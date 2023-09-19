@@ -4,14 +4,8 @@ import Foundation
 
     /// Checks conditions for showing free to paid plans dashboard cards
     static func shouldShowCard(
-        for blog: Blog,
-        isJetpack: Bool = AppConfiguration.isJetpack,
-        featureFlagEnabled: Bool = RemoteFeatureFlag.freeToPaidPlansDashboardCard.enabled()
+        for blog: Blog
     ) -> Bool {
-        guard isJetpack, featureFlagEnabled else {
-            return false
-        }
-
         return blog.supports(.domains) && !blog.hasPaidPlan
     }
 
@@ -27,6 +21,6 @@ import Foundation
     }
 
     @objc static func isFeatureEnabled() -> Bool {
-        return AppConfiguration.isJetpack && RemoteFeatureFlag.freeToPaidPlansDashboardCard.enabled()
+        return AppConfiguration.isJetpack
     }
 }

@@ -248,6 +248,7 @@ extension BlogDashboardViewController {
                                                         trailing: horizontalInset)
 
         section.interGroupSpacing = Constants.cellSpacing
+        section.contentInsetsReference = .readableContent
 
         return section
     }
@@ -322,7 +323,7 @@ extension BlogDashboardViewController {
     private enum Constants {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let horizontalSectionInset: CGFloat = 20
+        static let horizontalSectionInset: CGFloat = 12
         static let verticalSectionInset: CGFloat = 20
         static var bottomSectionInset: CGFloat {
             // Make room for FAB on iPhone

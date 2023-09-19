@@ -24,6 +24,11 @@ public func navigateBack() {
     }
 }
 
+public func tapTopOfScreen() {
+    let app = XCUIApplication()
+    app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2)).tap()
+}
+
 public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     let top = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
     let bottom = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
@@ -40,19 +45,29 @@ public func waitForExistAndTap(_ element: XCUIElement, timeout: TimeInterval = 5
     element.tap()
 }
 
-public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10, timeout: TimeInterval = 10) {
-    guard element.waitForIsHittable(timeout: timeout) else {
-        XCTFail("Expected element (\(element)) was not hittable after \(timeout) seconds.")
+public func waitForExistAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    guard element.waitForExistence(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) did not exist after \(timeout) seconds.")
         return
     }
 
+    element.tap()
+}
+
+public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
         if element.isHittable {
             element.tap()
             break
         }
+
+        usleep(500000) // a 0.5 second delay before retrying
         retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(element)) was not hittable after \(maxRetries) tries.")
     }
 }
 

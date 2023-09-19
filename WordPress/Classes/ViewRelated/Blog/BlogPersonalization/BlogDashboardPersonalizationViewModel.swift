@@ -93,7 +93,7 @@ private extension DashboardCard {
             case .newSite:
                 return NSLocalizedString("personalizeHome.dashboardCard.nextSteps", value: "Next steps", comment: "Card title for the pesonalization menu")
             }
-        case .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .empty, .domainsDashboardCard, .freeToPaidPlansDashboardCard, .domainRegistration, .jetpackSocial, .googleDomains:
+        case .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .empty, .freeToPaidPlansDashboardCard, .domainRegistration, .jetpackSocial, .googleDomains:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }

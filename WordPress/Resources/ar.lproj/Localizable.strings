@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:27+0000 */
+/* Translation-Revision-Date: 2023-09-13 14:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ar */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "مفعّل";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "أضف ملف صوتي";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "إضافة مكوّن هنا";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "إضافة صورة";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "إضافة صورة أو فيديو";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "إضافة وسائط";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "إضافة فيديو";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "العنوان";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "إضافة أي موضوع";
 
 /* No comment provided by engineer. */
+"Add audio" = "إضافة صوت";
+
+/* No comment provided by engineer. */
 "Add blocks" = "إضافة مكوِّنات";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "إضافة وصف";
+
+/* No comment provided by engineer. */
+"Add image" = "إضافة صورة";
 
 /* No comment provided by engineer. */
 "Add image or video" = "إضافة صورة أو فيديو";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "إضافة عنوان";
+
+/* No comment provided by engineer. */
+"Add video" = "إضافة فيديو";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "إضافة ميزات الموقع";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "يعني تسجيل الدخول موافقتك على _Terms of Service_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "اختيار ملف";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "تخصيص";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "اختيار نطاق";
+
+/* No comment provided by engineer. */
+"Choose a file" = "اختيار ملف";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "اختيار أيقونة تطبيق جديدة";
@@ -10550,7 +10547,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "قد تعرض البطاقات محتوى مختلفًا استنادًا إلى ما يحدث على موقعك. إننا نعمل على مزيد من البطاقات وضوابط التحكم.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "إضافة بطاقات أو إخفاؤها";
+"personalizeHome.cardsSectionHeader" = "إظهار البطاقات أو إخفاؤها";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "آخر نشاط";

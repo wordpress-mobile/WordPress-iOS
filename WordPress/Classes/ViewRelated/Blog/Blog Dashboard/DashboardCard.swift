@@ -12,7 +12,6 @@ enum DashboardCard: String, CaseIterable {
     case prompts
     case googleDomains
     case blaze
-    case domainsDashboardCard
     case freeToPaidPlansDashboardCard
     case domainRegistration
     case todaysStats = "todays_stats"
@@ -52,8 +51,6 @@ enum DashboardCard: String, CaseIterable {
             return DashboardBadgeCell.self
         case .blaze:
             return DashboardBlazeCardCell.self
-        case .domainsDashboardCard:
-            return DashboardDomainsCardCell.self
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardCell.self
         case .domainRegistration:
@@ -115,8 +112,6 @@ enum DashboardCard: String, CaseIterable {
             return JetpackBrandingVisibility.all.enabled
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
-        case .domainsDashboardCard:
-            return DomainsDashboardCardHelper.shouldShowCard(for: blog) && !FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .domainRegistration:

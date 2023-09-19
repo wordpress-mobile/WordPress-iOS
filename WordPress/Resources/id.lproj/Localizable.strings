@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: id */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIF";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "TAMBAHKAN AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "TAMBAHKAN BLOK DI SINI";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "TAMBAHKAN GAMBAR";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "TAMBAHKAN GAMBAR ATAU VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "TAMBAHKAN MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "TAMBAHKAN VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ALAMAT";
@@ -559,6 +547,9 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Tambahkan topik yang mana saja";
+
+/* No comment provided by engineer. */
+"Add audio" = "Tambahkan audio";
 
 /* No comment provided by engineer. */
 "Add blocks" = "Tambah blok";
@@ -1273,9 +1264,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Dengan mendaftar, berarti Anda menyetujui _Ketentuan Layanan_ kami.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "PILIH FILE";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "SESUAIKAN";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1522,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Pilih domain";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Pilih berkas";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Pilih ikon aplikasi baru";
@@ -10556,7 +10547,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "Kartu bisa saja menampilkan konten yang berbeda, tergantung pada apa yang terjadi di situs Anda. Kami terus mengembangkan fitur kartu dan kontrol.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Tambahkan atau sembunyikan kartu";
+"personalizeHome.cardsSectionHeader" = "Tampilkan atau sembunyikan kartu";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Aktivitas terbaru";

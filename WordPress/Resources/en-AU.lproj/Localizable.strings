@@ -389,19 +389,7 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ACTIVE";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ADD BLOCK HERE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE" = "ADD IMAGE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "ADD VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Address";
@@ -1208,9 +1196,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "By signing up, you agree to our _Terms of Service_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "CUSTOMISE";

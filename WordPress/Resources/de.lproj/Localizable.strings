@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: de */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIV";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "AUDIO HINZUFÜGEN";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "HIER BLOCK HINZUFÜGEN";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "BILD HINZUFÜGEN";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "BILD ODER VIDEO HINZUFÜGEN";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "MEDIEN HINZUFÜGEN";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "VIDEO HINZUFÜGEN";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Beliebiges Thema hinzufügen";
 
 /* No comment provided by engineer. */
+"Add audio" = "Audio hinzufügen";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Blöcke hinzufügen";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Beschreibung hinzufügen";
+
+/* No comment provided by engineer. */
+"Add image" = "Bild hinzufügen";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Bild oder Video hinzufügen";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Titel hinzufügen";
+
+/* No comment provided by engineer. */
+"Add video" = "Video hinzufügen";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Die Website-Funktionen werden hinzugefügt";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Durch die Registrierung stimmst du unseren Geschäftsbedingungen zu.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "Datei auswählen";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSEN";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Domain auswählen";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Datei auswählen";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Wähle ein neues App-Icon";
@@ -10556,7 +10553,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "Je nachdem was auf deiner Website los ist, zeigen Karten möglicherweise unterschiedliche Inhalte an. Wir arbeiten daran, mehr Karten und Bedienelemente zu ermöglichen.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Karten hinzufügen oder ausblenden";
+"personalizeHome.cardsSectionHeader" = "Karten anzeigen oder ausblenden";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Letzte Aktivität";

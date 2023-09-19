@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-07 10:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-13 10:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: zh_CN */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "活动";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "添加音频";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "在此处添加区块";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "添加图片";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "添加图片或视频";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "添加媒体";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "添加视频";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "添加任何主题";
 
 /* No comment provided by engineer. */
+"Add audio" = "添加音频";
+
+/* No comment provided by engineer. */
 "Add blocks" = "添加区块";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "添加描述";
+
+/* No comment provided by engineer. */
+"Add image" = "添加图片";
 
 /* No comment provided by engineer. */
 "Add image or video" = "添加图片或视频";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "添加标题";
+
+/* No comment provided by engineer. */
+"Add video" = "添加视频";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "正在添加站点功能";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "注册即表示您同意我们的_服务条款_。";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "选择文件";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "定制";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "选择域";
+
+/* No comment provided by engineer. */
+"Choose a file" = "选择文件";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "选择新的应用图标";
@@ -10550,7 +10547,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "卡片可能会显示不同的内容，具体取决于您站点上的情况。 我们正在开发更多卡片和控件。";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "添加或隐藏卡片";
+"personalizeHome.cardsSectionHeader" = "显示或隐藏卡片";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "近期的动态";

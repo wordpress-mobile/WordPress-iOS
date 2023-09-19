@@ -1,8 +1,16 @@
+23.4
+-----
+
+
 23.3
 -----
+* [***] [Jetpack-only] Lock Screen Widgets are now available on Jetpack. Quickly view your site stats without unlocking your phone. [#21535]
 * [*] Block editor: Fix the obscurred "Insert from URL" input for media blocks when using a device in landscape orientation. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6143]
 * [**] Block editor: Updated placeholder text colors for block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6182]
-* [**] Update the main site navigation on the My Site screen, making it easier to access the common site sections. The new shortcuts can be modified using the Personalize Home Tab screen. [21502](https://github.com/wordpress-mobile/WordPress-iOS/pull/21502).
+* [**] Update the main site navigation on the My Site screen, making it easier to access the common site sections. The new shortcuts can be modified using the Personalize Home Tab screen. [21502](https://github.com/wordpress-mobile/WordPress-iOS/pull/21502)
+* [**] [internal] Refactor fetching one single media item. [#21567]
+* [**] [internal] Refactored how the total number of WordPress Media is fetched. [#21568]
+* [**] [internal] Refactor fetching metadata of VideoPress videos. [#21569]
 
 23.2
 -----
@@ -21,6 +29,7 @@
 * [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
 * [*] Fix a crash on the pages list when the authentication token is invalid. [#21471]
 * [**] Me tab: move Me to the bottom tab bar [https://github.com/wordpress-mobile/WordPress-iOS/pull/21348]
+* [*] Fix Stats menu option not visible for self-hosted sites without a Jetpack connection. [#21548]
 
 23.0.1
 -----

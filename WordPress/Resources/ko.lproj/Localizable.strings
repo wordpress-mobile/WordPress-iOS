@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-07 09:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-13 01:28:14+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ko_KR */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "활성";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "오디오 추가";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "여기에 블록 추가";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "이미지 추가";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "이미지 또는 비디오 추가";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "미디어 추가";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "비디오 추가";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "주소";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "모든 토픽 추가하기";
 
 /* No comment provided by engineer. */
+"Add audio" = "오디오 추가하기";
+
+/* No comment provided by engineer. */
 "Add blocks" = "블록 추가";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "설명 추가";
+
+/* No comment provided by engineer. */
+"Add image" = "이미지 추가하기";
 
 /* No comment provided by engineer. */
 "Add image or video" = "이미지 또는 비디오 추가";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "제목 추가하기";
+
+/* No comment provided by engineer. */
+"Add video" = "비디오 추가하기";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "사이트 기능 추가";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "가입하려면 _서비스 약관_에 동의해야 합니다.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "파일 선택하기";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "사용자 정의";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "도메인 선택하기";
+
+/* No comment provided by engineer. */
+"Choose a file" = "파일을 선택하세요";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "새 앱 아이콘 선택";
@@ -10556,7 +10553,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "사이트에서 발생하는 상황에 따라 다른 콘텐츠가 카드에 표시될 수 있습니다. 더 많은 카드와 제어 기능을 연구하고 있습니다.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "카드 추가 또는 숨기기";
+"personalizeHome.cardsSectionHeader" = "카드 보이기 또는 숨기기";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "최근 활동";
