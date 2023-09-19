@@ -45,15 +45,6 @@ public func waitForExistAndTap(_ element: XCUIElement, timeout: TimeInterval = 5
     element.tap()
 }
 
-public func waitForExistAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
-    guard element.waitForExistence(timeout: timeout) else {
-        XCTFail("Expected element (\(element)) did not exist after \(timeout) seconds.")
-        return
-    }
-
-    element.tap()
-}
-
 public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {

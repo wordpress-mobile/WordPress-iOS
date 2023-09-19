@@ -290,8 +290,6 @@ public class BlockEditorScreen: ScreenObject {
         if action == .publish && postType == .post {
             dismissBloggingRemindersAlertIfNeeded()
         }
-        let postNowButton = app.buttons["\(action.rawValue) Now"]
-        var tries = 0
     }
 
     @discardableResult
