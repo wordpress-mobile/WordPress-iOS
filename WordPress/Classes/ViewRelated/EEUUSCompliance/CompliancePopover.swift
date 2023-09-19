@@ -7,28 +7,11 @@ struct CompliancePopover: View {
 
     var goToSettingsAction: (() -> ())?
     var saveAction: (() -> ())?
-    var shouldScroll: Bool = false
-    var screenHeight: CGFloat = 0
 
     @StateObject
     var viewModel: CompliancePopoverViewModel
 
     var body: some View {
-        if shouldScroll {
-            GeometryReader { reader in
-                ScrollView(showsIndicators: false) {
-                    contentVStack
-                    // Fixes the issue of scroll view content size not sizing properly.
-                    // Without this, on large dynamic fonts, the view is not properly scrollable.
-                    Spacer().frame(height: reader.size.height - screenHeight + Constants.verticalScrollBuffer)
-                }
-            }
-        } else {
-            contentVStack
-        }
-    }
-
-    private var contentVStack: some View {
         VStack(alignment: .leading, spacing: Length.Padding.double) {
             titleText
             subtitleText
