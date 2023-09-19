@@ -65,12 +65,8 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
     }
 
     private func configureOnEllipsisButtonTap(sourceRect: CGRect, blog: Blog) {
-        if FeatureFlag.personalizeHomeTab.enabled {
-            cardFrameView.addMoreMenu(items: [
-                BlogDashboardHelpers.makeHideCardAction(for: .quickStart, blog: blog)
-            ], card: .quickStart)
-        } else {
-            cardFrameView.onEllipsisButtonTap = { [weak self] in
+        cardFrameView.addMoreMenu(items: [
+            BlogDashboardHelpers.makeHideCardAction { [weak self] in
                 guard let self = self,
                       let viewController = self.viewController,
                       let blog = self.blog else {
@@ -78,7 +74,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
                 }
                 viewController.removeQuickStart(from: blog, sourceView: self.cardFrameView, sourceRect: sourceRect)
             }
-        }
+        ], card: .quickStart)
     }
 }
 
