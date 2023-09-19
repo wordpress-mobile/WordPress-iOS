@@ -198,14 +198,14 @@ public class BlockEditorScreen: ScreenObject {
         tapTopOfScreen()
     }
 
-//    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
-//    @discardableResult
-//    public func verifyImageBlockDisplayed() -> Self {
-//        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
-//        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
-//
-//        return self
-//    }
+    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
+    @discardableResult
+    public func verifyImageBlockDisplayed() -> Self {
+        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
+        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
+
+        return self
+    }
 
     @discardableResult
     public func verifyMediaBlocksDisplayed() -> Self {
