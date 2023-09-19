@@ -25,7 +25,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
                     return
                 }
                 Task {
-                    if await self.shouldShowPrivacyBanner(countryCode: countryCode) {
+                    if self.shouldShowPrivacyBanner(countryCode: countryCode) {
                         await self.presentPopover(on: viewController)
                     }
                 }
@@ -43,7 +43,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         presentingViewController?.dismiss(animated: true)
     }
 
-    private func shouldShowPrivacyBanner(countryCode: String) async -> Bool {
+    private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
         return isCountryInEU && !defaults.didShowCompliancePopup
     }

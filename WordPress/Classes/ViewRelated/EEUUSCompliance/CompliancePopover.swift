@@ -8,7 +8,6 @@ struct CompliancePopover: View {
     var goToSettingsAction: (() -> ())?
     var saveAction: (() -> ())?
     var shouldScroll: Bool = false
-    var screenHeight: CGFloat = 0
 
     @StateObject
     var viewModel: CompliancePopoverViewModel
