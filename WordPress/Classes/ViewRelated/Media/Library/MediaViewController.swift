@@ -14,6 +14,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     private var isSyncing = false
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
+    private var selection = NSMutableOrderedSet() // `Media`
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let coordinator = MediaCoordinator.shared
@@ -31,6 +32,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         self.blog = blog
         self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
+        self.hidesBottomBarWhenPushed = true
     }
 
     required init?(coder: NSCoder) {
@@ -45,8 +47,9 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
 
+        configureNavigationBar()
         configureCollectionView()
-        configureNavigationItems()
+        refreshNavigationItems()
 
         fetchController.delegate = self
         do {
@@ -86,23 +89,49 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
     }
 
-    private func configureNavigationItems() {
-        if blog.userCanUploadMedia {
-            buttonAddMedia.spotlightOffset = Constants.addButtonSpotlightOffset
-            let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
-            let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
-            buttonAddMedia.setImage(image, for: .normal)
-            buttonAddMedia.addAction(UIAction { [weak self] _ in
-                QuickStartTourGuide.shared.visited(.mediaUpload)
-                self?.buttonAddMedia.shouldShowSpotlight = false
-            }, for: .menuActionTriggered)
-            buttonAddMedia.menu = mediaPickerController.makeMenu(for: self)
-            buttonAddMedia.showsMenuAsPrimaryAction = true
-            buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
-            buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactScrollEdgeAppearance = appearance
+    }
 
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonAddMedia)
-        }
+    private func refreshNavigationItems() {
+        navigationItem.hidesBackButton = isEditing
+
+        navigationItem.rightBarButtonItems = {
+            var rightBarButtonItems: [UIBarButtonItem] = []
+
+            if !isEditing, blog.userCanUploadMedia {
+                configureAddMediaButton()
+                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+            }
+
+            if isEditing {
+                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                rightBarButtonItems.append(doneButton)
+            } else {
+                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+                rightBarButtonItems.append(selectButton)
+            }
+            return rightBarButtonItems
+        }()
+    }
+
+    private func configureAddMediaButton() {
+        buttonAddMedia.spotlightOffset = Constants.addButtonSpotlightOffset
+        let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
+        let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
+        buttonAddMedia.setImage(image, for: .normal)
+        buttonAddMedia.addAction(UIAction { [weak self] _ in
+            QuickStartTourGuide.shared.visited(.mediaUpload)
+            self?.buttonAddMedia.shouldShowSpotlight = false
+        }, for: .menuActionTriggered)
+        buttonAddMedia.menu = mediaPickerController.makeMenu(for: self)
+        buttonAddMedia.showsMenuAsPrimaryAction = true
+        buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
+        buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
     }
 
     private func updateFlowLayoutItemSize() {
@@ -115,6 +144,151 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+
+    // MARK: - Actions
+
+    @objc private func buttonSelectTapped() {
+        setEditing(true)
+    }
+
+    @objc private func buttonDoneTapped() {
+        setEditing(false)
+    }
+
+    @objc private func buttonDeleteTapped() {
+        deleteSelectedMedia(selectedMedia)
+    }
+
+    @objc private func buttonShareTapped(sender: UIBarButtonItem) {
+        shareSelectedMedia(selectedMedia, barButtonItem: sender)
+    }
+
+    private var selectedMedia: [Media] {
+        guard let selection = selection.array as? [Media] else {
+            assertionFailure("Invalid selection")
+            return []
+        }
+        return selection
+    }
+
+    // MARK: - Actions (Delete)
+
+    private func deleteSelectedMedia(_ selection: [Media]) {
+        guard !selection.isEmpty else {
+            return
+        }
+        let alert = UIAlertController(
+            title: nil,
+            message: selection.count == 1 ? Strings.deleteConfirmationMessageOne : Strings.deleteConfirmationMessageMany,
+            preferredStyle: UIDevice.current.userInterfaceIdiom == .phone ? .actionSheet : .alert
+        )
+        alert.addCancelActionWithTitle(Strings.deleteConfirmationCancel)
+        alert.addDestructiveActionWithTitle(Strings.deleteConfirmationConfirm) { _ in
+            self.didConfirmDeletion(for: selection)
+        }
+        present(alert, animated: true)
+    }
+
+    private func didConfirmDeletion(for selection: [Media]) {
+        let deletedItemsCount = selection.count
+
+        let updateProgress = { (progress: Progress?) in
+            let fractionCompleted = progress?.fractionCompleted ?? 0
+            SVProgressHUD.showProgress(Float(fractionCompleted), status: Strings.deletionProgressViewTitle)
+        }
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+
+        updateProgress(nil)
+        coordinator.delete(media: selection, onProgress: updateProgress, success: { [weak self] in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
+            SVProgressHUD.showSuccess(withStatus: Strings.deletionSuccessMessage)
+        }, failure: {
+            SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
+        })
+    }
+
+    // MARK: - Actions (Share)
+
+    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil) {
+        guard !selection.isEmpty else {
+            return
+        }
+        // TODO: Add spinner (cancellable?)
+        Task {
+            do {
+                // TODO: Add analytics
+                let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
+
+                let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+                present(activityViewController, animated: true, completion: nil)
+            } catch {
+                // TODO: Add error handling
+            }
+        }
+    }
+
+    // MARK: - Editing
+
+    private func setEditing(_ isEditing: Bool) {
+        guard self.isEditing != isEditing else { return }
+        self.isEditing = isEditing
+        self.collectionView.allowsMultipleSelection = isEditing
+
+        refreshNavigationItems()
+
+        if !isEditing {
+            deselectAll()
+        }
+
+        var toolbarItems: [UIBarButtonItem] = []
+        if blog.supports(.mediaDeletion) {
+            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped)))
+        }
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped)))
+        self.toolbarItems = toolbarItems
+        navigationController?.setToolbarHidden(!isEditing, animated: true)
+
+        updateToolbarItemsState()
+    }
+
+    private func setSelect(_ isSelected: Bool, for media: Media) {
+        if isSelected {
+            selection.add(media)
+        } else {
+            selection.remove(media)
+            getViewModel(for: media).badgeText = nil
+        }
+        var index = 1
+        for media in selection {
+            if let media = media as? Media {
+                getViewModel(for: media).badgeText = index.description
+                index += 1
+            } else {
+                assertionFailure("Invalid selection")
+            }
+        }
+        updateToolbarItemsState()
+    }
+
+    private func updateToolbarItemsState() {
+        for toolbarItem in toolbarItems ?? [] {
+            toolbarItem.isEnabled = selection.count > 0
+        }
+    }
+
+    private func deselectAll() {
+        for media in selection {
+            if let media = media as? Media {
+                getViewModel(for: media).badgeText = nil
+            } else {
+                assertionFailure("Invalid selection")
+            }
+        }
+        selection.removeAllObjects()
     }
 
     // MARK: - Refresh
@@ -188,6 +362,11 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         case .delete:
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
+            if let media = anObject as? Media {
+                setSelect(false, for: media)
+            } else {
+                assertionFailure("Invalid object: \(anObject)")
+            }
         case .update:
             // No interested in these. The screen observe these changes separately
             // to minimize the number of reloads: `.update` is emitted too often.
@@ -238,17 +417,26 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-
         let media = fetchController.object(at: indexPath)
-        switch media.remoteStatus {
-        case .failed, .pushing, .processing:
-            showRetryOptions(for: media)
-        case .sync:
-            let viewController = MediaItemViewController(media: media)
-            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-            navigationController?.pushViewController(viewController, animated: true)
-        default: break
+        if isEditing {
+            setSelect(true, for: media)
+        } else {
+            switch media.remoteStatus {
+            case .failed, .pushing, .processing:
+                showRetryOptions(for: media)
+            case .sync:
+                let viewController = MediaItemViewController(media: media)
+                WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
+                navigationController?.pushViewController(viewController, animated: true)
+            default: break
+            }
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if isEditing {
+            let media = fetchController.object(at: indexPath)
+            setSelect(false, for: media)
         }
     }
 
@@ -355,11 +543,20 @@ private enum Constants {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("media.title", value: "Media", comment: "Media screen navigation title")
+    static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
+    static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
     static let syncFailed = NSLocalizedString("media.syncFailed", value: "Unable to sync media", comment: "Title of error prompt shown when a sync fails.")
     static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
+
+    static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
+    static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
+    static let deleteConfirmationCancel = NSLocalizedString("mediaLibrary.deleteConfirmationCancel", value: "Cancel", comment: "Verb. Button title. Tapping cancels an action.")
+    static let deleteConfirmationConfirm = NSLocalizedString("mediaLibrary.deleteConfirmationConfirm", value: "Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)")
+    static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
+    static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
+    static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
 }
 
 extension Blog {

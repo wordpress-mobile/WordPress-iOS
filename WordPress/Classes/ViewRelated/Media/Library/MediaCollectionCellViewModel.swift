@@ -3,6 +3,7 @@ import UIKit
 final class MediaCollectionCellViewModel {
     var onImageLoaded: ((UIImage) -> Void)?
     @Published private(set) var overlayState: CircularProgressView.State?
+    @Published var badgeText: String?
     let mediaID: TaggedManagedObjectID<Media>
     var mediaType: MediaType
 
