@@ -1,12 +1,13 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
+final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private lazy var refreshControl = UIRefreshControl()
-
     private lazy var fetchController = makeFetchController()
+
+    private let searchController = UISearchController()
     private let mediaPickerController: MediaPickerController
 
     private let buttonAddMedia: SpotlightableButton = SpotlightableButton(type: .custom)
@@ -49,6 +50,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
         configureNavigationBar()
         configureCollectionView()
+        configureSearchController()
         refreshNavigationItems()
 
         fetchController.delegate = self
@@ -95,6 +97,13 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactScrollEdgeAppearance = appearance
+    }
+
+    private func configureSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+        navigationItem.searchController = searchController
     }
 
     private func refreshNavigationItems() {
@@ -332,7 +341,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     private func makeFetchController() -> NSFetchedResultsController<Media> {
         let request = NSFetchRequest<Media>(entityName: Media.self.entityName())
-        request.predicate = NSPredicate(format: "blog == %@", blog)
+        request.predicate = makePredicate(searchTerm: "")
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \Media.creationDate, ascending: false),
             // Disambiguate in case media are uploaded at the same time, which
@@ -346,6 +355,14 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             sectionNameKeyPath: nil,
             cacheName: nil
         )
+    }
+
+    private func makePredicate(searchTerm: String) -> NSPredicate {
+        var predicates = [NSPredicate(format: "blog == %@", blog)]
+        if !searchTerm.isEmpty {
+            predicates.append(NSPredicate(format: "(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", searchTerm, searchTerm, searchTerm))
+        }
+        return predicates.count == 1 ? predicates[0] : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
@@ -456,6 +473,20 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         }
     }
 
+    // MARK: - UISearchResultsUpdating
+
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchTerm = searchController.searchBar.text ?? ""
+        fetchController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
+        do {
+            try fetchController.performFetch()
+            collectionView.reloadData()
+            updateEmptyViewState()
+        } catch {
+            WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
+        }
+    }
+
     // MARK: - Menus
 
     private func showRetryOptions(for media: Media) {
@@ -505,6 +536,8 @@ extension MediaViewController: NoResultsViewHost {
             emptyViewState = .synching
         } else if syncError != nil {
             emptyViewState = .failed
+        } else if let searchTerm = searchController.searchBar.text, !searchTerm.isEmpty {
+            emptyViewState = .emptySearch
         } else {
             emptyViewState = .empty(isAddButtonShown: blog.userCanUploadMedia)
         }
@@ -523,6 +556,8 @@ extension MediaViewController: NoResultsViewHost {
             noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown)
             noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
             displayNoResults(on: view)
+        case .emptySearch:
+            configureAndDisplayNoResults(on: view, title: Strings.noSearchResultsTitle)
         case .failed:
             configureAndDisplayNoResults(on: view, title: Strings.syncFailed)
         }
@@ -532,6 +567,7 @@ extension MediaViewController: NoResultsViewHost {
         case hidden
         case synching
         case empty(isAddButtonShown: Bool)
+        case emptySearch
         case failed
     }
 }
@@ -549,6 +585,7 @@ private enum Strings {
     static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
+    static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
 
     static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
     static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
