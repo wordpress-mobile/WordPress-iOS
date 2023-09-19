@@ -131,7 +131,7 @@ private extension WhatIsNewScenePresenter {
     }
 
     private func shouldUseDashboardCustomView() -> Bool {
-        return self.store.appVersionName == "19.6"
+        return self.store.appVersionName == "23.3"
     }
 
     enum WhatIsNewStrings {
