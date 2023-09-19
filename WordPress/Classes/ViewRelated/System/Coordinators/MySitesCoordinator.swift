@@ -36,7 +36,17 @@ class MySitesCoordinator: NSObject {
     ///
     @objc
     var rootViewController: UIViewController {
-        return splitViewController
+        if MySitesCoordinator.isSplitViewEnabled {
+            return splitViewController
+        } else {
+            // `hidesBottomBarWhenPushed` doesn't work with `UISplitViewController`,
+            // so it we have to use `UINavigationController` directly.
+            return navigationController
+        }
+    }
+
+    @objc class var isSplitViewEnabled: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
     }
 
     @objc
@@ -65,6 +75,7 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.extendedLayoutIncludesOpaqueBars = true
 
         return navigationController
     }()

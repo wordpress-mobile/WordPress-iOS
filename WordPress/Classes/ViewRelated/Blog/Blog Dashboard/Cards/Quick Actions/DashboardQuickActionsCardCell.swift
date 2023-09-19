@@ -131,7 +131,7 @@ extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        self.parentViewController?.showDetailViewController(viewController, sender: nil)
+        self.blogDetailsViewController?.show(viewController, sender: nil)
     }
 }
 
