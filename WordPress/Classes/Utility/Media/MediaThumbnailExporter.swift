@@ -36,7 +36,7 @@ class MediaThumbnailExporter: MediaExporter {
 
         /// The compression quality of the thumbnail, if the image type supports compression.
         ///
-        var compressionQuality = 0.90
+        var compressionQuality = 0.8
 
         /// The target image type of the exported thumbnail images.
         ///
