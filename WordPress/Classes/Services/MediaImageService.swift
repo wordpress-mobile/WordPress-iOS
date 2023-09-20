@@ -23,25 +23,6 @@ final class MediaImageService: NSObject {
 
     // MARK: - Thumbnails
 
-    /// Returns a preferred thumbnail size (in pixels) optimized for the device.
-    ///
-    /// - important: It makes sure the app uses the same thumbnails across
-    /// different screens and presentation modes to avoid fetching and caching
-    /// more than one version of the same image.
-    static let preferredThumbnailSize: CGSize = {
-        let scale = UIScreen.main.scale
-        let targetSize = preferredThumbnailPointSize
-        return CGSize(width: targetSize.width * scale, height: targetSize.height * scale)
-    }()
-
-    static let preferredThumbnailPointSize: CGSize = {
-        let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-        let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-        let availableWidth = screenSide - MediaViewController.spacing * CGFloat(itemPerRow - 1)
-        let targetSize = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
-        return CGSize(width: targetSize, height: targetSize)
-    }()
-
     /// Returns a small thumbnail for the given media asset.
     ///
     /// The thumbnail size is different on different devices, but it's suitable
@@ -118,8 +99,8 @@ final class MediaImageService: NSObject {
     private func localThumbnail(for media: Media, targetSize: CGSize) async -> UIImage? {
         let exporter = MediaThumbnailExporter()
         exporter.mediaDirectoryType = .cache
-        exporter.options.preferredSize = targetSize
-        exporter.options.scale = 1
+        exporter.options.preferredSize = MediaImageService.targetSize(for: media, targetSize: targetSize)
+        exporter.options.scale = 1 // In pixels
 
         guard let sourceURL = media.absoluteLocalURL,
               exporter.supportsThumbnailExport(forFile: sourceURL) else {
@@ -203,6 +184,56 @@ final class MediaImageService: NSObject {
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
         let objectID = try await mediaRepository.getMedia(withID: mediaID, in: .init(media.blog))
         return try coreDataStack.mainContext.existingObject(with: objectID)
+    }
+
+    // MARK: - Target Size
+
+    /// Returns a preferred thumbnail size (in pixels) optimized for the device.
+    ///
+    /// - important: It makes sure the app uses the same thumbnails across
+    /// different screens and presentation modes to avoid fetching and caching
+    /// more than one version of the same image.
+    private static let preferredThumbnailSize: CGSize = {
+        let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+        let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
+        let availableWidth = screenSide - MediaViewController.spacing * CGFloat(itemPerRow - 1)
+        let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
+        let targetSize = CGSize(width: targetSide, height: targetSide)
+        return targetSize.scaled(by: UIScreen.main.scale)
+    }()
+
+    // Both Photon (Site Optimizer) and MediaThumbnailExporter doesn't support
+    // "aspect-fill" resizing mode, which is want we want for the thumbnails.
+    //
+    // This method converts the target size to support aspect fill mode.
+    //
+    // Example: if media size is 2000x3000 px and targetSize is 200x200 px, the
+    // returned value will be 200x300 px.
+    private static func targetSize(for media: Media, targetSize: CGSize) -> CGSize {
+        let mediaSize = CGSize(
+            width: CGFloat(media.width?.floatValue ?? 0),
+            height: CGFloat(media.height?.floatValue ?? 0)
+        )
+        return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
+    }
+
+    static func targetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
+        guard mediaSize.width > 0 && mediaSize.height > 0 else {
+            return originalTargetSize
+        }
+        let scaleHorizontal = originalTargetSize.width / mediaSize.width
+        let scaleVertical = originalTargetSize.height / mediaSize.height
+        // Scale image to fill the target size but avoid upscaling.
+        let aspectFillScale = min(1, max(scaleHorizontal, scaleVertical))
+        let targetSize = mediaSize.scaled(by: aspectFillScale).rounded()
+        // Sanitize the size to make sure ultra-wide panoramas are still resized
+        // to fit the target size, but increase it a bit for an acceptable size.
+        if targetSize.width > originalTargetSize.width * 4 ||
+            targetSize.height > originalTargetSize.height * 4 {
+            let aspectFitScale = min(scaleHorizontal, scaleVertical)
+            return mediaSize.scaled(by: aspectFitScale * 4).rounded()
+        }
+        return targetSize
     }
 }
 
