@@ -23,6 +23,8 @@ final class CompliancePopoverViewController: UIViewController {
         return hostingController.view
     }
 
+    // MARK: - Init
+
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
         let content = CompliancePopover(viewModel: viewModel)
