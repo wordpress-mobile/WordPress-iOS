@@ -17,6 +17,8 @@ class EditorFlow {
             try TabNavComponent()
                 .goToMySiteScreen()
                 .goToMoreMenu()
+
+            try MySiteMoreMenuScreen()
                 .goToSettingsScreen()
         }
         return try SiteSettingsScreen().toggleBlockEditor(to: state)

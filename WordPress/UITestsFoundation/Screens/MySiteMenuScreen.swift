@@ -106,13 +106,6 @@ public class MySiteMoreMenuScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToMoreMenu() -> Self {
-        app.tables.cells.staticTexts["More"].tap()
-
-        return self
-    }
-
-    @discardableResult
     public func goToPeople() throws -> PeopleScreen {
         peopleButton.tap()
         return try PeopleScreen()

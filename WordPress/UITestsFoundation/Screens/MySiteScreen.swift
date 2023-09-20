@@ -142,10 +142,8 @@ public class MySiteScreen: ScreenObject {
         return try ActionSheetComponent()
     }
 
-    @discardableResult
-    public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
+    public func goToMoreMenu() throws {
         moreMenuButton.tap()
-        return try MySiteMoreMenuScreen()
     }
 
     public func getSiteTitle() -> String {
