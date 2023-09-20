@@ -4,8 +4,9 @@ import XCTest
 class EditorGutenbergTests: XCTestCase {
 
     @MainActor
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         setUpTestSuite()
+        try await WireMock.setUpScenario(scenario: "new_post_flow")
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
@@ -19,7 +20,7 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     let postTitle = "Rich post title"
-    let postContent = "Some text, and more text"
+    let postContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue efficitur leo eget porta."
     let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
 
@@ -101,6 +102,11 @@ class EditorGutenbergTests: XCTestCase {
     func testAddMediaBlocks() throws {
         try BlockEditorScreen()
             .addImage()
+            .verifyImageBlockDisplayed()
+
+        try XCTSkipIf(!XCUIDevice.isPad, "Test currently fails on iPhone in CI for add video and audio from URL - Tapping on the coordinate location results in a blank screen. Skipping rest of test on iPhone while investigation is in progress")
+
+        try BlockEditorScreen()
             .addVideoFromUrl(urlPath: videoUrlPath)
             .addAudioFromUrl(urlPath: audioUrlPath)
             .verifyMediaBlocksDisplayed()

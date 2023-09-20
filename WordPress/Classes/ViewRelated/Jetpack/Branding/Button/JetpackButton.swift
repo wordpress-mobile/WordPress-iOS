@@ -67,7 +67,7 @@ class JetpackButton: CircularImageButton {
     }
 
     private func configureButton(with title: String) {
-        isUserInteractionEnabled = FeatureFlag.jetpackPoweredBottomSheet.enabled
+        isUserInteractionEnabled = true
         setTitle(title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor

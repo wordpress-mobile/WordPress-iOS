@@ -14,17 +14,11 @@ extension Post {
             tags = Strings.promptTag
         }
 
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
-            tags?.append(", \(Strings.promptTag)-\(prompt.promptID)")
-        }
+        tags?.append(", \(Strings.promptTag)-\(prompt.promptID)")
     }
 
     private func promptContent(withPromptText promptText: String) -> String {
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
-            return pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
-        } else {
-            return pullquoteBlock(promptText: promptText)
-        }
+        return pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
     }
 
     private func pullquoteBlock(promptText: String) -> String {

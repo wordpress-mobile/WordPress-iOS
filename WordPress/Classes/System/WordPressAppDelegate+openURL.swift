@@ -7,10 +7,6 @@ import AutomatticTracks
         let redactedURL = LoggingURLRedactor.redactedURL(url)
         DDLogInfo("Application launched with URL: \(redactedURL)")
 
-        guard !handleGoogleAuth(url: url, options: options) else {
-            return true
-        }
-
         if QRLoginCoordinator.didHandle(url: url) {
             return true
         }
@@ -54,16 +50,6 @@ import AutomatticTracks
         default:
             return false
         }
-    }
-
-    private func handleGoogleAuth(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        if WordPressAuthenticator.shared.handleGoogleAuthUrl(url,
-                                                             sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-                                                             annotation: options[UIApplication.OpenURLOptionsKey.annotation]) {
-            return true
-        }
-
-        return false
     }
 
     private func handleMagicLogin(url: URL) -> Bool {

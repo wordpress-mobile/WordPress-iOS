@@ -240,12 +240,12 @@ class EditorMediaUtility {
             return
         }
 
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMetadataFromVideoPressID(videoPressID, in: post.blog, success: { (metadata) in
-            completion(Result.success(metadata))
-        }, failure: { (error) in
-            DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            completion(Result.failure(error))
+        let remote = MediaServiceRemoteFactory().remote(for: post.blog)
+        remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate(), success: { metadata in
+            completion(.success(metadata!))
+        }, failure: { error in
+            DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error!.localizedDescription)")
+            completion(.failure(error!))
         })
     }
 }

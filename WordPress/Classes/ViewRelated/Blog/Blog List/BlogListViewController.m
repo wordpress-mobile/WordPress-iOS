@@ -708,7 +708,7 @@ static NSInteger HideSearchMinSites = 3;
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService removeBlog:blog];
 
-    if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
+    if ([AppConfiguration isWordPress]) {
         [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
     }
     

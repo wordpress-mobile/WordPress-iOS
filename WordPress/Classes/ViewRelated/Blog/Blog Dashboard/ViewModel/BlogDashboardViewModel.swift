@@ -57,8 +57,8 @@ final class BlogDashboardViewModel {
             switch item {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardQuickActionsCardCell
-                cell?.configureQuickActionButtons(for: blog, with: viewController)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as! DashboardQuickActionsCardCell
+                cell.configure(viewModel: quickActionsViewModel, viewController: viewController)
                 return cell
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
@@ -79,12 +79,16 @@ final class BlogDashboardViewModel {
     }()
 
     private var blazeViewModel: DashboardBlazeCardCellViewModel
+    private var quickActionsViewModel: DashboardQuickActionsViewModel
+    private var personalizationService: BlogDashboardPersonalizationService
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         registerNotifications()
     }
 
@@ -93,11 +97,21 @@ final class BlogDashboardViewModel {
         loadCardsFromCache()
     }
 
+    func viewWillAppear() {
+        quickActionsViewModel.viewWillAppear()
+    }
+
+    func viewWillDisappear() {
+        quickActionsViewModel.viewWillDisappear()
+    }
+
     /// Update to display the selected blog.
     func update(blog: Blog) {
         BlogDashboardAnalytics.shared.reset()
         self.blog = blog
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         self.loadCardsFromCache()
         self.loadCards()
     }
@@ -177,13 +191,14 @@ private extension BlogDashboardViewModel {
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
         if MigrationSuccessCardView.shouldShowMigrationSuccessCard, !WPDeviceIdentification.isiPad() {
-            snapshot.appendSections(DashboardSection.allCases)
+            snapshot.appendSections([.migrationSuccess])
             snapshot.appendItems([.migrationSuccess], toSection: .migrationSuccess)
-        } else {
-            snapshot.appendSections([.quickActions, .cards])
         }
-
-        snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
+        if !WPDeviceIdentification.isiPad() {
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
+        }
+        snapshot.appendSections([.cards])
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
     }

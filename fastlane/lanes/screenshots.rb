@@ -51,7 +51,7 @@ platform :ios do
 
     scan(
       workspace: WORKSPACE_PATH,
-      scheme: scheme,
+      scheme:,
       build_for_testing: true,
       derived_data_path: DERIVED_DATA_PATH
     )
@@ -73,11 +73,11 @@ platform :ios do
     dark_mode_values.each do |dark_mode_enabled|
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
-        scheme: scheme,
+        scheme:,
         test_without_building: true,
         derived_data_path: DERIVED_DATA_PATH,
-        output_directory: output_directory,
-        languages: languages,
+        output_directory:,
+        languages:,
         dark_mode: dark_mode_enabled,
         override_status_bar: true,
 
@@ -240,7 +240,7 @@ platform :ios do
       if already_exists
         Actions.execute_action(step_name) { UI.message "A simulator for device type #{device_type_id} already exists" }
       else
-        sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
+        sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name:)
         # To get the UUID of the created Simulator, store the `sh` call above in a variable, e.g. `res = sh(...`, then call:
         # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
       end

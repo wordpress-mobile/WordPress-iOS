@@ -44,7 +44,21 @@ extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
         let gravatarIcon = image.gravatarIcon(size: 28.0)
-        self.image = gravatarIcon?.withAlpha(0.36)
+        self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
         self.selectedImage = gravatarIcon
+    }
+}
+
+extension UIImage {
+
+    var blackAndWhite: UIImage? {
+        let context = CIContext(options: nil)
+        guard let currentFilter = CIFilter(name: "CIPhotoEffectNoir") else { return nil }
+        currentFilter.setValue(CIImage(image: self), forKey: kCIInputImageKey)
+        if let output = currentFilter.outputImage,
+            let cgImage = context.createCGImage(output, from: output.extent) {
+            return UIImage(cgImage: cgImage, scale: scale, orientation: imageOrientation)
+        }
+        return nil
     }
 }

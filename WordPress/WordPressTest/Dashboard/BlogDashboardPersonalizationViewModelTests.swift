@@ -3,16 +3,18 @@ import Nimble
 
 @testable import WordPress
 
-final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
+final class BlogDashboardPersonalizationViewModelTests: CoreDataTestCase {
     private let repository = InMemoryUserDefaults()
     private lazy var service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+    private var blog: Blog!
 
     var viewModel: BlogDashboardPersonalizationViewModel!
 
     override func setUp() {
         super.setUp()
 
-        viewModel = BlogDashboardPersonalizationViewModel(service: service, quickStartType: .undefined)
+        blog = BlogBuilder(contextManager.mainContext).build()
+        viewModel = BlogDashboardPersonalizationViewModel(blog: blog, service: service, quickStartType: .undefined)
     }
 
     func testThatCardStateIsToggled() throws {
@@ -39,7 +41,7 @@ final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
 
     func testThatQuickStartCardsIsNotDisplayedWhenTourIsActive() {
         // Given
-        viewModel = BlogDashboardPersonalizationViewModel(service: service, quickStartType: .newSite)
+        viewModel = BlogDashboardPersonalizationViewModel(blog: blog, service: service, quickStartType: .newSite)
 
         // Then
         XCTAssertTrue(viewModel.cards.contains(where: { $0.id == .quickStart }))

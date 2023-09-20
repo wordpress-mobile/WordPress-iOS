@@ -8,12 +8,10 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
 
     override func setUpWithError() throws {
         TestAnalyticsTracker.setup()
-        try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: true)
     }
 
     override func tearDownWithError() throws {
         TestAnalyticsTracker.tearDown()
-        try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: false)
     }
 
     func siteIntentViewControllerMaker() throws -> SiteIntentViewController {

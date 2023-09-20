@@ -1,4 +1,5 @@
 import UIKit
+import OSLog
 
 open class Tracks {
     // MARK: - Public Properties
@@ -26,9 +27,9 @@ open class Tracks {
         let prefixedEventName = "\(TracksConfiguration.eventNamePrefix)_\(eventName)"
         let payload  = payloadWithEventName(prefixedEventName, properties: properties)
         uploader.send(payload)
+
+        logInfo("🔵 Tracked: \(prefixedEventName), \(properties ?? [:])")
     }
-
-
 
     // MARK: - Private Helpers
     fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
@@ -152,5 +153,14 @@ open class Tracks {
         @objc func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
             print("<> Tracker.URLSessionDidFinishEventsForBackgroundURLSession")
         }
+    }
+}
+
+private extension Tracks {
+    /// OSLog to Console application
+    private func logInfo(_ value: String) {
+        guard let subsystem = Bundle.main.bundleIdentifier else { return }
+
+        Logger(subsystem: subsystem, category: "tracks").info("\(value)")
     }
 }

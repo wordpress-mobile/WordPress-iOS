@@ -8,7 +8,6 @@
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
-#import "TodayExtensionService.h"
 #import "WordPress-Swift.h"
 #import "PostType.h"
 @import WordPressKit;

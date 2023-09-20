@@ -22,19 +22,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
 @interface MediaService : LocalCoreDataService
 
 /**
- Get the Media object from the server using the blog and the mediaID as the identifier of the resource
- 
- @param mediaID
- @param blog
- @param success a block that will be invoked when the media is retrieved
- @param failure a block that will be invoked if an error happens returnin the associated error object with the details.
- */
-- (void)getMediaWithID:(nonnull NSNumber *)mediaID
-                inBlog:(nonnull Blog *)blog
-               success:(nullable void (^)(Media * _Nonnull media))success
-               failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
-/**
  Uploads the Media object to the server.
  
  @param media object to upload to the server.
@@ -130,21 +117,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(void))failure;
 
 /**
- *  Retrieves the metadata of a VideoPress video.
- *
- *  The metadata parameters can be found in the API reference:
- *  https://developer.wordpress.com/docs/api/1.1/get/videos/%24guid/
- *
- *  @param videoPressID ID of the video in VideoPress.
- *  @param success a block to be executed when the metadata is fetched successfully.
- *  @param failure a block to be executed when the metadata can't be fetched.
- */
-- (void)getMetadataFromVideoPressID:(nonnull NSString *)videoPressID
-                             inBlog:(nonnull Blog *)blog
-                            success:(nullable void (^)(RemoteVideoPressVideo * _Nonnull metadata))success
-                            failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
-/**
  * Sync all Media objects from the server to local database
  
  * @param blog
@@ -154,11 +126,5 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
 - (void)syncMediaLibraryForBlog:(nonnull Blog *)blog
                         success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
-
-- (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
-                            forMediaTypes:(nonnull NSSet *)mediaTypes
-                                  success:(nullable void (^)(NSInteger count))success
-                                  failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 @end

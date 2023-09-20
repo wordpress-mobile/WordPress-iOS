@@ -124,19 +124,19 @@ extension WPStyleGuide {
         public static let badgeTitleItalicsFont     = badgeTitleFont.italic()
 
         public static var badgeRegularStyle: [NSAttributedString.Key: Any] {
-            badgeStyle(withFont: FeatureFlag.milestoneNotifications.enabled ? badgeRegularFont : blockRegularFont)
+            badgeStyle(withFont: badgeRegularFont)
         }
 
         public static var badgeBoldStyle: [NSAttributedString.Key: Any] {
-            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeBoldFont) : blockBoldStyle
+            badgeStyle(withFont: badgeBoldFont)
         }
 
         public static var badgeItalicsStyle: [NSAttributedString.Key: Any] {
-            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeItalicsFont) : blockItalicsStyle
+            badgeStyle(withFont: badgeItalicsFont)
         }
 
         public static var badgeQuotedStyle: [NSAttributedString.Key: Any] {
-            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeItalicsFont, color: badgeQuotedColor) : blockQuotedStyle
+            badgeStyle(withFont: badgeItalicsFont, color: badgeQuotedColor)
         }
 
         public static let badgeTitleStyle: [NSAttributedString.Key: Any] = badgeStyle(withFont: badgeTitleFont)
@@ -350,12 +350,12 @@ extension WPStyleGuide {
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let contentBlockParagraph     = NSMutableParagraphStyle(
+        fileprivate static let contentBlockParagraph    = NSMutableParagraphStyle(
             minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let badgeParagraph           = FeatureFlag.milestoneNotifications.enabled ?
-            NSMutableParagraphStyle(minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center) :
-            NSMutableParagraphStyle(minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center)
+        fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
+            minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
+        )
 
         // Colors
         fileprivate static let sectionHeaderTextColor   = UIColor.textSubtle

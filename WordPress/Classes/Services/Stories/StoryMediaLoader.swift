@@ -25,7 +25,9 @@ final class StoryMediaLoader {
         results = [Output?](repeating: nil, count: files.count)
         downloadTasks = []
 
-        let service = MediaService(managedObjectContext: ContextManager.shared.mainContext)
+        let coreDataStack = ContextManager.shared
+        let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
+        let blogID = TaggedManagedObjectID(saved: post.blog)
         files.enumerated().forEach { (idx, file) in
 
             do {
@@ -52,7 +54,16 @@ final class StoryMediaLoader {
                 DDLogError("Error unarchiving \(file.url) - \(error)")
             }
 
-            service.getMediaWithID(NSNumber(value: Double(file.id) ?? 0), in: post.blog, success: { [weak self] media in
+            Task { @MainActor [weak self] in
+                let media: Media
+                do {
+                    let mediaID = try await mediaRepository.getMedia(withID: NSNumber(value: Double(file.id) ?? 0), in: blogID)
+                    media = try coreDataStack.mainContext.existingObject(with: mediaID)
+                } catch {
+                    DDLogWarn("Stories media fetch error \(error)")
+                    return
+                }
+
                 guard let self = self else { return }
                 let mediaType = media.mediaType
                 switch mediaType {
@@ -82,9 +93,6 @@ final class StoryMediaLoader {
                 default:
                     DDLogWarn("Unexpected Stories media type: \(mediaType)")
                 }
-
-            }) { (error) in
-                DDLogWarn("Stories media fetch error \(error)")
             }
         }
     }
