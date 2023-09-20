@@ -25,7 +25,8 @@ final class CompliancePopoverViewController: UIViewController {
 
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
-        hostingController = UIHostingController(rootView: CompliancePopover(viewModel: self.viewModel))
+        let content = CompliancePopover(viewModel: viewModel)
+        self.hostingController = UIHostingController(rootView: content)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -34,17 +35,11 @@ final class CompliancePopoverViewController: UIViewController {
     }
 
     // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addContentView()
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = true
-        hostingController.rootView.goToSettingsAction = {
-            self.viewModel.didTapSettings()
-        }
-        hostingController.rootView.saveAction = {
-            self.viewModel.didTapSave()
-        }
-        viewModel.didDisplayPopover()
+        self.viewModel.didDisplayPopover()
     }
 
     override func viewDidLayoutSubviews() {
@@ -79,6 +74,7 @@ final class CompliancePopoverViewController: UIViewController {
 }
 
 // MARK: - DrawerPresentable
+
 extension CompliancePopoverViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         if traitCollection.verticalSizeClass == .compact {

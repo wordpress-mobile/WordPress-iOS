@@ -5,9 +5,6 @@ struct CompliancePopover: View {
         static let verticalScrollBuffer = Length.Padding.large
     }
 
-    var goToSettingsAction: (() -> ())?
-    var saveAction: (() -> ())?
-
     @StateObject
     var viewModel: CompliancePopoverViewModel
 
@@ -56,7 +53,7 @@ struct CompliancePopover: View {
 
     private var settingsButton: some View {
         Button(action: {
-            goToSettingsAction?()
+            self.viewModel.didTapSettings()
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Padding.single)
@@ -71,7 +68,7 @@ struct CompliancePopover: View {
 
     private var saveButton: some View {
         Button(action: {
-            saveAction?()
+            self.viewModel.didTapSave()
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
