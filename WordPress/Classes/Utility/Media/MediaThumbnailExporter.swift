@@ -59,7 +59,7 @@ class MediaThumbnailExporter: MediaExporter {
             guard let size = preferredSize else {
                 return nil
             }
-            return max(size.width, size.height) * scale
+            return max(size.width, size.height) * min(2, scale)
         }
 
         lazy var identifier: String = {
