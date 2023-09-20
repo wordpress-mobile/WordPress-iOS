@@ -7,6 +7,10 @@ public class MySiteMoreMenuScreen: ScreenObject {
         $0.cells["Activity Log Row"]
     }
 
+    private let blogDetailsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Blog Details Table"]
+    }
+
     private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Blog Post Row"]
     }
@@ -44,6 +48,7 @@ public class MySiteMoreMenuScreen: ScreenObject {
     }
 
     var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
+    var blogDetailsTable: XCUIElement { blogDetailsTableGetter(app) }
     var domainsButton: XCUIElement { domainsButtonGetter(app) }
     var jetpackBackupButton: XCUIElement { jetpackBackupButtonGetter(app) }
     var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
@@ -57,6 +62,7 @@ public class MySiteMoreMenuScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
+                blogDetailsTableGetter,
                 activityLogButtonGetter,
                 mySiteNavigationBarGetter
             ],
