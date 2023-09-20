@@ -51,8 +51,9 @@ final class CompliancePopoverViewController: UIViewController {
         super.viewDidLayoutSubviews()
         // Calculate the size needed for the view to fit its content
         let targetSize = CGSize(width: view.bounds.width, height: 0)
+        self.contentView.frame = CGRect(origin: .zero, size: targetSize)
         let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
-        self.contentView.frame = .init(origin: .zero, size: contentViewSize)
+        self.contentView.frame.size = contentViewSize
 
         // Set the scrollView's content size to match the contentView's size
         //
