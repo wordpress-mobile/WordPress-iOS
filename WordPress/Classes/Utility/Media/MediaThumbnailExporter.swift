@@ -22,7 +22,7 @@ class MediaThumbnailExporter: MediaExporter {
         /// of the image within a layout's dimensions. If nil, the image will not be resized.
         ///
         /// - Note: The final size may or may not match the preferred dimensions, depending
-        ///   on the original image.
+        ///   on the original image
         ///
         var preferredSize: CGSize?
 

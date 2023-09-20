@@ -7,10 +7,12 @@ final class MediaImageService: NSObject {
 
     private let session: URLSession
     private let coreDataStack: CoreDataStackSwift
+    private let mediaFileManager: MediaFileManager
     private let ioQueue = DispatchQueue(label: "org.automattic.MediaImageService")
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
+        self.mediaFileManager = MediaFileManager(directory: .cache)
 
         let configuration = URLSessionConfiguration.default
         // `MediaImageService` has its own disk cache, so it's important to
@@ -40,10 +42,11 @@ final class MediaImageService: NSObject {
         return CGSize(width: targetSize, height: targetSize)
     }()
 
-    /// Returns a decompressed thumbnail optimized for the device.
+    /// Returns a small thumbnail for the given media asset.
     ///
-    /// For local images added to the library, it expects the `absoluteThumbnailLocalURL`
-    /// to be set by `MediaImportService`.
+    /// The thumbnail size is different on different devices, but it's suitable
+    /// for presentation in collection views. The returned images are decompressed
+    /// (bitmapped) and are ready to be displayed.
     @MainActor
     func thumbnail(for media: Media) async throws -> UIImage {
         guard media.remoteStatus != .stub else {
@@ -61,13 +64,86 @@ final class MediaImageService: NSObject {
 
     @MainActor
     private func _thumbnail(for media: Media) async throws -> UIImage {
-        if let fileURL = media.absoluteThumbnailLocalURL,
-           let image = try? await decompressedImage(forFileURL: fileURL) {
+        if let image = await cachedThumbnail(for: media) {
             return image
         }
         let targetSize = MediaImageService.preferredThumbnailSize
+        if let image = await localThumbnail(for: media, targetSize: targetSize) {
+            return image
+        }
         return try await remoteThumbnail(for: media, targetSize: targetSize)
     }
+
+    // MARK: - Cached Thumbnail
+
+    /// Returns a local thumbnail for the given media object (if available).
+    @MainActor
+    private func cachedThumbnail(for media: Media) async -> UIImage? {
+        let objectID = media.objectID
+        return try? await Task.detached(priority: .userInitiated) {
+            let imageURL = try self.getCachedThumbnailURL(for: objectID)
+            let data = try Data(contentsOf: imageURL)
+            return try decompressedImage(from: data)
+        }.value
+    }
+
+    private func getCachedThumbnailURL(for objectID: NSManagedObjectID) throws -> URL {
+        let objectID = objectID.uriRepresentation().lastPathComponent
+        return try mediaFileManager.makeLocalMediaURL(
+            withFilename: "\(objectID)-small-thumbnail",
+            fileExtension: nil // It can be different between local and remove thumbnails
+        )
+    }
+
+    // The save is performed asynchronously to eliminate any delays. It's
+    // exceedingly unlikely it'll result in any duplicated work thanks to the
+    // memore caches.
+    @MainActor
+    private func saveThumbnail(for media: Media, _ closure: @escaping (URL) throws -> Void) {
+        let objectID = media.objectID
+        ioQueue.async {
+            guard let targetURL = try? self.getCachedThumbnailURL(for: objectID) else { return }
+            try? closure(targetURL)
+        }
+    }
+
+    // MARK: - Local Thumbnail
+
+    /// Generates a thumbnail from a local asset.
+    ///
+    /// - Parameters:
+    ///   - media: The Media object.
+    ///   - targetSize: An ideal size of the thumbnail in pixels.
+    @MainActor
+    private func localThumbnail(for media: Media, targetSize: CGSize) async -> UIImage? {
+        let exporter = MediaThumbnailExporter()
+        exporter.mediaDirectoryType = .cache
+        exporter.options.preferredSize = targetSize
+        exporter.options.scale = 1
+
+        guard let sourceURL = media.absoluteLocalURL,
+              exporter.supportsThumbnailExport(forFile: sourceURL) else {
+            return nil
+        }
+
+        guard let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL) else {
+            return nil
+        }
+
+        let image = try? await Task.detached(priority: .userInitiated) {
+            let data = try Data(contentsOf: export.url)
+            return try decompressedImage(from: data)
+        }.value
+
+        // The order is important to ensure `export.url` still exists when creating an image
+        saveThumbnail(for: media) { targetURL in
+            try FileManager.default.moveItem(at: export.url, to: targetURL)
+        }
+
+        return image
+    }
+
+    // MARK: - Remote Thumbnail
 
     /// Downloads thumbnail for the given media object and saves it locally. Returns
     /// a file URL for the downloaded thumbnail.
@@ -89,40 +165,13 @@ final class MediaImageService: NSObject {
         }
         let (data, _) = try await session.data(for: request)
 
-        // Saves the thumbnail and records `absoluteThumbnailLocalURL` asynchronously.
-        // The service doesn't wait for the completion to eliminate any delays
-        // for image display. This includes writing data to disk, which is relatively
-        // fast, and updating `absoluteThumbnailLocalURL` on the media object.
-        // The latter can be slow because there is only one background context
-        // and it's often busy with long operations that could delay the image
-        // display by seconds.
-        let mediaID = TaggedManagedObjectID(media)
-        ioQueue.async {
-            if let fileURL = try? self.saveThumbnail(data, for: imageURL) {
-                self.setLocalThumbnailURL(fileURL, for: mediaID)
-            }
+        saveThumbnail(for: media) { targetURL in
+            try data.write(to: targetURL)
         }
 
         return try await Task.detached(priority: .userInitiated) {
-            try decompressedImage(from: data, fileExtension: imageURL.pathExtension)
+            try decompressedImage(from: data)
         }.value
-    }
-
-    private func saveThumbnail(_ data: Data, for imageURL: URL) throws -> URL {
-        let fileURL = try MediaFileManager.cache.directoryURL()
-            .appendingPathComponent(UUID().uuidString, isDirectory: false)
-            .appendingPathExtension(imageURL.pathExtension)
-        try data.write(to: fileURL)
-        return fileURL
-    }
-
-    private func setLocalThumbnailURL(_ fileURL: URL, for mediaID: TaggedManagedObjectID<Media>) {
-        coreDataStack.performAndSave({ context in
-            let media = try context.existingObject(with: mediaID)
-            if media.absoluteThumbnailLocalURL != fileURL {
-                media.absoluteThumbnailLocalURL = fileURL
-            }
-        }, completion: nil, on: .main)
     }
 
     @MainActor
@@ -161,30 +210,37 @@ final class MediaImageService: NSObject {
 
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.
-private func decompressedImage(forFileURL fileURL: URL) async throws -> UIImage {
-    assert(fileURL.isFileURL, "Unsupported URL: \(fileURL)")
-    return try await Task.detached(priority: .userInitiated) {
-        let data = try Data(contentsOf: fileURL)
-        return try decompressedImage(from: data, fileExtension: fileURL.pathExtension)
-    }.value
-}
-
-private func decompressedImage(from data: Data, fileExtension: String) throws -> UIImage {
+private func decompressedImage(from data: Data) throws -> UIImage {
     guard let image = UIImage(data: data) else {
         throw URLError(.cannotDecodeContentData)
     }
-    guard isDecompressionNeeded(for: fileExtension) else {
+    guard isDecompressionNeeded(for: data) else {
         return image
     }
     return image.preparingForDisplay() ?? image
 }
 
-private func isDecompressionNeeded(for fileExtension: String) -> Bool {
+private func isDecompressionNeeded(for data: Data) -> Bool {
     // This check is required to avoid the following error messages when
     // using `preparingForDisplay`:
     //
     //    [Decompressor] Error -17102 decompressing image -- possibly corrupt
     //
     // More info: https://github.com/SDWebImage/SDWebImage/issues/3365
-    return fileExtension == "jpeg" || fileExtension == "jpg"
+    data.isMatchingMagicNumbers(Data.jpegMagicNumbers)
+}
+
+private extension Data {
+    // JPEG magic numbers https://en.wikipedia.org/wiki/JPEG
+    static let jpegMagicNumbers: [UInt8] = [0xFF, 0xD8, 0xFF]
+
+    func isMatchingMagicNumbers(_ numbers: [UInt8?]) -> Bool {
+        guard self.count >= numbers.count else {
+            return false
+        }
+        return zip(numbers.indices, numbers).allSatisfy { index, number in
+            guard let number = number else { return true }
+            return self[index] == number
+        }
+    }
 }

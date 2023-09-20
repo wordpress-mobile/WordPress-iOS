@@ -70,8 +70,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 /**
  Local file URL for a preprocessed **large** thumbnail that can be used for
  a full-screen presentation.
-
- - warning: It's not a small thumbnail designed for collection views.
  */
 @property (nonatomic, strong, nullable) NSURL *absoluteThumbnailLocalURL;
 
