@@ -10,9 +10,10 @@ final class MediaImageService: NSObject {
     private let mediaFileManager: MediaFileManager
     private let ioQueue = DispatchQueue(label: "org.automattic.MediaImageService")
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache)) {
         self.coreDataStack = coreDataStack
-        self.mediaFileManager = MediaFileManager(directory: .cache)
+        self.mediaFileManager = mediaFileManager
 
         let configuration = URLSessionConfiguration.default
         // `MediaImageService` has its own disk cache, so it's important to
@@ -30,76 +31,80 @@ final class MediaImageService: NSObject {
     /// (bitmapped) and are ready to be displayed.
     @MainActor
     func thumbnail(for media: Media) async throws -> UIImage {
+        let size = ThumbnailSize.small
         guard media.remoteStatus != .stub else {
             let media = try await fetchStubMedia(for: media)
-            // This should never happen, but adding it just in case to avoid recusion
             guard media.remoteStatus != .stub else {
                 assertionFailure("The fetched media still has a .stub status")
                 throw MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL
             }
-            return try await _thumbnail(for: media)
+            return try await _thumbnail(for: media, size: size)
         }
 
-        return try await _thumbnail(for: media)
+        return try await _thumbnail(for: media, size: size)
     }
 
     @MainActor
-    private func _thumbnail(for media: Media) async throws -> UIImage {
-        if let image = await cachedThumbnail(for: media) {
+    private func _thumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
+        if let image = await cachedThumbnail(for: media, size: size) {
             return image
         }
-        let targetSize = MediaImageService.preferredThumbnailSize
-        if let image = await localThumbnail(for: media, targetSize: targetSize) {
+        if let image = await localThumbnail(for: media, size: size) {
             return image
         }
-        return try await remoteThumbnail(for: media, targetSize: targetSize)
+        return try await remoteThumbnail(for: media, size: size)
     }
 
     // MARK: - Cached Thumbnail
 
     /// Returns a local thumbnail for the given media object (if available).
     @MainActor
-    private func cachedThumbnail(for media: Media) async -> UIImage? {
+    private func cachedThumbnail(for media: Media, size: ThumbnailSize) async -> UIImage? {
         let objectID = media.objectID
-        return try? await Task.detached(priority: .userInitiated) {
-            let imageURL = try self.getCachedThumbnailURL(for: objectID)
+        return try? await Task.detached {
+            let imageURL = try self.getCachedThumbnailURL(for: objectID, size: size)
             let data = try Data(contentsOf: imageURL)
             return try decompressedImage(from: data)
         }.value
-    }
-
-    private func getCachedThumbnailURL(for objectID: NSManagedObjectID) throws -> URL {
-        let objectID = objectID.uriRepresentation().lastPathComponent
-        return try mediaFileManager.makeLocalMediaURL(
-            withFilename: "\(objectID)-small-thumbnail",
-            fileExtension: nil // It can be different between local and remove thumbnails
-        )
     }
 
     // The save is performed asynchronously to eliminate any delays. It's
     // exceedingly unlikely it'll result in any duplicated work thanks to the
     // memore caches.
     @MainActor
-    private func saveThumbnail(for media: Media, _ closure: @escaping (URL) throws -> Void) {
+    private func saveThumbnail(for media: Media, size: ThumbnailSize, _ closure: @escaping (URL) throws -> Void) {
         let objectID = media.objectID
         ioQueue.async {
-            guard let targetURL = try? self.getCachedThumbnailURL(for: objectID) else { return }
-            try? closure(targetURL)
+            if let targetURL = try? self.getCachedThumbnailURL(for: objectID, size: size) {
+                try? closure(targetURL)
+            }
         }
+    }
+
+    private func getCachedThumbnailURL(for objectID: NSManagedObjectID, size: ThumbnailSize) throws -> URL {
+        let objectID = objectID.uriRepresentation().lastPathComponent
+        return try mediaFileManager.makeLocalMediaURL(
+            withFilename: "\(objectID)-\(size.rawValue)-thumbnail",
+            fileExtension: nil, // We don't know ahead of time
+            incremented: false
+        )
+    }
+
+    /// Flushes all pending I/O changes to disk.
+    ///
+    /// - warning: For testing purposes only.
+    func flush() {
+        ioQueue.sync {}
     }
 
     // MARK: - Local Thumbnail
 
-    /// Generates a thumbnail from a local asset.
-    ///
-    /// - Parameters:
-    ///   - media: The Media object.
-    ///   - targetSize: An ideal size of the thumbnail in pixels.
+    /// Generates a thumbnail from a local asset and saves it in cache.
     @MainActor
-    private func localThumbnail(for media: Media, targetSize: CGSize) async -> UIImage? {
+    private func localThumbnail(for media: Media, size: ThumbnailSize) async -> UIImage? {
         let exporter = MediaThumbnailExporter()
         exporter.mediaDirectoryType = .cache
-        exporter.options.preferredSize = MediaImageService.targetSize(for: media, targetSize: targetSize)
+        exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
         exporter.options.scale = 1 // In pixels
 
         guard let sourceURL = media.absoluteLocalURL,
@@ -111,13 +116,13 @@ final class MediaImageService: NSObject {
             return nil
         }
 
-        let image = try? await Task.detached(priority: .userInitiated) {
+        let image = try? await Task.detached {
             let data = try Data(contentsOf: export.url)
             return try decompressedImage(from: data)
         }.value
 
         // The order is important to ensure `export.url` still exists when creating an image
-        saveThumbnail(for: media) { targetURL in
+        saveThumbnail(for: media, size: size) { targetURL in
             try FileManager.default.moveItem(at: export.url, to: targetURL)
         }
 
@@ -126,14 +131,10 @@ final class MediaImageService: NSObject {
 
     // MARK: - Remote Thumbnail
 
-    /// Downloads thumbnail for the given media object and saves it locally. Returns
-    /// a file URL for the downloaded thumbnail.
-    ///
-    /// - Parameters:
-    ///   - media: The Media object.
-    ///   - targetSize: An ideal size of the thumbnail in pixels.
+    /// Downloads a remote thumbnail and saves it in cache.
     @MainActor
-    private func remoteThumbnail(for media: Media, targetSize: CGSize) async throws -> UIImage {
+    private func remoteThumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
+        let targetSize = MediaImageService.getThumbnailSize(for: media, size: size)
         guard let imageURL = remoteThumbnailURL(for: media, targetSize: targetSize) else {
             throw URLError(.badURL)
         }
@@ -146,11 +147,11 @@ final class MediaImageService: NSObject {
         }
         let (data, _) = try await session.data(for: request)
 
-        saveThumbnail(for: media) { targetURL in
+        saveThumbnail(for: media, size: size) { targetURL in
             try data.write(to: targetURL)
         }
 
-        return try await Task.detached(priority: .userInitiated) {
+        return try await Task.detached {
             try decompressedImage(from: data)
         }.value
     }
@@ -188,33 +189,44 @@ final class MediaImageService: NSObject {
 
     // MARK: - Target Size
 
+    enum ThumbnailSize: String {
+        case small
+    }
+
+    /// Returns an optiomal target size in pixels for a thumbnail of the given
+    /// size for the given media asset.
+    ///
+    /// The size is calculated to fill a collection view cell, assuming the app
+    /// displays a few cells in a row. The cell size can vary depending on whether the
+    /// device is in landscape or portrait mode, but the thumbnail size is
+    /// guaranteed to always be the same across app launches.
+    ///
+    /// Example: if media size is 2000x3000 px and targetSize is 200x200 px, the
+    /// returned value will be 200x300 px.
+    static func getThumbnailSize(for media: Media, size: ThumbnailSize) -> CGSize {
+        let mediaSize = CGSize(
+            width: CGFloat(media.width?.floatValue ?? 0),
+            height: CGFloat(media.height?.floatValue ?? 0)
+        )
+        let targetSize = MediaImageService.getPreferredThumbnailSize(for: size)
+        return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
+    }
+
     /// Returns a preferred thumbnail size (in pixels) optimized for the device.
     ///
     /// - important: It makes sure the app uses the same thumbnails across
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
-    private static let preferredThumbnailSize: CGSize = {
-        let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-        let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-        let availableWidth = screenSide - MediaViewController.spacing * CGFloat(itemPerRow - 1)
-        let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
-        let targetSize = CGSize(width: targetSide, height: targetSide)
-        return targetSize.scaled(by: UIScreen.main.scale)
-    }()
-
-    // Both Photon (Site Optimizer) and MediaThumbnailExporter doesn't support
-    // "aspect-fill" resizing mode, which is want we want for the thumbnails.
-    //
-    // This method converts the target size to support aspect fill mode.
-    //
-    // Example: if media size is 2000x3000 px and targetSize is 200x200 px, the
-    // returned value will be 200x300 px.
-    private static func targetSize(for media: Media, targetSize: CGSize) -> CGSize {
-        let mediaSize = CGSize(
-            width: CGFloat(media.width?.floatValue ?? 0),
-            height: CGFloat(media.height?.floatValue ?? 0)
-        )
-        return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
+    private static func getPreferredThumbnailSize(for thumbnail: ThumbnailSize) -> CGSize {
+        switch thumbnail {
+        case .small:
+            let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+            let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
+            let availableWidth = screenSide - MediaViewController.spacing * CGFloat(itemPerRow - 1)
+            let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
+            let targetSize = CGSize(width: targetSide, height: targetSide)
+            return targetSize.scaled(by: UIScreen.main.scale)
+        }
     }
 
     static func targetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
