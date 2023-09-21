@@ -16,8 +16,17 @@ struct DomainListCard: View {
     }
 
     var body: some View {
-        HStack(spacing: Length.Padding.double) {
-            textContainerVStack
+        VStack {
+            HStack(spacing: Length.Padding.double) {
+                textContainerVStack
+                chevronIcon
+            }
+
+            if let description = domainInfo.description {
+                Divider()
+                    .padding(.bottom, Length.Padding.double)
+                descriptionText(description)
+            }
         }
         .padding()
     }
@@ -29,11 +38,6 @@ struct DomainListCard: View {
                 .padding(.bottom, Length.Padding.single)
             statusHStack
                 .padding(.bottom, Length.Padding.double)
-            Divider()
-                .padding(.bottom, Length.Padding.double)
-            if let description = domainInfo.description {
-                descriptionText(description)
-            }
         }
     }
 
@@ -65,22 +69,27 @@ struct DomainListCard: View {
                     width: Length.Padding.single,
                     height: Length.Padding.single
                 )
-            Text("Complete Setup")
+            Text(domainInfo.state.text)
                 .foregroundColor(domainInfo.state.textColor)
                 .font(.subheadline.weight(domainInfo.state.fontWeight))
         }
     }
 
     private var expirationText: some View {
-        Text("Expires Aug 15 2004")
+        Text(domainInfo.date ?? "—")
             .font(.subheadline)
-            .foregroundColor(.DS.Foreground.secondary)
+            .foregroundColor(domainInfo.state.expireTextColor)
     }
 
     private func descriptionText(_ description: String) -> some View {
         Text(description)
             .font(.subheadline)
             .foregroundColor(.secondary)
+    }
+
+    private var chevronIcon: some View {
+        Image(systemName: "chevron.right")
+            .foregroundColor(.DS.Foreground.secondary)
     }
 }
 
@@ -196,7 +205,7 @@ extension DomainListCard {
                     .renew,
                     .verifying,
                     .verifyEmail:
-                return Color.DS.Foreground.primary
+                return Color.DS.Foreground.secondary
             }
         }
 
@@ -240,7 +249,7 @@ struct DomainListCard_Previews: PreviewProvider {
                 domainInfo: .init(
                     domainName: "domain.cool.cool",
                     domainHeadline: "A Cool Website",
-                    state: .error,
+                    state: .inProgress,
                     description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
                     date: "Expires Aug 15 2004"
                 )
