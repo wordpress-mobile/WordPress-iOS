@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1234,8 +1234,7 @@
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Fi";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -1257,7 +1256,6 @@
 "Medium" = "Canolig";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Dewislen";
 
@@ -1549,8 +1547,7 @@
 /* A short message explaining that a page was moved to the trash bin. */
 "Page moved to trash." = "Symudwyd y dudalen i'r sbwriel.";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -1665,7 +1662,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -2022,7 +2018,6 @@
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Rhannu";
 
@@ -2081,8 +2076,7 @@
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Hepgor";
 
 /* Label for the slug field. Should be the same as WP core. */
@@ -2165,7 +2159,6 @@
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -2566,9 +2559,6 @@
 /* Use the current image */
 "Use" = "Defnydd";
 
-/* No comment provided by engineer. */
-"Use this site" = "Defnyddiwch y wefan hon";
-
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -2750,9 +2740,6 @@
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Rydych yn llwytho cyfryngau ar hyn o bryd. Bydd y weithredu hon yn diddymu unrhyw lwytho cyfredol arall.\n\nYdych chi siŵr?";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Gallwch ddangos ystaegau gwefan unigol yng ngolwg iOS Today\/Notification Center.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Gallwch diystyru'r gosodiadau hyn ar gyfer cofnodion unigol.";

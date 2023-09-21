@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-12 15:03:52+0000 */
+/* Translation-Revision-Date: 2023-09-18 06:48:01+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -372,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Файл содержит элемент вредоносного кода";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Хорошее имя — короткое и запоминающееся.\nИзменить его можно позже.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Новый способ создавать и публиковать захватывающее содержимое на вашем сайте.";
@@ -1912,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Продолжить";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3435,15 +3431,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Попробуйте, добавив несколько блоков в запись или страницу!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Дайте имя своему сайту %@";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Первое впечатление важно! Назовите свой сайт так, как это отразит его индивидуальность и содержание.";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Дайте имя своему сайту";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3777,10 +3766,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Информация об учебных курсах и мероприятиях WordPress.com (очных и онлайн).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Начальный экран";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Запускаем процесс восстановления";
@@ -4481,8 +4466,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Я";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4542,7 +4526,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Упоминание";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Меню";
 
@@ -4710,8 +4693,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Имя";
 
 /* Error to be displayed when a tag is empty */
@@ -5396,8 +5378,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Страница обновлена";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5749,7 +5730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6821,7 +6801,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Поделиться";
 
@@ -7009,8 +6988,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Пропустить";
 
 /* Menu title to skip today's prompt. */
@@ -7030,6 +7008,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Соцсети";
 
@@ -7171,7 +7150,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8536,9 +8514,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Войти с паролем";
 
-/* No comment provided by engineer. */
-"Use this site" = "Использовать этот сайт";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Используется в сети: на вкладках браузера, при предварительном просмотре в социальных сетях и в разделе Чтиво WordPress.com.";
 
@@ -9102,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Проверочный код для двухфакторной аутентификации недействителен. Проверьте код и повторите попытку.";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Виджеты";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Настройки ширины";
 
@@ -9289,9 +9261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Вы можете управлять подсказками и напоминаниями о ведении блога в любое время в разделе Мой сайт, Настройки, Ведение блога";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "В iOS статистику по отдельному сайту можно отобразить в Центре уведомлений на экране «Cегодня».";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Вы можете редактировать этот блок используя веб версию редактора.";
@@ -9707,6 +9676,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Закрыть";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "Копировать URL";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Открыть в браузере";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Закрыть";
 
@@ -9791,6 +9766,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "У вас закончились возможности поделиться!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Комментарии";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Медиа";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Далее";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Страницы";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Записи";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Статистика";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Вся активность";
 
@@ -9859,6 +9852,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Удаленная настройка";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Удалить текущий тур";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Займите себе место в Интернете: зарегистрируйте адрес сайта, который будет легко запомнить и порекомендовать друзьям.";
@@ -10324,6 +10320,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "Невозможно синхронизировать медиа";
+
 /* Media screen navigation title */
 "media.title" = "Медиа";
 
@@ -10339,8 +10338,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Закрыть";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Удалить";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Закрыть";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Повторить загрузку";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Закрыть";
@@ -10354,11 +10359,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Открыть настройки";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Свободная GIF-медиатека";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Выбрать медиафайл";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Другие файлы";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Выбрать с устройства";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Библиотека бесплатных фотографий";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Сделать фотографию";
@@ -10582,6 +10596,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Статистика за сегодня";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Показать или скрыть ярлыки быстрого доступа";
+
 /* Page title */
 "personalizeHome.title" = "Настройте вкладку «Главная»";
 
@@ -10690,6 +10707,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Вход выполнен!";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Далее";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Поиск";
@@ -10844,9 +10864,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Неизвестно";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Показать подсказки";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Напоминания";
@@ -11020,7 +11037,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Обратиться в поддержку";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Чем мы можем вам помочь?";
+"support.chatBot.firstMessage" = "Привет, я Jetpack AI помощник.\\n\\nЧем мы можем вам помочь?\\n\\nЕсли я не смогу ответить на ваш вопрос, я помогу вам открыть заявку в службу поддержки нашей команды!";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Отправить сообщение...";
@@ -11157,8 +11174,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Закрыть";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Записи за все время, максимум просмотров";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Просмотры за всё время";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Просмотры за всё время и посетители";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Максимальное число просмотров за всё время";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Наиболее просматриваемые";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Не удалось загрузить статистику сайта.";
@@ -11186,6 +11215,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Войдите в Jetpack для просмотра статистики за сегодняшний день.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Просмотры за всё время";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Просмотров сегодня";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "Не удалось загрузить статистику за неделю.";
@@ -11237,6 +11272,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Посетители";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Отметки \"нравится\" за сегодня и комментарии";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Просмотры за сегодня";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Просмотры за сегодня и посетители";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "в будущем будет недоступен.";

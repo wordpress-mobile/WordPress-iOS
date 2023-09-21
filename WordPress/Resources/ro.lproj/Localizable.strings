@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-12 18:30:33+0000 */
+/* Translation-Revision-Date: 2023-09-18 15:03:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -372,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un fișier conține un model de cod care poate crea vulnerabilități";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Un nume bun este scurt și memorabil.\nÎl poți modifica mai târziu.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Un mod nou de a crea și publica conținut captivant pe site-ul tău.";
@@ -1912,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continuă";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3435,15 +3431,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Încearcă-le, adaugă câteva blocuri în articolele sau paginile tale!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Dă un nume site-ului web %@";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Dă-i site-ului un nume care să-i reflecte personalitatea și subiectul (tema). Prima impresie este foarte importantă!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Dă un nume site-ului web";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3777,10 +3766,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informații despre cursuri și evenimente WordPress.com (online & în-persoană).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Ecranul inițial";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Inițializez procesul de restaurare";
@@ -4481,8 +4466,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Eu";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4542,7 +4526,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Mențiune";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Meniu";
 
@@ -4710,8 +4693,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Nume";
 
 /* Error to be displayed when a tag is empty */
@@ -5396,8 +5378,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Am actualizat pagina";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5749,7 +5730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6304,7 +6284,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Retry Scan" = "Încearcă scanarea din nou";
 
 /* User action to retry media upload. */
-"Retry Upload" = "Reîncerc încărcarea";
+"Retry Upload" = "Reîncearcă încărcarea";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "Reîncearcă-le pe toate";
@@ -6821,7 +6801,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partajare";
 
@@ -7009,8 +6988,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Sari peste";
 
 /* Menu title to skip today's prompt. */
@@ -7030,6 +7008,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Social";
 
@@ -7171,7 +7150,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8536,9 +8514,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Folosește parola pentru autentificare";
 
-/* No comment provided by engineer. */
-"Use this site" = "Folosește acest site";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Este folosit pe web: în filele navigatoarelor, previzualizările rețelelor sociale și Cititorul WordPress.com.";
 
@@ -9102,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hopa, acesta nu este un cod valid de verificare cu doi-factori. Verifică-ți din nou codul și reîncearcă!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Piese";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Setări lățime";
 
@@ -9289,9 +9261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Poți controla în orice moment îndemnurile și reamintirile pentru publicare în Site-ul meu, Setări, Blogging";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Poți afișa statisticile unui singur site în vizualizarea iOS Azi\/Centru de notificări.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Poți să editezi acest bloc folosind versiunea web a editorului.";
@@ -9707,6 +9676,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Refuză";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "Copiază URL-ul";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Deschide în navigator";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Refuză";
 
@@ -9791,6 +9766,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "Nu mai ai partajări!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Comentarii";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Mai multe";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Pagini";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Articole";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Statistici";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Toate activitățile";
 
@@ -9859,6 +9852,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurare la distanță";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Înlătură turul curent";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Rezervă-ți partea ta pe web cu o adresă de site ușor de găsit, partajat și urmărit.";
@@ -10324,6 +10320,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcat ca spam";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "Nu pot să sincronizez elementele media";
+
 /* Media screen navigation title */
 "media.title" = "Media";
 
@@ -10339,8 +10338,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Refuză";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Șterge";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Refuză";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Reîncearcă încărcarea";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Refuză";
@@ -10354,11 +10359,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Deschide setările";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Bibliotecă de GIF-uri gratuite";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Alege din Media";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Alte fișiere";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Alege de pe dispozitiv";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Bibliotecă de fotografii gratuite";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Fă o fotografie";
@@ -10582,6 +10596,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Statistici pentru azi";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Arată sau ascunde scurtăturile";
+
 /* Page title */
 "personalizeHome.title" = "Personalizează fila Prima pagină";
 
@@ -10690,6 +10707,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Mai multe";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Caută";
@@ -10845,9 +10865,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Necunoscut";
 
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Arată îndemnurile";
-
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reamintiri";
 
@@ -10981,7 +10998,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut o apreciere.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";
@@ -11020,7 +11037,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Contactează suportul";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Cu ce te putem ajuta?";
+"support.chatBot.firstMessage" = "Bună, sunt Asistentul Jetpack AI.\\n\\nCu ce te pot ajuta?\\n\\nDacă nu pot să-ți răspund la întrebare, te voi ajuta să deschizi un tichet de suport pentru echipa noastră.";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Trimite un mesaj...";
@@ -11157,8 +11174,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Refuză";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Total general articole și cele mai multe vizualizări";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Total general vizualizări";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Total general vizualizări și vizitatori";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Cele mai multe vizualizări";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Cele mai multe vizualizări";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Nu pot încărca statisticile de la început.";
@@ -11186,6 +11215,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Autentifică-te în Jetpack pentru a vedea statisticile de azi.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Total general vizualizări";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Vizualizări azi";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "Nu pot încărca statisticile pentru această săptămână.";
@@ -11237,6 +11272,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Vizitatori";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Aprecierile și comentariile de azi";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Vizualizările de azi";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Vizualizările și vizitatorii de azi";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "va fi indisponibil în viitor.";

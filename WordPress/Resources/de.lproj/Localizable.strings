@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-18 15:54:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -372,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Eine Datei enthält ein bösartiges Codemuster";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Ein guter Name ist kurz und einprägsam.\nDu kannst es später jederzeit ändern.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Eine neue Möglichkeit zum Erstellen und Veröffentlichen ansprechender Inhalte auf deiner Website.";
@@ -1912,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Weiter";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3435,15 +3431,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Probier es aus, indem du deinem Beitrag oder deiner Seite ein paar Blocks hinzufügst!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Gib deiner %@-Website einen Namen";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Wähle einen Namen für deine Website, der am besten zu ihrer Persönlichkeit und Ausrichtung passt. Erste Eindrücke zählen!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Gib deiner Website einen Namen";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3777,10 +3766,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informationen zu WordPress.com-Kursen und -Veranstaltungen (online und vor Ort).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Erster Bildschirm";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Wiederherstellungsvorgang wird initialisiert";
@@ -4481,8 +4466,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ich";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4542,7 +4526,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Erwähnung";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menü";
 
@@ -4710,8 +4693,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -5396,8 +5378,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Seite aktualisiert";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5749,7 +5730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6821,7 +6801,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Teilen";
 
@@ -7009,8 +6988,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Überspringen";
 
 /* Menu title to skip today's prompt. */
@@ -7030,6 +7008,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Social Media";
 
@@ -7171,7 +7150,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8536,9 +8514,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Mit Passwort anmelden";
 
-/* No comment provided by engineer. */
-"Use this site" = "Diese Website verwenden";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Im Web verwendet: in Browser-Tabs, Website-Vorschauen in sozialen Medien und im WordPress.com-Reader.";
 
@@ -9102,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ups, das ist kein gültiger zweistufiger Verifizierungscode. Überprüfe deinen Code und versuche es noch einmal!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgets";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Breite-Einstellungen";
 
@@ -9289,9 +9261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Unter „Meine Website, Einstellungen, Bloggen“ kannst du jederzeit Einstellungen für Blog-Schreibanregungen und -Erinnerungen vornehmen";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kannst unter iOS Today\/im Mitteilungscenter die Statistik einer einzigen Website anzeigen.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Du kannst diesen Block über die Webversion des Editors bearbeiten.";
@@ -9707,6 +9676,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Verwerfen";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "URL kopieren";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Im Browser öffnen";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Verwerfen";
 
@@ -9791,6 +9766,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "Du kannst nicht mehr teilen!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Kommentare";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Medien";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Mehr";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Seiten";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Beiträge";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Statistiken";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Alle Aktivitäten";
 
@@ -9859,6 +9852,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Remote-Konfiguration";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Aktuelle Tour entfernen";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Erobere dir dein eigenes Stück vom Internet mit einer Website-Adresse, die man leicht finden, teilen und abonnieren kann.";
@@ -10324,6 +10320,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "als Spam markiert";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "Medien konnten nicht synchronisiert werden";
+
 /* Media screen navigation title */
 "media.title" = "Medien";
 
@@ -10339,8 +10338,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Verwerfen";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Löschen";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Verwerfen";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Upload erneut starten";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Verwerfen";
@@ -10354,11 +10359,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Einstellungen öffnen";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Kostenlose GIF-Bibliothek";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Aus Medien wählen";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Andere Dateien";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Von einem Gerät auswählen";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Kostenlose Fotobibliothek";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Foto aufnehmen";
@@ -10582,6 +10596,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Statistiken von heute";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Tastaturkürzel anzeigen oder ausblenden";
+
 /* Page title */
 "personalizeHome.title" = "Startseiten-Tab personalisieren";
 
@@ -10690,6 +10707,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Mehr";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Suche";
@@ -10844,9 +10864,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Unbekannt";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Schreibanregungen anzeigen";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Erinnerungen";
@@ -11020,7 +11037,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Support kontaktieren";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Wobei können wir dir helfen?";
+"support.chatBot.firstMessage" = "Hallo, ich bin der Jetpack AI Assistant.\\n\\nWobei kann ich dir behilflich sein?\\n\\nFalls ich deine Frage nicht beantworten kann, helfe ich dir dabei, ein Support-Ticket bei unserem Team zu öffnen!";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Sende eine Nachricht …";
@@ -11157,8 +11174,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Verwerfen";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Beiträge im gesamten Zeitraum und häufigste Aufrufe";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Aufrufe im gesamten Zeitraum";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Aufrufe und Besucher im gesamten Zeitraum";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Bisher bestes Aufrufergebnis";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Häufigste Aufrufe";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Die Gesamtstatistiken konnten nicht geladen werden.";
@@ -11186,6 +11215,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Melde dich bei Jetpack an, um dir die Statistiken von heute anzusehen.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Aufrufe im gesamten Zeitraum";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Aufrufe heute";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "Die Statistiken dieser Woche konnten nicht geladen werden.";
@@ -11237,6 +11272,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Besucher";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Heutige Likes und Kommentare";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Heutige Aufrufe";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Heutige Aufrufe und Besucher";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "wird zukünftig deaktiviert sein";
