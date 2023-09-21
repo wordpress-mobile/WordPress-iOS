@@ -237,6 +237,9 @@ private extension Media {
             guard let remoteURL = remoteURL.flatMap(URL.init) else {
                 return nil
             }
+            // Download a non-retina version for GIFs: makes a massive difference
+            // in terms of size. Example: 2.4 MB -> 350 KB.
+            let targetSize = remoteURL.isGif ? targetSize.scaled(by: 1.0 / UIScreen.main.scale) : targetSize
             if !isEligibleForPhoton {
                 return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
             } else {
@@ -249,7 +252,7 @@ private extension Media {
     }
 
     var isEligibleForPhoton: Bool {
-        blog.isPrivateAtWPCom() || (!blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored())
+        !(blog.isPrivateAtWPCom() || (!blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored()))
     }
 }
 
