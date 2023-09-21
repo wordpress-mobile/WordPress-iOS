@@ -219,17 +219,21 @@ extension MediaImageService {
         guard mediaSize.width > 0 && mediaSize.height > 0 else {
             return originalTargetSize
         }
-        let scaleHorizontal = originalTargetSize.width / mediaSize.width
-        let scaleVertical = originalTargetSize.height / mediaSize.height
-        // Scale image to fill the target size but avoid upscaling.
-        let aspectFillScale = min(1, max(scaleHorizontal, scaleVertical))
-        let targetSize = mediaSize.scaled(by: aspectFillScale).rounded()
+        // Scale image to fill the target size but avoid upscaling
+        let scale = min(1, max(
+            originalTargetSize.width / mediaSize.width,
+            originalTargetSize.height / mediaSize.height
+        ))
+        let targetSize = mediaSize.scaled(by: scale).rounded()
+
         // Sanitize the size to make sure ultra-wide panoramas are still resized
         // to fit the target size, but increase it a bit for an acceptable size.
-        if targetSize.width > originalTargetSize.width * 4 ||
-            targetSize.height > originalTargetSize.height * 4 {
-            let aspectFitScale = min(scaleHorizontal, scaleVertical)
-            return mediaSize.scaled(by: aspectFitScale * 4).rounded()
+        let threshold: CGFloat = 4
+        if targetSize.width > originalTargetSize.width * threshold || targetSize.height > originalTargetSize.height * threshold {
+            return CGSize(
+                width: min(targetSize.width, originalTargetSize.width * threshold),
+                height: min(targetSize.height, originalTargetSize.height * threshold)
+            )
         }
         return targetSize
     }

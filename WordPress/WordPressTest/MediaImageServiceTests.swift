@@ -114,7 +114,7 @@ class MediaImageServiceTests: CoreDataTestCase {
                 forMediaSize: CGSize(width: 4000, height: 400),
                 targetSize: CGSize(width: 200, height: 200)
             ),
-            CGSize(width: 800, height: 80)
+            CGSize(width: 800, height: 200)
         )
     }
 
