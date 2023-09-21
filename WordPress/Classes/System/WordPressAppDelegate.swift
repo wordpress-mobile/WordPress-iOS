@@ -88,68 +88,68 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Application lifecycle
 
-//    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        AppAppearance.overrideAppearance()
-//        MemoryCache.shared.register()
-//
-//        // Start CrashLogging as soon as possible (in case a crash happens during startup)
-//        try? loggingStack.start()
-//
-//        // Configure WPCom API overrides
-//        configureWordPressComApi()
-//
-//        configureWordPressAuthenticator()
-//
-//        configureReachability()
-//        configureSelfHostedChallengeHandler()
-//        updateFeatureFlags()
-//        updateRemoteConfig()
-//
-//        window?.makeKeyAndVisible()
-//
-//        // Restore a disassociated account prior to fixing tokens.
-//        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
-//
-//        customizeAppearance()
-//        configureAnalytics()
-//
-//        let solver = WPAuthTokenIssueSolver()
-//        let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
-//            self?.runStartupSequence(with: launchOptions ?? [:])
-//        }
-//
-//        shouldRestoreApplicationState = !isFixingAuthTokenIssue
-//
-//        return true
-//    }
-//
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-//        DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
-//
-//        ABTest.start()
-//
-//        InteractiveNotificationsManager.shared.registerForUserNotifications()
-//        setupPingHub()
-//        setupBackgroundRefresh(application)
-//        setupComponentsAppearance()
-//        disableAnimationsForUITests(application)
-//        logoutAtLaunchForUITests(application)
-//
-//        // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
-//        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
-//        fonts?.forEach({ url in
-//            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-//        })
-//
-//        PushNotificationsManager.shared.deletePendingLocalNotifications()
-//
-//        startObservingAppleIDCredentialRevoked()
-//
-//        NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
-//
-//        return true
-//    }
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        AppAppearance.overrideAppearance()
+        MemoryCache.shared.register()
+
+        // Start CrashLogging as soon as possible (in case a crash happens during startup)
+        try? loggingStack.start()
+
+        // Configure WPCom API overrides
+        configureWordPressComApi()
+
+        configureWordPressAuthenticator()
+
+        configureReachability()
+        configureSelfHostedChallengeHandler()
+        updateFeatureFlags()
+        updateRemoteConfig()
+
+        window?.makeKeyAndVisible()
+
+        // Restore a disassociated account prior to fixing tokens.
+        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
+
+        customizeAppearance()
+        configureAnalytics()
+
+        let solver = WPAuthTokenIssueSolver()
+        let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
+            self?.runStartupSequence(with: launchOptions ?? [:])
+        }
+
+        shouldRestoreApplicationState = !isFixingAuthTokenIssue
+
+        return true
+    }
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+
+        ABTest.start()
+
+        InteractiveNotificationsManager.shared.registerForUserNotifications()
+        setupPingHub()
+        setupBackgroundRefresh(application)
+        setupComponentsAppearance()
+        disableAnimationsForUITests(application)
+        logoutAtLaunchForUITests(application)
+
+        // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
+        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+        fonts?.forEach({ url in
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        })
+
+        PushNotificationsManager.shared.deletePendingLocalNotifications()
+
+        startObservingAppleIDCredentialRevoked()
+
+        NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+
+        return true
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
