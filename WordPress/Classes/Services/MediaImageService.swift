@@ -22,6 +22,17 @@ final class MediaImageService: NSObject {
         self.session = URLSession(configuration: configuration)
     }
 
+    static func migrateCacheIfNeeded() {
+        let didMigrateKey = "MediaImageService-didMigrateCacheKey"
+        guard Feature.enabled(.mediaModernization) && !UserDefaults.standard.bool(forKey: didMigrateKey) else {
+            return
+        }
+        UserDefaults.standard.set(true, forKey: didMigrateKey)
+        DispatchQueue.global(qos: .utility).async {
+            MediaFileManager.clearAllMediaCacheFiles(onCompletion: nil, onError: nil)
+        }
+    }
+
     // MARK: - Thumbnails
 
     /// Returns a thumbnail for the given media asset. The images are decompressed
