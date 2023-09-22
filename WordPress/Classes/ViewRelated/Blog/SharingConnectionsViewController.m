@@ -242,7 +242,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         self.helper.popoverSourceView = cell.textLabel;
     }
 
-    [self.helper connectPublicizeService];
+    if ([self.publicizeService.serviceID isEqualToString:@"mastodon"]
+        && [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialMastodonPopup]) {
+        [self handleMastodonConnect];
+    } else {
+        [self.helper connectPublicizeService];
+    }
 }
 
 - (void)handleContinueURLTapped:(NSURL*)url
@@ -252,6 +257,42 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if ([application canOpenURL:url]) {
         [application openURL:url options:@{} completionHandler:nil];
     }
+}
+
+- (void)handleMastodonConnect
+{
+    // The connect URL does not work for Mastodon at the moment. As a work around, we can open
+    // the connections page.
+    NSString *messageString = NSLocalizedStringWithDefaultValue(@"social.sharingConnection.mastodon.message",
+                                                                nil,
+                                                                [NSBundle mainBundle],
+                                                                @"You can connect your Mastodon account on the WordPress.com website. When you're done, return to the app to change your sharing settings.",
+                                                                @"Popup message format displayed to the user when attempting to connect to a Mastodon account.");
+    NSString *defaultActionString = NSLocalizedStringWithDefaultValue(@"social.sharingConnection.mastodon.gotoweb",
+                                                                      nil,
+                                                                      [NSBundle mainBundle],
+                                                                      @"Go to web",
+                                                                      @"Default action for the Mastodon connect popup message.");
+    NSString *cancelString = NSLocalizedStringWithDefaultValue(@"social.sharingConnection.mastodon.cancel",
+                                                               nil,
+                                                               [NSBundle mainBundle],
+                                                               @"Cancel",
+                                                               @"Cancel action for the Mastodon connect popup message.");
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""
+                                                                   message:messageString
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addDefaultActionWithTitle:defaultActionString
+                             handler:^(UIAlertAction * _Nonnull __unused action) {
+        NSString *baseUrl = @"https://wordpress.com/marketing/connections/%@";
+        NSString *hostname = self.blog.hostname;
+        if (hostname.length > 0) {
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:baseUrl, hostname]];
+            [[UIApplication sharedApplication] openURL:url options:nil completionHandler:nil];
+        }
+    }];
+    [alert addCancelActionWithTitle:cancelString handler:nil];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 

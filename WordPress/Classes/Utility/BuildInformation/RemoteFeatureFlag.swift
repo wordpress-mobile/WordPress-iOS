@@ -21,6 +21,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case siteEditorMVP
     case contactSupportChatbot
     case jetpackSocialImprovements
+    case jetpackSocialMastodonPopup
 
     var defaultValue: Bool {
         switch self {
@@ -62,6 +63,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
+        case .jetpackSocialMastodonPopup:
+            return true
         }
     }
 
@@ -106,6 +109,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "contact_support_chatbot"
         case .jetpackSocialImprovements:
             return "jetpack_social_improvements_v1"
+        case .jetpackSocialMastodonPopup:
+            return "jp_social_mastodon_connect_via_web"
         }
     }
 
@@ -149,6 +154,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Contact Support via DocsBot"
         case .jetpackSocialImprovements:
             return "Jetpack Social Improvements v1"
+        case .jetpackSocialMastodonPopup:
+            return "Jetpack Social Mastodon Popup"
         }
     }
 
