@@ -120,7 +120,13 @@ public class BlockEditorScreen: ScreenObject {
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter, redoButtonGetter, undoButtonGetter ],
+            expectedElementGetters: [
+                editorNavigationBarGetter,
+                addBlockButtonGetter,
+                editorCloseButtonGetter,
+                redoButtonGetter,
+                undoButtonGetter
+            ],
             app: app
         )
     }
