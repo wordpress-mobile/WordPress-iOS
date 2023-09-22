@@ -230,9 +230,7 @@ extension DomainListCard {
 
         fileprivate var expireTextColor: Color {
             switch self {
-            case .expired,
-                    .expiringSoon,
-                    .actionRequired:
+            case .expired:
                 return Color.DS.Foreground.warning
             default:
                 return Color.DS.Foreground.secondary
@@ -249,7 +247,7 @@ struct DomainListCard_Previews: PreviewProvider {
                 domainInfo: .init(
                     domainName: "domain.cool.cool",
                     domainHeadline: "A Cool Website",
-                    state: .inProgress,
+                    state: .actionRequired,
                     description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
                     date: "Expires Aug 15 2004"
                 )
