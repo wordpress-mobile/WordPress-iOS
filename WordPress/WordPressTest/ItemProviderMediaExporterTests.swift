@@ -7,6 +7,25 @@ final class ItemProviderMediaExporterTests: XCTestCase {
 
     // MARK: - Images
 
+    func testHEICIsConvertedToJPEG() throws {
+        // GIVEN a provider with a HEIC photo
+        let provider = try makeProvider(forResource: "iphone-photo", withExtension: "heic", type: .heic)
+
+        // WHEN
+        let exporter = ItemProviderMediaExporter(provider: provider)
+        exporter.mediaDirectoryType = .temporary
+
+        let media = try exportedMedia(from: exporter)
+
+        // THEN it switched to heic from webp
+        XCTAssertEqual(media.url.pathExtension, "jpeg")
+        XCTAssertEqual(media.width, 640)
+        XCTAssertEqual(media.height, 480)
+        XCTAssertNotNil(UIImage(data: try Data(contentsOf: media.url)))
+
+        MediaExporterTests.cleanUpExportedMedia(atURL: media.url)
+    }
+
     func testThatWebPIsConvertedToSupportedFormat() throws {
         // GIVEN a provider with a WebP image
         let provider = try makeProvider(forResource: "test-webp", withExtension: "webp", type: .webP)
