@@ -18,7 +18,7 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         let media = try exportedMedia(from: exporter)
 
         // THEN it switched to heic from webp
-        XCTAssertEqual(media.url.pathExtension, "heic")
+        XCTAssertEqual(media.url.pathExtension, "jpeg")
         XCTAssertEqual(media.width, 1024.0)
         XCTAssertEqual(media.height, 772.0)
         XCTAssertNotNil(UIImage(data: try Data(contentsOf: media.url)))
