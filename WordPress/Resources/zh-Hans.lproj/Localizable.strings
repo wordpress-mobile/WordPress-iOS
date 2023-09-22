@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-13 10:54:10+0000 */
+/* Translation-Revision-Date: 2023-09-19 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -372,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "一个包含恶意代码模式的文件";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "好的名称应简短易记。\n您之后可以对此进行更改。";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "在您的站点上创建、发布吸引人内容的新方法。";
@@ -1912,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "继续";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3432,15 +3428,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "将一些区块添加到您的博文或页面，试试看吧！";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "为您的 %@ 网站命名";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "为您的站点提供一个反映其个性和主题的名称。 第一印象很重要！";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "为您的网站命名";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3774,10 +3763,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "有关 WordPress.com 课程和活动（在线和现场）的信息。";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "初始屏幕";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "正在初始化恢复过程";
@@ -4478,8 +4463,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "我";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4539,7 +4523,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "提及";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "菜单";
 
@@ -4707,8 +4690,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "名称";
 
 /* Error to be displayed when a tag is empty */
@@ -5393,8 +5375,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "页面已更新";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5746,7 +5727,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6818,7 +6798,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共享";
 
@@ -7006,8 +6985,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "跳过";
 
 /* Menu title to skip today's prompt. */
@@ -7027,6 +7005,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "社交";
 
@@ -7168,7 +7147,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8533,9 +8511,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "使用密码登录";
 
-/* No comment provided by engineer. */
-"Use this site" = "使用此站点";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "在网络上使用：包括浏览器选项卡、社交媒体上的预览和 WordPress.com 阅读器。";
 
@@ -9099,9 +9074,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，双因素验证码无效。请仔细检查代码，然后重试！";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "小组件";
-
 /* No comment provided by engineer. */
 "Width Settings" = "宽度设置";
 
@@ -9286,9 +9258,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "您随时可以访问“我的站点”、“设置”、“博客”，控制博客提示和提醒。";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "您可以在 iOS 今天\/通知中心视图显示单个站点的统计资料。";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "您可以使用编辑器的 Web 版本编辑此区块。";
@@ -9701,6 +9670,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "忽略";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "复制 URL";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "在浏览器中打开";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "忽略";
 
@@ -9785,6 +9760,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "您的分享机会已用完！";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "评论";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "媒体";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "更多";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "页面";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "文章";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "统计数据";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "所有动态";
 
@@ -9853,6 +9846,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "远程配置";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "删除当前导览";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "通过易于查找、共享和关注的站点地址，在网络上创建自己的一席之地。";
@@ -10318,6 +10314,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "无法同步媒体";
+
 /* Media screen navigation title */
 "media.title" = "媒体";
 
@@ -10333,8 +10332,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "忽略";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "删除";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "忽略";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "重试上传";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
@@ -10348,11 +10353,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "打开设置";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "免费 GIF 图库";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "从媒体中选择";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "其他文件";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "从设备中选择";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "免费照片库";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "拍摄照片";
@@ -10576,6 +10590,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "今日统计信息";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "显示或隐藏快捷键";
+
 /* Page title */
 "personalizeHome.title" = "对“首页”选项卡进行个性化";
 
@@ -10684,6 +10701,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "更多";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "搜索";
@@ -10838,9 +10858,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "未知";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "显示提示";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
@@ -11014,7 +11031,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "联系支持人员";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "我们能为您提供什么帮助？";
+"support.chatBot.firstMessage" = "你好，我是 Jetpack AI Assistant。\\n\\n我们能为您提供什么帮助？\\n\\n如果我不能回答您的问题，我会帮您向我们的团队提交一张支持申请单！";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "发送消息……";
@@ -11151,8 +11168,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "忽略";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "历年文章数和浏览次数之最";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "历年浏览次数";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "历年浏览次数和访客人数";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最受欢迎的文章";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "浏览次数之最";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "无法加载所有时间的统计信息。";
@@ -11180,6 +11209,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "历年浏览次数";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "今日浏览次数";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "无法加载本周的统计信息。";
@@ -11231,6 +11266,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "访客数";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "今日点赞数和评论数";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "今日浏览次数";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "今日浏览次数和访客人数";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";

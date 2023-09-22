@@ -13,11 +13,12 @@ extension WPTabBarController {
     @objc func configureMeTabImage(placeholderImage: UIImage) {
         meNavigationController?.tabBarItem.image = placeholderImage
 
-        guard let account = defaultAccount() else {
+        guard let account = defaultAccount(),
+              let email = account.email else {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: account.email) { [weak self] image in
+        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
             guard let image else {
                 return
             }
