@@ -54,10 +54,14 @@ end
 
 def gutenberg_local_pod
   options_gb = { path: local_gutenberg_path }
-  options_aztec = { path: "#{ local_gutenberg_path }/gutenberg/packages/react-native-aztec/" }
+  options_aztec = { path: "#{local_gutenberg_path}/gutenberg/packages/react-native-aztec/" }
 
-  raise "Could not find Gutenberg pod at #{options_gb[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options_gb[:path])
-  raise "Could not find RNTAztecView pod at #{options_aztec[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options_aztec[:path])
+  unless File.exist?(options_gb[:path])
+    raise "Could not find Gutenberg pod at #{options_gb[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable."
+  end
+  unless File.exist?(options_aztec[:path])
+    raise "Could not find RNTAztecView pod at #{options_aztec[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable."
+  end
 
   puts "[Gutenberg] Installing pods using local Gutenberg version from #{local_gutenberg_path}"
 
