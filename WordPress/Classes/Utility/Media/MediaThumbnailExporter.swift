@@ -22,7 +22,7 @@ class MediaThumbnailExporter: MediaExporter {
         /// of the image within a layout's dimensions. If nil, the image will not be resized.
         ///
         /// - Note: The final size may or may not match the preferred dimensions, depending
-        ///   on the original image.
+        ///   on the original image
         ///
         var preferredSize: CGSize?
 
@@ -36,7 +36,7 @@ class MediaThumbnailExporter: MediaExporter {
 
         /// The compression quality of the thumbnail, if the image type supports compression.
         ///
-        var compressionQuality = 0.90
+        var compressionQuality = 0.8
 
         /// The target image type of the exported thumbnail images.
         ///
@@ -59,7 +59,7 @@ class MediaThumbnailExporter: MediaExporter {
             guard let size = preferredSize else {
                 return nil
             }
-            return max(size.width, size.height) * scale
+            return max(size.width, size.height) * min(2, scale)
         }
 
         lazy var identifier: String = {
