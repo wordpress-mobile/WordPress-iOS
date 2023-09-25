@@ -158,7 +158,6 @@ enum DashboardCard: String, CaseIterable {
         .scheduledPosts,
         .blaze,
         .prompts,
-        .quickStart,
         .pages,
         .activityLog
     ]

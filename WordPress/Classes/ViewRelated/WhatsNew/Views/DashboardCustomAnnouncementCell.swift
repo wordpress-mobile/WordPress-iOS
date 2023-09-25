@@ -52,9 +52,9 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
         NSLayoutConstraint.activate([
             imageBackgroundView.heightAnchor.constraint(equalToConstant: Appearance.announcementImageHeight),
             imageBackgroundView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
-            announcementImageView.heightAnchor.constraint(equalTo: imageBackgroundView.heightAnchor),
-            announcementImageView.centerXAnchor.constraint(equalTo: imageBackgroundView.centerXAnchor),
-            announcementImageView.centerYAnchor.constraint(equalTo: imageBackgroundView.centerYAnchor)
+            announcementImageView.topAnchor.constraint(equalTo: imageBackgroundView.topAnchor),
+            announcementImageView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor),
+            announcementImageView.centerXAnchor.constraint(equalTo: imageBackgroundView.centerXAnchor)
         ])
     }
 
@@ -67,7 +67,20 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     func configure(feature: WordPressKit.Feature) {
 
         if let url = URL(string: feature.iconUrl) {
-            announcementImageView.af_setImage(withURL: url)
+            announcementImageView.af_setImage(withURL: url, completion: { [weak self] response in
+
+                guard let self,
+                      let width = response.value?.size.width,
+                      let height = response.value?.size.height else {
+                    return
+                }
+
+                let aspectRatio = width / height
+
+                NSLayoutConstraint.activate([
+                    self.announcementImageView.widthAnchor.constraint(equalTo: self.announcementImageView.heightAnchor, multiplier: aspectRatio)
+                ])
+            })
         }
         headingLabel.text = feature.subtitle
     }

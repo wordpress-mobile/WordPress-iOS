@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1309,8 +1309,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Fortsett";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2979,8 +2978,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Meg";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -3033,7 +3031,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Nevne";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Meny";
 
@@ -3159,8 +3156,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Navn";
 
 /* Error to be displayed when a tag is empty */
@@ -3666,8 +3662,7 @@ translators: Block name. %s: The localized block name */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Side planlagt";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -3962,7 +3957,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -4735,7 +4729,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Deling";
 
@@ -4901,8 +4894,7 @@ translators: Block name. %s: The localized block name */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Hopp over";
 
 /* Label for the slug field. Should be the same as WP core. */
@@ -4910,6 +4902,7 @@ translators: Block name. %s: The localized block name */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Sosialt";
 
@@ -5036,7 +5029,6 @@ translators: Block name. %s: The localized block name */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -6002,9 +5994,6 @@ translators: Block name. %s: The localized block name */
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Bruk blokkredigering";
 
-/* No comment provided by engineer. */
-"Use this site" = "Bruk dette nettstedet";
-
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -6386,9 +6375,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oida, det var ikke en gyldig 2-trinnsautentiseringskode. Dobbeltsjekk koden din, og prøv igjen!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgeter";
-
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Vil ikke vises offentlig.";
 
@@ -6519,9 +6505,6 @@ translators: Block name. %s: The localized block name */
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kan alltid logge inn med en lenke som den du nettopp brukte, men du kan også sette opp et passord hvis du foretrekker det.";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kan vise et nettsteds statistikk i iOS idag\/varslingssenter-visningen.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Du kan følge innlegg på et spesifikt nettsted ved å følge det.";

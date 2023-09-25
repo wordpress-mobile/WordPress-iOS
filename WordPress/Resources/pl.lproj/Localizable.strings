@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.8 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */
@@ -113,9 +113,6 @@
 
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Ustawiono obrazek wyróżniający. Stuknij, aby go zmienić.";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Dobra nazwa jest krótka i łatwa do zapamiętania. \nMożna zmienić ją później.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Kilka kroków, które pokażą, jak dodać szablon, ikonę witryny, itd.";
@@ -1314,10 +1311,6 @@
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Nadaj witrynie nazwę, która odzwierciedla jej osobowość i tematykę. Pierwsze wrażenie się liczy!";
 
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Nazwij swoją witrynę";
-
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -1747,8 +1740,7 @@
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ja";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -1770,7 +1762,6 @@
 "Medium" = "Średnio";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
@@ -2075,8 +2066,7 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Tytuł strony. Pusty";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -2207,7 +2197,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -2637,7 +2626,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Udostępnianie ";
 
@@ -2718,12 +2706,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Pomiń";
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Społeczności";
 
@@ -2818,7 +2806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -3201,9 +3188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Użyj hasła, aby się zalogować";
-
-/* No comment provided by engineer. */
-"Use this site" = "Użyj witryny";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.

@@ -11,11 +11,19 @@ class WhatIsNewScenePresenter: ScenePresenter {
     private let store: AnnouncementsStore
 
     private func shouldPresentWhatIsNew(on viewController: UIViewController) -> Bool {
-        viewController is AppSettingsViewController ||
+        if UIDevice.isPad() && versionsDisabledForIpad.contains(self.store.appVersionName) {
+            return false
+        }
+
+        return viewController is AppSettingsViewController ||
             (AppRatingUtility.shared.didUpgradeVersion &&
-                UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString() &&
-                self.store.announcements.first?.isLocalized == true)
+             UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString() &&
+             self.store.announcements.first?.isLocalized == true)
     }
+
+    private var versionsDisabledForIpad = [
+        "23.3"
+    ]
 
     var versionHasAnnouncements: Bool {
         store.versionHasAnnouncements
@@ -131,7 +139,7 @@ private extension WhatIsNewScenePresenter {
     }
 
     private func shouldUseDashboardCustomView() -> Bool {
-        return self.store.appVersionName == "19.6"
+        return self.store.appVersionName == "23.3"
     }
 
     enum WhatIsNewStrings {

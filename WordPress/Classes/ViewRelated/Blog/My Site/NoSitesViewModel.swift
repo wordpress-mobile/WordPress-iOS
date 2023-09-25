@@ -14,8 +14,8 @@ struct NoSitesViewModel {
     init(appUIType: RootViewCoordinator.AppUIType?, account: WPAccount?) {
         self.appUIType = appUIType
         self.displayName = account?.displayName ?? "-"
-        if let account {
-            self.gravatarURL = Gravatar.gravatarUrl(for: account.email)
+        if let email = account?.email {
+            self.gravatarURL = Gravatar.gravatarUrl(for: email)
         } else {
             self.gravatarURL = nil
         }
