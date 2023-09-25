@@ -52,5 +52,5 @@ protocol RootViewPresenter: AnyObject {
 
     var meViewController: MeViewController? { get }
     func showMeScreen()
-    func popMeToRoot()
+    func popMeScreenToRoot()
 }

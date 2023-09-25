@@ -152,7 +152,7 @@ extension MySitesCoordinator: RootViewPresenter {
         mySitesCoordinator.showMe()
     }
 
-    func popMeToRoot() {
+    func popMeScreenToRoot() {
         // Do nothing
     }
 

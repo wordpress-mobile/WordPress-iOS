@@ -163,7 +163,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         tabBarController.showMeTab()
     }
 
-    func popMeToRoot() {
+    func popMeScreenToRoot() {
         tabBarController.meNavigationController?.popToRootViewController(animated: false)
     }
 }
