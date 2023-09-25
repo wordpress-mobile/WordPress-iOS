@@ -152,4 +152,18 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
     func popNotificationsTabToRoot() {
         // Do nothing since static notification tab will never have a stack
     }
+
+    // MARK: Me
+
+    var meViewController: MeViewController? {
+        return tabBarController.meViewController
+    }
+
+    func showMeScreen() {
+        tabBarController.showMeTab()
+    }
+
+    func popMeToRoot() {
+        tabBarController.meNavigationController?.popToRootViewController(animated: false)
+    }
 }

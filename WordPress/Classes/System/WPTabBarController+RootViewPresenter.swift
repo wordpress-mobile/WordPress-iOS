@@ -46,4 +46,14 @@ extension WPTabBarController: RootViewPresenter {
     func showMedia(for blog: Blog) {
         mySitesCoordinator.showMedia(for: blog)
     }
+
+    // MARK: Me
+
+    func showMeScreen() {
+        showMeTab()
+    }
+
+    func popMeToRoot() {
+        meNavigationController?.popToRootViewController(animated: false)
+    }
 }
