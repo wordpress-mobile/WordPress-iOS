@@ -28,7 +28,7 @@ extension RootViewPresenter {
         showMeScreen()
         popMeTabToRoot()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
-            self.meViewController?.navigateToAccountSettings()
+            self.meViewController?.navigateToAppSettings()
         }
     }
 
