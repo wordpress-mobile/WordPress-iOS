@@ -54,7 +54,7 @@ end
 
 def gutenberg_local_pod
   options_gb = gutenberg_pod_options(name: 'Gutenberg', path: local_gutenberg_path)
-  options_aztec = gutenberg_pod_options(name: 'RNTAztecView', path: "#{local_gutenberg_path}/gutenberg/packages/react-native-aztec/")
+  options_aztec = gutenberg_pod_options(name: 'RNTAztecView', path: "#{local_gutenberg_path}/gutenberg/packages/react-native-aztec")
 
   react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
 
