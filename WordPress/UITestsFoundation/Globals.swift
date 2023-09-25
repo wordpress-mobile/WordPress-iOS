@@ -53,6 +53,22 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     }
 }
 
+public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
+    var retries = 0
+    while retries < maxRetries {
+        if element.isHittable {
+            usleep(500000)
+            break
+        }
+
+        retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(element)) was still hittable after \(maxRetries) tries.")
+    }
+}
+
 extension ScreenObject {
 
     // TODO: This was implemented on the original `BaseScreen` and is here just as a copy-paste for the transition.
