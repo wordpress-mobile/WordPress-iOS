@@ -134,22 +134,28 @@ extension MySitesCoordinator: RootViewPresenter {
     var meViewController: MeViewController? {
         /// On iPhone, the My Sites root view controller is a navigation controller
         if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController,
-           let topViewController = navigationController.topViewController as? MeViewController {
-            return topViewController
-        }
+           let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
+               return controller
+           }
 
         /// On iPad, the My Sites root view controller is a split view controllet and Me is displayed
         /// as a detail view controller
         if let splitViewController = mySitesCoordinator.rootViewController as? WPSplitViewController,
-           let topDetailViewController = splitViewController.topDetailViewController as? MeViewController {
-            return topDetailViewController
+           let navigationController = splitViewController.viewControllers.last as? UINavigationController,
+           let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
+            return controller
         }
 
         return nil
     }
 
     func showMeScreen() {
-        mySitesCoordinator.showMe()
+        guard let meViewController else {
+            mySitesCoordinator.showMe()
+            return
+        }
+
+        meViewController.navigationController?.popToViewController(meViewController, animated: false)
     }
 
     func popMeScreenToRoot() {
