@@ -186,7 +186,7 @@ public class BlockEditorScreen: ScreenObject {
     private func addMediaBlockFromUrl(blockType: String, UrlPath: String) {
         addBlock(blockType)
         insertFromUrlButton.tap()
-        app.textFields.element.typeText(UrlPath)
+        type(text: UrlPath, in: app.textFields.element)
         // to dismiss media block URL prompt
         tapTopOfScreen()
     }
