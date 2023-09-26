@@ -150,6 +150,10 @@ extension MySitesCoordinator: RootViewPresenter {
 
     func showMeScreen() {
         guard let meViewController else {
+            /// In order to show the Me screen, the My Sites screen must be visible (see: MySitesCoordinator.showMe)
+            if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController {
+                navigationController.popToRootViewController(animated: false)
+            }
             mySitesCoordinator.showMe()
             return
         }
