@@ -18,7 +18,6 @@ extension RootViewPresenter {
     /// access to sub levels
     func navigateToAccountSettings() {
         showMeScreen()
-        popMeScreenToRoot()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
             self.meViewController?.navigateToAccountSettings()
         }
@@ -26,7 +25,6 @@ extension RootViewPresenter {
 
     func navigateToAppSettings() {
         showMeScreen()
-        popMeScreenToRoot()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
             self.meViewController?.navigateToAppSettings()
         }
@@ -34,7 +32,6 @@ extension RootViewPresenter {
 
     func navigateToSupport() {
         showMeScreen()
-        popMeScreenToRoot()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
             self.meViewController?.navigateToHelpAndSupport()
         }
