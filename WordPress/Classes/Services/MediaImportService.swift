@@ -79,7 +79,9 @@ class MediaImportService: NSObject {
     ) -> (Media, Progress)? {
         assert(Thread.isMainThread, "\(#function) can only be called from the main thread")
 
-        guard let media = try? createMedia(with: exportable, blogObjectID: blog.objectID, postObjectID: post?.objectID, in: coreDataStack.mainContext) else {
+        let blogObjectID = TaggedManagedObjectID(blog)
+        let postObjectID = post.map { TaggedManagedObjectID($0) }
+        guard let media = try? createMedia(with: exportable, blogObjectID: blogObjectID, postObjectID: postObjectID, in: coreDataStack.mainContext) else {
             return nil
         }
 
@@ -132,8 +134,10 @@ class MediaImportService: NSObject {
         completion: @escaping (Media?, Error?) -> Void
     ) -> Progress {
         let createProgress = Progress.discreteProgress(totalUnitCount: 1)
+        let blogObjectID = TaggedManagedObjectID(blog)
+        let postObjectID = post.map { TaggedManagedObjectID($0) }
         coreDataStack.performAndSave({ context in
-            let media = try self.createMedia(with: exportable, blogObjectID: blog.objectID, postObjectID: post?.objectID, in: context)
+            let media = try self.createMedia(with: exportable, blogObjectID: blogObjectID, postObjectID: postObjectID, in: context)
             try context.obtainPermanentIDs(for: [media])
             return media.objectID
         }, completion: { (result: Result<NSManagedObjectID, Error>) in
@@ -164,9 +168,9 @@ class MediaImportService: NSObject {
         return createProgress
     }
 
-    private func createMedia(with exportable: ExportableAsset, blogObjectID: NSManagedObjectID, postObjectID: NSManagedObjectID?, in context: NSManagedObjectContext) throws -> Media {
-        let blogInContext = try context.existingObject(with: blogObjectID) as! Blog
-        let postInContext = try postObjectID.flatMap(context.existingObject(with:)) as? AbstractPost
+    private func createMedia(with exportable: ExportableAsset, blogObjectID: TaggedManagedObjectID<Blog>, postObjectID: TaggedManagedObjectID<AbstractPost>?, in context: NSManagedObjectContext) throws -> Media {
+        let blogInContext = try context.existingObject(with: blogObjectID)
+        let postInContext = try postObjectID.flatMap(context.existingObject(with:))
 
         let media = postInContext.flatMap(Media.makeMedia(post:)) ?? Media.makeMedia(blog: blogInContext)
         media.mediaType = exportable.assetMediaType
