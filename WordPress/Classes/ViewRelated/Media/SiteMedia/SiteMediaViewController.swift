@@ -1,14 +1,14 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
+final class SiteMediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private lazy var refreshControl = UIRefreshControl()
     private lazy var fetchController = makeFetchController()
 
     private let searchController = UISearchController()
-    private let mediaPickerController: MediaPickerController
+    private let addMediaMenuController: SiteMediaAddMediaMenuController
 
     private let buttonAddMedia: SpotlightableButton = SpotlightableButton(type: .custom)
 
@@ -31,7 +31,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     init(blog: Blog) {
         self.blog = blog
-        self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
+        self.addMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
     }
@@ -137,14 +137,14 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             QuickStartTourGuide.shared.visited(.mediaUpload)
             self?.buttonAddMedia.shouldShowSpotlight = false
         }, for: .menuActionTriggered)
-        buttonAddMedia.menu = mediaPickerController.makeMenu(for: self)
+        buttonAddMedia.menu = addMediaMenuController.makeMenu(for: self)
         buttonAddMedia.showsMenuAsPrimaryAction = true
         buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
         buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = MediaViewController.spacing
+        let spacing = SiteMediaViewController.spacing
         let availableWidth = collectionView.bounds.width
         let itemsPerRow = availableWidth < 450 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
@@ -525,7 +525,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
 // MARK: - MediaViewController (NoResults)
 
-extension MediaViewController: NoResultsViewHost {
+extension SiteMediaViewController: NoResultsViewHost {
     private func updateEmptyViewState() {
         let isEmpty = collectionView.numberOfItems(inSection: 0) == 0
         guard isEmpty else {
@@ -554,7 +554,7 @@ extension MediaViewController: NoResultsViewHost {
             displayNoResults(on: view)
         case .empty(let isAddButtonShown):
             noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown)
-            noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
+            noResultsViewController.buttonMenu = addMediaMenuController.makeMenu(for: self)
             displayNoResults(on: view)
         case .emptySearch:
             configureAndDisplayNoResults(on: view, title: Strings.noSearchResultsTitle)

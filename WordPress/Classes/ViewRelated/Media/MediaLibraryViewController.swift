@@ -62,7 +62,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
         if FeatureFlag.mediaModernization.enabled {
-            let controller = MediaViewController(blog: blog)
+            let controller = SiteMediaViewController(blog: blog)
             sourceController.show(controller, sender: nil)
         } else {
             let controller = MediaLibraryViewController(blog: blog)
