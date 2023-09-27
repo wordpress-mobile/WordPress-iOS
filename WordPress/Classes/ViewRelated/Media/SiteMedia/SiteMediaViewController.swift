@@ -10,6 +10,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var buttonAddMedia = SpotlightableButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
 
+    private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
+    private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
+    private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
+
     init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -45,18 +49,20 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     // MARK: - Configuration
 
     private func configureAddMediaButton() {
-        buttonAddMedia.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+        let button = self.buttonAddMedia
+
+        button.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
         let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
-        buttonAddMedia.setImage(image, for: .normal)
-        buttonAddMedia.addAction(UIAction { [weak self] _ in
+        button.setImage(image, for: .normal)
+        button.addAction(UIAction { [weak self] _ in
             QuickStartTourGuide.shared.visited(.mediaUpload)
             self?.buttonAddMedia.shouldShowSpotlight = false
         }, for: .menuActionTriggered)
-        buttonAddMedia.menu = buttonAddMediaMenuController.makeMenu(for: self)
-        buttonAddMedia.showsMenuAsPrimaryAction = true
-        buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
-        buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
+        button.menu = buttonAddMediaMenuController.makeMenu(for: self)
+        button.showsMenuAsPrimaryAction = true
+        button.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
+        button.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
     }
 
     private func configureNavigationBarAppearance() {
@@ -116,13 +122,15 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         collectionViewController.setEditing(isEditing)
         refreshNavigationItems()
 
-        if isEditing {
+        if isEditing && toolbarItems == nil {
             var toolbarItems: [UIBarButtonItem] = []
             if blog.supports(.mediaDeletion) {
-                toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped)))
+                toolbarItems.append(toolbarItemDelete)
             }
             toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped)))
+            toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
+            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            toolbarItems.append(toolbarItemShare)
             self.toolbarItems = toolbarItems
         }
 
@@ -133,6 +141,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         for toolbarItem in toolbarItems ?? [] {
             toolbarItem.isEnabled = selection.count > 0
         }
+        toolbarItemTitle.setSelection(selection)
     }
 
     // MARK: - Actions (Delete)
@@ -207,7 +216,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 private enum Strings {
     static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
-
     static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
     static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
     static let deleteConfirmationCancel = NSLocalizedString("mediaLibrary.deleteConfirmationCancel", value: "Cancel", comment: "Verb. Button title. Tapping cancels an action.")
