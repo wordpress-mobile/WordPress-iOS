@@ -8,13 +8,8 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {
-        return
-    }
-
-    func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? {
-        return nil
-    }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
+    func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
@@ -35,6 +30,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let filter: Set<MediaType>?
+    private let isShowingPendingUploads: Bool
     private let coordinator = MediaCoordinator.shared
 
     private var emptyViewState: EmptyViewState = .hidden {
@@ -54,9 +50,10 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         return selection
     }
 
-    init(blog: Blog, filter: Set<MediaType>? = nil) {
+    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true) {
         self.blog = blog
         self.filter = filter
+        self.isShowingPendingUploads = isShowingPendingUploads
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -237,6 +234,9 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         if let filter {
             let mediaTypes = filter.map(Media.string(from:))
             predicates.append(NSPredicate(format: "mediaTypeString IN %@", mediaTypes))
+        }
+        if !isShowingPendingUploads {
+            predicates.append(NSPredicate(format: "remoteStatusNumber == %i", MediaRemoteStatus.sync.rawValue))
         }
         if !searchTerm.isEmpty {
             predicates.append(NSPredicate(format: "(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", searchTerm, searchTerm, searchTerm))

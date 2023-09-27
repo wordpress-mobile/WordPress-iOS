@@ -8,11 +8,10 @@ protocol SiteMediaPickerViewControllerDelegate: AnyObject {
 /// The media picker for your site media.
 final class SiteMediaPickerViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {
     private let blog: Blog
-    private let filter: Set<MediaType>?
     private let allowsMultipleSelection: Bool
 
-    private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter)
-    private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
+    private let collectionViewController: SiteMediaCollectionViewController
+    private let toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
 
     weak var delegate: SiteMediaPickerViewControllerDelegate?
@@ -25,8 +24,8 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     ///   - allowsMultipleSelection: `false` by default.
     init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false) {
         self.blog = blog
-        self.filter = filter
         self.allowsMultipleSelection = allowsMultipleSelection
+        self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -58,8 +57,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactScrollEdgeAppearance = appearance
     }
-
-#warning("TODO: show unsynced photos? allow to select them?")
 
     private func configurationNavigationItems() {
         let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
