@@ -20,9 +20,11 @@ extension RootViewPresenter {
             guard let self else {
                 return
             }
-            self.showMeScene(animated: context.animated) { meViewController in
+            CATransaction.perform {
+                self.showMeScreen()
                 self.popMeTabToRoot()
-                completion(meViewController)
+            } completion: {
+                completion(self.meViewController)
             }
         }
     }
