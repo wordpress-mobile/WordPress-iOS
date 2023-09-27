@@ -203,7 +203,7 @@ extension MediaImageService {
             /// a portraint (dominant) mode.
             let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
             let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-            let availableWidth = screenSide - SiteMediaViewController.spacing * CGFloat(itemPerRow - 1)
+            let availableWidth = screenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
             let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
             let targetSize = CGSize(width: targetSide, height: targetSide)
             return targetSize.scaled(by: UIScreen.main.scale)
