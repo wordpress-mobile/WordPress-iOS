@@ -593,37 +593,50 @@ import Combine
             return
         }
 
-        // The container view is so that the header respects the safe area boundaries and expands
-        // the header's background color to the screen's edges.
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = header.backgroundColor
-        header.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(header)
+        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && FeatureFlag.readerImprovements.enabled
+        let headerView = {
+            guard isNewSiteHeader else {
+                return header
+            }
+
+            // The container view is so that the header respects the safe area boundaries and expands
+            // the header's background color to the screen's edges.
+            let containerView = UIView()
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.backgroundColor = header.backgroundColor
+            header.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(header)
+            return containerView
+        }()
 
         if let tableHeaderView = tableView.tableHeaderView {
-            containerView.isHidden = tableHeaderView.isHidden
+            headerView.isHidden = tableHeaderView.isHidden
         }
-
-        tableView.tableHeaderView = containerView
-        streamHeader = header as? ReaderStreamHeader
+        tableView.tableHeaderView = headerView
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        let centerConstraint = containerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-        let topConstraint = containerView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        let headerWidthConstraint = containerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
+        let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
+        let topConstraint = headerView.topAnchor.constraint(equalTo: tableView.topAnchor)
+        let headerWidthConstraint = headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         headerWidthConstraint.priority = UILayoutPriority(999)
         centerConstraint.priority = UILayoutPriority(999)
 
-        NSLayoutConstraint.activate([
+        var constraints = [
             centerConstraint,
             headerWidthConstraint,
-            topConstraint,
-            header.topAnchor.constraint(equalTo: containerView.topAnchor),
-            header.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-        ])
+            topConstraint
+        ]
+
+        if isNewSiteHeader {
+            constraints.append(contentsOf: [
+                header.topAnchor.constraint(equalTo: headerView.topAnchor),
+                header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+                header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            ])
+        }
+
+        NSLayoutConstraint.activate(constraints)
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
