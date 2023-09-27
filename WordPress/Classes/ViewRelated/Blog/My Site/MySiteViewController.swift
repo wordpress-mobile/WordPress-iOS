@@ -900,6 +900,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
+        viewController.loadViewIfNeeded()
         if MySitesCoordinator.isSplitViewEnabled {
             switch currentSection {
             case .dashboard:
