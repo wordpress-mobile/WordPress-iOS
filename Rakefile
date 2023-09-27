@@ -112,7 +112,7 @@ bundle exec fastlane run configure_apply force:true
     end
 
     task :install do
-      fold('install.cocoapds') do
+      fold('install.cocoapods') do
         pod %w[install]
       rescue StandardError
         puts "Attempting to fix Gutenberg-Mobile local podspecs failing to install — since that is one of the most common reason for `pod install` to fail — then retrying…\n\n"
@@ -134,7 +134,7 @@ bundle exec fastlane run configure_apply force:true
     end
 
     task :clean do
-      fold('clean.cocoapds') do
+      fold('clean.cocoapods') do
         FileUtils.rm_rf('Pods')
       end
     end
