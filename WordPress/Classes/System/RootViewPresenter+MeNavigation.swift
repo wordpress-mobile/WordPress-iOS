@@ -17,23 +17,23 @@ extension RootViewPresenter {
 
     /// access to sub levels
     func navigateToAccountSettings() {
-        showMeScene(animated: false) { meViewController in
-            self.popMeTabToRoot()
-            meViewController?.navigateToAccountSettings()
+        showMeScreen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+            self.meViewController?.navigateToAccountSettings()
         }
     }
 
     func navigateToAppSettings() {
-        showMeScene() { meViewController in
-            self.popMeTabToRoot()
-            meViewController?.navigateToAppSettings()
+        showMeScreen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+            self.meViewController?.navigateToAppSettings()
         }
     }
 
     func navigateToSupport() {
-        showMeScene() { meViewController in
-            self.popMeTabToRoot()
-            meViewController?.navigateToHelpAndSupport()
+        showMeScreen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+            self.meViewController?.navigateToHelpAndSupport()
         }
     }
 

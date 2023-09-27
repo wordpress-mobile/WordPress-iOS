@@ -129,6 +129,42 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
+    // MARK: Me
+
+    var meViewController: MeViewController? {
+        /// On iPhone, the My Sites root view controller is a navigation controller, and Me is pushed onto the stack
+        if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController,
+           let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
+               return controller
+           }
+
+        /// On iPad, the My Sites root view controller is a split view controller, and Me is shown in the detail view controller
+        if let splitViewController = mySitesCoordinator.rootViewController as? WPSplitViewController,
+           let detailNavigationController = splitViewController.viewControllers.last as? UINavigationController,
+           let controller = detailNavigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
+            return controller
+        }
+
+        return nil
+    }
+
+    func showMeScreen() {
+        guard let meViewController else {
+            /// In order to show the Me screen, the My Sites screen must be visible (see: MySitesCoordinator.showMe)
+            if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController {
+                navigationController.popToRootViewController(animated: false)
+            }
+            mySitesCoordinator.showMe()
+            return
+        }
+
+        meViewController.navigationController?.popToViewController(meViewController, animated: false)
+    }
+
+    func popMeScreenToRoot() {
+        // Do nothing
+    }
+
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.
