@@ -10116,6 +10116,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		0C23F33C2AC4AED900EE6117 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0C748B4A2A9D71A000809E1A /* SiteMediaCollectionViewController.swift */,
+				0C7762222AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		0C7D48182A4DB91B0023CF84 /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
@@ -10139,8 +10148,7 @@
 			isa = PBXGroup;
 			children = (
 				0C8E2F2C2AC4722F0023F9D6 /* SiteMediaViewController.swift */,
-				0C748B4A2A9D71A000809E1A /* SiteMediaCollectionViewController.swift */,
-				0C7762222AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift */,
+				0C23F33C2AC4AED900EE6117 /* Controllers */,
 				0C23F3332AC49C1000EE6117 /* Views */,
 			);
 			path = SiteMedia;
