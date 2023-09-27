@@ -613,6 +613,7 @@ import Combine
             headerView.isHidden = tableHeaderView.isHidden
         }
         tableView.tableHeaderView = headerView
+        streamHeader = header as? ReaderStreamHeader
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
