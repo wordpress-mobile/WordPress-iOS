@@ -36,7 +36,7 @@ extension RootViewPresenter {
             CATransaction.perform {
                 me.navigateToAppSettings()
             } completion: {
-                completion(me.navigationController?.topViewController)
+                completion(self.appSettingsViewController(from: me))
             }
         }
     }
@@ -49,6 +49,24 @@ extension RootViewPresenter {
                 completion(privacySettings)
             }
         }
+    }
+
+    // MARK: - Helpers
+
+    // This code is error-prone and could be avoided if `MeViewController.navigateToAppSettings` returns the `AppSettingsViewController` instance.
+    private func appSettingsViewController(from meViewController: UIViewController?) -> AppSettingsViewController? {
+        guard let meViewController else {
+            return nil
+        }
+        return meViewController.navigationController?.topViewController as? AppSettingsViewController ?? { () -> AppSettingsViewController? in
+            guard let viewControllers = meViewController.splitViewController?.viewControllers,
+                  viewControllers.count >= 1,
+                  let appSettings = (viewControllers[1] as? UINavigationController)?.topViewController
+            else {
+                return nil
+            }
+            return appSettings as? AppSettingsViewController
+        }()
     }
 }
 
