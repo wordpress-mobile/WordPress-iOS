@@ -67,6 +67,8 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         if allowsMultipleSelection {
             navigationItem.rightBarButtonItems = [buttonDone]
         }
+
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     // MARK: - Actions
