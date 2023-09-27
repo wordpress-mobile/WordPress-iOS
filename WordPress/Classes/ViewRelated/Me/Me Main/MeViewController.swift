@@ -137,7 +137,6 @@ class MeViewController: UITableViewController {
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
-        let isDetailViewController = (splitViewController?.viewControllers.last as? UINavigationController)?.topViewController is MeViewController
         let accessoryType: UITableViewCell.AccessoryType = isPrimaryViewControllerInSplitView() ? .none : .disclosureIndicator
 
         let loggedIn = account != nil
