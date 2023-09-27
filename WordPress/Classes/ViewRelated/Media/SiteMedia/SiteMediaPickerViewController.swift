@@ -8,16 +8,24 @@ protocol SiteMediaPickerViewControllerDelegate: AnyObject {
 /// The media picker for your site media.
 final class SiteMediaPickerViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {
     private let blog: Blog
+    private let filter: Set<MediaType>?
     private let allowsMultipleSelection: Bool
 
-    private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
+    private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter)
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
 
     weak var delegate: SiteMediaPickerViewControllerDelegate?
 
-    init(blog: Blog, allowsMultipleSelection: Bool = false) {
+    /// Initializes the media picker with the given parameters.
+    ///
+    /// - parameters:
+    ///   - blog: The site that contains the media
+    ///   - filter: The types of media to display. By default, `nil` (show everything).
+    ///   - allowsMultipleSelection: `false` by default.
+    init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false) {
         self.blog = blog
+        self.filter = filter
         self.allowsMultipleSelection = allowsMultipleSelection
 
         super.init(nibName: nil, bundle: nil)
@@ -51,7 +59,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         navigationItem.compactScrollEdgeAppearance = appearance
     }
 
-#warning("TODO: add filters")
 #warning("TODO: show unsynced photos? allow to select them?")
 
     private func configurationNavigationItems() {

@@ -34,6 +34,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var selection = NSMutableOrderedSet() // `Media`
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
     private let blog: Blog
+    private let filter: Set<MediaType>?
     private let coordinator = MediaCoordinator.shared
 
     private var emptyViewState: EmptyViewState = .hidden {
@@ -53,8 +54,9 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         return selection
     }
 
-    init(blog: Blog) {
+    init(blog: Blog, filter: Set<MediaType>? = nil) {
         self.blog = blog
+        self.filter = filter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -232,6 +234,10 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     private func makePredicate(searchTerm: String) -> NSPredicate {
         var predicates = [NSPredicate(format: "blog == %@", blog)]
+        if let filter {
+            let mediaTypes = filter.map(Media.string(from:))
+            predicates.append(NSPredicate(format: "mediaTypeString IN %@", mediaTypes))
+        }
         if !searchTerm.isEmpty {
             predicates.append(NSPredicate(format: "(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", searchTerm, searchTerm, searchTerm))
         }
