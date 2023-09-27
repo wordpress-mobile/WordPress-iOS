@@ -130,10 +130,10 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     // MARK: - Editing
 
-    func setEditing(_ isEditing: Bool) {
+    func setEditing(_ isEditing: Bool, allowsMultipleSelection: Bool) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
-        self.collectionView.allowsMultipleSelection = isEditing
+        self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
 
         deselectAll()
     }
@@ -146,13 +146,17 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             getViewModel(for: media).badgeText = nil
         }
         var index = 1
-        for media in selection {
-            if let media = media as? Media {
-                getViewModel(for: media).badgeText = index.description
-                index += 1
-            } else {
-                assertionFailure("Invalid selection")
+        if collectionView.allowsMultipleSelection {
+            for media in selection {
+                if let media = media as? Media {
+                    getViewModel(for: media).badgeText = index.description
+                    index += 1
+                } else {
+                    assertionFailure("Invalid selection")
+                }
             }
+        } else {
+            // Don't display a badge
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
     }

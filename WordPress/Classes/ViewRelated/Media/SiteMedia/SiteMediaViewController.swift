@@ -119,7 +119,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
 
-        collectionViewController.setEditing(isEditing)
+        collectionViewController.setEditing(isEditing, allowsMultipleSelection: true)
         refreshNavigationItems()
 
         if isEditing && toolbarItems == nil {
