@@ -1,6 +1,7 @@
 23.4
 -----
 * [*] Resolve the unresponsiveness of the compliance popover on iPhone SE devices when large fonts are enabled. [#21609]
+* [*] Fix an issue with a New Page action visible for Contributors [https://github.com/wordpress-mobile/WordPress-iOS/pull/21659]
 * [*] Block Editor: Prevent crash from invalid media URLs [https://github.com/WordPress/gutenberg/pull/54834]
 * [*] Block Editor: Limit inner blocks nesting depth to avoid call stack size exceeded crash [https://github.com/WordPress/gutenberg/pull/54382]
 * [**] Block Editor: Fallback to Twitter provider when embedding X URLs [https://github.com/WordPress/gutenberg/pull/54876]
