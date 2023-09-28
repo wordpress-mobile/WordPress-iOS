@@ -282,9 +282,7 @@ class MeViewController: UITableViewController {
 
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
-            WPAppAnalytics.track(.openedAppSettings)
-            let controller = AppSettingsViewController()
-            self.showOrPushController(controller)
+            self.navigateToAppSettings()
         }
     }
 
@@ -350,8 +348,13 @@ class MeViewController: UITableViewController {
 
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
-    @objc public func navigateToAppSettings() {
-        navigateToTarget(for: appSettingsRow.title)
+    @objc public func navigateToAppSettings(completion: ((AppSettingsViewController) -> Void)? = nil) {
+        self.selectRowForTitle(appSettingsRow.title)
+        WPAppAnalytics.track(.openedAppSettings)
+        let destination = AppSettingsViewController()
+        self.showOrPushController(destination) {
+            completion?(destination)
+        }
     }
 
     /// Selects the Help & Support row and pushes the Support view controller
@@ -380,14 +383,41 @@ class MeViewController: UITableViewController {
         }
     }
 
-    private func showOrPushController(_ controller: UIViewController) {
+    private func selectRowForTitle(_ rowTitle: String) {
+        self.tableView.selectRow(at: indexPathForRowTitle(rowTitle), animated: true, scrollPosition: .middle)
+    }
+
+    private func indexPathForRowTitle(_ rowTitle: String) -> IndexPath? {
+        let matchRow: ((ImmuTableRow) -> Bool) = { row in
+            if let row = row as? NavigationItemRow {
+                return row.title == rowTitle
+            } else if let row = row as? IndicatorNavigationItemRow {
+                return row.title == rowTitle
+            }
+            return false
+        }
+        guard let sections = handler?.viewModel.sections,
+              let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
+              let row = sections[section].rows.firstIndex(where: matchRow) else {
+            return nil
+        }
+        return IndexPath(row: row, section: section)
+    }
+
+    private func showOrPushController(_ controller: UIViewController, completion: (() -> Void)? = nil) {
         let shouldShowInDetailViewController = isPrimaryViewControllerInSplitView()
         if shouldShowInDetailViewController {
             self.showDetailViewController(controller, sender: self)
+            completion?()
             return
+        } else if let navigationController {
+            navigationController.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
+            navigationController.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in
+                completion?()
+            })
+        } else {
+            completion?()
         }
-
-        self.navigationController?.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
     }
 
     private func isPrimaryViewControllerInSplitView() -> Bool {
