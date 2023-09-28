@@ -6,7 +6,7 @@ final class AddressTableViewCell: UITableViewCell {
     // MARK: - Dependencies
 
     private var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
     // MARK: - Views
