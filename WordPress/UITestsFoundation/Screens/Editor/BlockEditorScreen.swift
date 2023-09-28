@@ -193,13 +193,19 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func verifyMediaBlocksDisplayed() -> Self {
-        let imagePredicate = NSPredicate(format: "label == 'Image caption. Empty'")
-        let videoPredicate = NSPredicate(format: "label == 'Video caption. Empty'")
-        let audioPredicate = NSPredicate(format: "label == 'Audio Player'")
+        let imageBlock = NSPredicate(format: "label == 'Image Block. Row 1'")
+        let imageCaption = NSPredicate(format: "label == 'Image caption. Empty'")
+        let videoBlock = NSPredicate(format: "label == 'Video Block. Row 2'")
+        let videoCaption = NSPredicate(format: "label == 'Video caption. Empty'")
+        let audioBlock = NSPredicate(format: "label == 'Audio Block. Row 3'")
+        let audioPlayer = NSPredicate(format: "label == 'Audio Player'")
 
-        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.exists)
-        XCTAssertTrue(app.buttons.containing(videoPredicate).firstMatch.exists)
-        XCTAssertTrue(app.buttons.containing(audioPredicate).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(imageBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(imageCaption).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(videoBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(audioBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(videoCaption).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(audioPlayer).firstMatch.exists)
 
         return self
     }
