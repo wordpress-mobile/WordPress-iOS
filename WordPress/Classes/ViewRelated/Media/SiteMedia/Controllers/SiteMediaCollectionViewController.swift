@@ -432,8 +432,9 @@ extension SiteMediaCollectionViewController: NoResultsViewHost {
             noResultsViewController.configureForFetching()
             displayNoResults(on: view)
         case .empty(let isAddButtonShown):
-            noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown)
-            noResultsViewController.buttonMenu = delegate?.makeAddMediaMenu(for: self)
+            let menu = delegate?.makeAddMediaMenu(for: self)
+            noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown && menu != nil)
+            noResultsViewController.buttonMenu = menu
             displayNoResults(on: view)
         case .emptySearch:
             configureAndDisplayNoResults(on: view, title: Strings.noSearchResultsTitle)
