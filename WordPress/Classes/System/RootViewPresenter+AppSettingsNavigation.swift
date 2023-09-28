@@ -20,9 +20,10 @@ extension RootViewPresenter {
             guard let self else {
                 return
             }
-            self.showMeScene(animated: context.animated) { meViewController in
-                self.popMeTabToRoot()
-                completion(meViewController)
+            CATransaction.perform {
+                self.showMeScreen()
+            } completion: {
+                completion(self.meViewController)
             }
         }
     }
@@ -31,11 +32,7 @@ extension RootViewPresenter {
     private func navigateToAppSettings() -> ViewControllerNavigationAction {
         return .init { context, completion in
             let me: MeViewController = try context.fromViewController()
-            CATransaction.perform {
-                me.navigateToAppSettings()
-            } completion: {
-                completion(me.navigationController?.topViewController)
-            }
+            me.navigateToAppSettings(completion: completion)
         }
     }
 
