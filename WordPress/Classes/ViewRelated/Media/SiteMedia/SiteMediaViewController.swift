@@ -61,8 +61,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         }, for: .menuActionTriggered)
         button.menu = buttonAddMediaMenuController.makeMenu(for: self)
         button.showsMenuAsPrimaryAction = true
-        button.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
-        button.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
+        button.accessibilityLabel = Strings.addButtonAccessibilityLabel
+        button.accessibilityHint = Strings.addButtonAccessibilityHint
     }
 
     private func configureNavigationBarAppearance() {
@@ -216,6 +216,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 private enum Strings {
     static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
+    static let addButtonAccessibilityLabel = NSLocalizedString("mediaLibrary.addButtonAccessibilityLabel", value: "Add", comment: "Accessibility label for add button to add items to the user's media library")
+    static let addButtonAccessibilityHint = NSLocalizedString("mediaLibrary.addButtonAccessibilityHint", value: "Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
     static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
     static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
     static let deleteConfirmationCancel = NSLocalizedString("mediaLibrary.deleteConfirmationCancel", value: "Cancel", comment: "Verb. Button title. Tapping cancels an action.")
