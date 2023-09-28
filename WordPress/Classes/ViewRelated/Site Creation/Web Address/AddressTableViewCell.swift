@@ -54,7 +54,7 @@ final class AddressTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.domainFont
         label.textColor = Appearance.domainTextColor
-        label.numberOfLines = 2
+        label.numberOfLines = 3
         return label
     }()
 
@@ -102,6 +102,7 @@ final class AddressTableViewCell: UITableViewCell {
             view.backgroundColor = UIColor(light: .secondarySystemBackground, dark: .tertiarySystemBackground)
             return view
         }()
+        costLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
     }
 
     // MARK: - Layout
@@ -196,6 +197,19 @@ final class AddressTableViewCell: UITableViewCell {
             let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
             attributedString.append(NSAttributedString(string: " \(sale)", attributes: saleAttributes))
             attributedString.append(.init(string: "\n\(ViewModel.Strings.firstYear)", attributes: firstYearAttributes))
+            return attributedString
+        case .freeWithPaidPlan(let cost):
+            let costAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.secondaryLabel,
+                .font: Appearance.smallCostFont,
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue
+            ]
+            let firstYearAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: Appearance.saleCostTextColor,
+                .font: Appearance.smallCostFont
+            ]
+            let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
+            attributedString.append(.init(string: "\n\(ViewModel.Strings.freeWithPaidPlan)", attributes: firstYearAttributes))
             return attributedString
         }
     }
