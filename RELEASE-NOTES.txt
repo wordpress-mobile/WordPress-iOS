@@ -1,6 +1,3 @@
-23.5
------
-
 23.4
 -----
 * [*] Resolve the unresponsiveness of the compliance popover on iPhone SE devices when large fonts are enabled. [#21609]
