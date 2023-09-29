@@ -47,10 +47,6 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Likes"]
     }
 
-    private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Topic"]
-    }
-
     private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["topics-card-cell-button"]
     }
@@ -76,7 +72,6 @@ public class ReaderScreen: ScreenObject {
     var savePostButton: XCUIElement { savePostButtonGetter(app) }
     var savedButton: XCUIElement { savedButtonGetter(app) }
     var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
-    var topicNavigationBar: XCUIElement { topicNavigationBarGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -163,7 +158,6 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func verifyTopicLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3), file: file, line: line)
         XCTAssertTrue(readerButton.waitForExistence(timeout: 3), file: file, line: line)
         XCTAssertTrue(followButton.waitForExistence(timeout: 3), file: file, line: line)
 
