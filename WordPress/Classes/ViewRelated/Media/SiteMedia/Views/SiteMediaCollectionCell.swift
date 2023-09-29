@@ -108,6 +108,8 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
             }
         }.store(in: &cancellables)
 
+        configureAccessibility(viewModel)
+
         viewModel.onAppear()
     }
 
@@ -128,6 +130,14 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         }
         imageView.alpha = 1
         placeholderView.alpha = 0
+    }
+
+    // MARK: - Accessibility
+
+    private func configureAccessibility(_ viewModel: SiteMediaCollectionCellViewModel) {
+        isAccessibilityElement = true
+        accessibilityLabel = viewModel.accessibilityLabel
+        accessibilityHint = viewModel.accessibilityHint
     }
 
     // MARK: - Helpers

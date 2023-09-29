@@ -144,7 +144,45 @@ final class SiteMediaCollectionCellViewModel {
             break
         }
     }
+
+    // MARK: - Accessibility
+
+    var accessibilityLabel: String? {
+        let formattedDate = media.creationDate.map(accessibilityDateFormatter.string) ?? Strings.accessibilityUnknownCreationDate
+
+        switch mediaType {
+        case .image:
+            return String(format: Strings.accessibilityLabelImage, formattedDate)
+        case .video:
+            return String(format: Strings.accessibilityLabelVideo, formattedDate)
+        case .audio:
+            return String(format: Strings.accessibilityLabelAudio, formattedDate)
+        case .document, .powerpoint:
+            return String(format: Strings.accessibilityLabelDocument, media.filename ?? formattedDate)
+        @unknown default:
+            return nil
+        }
+    }
+
+    var accessibilityHint: String { Strings.accessibilityHint }
 }
+
+private enum Strings {
+    static let accessibilityUnknownCreationDate = NSLocalizedString("siteMedia.accessibilityUnknownCreationDate", value: "Unknown creation date", comment: "Accessibility label to use when creation date from media asset is not know.")
+    static let accessibilityLabelImage = NSLocalizedString("siteMedia.accessibilityLabelImage", value: "Image, %@", comment: "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image.")
+    static let accessibilityLabelVideo = NSLocalizedString("siteMedia.accessibilityLabelVideo", value: "Video, %@", comment: "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video.")
+    static let accessibilityLabelAudio = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio.")
+    static let accessibilityLabelDocument = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for other media items in the media collection view. The parameter is the filename file.")
+    static let accessibilityHint = NSLocalizedString("siteMedia.cellAccessibilityHint", value: "Select media.", comment: "Accessibility hint for actions when displaying media items.")
+}
+
+private let accessibilityDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.doesRelativeDateFormatting = true
+    formatter.dateStyle = .full
+    formatter.timeStyle = .short
+    return formatter
+}()
 
 // MARK: - Helpers (Duration Formatter)
 
