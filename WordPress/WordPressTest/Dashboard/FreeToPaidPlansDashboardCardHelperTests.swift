@@ -10,7 +10,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
             .with(hasPaidPlan: false)
             .build()
 
-        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
+        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
 
         XCTAssertTrue(result, "Card should show for blogs with a free plan and no mapped domain")
     }
@@ -23,7 +23,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
             .with(hasPaidPlan: true)
             .build()
 
-        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
+        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
 
         XCTAssertFalse(result, "Card should not show for blogs without a free plan")
     }
@@ -37,21 +37,8 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
             .with(hasPaidPlan: false)
             .build()
 
-        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
+        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
 
         XCTAssertTrue(result, "Card should still be shown for blogs with a mapped domain and with a free plan")
-    }
-
-    func testShouldNotShowCardFeatureFlagDisabled() {
-        let blog = BlogBuilder(mainContext)
-            .with(supportsDomains: true)
-            .with(domainCount: 1, of: .wpCom)
-            .with(hasMappedDomain: false)
-            .with(hasPaidPlan: false)
-            .build()
-
-        let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: false)
-
-        XCTAssertFalse(result, "Card should not show when the feature flag is disabled")
     }
 }

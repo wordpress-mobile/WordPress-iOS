@@ -163,7 +163,11 @@ class PostPostViewController: UIViewController {
         titleLabel.text = post.titleForDisplay().strippingHTML()
         titleLabel.accessibilityIdentifier = "postTitle"
 
-        if post.isScheduled() {
+        if let status = post.status, status == .pending {
+            postStatusLabel.text = AbstractPost.title(forStatus: status.rawValue)
+            postStatusLabel.accessibilityIdentifier = "pendingPostStatusLabel"
+            shareButton.isHidden = true
+        } else if post.isScheduled() {
             let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for.")
             postStatusLabel.text = String(format: format, post.dateStringForDisplay())
             postStatusLabel.accessibilityIdentifier = "scheduledPostStatusLabel"

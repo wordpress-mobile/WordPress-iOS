@@ -14,7 +14,7 @@ final class BlogDashboardPersonalizationViewModelTests: CoreDataTestCase {
         super.setUp()
 
         blog = BlogBuilder(contextManager.mainContext).build()
-        viewModel = BlogDashboardPersonalizationViewModel(blog: blog, service: service, quickStartType: .undefined)
+        viewModel = BlogDashboardPersonalizationViewModel(blog: blog, service: service)
     }
 
     func testThatCardStateIsToggled() throws {
@@ -37,14 +37,6 @@ final class BlogDashboardPersonalizationViewModelTests: CoreDataTestCase {
         for card in viewModel.cards {
             XCTAssertTrue(!card.title.isEmpty)
         }
-    }
-
-    func testThatQuickStartCardsIsNotDisplayedWhenTourIsActive() {
-        // Given
-        viewModel = BlogDashboardPersonalizationViewModel(blog: blog, service: service, quickStartType: .newSite)
-
-        // Then
-        XCTAssertTrue(viewModel.cards.contains(where: { $0.id == .quickStart }))
     }
 
     func testThatQuickStartCardsIsNotDisplayedWhenNoTourIsActive() {

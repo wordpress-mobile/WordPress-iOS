@@ -9,17 +9,26 @@ final class CompliancePopoverViewController: UIViewController {
     private let viewModel: CompliancePopoverViewModel
 
     // MARK: - Views
+
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let hostingController: UIHostingController<CompliancePopover>
 
     private var contentView: UIView {
         return hostingController.view
     }
 
-    private var bannerIntrinsicHeight: CGFloat = 0
+    // MARK: - Init
 
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
-        hostingController = UIHostingController(rootView: CompliancePopover(viewModel: self.viewModel))
+        let content = CompliancePopover(viewModel: viewModel)
+        self.hostingController = UIHostingController(rootView: content)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -28,39 +37,46 @@ final class CompliancePopoverViewController: UIViewController {
     }
 
     // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addContentView()
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = true
-        hostingController.rootView.goToSettingsAction = {
-            self.viewModel.didTapSettings()
-        }
-        hostingController.rootView.saveAction = {
-            self.viewModel.didTapSave()
-        }
-        viewModel.didDisplayPopover()
+        self.viewModel.didDisplayPopover()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        // Calculate the size needed for the view to fit its content
         let targetSize = CGSize(width: view.bounds.width, height: 0)
+        self.contentView.frame = CGRect(origin: .zero, size: targetSize)
         let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
-        self.contentView.frame = .init(origin: .zero, size: contentViewSize)
-        self.preferredContentSize = contentView.bounds.size
+        self.contentView.frame.size = contentViewSize
 
-        self.hostingController.rootView.screenHeight = self.view.frame.height
-        self.hostingController.rootView.shouldScroll = (contentViewSize.height + 100) > self.view.frame.height
+        // Set the scrollView's content size to match the contentView's size
+        //
+        // Scroll is enabled / disabled automatically depending on whether the `contentSize` is bigger than the its size.
+        self.scrollView.contentSize = contentViewSize
+
+        // Set the preferred content size for the view controller to match the contentView's size
+        //
+        // This property should be updated when `DrawerPresentable.collapsedHeight` is `intrinsicHeight`.
+        // Because under the hood the `BottomSheetViewController` reads this property to layout its subviews.
+        self.preferredContentSize = contentViewSize
     }
 
     private func addContentView() {
+        self.view.addSubview(scrollView)
+        self.view.pinSubviewToAllEdges(scrollView)
         self.hostingController.willMove(toParent: self)
         self.addChild(hostingController)
-        self.view.addSubview(contentView)
+        self.contentView.translatesAutoresizingMaskIntoConstraints = true
+        self.scrollView.addSubview(contentView)
         self.hostingController.didMove(toParent: self)
     }
 }
 
 // MARK: - DrawerPresentable
+
 extension CompliancePopoverViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         if traitCollection.verticalSizeClass == .compact {

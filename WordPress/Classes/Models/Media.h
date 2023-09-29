@@ -68,10 +68,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSURL *absoluteLocalURL;
 
 /**
- Local file URL for a preprocessed thumbnail of the Media's asset. This may be nil if the
- thumbnail has been deleted from the cache directory.
-
- Note: it is recommended to instead use MediaService to generate thumbnails with a preferred size.
+ Local file URL for a preprocessed **large** thumbnail that can be used for
+ a full-screen presentation.
  */
 @property (nonatomic, strong, nullable) NSURL *absoluteThumbnailLocalURL;
 

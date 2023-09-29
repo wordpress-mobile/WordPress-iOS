@@ -103,8 +103,6 @@ private func makeKey(for card: DashboardCard) -> String? {
         // have a "-card" component in the key name. Keeping it like this to
         // avoid having to migrate data.
         return "prompts-enabled-site-settings"
-    case .domainsDashboardCard:
-        return "domains-dashboard-card-enabled-site-settings"
     case .freeToPaidPlansDashboardCard:
         return "free-to-paid-plans-dashboard-card-enabled-site-settings"
     case .domainRegistration:
@@ -116,6 +114,9 @@ private func makeKey(for card: DashboardCard) -> String? {
     case .pages:
         return "pages-card-enabled-site-settings"
     case .quickStart:
+        // The "Quick Start" cell used to use `BlogDashboardPersonalizationService`.
+        // It no longer does, but it's important to keep the flag around for
+        // users that hidden it using this flag.
         return "quick-start-card-enabled-site-settings"
     case .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty:
         return nil

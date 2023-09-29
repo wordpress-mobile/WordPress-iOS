@@ -186,29 +186,26 @@ public class BlockEditorScreen: ScreenObject {
     private func addMediaBlockFromUrl(blockType: String, UrlPath: String) {
         addBlock(blockType)
         insertFromUrlButton.tap()
-        app.textFields.element.typeText(UrlPath)
+        type(text: UrlPath, in: app.textFields.element)
         // to dismiss media block URL prompt
         tapTopOfScreen()
     }
 
-    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
-    @discardableResult
-    public func verifyImageBlockDisplayed() -> Self {
-        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
-        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
-
-        return self
-    }
-
     @discardableResult
     public func verifyMediaBlocksDisplayed() -> Self {
-        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
-        let videoPredicate = NSPredicate(format: "label == 'Video Block. Row 2'")
-        let audioPredicate = NSPredicate(format: "label == 'Audio Block. Row 3'")
+        let imageBlock = NSPredicate(format: "label == 'Image Block. Row 1'")
+        let imageCaption = NSPredicate(format: "label == 'Image caption. Empty'")
+        let videoBlock = NSPredicate(format: "label == 'Video Block. Row 2'")
+        let videoCaption = NSPredicate(format: "label == 'Video caption. Empty'")
+        let audioBlock = NSPredicate(format: "label == 'Audio Block. Row 3'")
+        let audioPlayer = NSPredicate(format: "label == 'Audio Player'")
 
-        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.exists)
-        XCTAssertTrue(app.buttons.containing(videoPredicate).firstMatch.exists)
-        XCTAssertTrue(app.buttons.containing(audioPredicate).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(imageBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(imageCaption).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(videoBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(audioBlock).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(videoCaption).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(audioPlayer).firstMatch.exists)
 
         return self
     }
@@ -257,6 +254,7 @@ public class BlockEditorScreen: ScreenObject {
     public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
         try post(action: action)
         waitAndTap(noticeViewButton)
+
         return try EditorPublishEpilogueScreen()
     }
 
@@ -264,6 +262,7 @@ public class BlockEditorScreen: ScreenObject {
         let postButton = app.buttons[action.rawValue]
         let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
+
         // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
         // The tests would fail sometimes in the pipeline with no apparent reason.
         repeat {
@@ -271,7 +270,10 @@ public class BlockEditorScreen: ScreenObject {
             tries += 1
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
 
-        try confirmPost(button: postNowButton, action: action)
+        postNowButton.tap()
+        guard action == .publish else { return }
+
+        dismissBloggingRemindersAlertIfNeeded()
     }
 
     @discardableResult
@@ -403,12 +405,6 @@ public class BlockEditorScreen: ScreenObject {
         chooseFromDeviceButton.tap()
 
         return try PHPickerScreen()
-    }
-
-    private func confirmPost(button: XCUIElement, action: postAction) throws {
-        button.tap()
-        guard action == .publish else { return }
-        dismissBloggingRemindersAlertIfNeeded()
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
