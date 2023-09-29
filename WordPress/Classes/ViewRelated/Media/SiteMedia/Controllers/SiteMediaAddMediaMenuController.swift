@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class MediaPickerController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate, UIDocumentPickerDelegate {
+final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate, UIDocumentPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
