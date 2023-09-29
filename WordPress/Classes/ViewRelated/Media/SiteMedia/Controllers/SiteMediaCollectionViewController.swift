@@ -27,7 +27,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
     private var selection = NSMutableOrderedSet() // `Media`
-    private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
+    private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
@@ -95,7 +95,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func configureCollectionView() {
-        collectionView.register(MediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+        collectionView.register(SiteMediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -303,7 +303,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! SiteMediaCollectionCell
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
@@ -392,11 +392,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     // MARK: - Helpers
 
     // Create ViewModel lazily to avoid fetching more managed objects than needed.
-    private func getViewModel(for media: Media) -> MediaCollectionCellViewModel {
+    private func getViewModel(for media: Media) -> SiteMediaCollectionCellViewModel {
         if let viewModel = viewModels[media.objectID] {
             return viewModel
         }
-        let viewModel = MediaCollectionCellViewModel(media: media)
+        let viewModel = SiteMediaCollectionCellViewModel(media: media)
         viewModels[media.objectID] = viewModel
         return viewModel
     }

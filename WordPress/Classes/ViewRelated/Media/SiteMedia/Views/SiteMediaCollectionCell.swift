@@ -1,12 +1,12 @@
 import UIKit
 import Combine
 
-final class MediaCollectionCell: UICollectionViewCell {
+final class SiteMediaCollectionCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
-    private var viewModel: MediaCollectionCellViewModel?
-    private var badgeView: MediaCollectionCellBadgeView?
+    private var viewModel: SiteMediaCollectionCellViewModel?
+    private var badgeView: SiteMediaCollectionCellBadgeView?
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -50,7 +50,7 @@ final class MediaCollectionCell: UICollectionViewCell {
         badgeView?.isHidden = true
     }
 
-    func configure(viewModel: MediaCollectionCellViewModel) {
+    func configure(viewModel: SiteMediaCollectionCellViewModel) {
         self.viewModel = viewModel
 
         switch viewModel.mediaType {
@@ -106,11 +106,11 @@ final class MediaCollectionCell: UICollectionViewCell {
         }
     }
 
-    private func getBadgeView() -> MediaCollectionCellBadgeView {
+    private func getBadgeView() -> SiteMediaCollectionCellBadgeView {
         if let badgeView {
             return badgeView
         }
-        let badgeView = MediaCollectionCellBadgeView()
+        let badgeView = SiteMediaCollectionCellBadgeView()
         contentView.addSubview(badgeView)
         badgeView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

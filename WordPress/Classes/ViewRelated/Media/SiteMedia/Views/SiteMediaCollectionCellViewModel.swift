@@ -1,6 +1,6 @@
 import UIKit
 
-final class MediaCollectionCellViewModel {
+final class SiteMediaCollectionCellViewModel {
     var onImageLoaded: ((UIImage) -> Void)?
     @Published private(set) var overlayState: CircularProgressView.State?
     @Published var badgeText: String?
