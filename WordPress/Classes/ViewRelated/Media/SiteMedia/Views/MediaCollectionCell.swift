@@ -53,16 +53,21 @@ final class MediaCollectionCell: UICollectionViewCell {
     func configure(viewModel: MediaCollectionCellViewModel) {
         self.viewModel = viewModel
 
-        if let image = viewModel.getCachedThubmnail() {
-            // Display with no animations. It should happen often thanks to prefetchig
-            imageView.image = image
-            imageView.alpha = 1
-            placeholderView.alpha = 0
-        } else {
-            let mediaID = viewModel.mediaID
-            viewModel.onImageLoaded = { [weak self] in
-                self?.didLoadImage($0, for: mediaID)
+        switch viewModel.mediaType {
+        case .image, .video:
+            if let image = viewModel.getCachedThubmnail() {
+                // Display with no animations. It should happen often thanks to prefetchig
+                imageView.image = image
+                imageView.alpha = 1
+                placeholderView.alpha = 0
+            } else {
+                let mediaID = viewModel.mediaID
+                viewModel.onImageLoaded = { [weak self] in
+                    self?.didLoadImage($0, for: mediaID)
+                }
             }
+        default:
+            break
         }
 
         viewModel.$overlayState.sink { [overlayView] in
