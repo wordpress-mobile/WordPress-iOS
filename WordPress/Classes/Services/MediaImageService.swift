@@ -64,7 +64,7 @@ final class MediaImageService: NSObject {
         return try? await Task.detached {
             let imageURL = try self.getCachedThumbnailURL(for: mediaID, size: size)
             let data = try Data(contentsOf: imageURL)
-            return try decompressedImage(from: data)
+            return try makeImage(from: data)
         }.value
     }
 
@@ -116,7 +116,7 @@ final class MediaImageService: NSObject {
 
         let image = try? await Task.detached {
             let data = try Data(contentsOf: export.url)
-            return try decompressedImage(from: data)
+            return try makeImage(from: data)
         }.value
 
         // The order is important to ensure `export.url` still exists when creating an image
@@ -150,7 +150,7 @@ final class MediaImageService: NSObject {
         }
 
         return try await Task.detached {
-            try decompressedImage(from: data)
+            try makeImage(from: data)
         }.value
     }
 
@@ -254,7 +254,13 @@ private extension Media {
             }
             // Download a non-retina version for GIFs: makes a massive difference
             // in terms of size. Example: 2.4 MB -> 350 KB.
-            let targetSize = remoteURL.isGif ? targetSize.scaled(by: 1.0 / UIScreen.main.scale) : targetSize
+            let scale = UIScreen.main.scale
+            var targetSize = targetSize
+            if remoteURL.isGif {
+                targetSize = targetSize
+                    .scaled(by: 1.0 / scale)
+                    .scaled(by: min(2, scale))
+            }
             if !isEligibleForPhoton {
                 return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
             } else {
@@ -275,9 +281,12 @@ private extension Media {
 
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.
-private func decompressedImage(from data: Data) throws -> UIImage {
+private func makeImage(from data: Data) throws -> UIImage {
     guard let image = UIImage(data: data) else {
         throw URLError(.cannotDecodeContentData)
+    }
+    if data.isMatchingMagicNumbers(Data.gifMagicNumbers) {
+        return AnimatedImageWrapper(gifData: data) ?? image
     }
     guard isDecompressionNeeded(for: data) else {
         return image
@@ -298,6 +307,9 @@ private func isDecompressionNeeded(for data: Data) -> Bool {
 private extension Data {
     // JPEG magic numbers https://en.wikipedia.org/wiki/JPEG
     static let jpegMagicNumbers: [UInt8] = [0xFF, 0xD8, 0xFF]
+
+    // GIF magic numbers https://en.wikipedia.org/wiki/GIF
+    static let gifMagicNumbers: [UInt8] = [0x47, 0x49, 0x46]
 
     func isMatchingMagicNumbers(_ numbers: [UInt8?]) -> Bool {
         guard self.count >= numbers.count else {

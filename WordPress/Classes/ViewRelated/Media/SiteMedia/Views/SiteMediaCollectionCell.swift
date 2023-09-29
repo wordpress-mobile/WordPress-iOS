@@ -1,8 +1,9 @@
 import UIKit
 import Combine
+import Gifu
 
 final class SiteMediaCollectionCell: UICollectionViewCell {
-    private let imageView = UIImageView()
+    private let imageView = GIFImageView()
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
     private var durationView: SiteMediaVideoDurationView?
@@ -61,10 +62,8 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         switch viewModel.mediaType {
         case .image, .video:
             if let image = viewModel.getCachedThubmnail() {
-                // Display with no animations. It should happen often thanks to prefetchig
-                imageView.image = image
-                imageView.alpha = 1
-                placeholderView.alpha = 0
+                // Display with no animations. It should happen often thanks to prefetching.
+                setImage(image)
             } else {
                 let mediaID = viewModel.mediaID
                 viewModel.onImageLoaded = { [weak self] in
@@ -118,7 +117,15 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         assert(Thread.isMainThread)
 
         guard viewModel?.mediaID == mediaID else { return }
-        imageView.image = image
+        setImage(image)
+    }
+
+    private func setImage(_ image: UIImage) {
+        if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+            imageView.animate(withGIFData: data)
+        } else {
+            imageView.image = image
+        }
         imageView.alpha = 1
         placeholderView.alpha = 0
     }
