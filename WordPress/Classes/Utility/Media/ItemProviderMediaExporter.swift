@@ -24,11 +24,11 @@ final class ItemProviderMediaExporter: MediaExporter {
             if let imageOptions {
                 exporter.options = imageOptions
             }
-            // If image format is not supported, switch to `.heic`.
+            // If image format is not supported, switch to `.jpeg`.
             if exporter.options.exportImageType == nil,
                let type = provider.registeredTypeIdentifiers.first,
                !ItemProviderMediaExporter.supportedImageTypes.contains(type) {
-                exporter.options.exportImageType = UTType.heic.identifier
+                exporter.options.exportImageType = UTType.jpeg.identifier
             }
             let exportProgress = exporter.export(onCompletion: onCompletion, onError: onError)
             progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
@@ -89,15 +89,15 @@ final class ItemProviderMediaExporter: MediaExporter {
     ///
     /// One notable format missing from the list is `.webp`, which is not supported
     /// by `CGImageDestinationCreateWithURL` and, in turn, `MediaImageExporter`.
+    /// If the format is not supported, the app falls back to `.jpeg`.
     ///
-    /// If the format is not supported, the app fallbacks to `.heic` which is
-    /// similar to `.webp`: more efficient than traditional formats and supports
-    /// opacity, unlike `.jpeg`.
+    /// Despire wp.com supporting `.heic`, self-hosted sites don't (yet),
+    /// so, just to be safe, the app converts them to `.jpeg`. This should be
+    /// revisited in the future as hopefully `.heic` support is added.
     private static let supportedImageTypes: Set<String> = Set([
         UTType.png,
         UTType.jpeg,
         UTType.gif,
-        UTType.heic,
         UTType.svg
     ].map(\.identifier))
 

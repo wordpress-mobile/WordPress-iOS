@@ -1,0 +1,7 @@
+Les widgets d’écran de verrouillage sont désormais disponibles sur Jetpack. Vous pouvez donc vérifier les statistiques de votre site sans déverrouiller votre téléphone. N’oubliez pas qu’un grand pouvoir implique une grande efficacité. Ou quelque chose du genre.
+
+Nous avons modifié l’affichage des alertes lorsque vous insérez des médias dans des blocs à partir d’une URL. C’est une excellente chose.
+
+Il est également plus facile de différencier un texte indicatif d’un contenu réel dans les thèmes basés sur des blocs.
+
+Enfin, nous avons mis à jour la navigation dans Mon site pour offrir un accès plus rapide aux sections les plus populaires du site. (Vous n’aimez pas ces raccourcis ? Ne vous inquiétez pas, vous pouvez les personnaliser comme vous l’entendez.)

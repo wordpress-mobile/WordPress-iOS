@@ -1,0 +1,7 @@
+Kilit ekranı bileşenleri bundan sonra Jetpack'te kullanılabilir. Böylece telefonunuzun kilidini açmadan site istatistiklerinizi kontrol edebilirsiniz. Ama unutmayın, büyük güç büyük verimlilik getirir. Ya da benzer bir şeydi.
+
+Bir URL'den bloklara ortam eklerken uyarıların görünme şeklini değiştirdik. Bu bizim için iyi bir şey.
+
+Ayrıca, blok tabanlı temalarda yer tutucu metin ile gerçek içerik arasındaki farkı anlamak da artık daha kolay.
+
+Son olarak, sitenin popüler bölümlerine daha hızlı ulaşabilmeniz için Sitem'deki gezinme deneyimini güncelledik. (Bu kısayolları sevmiyor musunuz? Üzülmeyin, onları istediğiniz şekilde kişiselleştirebilirsiniz.)
