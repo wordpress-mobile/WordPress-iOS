@@ -6,6 +6,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
     private var durationView: SiteMediaVideoDurationView?
+    private var documentInfoView: SiteMediaDocumentInfoView?
     private var badgeView: SiteMediaCollectionCellBadgeView?
 
     private var viewModel: SiteMediaCollectionCellViewModel?
@@ -51,6 +52,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         placeholderView.alpha = 1
         badgeView?.isHidden = true
         durationView?.isHidden = true
+        documentInfoView?.isHidden = true
     }
 
     func configure(viewModel: SiteMediaCollectionCellViewModel) {
@@ -69,7 +71,10 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
                     self?.didLoadImage($0, for: mediaID)
                 }
             }
-        default:
+        case .document, .powerpoint, .audio:
+            getDocumentInfoView().configure(viewModel)
+            getDocumentInfoView().isHidden = false
+        @unknown default:
             break
         }
 
@@ -119,6 +124,23 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
     }
 
     // MARK: - Helpers
+
+    private func getDocumentInfoView() -> SiteMediaDocumentInfoView {
+        if let documentInfoView {
+            return documentInfoView
+        }
+        let documentInfoView = SiteMediaDocumentInfoView()
+        contentView.addSubview(documentInfoView)
+        documentInfoView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            documentInfoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
+            documentInfoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
+            documentInfoView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 4),
+            documentInfoView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -4)
+        ])
+        self.documentInfoView = documentInfoView
+        return documentInfoView
+    }
 
     private func getDurationView() -> SiteMediaVideoDurationView {
         if let durationView {

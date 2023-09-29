@@ -5,8 +5,9 @@ final class SiteMediaCollectionCellViewModel {
     @Published private(set) var overlayState: CircularProgressView.State?
     @Published private(set) var durationText: String?
     @Published var badgeText: String?
+    var filename: String? { media.filename }
     let mediaID: TaggedManagedObjectID<Media>
-    var mediaType: MediaType
+    let mediaType: MediaType
 
     private let media: Media
     private let service: MediaImageService
@@ -29,7 +30,7 @@ final class SiteMediaCollectionCellViewModel {
         self.service = service
         self.cache = cache
 
-        if media.mediaType == .video || media.mediaType == .audio {
+        if media.mediaType == .video {
             observations.append(media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
                 // Using `rounded()` to match the behavior of the Photos app
                 self?.durationText = makeString(forDuration: media.duration().rounded())

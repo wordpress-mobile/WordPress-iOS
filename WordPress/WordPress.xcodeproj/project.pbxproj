@@ -381,6 +381,8 @@
 		0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */; };
 		0C0453282AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
 		0C0453292AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
+		0C04532B2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */; };
+		0C04532C2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */; };
 		0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
@@ -6060,6 +6062,7 @@
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
 		0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCellBadgeView.swift; sourceTree = "<group>"; };
 		0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaVideoDurationView.swift; sourceTree = "<group>"; };
+		0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaDocumentInfoView.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaSelectionTitleView.swift; sourceTree = "<group>"; };
@@ -10118,6 +10121,7 @@
 				0CAE8EF52A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift */,
 				0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */,
 				0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */,
+				0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -22460,6 +22464,7 @@
 				FE76C5E0293A63A800573C92 /* UIApplication+AppAvailability.swift in Sources */,
 				9A341E5621997A340036662E /* BlogAuthor.swift in Sources */,
 				C7234A3A2832BA240045C63F /* QRLoginCoordinator.swift in Sources */,
+				0C04532B2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				F4D829702931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
@@ -24816,6 +24821,7 @@
 				FABB24482602FC2C00C8785C /* MyProfileViewController.swift in Sources */,
 				0C2C83FE2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */,
 				FAD7626529F1480E00C09583 /* DashboardActivityLogCardCell+ActivityPresenter.swift in Sources */,
+				0C04532C2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */,
 				3FE3D1FF26A6F56700F3CD10 /* Comment+Interface.swift in Sources */,
 				FABB24492602FC2C00C8785C /* CreateButtonActionSheet.swift in Sources */,
 				FABB244A2602FC2C00C8785C /* ReaderStreamViewController+Ghost.swift in Sources */,
