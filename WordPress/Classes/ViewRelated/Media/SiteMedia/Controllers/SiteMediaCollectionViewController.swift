@@ -260,6 +260,13 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
                 setSelect(false, for: media)
+
+                if let viewController = navigationController?.topViewController,
+                   viewController !== self,
+                    let detailsViewController = viewController as? MediaItemViewController,
+                   detailsViewController.media.objectID == media.objectID {
+                    navigationController?.popViewController(animated: true)
+                }
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
