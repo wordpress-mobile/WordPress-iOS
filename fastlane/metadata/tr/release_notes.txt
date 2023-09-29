@@ -1,0 +1,3 @@
+Bir URL'den bloklara ortam eklerken uyarıların görünme şeklini değiştirdik. Bu bizim için iyi bir şey.
+
+Ayrıca, blok tabanlı temalarda yer tutucu metin ile gerçek içerik arasındaki farkı anlamak da artık daha kolay.
