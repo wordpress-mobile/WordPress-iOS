@@ -3,6 +3,7 @@ import UIKit
 final class SiteMediaCollectionCellViewModel {
     var onImageLoaded: ((UIImage) -> Void)?
     @Published private(set) var overlayState: CircularProgressView.State?
+    @Published private(set) var durationText: String?
     @Published var badgeText: String?
     let mediaID: TaggedManagedObjectID<Media>
     var mediaType: MediaType
@@ -13,8 +14,7 @@ final class SiteMediaCollectionCellViewModel {
     private var isVisible = false
     private var isPrefetchingNeeded = false
     private var imageTask: Task<Void, Never>?
-    private var statusObservation: NSKeyValueObservation?
-    private var thumbnailObservation: NSKeyValueObservation?
+    private var observations: [NSKeyValueObservation] = []
 
     deinit {
         imageTask?.cancel()
@@ -29,16 +29,23 @@ final class SiteMediaCollectionCellViewModel {
         self.service = service
         self.cache = cache
 
-        statusObservation = media.observe(\.remoteStatusNumber, options: [.new]) { [weak self] media, _ in
-            self?.updateOverlayState()
+        if media.mediaType == .video || media.mediaType == .audio {
+            observations.append(media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
+                // Using `rounded()` to match the behavior of the Photos app
+                self?.durationText = makeString(forDuration: media.duration().rounded())
+            })
         }
+
+        observations.append(media.observe(\.remoteStatusNumber, options: [.new]) { [weak self] _, _ in
+            self?.updateOverlayState()
+        })
 
         // No sure why but `.initial` didn't work.
         self.updateOverlayState()
 
-        thumbnailObservation = media.observe(\.localURL, options: [.new]) { [weak self] media, _ in
+        observations.append(media.observe(\.localURL, options: [.new]) { [weak self] media, _ in
             self?.didUpdateLocalThumbnail()
-        }
+        })
     }
 
     // MARK: - View Lifecycle
@@ -122,7 +129,7 @@ final class SiteMediaCollectionCellViewModel {
         fetchThumbnailIfNeeded()
     }
 
-    // MARK: - Status
+    // MARK: - State
 
     private func updateOverlayState() {
         switch media.remoteStatus {
@@ -136,4 +143,25 @@ final class SiteMediaCollectionCellViewModel {
             break
         }
     }
+}
+
+// MARK: - Helpers (Duration Formatter)
+
+private func makeString(forDuration duration: TimeInterval) -> String? {
+    let hours = Int(duration / 3600)
+    if hours > 0 {
+        return longDurationFormatter.string(from: duration)
+    } else {
+        return shortDurationFormatter.string(from: duration)
+    }
+}
+
+private let longDurationFormatter = makeFormatter(units: [.hour, .minute, .second])
+private let shortDurationFormatter = makeFormatter(units: [.minute, .second])
+
+private func makeFormatter(units: NSCalendar.Unit) -> DateComponentsFormatter {
+    let formatter = DateComponentsFormatter()
+    formatter.zeroFormattingBehavior = .pad
+    formatter.allowedUnits = units
+    return formatter
 }

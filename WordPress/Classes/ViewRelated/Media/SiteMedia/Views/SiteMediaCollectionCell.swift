@@ -5,8 +5,10 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
-    private var viewModel: SiteMediaCollectionCellViewModel?
+    private var durationView: SiteMediaVideoDurationView?
     private var badgeView: SiteMediaCollectionCellBadgeView?
+
+    private var viewModel: SiteMediaCollectionCellViewModel?
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -48,6 +50,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         imageView.alpha = 0
         placeholderView.alpha = 1
         badgeView?.isHidden = true
+        durationView?.isHidden = true
     }
 
     func configure(viewModel: SiteMediaCollectionCellViewModel) {
@@ -90,20 +93,46 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
             }
         }.store(in: &cancellables)
 
+        viewModel.$durationText.sink { [weak self] text in
+            guard let self else { return }
+            if let text {
+                let durationView = self.getDurationView()
+                durationView.isHidden = false
+                durationView.textLabel.text = text
+            } else {
+                self.durationView?.isHidden = true
+            }
+        }.store(in: &cancellables)
+
         viewModel.onAppear()
     }
+
+    // MARK: - Thumbnails
 
     private func didLoadImage(_ image: UIImage, for mediaID: TaggedManagedObjectID<Media>) {
         assert(Thread.isMainThread)
 
         guard viewModel?.mediaID == mediaID else { return }
-
-        // TODO: Display an asset-specific placeholder on error
         imageView.image = image
-        UIView.animate(withDuration: 0.15, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction]) {
-            self.imageView.alpha = 1
-            self.placeholderView.alpha = 0
+        imageView.alpha = 1
+        placeholderView.alpha = 0
+    }
+
+    // MARK: - Helpers
+
+    private func getDurationView() -> SiteMediaVideoDurationView {
+        if let durationView {
+            return durationView
         }
+        let durationView = SiteMediaVideoDurationView()
+        contentView.addSubview(durationView)
+        durationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            durationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            durationView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
+        ])
+        self.durationView = durationView
+        return durationView
     }
 
     private func getBadgeView() -> SiteMediaCollectionCellBadgeView {
