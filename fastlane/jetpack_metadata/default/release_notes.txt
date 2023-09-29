@@ -1,8 +1,7 @@
-* [***] Lock Screen Widgets are now available on Jetpack. Quickly view your site stats without unlocking your phone. [#21535]
-* [*] Block editor: Fix the obscurred "Insert from URL" input for media blocks when using a device in landscape orientation. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6143]
-* [**] Block editor: Updated placeholder text colors for block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6182]
-* [**] Update the main site navigation on the My Site screen, making it easier to access the common site sections. The new shortcuts can be modified using the Personalize Home Tab screen. [21502](https://github.com/wordpress-mobile/WordPress-iOS/pull/21502)
-* [**] [internal] Refactor fetching one single media item. [#21567]
-* [**] [internal] Refactored how the total number of WordPress Media is fetched. [#21568]
-* [**] [internal] Refactor fetching metadata of VideoPress videos. [#21569]
+Lock screen widgets are now available on Jetpack so you can check your site stats without unlocking your phone. Just remember, with great power comes great efficiency. Or something like that.
 
+We changed the way alerts appear when you’re inserting media into blocks from a URL. So we’ve got that going for us, which is nice.
+
+It’s also easier to tell the difference between placeholder text and actual content in block-based themes.
+
+Finally, we updated the navigation in My Site so you can reach popular sections of the site faster. (Don’t love these shortcuts? Don’t worry, you can personalize them to your heart’s content.)
