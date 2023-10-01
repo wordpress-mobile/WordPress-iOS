@@ -198,6 +198,7 @@ platform :ios do
   desc 'Creates a new hotfix branch for the given `version:x.y.z`. The branch will be cut from the `x.y` tag.'
   lane :new_hotfix_release do |options|
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
+    hotfix_build_code = hotfix_build_code(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -210,7 +211,7 @@ platform :ios do
       New hotfix version: #{new_version}
 
       Current build code: #{current_build_code}
-      New build code: #{next_build_code}
+      New build code: #{hotfix_build_code}
 
       Branching from tag: #{previous_version}
 
@@ -236,7 +237,7 @@ platform :ios do
     UI.message 'Bumping hotfix version and build code...'
     PUBLIC_VERSION_FILE.write(
       version_short: new_version,
-      version_long: next_build_code
+      version_long: hotfix_build_code
     )
     UI.message "Done! New Release Version: #{current_release_version}. New Build Code: #{current_build_code}"
 
