@@ -160,7 +160,9 @@ end
 # Returns the build code of the app for the code freeze. It is the hotfix version name plus sets the build number to 0
 #
 def hotfix_build_code(release_version:)
-  BUILD_CODE_FORMATTER.build_code(version: release_version)
+  version = VERSION_FORMATTER.parse(release_version)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version:)
 end
 
 # Returns the next build code of the app
