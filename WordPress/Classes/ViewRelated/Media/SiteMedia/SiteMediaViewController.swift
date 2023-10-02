@@ -14,7 +14,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
 
