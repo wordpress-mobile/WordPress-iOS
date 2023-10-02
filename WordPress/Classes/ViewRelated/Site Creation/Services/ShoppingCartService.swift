@@ -1,7 +1,5 @@
 import Foundation
 
-/// A proxy for being able to use dependency injection for RegisterDomainDetailsViewModel
-/// especially for unittest mocking purposes
 protocol ShoppingCartServiceProtocol {
     func createSiteCreationShoppingCart(
         siteID: Int,
