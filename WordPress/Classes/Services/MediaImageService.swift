@@ -100,24 +100,17 @@ final class MediaImageService: NSObject {
     /// Generates a thumbnail from a local asset and saves it in cache.
     @MainActor
     private func localThumbnail(for media: Media, size: ThumbnailSize) async -> UIImage? {
-        let exporter = MediaThumbnailExporter()
-        exporter.mediaDirectoryType = .cache
-        exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
-        exporter.options.scale = 1 // In pixels
-
-        guard let sourceURL = media.absoluteLocalURL,
-              exporter.supportsThumbnailExport(forFile: sourceURL) else {
+        guard let sourceURL = media.absoluteLocalURL else {
             return nil
         }
 
-        guard let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL) else {
+        let exporter = makeThumbnailExporter(for: media, size: size)
+        guard exporter.supportsThumbnailExport(forFile: sourceURL),
+              let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
+              let image = try? await makeImage(from: export.url)
+        else {
             return nil
         }
-
-        let image = try? await Task.detached {
-            let data = try Data(contentsOf: export.url)
-            return try makeImage(from: data)
-        }.value
 
         // The order is important to ensure `export.url` still exists when creating an image
         saveThumbnail(for: media.objectID, size: size) { targetURL in
@@ -127,6 +120,14 @@ final class MediaImageService: NSObject {
         return image
     }
 
+    private func makeThumbnailExporter(for media: Media, size: ThumbnailSize) -> MediaThumbnailExporter {
+        let exporter = MediaThumbnailExporter()
+        exporter.mediaDirectoryType = .cache
+        exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
+        exporter.options.scale = 1 // In pixels
+        return exporter
+    }
+
     // MARK: - Remote Thumbnail
 
     /// Downloads a remote thumbnail and saves it in cache.
@@ -134,6 +135,11 @@ final class MediaImageService: NSObject {
     private func remoteThumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
         let targetSize = MediaImageService.getThumbnailSize(for: media, size: size)
         guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize) else {
+            // Self-hosted WordPress sites don't have `remoteThumbnailURL`, so
+            // the app generates the thumbnail by itself.
+            if media.mediaType == .video {
+                return try await generateThumbnailForVideo(for: media, size: size)
+            }
             throw URLError(.badURL)
         }
 
@@ -153,6 +159,24 @@ final class MediaImageService: NSObject {
         }.value
         saveThumbnail(for: media.objectID, size: size) { targetURL in
             try data.write(to: targetURL)
+        }
+        return image
+    }
+
+    // MARK: - Thubmnail for Video
+
+    @MainActor
+    private func generateThumbnailForVideo(for media: Media, size: ThumbnailSize) async throws -> UIImage {
+        guard let videoURL = media.remoteURL.flatMap(URL.init) else {
+            throw URLError(.badURL)
+        }
+        let exporter = makeThumbnailExporter(for: media, size: size)
+        let (_, export) = try await exporter.exportThumbnail(forVideoURL: videoURL)
+        let image = try await makeImage(from: export.url)
+
+        // The order is important to ensure `export.url` exists when making an image
+        saveThumbnail(for: media.objectID, size: size) { targetURL in
+            try FileManager.default.moveItem(at: export.url, to: targetURL)
         }
         return image
     }
@@ -281,6 +305,13 @@ private extension Media {
 }
 
 // MARK: - Helpers (Decompression)
+
+private func makeImage(from fileURL: URL) async throws -> UIImage {
+    try await Task.detached {
+        let data = try Data(contentsOf: fileURL)
+        return try makeImage(from: data)
+    }.value
+}
 
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.

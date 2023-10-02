@@ -55,7 +55,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
     }
 
-    // MARK: - Remote Resources
+    // MARK: - Remote Resources (Images)
 
     func testSmallThumbnailForRemoteImage() async throws {
         // GIVEN
@@ -68,12 +68,63 @@ class MediaImageServiceTests: CoreDataTestCase {
         try mainContext.obtainPermanentIDs(for: [media])
 
         // GIVEN remote image is mocked and is resized based on the parameters
-        try mockRemoteImage(withResource: "test-image", fileExtension: "jpg")
+        try mockResizableImage(withResource: "test-image", fileExtension: "jpg")
 
         // WHEN
         let thumbnail = try await sut.thumbnail(for: media)
 
         // THEN a small thumbnail is created
+        XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+
+        // GIVEN local asset is deleted
+        sut.flush()
+
+        // WHEN
+        let cachedThumbnail = try await sut.thumbnail(for: media)
+
+        // THEN cached thumbnail is still available
+        XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+    }
+
+    // MARK: - Remote Resources (Videos)
+
+    func testSmallThumbnailForRemoteVideo() async throws {
+        // GIVEN
+        let media = Media(context: mainContext)
+        media.mediaType = .video
+        media.width = 1024
+        media.height = 680
+        media.remoteThumbnailURL = "https://example.files.wordpress.com/2023/09/video-thumbnail.jpg"
+        try mainContext.obtainPermanentIDs(for: [media])
+
+        // GIVEN remote image is mocked and is resized based on the parameters
+        try mockResponse(withResource: "test-image", fileExtension: "jpg")
+
+        // WHEN
+        let thumbnail = try await sut.thumbnail(for: media)
+
+        // THEN a thumbnail is downloaded using the remote URL as is
+        XCTAssertEqual(thumbnail.size, CGSize(width: 1024, height: 680))
+    }
+
+    // Videos on self-hosted WordPress sites don't have `remoteThumbnailURL`.
+    // The only possible way to display a thumbnail is to generate it from
+    // `remoteURL`.
+    func testSmallThumbnailForRemoteSelfHostedVideo() async throws {
+        // GIVEN
+        let videoURL = try XCTUnwrap(Bundle.test.url(forResource: "test-video-device-gps", withExtension: "m4v"))
+
+        let media = Media(context: mainContext)
+        media.mediaType = .video
+        media.width = 640
+        media.height = 360
+        media.remoteURL = videoURL.absoluteString
+        try mainContext.obtainPermanentIDs(for: [media])
+
+        // WHEN
+        let thumbnail = try await sut.thumbnail(for: media)
+
+        // THEN a thumbnail is downloaded using the remote URL as is
         XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
 
         // GIVEN local asset is deleted
@@ -138,7 +189,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         return mediaURL
     }
 
-    func mockRemoteImage(withResource name: String, fileExtension: String) throws {
+    func mockResizableImage(withResource name: String, fileExtension: String) throws {
         let sourceURL = try XCTUnwrap(Bundle.test.url(forResource: name, withExtension: fileExtension))
         let image = try XCTUnwrap(UIImage(data: try Data(contentsOf: sourceURL)))
 
@@ -156,6 +207,20 @@ class MediaImageServiceTests: CoreDataTestCase {
             let resizedImage = image.resizedImage(CGSize(width: width, height: height), interpolationQuality: .default)
             let responseData = resizedImage?.jpegData(compressionQuality: 0.8) ?? Data()
             return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
+        })
+    }
+
+    func mockResponse(withResource name: String, fileExtension: String, expectedURL: URL? = nil) throws {
+        let sourceURL = try XCTUnwrap(Bundle.test.url(forResource: name, withExtension: fileExtension))
+        let data = try Data(contentsOf: sourceURL)
+
+        stub(condition: { _ in
+            return true
+        }, response: { request in
+            guard expectedURL == nil || request.url == expectedURL else {
+                return HTTPStubsResponse(error: URLError(.unknown))
+            }
+            return HTTPStubsResponse(data: data, statusCode: 200, headers: nil)
         })
     }
 }
