@@ -2,7 +2,7 @@ import UIKit
 import AutomatticTracks
 import Sentry
 
-final class DomainPurchasingWebFlowController {
+final class SiteCreationPurchasingWebFlowController {
 
     // MARK: - Constants
 
@@ -20,14 +20,14 @@ final class DomainPurchasingWebFlowController {
     weak private var presentingViewController: UIViewController?
 
     /// The service that interacts with the Backend API.
-    private let shoppingCartService: RegisterDomainDetailsServiceProxyProtocol
+    private let shoppingCartService: ShoppingCartServiceProtocol
 
     /// Provides an API to capture errors.
     private let crashLogger: CrashLogging
 
     /// The domain purchasing web view can be presented from multiple sources.
     /// This property represents this source, and it's used mostly for analytics.
-    private let origin: DomainPurchaseWebViewViewOrigin?
+    private let origin: SiteCreationWebViewViewOrigin?
 
     // MARK: - Execution Variables
 
@@ -40,9 +40,9 @@ final class DomainPurchasingWebFlowController {
     // MARK: - Init
 
     init(viewController: UIViewController,
-         shoppingCartService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy(),
+         shoppingCartService: ShoppingCartServiceProtocol = ShoppingCartService(),
          crashLogger: CrashLogging = .main,
-         origin: DomainPurchaseWebViewViewOrigin? = nil) {
+         origin: SiteCreationWebViewViewOrigin? = nil) {
         self.presentingViewController = viewController
         self.shoppingCartService = shoppingCartService
         self.crashLogger = crashLogger
@@ -51,11 +51,11 @@ final class DomainPurchasingWebFlowController {
 
     // MARK: - API
 
-    func purchase(domain: FullyQuotedDomainSuggestion, site: Blog, completion: CompletionHandler? = nil) {
-        purchase(domain: domain.remoteSuggestion(), site: site, completion: completion)
+    func purchase(domain: FullyQuotedDomainSuggestion, planId: Int, site: Blog, completion: CompletionHandler? = nil) {
+        purchase(domain: domain.remoteSuggestion(), planId: planId, site: site, completion: completion)
     }
 
-    func purchase(domain: DomainSuggestion, site: Blog, completion: CompletionHandler? = nil) {
+    func purchase(domain: DomainSuggestion, planId: Int, site: Blog, completion: CompletionHandler? = nil) {
         let middleware = self.middleware(for: completion, domain: domain, site: site)
         guard let presentingViewController else {
             middleware(.failure(.internal("The presentingViewController is deallocated")))
@@ -65,7 +65,7 @@ final class DomainPurchasingWebFlowController {
             middleware(.failure(.invalidInput))
             return
         }
-        self.createCartAndPresentWebView(domain: domain, in: presentingViewController, completion: middleware)
+        self.createCartAndPresentWebView(domain: domain, planId: planId, in: presentingViewController, completion: middleware)
     }
 
     // MARK: - Private: Completion Middleware
@@ -86,7 +86,7 @@ final class DomainPurchasingWebFlowController {
     }
 
     /// Logs the error in case the domain purchasing resulted in a failure.
-    private func handleError(result: Result<String, DomainPurchasingError>, domain: DomainSuggestion, site: Blog) {
+    private func handleError(result: Result<String, SiteCreationPurchasingError>, domain: DomainSuggestion, site: Blog) {
         guard case let .failure(error) = result, !error.trusted else {
             return
         }
@@ -95,7 +95,7 @@ final class DomainPurchasingWebFlowController {
     }
 
     /// Tracks domain purchasing analytics when it completes.
-    private func trackCompletionEvents(result: Result<String, DomainPurchasingError>, domain: DomainSuggestion, site: Blog) {
+    private func trackCompletionEvents(result: Result<String, SiteCreationPurchasingError>, domain: DomainSuggestion, site: Blog) {
         guard case .success = result else {
             return
         }
@@ -104,11 +104,12 @@ final class DomainPurchasingWebFlowController {
 
     // MARK: - Private: Doman Purchasing
 
-    private func createCartAndPresentWebView(domain: Domain, in presentingViewController: UIViewController, completion: CompletionHandler? = nil) {
-        self.shoppingCartService.createPersistentDomainShoppingCart(
+    private func createCartAndPresentWebView(domain: Domain, planId: Int, in presentingViewController: UIViewController, completion: CompletionHandler? = nil) {
+        self.shoppingCartService.createSiteCreationShoppingCart(
             siteID: domain.siteID,
             domainSuggestion: domain.underlyingDomain,
             privacyProtectionEnabled: domain.supportsPrivacy,
+            planId: planId,
             success: { [weak self] _ in
                 self?.presentWebViewForCurrentSite(domain: domain, in: presentingViewController, completion: completion)
             }) { error in
@@ -126,7 +127,7 @@ final class DomainPurchasingWebFlowController {
         //
         // This was last checked by @diegoreymendez on 2021-09-22.
         //
-        var result: Result<String, DomainPurchasingError>?
+        var result: Result<String, SiteCreationPurchasingError>?
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: domain.hostURL,
             source: origin?.rawValue ?? ""
@@ -152,10 +153,10 @@ final class DomainPurchasingWebFlowController {
             if let presentedViewController = self.presentedViewController {
                 presentedViewController.setViewControllers([webViewController], animated: false)
             } else {
-                let navController = DomainPurchasingNavigationController(rootViewController: webViewController)
+                let navController = SiteCreationPurchasingNavigationController(rootViewController: webViewController)
                 navController.onDismiss = {
                     let result = result ?? .failure(.canceled)
-                    self.completeDomainPurchasing(result: result, completion: completion)
+                    self.completeSiteCreationPurchasing(result: result, completion: completion)
                 }
                 presentingViewController.present(navController, animated: true)
                 self.presentedViewController = navController
@@ -165,7 +166,7 @@ final class DomainPurchasingWebFlowController {
     }
 
     /// Calls the completion handler with the result and clean up observation properties.
-    private func completeDomainPurchasing(result: Result<String, DomainPurchasingError>, completion: CompletionHandler? = nil) {
+    private func completeSiteCreationPurchasing(result: Result<String, SiteCreationPurchasingError>, completion: CompletionHandler? = nil) {
         self.cleanupExecutionVariables()
         completion?(result)
     }
@@ -202,11 +203,11 @@ final class DomainPurchasingWebFlowController {
         _ newURL: URL,
         oldURL: URL?,
         domain: Domain,
-        completion: (Result<String, DomainPurchasingError>) -> Void
+        completion: (Result<String, SiteCreationPurchasingError>) -> Void
     ) {
         let canOpenNewURL = newURL.absoluteString.starts(with: Constants.checkoutWebAddress)
         guard canOpenNewURL else {
-            let error = DomainPurchasingError.unsupportedRedirect(fromURL: oldURL, toURL: newURL)
+            let error = SiteCreationPurchasingError.unsupportedRedirect(fromURL: oldURL, toURL: newURL)
             completion(.failure(error))
             return
         }
@@ -242,7 +243,7 @@ final class DomainPurchasingWebFlowController {
     }
 
     /// Metadata to attach when capturing errors.
-    private func userInfoForError(_ error: DomainPurchasingError, domain: DomainSuggestion, site: Blog) -> [String: Any] {
+    private func userInfoForError(_ error: SiteCreationPurchasingError, domain: DomainSuggestion, site: Blog) -> [String: Any] {
         var userInfo = userInfo(domain: domain, site: site)
         userInfo = userInfo.merging(error.errorUserInfo) { $1 }
         return userInfo
@@ -250,9 +251,9 @@ final class DomainPurchasingWebFlowController {
 
     // MARK: - Types
 
-    typealias CompletionHandler = (Result<String, DomainPurchasingError>) -> Void
+    typealias CompletionHandler = (Result<String, SiteCreationPurchasingError>) -> Void
 
-    enum DomainPurchasingError: LocalizedError {
+    enum SiteCreationPurchasingError: LocalizedError {
         case invalidInput
         case canceled
         case unsupportedRedirect(fromURL: URL?, toURL: URL)
@@ -281,7 +282,7 @@ final class DomainPurchasingWebFlowController {
 
 // MARK: - Analytics Helpers
 
-private extension DomainPurchasingWebFlowController {
+private extension SiteCreationPurchasingWebFlowController {
 
     func trackDomainCheckoutWebViewViewed(blog: Blog) {
         let properties = WPAnalytics.domainsProperties(for: blog, origin: origin)
@@ -296,14 +297,14 @@ private extension DomainPurchasingWebFlowController {
 
 // MARK: - Subtypes Extensions
 
-extension DomainPurchasingWebFlowController.Domain {
+extension SiteCreationPurchasingWebFlowController.Domain {
 
     init?(domain: DomainSuggestion, site: Blog) {
         guard let siteID = site.dotComID?.intValue,
               let homeURLString = site.homeURL,
               let homeURL = URL(string: homeURLString as String),
               let hostURLString = homeURL.host,
-              let hostURL = URL(string: DomainPurchasingWebFlowController.Constants.checkoutWebAddress + "/\(hostURLString)")
+              let hostURL = URL(string: SiteCreationPurchasingWebFlowController.Constants.checkoutWebAddress + "/\(hostURLString)")
         else {
             return nil
         }
@@ -315,7 +316,7 @@ extension DomainPurchasingWebFlowController.Domain {
     }
 }
 
-extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError, CustomDebugStringConvertible {
+extension SiteCreationPurchasingWebFlowController.SiteCreationPurchasingError: CustomNSError, CustomDebugStringConvertible {
 
     /// Untrusted errors should be monitored and requires our attention.
     var trusted: Bool {
@@ -382,7 +383,7 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
 ///
 /// This way, we guarantee that `onDismiss` will be called whether the screen was dismissed by tapping "X" button, using the swipe down gesture,
 /// or even if the system decided to dismiss the screen.
-private class DomainPurchasingNavigationController: UINavigationController {
+private class SiteCreationPurchasingNavigationController: UINavigationController {
 
     var onDismiss: (() -> Void)?
 

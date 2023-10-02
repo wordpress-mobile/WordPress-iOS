@@ -7,13 +7,13 @@ extension WPAnalytics {
         FeatureFlag.siteCreationDomainPurchasing.enabled
     }
 
-    static func domainsProperties(for blog: Blog, origin: DomainPurchaseWebViewViewOrigin? = .menu) -> [AnyHashable: Any] {
+    static func domainsProperties(for blog: Blog, origin: SiteCreationWebViewViewOrigin? = .menu) -> [AnyHashable: Any] {
         domainsProperties(usingCredit: blog.canRegisterDomainWithPaidPlan, origin: origin)
     }
 
     static func domainsProperties(
         usingCredit: Bool,
-        origin: DomainPurchaseWebViewViewOrigin?
+        origin: SiteCreationWebViewViewOrigin?
     ) -> [AnyHashable: Any] {
         var dict: [AnyHashable: Any] = ["using_credit": usingCredit.stringLiteral]
         if Self.domainPurchasingEnabled,
@@ -24,7 +24,7 @@ extension WPAnalytics {
     }
 }
 
-enum DomainPurchaseWebViewViewOrigin: String {
+enum SiteCreationWebViewViewOrigin: String {
     case siteCreation = "site_creation"
     case menu
 }
