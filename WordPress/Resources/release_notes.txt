@@ -1,3 +1,7 @@
-We changed the way alerts appear when you’re inserting media into blocks from a URL. So we’ve got that going for us, which is nice.
+* [*] Resolve the unresponsiveness of the compliance popover on iPhone SE devices when large fonts are enabled. [#21609]
+* [*] Block Editor: Prevent crash from invalid media URLs [https://github.com/WordPress/gutenberg/pull/54834]
+* [*] Fix an issue with contributors seeing pre-publishing popup and a wrong confirmation message after submitting a post for review [https://github.com/wordpress-mobile/WordPress-iOS/pull/21658]
+* [*] Block Editor: Limit inner blocks nesting depth to avoid call stack size exceeded crash [https://github.com/WordPress/gutenberg/pull/54382]
+* [*] Fix an issue with non-admins being able to see the plugin menu on the Atomic sites [https://github.com/wordpress-mobile/WordPress-iOS/pull/21657]
+* [**] Block Editor: Fallback to Twitter provider when embedding X URLs [https://github.com/WordPress/gutenberg/pull/54876]
 
-It’s also easier to tell the difference between placeholder text and actual content in block-based themes.
