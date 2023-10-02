@@ -170,11 +170,11 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
         success: @escaping (CartResponseProtocol) -> Void,
         failure: @escaping (Error) -> Void) {
 
-        transactionsServiceRemote.createTemporaryDomainShoppingCart(siteID: siteID,
-                                                                    domainSuggestion: domainSuggestion,
-                                                                    privacyProtectionEnabled: privacyProtectionEnabled,
-                                                                    success: success,
-                                                                    failure: failure)
+            transactionsServiceRemote.createShoppingCart(siteID: siteID,
+                                                         products: [.domain(domainSuggestion, privacyProtectionEnabled)],
+                                                         temporary: true,
+                                                         success: success,
+                                                         failure: failure)
     }
 
     func createPersistentDomainShoppingCart(siteID: Int,
@@ -182,12 +182,11 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                             privacyProtectionEnabled: Bool,
                                             success: @escaping (CartResponseProtocol) -> Void,
                                             failure: @escaping (Error) -> Void) {
-
-        transactionsServiceRemote.createPersistentDomainShoppingCart(siteID: siteID,
-                                                                     domainSuggestion: domainSuggestion,
-                                                                     privacyProtectionEnabled: privacyProtectionEnabled,
-                                                                     success: success,
-                                                                     failure: failure)
+        transactionsServiceRemote.createShoppingCart(siteID: siteID,
+                                                     products: [.domain(domainSuggestion, privacyProtectionEnabled)],
+                                                     temporary: false,
+                                                     success: success,
+                                                     failure: failure)
     }
 
     func redeemCartUsingCredits(cart: CartResponseProtocol,
