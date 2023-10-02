@@ -56,7 +56,7 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
 public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
-        if element.isHittable {
+        if element.exists {
             usleep(500000)
             break
         }
