@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.8 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */

@@ -1,0 +1,7 @@
+I widget della schermata di blocco sono ora disponibili su Jetpack così potrai verificare le statistiche del sito senza sbloccare il telefono. Ricorda solo che da una grande potenza deriva una grande efficienza. O qualcosa del genere.
+
+Abbiamo modificato il modo in cui vengono visualizzati gli avvisi quando inserisci elementi multimediali nei blocchi da un URL. Quindi ce l'abbiamo fatta, il che è un bene.
+
+È anche più semplice distinguere tra il testo del segnaposto e il contenuto effettivo presenti nei temi basati su blocchi.
+
+Infine, abbiamo aggiornato la navigazione in Il mio sito in modo tale da raggiungere più velocemente le sezioni più visitate del sito. Non ti piacciono queste scorciatoie? Non preoccuparti, puoi personalizzarle a tuo piacimento.

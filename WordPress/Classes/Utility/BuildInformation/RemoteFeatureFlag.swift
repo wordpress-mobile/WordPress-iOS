@@ -20,6 +20,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case contactSupportChatbot
     case jetpackSocialImprovements
     case domainManagement
+    case plansInSiteCreation
 
     var defaultValue: Bool {
         switch self {
@@ -58,6 +59,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
         case .domainManagement:
+            return false
+        case .plansInSiteCreation:
             return false
         }
     }
@@ -101,6 +104,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "jetpack_social_improvements_v1"
         case .domainManagement:
             return "domain_management"
+        case .plansInSiteCreation:
+            return "plans_in_site_creation"
         }
     }
 
@@ -142,6 +147,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Social Improvements v1"
         case .domainManagement:
             return "Domain Management"
+        case .plansInSiteCreation:
+            return "Plans in Site Creation"
         }
     }
 

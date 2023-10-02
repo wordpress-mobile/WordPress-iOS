@@ -1,0 +1,7 @@
+Widget kunci layar kini tersedia di Jetpack agar Anda dapat memeriksa statistik situs Anda tanpa membuka ponsel. Ingatlah bahwa keleluasaan selalu menyertai efisiensi. Atau kurang lebih demikian.
+
+Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
+
+Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.
+
+Akhirnya, kami memperbarui navigasi di Situs Saya agar Anda dapat menjangkau bagian populer pada situs dengan lebih cepat. (Tidak suka pintasan ini? Jangan khawatir, Anda dapat mempersonalisasikannya sesuka hati.)

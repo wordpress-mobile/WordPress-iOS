@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-19 15:54:08+0000 */
+/* Translation-Revision-Date: 2023-09-24 14:52:18+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.8 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -546,6 +546,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "新增任何主題";
 
 /* No comment provided by engineer. */
+"Add audio" = "新增音訊";
+
+/* No comment provided by engineer. */
 "Add blocks" = "新增區塊";
 
 /* No comment provided by engineer. */
@@ -553,6 +556,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "新增說明";
+
+/* No comment provided by engineer. */
+"Add image" = "新增圖片";
 
 /* No comment provided by engineer. */
 "Add image or video" = "新增圖片或視訊";
@@ -614,6 +620,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "新增標題";
+
+/* No comment provided by engineer. */
+"Add video" = "新增影片";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "新增網站功能";
@@ -1516,6 +1525,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "選擇網域";
+
+/* No comment provided by engineer. */
+"Choose a file" = "選擇檔案";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "選擇新的應用程式圖示";
@@ -10547,6 +10559,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "資訊卡可根據網站活動顯示不同內容。 我們正在開發更多資訊卡和控制功能。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "顯示或隱藏資訊卡";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "最近活動";
