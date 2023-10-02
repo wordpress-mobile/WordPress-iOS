@@ -33,13 +33,8 @@ class PostTests: XCTestCase {
             .closePostSettings()
             .post(action: .schedule)
 
-        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
-        if XCUIDevice.isPhone {
-            try MySiteScreen()
-                .goToMoreMenu()
-        }
-
-        try MySiteMoreMenuScreen()
+        try MySiteScreen()
+            .goToMoreMenu()
             .goToPostsScreen()
             .showOnly(.scheduled)
             .verifyPostExists(withTitle: postTitle)

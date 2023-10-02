@@ -10,10 +10,7 @@ class MainNavigationTests: XCTestCase {
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
 
-        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
-        if XCUIDevice.isPhone {
-            try MySiteScreen().goToMoreMenu()
-        }
+        try MySiteScreen().goToMoreMenu()
     }
 
     override func tearDownWithError() throws {

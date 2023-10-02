@@ -145,8 +145,14 @@ public class MySiteScreen: ScreenObject {
         return try ActionSheetComponent()
     }
 
-    public func goToMoreMenu() throws {
-        moreMenuButton.tap()
+    @discardableResult
+    public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
+        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
+        if XCUIDevice.isPhone {
+            moreMenuButton.tap()
+        }
+
+        return try MySiteMoreMenuScreen()
     }
 
     public func getSiteTitle() -> String {
