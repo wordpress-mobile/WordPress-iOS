@@ -171,7 +171,7 @@ platform :ios do
 
     # Bump the build code
     UI.message 'Bumping build code...'
-    Fastlane::Helper::GitHelper.ensure_on_branch!('release')
+    ensure_git_branch(branch: '^release/') # Match branch names that begin with `release/`
     PUBLIC_VERSION_FILE.write(version_long: next_build_code)
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.message "Done! New Build Code: #{current_build_code}"
@@ -291,7 +291,7 @@ platform :ios do
 
     # Bump the build code
     UI.message 'Bumping build code...'
-    Fastlane::Helper::GitHelper.ensure_on_branch!('release')
+    ensure_git_branch(branch: '^release/') # Match branch names that begin with `release/`
     PUBLIC_VERSION_FILE.write(version_long: next_build_code)
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.message "Done! New Build Code: #{current_build_code}"
