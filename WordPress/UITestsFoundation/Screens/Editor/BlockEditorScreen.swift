@@ -297,8 +297,8 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func openPostSettings() throws -> EditorPostSettings {
-        moreButton.tap()
-        postSettingsButton.tap()
+        waitAndTap(moreButton)
+        waitAndTap(postSettingsButton)
 
         return try EditorPostSettings()
     }
