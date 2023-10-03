@@ -33,7 +33,7 @@ platform :ios do
       • New release version and build code: #{next_release_version} (#{code_freeze_build_code}).
 
       • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code})
-      • New internal release version and build code: #{next_release_version} (#{next_internal_build_code})
+      • New internal release version and build code: #{next_release_version} (#{code_freeze_internal_build_code})
 
       Do you want to continue?
 
