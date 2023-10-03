@@ -11,10 +11,13 @@ final class SiteMediaCollectionCellViewModel {
 
     private let media: Media
     private let service: MediaImageService
+    private let coordinator: MediaCoordinator
     private let cache: MemoryCache
+
     private var isVisible = false
     private var isPrefetchingNeeded = false
     private var imageTask: Task<Void, Never>?
+    private var progressObserver: NSKeyValueObservation?
     private var observations: [NSKeyValueObservation] = []
 
     deinit {
@@ -23,11 +26,13 @@ final class SiteMediaCollectionCellViewModel {
 
     init(media: Media,
          service: MediaImageService = .shared,
+         coordinator: MediaCoordinator = .shared,
          cache: MemoryCache = .shared) {
         self.mediaID = TaggedManagedObjectID(media)
         self.media = media
         self.mediaType = media.mediaType
         self.service = service
+        self.coordinator = coordinator
         self.cache = cache
 
         if media.mediaType == .video {
@@ -135,13 +140,32 @@ final class SiteMediaCollectionCellViewModel {
     private func updateOverlayState() {
         switch media.remoteStatus {
         case .pushing, .processing:
-            self.overlayState = .indeterminate
+            if let progress = coordinator.progress(for: media) {
+                progressObserver = progress.observe(\Progress.fractionCompleted, options: [.initial, .new]) { [weak self] progress, _ in
+                    self?.didUpdateProgress(progress)
+                }
+            } else {
+                overlayState = .indeterminate
+            }
         case .failed:
-            self.overlayState = .retry
+            overlayState = .retry
         case .sync:
-            self.overlayState = nil
+            overlayState = nil
         default:
             break
+        }
+    }
+
+    private func didUpdateProgress(_ progress: Progress) {
+        guard media.remoteStatus == .processing || media.remoteStatus == .pushing else { return }
+
+        // It takes a second or two (or more, depending on the file size) to
+            // process the uploaded file after the progress stop reporting updates,
+            // so the app switches to the indeterminate progress indicator.
+        if progress.fractionCompleted > 0.99 {
+            overlayState = .indeterminate
+        } else {
+            overlayState = .progress(progress.fractionCompleted * 0.9)
         }
     }
 
