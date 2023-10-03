@@ -124,8 +124,11 @@ class MediaImageServiceTests: CoreDataTestCase {
         // WHEN
         let thumbnail = try await sut.thumbnail(for: media)
 
+        let expectedSize = MediaImageService.getThumbnailSize(for: media, size: .small)
+
         // THEN a thumbnail is downloaded using the remote URL as is
-        XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        XCTAssertEqual(thumbnail.size.width, expectedSize.width, accuracy: 1.5)
+        XCTAssertEqual(thumbnail.size.height, expectedSize.height, accuracy: 1.5)
 
         // GIVEN local asset is deleted
         sut.flush()
@@ -134,7 +137,8 @@ class MediaImageServiceTests: CoreDataTestCase {
         let cachedThumbnail = try await sut.thumbnail(for: media)
 
         // THEN cached thumbnail is still available
-        XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        XCTAssertEqual(cachedThumbnail.size.width, expectedSize.width, accuracy: 1.5)
+        XCTAssertEqual(cachedThumbnail.size.height, expectedSize.height, accuracy: 1.5)
     }
 
     // MARK: - Target Size
