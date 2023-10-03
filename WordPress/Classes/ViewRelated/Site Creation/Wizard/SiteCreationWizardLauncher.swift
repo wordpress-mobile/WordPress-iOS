@@ -10,6 +10,7 @@ final class SiteCreationWizardLauncher {
         .intent,
         .design,
         .address,
+        .plan,
         .siteAssembly
     ]
 
@@ -43,6 +44,8 @@ final class SiteCreationWizardLauncher {
         case .address:
             let addressService = DomainsServiceAdapter(coreDataStack: ContextManager.shared)
             return WebAddressStep(creator: self.creator, service: addressService)
+        case .plan:
+            return PlanStep(creator: self.creator)
         case .design:
             // we call dropLast to remove .siteAssembly
             let isLastStep = steps.dropLast().last == .design
