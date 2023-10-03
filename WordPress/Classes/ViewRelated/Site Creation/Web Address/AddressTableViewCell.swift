@@ -127,7 +127,11 @@ final class AddressTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         [dotView, checkmarkImageView].forEach { view in
-            view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
+            if traitCollection.layoutDirection == .leftToRight {
+                view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
+            } else {
+                view.center = CGPoint(x: contentView.frame.width - Appearance.contentMargins.leading / 2, y: bounds.midY)
+            }
         }
     }
 
