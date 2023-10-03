@@ -23,6 +23,8 @@ class ReaderDetailNewHeaderViewHost: UIView {
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
+    private let isLoggedIn: Bool
+
     // TODO: Populate this with values from the ReaderPost.
     private lazy var viewModel: ReaderDetailHeaderViewModel = {
         $0.topicDelegate = self
@@ -34,7 +36,9 @@ class ReaderDetailNewHeaderViewHost: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init() {
+    init(isLoggedIn: Bool) {
+        self.isLoggedIn = isLoggedIn
+
         super.init(frame: .zero)
         setupView()
     }
@@ -46,13 +50,20 @@ class ReaderDetailNewHeaderViewHost: UIView {
             guard let swiftUIView = self?.subviews.first else {
                 return
             }
-            swiftUIView.invalidateIntrinsicContentSize()
-            self?.layoutIfNeeded()
+            self?.refreshContainerLayout()
         }
 
         let view = UIView.embedSwiftUIView(headerView)
         addSubview(view)
         pinSubviewToAllEdges(view)
+    }
+
+    func refreshContainerLayout() {
+        guard let swiftUIView = subviews.first else {
+            return
+        }
+        swiftUIView.invalidateIntrinsicContentSize()
+        layoutIfNeeded()
     }
 }
 
@@ -60,7 +71,9 @@ class ReaderDetailNewHeaderViewHost: UIView {
 
 extension ReaderDetailNewHeaderViewHost: ReaderDetailHeader {
     func configure(for post: ReaderPost) {
-        // TODO: Check if it's possible to move this to `init`.
+        viewModel.configure(with: TaggedManagedObjectID(post),
+                            isLoggedIn: isLoggedIn,
+                            completion: refreshContainerLayout)
     }
 
     func refreshFollowButton() {
@@ -82,22 +95,63 @@ extension ReaderDetailNewHeaderViewHost: ReaderTopicCollectionViewCoordinatorDel
 
 // MARK: - SwiftUI View Model
 
-// TODO: Hook with real data
 class ReaderDetailHeaderViewModel: ObservableObject {
+    private let coreDataStack: CoreDataStackSwift
     weak var headerDelegate: ReaderDetailHeaderViewDelegate?
     weak var topicDelegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
+    // Follow/Unfollow states
     @Published var isFollowingSite = false
-    @Published var showsFollowButton = true
+    @Published var showsFollowButton = false
     @Published var isFollowButtonInteractive = true
 
-    let siteIconURL: URL? = URL(string: "https://cyclingmole.com/wp-content/uploads/2021/11/cropped-favicon-1.jpg")
-    let authorAvatarURL: URL? = URL(string: "https://2.gravatar.com/avatar/2fdc6c9e9d38a9b422210e1728a677c8466d101518d20b81490db476f59b08cf?s=96&d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D96&r=G")
-    let authorName: String = "Penelope Greenway"
-    let relativePostTime: String = "1h ago"
-    let siteName: String = "Nature's Canvas"
-    let postTitle: String = "Untamed Beauty: Discovering the Wonders of the Wild"
-    let tags: [String] = ["daily prompt", "travel", "music", "photography", "shadow dancing", "ultimate gifts"]
+    @Published var siteIconURL: URL? = nil
+    @Published var authorAvatarURL: URL? = nil
+    @Published var authorName = String()
+    @Published var relativePostTime = String()
+    @Published var siteName = String()
+    @Published var postTitle: String? = nil // post title can be empty.
+    @Published var tags: [String] = []
+
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+        self.coreDataStack = coreDataStack
+    }
+
+    func configure(with objectID: TaggedManagedObjectID<ReaderPost>,
+                   isLoggedIn: Bool,
+                   completion: (() -> Void)?) {
+        coreDataStack.performQuery { [weak self] context -> Void in
+            guard let self,
+                  let post = try? context.existingObject(with: objectID) else {
+                return
+            }
+
+            self.showsFollowButton = isLoggedIn
+            self.isFollowingSite = post.isFollowing
+
+            self.siteIconURL = post.siteIconForDisplay(ofSize: Int(ReaderDetailNewHeaderView.Constants.siteIconLength))
+            self.authorAvatarURL = post.avatarURLForDisplay() ?? nil
+
+            if let authorName = post.authorForDisplay(), !authorName.isEmpty {
+                self.authorName = authorName
+            }
+
+            if let relativePostTime = post.dateForDisplay()?.toMediumString() {
+                self.relativePostTime = relativePostTime
+            }
+
+            if let siteName = post.blogNameForDisplay(), !siteName.isEmpty {
+                self.siteName = siteName
+            }
+
+            self.postTitle = post.titleForDisplay() ?? nil
+            self.tags = post.tagsForDisplay() ?? []
+        }
+
+        DispatchQueue.main.async {
+            completion?()
+        }
+    }
 
     func didTapAuthorSection() {
         headerDelegate?.didTapBlogName()
@@ -135,11 +189,13 @@ struct ReaderDetailNewHeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             headerRow
-            Text(viewModel.postTitle)
-                .font(.title)
-                .fontWeight(.bold)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+            if let postTitle = viewModel.postTitle {
+                Text(postTitle)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+            }
             if !viewModel.tags.isEmpty {
                 tagsView
             }
@@ -274,7 +330,7 @@ struct ReaderDetailNewHeaderView: View {
 
 // MARK: Private Helpers
 
-private extension ReaderDetailNewHeaderView {
+fileprivate extension ReaderDetailNewHeaderView {
 
     struct Constants {
         static let siteIconLength: CGFloat = 40.0
