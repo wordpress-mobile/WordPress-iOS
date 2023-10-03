@@ -33,5 +33,6 @@ struct HomeWidgetAllTime: Widget {
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)
         .description(LocalizableStrings.allTimePreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
+        .contentMarginsDisabled() /// Disabling additional iOS17 margins for widgets
     }
 }

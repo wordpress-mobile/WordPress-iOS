@@ -53,5 +53,6 @@ struct HomeWidgetThisWeek: Widget {
         .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
         .description(LocalizableStrings.thisWeekPreviewDescription)
         .supportedFamilies([.systemMedium, .systemLarge])
+        .contentMarginsDisabled() /// Disabling additional iOS17 margins for widgets
     }
 }
