@@ -48,6 +48,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell {
         viewModel?.onDisappear()
         viewModel = nil
 
+        imageView.prepareForReuse()
         imageView.image = nil
         imageView.alpha = 0
         placeholderView.alpha = 1
