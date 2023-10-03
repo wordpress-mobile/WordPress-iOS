@@ -28,6 +28,7 @@ final class SupportChatBotViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
         webView.configuration.userContentController.add(self, name: Constants.supportCallback)
         webView.configuration.userContentController.add(self, name: Constants.errorCallback)
     }

@@ -57,7 +57,7 @@ final class SiteCreator {
 
     /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
     var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
     /// Flag indicating whether the domain checkout flow should appear or not.
