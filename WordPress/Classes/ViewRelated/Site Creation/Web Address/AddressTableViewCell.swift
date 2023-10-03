@@ -22,7 +22,7 @@ final class AddressTableViewCell: UITableViewCell {
         return label
     }()
 
-    private let tagsLabel: UILabel = {
+    private let leadingLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.tagFont
@@ -52,7 +52,7 @@ final class AddressTableViewCell: UITableViewCell {
         return view
     }()
 
-    private let costLabel: UILabel = {
+    private let trailingLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.domainFont
@@ -83,27 +83,27 @@ final class AddressTableViewCell: UITableViewCell {
             comment: "Accessibility hint for a domain in the Site Creation domains list."
         )
         if domainPurchasingEnabled {
-            self.accessibilityElements = [domainLabel, tagsLabel, costLabel]
+            self.accessibilityElements = [domainLabel, leadingLabel, trailingLabel]
         } else {
             self.selectedBackgroundView?.backgroundColor = .clear
         }
     }
 
     private func setupSubviews() {
-        let domainAndTag = Self.stackedViews([domainLabel, tagsLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
-        let main = Self.stackedViews([domainAndTag, costLabel], axis: .horizontal, alignment: .center, distribution: .fill, spacing: 4)
-        tagsLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        tagsLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        let domainAndTag = Self.stackedViews([domainLabel, leadingLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
+        let main = Self.stackedViews([domainAndTag, trailingLabel], axis: .horizontal, alignment: .center, distribution: .fill, spacing: 4)
         domainLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         domainLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        costLabel.setContentHuggingPriority(.required, for: .horizontal)
-        costLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        leadingLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        leadingLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        trailingLabel.setContentHuggingPriority(.required, for: .horizontal)
+        trailingLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         main.translatesAutoresizingMaskIntoConstraints = false
         main.isLayoutMarginsRelativeArrangement = true
         main.directionalLayoutMargins = Appearance.contentMargins
         self.contentView.addSubview(main)
         self.contentView.pinSubviewToAllEdges(main)
-        self.updatePriceLabelTextAlignment()
+        self.updateTrailingLabelTextAlignment()
         self.contentView.addSubview(dotView)
         self.contentView.addSubview(checkmarkImageView)
         self.selectedBackgroundView = {
@@ -127,7 +127,7 @@ final class AddressTableViewCell: UITableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.layoutDirection != previousTraitCollection?.layoutDirection {
-            self.updatePriceLabelTextAlignment()
+            self.updateTrailingLabelTextAlignment()
         }
     }
 
@@ -136,26 +136,26 @@ final class AddressTableViewCell: UITableViewCell {
     /// This is the new update method and it's called when `domainPurchasing` feature flag is enabled.
     func update(with viewModel: ViewModel) {
         self.domainLabel.text = viewModel.domain
-        self.tagsLabel.attributedText = Self.tagsAttributedString(tags: viewModel.tags, cost: viewModel.cost)
-        self.costLabel.attributedText = Self.costAttributedString(cost: viewModel.cost)
+        self.leadingLabel.attributedText = Self.leadingAttributedString(tags: viewModel.tags, cost: viewModel.cost)
+        self.trailingLabel.attributedText = Self.trailingAttributedString(cost: viewModel.cost)
         self.dotView.backgroundColor = Appearance.dotColor(viewModel.tags.first)
     }
 
-    /// Updates the `costLabel` text alignment.
-    private func updatePriceLabelTextAlignment() {
+    /// Updates the `trailingLabel` text alignment.
+    private func updateTrailingLabelTextAlignment() {
         switch traitCollection.layoutDirection {
         case .rightToLeft:
             // swiftlint:disable:next natural_text_alignment
-            self.costLabel.textAlignment = .left
+            self.trailingLabel.textAlignment = .left
         default:
             // swiftlint:disable:next inverse_text_alignment
-            self.costLabel.textAlignment = .right
+            self.trailingLabel.textAlignment = .right
         }
     }
 
     // MARK: - Helpers
 
-    private static func tagsAttributedString(tags: [ViewModel.Tag], cost: ViewModel.Cost) -> NSAttributedString? {
+    private static func leadingAttributedString(tags: [ViewModel.Tag], cost: ViewModel.Cost) -> NSAttributedString? {
         let attributedString = NSMutableAttributedString()
         for (index, tag) in tags.enumerated() {
             let attributes: [NSAttributedString.Key: Any] = [
@@ -173,7 +173,6 @@ final class AddressTableViewCell: UITableViewCell {
             ]
 
             let newline = attributedString.length > 0 ? "\n" : ""
-
             attributedString.append(.init(string: "\(newline)\(ViewModel.Strings.freeWithPaidPlan)", attributes: firstYearAttributes))
             return attributedString
         default:
@@ -183,7 +182,7 @@ final class AddressTableViewCell: UITableViewCell {
         return attributedString
     }
 
-    private static func costAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
+    private static func trailingAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
         switch cost {
         case .free:
             let attributes: [NSAttributedString.Key: Any] = [
