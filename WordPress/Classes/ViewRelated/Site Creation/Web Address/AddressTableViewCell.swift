@@ -18,6 +18,7 @@ final class AddressTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.domainFont
         label.textColor = Appearance.domainTextColor
+        label.numberOfLines = 2
         return label
     }()
 
@@ -25,6 +26,8 @@ final class AddressTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.tagFont
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
@@ -54,7 +57,7 @@ final class AddressTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.domainFont
         label.textColor = Appearance.domainTextColor
-        label.numberOfLines = 3
+        label.numberOfLines = 2
         return label
     }()
 
@@ -88,7 +91,13 @@ final class AddressTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         let domainAndTag = Self.stackedViews([domainLabel, tagsLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
-        let main = Self.stackedViews([domainAndTag, costLabel], axis: .horizontal, alignment: .center, distribution: .equalCentering, spacing: 0)
+        let main = Self.stackedViews([domainAndTag, costLabel], axis: .horizontal, alignment: .center, distribution: .fill, spacing: 4)
+        tagsLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        tagsLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        domainLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        domainLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        costLabel.setContentHuggingPriority(.required, for: .horizontal)
+        costLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         main.translatesAutoresizingMaskIntoConstraints = false
         main.isLayoutMarginsRelativeArrangement = true
         main.directionalLayoutMargins = Appearance.contentMargins
@@ -102,7 +111,6 @@ final class AddressTableViewCell: UITableViewCell {
             view.backgroundColor = UIColor(light: .secondarySystemBackground, dark: .tertiarySystemBackground)
             return view
         }()
-        costLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
     }
 
     // MARK: - Layout
@@ -128,8 +136,7 @@ final class AddressTableViewCell: UITableViewCell {
     /// This is the new update method and it's called when `domainPurchasing` feature flag is enabled.
     func update(with viewModel: ViewModel) {
         self.domainLabel.text = viewModel.domain
-        self.tagsLabel.attributedText = Self.tagsAttributedString(tags: viewModel.tags)
-        self.tagsLabel.isHidden = viewModel.tags.isEmpty
+        self.tagsLabel.attributedText = Self.tagsAttributedString(tags: viewModel.tags, cost: viewModel.cost)
         self.costLabel.attributedText = Self.costAttributedString(cost: viewModel.cost)
         self.dotView.backgroundColor = Appearance.dotColor(viewModel.tags.first)
     }
@@ -148,10 +155,7 @@ final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Helpers
 
-    private static func tagsAttributedString(tags: [ViewModel.Tag]) -> NSAttributedString? {
-        guard !tags.isEmpty else {
-            return nil
-        }
+    private static func tagsAttributedString(tags: [ViewModel.Tag], cost: ViewModel.Cost) -> NSAttributedString? {
         let attributedString = NSMutableAttributedString()
         for (index, tag) in tags.enumerated() {
             let attributes: [NSAttributedString.Key: Any] = [
@@ -160,6 +164,22 @@ final class AddressTableViewCell: UITableViewCell {
             let string = index == 0 ? tag.localizedString : "\n\(tag.localizedString)"
             attributedString.append(.init(string: string, attributes: attributes))
         }
+
+        switch cost {
+        case .freeWithPaidPlan:
+            let firstYearAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: Appearance.saleCostTextColor,
+                .font: Appearance.smallCostFont
+            ]
+
+            let newline = attributedString.length > 0 ? "\n" : ""
+
+            attributedString.append(.init(string: "\(newline)\(ViewModel.Strings.freeWithPaidPlan)", attributes: firstYearAttributes))
+            return attributedString
+        default:
+            break
+        }
+
         return attributedString
     }
 
@@ -201,15 +221,10 @@ final class AddressTableViewCell: UITableViewCell {
         case .freeWithPaidPlan(let cost):
             let costAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.secondaryLabel,
-                .font: Appearance.smallCostFont,
+                .font: Appearance.regularCostFont,
                 .strikethroughStyle: NSUnderlineStyle.single.rawValue
             ]
-            let firstYearAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: Appearance.saleCostTextColor,
-                .font: Appearance.smallCostFont
-            ]
             let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
-            attributedString.append(.init(string: "\n\(ViewModel.Strings.freeWithPaidPlan)", attributes: firstYearAttributes))
             return attributedString
         }
     }
