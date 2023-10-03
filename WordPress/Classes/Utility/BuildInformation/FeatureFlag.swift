@@ -8,7 +8,6 @@ enum FeatureFlag: Int, CaseIterable {
     case siteIconCreator
     case statsNewInsights
     case betaSiteDesigns
-    case siteCreationDomainPurchasing
     case personalizeHomeTab
     case commentModerationUpdate
     case compliancePopover
@@ -35,8 +34,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .statsNewInsights:
             return AppConfiguration.statsRevampV2Enabled
         case .betaSiteDesigns:
-            return false
-        case .siteCreationDomainPurchasing:
             return false
         case .personalizeHomeTab:
             return AppConfiguration.isJetpack
@@ -86,8 +83,6 @@ extension FeatureFlag {
             return "New Cards for Stats Insights"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
-        case .siteCreationDomainPurchasing:
-            return "Site Creation Domain Purchasing"
         case .personalizeHomeTab:
             return "Personalize Home Tab"
         case .commentModerationUpdate:

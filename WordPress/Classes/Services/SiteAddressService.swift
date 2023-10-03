@@ -53,7 +53,7 @@ final class DomainsServiceAdapter: SiteAddressService {
 
     /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
     private var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
     /**

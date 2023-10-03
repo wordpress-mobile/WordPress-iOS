@@ -200,6 +200,13 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - My Sites
 
+    func showMe() {
+        guard let mySiteViewController = navigationController.topViewController as? MySiteViewController else {
+            return
+        }
+        mySiteViewController.showBlogDetailsSubsection(.me)
+    }
+
     func showPages(for blog: Blog) {
         showBlogDetails(for: blog, then: .pages)
     }

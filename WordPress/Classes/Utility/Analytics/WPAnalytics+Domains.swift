@@ -4,7 +4,7 @@ extension WPAnalytics {
 
     /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
     private static var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
     static func domainsProperties(for blog: Blog, origin: SiteCreationWebViewViewOrigin? = .menu) -> [AnyHashable: Any] {
