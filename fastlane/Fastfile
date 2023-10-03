@@ -109,7 +109,7 @@ end
 #
 def current_internal_release_version
   # Read the current release version from the .xcconfig file and parse it into an AppVersion object
-  current_version = VERSION_FORMATTER.parse(INTERNAL_CONFIG_FILE.read_release_version)
+  current_version = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
   # Return the formatted release version
   VERSION_FORMATTER.release_version(current_version)
 end
@@ -153,7 +153,7 @@ def code_freeze_build_code
   # Read the current build code from the .xcconfig file and parse it into an AppVersion object
   # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
   # calculator can be used to calculate the next four-part version
-  current_release_version = VERSION_FORMATTER.parse(INTERNAL_CONFIG_FILE.read_release_version)
+  current_release_version = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
   # Calculate the next release version, which will be used as the basis of the new build code
   code_freeze_build_code = VERSION_CALCULATOR.next_release_version(version: current_release_version)
   # Return the formatted build code
