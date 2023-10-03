@@ -143,15 +143,18 @@ final class MediaImageService: NSObject {
         guard !Task.isCancelled else {
             throw CancellationError()
         }
-        let (data, _) = try await session.data(for: request)
-
+        let (data, response) = try await session.data(for: request)
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+              (200..<400).contains(statusCode) else {
+            throw URLError(.unknown)
+        }
+        let image = try await Task.detached {
+            try makeImage(from: data)
+        }.value
         saveThumbnail(for: media.objectID, size: size) { targetURL in
             try data.write(to: targetURL)
         }
-
-        return try await Task.detached {
-            try makeImage(from: data)
-        }.value
+        return image
     }
 
     // MARK: - Stubs
