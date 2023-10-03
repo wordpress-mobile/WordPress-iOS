@@ -237,7 +237,7 @@ platform :ios do
       • New release version and build code: #{new_version} (#{hotfix_build_code}).
 
       • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code}).
-      • New internal release version and build code: #{new_version} (#{internal_hotfix_build_code}).
+      • New internal release version and build code: #{new_version} (#{internal_hotfix_build_code(release_version: new_version)}).
 
       Branching from tag: #{previous_version}
 
