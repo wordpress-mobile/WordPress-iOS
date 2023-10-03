@@ -137,7 +137,10 @@ final class MediaImageService: NSObject {
             throw URLError(.badURL)
         }
 
-        let host = MediaHost(with: media.blog)
+        let blogID = TaggedManagedObjectID(media.blog)
+        let host = try await coreDataStack.performQuery { context in
+            MediaHost(with: try context.existingObject(with: blogID))
+        }
         let request = try await MediaRequestAuthenticator()
             .authenticatedRequest(for: imageURL, host: host)
         guard !Task.isCancelled else {
