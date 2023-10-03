@@ -273,6 +273,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion], _ invalidQuery: Bool) {
+        let data = sortFreeAndPaidSuggestions(data)
+
         setAddressHintVisibility(isHidden: true)
         let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
@@ -512,6 +514,34 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                            comment: "Suggested domains")
         static let noMatch: String = NSLocalizedString("This domain is unavailable",
                                                        comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
+    }
+}
+
+// MARK: - Sorting
+
+private extension WebAddressWizardContent {
+    // Mimics the sorting on the web - two top domains, one free domain, and other domains
+    private func sortFreeAndPaidSuggestions(_ suggestions: [DomainSuggestion]) -> [DomainSuggestion] {
+        var topDomains: [DomainSuggestion] = []
+        var freeDomains: [DomainSuggestion] = []
+        var otherDomains: [DomainSuggestion] = []
+
+        for i in 0..<suggestions.count {
+            let suggestion = suggestions[i]
+            if freeDomains.isEmpty && suggestion.isFree {
+                freeDomains.append(suggestion)
+                continue
+            }
+
+            if topDomains.count < 2 && !suggestion.isFree {
+                topDomains.append(suggestion)
+                continue
+            }
+
+            otherDomains.append(suggestion)
+        }
+
+        return topDomains + freeDomains + otherDomains
     }
 }
 
