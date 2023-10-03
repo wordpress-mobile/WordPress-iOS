@@ -9,6 +9,17 @@ final class AddressTableViewCell: UITableViewCell {
         RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
+    override var accessibilityLabel: String? {
+        get {
+            return [domainLabel.text,
+                    trailingLabel.text,
+                    leadingLabel.text]
+                .compactMap { $0 }
+                .joined(separator: ".\n")
+        }
+        set {}
+    }
+
     // MARK: - Views
 
     private var borders = [UIView]()
@@ -82,9 +93,7 @@ final class AddressTableViewCell: UITableViewCell {
             "Selects this domain to use for your site.",
             comment: "Accessibility hint for a domain in the Site Creation domains list."
         )
-        if domainPurchasingEnabled {
-            self.accessibilityElements = [domainLabel, leadingLabel, trailingLabel]
-        } else {
+        if !domainPurchasingEnabled {
             self.selectedBackgroundView?.backgroundColor = .clear
         }
     }
