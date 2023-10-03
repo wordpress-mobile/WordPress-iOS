@@ -22,12 +22,18 @@ platform :ios do
 
     ensure_git_status_clean
 
+    # The `next_release_version` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
     confirmation_message = <<-MESSAGE
 
       Code Freeze:
       • New release branch from #{DEFAULT_BRANCH}: release/#{next_release_version}
+
       • Current release version and build code: #{current_release_version} (#{current_build_code}).
       • New release version and build code: #{next_release_version} (#{code_freeze_build_code}).
+
+      • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code})
+      • New internal release version and build code: #{next_release_version} (#{next_internal_build_code})
 
       Do you want to continue?
 
@@ -50,6 +56,17 @@ platform :ios do
     )
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.message "Done! New Release Version: #{current_release_version}. New Build Code: #{current_build_code}"
+
+    # Bump the internal release version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping internal release version and build code...'
+    INTERNAL_VERSION_FILE.write(
+      # The external and internal release versions are always the same. Because the external release version was
+      # already bumped, we want to just use the `current_release_version`
+      version_short: current_release_version,
+      version_long: code_freeze_internal_build_code
+    )
+    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    UI.message "Done! New Internal Release Version: #{current_internal_release_version}. New Internal Build Code: #{current_internal_build_code}"
 
     new_version = current_release_version
 
@@ -143,8 +160,11 @@ platform :ios do
     # Check versions
     message = <<-MESSAGE
 
-      Current build code: #{current_build_code}
-      New build code: #{next_build_code}
+      • Current build code: #{current_build_code}
+      • New build code: #{next_build_code}
+
+      • Current internal build code: #{current_internal_build_code}
+      • New internal build code: #{next_internal_build_code}
 
     MESSAGE
 
@@ -171,8 +191,14 @@ platform :ios do
     UI.message 'Bumping build code...'
     ensure_git_branch(branch: '^release/') # Match branch names that begin with `release/`
     PUBLIC_VERSION_FILE.write(version_long: next_build_code)
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.message "Done! New Build Code: #{current_build_code}"
+
+    # Bump the internal build code
+    UI.message 'Bumping internal build code...'
+    PUBLIC_VERSION_FILE.write(version_long: next_internal_build_code)
+    UI.message "Done! New Internal Build Code: #{current_internal_build_code}"
+
+    Fastlane::Helper::Ios::GitHelper.commit_version_bump
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
@@ -205,11 +231,13 @@ platform :ios do
     # Check versions
     message = <<-MESSAGE
 
-      Current release version: #{current_release_version}
-      New hotfix version: #{new_version}
+      New Hotfix:
 
-      Current build code: #{current_build_code}
-      New build code: #{hotfix_build_code}
+      • Current release version and build code: #{current_release_version} (#{current_build_code}).
+      • New release version and build code: #{new_version} (#{hotfix_build_code}).
+
+      • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code}).
+      • New internal release version and build code: #{new_version} (#{internal_hotfix_build_code}).
 
       Branching from tag: #{previous_version}
 
@@ -238,6 +266,14 @@ platform :ios do
       version_long: hotfix_build_code
     )
     UI.message "Done! New Release Version: #{current_release_version}. New Build Code: #{current_build_code}"
+
+    # Bump the internal hotfix version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping internal hotfix version and build code...'
+    INTERNAL_VERSION_FILE.write(
+      version_short: new_version,
+      version_long: internal_hotfix_build_code
+    )
+    UI.message "Done! New Internal Release Version: #{current_internal_release_version}. New Internal Build Code: #{current_internal_build_code}"
 
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
   end
@@ -291,6 +327,13 @@ platform :ios do
     PUBLIC_VERSION_FILE.write(version_long: next_build_code)
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.message "Done! New Build Code: #{current_build_code}"
+
+    # Bump the internal build code
+    UI.message 'Bumping internal build code...'
+    INTERNAL_VERSION_FILE.write(version_long: next_internal_build_code)
+    UI.message "Done! New Internal Build Code: #{current_internal_build_code}"
+
+    Fastlane::Helper::Ios::GitHelper.commit_version_bump
 
     # Wrap up
     version = current_release_version

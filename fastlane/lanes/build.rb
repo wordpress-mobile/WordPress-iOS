@@ -228,7 +228,7 @@ platform :ios do
   desc 'Builds and uploads for distribution to App Center'
   lane :build_and_upload_app_center do |options|
     unless options[:skip_prechecks]
-      message = "Building internal version #{internal_current_release_version} (#{internal_current_build_code}) and uploading to AppCenter\n"
+      message = "Building internal version #{current_internal_release_version} (#{current_internal_build_code}) and uploading to AppCenter\n"
       if options[:skip_confirm]
         UI.message(message)
       else
