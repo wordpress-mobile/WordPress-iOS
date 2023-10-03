@@ -74,7 +74,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
-    private let header: ReaderDetailHeaderView = .loadFromNib()
+    private lazy var header: UIView & ReaderDetailHeader = {
+        guard FeatureFlag.readerImprovements.enabled else {
+            return ReaderDetailHeaderView.loadFromNib()
+        }
+        return ReaderDetailNewHeaderViewHost()
+    }()
 
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
@@ -597,7 +602,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
 
         headerContainerView.pinSubviewToAllEdges(header)
-        headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
+
+        if !FeatureFlag.readerImprovements.enabled {
+            headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
+        }
     }
 
     private func fetchLikes() {
