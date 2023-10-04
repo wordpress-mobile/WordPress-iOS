@@ -1,7 +1,7 @@
 import Foundation
 
 protocol ShoppingCartServiceProtocol {
-    func createSiteCreationShoppingCart(
+    func makeSiteCreationShoppingCart(
         siteID: Int,
         domainSuggestion: DomainSuggestion,
         privacyProtectionEnabled: Bool,
@@ -24,7 +24,7 @@ final class ShoppingCartService: ShoppingCartServiceProtocol {
         TransactionsServiceRemote(wordPressComRestApi: restApi)
     }()
 
-    func createSiteCreationShoppingCart(
+    func makeSiteCreationShoppingCart(
         siteID: Int,
         domainSuggestion: DomainSuggestion,
         privacyProtectionEnabled: Bool,

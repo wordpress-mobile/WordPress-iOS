@@ -105,7 +105,7 @@ final class SiteCreationPurchasingWebFlowController {
     // MARK: - Private: Doman Purchasing
 
     private func createCartAndPresentWebView(domain: Domain, planId: Int, in presentingViewController: UIViewController, completion: CompletionHandler? = nil) {
-        self.shoppingCartService.createSiteCreationShoppingCart(
+        self.shoppingCartService.makeSiteCreationShoppingCart(
             siteID: domain.siteID,
             domainSuggestion: domain.underlyingDomain,
             privacyProtectionEnabled: domain.supportsPrivacy,
