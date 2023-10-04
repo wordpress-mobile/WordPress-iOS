@@ -117,6 +117,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     @Published var postTitle: String? = nil // post title can be empty.
     @Published var tags: [String] = []
 
+    @Published var showsAuthorName: Bool = true
+
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
@@ -148,6 +150,10 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             if let siteName = post.blogNameForDisplay(), !siteName.isEmpty {
                 self.siteName = siteName
             }
+
+            // hide the author name if it exactly matches the site name.
+            // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
+            self.showsAuthorName = self.authorName != self.siteName
 
             self.postTitle = post.titleForDisplay() ?? nil
             self.tags = post.tagsForDisplay() ?? []
@@ -244,7 +250,7 @@ struct ReaderDetailNewHeaderView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
-                authorText
+                authorAndTimestampText
             }
         }
         .onTapGesture {
@@ -290,7 +296,12 @@ struct ReaderDetailNewHeaderView: View {
             })
     }
 
-    var authorText: some View {
+    var authorAndTimestampText: some View {
+        guard viewModel.showsAuthorName,
+              !viewModel.authorName.isEmpty else {
+            return timestampText
+        }
+
         var texts: [Text] = [
             Text(viewModel.authorName)
                 .font(.footnote)
@@ -300,11 +311,7 @@ struct ReaderDetailNewHeaderView: View {
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryLabel)),
 
-            // TODO: Process the logic for relative post time.
-            // TODO: Use the current relative time formatter.
-            Text(viewModel.relativePostTime)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryLabel))
+            timestampText
         ]
 
         if direction == .rightToLeft {
@@ -312,6 +319,12 @@ struct ReaderDetailNewHeaderView: View {
         }
 
         return texts.reduce(Text(""), +)
+    }
+
+    var timestampText: Text {
+        Text(viewModel.relativePostTime)
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryLabel))
     }
 
     /// TODO: Update when the Follow buttons are updated.
