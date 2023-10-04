@@ -1263,6 +1263,9 @@
 /* Title for impressions stats view */
 "blazeCampaigns.impressions" = "Impressions";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Block cannot be rendered because it is deeply nested. Tap here for more details.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -1318,6 +1321,12 @@
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Blocks menu";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -2608,6 +2617,9 @@ Example: Reply to Pamela Nguyen */
 /* Only December needs to be translated */
 "December 17, 2017" = "December 17, 2017";
 
+/* No comment provided by engineer. */
+"Deeply nested block" = "Deeply nested block";
+
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Default";
@@ -2803,14 +2815,8 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you.";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Find a custom domain";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
@@ -5282,9 +5288,6 @@ Please install the %3$@ to use the app with this site.";
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Unable to sync media";
 
-/* Media screen navigation title */
-"media.title" = "Media";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "The item could not be added to the Media library";
 
@@ -5297,6 +5300,36 @@ Please install the %3$@ to use the app with this site.";
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Dismiss";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Add new media";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Add";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Select";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Cancel";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Delete";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Are you sure you want to permanently delete these items?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Are you sure you want to permanently delete this item?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Unable to delete all media items.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Deleting...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Deleted!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Delete";
 
@@ -5305,6 +5338,27 @@ Please install the %3$@ to use the app with this site.";
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Retry Upload";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "No media matching your search";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Media";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d Images Selected";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 Image Selected";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d Items Selected";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 Item Selected";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Select Items";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
@@ -6467,12 +6521,6 @@ Please install the %3$@ to use the app with this site.";
 "personalizeHome.dashboardCard.draftPosts" = "Draft posts";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Get to know the app";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Next steps";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pages";
 
 /* Card title for the pesonalization menu */
@@ -7146,6 +7194,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Report this user";
 
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ posts • %2$@ followers";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
 
@@ -7308,8 +7359,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Remove";
 
 /* Remove Person Alert Title
@@ -8246,6 +8296,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Media";
+
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
 "Sites" = "Sites";
@@ -8874,6 +8927,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility Identifier for the H6 Aztec Style */
 "Switches to the Heading 6 font size" = "Switches to the Heading 6 font size";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Synced patterns";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "System default";
 
@@ -8918,9 +8974,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Take a Photo" = "Take a Photo";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Take a Photo or Video";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Take a Video";
 
 /* Menu option for taking an image or video with the device's camera. */
@@ -8937,6 +8990,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tap here to show help";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Tap here to show more details.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Tap to add new stats cards.";
@@ -9918,6 +9974,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Unfollows the blog.";
 
+/* No comment provided by engineer. */
+"Ungroup block" = "Ungroup block";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "Unhide";
 
@@ -10319,6 +10378,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Warning";
+
+/* No comment provided by engineer. */
+"Warning message" = "Warning message";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";

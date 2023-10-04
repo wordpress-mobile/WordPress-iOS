@@ -1,0 +1,7 @@
+Låsskärmswidgetar är nu tillgängliga för Jetpack, så att du kan kontrollera din webbplatsstatistik utan att låsa upp din telefon. Kom ihåg, god kraft medför god effektivitet. Eller något i den stilen.
+
+Vi har ändrat hur aviseringar visas när du infogar media i block från en URL. Det känns bra att det är ordnat.
+
+Det är också enklare att se skillnaden mellan platshållartext och faktiskt innehåll i blockbaserade teman.
+
+Slutligen har vi uppdaterat navigeringen för Min webbplats, så att du kan nå populära webbplatssektioner snabbare. (Gillar du inte dessa genvägar? Oroa dig inte, du kan anpassa dem efter eget tycke.)

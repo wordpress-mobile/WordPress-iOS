@@ -1,0 +1,3 @@
+Vi har ändrat hur aviseringar visas när du infogar media i block från en URL. Det känns bra att det är ordnat.
+
+Det är också enklare att se skillnaden mellan platshållartext och faktiskt innehåll i blockbaserade teman.

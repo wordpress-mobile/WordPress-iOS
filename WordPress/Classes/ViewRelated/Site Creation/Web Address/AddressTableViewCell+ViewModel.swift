@@ -11,6 +11,7 @@ extension AddressTableViewCell {
             case free
             case regular(cost: String)
             case onSale(cost: String, sale: String)
+            case freeWithPaidPlan(cost: String)
         }
 
         enum Tag {
@@ -62,6 +63,11 @@ extension AddressTableViewCell.ViewModel {
             value: "Sale",
             comment: "The 'Sale' label under the domain name in 'Choose a domain' screen"
         )
+        static let freeWithPaidPlan = NSLocalizedString(
+            "domain.suggestions.row.free-with-plan",
+            value: "Free for a year with a plan",
+            comment: "The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen"
+        )
     }
 }
 
@@ -78,13 +84,9 @@ extension AddressTableViewCell.ViewModel {
         } else if let formatter = Self.currencyFormatter(code: model.currencyCode),
                   let costValue = model.cost,
                   let formattedCost = formatter.string(from: .init(value: costValue)) {
-            if let saleCost = model.saleCost, let formattedSaleCost = formatter.string(from: .init(value: saleCost)) {
-                cost = .onSale(cost: formattedCost, sale: formattedSaleCost)
-            } else {
-                cost = .regular(cost: formattedCost)
-            }
+            cost = .freeWithPaidPlan(cost: formattedCost)
         } else {
-            cost = .regular(cost: model.costString)
+            cost = .freeWithPaidPlan(cost: model.costString)
         }
 
         // Configure tags

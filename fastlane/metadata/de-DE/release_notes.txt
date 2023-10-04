@@ -1,0 +1,3 @@
+Wir haben die Art und Weise geändert, wie Warnmeldungen angezeigt werden, wenn du Medien von einer URL in Blöcke einfügst. Das hätten wir schon einmal, das ist gut.
+
+Außerdem ist es jetzt einfacher, in blockbasierten Themes den Unterschied zwischen Platzhaltertext und tatsächlichem Inhalt zu erkennen.

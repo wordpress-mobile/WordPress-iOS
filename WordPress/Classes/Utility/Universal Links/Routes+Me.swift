@@ -29,7 +29,7 @@ enum MeNavigationAction: NavigationAction {
     func perform(_ values: [String: String] = [:], source: UIViewController? = nil, router: LinkRouter) {
         switch self {
         case .root:
-            RootViewCoordinator.sharedPresenter.showMeScene()
+            RootViewCoordinator.sharedPresenter.showMeScreen()
         case .accountSettings:
             RootViewCoordinator.sharedPresenter.navigateToAccountSettings()
         case .notificationSettings:

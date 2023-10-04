@@ -1,0 +1,7 @@
+Os widgets na tela de bloqueio agora estão disponíveis no Jetpack. Assim, você verifica as estatísticas do seu site sem precisar desbloquear o celular. Lembre-se, com grandes poderes vem grande eficiência. Ou algo parecido.
+
+Mudamos a forma como os alertas aparecem ao inserir mídia em blocos a partir de uma URL. Agora temos isso ao nosso favor, o que é bom.
+
+Também ficou mais fácil diferenciar o texto de espaço reservado do conteúdo nos temas com bloco.
+
+Por fim, atualizamos a navegação em Meu site para que você acesse seções populares do site mais rapidamente. (Não curte esses atalhos? Não se preocupe, você pode personalizá-los do seu jeito).

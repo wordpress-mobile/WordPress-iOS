@@ -80,4 +80,9 @@ extension Blog {
     public func areBloggingRemindersAllowed() -> Bool {
         return isUserCapableOf(.EditPosts) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
     }
+
+    var userCanUploadMedia: Bool {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
+        capabilities != nil ? isUploadingFilesAllowed() : true
+    }
 }

@@ -48,4 +48,9 @@ protocol RootViewPresenter: AnyObject {
     func switchNotificationsTabToNotificationSettings()
     func popNotificationsTabToRoot()
 
+    // MARK: Me
+
+    var meViewController: MeViewController? { get }
+    func showMeScreen()
+    func popMeScreenToRoot()
 }
