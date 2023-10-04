@@ -7,13 +7,14 @@ class DashboardTests: XCTestCase {
     @MainActor
     override func setUp() async throws {
         setUpTestSuite()
-        try await WireMock.setUpScenario(scenario: "pages_flow")
+        try await WireMock.setUpScenario(scenario: "new_page_flow")
 
         try LoginFlow
             .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
+        try await WireMock.resetScenario(scenario: "new_page_flow")
         takeScreenshotOfFailedTest()
     }
 

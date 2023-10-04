@@ -23,12 +23,6 @@
       "name" : "new_post_flow",
       "state" : "Started",
       "possibleStates" : [ "Started", "initial_posts_list", "post_published", "new_posts_list" ]
-    },
-    {
-      "id" : "pages_flow",
-      "name" : "pages_flow",
-      "state" : "Started",
-      "possibleStates" : [ "Started", "initial_pages_list" ]
     }
   ]
 }
