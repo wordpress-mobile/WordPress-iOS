@@ -27,6 +27,8 @@ class ReaderPostCardCell: UITableViewCell {
 
     private let separatorView = UIView()
 
+    private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
@@ -35,6 +37,21 @@ class ReaderPostCardCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoader.prepareForReuse()
+        resetElements()
+        addMissingViews()
+        addViewConstraints()
+    }
+
+    func configure(with contentProvider: ReaderPostContentProvider,
+                   actionVisibility: ReaderActionsVisibility) {
+        configureLabels(with: contentProvider, actionVisibility: actionVisibility)
+        configureImages(with: contentProvider)
+        configureButtons(with: contentProvider, actionVisibility: actionVisibility)
     }
 
 }
@@ -102,7 +119,6 @@ private extension ReaderPostCardCell {
         siteTitleLabel.font = .preferredFont(forTextStyle: .subheadline).semibold()
         siteTitleLabel.numberOfLines = 1
         siteTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        siteTitleLabel.setText("Site Title") // TODO: Remove
         siteStackView.addArrangedSubview(siteTitleLabel)
     }
 
@@ -111,7 +127,6 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .subheadline)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-        postDateLabel.setText("Post Date") // TODO: Remove
         siteStackView.addArrangedSubview(postDateLabel)
     }
 
@@ -127,7 +142,6 @@ private extension ReaderPostCardCell {
         postTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         postTitleLabel.font = .preferredFont(forTextStyle: .title3).semibold()
         postTitleLabel.numberOfLines = 2
-        postTitleLabel.setText("Post Title") // TODO: Remove
         contentStackView.addArrangedSubview(postTitleLabel)
     }
 
@@ -135,7 +149,6 @@ private extension ReaderPostCardCell {
         postSummaryLabel.translatesAutoresizingMaskIntoConstraints = false
         postSummaryLabel.font = .preferredFont(forTextStyle: .footnote)
         postSummaryLabel.numberOfLines = 3
-        postSummaryLabel.setText("Post summary") // TODO: Remove
         contentStackView.addArrangedSubview(postSummaryLabel)
     }
 
@@ -143,7 +156,6 @@ private extension ReaderPostCardCell {
         featuredImageView.translatesAutoresizingMaskIntoConstraints = false
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
-        featuredImageView.backgroundColor = .green // TODO: Remove
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
@@ -151,7 +163,6 @@ private extension ReaderPostCardCell {
         postCountsLabel.font = .preferredFont(forTextStyle: .footnote)
         postCountsLabel.numberOfLines = 1
         postCountsLabel.textColor = .secondaryLabel
-        postCountsLabel.setText("15 likes • 4 comments") // TODO: Remove
         contentStackView.addArrangedSubview(postCountsLabel)
     }
 
@@ -271,6 +282,218 @@ private extension ReaderPostCardCell {
         ]
     }
 
+    // MARK: - View configuration
+
+    func configureLabels(with contentProvider: ReaderPostContentProvider,
+                         actionVisibility: ReaderActionsVisibility) {
+        configureSiteTitle(with: contentProvider)
+        configurePostDateLabel(with: contentProvider)
+        configureLabel(postTitleLabel, text: contentProvider.titleForDisplay())
+        configureLabel(postSummaryLabel, text: contentProvider.contentPreviewForDisplay())
+        configureCountsLabel(with: contentProvider, actionVisibility: actionVisibility)
+    }
+
+    func configureLabel(_ label: UILabel, text: String?) {
+        guard let text else {
+            label.removeFromSuperview()
+            return
+        }
+        label.setText(text)
+    }
+
+    func configureSiteTitle(with contentProvider: ReaderPostContentProvider) {
+        if let post = contentProvider as? ReaderPost, post.isP2Type(), let author = contentProvider.authorForDisplay() {
+            let strings = [author, contentProvider.blogNameForDisplay?()].compactMap { $0 }
+            configureLabel(siteTitleLabel, text: strings.joined(separator: " ▸ "))
+        } else {
+            configureLabel(siteTitleLabel, text: contentProvider.blogNameForDisplay?())
+        }
+    }
+
+    func configurePostDateLabel(with contentProvider: ReaderPostContentProvider) {
+        let postDateString: String? = {
+            guard let dateForDisplay = contentProvider.dateForDisplay()?.toShortString() else {
+                return nil
+            }
+            return siteTitleLabel.text != nil ? "• \(dateForDisplay)" : dateForDisplay
+        }()
+        configureLabel(postDateLabel, text: postDateString)
+    }
+
+    func configureCountsLabel(with contentProvider: ReaderPostContentProvider,
+                              actionVisibility: ReaderActionsVisibility) {
+        let isCommentsEnabled = isCommentsEnabled(with: contentProvider)
+        let isLikesEnabled = isLikesEnabled(with: contentProvider, actionVisibility: actionVisibility)
+        let commentCount = contentProvider.commentCount()?.intValue ?? 0
+        let likeCount = contentProvider.likeCount()?.intValue ?? 0
+        var countStrings = [String]()
+
+        if isLikesEnabled {
+            countStrings.append(WPStyleGuide.likeCountForDisplay(likeCount))
+        }
+
+        if isCommentsEnabled {
+            countStrings.append(WPStyleGuide.commentCountForDisplay(commentCount))
+        }
+        let combinedStrings = countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
+        configureLabel(postCountsLabel, text: combinedStrings)
+    }
+
+    func configureImages(with contentProvider: ReaderPostContentProvider) {
+        configureAvatar(with: contentProvider)
+        configureSiteIcon(with: contentProvider)
+        configureFeaturedImage(with: contentProvider)
+    }
+
+    func downloadIcon(with contentProvider: ReaderPostContentProvider, url: URL, imageView: UIImageView, container: UIView) {
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: contentProvider, failure: { error in
+            DDLogError("ReaderPostCardCell MediaHost error: \(error.localizedDescription)")
+        })
+        Task {
+            do {
+                let request = try await mediaRequestAuthenticator.authenticatedRequest(for: url, host: host)
+                imageView.downloadImage(usingRequest: request)
+            } catch {
+                DDLogError(error)
+                removeFromStackView(siteStackView, view: container)
+            }
+        }
+    }
+
+    func configureAvatar(with contentProvider: ReaderPostContentProvider) {
+        guard let post = contentProvider as? ReaderPost,
+              post.isP2Type(),
+              let url = contentProvider.avatarURLForDisplay() else {
+            removeFromStackView(siteStackView, view: avatarContainerView)
+            return
+        }
+        downloadIcon(with: contentProvider, url: url, imageView: avatarImageView, container: avatarContainerView)
+    }
+
+    func configureSiteIcon(with contentProvider: ReaderPostContentProvider) {
+        let scale = window?.screen.scale ?? 1.0
+        let size = Constants.iconImageSize * scale
+        guard let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
+            removeFromStackView(siteStackView, view: siteIconContainerView)
+            return
+        }
+        downloadIcon(with: contentProvider, url: url, imageView: siteIconImageView, container: siteIconContainerView)
+    }
+
+    func configureFeaturedImage(with contentProvider: ReaderPostContentProvider) {
+        guard let url = contentProvider.featuredImageURLForDisplay?() else {
+            removeFromStackView(contentStackView, view: featuredImageView)
+            return
+        }
+        let imageSize = featuredImageIdealSize()
+        let host = MediaHost(with: contentProvider, failure: { error in
+            DDLogError(error)
+        })
+        imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
+    }
+
+    func featuredImageIdealSize() -> CGSize {
+        guard let window = WordPressAppDelegate.shared?.window else {
+            return CGSize(width: featuredImageView.frame.width,
+                          height: featuredImageView.frame.height)
+        }
+
+        let windowWidth = window.screen.bounds.width
+        let safeAreaOffset = window.safeAreaInsets.left + window.safeAreaInsets.right
+        let width = windowWidth - safeAreaOffset - Constants.ContentStackView.margins * 2
+        let height = width * Constants.FeaturedImage.heightAspectMultiplier
+        return CGSize(width: width, height: height)
+    }
+
+    func configureButtons(with contentProvider: ReaderPostContentProvider,
+                          actionVisibility: ReaderActionsVisibility) {
+        if !isReblogEnabled(with: contentProvider, actionVisibility: actionVisibility) {
+            removeFromStackView(controlsStackView, view: reblogButton)
+        }
+        if isCommentsEnabled(with: contentProvider) {
+            configureLikeButton(with: contentProvider)
+        } else {
+            removeFromStackView(controlsStackView, view: commentButton)
+        }
+        if !isLikesEnabled(with: contentProvider, actionVisibility: actionVisibility) {
+            removeFromStackView(controlsStackView, view: likeButton)
+        }
+    }
+
+    func configureLikeButton(with contentProvider: ReaderPostContentProvider) {
+        let isLiked = contentProvider.isLiked()
+        likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
+        likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+    }
+
+    func isReblogEnabled(with contentProvider: ReaderPostContentProvider,
+                         actionVisibility: ReaderActionsVisibility) -> Bool {
+        return !contentProvider.isPrivate() && actionVisibility.isEnabled
+    }
+
+    func isCommentsEnabled(with contentProvider: ReaderPostContentProvider) -> Bool {
+        let usesWPComAPI = contentProvider.isWPCom() || contentProvider.isJetpack()
+        let commentCount = contentProvider.commentCount()?.intValue ?? 0
+        let hasComments = commentCount > 0
+
+        return usesWPComAPI && (contentProvider.commentsOpen() || hasComments)
+    }
+
+    func isLikesEnabled(with contentProvider: ReaderPostContentProvider,
+                        actionVisibility: ReaderActionsVisibility) -> Bool {
+        let likeCount = contentProvider.likeCount()?.intValue ?? 0
+        return !contentProvider.isExternal() && (likeCount > 0 || actionVisibility.isEnabled)
+    }
+
+    // MARK: - Cell reuse
+
+    func addMissingViews() {
+        let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
+        let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
+        let controlViews = [reblogButton, commentButton, likeButton]
+
+        siteHeaderViews.enumerated().forEach { (index, view) in
+            addToStackView(siteStackView, view: view, index: index)
+        }
+        contentViews.enumerated().forEach { (index, view) in
+            addToStackView(contentStackView, view: view, index: index)
+        }
+        controlViews.enumerated().forEach { (index, view) in
+            addToStackView(controlsStackView, view: view, index: index)
+        }
+
+        siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.reblogSpacing, after: reblogButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.commentSpacing, after: commentButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.likeSpacing, after: likeButton)
+    }
+
+    func addToStackView(_ stackView: UIStackView, view: UIView, index: Int) {
+        guard view.superview == nil, stackView.arrangedSubviews.count >= index else {
+            return
+        }
+        stackView.insertArrangedSubview(view, at: index)
+    }
+
+    func removeFromStackView(_ stackView: UIStackView, view: UIView) {
+        stackView.removeArrangedSubview(view)
+        view.removeFromSuperview()
+    }
+
+    func resetElements() {
+        avatarImageView.image = Constants.avatarPlaceholder
+        siteIconImageView.image = Constants.siteIconPlaceholder
+        siteTitleLabel.text = nil
+        postDateLabel.text = nil
+        postTitleLabel.text = nil
+        postSummaryLabel.text = nil
+        featuredImageView.image = nil
+        postCountsLabel.text = nil
+    }
+
     // MARK: - Constants
 
     struct Constants {
@@ -306,6 +529,7 @@ private extension ReaderPostCardCell {
         static let reblogButtonImage = UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
         static let commentButtonImage = UIImage(named: "icon-reader-post-comment")?.withRenderingMode(.alwaysTemplate)
         static let likeButtonImage = UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
+        static let likedButtonImage = UIImage(named: "icon-reader-star-fill")?.withRenderingMode(.alwaysTemplate)
         static let menuButtonImage = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
         static let buttonMinimumSize: CGFloat = 44.0
         static let reblogButtonText = NSLocalizedString("reader.post.button.reblog",
@@ -317,6 +541,9 @@ private extension ReaderPostCardCell {
         static let likeButtonText = NSLocalizedString("reader.post.button.like",
                                                       value: "Like",
                                                       comment: "Text for the 'Like' button on the reader post card cell.")
+        static let likedButtonText = NSLocalizedString("reader.post.button.liked",
+                                                       value: "Liked",
+                                                       comment: "Text for the 'Liked' button on the reader post card cell.")
         static let separatorHeight: CGFloat = 0.5
     }
 
