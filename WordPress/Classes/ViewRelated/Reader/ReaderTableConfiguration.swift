@@ -1,7 +1,7 @@
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
-    private let readerCardCellNibName = "ReaderPostCardCell"
+    private let readerCardCellNibName = "OldReaderPostCardCell"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
@@ -65,8 +65,8 @@ final class ReaderTableConfiguration {
         return tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
     }
 
-    func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
-        return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+    func postCardCell(_ tableView: UITableView) -> OldReaderPostCardCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! OldReaderPostCardCell
     }
 
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {
