@@ -18,17 +18,22 @@ protocol ReaderDetailHeader: NSObjectProtocol {
 // MARK: - SwiftUI View Host
 
 class ReaderDetailNewHeaderViewHost: UIView {
-    weak var delegate: ReaderDetailHeaderViewDelegate?
+    weak var delegate: ReaderDetailHeaderViewDelegate? {
+        didSet {
+            viewModel.headerDelegate = delegate
+        }
+    }
 
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
     private let isLoggedIn: Bool
 
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
+
     // TODO: Populate this with values from the ReaderPost.
     private lazy var viewModel: ReaderDetailHeaderViewModel = {
         $0.topicDelegate = self
-        $0.headerDelegate = delegate
         return $0
     }(ReaderDetailHeaderViewModel())
 
@@ -47,9 +52,6 @@ class ReaderDetailNewHeaderViewHost: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         let headerView = ReaderDetailNewHeaderView(viewModel: viewModel) { [weak self] in
-            guard let swiftUIView = self?.subviews.first else {
-                return
-            }
             self?.refreshContainerLayout()
         }
 
@@ -77,7 +79,7 @@ extension ReaderDetailNewHeaderViewHost: ReaderDetailHeader {
     }
 
     func refreshFollowButton() {
-        viewModel.isFollowingSite = true
+        viewModel.refreshFollowState()
     }
 }
 
@@ -97,6 +99,8 @@ extension ReaderDetailNewHeaderViewHost: ReaderTopicCollectionViewCoordinatorDel
 
 class ReaderDetailHeaderViewModel: ObservableObject {
     private let coreDataStack: CoreDataStackSwift
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
+
     weak var headerDelegate: ReaderDetailHeaderViewDelegate?
     weak var topicDelegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
@@ -120,6 +124,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     func configure(with objectID: TaggedManagedObjectID<ReaderPost>,
                    isLoggedIn: Bool,
                    completion: (() -> Void)?) {
+        postObjectID = objectID
         coreDataStack.performQuery { [weak self] context -> Void in
             guard let self,
                   let post = try? context.existingObject(with: objectID) else {
@@ -150,6 +155,19 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
         DispatchQueue.main.async {
             completion?()
+        }
+    }
+
+    func refreshFollowState() {
+        guard let postObjectID else {
+            return
+        }
+
+        isFollowingSite = coreDataStack.performQuery { context in
+            guard let post = try? context.existingObject(with: postObjectID) else {
+                return false
+            }
+            return post.isFollowing
         }
     }
 
