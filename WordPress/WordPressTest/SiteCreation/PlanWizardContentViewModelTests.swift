@@ -6,11 +6,13 @@ final class PlanWizardContentViewModelTests: XCTestCase {
     private var siteCreator: SiteCreator!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         siteCreator = SiteCreator()
         sut = PlanWizardContentViewModel(siteCreator: siteCreator)
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         siteCreator = nil
         sut = nil
     }
