@@ -2,7 +2,7 @@ import UIKit
 import Combine
 import Gifu
 
-final class SiteMediaCollectionCell: UICollectionViewCell {
+final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
     private let imageView = GIFImageView()
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()

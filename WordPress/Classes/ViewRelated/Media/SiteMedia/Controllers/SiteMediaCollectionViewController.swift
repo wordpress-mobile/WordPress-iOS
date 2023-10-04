@@ -95,7 +95,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func configureCollectionView() {
-        collectionView.register(SiteMediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+        collectionView.register(cell: SiteMediaCollectionCell.self)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -310,7 +310,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! SiteMediaCollectionCell
+        let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
@@ -457,10 +457,6 @@ extension SiteMediaCollectionViewController: NoResultsViewHost {
         case emptySearch
         case failed
     }
-}
-
-private enum Constants {
-    static let cellID = "cellID"
 }
 
 private enum Strings {
