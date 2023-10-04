@@ -9,7 +9,8 @@ class MainNavigationTests: XCTestCase {
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
-            .goToMoreMenu()
+
+        try MySiteScreen().goToMoreMenu()
     }
 
     override func tearDownWithError() throws {
