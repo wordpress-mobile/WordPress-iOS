@@ -172,7 +172,7 @@ private enum Strings {
     static let accessibilityLabelImage = NSLocalizedString("siteMedia.accessibilityLabelImage", value: "Image, %@", comment: "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image.")
     static let accessibilityLabelVideo = NSLocalizedString("siteMedia.accessibilityLabelVideo", value: "Video, %@", comment: "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video.")
     static let accessibilityLabelAudio = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio.")
-    static let accessibilityLabelDocument = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for other media items in the media collection view. The parameter is the filename file.")
+    static let accessibilityLabelDocument = NSLocalizedString("siteMedia.accessibilityLabelDocument", value: "Document, %@", comment: "Accessibility label for other media items in the media collection view. The parameter is the filename file.")
     static let accessibilityHint = NSLocalizedString("siteMedia.cellAccessibilityHint", value: "Select media.", comment: "Accessibility hint for actions when displaying media items.")
 }
 
