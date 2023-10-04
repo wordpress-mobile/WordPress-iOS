@@ -32,10 +32,6 @@ class GutenbergMediaPickerHelper: NSObject {
         return dataSource
     }()
 
-    /// Device Photo Library Data Source
-    ///
-    fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
-
     var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
 
     init(context: UIViewController, post: AbstractPost) {
@@ -48,10 +44,13 @@ class GutenbergMediaPickerHelper: NSObject {
                                       dataSourceType: MediaPickerDataSourceType = .device,
                                       allowMultipleSelection: Bool,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
-        if dataSourceType == .device, FeatureFlag.nativePhotoPicker.enabled {
+        switch dataSourceType {
+        case .device:
             presentNativePicker(filter: filter, allowMultipleSelection: allowMultipleSelection, completion: callback)
-        } else {
-            presentLegacyPicker(filter: filter, dataSourceType: dataSourceType, allowMultipleSelection: allowMultipleSelection, callback: callback)
+        case .mediaLibrary:
+            presentLegacyPicker(filter: filter, allowMultipleSelection: allowMultipleSelection, callback: callback)
+        @unknown default:
+            break
         }
     }
 
@@ -72,7 +71,6 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 
     private func presentLegacyPicker(filter: WPMediaType,
-                                     dataSourceType: MediaPickerDataSourceType = .device,
                                      allowMultipleSelection: Bool,
                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
@@ -80,17 +78,10 @@ class GutenbergMediaPickerHelper: NSObject {
         let mediaPickerOptions = WPMediaPickerOptions.withDefaults(filter: filter, allowMultipleSelection: allowMultipleSelection)
         let picker = WPNavigationMediaPickerViewController(options: mediaPickerOptions)
         navigationPicker = picker
-        switch dataSourceType {
-        case .device:
-            picker.dataSource = devicePhotoLibraryDataSource
-        case .mediaLibrary:
-            picker.startOnGroupSelector = false
-            picker.showGroupSelector = false
-            picker.dataSource = mediaLibraryDataSource
-        @unknown default:
-            fatalError()
-        }
 
+        picker.startOnGroupSelector = false
+        picker.showGroupSelector = false
+        picker.dataSource = mediaLibraryDataSource
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
@@ -166,49 +157,9 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 
-    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
-    }
-
-    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
-        let header = DeviceMediaPermissionsHeader()
-        header.translatesAutoresizingMaskIntoConstraints = false
-
-        return header.referenceSizeInView(picker.view)
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
-        guard let headerView = headerView as? DeviceMediaPermissionsHeader else {
-            return
-        }
-
-        headerView.presenter = picker
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        !post.blog.canUploadAsset(asset)
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if !post.blog.canUploadAsset(asset) {
-            presentVideoLimitExceededFromPicker(on: picker)
-            return false
-        }
-        return true
-    }
-
     fileprivate func invokeMediaPickerCallback(asset: [WPMediaAsset]?) {
         didPickMediaCallback?(asset)
         didPickMediaCallback = nil
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
-            edit(fromMediaPicker: picker, assets: phAssets)
-            return nil
-        }
-
-        return nil
     }
 
     func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
@@ -244,35 +195,6 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
         didPickMediaCallback?(results.map(\.itemProvider))
         didPickMediaCallback = nil
     }
-}
-
-// MARK: - Media Editing
-//
-extension GutenbergMediaPickerHelper {
-        private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
-            let mediaEditor = WPMediaEditor(assets)
-
-            // When the photo's library is updated (eg.: a new photo is added)
-            // the actionBar is appearing and conflicting with Media Editor.
-            // We hide it to prevent that issue
-            picker.actionBar?.isHidden = true
-
-            mediaEditor.edit(from: picker,
-                                  onFinishEditing: { [weak self] images, actions in
-                                    guard let images = images as? [PHAsset] else {
-                                        return
-                                    }
-
-                                    self?.didPickMediaCallback?(images)
-                                    self?.context.dismiss(animated: false)
-                }, onCancel: {
-                    // Dismiss the Preview screen in Media Picker
-                    picker.navigationController?.popViewController(animated: false)
-
-                    // Show picker actionBar again
-                    picker.actionBar?.isHidden = false
-            })
-        }
 }
 
 fileprivate extension WPMediaPickerOptions {
