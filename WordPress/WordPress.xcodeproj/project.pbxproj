@@ -2687,7 +2687,6 @@
 		B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B538F3881EF46EC8001003D5 /* UnknownEditorViewController.swift */; };
 		B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */; };
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
-		B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */; };
 		B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54075D31D3D7D5B0095C318 /* IntrinsicTableView.swift */; };
 		B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
 		B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */; };
@@ -5087,7 +5086,6 @@
 		FABB24F52602FC2C00C8785C /* ReaderTagTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */; };
 		FABB24F62602FC2C00C8785C /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F110239A2318479000C4E84A /* Media.swift */; };
 		FABB24F72602FC2C00C8785C /* WordPressOrgRestApi+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C2260623901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift */; };
-		FABB24F82602FC2C00C8785C /* GravatarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */; };
 		FABB24F92602FC2C00C8785C /* ReaderTableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */; };
 		FABB24FA2602FC2C00C8785C /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
 		FABB24FB2602FC2C00C8785C /* ReaderListStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */; };
@@ -8031,7 +8029,6 @@
 		B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTextViewController.m; sourceTree = "<group>"; };
 		B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsSelectionViewController.h; sourceTree = "<group>"; };
 		B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsSelectionViewController.m; sourceTree = "<group>"; };
-		B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarPickerViewController.swift; sourceTree = "<group>"; };
 		B54075D31D3D7D5B0095C318 /* IntrinsicTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntrinsicTableView.swift; sourceTree = "<group>"; };
 		B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
 		B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
@@ -11177,7 +11174,6 @@
 		3F29EB6A24041FB2005313DE /* Gravatar */ = {
 			isa = PBXGroup;
 			children = (
-				B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */,
 				43FF64EE20DAA0840060A69A /* GravatarUploader.swift */,
 				0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */,
 			);
@@ -22310,7 +22306,6 @@
 				F110239B2318479000C4E84A /* Media.swift in Sources */,
 				176CE91627FB44C100F1E32B /* StatsBaseCell.swift in Sources */,
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
-				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
 				3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
@@ -25121,7 +25116,6 @@
 				837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
 				FABB24F72602FC2C00C8785C /* WordPressOrgRestApi+WordPress.swift in Sources */,
-				FABB24F82602FC2C00C8785C /* GravatarPickerViewController.swift in Sources */,
 				FABB24F92602FC2C00C8785C /* ReaderTableConfiguration.swift in Sources */,
 				FABB24FA2602FC2C00C8785C /* AnnouncementsStore.swift in Sources */,
 				FABB24FB2602FC2C00C8785C /* ReaderListStreamHeader.swift in Sources */,
