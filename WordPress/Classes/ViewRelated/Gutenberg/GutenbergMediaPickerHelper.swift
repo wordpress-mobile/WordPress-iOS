@@ -85,7 +85,6 @@ class GutenbergMediaPickerHelper: NSObject {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
-        picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
         picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
 
         picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")

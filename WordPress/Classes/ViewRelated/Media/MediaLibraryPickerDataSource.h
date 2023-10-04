@@ -6,6 +6,11 @@
 @class Blog;
 @class AbstractPost;
 
+typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
+    MediaPickerDataSourceTypeDevice,
+    MediaPickerDataSourceTypeMediaLibrary
+};
+
 @interface MediaLibraryGroup: NSObject <WPMediaGroup>
 
 - (nonnull instancetype)initWithBlog:(Blog *_Nonnull)blog;
