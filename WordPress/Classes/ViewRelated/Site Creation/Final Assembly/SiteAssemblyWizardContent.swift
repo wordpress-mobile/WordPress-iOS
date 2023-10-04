@@ -143,15 +143,15 @@ final class SiteAssemblyWizardContent: UIViewController {
                let domain = self.siteCreator.address,
                let planId = self.siteCreator.planId,
                let blog = self.createdBlog {
-                self.attemptPlanAndDomainPurchasing(domain: domain, planId: planId, site: blog)
+                self.attemptPurchasing(domain: domain, planId: planId, site: blog)
             } else {
                 self.contentView.status = status
             }
         }
     }
 
-    /// The site must be created before attempting domain and plan bundle purchasing.
-    private func attemptPlanAndDomainPurchasing(domain: DomainSuggestion, planId: Int, site: Blog) {
+    /// The site must be created before attempting plan and/or domain purchasing.
+    private func attemptPurchasing(domain: DomainSuggestion, planId: Int, site: Blog) {
         self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) { [weak self] result in
             guard let self else {
                 return
@@ -209,7 +209,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                 return
             }
             self.contentView.status = .inProgress
-            self.attemptPlanAndDomainPurchasing(domain: domain, planId: planId, site: site)
+            self.attemptPurchasing(domain: domain, planId: planId, site: site)
         }
 
         self.installErrorStateViewController(with: configuration)
