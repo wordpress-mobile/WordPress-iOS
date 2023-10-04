@@ -252,6 +252,11 @@ struct ReaderDetailNewHeaderView: View {
             }
             .frame(width: Constants.authorImageLength, height: Constants.authorImageLength)
             .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color(uiColor: .systemBackground), lineWidth: 1.0)
+            }
+            .offset(x: 2.0, y: 2.0)
         }
     }
 
