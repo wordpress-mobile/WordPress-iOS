@@ -209,6 +209,10 @@ struct ReaderDetailNewHeaderView: View {
         return colorScheme == .light ? color.darkVariant() : color.lightVariant()
     }
 
+    var innerBorderOpacity: CGFloat {
+        return colorScheme == .light ? 0.1 : 0.2
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             headerRow
@@ -270,7 +274,7 @@ struct ReaderDetailNewHeaderView: View {
                 // adds an inward border with low opacity to preserve the avatar's shape.
                 Circle()
                     .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
-                    .opacity(0.1)
+                    .opacity(innerBorderOpacity)
             }
 
             AsyncImage(url: avatarURL) { image in
@@ -284,7 +288,7 @@ struct ReaderDetailNewHeaderView: View {
                 // adds an inward border with low opacity to preserve the avatar's shape.
                 Circle()
                     .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
-                    .opacity(0.1)
+                    .opacity(innerBorderOpacity)
             }
             .background {
                 // adds a border between the the author avatar and the site icon.
