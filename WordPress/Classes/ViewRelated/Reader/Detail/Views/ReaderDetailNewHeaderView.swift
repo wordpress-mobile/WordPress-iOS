@@ -247,7 +247,8 @@ struct ReaderDetailNewHeaderView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
-                authorAndTimestampText
+                    .lineLimit(1)
+                authorAndTimestampView
             }
         }
         .onTapGesture {
@@ -306,29 +307,27 @@ struct ReaderDetailNewHeaderView: View {
             })
     }
 
-    var authorAndTimestampText: some View {
-        guard viewModel.showsAuthorName,
-              !viewModel.authorName.isEmpty else {
-            return timestampText
-        }
+    var authorAndTimestampView: some View {
+        HStack(spacing: 0) {
+            if viewModel.showsAuthorName, !viewModel.authorName.isEmpty {
+                Text(viewModel.authorName)
+                    .font(.footnote)
+                    .foregroundColor(Color(.text))
+                    .lineLimit(1)
 
-        var texts: [Text] = [
-            Text(viewModel.authorName)
-                .font(.footnote)
-                .foregroundColor(Color(.text)),
-
-            Text(" • ")
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryLabel)),
+                Text(" • ")
+                    .font(.footnote)
+                    .foregroundColor(Color(.secondaryLabel))
+                    .lineLimit(1)
+                    .layoutPriority(1)
+            }
 
             timestampText
-        ]
+                .lineLimit(1)
+                .layoutPriority(1)
 
-        if direction == .rightToLeft {
-            texts.reverse()
+            Spacer()
         }
-
-        return texts.reduce(Text(""), +)
     }
 
     var timestampText: Text {
