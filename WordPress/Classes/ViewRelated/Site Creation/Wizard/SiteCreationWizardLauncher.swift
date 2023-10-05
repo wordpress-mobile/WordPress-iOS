@@ -6,13 +6,22 @@ final class SiteCreationWizardLauncher {
         return SiteCreator()
     }()
 
-    let steps: [SiteCreationStep] = [
-        .intent,
-        .design,
-        .address,
-        .plan,
-        .siteAssembly
-    ]
+    let steps: [SiteCreationStep] = {
+        if RemoteFeatureFlag.plansInSiteCreation.enabled() {
+            [.intent,
+             .design,
+             .address,
+             .plan,
+             .siteAssembly
+            ]
+        } else {
+            [.intent,
+             .design,
+             .address,
+             .siteAssembly
+            ]
+        }
+    }()
 
     private lazy var wizard: SiteCreationWizard = {
         return SiteCreationWizard(steps: steps.map { initStep($0) })

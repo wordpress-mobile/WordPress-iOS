@@ -128,7 +128,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         super.init(scrollableView: table,
                    mainTitle: Strings.mainTitle,
                    prompt: Strings.prompt,
-                   primaryActionTitle: Strings.selectDomain,
+                   primaryActionTitle: creator.domainPurchasingEnabled ? Strings.selectDomain : Strings.createSite,
                    accessoryView: searchHeader)
     }
 
@@ -504,6 +504,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                          comment: "Select domain name. Title")
         static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
+        static let createSite: String = NSLocalizedString("Create Site",
+                                                          comment: "Button to progress to the next step")
         static let selectDomain: String = NSLocalizedString("siteCreation.domains.buttons.selectDomain",
                                                             value: "Select domain",
                                                             comment: "Button to progress to the next step after selecting domain in Site Creation")
