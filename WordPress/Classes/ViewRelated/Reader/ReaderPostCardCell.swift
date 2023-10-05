@@ -58,6 +58,10 @@ class ReaderPostCardCell: UITableViewCell {
         self.viewModel = viewModel
     }
 
+    func refreshLikeButton() {
+        configureLikeButton()
+    }
+
     // MARK: - Constants
 
     struct Constants {
@@ -192,6 +196,10 @@ private extension ReaderPostCardCell {
         siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
         siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
         siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSiteHeader))
+        siteStackView.addGestureRecognizer(tapGesture)
+
         contentStackView.addArrangedSubview(siteStackView)
     }
 
@@ -223,7 +231,7 @@ private extension ReaderPostCardCell {
         contentStackView.addArrangedSubview(postCountsLabel)
     }
 
-    func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil) {
+    func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil, action: Selector) {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .secondaryLabel
         button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
@@ -231,16 +239,28 @@ private extension ReaderPostCardCell {
         button.setImage(image, for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
         button.setTitle(text, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
         controlsStackView.addArrangedSubview(button)
     }
 
     func setupControlButtons() {
-        setupControlButton(reblogButton, image: Constants.reblogButtonImage, text: Constants.reblogButtonText)
-        setupControlButton(commentButton, image: Constants.commentButtonImage, text: Constants.commentButtonText)
-        setupControlButton(likeButton, image: Constants.likeButtonImage, text: Constants.likeButtonText)
+        setupControlButton(reblogButton,
+                           image: Constants.reblogButtonImage,
+                           text: Constants.reblogButtonText,
+                           action: #selector(didTapReblog))
+        setupControlButton(commentButton,
+                           image: Constants.commentButtonImage,
+                           text: Constants.commentButtonText,
+                           action: #selector(didTapComment))
+        setupControlButton(likeButton,
+                           image: Constants.likeButtonImage,
+                           text: Constants.likeButtonText,
+                           action: #selector(didTapLike))
         setupFillerView()
         controlsStackView.addArrangedSubview(fillerView)
-        setupControlButton(menuButton, image: Constants.menuButtonImage)
+        setupControlButton(menuButton,
+                           image: Constants.menuButtonImage,
+                           action: #selector(didTapMore))
     }
 
     func setupFillerView() {
@@ -461,6 +481,28 @@ private extension ReaderPostCardCell {
         postSummaryLabel.text = nil
         featuredImageView.image = nil
         postCountsLabel.text = nil
+    }
+
+    // MARK: - Button actions
+
+    @objc func didTapSiteHeader() {
+        viewModel?.showSiteDetails()
+    }
+
+    @objc func didTapReblog() {
+        viewModel?.reblog()
+    }
+
+    @objc func didTapComment() {
+        viewModel?.comment(with: self)
+    }
+
+    @objc func didTapLike() {
+        viewModel?.toggleLike(with: self)
+    }
+
+    @objc func didTapMore() {
+        viewModel?.showMore(with: menuButton)
     }
 
 }

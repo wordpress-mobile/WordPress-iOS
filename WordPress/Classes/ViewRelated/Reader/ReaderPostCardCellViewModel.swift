@@ -60,6 +60,10 @@ struct ReaderPostCardCellViewModel {
         return countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
     }
 
+    private var readerPost: ReaderPost? {
+        contentProvider as? ReaderPost
+    }
+
     var isPostLiked: Bool {
         contentProvider.isLiked()
     }
@@ -98,10 +102,16 @@ struct ReaderPostCardCellViewModel {
 
     private let contentProvider: ReaderPostContentProvider
     private let actionVisibility: ReaderActionsVisibility
+    private weak var parentViewController: ReaderStreamViewController?
 
-    init(contentProvider: ReaderPostContentProvider, isLoggedIn: Bool) {
+    private var followCommentsService: FollowCommentsService?
+
+    init(contentProvider: ReaderPostContentProvider,
+         isLoggedIn: Bool,
+         parentViewController: ReaderStreamViewController) {
         self.contentProvider = contentProvider
         self.actionVisibility = .visible(enabled: isLoggedIn)
+        self.parentViewController = parentViewController
     }
 
     // MARK: - Functions
@@ -144,6 +154,65 @@ struct ReaderPostCardCellViewModel {
             DDLogError(error)
         })
         imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
+    }
+
+    func showSiteDetails() {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+        ReaderHeaderAction().execute(post: readerPost, origin: parentViewController)
+    }
+
+    func reblog() {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+        ReaderReblogAction().execute(readerPost: readerPost, origin: parentViewController, reblogSource: .list)
+    }
+
+    func comment(with cell: UITableViewCell) {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+
+        if let indexPath = parentViewController.tableView.indexPath(for: cell),
+           let topic = parentViewController.readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           parentViewController.shouldShowCommentSpotlight {
+            parentViewController.reloadReaderDiscoverNudgeFlow(at: indexPath)
+        }
+
+        ReaderCommentAction().execute(post: readerPost, origin: parentViewController, source: .postCard)
+    }
+
+    func toggleLike(with cell: ReaderPostCardCell) {
+        guard let readerPost else {
+            return
+        }
+
+        ReaderLikeAction().execute(with: readerPost, completion: { [weak cell] in
+            cell?.refreshLikeButton()
+        })
+    }
+
+    mutating func showMore(with anchor: UIView) {
+        guard let readerPost,
+              let parentViewController,
+              let followCommentsService = FollowCommentsService(post: readerPost) else {
+            return
+        }
+        self.followCommentsService = followCommentsService
+
+        ReaderMenuAction(logged: actionVisibility.isEnabled).execute(
+            post: readerPost,
+            context: parentViewController.viewContext,
+            readerTopic: parentViewController.readerTopic,
+            anchor: anchor,
+            vc: parentViewController,
+            source: ReaderPostMenuSource.card,
+            followCommentsService: followCommentsService
+        )
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
 }
