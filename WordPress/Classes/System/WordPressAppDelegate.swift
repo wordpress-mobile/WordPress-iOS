@@ -92,6 +92,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
+        MediaImageService.migrateCacheIfNeeded()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -129,6 +130,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ABTest.start()
 
+        Media.removeTemporaryData()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)

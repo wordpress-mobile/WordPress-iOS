@@ -558,7 +558,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
-            return [self supportsPluginManagement];
+            return [self supportsPluginManagement] && [self isAdmin];
         case BlogFeatureJetpackImageSettings:
             return [self supportsJetpackImageSettings];
         case BlogFeatureJetpackSettings:
@@ -686,8 +686,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
     BOOL isTransferrable = self.isHostedAtWPcom
     && self.hasBusinessPlan
-    && self.siteVisibility != SiteVisibilityPrivate
-    && self.isAdmin;
+    && self.siteVisibility != SiteVisibilityPrivate;
 
     BOOL supports = isTransferrable || hasRequiredJetpack;
 
@@ -696,8 +695,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     if(!supports && !self.account){
         supports = !self.isHostedAtWPcom
         && self.wordPressOrgRestApi
-        && [self hasRequiredWordPressVersion:@"5.5"]
-        && self.isAdmin;
+        && [self hasRequiredWordPressVersion:@"5.5"];
     }
 
     return supports;

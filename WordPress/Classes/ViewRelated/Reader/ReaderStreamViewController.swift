@@ -216,6 +216,8 @@ import Combine
 
     private var readerTopicChangesObserver: AnyCancellable?
 
+    private weak var streamHeader: ReaderStreamHeader?
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -591,24 +593,51 @@ import Combine
             return
         }
 
-        if let tableHeaderView = tableView.tableHeaderView {
-            header.isHidden = tableHeaderView.isHidden
-        }
+        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && FeatureFlag.readerImprovements.enabled
+        let headerView = {
+            guard isNewSiteHeader else {
+                return header
+            }
 
-        tableView.tableHeaderView = header
+            // The container view is so that the header respects the safe area boundaries and expands
+            // the header's background color to the screen's edges.
+            let containerView = UIView()
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.backgroundColor = header.backgroundColor
+            header.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(header)
+            return containerView
+        }()
+
+        if let tableHeaderView = tableView.tableHeaderView {
+            headerView.isHidden = tableHeaderView.isHidden
+        }
+        tableView.tableHeaderView = headerView
+        streamHeader = header as? ReaderStreamHeader
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-        let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
-        let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
+        let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
+        let topConstraint = headerView.topAnchor.constraint(equalTo: tableView.topAnchor)
+        let headerWidthConstraint = headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         headerWidthConstraint.priority = UILayoutPriority(999)
         centerConstraint.priority = UILayoutPriority(999)
 
-        NSLayoutConstraint.activate([
+        var constraints = [
             centerConstraint,
             headerWidthConstraint,
             topConstraint
-        ])
+        ]
+
+        if isNewSiteHeader {
+            constraints.append(contentsOf: [
+                header.topAnchor.constraint(equalTo: headerView.topAnchor),
+                header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+                header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            ])
+        }
+
+        NSLayoutConstraint.activate(constraints)
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -689,6 +718,8 @@ import Combine
                 return
             }
             title = NSLocalizedString("Topic", comment: "Topic page title")
+        } else if FeatureFlag.readerImprovements.enabled && ReaderHelpers.topicType(topic) == .site {
+            title = ""
         } else {
             title = topic.title
         }
@@ -839,10 +870,10 @@ import Combine
             assertionFailure("A reader topic is required")
             return
         }
-        guard let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+        guard let streamHeader else {
             return
         }
-        header.configureHeader(topic)
+        streamHeader.configureHeader(topic)
     }
 
     func showManageSites(animated: Bool = true) {

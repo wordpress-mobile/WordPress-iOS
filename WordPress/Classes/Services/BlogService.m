@@ -206,7 +206,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
     
-    if ([DomainsDashboardCardHelper isFeatureEnabled] || [FreeToPaidPlansDashboardCardHelper isFeatureEnabled]) {
+    if ([FreeToPaidPlansDashboardCardHelper isFeatureEnabled]) {
         dispatch_group_enter(syncGroup);
         [self refreshDomainsFor:blog success:^{
             dispatch_group_leave(syncGroup);

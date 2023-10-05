@@ -49,6 +49,14 @@ extension CGSize {
     func clamp(min minValue: Int, max maxValue: Int) -> CGSize {
         return clamp(min: CGFloat(minValue), max: CGFloat(maxValue))
     }
+
+    func scaled(by scale: CGFloat) -> CGSize {
+        CGSize(width: width * scale, height: height * scale)
+    }
+
+    func rounded() -> CGSize {
+        CGSize(width: width.rounded(), height: height.rounded())
+    }
 }
 
 extension CGFloat {

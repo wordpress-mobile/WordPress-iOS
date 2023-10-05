@@ -185,6 +185,7 @@ extension PublishingEditor {
         }
 
         if action.isAsync,
+           action != .submitForReview,
            let postStatus = self.post.original?.status ?? self.post.status,
            ![.publish, .publishPrivate].contains(postStatus) {
             WPAnalytics.track(.editorPostPublishTap)

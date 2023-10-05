@@ -1694,10 +1694,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
-    view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
-        [weakSelf removeQuickStartFromBlog:weakSelf.blog
-                                sourceView:header
-                                sourceRect:header.ellipsisButton.frame];
+    view.ellipsisButtonDidTouch = ^{
+        [weakSelf removeQuickStartFromBlog:weakSelf.blog];
     };
     return view;
 }

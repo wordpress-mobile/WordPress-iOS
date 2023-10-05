@@ -491,11 +491,6 @@ import Foundation
     case jetpackPluginConnectUserAccountFailed
     case jetpackPluginConnectUserAccountCompleted
 
-    // Domains Dashboard Card
-    case directDomainsPurchaseDashboardCardShown
-    case directDomainsPurchaseDashboardCardTapped
-    case directDomainsPurchaseDashboardCardHidden
-
     // Jetpack Social - Twitter Deprecation Notice
     case jetpackSocialTwitterNoticeLinkTapped
 
@@ -1363,14 +1358,6 @@ import Foundation
             return "jetpack_plugin_connect_user_account_failed"
         case .jetpackPluginConnectUserAccountCompleted:
             return "jetpack_plugin_connect_user_account_completed"
-
-        // Domains Dashboard Card
-        case .directDomainsPurchaseDashboardCardShown:
-            return "direct_domains_purchase_dashboard_card_shown"
-        case .directDomainsPurchaseDashboardCardHidden:
-            return "direct_domains_purchase_dashboard_card_hidden"
-        case .directDomainsPurchaseDashboardCardTapped:
-            return "direct_domains_purchase_dashboard_card_tapped"
 
         // Jetpack Social - Twitter Deprecation Notice
         case .jetpackSocialTwitterNoticeLinkTapped:

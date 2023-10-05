@@ -6,6 +6,7 @@ final class MediaCollectionCell: UICollectionViewCell {
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
     private var viewModel: MediaCollectionCellViewModel?
+    private var badgeView: MediaCollectionCellBadgeView?
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -46,6 +47,7 @@ final class MediaCollectionCell: UICollectionViewCell {
         imageView.image = nil
         imageView.alpha = 0
         placeholderView.alpha = 1
+        badgeView?.isHidden = true
     }
 
     func configure(viewModel: MediaCollectionCellViewModel) {
@@ -72,6 +74,17 @@ final class MediaCollectionCell: UICollectionViewCell {
             }
         }.store(in: &cancellables)
 
+        viewModel.$badgeText.sink { [weak self] text in
+            guard let self else { return }
+            if let text {
+                let badgeView = self.getBadgeView()
+                badgeView.isHidden = false
+                badgeView.textLabel.text = text
+            } else {
+                self.badgeView?.isHidden = true
+            }
+        }.store(in: &cancellables)
+
         viewModel.onAppear()
     }
 
@@ -86,5 +99,20 @@ final class MediaCollectionCell: UICollectionViewCell {
             self.imageView.alpha = 1
             self.placeholderView.alpha = 0
         }
+    }
+
+    private func getBadgeView() -> MediaCollectionCellBadgeView {
+        if let badgeView {
+            return badgeView
+        }
+        let badgeView = MediaCollectionCellBadgeView()
+        contentView.addSubview(badgeView)
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            badgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            badgeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
+        ])
+        self.badgeView = badgeView
+        return badgeView
     }
 }
