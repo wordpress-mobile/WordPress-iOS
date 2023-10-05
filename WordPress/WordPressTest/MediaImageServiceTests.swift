@@ -31,12 +31,13 @@ class MediaImageServiceTests: CoreDataTestCase {
     func testSmallThumbnailForLocalImage() async throws {
         // GIVEN
         let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
         media.mediaType = .image
         media.width = 1024
         media.height = 680
         let localURL = try makeLocalURL(forResource: "test-image", fileExtension: "jpg")
         media.absoluteLocalURL = localURL
-        try mainContext.obtainPermanentIDs(for: [media])
+        try mainContext.save()
 
         // WHEN
         let thumbnail = try await sut.thumbnail(for: media)
@@ -60,12 +61,13 @@ class MediaImageServiceTests: CoreDataTestCase {
     func testSmallThumbnailForRemoteImage() async throws {
         // GIVEN
         let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
         media.mediaType = .image
         media.width = 1024
         media.height = 680
         let remoteURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
         media.remoteURL = remoteURL.absoluteString
-        try mainContext.obtainPermanentIDs(for: [media])
+        try mainContext.save()
 
         // GIVEN remote image is mocked and is resized based on the parameters
         try mockResizableImage(withResource: "test-image", fileExtension: "jpg")
@@ -184,6 +186,13 @@ class MediaImageServiceTests: CoreDataTestCase {
     }
 
     // MARK: - Helpers
+
+    func makeEmptyBlog() -> Blog {
+        let blog = Blog.createBlankBlog(in: mainContext)
+        blog.url = "example.com/blog"
+        blog.xmlrpc = "test"
+        return blog
+    }
 
     /// `Media` is hardcoded to work with a specific direcoty URL managed by `MediaFileManager`
     func makeLocalURL(forResource name: String, fileExtension: String) throws -> URL {
