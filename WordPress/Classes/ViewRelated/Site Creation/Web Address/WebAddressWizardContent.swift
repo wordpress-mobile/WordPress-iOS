@@ -145,6 +145,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         loadHeaderView()
         addAddressHintView()
         configureUIIfNeeded()
+        navigationItem.backButtonTitle = Strings.backButtonTitle
     }
 
     private func configureUIIfNeeded() {
@@ -517,6 +518,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                            comment: "Suggested domains")
         static let noMatch: String = NSLocalizedString("This domain is unavailable",
                                                        comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
+        static let backButtonTitle = NSLocalizedString("siteCreation.domain.backButton.title",
+                                                       value: "Domains",
+                                                       comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
+        )
     }
 }
 
