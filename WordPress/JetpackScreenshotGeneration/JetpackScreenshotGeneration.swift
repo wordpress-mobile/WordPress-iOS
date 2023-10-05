@@ -36,7 +36,6 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         let mySite = try MySiteScreen()
         let mySiteMenu = try MySiteMoreMenuScreen()
-        let chooseLayout = try ChooseLayoutScreen()
 
         // Get Site Creation screenshot
         let mySitesScreen = try mySite.showSiteSwitcher()
@@ -52,7 +51,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(2, named: "CreateNew")
 
         // Get Page Builder screenshot
-        try createSheet.goToSitePage()
+        let chooseLayout = try createSheet.goToSitePage()
             .thenTakeScreenshot(3, named: "PageBuilder")
 
         try chooseLayout.closeModal()

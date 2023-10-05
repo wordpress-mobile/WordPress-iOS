@@ -8,9 +8,9 @@ class PageTests: XCTestCase {
         setUpTestSuite()
         try await WireMock.setUpScenario(scenario: "new_page_flow")
 
-        try LoginFlow.login(
-            email: WPUITestCredentials.testWPcomUserEmail
-        )
+        try LoginFlow
+            .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomFreeSite)
     }
 
     override func tearDown() async throws {
@@ -25,6 +25,7 @@ class PageTests: XCTestCase {
             .goToMySiteScreen()
             .goToCreateSheet()
             .goToSitePage()
+            .createBlankPage()
             .enterTextInTitle(text: postTitle, postType: .page)
             .post(action: .publish, postType: .page)
 
