@@ -14,6 +14,12 @@ final class PlanWizardContent: WebKitViewController {
         super.init(configuration: configuration)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        titleView.isHidden = true
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
