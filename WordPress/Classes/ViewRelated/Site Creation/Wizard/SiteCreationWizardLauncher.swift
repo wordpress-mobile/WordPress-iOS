@@ -8,17 +8,19 @@ final class SiteCreationWizardLauncher {
 
     let steps: [SiteCreationStep] = {
         if RemoteFeatureFlag.plansInSiteCreation.enabled() {
-            [.intent,
-             .design,
-             .address,
-             .plan,
-             .siteAssembly
+            return [
+                .intent,
+                .design,
+                .address,
+                .plan,
+                .siteAssembly
             ]
         } else {
-            [.intent,
-             .design,
-             .address,
-             .siteAssembly
+            return [
+                .intent,
+                .design,
+                .address,
+                .siteAssembly
             ]
         }
     }()
