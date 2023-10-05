@@ -9,23 +9,17 @@ final class PlanWizardContent: WebKitViewController {
     init(viewModel: PlanWizardContentViewModel, completion: @escaping PlanSelectionCallback) {
         self.viewModel = viewModel
         self.completion = completion
-        let configuration = WebViewControllerConfiguration(url: nil)
+        let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
+        configuration.displayStatusInNavigationBar = false
         super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        titleView.isHidden = true
         view.backgroundColor = .basicBackground
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        load(request: URLRequest(url: viewModel.url))
     }
 
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
