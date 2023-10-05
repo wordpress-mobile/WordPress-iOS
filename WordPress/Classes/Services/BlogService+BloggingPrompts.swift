@@ -5,7 +5,8 @@ extension BlogService {
     @objc func updatePromptSettings(for blog: RemoteBlog?, context: NSManagedObjectContext) {
         guard let blog = blog,
               let jsonSettings = blog.options["blogging_prompts_settings"] as? [String: Any],
-              let settingsValue = jsonSettings["value"],
+              let settingsValue = jsonSettings["value"] as? [String: Any],
+              JSONSerialization.isValidJSONObject(settingsValue),
               let data = try? JSONSerialization.data(withJSONObject: settingsValue),
               let remoteSettings = try? JSONDecoder().decode(RemoteBloggingPromptsSettings.self, from: data) else {
             return

@@ -140,7 +140,7 @@ final class SiteAssemblyContentView: UIView {
         if let isFreeDomain = isFreeDomain {
             return !isFreeDomain
         }
-        return siteCreator.shouldShowDomainCheckout
+        return siteCreator.shouldShowCheckout
     }
 
     // MARK: SiteAssemblyContentView

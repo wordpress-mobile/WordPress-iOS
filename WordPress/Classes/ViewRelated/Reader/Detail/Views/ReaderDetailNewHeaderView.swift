@@ -18,17 +18,20 @@ protocol ReaderDetailHeader: NSObjectProtocol {
 // MARK: - SwiftUI View Host
 
 class ReaderDetailNewHeaderViewHost: UIView {
-    weak var delegate: ReaderDetailHeaderViewDelegate?
+    weak var delegate: ReaderDetailHeaderViewDelegate? {
+        didSet {
+            viewModel.headerDelegate = delegate
+        }
+    }
 
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
-    private let isLoggedIn: Bool
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
     // TODO: Populate this with values from the ReaderPost.
     private lazy var viewModel: ReaderDetailHeaderViewModel = {
         $0.topicDelegate = self
-        $0.headerDelegate = delegate
         return $0
     }(ReaderDetailHeaderViewModel())
 
@@ -36,9 +39,7 @@ class ReaderDetailNewHeaderViewHost: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(isLoggedIn: Bool) {
-        self.isLoggedIn = isLoggedIn
-
+    init() {
         super.init(frame: .zero)
         setupView()
     }
@@ -47,9 +48,6 @@ class ReaderDetailNewHeaderViewHost: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         let headerView = ReaderDetailNewHeaderView(viewModel: viewModel) { [weak self] in
-            guard let swiftUIView = self?.subviews.first else {
-                return
-            }
             self?.refreshContainerLayout()
         }
 
@@ -72,12 +70,11 @@ class ReaderDetailNewHeaderViewHost: UIView {
 extension ReaderDetailNewHeaderViewHost: ReaderDetailHeader {
     func configure(for post: ReaderPost) {
         viewModel.configure(with: TaggedManagedObjectID(post),
-                            isLoggedIn: isLoggedIn,
                             completion: refreshContainerLayout)
     }
 
     func refreshFollowButton() {
-        viewModel.isFollowingSite = true
+        viewModel.refreshFollowState()
     }
 }
 
@@ -97,12 +94,13 @@ extension ReaderDetailNewHeaderViewHost: ReaderTopicCollectionViewCoordinatorDel
 
 class ReaderDetailHeaderViewModel: ObservableObject {
     private let coreDataStack: CoreDataStackSwift
+    private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
+
     weak var headerDelegate: ReaderDetailHeaderViewDelegate?
     weak var topicDelegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
     // Follow/Unfollow states
     @Published var isFollowingSite = false
-    @Published var showsFollowButton = false
     @Published var isFollowButtonInteractive = true
 
     @Published var siteIconURL: URL? = nil
@@ -113,20 +111,20 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     @Published var postTitle: String? = nil // post title can be empty.
     @Published var tags: [String] = []
 
+    @Published var showsAuthorName: Bool = true
+
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
 
-    func configure(with objectID: TaggedManagedObjectID<ReaderPost>,
-                   isLoggedIn: Bool,
-                   completion: (() -> Void)?) {
+    func configure(with objectID: TaggedManagedObjectID<ReaderPost>, completion: (() -> Void)?) {
+        postObjectID = objectID
         coreDataStack.performQuery { [weak self] context -> Void in
             guard let self,
                   let post = try? context.existingObject(with: objectID) else {
                 return
             }
 
-            self.showsFollowButton = isLoggedIn
             self.isFollowingSite = post.isFollowing
 
             self.siteIconURL = post.siteIconForDisplay(ofSize: Int(ReaderDetailNewHeaderView.Constants.siteIconLength))
@@ -144,12 +142,29 @@ class ReaderDetailHeaderViewModel: ObservableObject {
                 self.siteName = siteName
             }
 
+            // hide the author name if it exactly matches the site name.
+            // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
+            self.showsAuthorName = self.authorName != self.siteName
+
             self.postTitle = post.titleForDisplay() ?? nil
             self.tags = post.tagsForDisplay() ?? []
         }
 
         DispatchQueue.main.async {
             completion?()
+        }
+    }
+
+    func refreshFollowState() {
+        guard let postObjectID else {
+            return
+        }
+
+        isFollowingSite = coreDataStack.performQuery { context in
+            guard let post = try? context.existingObject(with: postObjectID) else {
+                return false
+            }
+            return post.isFollowing
         }
     }
 
@@ -208,10 +223,8 @@ struct ReaderDetailNewHeaderView: View {
     var headerRow: some View {
         HStack(spacing: 8.0) {
             authorStack
-            if viewModel.showsFollowButton {
-                Spacer()
-                followButton(isPhone: WPDeviceIdentification.isiPhone())
-            }
+            Spacer()
+            followButton(isPhone: WPDeviceIdentification.isiPhone())
         }
     }
 
@@ -226,7 +239,7 @@ struct ReaderDetailNewHeaderView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
-                authorText
+                authorAndTimestampText
             }
         }
         .onTapGesture {
@@ -252,6 +265,11 @@ struct ReaderDetailNewHeaderView: View {
             }
             .frame(width: Constants.authorImageLength, height: Constants.authorImageLength)
             .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color(uiColor: .systemBackground), lineWidth: 1.0)
+            }
+            .offset(x: 2.0, y: 2.0)
         }
     }
 
@@ -267,7 +285,12 @@ struct ReaderDetailNewHeaderView: View {
             })
     }
 
-    var authorText: some View {
+    var authorAndTimestampText: some View {
+        guard viewModel.showsAuthorName,
+              !viewModel.authorName.isEmpty else {
+            return timestampText
+        }
+
         var texts: [Text] = [
             Text(viewModel.authorName)
                 .font(.footnote)
@@ -277,11 +300,7 @@ struct ReaderDetailNewHeaderView: View {
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryLabel)),
 
-            // TODO: Process the logic for relative post time.
-            // TODO: Use the current relative time formatter.
-            Text(viewModel.relativePostTime)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryLabel))
+            timestampText
         ]
 
         if direction == .rightToLeft {
@@ -289,6 +308,12 @@ struct ReaderDetailNewHeaderView: View {
         }
 
         return texts.reduce(Text(""), +)
+    }
+
+    var timestampText: Text {
+        Text(viewModel.relativePostTime)
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryLabel))
     }
 
     /// TODO: Update when the Follow buttons are updated.
