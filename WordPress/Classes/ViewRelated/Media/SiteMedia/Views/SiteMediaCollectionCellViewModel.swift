@@ -9,7 +9,7 @@ final class SiteMediaCollectionCellViewModel {
     @Published private(set) var durationText: String?
     @Published private(set) var documentInfo: SiteMediaDocumentInfoViewModel?
 
-    @Published var badgeText: String?
+    @Published var badge: BadgeType?
 
     private let media: Media
     private let mediaType: MediaType
@@ -22,6 +22,11 @@ final class SiteMediaCollectionCellViewModel {
     private var imageTask: Task<Void, Never>?
     private var progressObserver: NSKeyValueObservation?
     private var observations: [NSKeyValueObservation] = []
+
+    enum BadgeType {
+        case unordered
+        case ordered(index: Int)
+    }
 
     deinit {
         imageTask?.cancel()

@@ -74,8 +74,8 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             .sink { [weak self] in self?.didUpdateOverlayState($0) }
             .store(in: &cancellables)
 
-        viewModel.$badgeText
-            .sink { [weak self] in self?.didUpdateBadgeText($0) }
+        viewModel.$badge
+            .sink { [weak self] in self?.didUpdateBadge($0) }
             .store(in: &cancellables)
 
         viewModel.$durationText
@@ -102,11 +102,11 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         }
     }
 
-    private func didUpdateBadgeText(_ text: String?) {
-        if let text {
+    private func didUpdateBadge(_ badge: SiteMediaCollectionCellViewModel.BadgeType?) {
+        if let badge {
             let badgeView = getBadgeView()
             badgeView.isHidden = false
-            badgeView.textLabel.text = text
+            badgeView.setBadge(badge)
         } else {
             badgeView?.isHidden = true
         }
