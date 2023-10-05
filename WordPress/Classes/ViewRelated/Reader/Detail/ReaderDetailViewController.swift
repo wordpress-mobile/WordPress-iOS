@@ -78,7 +78,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard FeatureFlag.readerImprovements.enabled else {
             return ReaderDetailHeaderView.loadFromNib()
         }
-        return ReaderDetailNewHeaderViewHost(isLoggedIn: AccountHelper.isDotcomAvailable())
+        return ReaderDetailNewHeaderViewHost()
     }()
 
     /// Bottom toolbar

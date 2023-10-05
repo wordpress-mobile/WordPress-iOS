@@ -27,8 +27,6 @@ class ReaderDetailNewHeaderViewHost: UIView {
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
-    private let isLoggedIn: Bool
-
     private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
     // TODO: Populate this with values from the ReaderPost.
@@ -41,9 +39,7 @@ class ReaderDetailNewHeaderViewHost: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(isLoggedIn: Bool) {
-        self.isLoggedIn = isLoggedIn
-
+    init() {
         super.init(frame: .zero)
         setupView()
     }
@@ -74,7 +70,6 @@ class ReaderDetailNewHeaderViewHost: UIView {
 extension ReaderDetailNewHeaderViewHost: ReaderDetailHeader {
     func configure(for post: ReaderPost) {
         viewModel.configure(with: TaggedManagedObjectID(post),
-                            isLoggedIn: isLoggedIn,
                             completion: refreshContainerLayout)
     }
 
@@ -106,7 +101,6 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
     // Follow/Unfollow states
     @Published var isFollowingSite = false
-    @Published var showsFollowButton = false
     @Published var isFollowButtonInteractive = true
 
     @Published var siteIconURL: URL? = nil
@@ -123,9 +117,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         self.coreDataStack = coreDataStack
     }
 
-    func configure(with objectID: TaggedManagedObjectID<ReaderPost>,
-                   isLoggedIn: Bool,
-                   completion: (() -> Void)?) {
+    func configure(with objectID: TaggedManagedObjectID<ReaderPost>, completion: (() -> Void)?) {
         postObjectID = objectID
         coreDataStack.performQuery { [weak self] context -> Void in
             guard let self,
@@ -133,7 +125,6 @@ class ReaderDetailHeaderViewModel: ObservableObject {
                 return
             }
 
-            self.showsFollowButton = isLoggedIn
             self.isFollowingSite = post.isFollowing
 
             self.siteIconURL = post.siteIconForDisplay(ofSize: Int(ReaderDetailNewHeaderView.Constants.siteIconLength))
@@ -232,10 +223,8 @@ struct ReaderDetailNewHeaderView: View {
     var headerRow: some View {
         HStack(spacing: 8.0) {
             authorStack
-            if viewModel.showsFollowButton {
-                Spacer()
-                followButton(isPhone: WPDeviceIdentification.isiPhone())
-            }
+            Spacer()
+            followButton(isPhone: WPDeviceIdentification.isiPhone())
         }
     }
 
