@@ -10,6 +10,7 @@ final class PlanWizardContent: WebKitViewController {
         self.viewModel = viewModel
         self.completion = completion
         let configuration = WebViewControllerConfiguration(url: nil)
+        configuration.secureInteraction = true
         super.init(configuration: configuration)
     }
 
