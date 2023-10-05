@@ -19,20 +19,13 @@ final class PlanWizardContent: WebKitViewController {
         super.viewDidLoad()
 
         titleView.isHidden = true
+        view.backgroundColor = .basicBackground
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         load(request: URLRequest(url: viewModel.url))
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        /// Reload web view when View Controller is closed
-        /// Ensures outdated web view is not shown when navigating back and forth
-        webView.load(URLRequest(url: URL(string: "about:blank")!))
     }
 
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
