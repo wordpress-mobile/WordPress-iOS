@@ -66,7 +66,7 @@ final class AddressTableViewCell: UITableViewCell {
     private let trailingLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.font = Appearance.domainFont
+        label.font = Appearance.regularCostFont
         label.textColor = Appearance.domainTextColor
         label.numberOfLines = 2
         return label
@@ -181,8 +181,7 @@ final class AddressTableViewCell: UITableViewCell {
         switch cost {
         case .freeWithPaidPlan:
             let firstYearAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: Appearance.saleCostTextColor,
-                .font: Appearance.smallCostFont
+                .foregroundColor: Appearance.saleCostTextColor
             ]
 
             let newline = attributedString.length > 0 ? "\n" : ""
@@ -199,14 +198,12 @@ final class AddressTableViewCell: UITableViewCell {
         switch cost {
         case .free:
             let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.label,
-                .font: Appearance.regularCostFont
+                .foregroundColor: UIColor.label
             ]
             return NSAttributedString(string: ViewModel.Strings.free, attributes: attributes)
         case .regular(let cost):
             var attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.label,
-                .font: Appearance.regularCostFont
+                .foregroundColor: UIColor.label
             ]
             let attributedString = NSMutableAttributedString(string: cost, attributes: attributes)
             attributes[.font] = Appearance.smallCostFont
@@ -233,7 +230,6 @@ final class AddressTableViewCell: UITableViewCell {
         case .freeWithPaidPlan(let cost):
             let costAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.secondaryLabel,
-                .font: Appearance.regularCostFont,
                 .strikethroughStyle: NSUnderlineStyle.single.rawValue
             ]
             let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
