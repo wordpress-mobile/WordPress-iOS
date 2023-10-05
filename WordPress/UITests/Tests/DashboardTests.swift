@@ -6,6 +6,7 @@ class DashboardTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
 
         try LoginFlow
@@ -14,6 +15,7 @@ class DashboardTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
+        try super.tearDownWithError()
     }
 
     func testFreeToPaidCardNavigation() throws {
