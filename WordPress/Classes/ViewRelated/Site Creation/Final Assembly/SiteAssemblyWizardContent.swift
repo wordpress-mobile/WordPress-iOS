@@ -17,8 +17,8 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// The service with which the final assembly interacts to coordinate site creation.
     private let service: SiteAssemblyService
 
-    /// Displays the domain checkout web view.
-    private lazy var domainPurchasingController = DomainPurchasingWebFlowController(viewController: self, origin: .siteCreation)
+    /// Displays the domain and plan checkout web view.
+    private lazy var siteCreationPurchasingController = SiteCreationPurchasingWebFlowController(viewController: self, origin: .siteCreation)
 
     /// The new `Blog`, if successfully created; `nil` otherwise.
     private var createdBlog: Blog?
@@ -107,7 +107,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private func attemptSiteCreation() {
         let creationRequest = siteCreator.build()
-        let shouldPerformDomainPurchasingStep = siteCreator.shouldShowDomainCheckout
+        let shouldPerformPurchasingStep = siteCreator.shouldShowCheckout
         service.createSite(creationRequest: creationRequest) { [weak self] status in
             guard let self = self else {
                 return
@@ -139,19 +139,20 @@ final class SiteAssemblyWizardContent: UIViewController {
                 SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
             }
             if status == .succeeded,
-               shouldPerformDomainPurchasingStep,
+               shouldPerformPurchasingStep,
                let domain = self.siteCreator.address,
+               let planId = self.siteCreator.planId,
                let blog = self.createdBlog {
-                self.attemptDomainPurchasing(domain: domain, site: blog)
+                self.attemptPurchasing(domain: domain, planId: planId, site: blog)
             } else {
                 self.contentView.status = status
             }
         }
     }
 
-    /// The site must be created before attempting domain purchasing.
-    private func attemptDomainPurchasing(domain: DomainSuggestion, site: Blog) {
-        self.domainPurchasingController.purchase(domain: domain, site: site) { [weak self] result in
+    /// The site must be created before attempting plan and/or domain purchasing.
+    private func attemptPurchasing(domain: DomainSuggestion, planId: Int, site: Blog) {
+        self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) { [weak self] result in
             guard let self else {
                 return
             }
@@ -164,7 +165,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                 self.contentView.isFreeDomain = true
                 switch error {
                 case .unsupportedRedirect, .internal, .invalidInput, .other:
-                    self.installDomainCheckoutErrorStateViewController(domain: domain, site: site)
+                    self.installDomainCheckoutErrorStateViewController(domain: domain, planId: planId, site: site)
                     self.contentView.status = .failed
                 case .canceled:
                     self.contentView.status = .succeeded
@@ -200,7 +201,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         self.installErrorStateViewController(with: configuration)
     }
 
-    private func installDomainCheckoutErrorStateViewController(domain: DomainSuggestion, site: Blog) {
+    private func installDomainCheckoutErrorStateViewController(domain: DomainSuggestion, planId: Int, site: Blog) {
         var configuration = ErrorStateViewConfiguration.configuration(type: .domainCheckoutFailed)
 
         configuration.retryActionHandler = { [weak self] in
@@ -208,7 +209,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                 return
             }
             self.contentView.status = .inProgress
-            self.attemptDomainPurchasing(domain: domain, site: site)
+            self.attemptPurchasing(domain: domain, planId: planId, site: site)
         }
 
         self.installErrorStateViewController(with: configuration)

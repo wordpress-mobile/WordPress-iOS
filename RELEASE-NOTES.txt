@@ -1,5 +1,6 @@
 23.5
 -----
+* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
 
 
 23.4
