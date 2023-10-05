@@ -72,6 +72,10 @@ public class BlockEditorScreen: ScreenObject {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
     }
 
+    private let returnButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Return"]
+    }
+
     private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Set reminders"]
     }
@@ -105,6 +109,7 @@ public class BlockEditorScreen: ScreenObject {
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
+    var returnButton: XCUIElement { returnButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
@@ -115,7 +120,13 @@ public class BlockEditorScreen: ScreenObject {
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter, redoButtonGetter, undoButtonGetter ],
+            expectedElementGetters: [
+                editorNavigationBarGetter,
+                addBlockButtonGetter,
+                editorCloseButtonGetter,
+                redoButtonGetter,
+                undoButtonGetter
+            ],
             app: app
         )
     }
@@ -258,7 +269,8 @@ public class BlockEditorScreen: ScreenObject {
         return try EditorPublishEpilogueScreen()
     }
 
-    public func post(action: postAction) throws {
+    @discardableResult
+    public func post(action: postAction) throws -> Self {
         let postButton = app.buttons[action.rawValue]
         let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
@@ -271,15 +283,22 @@ public class BlockEditorScreen: ScreenObject {
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
 
         postNowButton.tap()
-        guard action == .publish else { return }
 
-        dismissBloggingRemindersAlertIfNeeded()
+        if action == .publish {
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+
+        return self
+    }
+
+    public func waitForNoticeToDisappear() throws {
+        waitForElementToDisappear(noticeViewButton)
     }
 
     @discardableResult
     public func openPostSettings() throws -> EditorPostSettings {
-        moreButton.tap()
-        postSettingsButton.tap()
+        waitAndTap(moreButton)
+        waitAndTap(postSettingsButton)
 
         return try EditorPostSettings()
     }
