@@ -195,11 +195,19 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 struct ReaderDetailNewHeaderView: View {
 
     @SwiftUI.Environment(\.layoutDirection) var direction
+    @SwiftUI.Environment(\.colorScheme) var colorScheme
 
     @ObservedObject var viewModel: ReaderDetailHeaderViewModel
 
     /// A callback for the parent to react to collection view size changes.
     var onTagsViewUpdated: (() -> Void)? = nil
+
+    /// Used for the inward border. We want the color to be inverted, such that the avatar can "preserve" its shape
+    /// when the image has low or almost no contrast with the background (imagine white avatar on white background).
+    var avatarInnerBorderColor: UIColor {
+        let color = UIColor.systemBackground
+        return colorScheme == .light ? color.darkVariant() : color.lightVariant()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
@@ -257,6 +265,12 @@ struct ReaderDetailNewHeaderView: View {
             }
             .frame(width: Constants.siteIconLength, height: Constants.siteIconLength)
             .clipShape(Circle())
+            .overlay {
+                // adds an inward border with low opacity to preserve the avatar's shape.
+                Circle()
+                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
+                    .opacity(0.1)
+            }
 
             AsyncImage(url: avatarURL) { image in
                 image.resizable()
@@ -266,6 +280,13 @@ struct ReaderDetailNewHeaderView: View {
             .frame(width: Constants.authorImageLength, height: Constants.authorImageLength)
             .clipShape(Circle())
             .overlay {
+                // adds an inward border with low opacity to preserve the avatar's shape.
+                Circle()
+                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
+                    .opacity(0.1)
+            }
+            .background {
+                // adds a border between the the author avatar and the site icon.
                 Circle()
                     .stroke(Color(uiColor: .systemBackground), lineWidth: 1.0)
             }
