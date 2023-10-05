@@ -60,58 +60,76 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
     func configure(viewModel: SiteMediaCollectionCellViewModel) {
         self.viewModel = viewModel
 
-        switch viewModel.mediaType {
-        case .image, .video:
-            if let image = viewModel.getCachedThubmnail() {
-                // Display with no animations. It should happen often thanks to prefetching.
-                setImage(image)
-            } else {
-                let mediaID = viewModel.mediaID
-                viewModel.onImageLoaded = { [weak self] in
-                    self?.didLoadImage($0, for: mediaID)
-                }
+        if let image = viewModel.getCachedThubmnail() {
+            // Display with no animations. It should happen often thanks to prefetching.
+            setImage(image)
+        } else {
+            let mediaID = viewModel.mediaID
+            viewModel.onImageLoaded = { [weak self] in
+                self?.didLoadImage($0, for: mediaID)
             }
-        case .document, .powerpoint, .audio:
-            getDocumentInfoView().configure(viewModel)
-            getDocumentInfoView().isHidden = false
-        @unknown default:
-            break
         }
 
-        viewModel.$overlayState.sink { [overlayView] in
-            if let state = $0 {
-                overlayView.state = state
-                overlayView.isHidden = false
-            } else {
-                overlayView.isHidden = true
-            }
-        }.store(in: &cancellables)
+        viewModel.$overlayState
+            .sink { [weak self] in self?.didUpdateOverlayState($0) }
+            .store(in: &cancellables)
 
-        viewModel.$badgeText.sink { [weak self] text in
-            guard let self else { return }
-            if let text {
-                let badgeView = self.getBadgeView()
-                badgeView.isHidden = false
-                badgeView.textLabel.text = text
-            } else {
-                self.badgeView?.isHidden = true
-            }
-        }.store(in: &cancellables)
+        viewModel.$badgeText
+            .sink { [weak self] in self?.didUpdateBadgeText($0) }
+            .store(in: &cancellables)
 
-        viewModel.$durationText.sink { [weak self] text in
-            guard let self else { return }
-            if let text {
-                let durationView = self.getDurationView()
-                durationView.isHidden = false
-                durationView.textLabel.text = text
-            } else {
-                self.durationView?.isHidden = true
-            }
-        }.store(in: &cancellables)
+        viewModel.$durationText
+            .sink { [weak self] in self?.didUpdateDurationText($0) }
+            .store(in: &cancellables)
+
+        viewModel.$documentInfo
+            .sink { [weak self] in self?.didUpdateDocumentInfo($0) }
+            .store(in: &cancellables)
 
         configureAccessibility(viewModel)
 
         viewModel.onAppear()
+    }
+
+    // MARK: - Refresh
+
+    private func didUpdateOverlayState(_ state: CircularProgressView.State?) {
+        if let state {
+            overlayView.state = state
+            overlayView.isHidden = false
+        } else {
+            overlayView.isHidden = true
+        }
+    }
+
+    private func didUpdateBadgeText(_ text: String?) {
+        if let text {
+            let badgeView = getBadgeView()
+            badgeView.isHidden = false
+            badgeView.textLabel.text = text
+        } else {
+            badgeView?.isHidden = true
+        }
+    }
+
+    private func didUpdateDurationText(_ text: String?) {
+        if let text {
+            let durationView = getDurationView()
+            durationView.isHidden = false
+            durationView.textLabel.text = text
+        } else {
+            durationView?.isHidden = true
+        }
+    }
+
+    private func didUpdateDocumentInfo(_ viewModel: SiteMediaDocumentInfoViewModel?) {
+        if let viewModel {
+            let documentInfoView = getDocumentInfoView()
+            documentInfoView.isHidden = false
+            documentInfoView.configure(viewModel)
+        } else {
+            documentInfoView?.isHidden = true
+        }
     }
 
     // MARK: - Thumbnails
