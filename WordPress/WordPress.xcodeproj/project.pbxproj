@@ -3013,7 +3013,7 @@
 		CECEEB562823164800A28ADE /* MediaCacheSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECEEB542823164800A28ADE /* MediaCacheSettingsViewController.swift */; };
 		D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213A62FF811EBDB969FA7669 /* Pods_WordPressShareExtension.framework */; };
 		D8071631203DA23700B32FD9 /* Accessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8071630203DA23700B32FD9 /* Accessible.swift */; };
-		D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */; };
+		D809E686203F0215001AA0DE /* OldReaderPostCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D809E685203F0215001AA0DE /* OldReaderPostCardCellTests.swift */; };
 		D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */; };
 		D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79D20746B4100614A59 /* MediaPickingContext.swift */; };
 		D80BC7A22074739400614A59 /* MediaLibraryStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC7A12074739300614A59 /* MediaLibraryStrings.swift */; };
@@ -8350,7 +8350,7 @@
 		D42A30853435E728881904E8 /* Pods_JetpackIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JetpackIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D67306CD28F2440FF6B0065C /* Pods-JetpackIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackIntents.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackIntents/Pods-JetpackIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		D8071630203DA23700B32FD9 /* Accessible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessible.swift; sourceTree = "<group>"; };
-		D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCellTests.swift; sourceTree = "<group>"; };
+		D809E685203F0215001AA0DE /* OldReaderPostCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldReaderPostCardCellTests.swift; sourceTree = "<group>"; };
 		D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryMediaPickingCoordinator.swift; sourceTree = "<group>"; };
 		D80BC79D20746B4100614A59 /* MediaPickingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickingContext.swift; sourceTree = "<group>"; };
 		D80BC7A12074739300614A59 /* MediaLibraryStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryStrings.swift; sourceTree = "<group>"; };
@@ -16965,7 +16965,7 @@
 				3236F79F24B61B780088E8F3 /* Select Interests */,
 				8BDA5A6C247C2F8400AB124C /* ReaderDetailViewControllerTests.swift */,
 				8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */,
-				D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */,
+				D809E685203F0215001AA0DE /* OldReaderPostCardCellTests.swift */,
 				748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */,
 				E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */,
 				8B7F51CA24EED8A8008CF5B5 /* ReaderTrackerTests.swift */,
@@ -23329,7 +23329,7 @@
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				F565190323CF6D1D003FACAF /* WKCookieJarTests.swift in Sources */,
 				C738CB0D28623F07001BE107 /* QRLoginURLParserTests.swift in Sources */,
-				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
+				D809E686203F0215001AA0DE /* OldReaderPostCardCellTests.swift in Sources */,
 				4AAD69082A6F68A5007FE77E /* MediaRepositoryTests.swift in Sources */,
 				FEFC0F8C273131A6001F7F1D /* CommentService+RepliesTests.swift in Sources */,
 				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
