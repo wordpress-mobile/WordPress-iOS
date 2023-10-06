@@ -190,9 +190,7 @@ struct ReaderPostCardCellViewModel {
             return
         }
 
-        ReaderLikeAction().execute(with: readerPost, completion: { [weak cell] in
-            cell?.refreshLikeButton()
-        })
+        ReaderLikeAction().execute(with: readerPost)
     }
 
     mutating func showMore(with anchor: UIView) {

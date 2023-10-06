@@ -58,10 +58,6 @@ class ReaderPostCardCell: UITableViewCell {
         self.viewModel = viewModel
     }
 
-    func refreshLikeButton() {
-        configureLikeButton()
-    }
-
     // MARK: - Constants
 
     struct Constants {
