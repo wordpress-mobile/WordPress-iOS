@@ -72,11 +72,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
+    private let viewModel: MySiteViewModel
+
     // MARK: - Initializers
 
     init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
+        self.viewModel = MySiteViewModel()
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -124,18 +127,18 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private var noSitesScrollView: UIScrollView?
     private var noSitesRefreshControl: UIRefreshControl?
     private lazy var noSitesViewController: UIHostingController = {
-        let viewModel = NoSitesViewModel(
+        let noSitesViewModel = NoSitesViewModel(
             appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
-            account: defaultAccount()
+            account: viewModel.defaultAccount
         )
         let configuration = AddNewSiteConfiguration(
-            canCreateWPComSite: defaultAccount() != nil,
+            canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
             launchSiteCreation: self.launchSiteCreationFromNoSites,
             launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
         )
         let noSiteView = NoSitesView(
-            viewModel: viewModel,
+            viewModel: noSitesViewModel,
             addNewSiteConfiguration: configuration
         )
         return UIHostingController(rootView: noSiteView)
@@ -317,12 +320,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         configureNavBarAppearance(animated: true)
     }
 
-    // MARK: - Account
-
-    private func defaultAccount() -> WPAccount? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-    }
-
     // MARK: - Main Blog
 
     /// Convenience method to retrieve the main blog for an account when none is selected.
@@ -368,7 +365,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     @objc
     private func syncBlogs() {
-        guard let account = defaultAccount() else {
+        guard let account = viewModel.defaultAccount else {
             return
         }
 
@@ -954,5 +951,18 @@ extension MySiteViewController: JetpackRemoteInstallDelegate {
 
     func jetpackRemoteInstallWebviewFallback() {
         // no op
+    }
+}
+
+class MySiteViewModel {
+
+    let coreDataStack: CoreDataStack
+
+    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+        self.coreDataStack = coreDataStack
+    }
+
+    var defaultAccount: WPAccount? {
+        try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext)
     }
 }
