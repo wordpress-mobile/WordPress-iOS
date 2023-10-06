@@ -238,6 +238,9 @@ class MeViewController: UITableViewController {
 
         return ImmuTable(sections: sections)
     }
+    private func myDomainsRow() -> ImmuTableRow {
+        ButtonRow(title: "My Domains", action: presentMyDomains())
+    }
 
     // MARK: - UITableViewDelegate
 
@@ -333,6 +336,16 @@ class MeViewController: UITableViewController {
             }
 
             self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
+        }
+    }
+
+    private func presentMyDomains() -> ImmuTableAction {
+        return { [unowned self] _ in
+            let controller = MyDomainsViewController()
+            let navigationController = UINavigationController(rootViewController: controller)
+            self.present(navigationController, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
         }
     }
 
