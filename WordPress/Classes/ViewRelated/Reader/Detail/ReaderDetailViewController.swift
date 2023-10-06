@@ -531,6 +531,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Configure the webview
     private func configureWebView() {
+        webView.usesSansSerifStyle = FeatureFlag.readerImprovements.enabled
         webView.navigationDelegate = self
     }
 
