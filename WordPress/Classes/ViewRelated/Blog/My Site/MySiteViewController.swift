@@ -322,14 +322,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Main Blog
 
-    /// Convenience method to retrieve the main blog for an account when none is selected.
-    ///
-    /// - Returns:the main blog for an account (last selected, or first blog in list).
-    ///
-    private func mainBlog() -> Blog? {
-        return Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
-    }
-
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
     /// There's no scenario where this is shown empty, for an account that HAS blogs.
     ///
@@ -337,7 +329,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// the account's primary blog, or the first blog we find for the account).
     ///
     private func showBlogDetailsForMainBlogOrNoSites() {
-        guard let mainBlog = mainBlog() else {
+        guard let mainBlog = viewModel.mainBlog else {
             showNoSites()
             return
         }
@@ -964,5 +956,12 @@ class MySiteViewModel {
 
     var defaultAccount: WPAccount? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext)
+    }
+
+    /// The main blog for an account when none is selected.
+    ///
+    /// - Returns:the main blog for an account (last selected, or first blog in list).
+    var mainBlog: Blog? {
+        Blog.lastUsedOrFirst(in: coreDataStack.mainContext)
     }
 }
