@@ -13,7 +13,7 @@ extension SiteMediaCollectionViewControllerDelegate {
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -39,6 +39,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var isBatchSelectionUpdate = false
     private var panGestureInitialIndexPath: IndexPath?
     private var panGesturePeviousSelection: NSOrderedSet?
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didRecognizePanGesture))
 
     private var emptyViewState: EmptyViewState = .hidden {
         didSet {
@@ -115,7 +116,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
 
-        collectionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didRecognizePanGesture)))
+        collectionView.addGestureRecognizer(panGestureRecognizer)
+        panGestureRecognizer.delegate = self
     }
 
     private func configureSearchController() {
@@ -201,6 +203,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     @objc private func didRecognizePanGesture(_ gesture: UIPanGestureRecognizer) {
+        guard isEditing else { return }
+
         switch gesture.state {
         case .began:
             panGestureInitialIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView))
@@ -222,6 +226,30 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         default:
             break
         }
+    }
+
+    // MARK: - UIGestureRecognizerDelegate (Selection)
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            return otherGestureRecognizer === collectionView.panGestureRecognizer
+        }
+        return true
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            return isEditing
+        }
+        return true
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: panGestureRecognizer.view)
+            return abs(translation.x) > abs(translation.y)
+        }
+        return true
     }
 
     // MARK: - Refresh
