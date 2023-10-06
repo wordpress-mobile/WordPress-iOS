@@ -26,13 +26,19 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var isSyncing = false
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
-    private var selection = NSMutableOrderedSet() // `Media`
     private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
-    private var isSelectionOrdered = false
     private let coordinator = MediaCoordinator.shared
+
+    // Selection management
+    private var selection = NSMutableOrderedSet() // `Media`
+    private var allowsMultipleSelection = false
+    private var isSelectionOrdered = false
+    private var isBatchSelectionUpdate = false
+    private var panGestureInitialIndexPath: IndexPath?
+    private var panGesturePeviousSelection: NSOrderedSet?
 
     private var emptyViewState: EmptyViewState = .hidden {
         didSet {
@@ -108,6 +114,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         collectionView.refreshControl = refreshControl
 
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
+
+        collectionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didRecognizePanGesture)))
     }
 
     private func configureSearchController() {
@@ -128,7 +136,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
     }
 
-    // MARK: - Editing
+    // MARK: - Editing (Selection)
 
     func setEditing(
         _ isEditing: Bool,
@@ -137,43 +145,83 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
+        self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
-        self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
 
         deselectAll()
     }
 
-    private func setSelect(_ isSelected: Bool, for media: Media) {
-        guard collectionView.allowsMultipleSelection else {
-            delegate?.siteMediaViewController(self, didUpdateSelection: [media])
-            return
+    private func updateSelection(_ perform: () -> Void) {
+        guard !isBatchSelectionUpdate else {
+            return perform()
         }
-        if isSelected {
-            selection.add(media)
-        } else {
-            selection.remove(media)
+
+        let previousSelection = selectedMedia
+
+        isBatchSelectionUpdate = true
+        perform()
+        isBatchSelectionUpdate = false
+
+        for media in previousSelection where !selection.contains(media) {
             getViewModel(for: media).badge = nil
         }
-        for (index, media) in selection.enumerated() {
-            if let media = media as? Media {
-                getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
-            } else {
-                assertionFailure("Invalid selection")
+        if allowsMultipleSelection {
+            for (index, media) in selection.enumerated() {
+                if let media = media as? Media {
+                    getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
+                } else {
+                    assertionFailure("Invalid selection")
+                }
             }
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
+        if !allowsMultipleSelection {
+            selection = []
+        }
+    }
+
+    private func toggleSelection(for media: Media) {
+        setSelected(!selection.contains(media), for: media)
+    }
+
+    private func setSelected(_ isSelected: Bool, for media: Media) {
+        updateSelection {
+            if isSelected {
+                selection.add(media)
+            } else {
+                selection.remove(media)
+            }
+        }
     }
 
     private func deselectAll() {
-        for media in selection {
-            if let media = media as? Media {
-                getViewModel(for: media).badge = nil
-            } else {
-                assertionFailure("Invalid selection")
-            }
+        updateSelection {
+            selection.removeAllObjects()
         }
-        selection.removeAllObjects()
-        delegate?.siteMediaViewController(self, didUpdateSelection: [])
+    }
+
+    @objc private func didRecognizePanGesture(_ gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            panGestureInitialIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView))
+            panGesturePeviousSelection = selection.copy() as? NSOrderedSet
+        case .changed:
+            guard let currentIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)),
+                  let panGestureInitialIndexPath,
+                  let panGesturePeviousSelection else { return }
+
+            updateSelection {
+                selection = NSMutableOrderedSet(orderedSet: panGesturePeviousSelection)
+                for index in stride(from: panGestureInitialIndexPath.item, through: currentIndexPath.item, by: currentIndexPath.item > panGestureInitialIndexPath.item ? 1 : -1) {
+                    let media = fetchController.object(at: IndexPath(item: index, section: 0))
+                    selection.add(media)
+                }
+            }
+        case .ended:
+            break
+        default:
+            break
+        }
     }
 
     // MARK: - Refresh
@@ -263,7 +311,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
-                setSelect(false, for: media)
+                setSelected(false, for: media)
 
                 if let viewController = navigationController?.topViewController,
                    viewController !== self,
@@ -326,7 +374,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let media = fetchController.object(at: indexPath)
         if isEditing {
-            setSelect(true, for: media)
+            toggleSelection(for: media)
         } else {
             switch media.remoteStatus {
             case .failed, .pushing, .processing:
@@ -337,13 +385,6 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
                 navigationController?.pushViewController(viewController, animated: true)
             default: break
             }
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if isEditing {
-            let media = fetchController.object(at: indexPath)
-            setSelect(false, for: media)
         }
     }
 
