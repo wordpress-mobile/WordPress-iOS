@@ -215,12 +215,18 @@ class MeViewController: UITableViewController {
 
                 return rows
             }()),
+            .init(headerText: HeaderTitles.products, rows: {
+                return [myDomainsRow()] // TODO: Add my domains only if feature flag is enabled. Otherwise only "Purchases"
+            }()),
 
             // last section
             .init(headerText: wordPressComAccount, rows: {
                 return [loggedIn ? logOut : logIn]
             }())
         ])
+    }
+    private func myDomainsRow() -> ImmuTableRow {
+        ButtonRow(title: "My Domains", action: presentMyDomains())
     }
 
     // MARK: - UITableViewDelegate
@@ -320,6 +326,16 @@ class MeViewController: UITableViewController {
         }
     }
 
+    private func presentMyDomains() -> ImmuTableAction {
+        return { [unowned self] _ in
+            let controller = MyDomainsViewController()
+            let navigationController = UINavigationController(rootViewController: controller)
+            self.present(navigationController, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
+        }
+    }
+
     fileprivate func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
@@ -374,8 +390,8 @@ class MeViewController: UITableViewController {
         }
 
         if let sections = handler?.viewModel.sections,
-            let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
-            let row = sections[section].rows.firstIndex(where: matchRow) {
+           let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
+           let row = sections[section].rows.firstIndex(where: matchRow) {
             let indexPath = IndexPath(row: row, section: section)
 
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
@@ -574,6 +590,11 @@ private extension MeViewController {
 
     enum HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+        static let products = NSLocalizedString(
+            "me.products.header",
+            value: "Products",
+            comment: "Products header text in Me Screen."
+        )
     }
 
     enum LogoutAlert {
