@@ -1,12 +1,3 @@
-Vi har lagt till allas inbyggda favoritmediaväljare, som du känner igen från din Apple-app Bilder. Filtrera efter olika mediatyper och sök efter album och foton, oavsett hur många det finns. Det är goda nyheter för dina 3 591 kattfoton.
+Vi har ändrat hur aviseringar visas när du infogar media i block från en URL. Det känns bra att det är ordnat.
 
-Vi har flyttat knappen "Mig" från det övre hörnet och gjort ett antal mindre designjusteringar. Blocket Sociala länkar inkluderar nu en ytterkant så att du kan se när det är valt.
-
-Vi har tagit bort genvägen "Nytt fotoinlägg" i appen för att göra menyn kortare och tydligare. Adjö och farväl.
-
-Slutligen har vi även åtgärdat ett antal buggar.
-
-- Du kan nu ta ett foto i appen och ladda upp det till din webbplats, även om du inte har gett appen fullständig åtkomst till dina foton.
-- Fel bearbetas och visas nu korrekt när du stöter på problem vid uppladdning av media.
-- Listan Sidor bör inte längre krascha om din autentiseringstoken är ogiltig.
-- När du arbetar i blockredigeraren ska appen inte längre krascha om du omvandlar ett inbäddat kolumnblock till ett gruppblock.
+Det är också enklare att se skillnaden mellan platshållartext och faktiskt innehåll i blockbaserade teman.

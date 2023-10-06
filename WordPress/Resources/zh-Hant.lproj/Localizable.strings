@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-07 09:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-24 14:52:18+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -373,9 +373,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
 
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "好名稱必須簡短易記。\n日後你可隨時變更。";
-
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "使用全新方式在網站上建立及發佈吸睛內容。";
 
@@ -549,6 +546,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "新增任何主題";
 
 /* No comment provided by engineer. */
+"Add audio" = "新增音訊";
+
+/* No comment provided by engineer. */
 "Add blocks" = "新增區塊";
 
 /* No comment provided by engineer. */
@@ -556,6 +556,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "新增說明";
+
+/* No comment provided by engineer. */
+"Add image" = "新增圖片";
 
 /* No comment provided by engineer. */
 "Add image or video" = "新增圖片或視訊";
@@ -617,6 +620,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "新增標題";
+
+/* No comment provided by engineer. */
+"Add video" = "新增影片";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "新增網站功能";
@@ -1520,6 +1526,9 @@ translators: Block name. %s: The localized block name */
 /* Select domain name. Title */
 "Choose a domain" = "選擇網域";
 
+/* No comment provided by engineer. */
+"Choose a file" = "選擇檔案";
+
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "選擇新的應用程式圖示";
 
@@ -1900,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "繼續";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3420,15 +3428,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "馬上嘗試為你的文章或頁面新增幾個區塊！";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "為你的 %@ 網站取個名字";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "為你的網站取個名字";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3762,10 +3763,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "WordPress.com 課程與活動相關資訊 (線上和專人洽詢)。";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "初始畫面";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "初始化還原程序";
@@ -4466,8 +4463,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "我";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4527,7 +4523,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "標記";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "選單";
 
@@ -4695,8 +4690,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "名稱";
 
 /* Error to be displayed when a tag is empty */
@@ -5381,8 +5375,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "頁面已更新";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5734,7 +5727,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6806,7 +6798,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "分享";
 
@@ -6994,8 +6985,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "跳過";
 
 /* Menu title to skip today's prompt. */
@@ -7015,6 +7005,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "社交";
 
@@ -7156,7 +7147,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8521,9 +8511,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "使用密碼登入";
 
-/* No comment provided by engineer. */
-"Use this site" = "使用此網站";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "在整個網頁上使用：包括瀏覽器分頁、社群媒體預覽和 WordPress.com 閱讀器。";
 
@@ -9087,9 +9074,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，此雙重驗證碼無效。請再次檢查你的驗證碼，然後再試一次！";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "小工具";
-
 /* No comment provided by engineer. */
 "Width Settings" = "寬度設定";
 
@@ -9274,9 +9258,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "你可以隨時前往「我的網站」>「設定」>「撰寫網誌」控制網誌提示和提醒";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "你可以在 iOS「今天\/通知中心」檢視畫面中顯示單一網站的統計資料。";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "你可以使用網頁版編輯器來編輯此區塊。";
@@ -9689,6 +9670,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "關閉";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "複製網址";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "在瀏覽器中開啟";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "關閉";
 
@@ -9773,6 +9760,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "你的分享次數已用盡！";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "留言";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "媒體";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "更多";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "頁面";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "文章";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "統計";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "所有活動";
 
@@ -9841,6 +9846,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "遠端設定";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "移除目前的導覽";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "建立易於搜尋、分享和追蹤的網站位址，打造屬於自己的網路園地。";
@@ -10306,6 +10314,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "無法同步媒體";
+
 /* Media screen navigation title */
 "media.title" = "媒體";
 
@@ -10321,8 +10332,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "關閉";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "刪除";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "關閉";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "重試上傳";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "關閉";
@@ -10336,11 +10353,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "開啟設定";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "免費 GIF 圖庫";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "從媒體中選擇";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "其他檔案";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "從裝置中選擇";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "免費相片圖庫";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "拍攝照片";
@@ -10534,6 +10560,9 @@ Example: Reply to Pamela Nguyen */
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "資訊卡可根據網站活動顯示不同內容。 我們正在開發更多資訊卡和控制功能。";
 
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "顯示或隱藏資訊卡";
+
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "最近活動";
 
@@ -10560,6 +10589,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "本日統計";
+
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "顯示或隱藏捷徑";
 
 /* Page title */
 "personalizeHome.title" = "打造個人化「首頁」分頁";
@@ -10663,6 +10695,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "你已登入！";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "更多";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "搜尋";
@@ -10817,9 +10852,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "未知";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "顯示提示";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
@@ -10993,7 +11025,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "聯絡支援團隊";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "你需要什麼協助？";
+"support.chatBot.firstMessage" = "你好，我是 Jetpack AI 助理。\\n\\n有什麼地方需要幫忙嗎？\\n\\n如果我無法解答你的問題，會協助你開立客服支援單並提交給我們的團隊！";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "傳送訊息…";
@@ -11130,8 +11162,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "關閉";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "有史以來的文章數與最高瀏覽數";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "有史以來的瀏覽次數";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "有史以來的瀏覽次數與訪客數";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最高記錄的瀏覽次數";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "最高瀏覽數";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "無法載入所有時間的統計資料。";
@@ -11159,6 +11203,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "登入 Jetpack 以查看今日的統計資料。";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "有史以來的瀏覽次數";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "本日瀏覽次數";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "無法載入本週統計資料。";
@@ -11210,6 +11260,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "訪客";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "本日按讚數與留言數";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "本日瀏覽次數";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "本日瀏覽次數與訪客";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "日後將無法使用。";

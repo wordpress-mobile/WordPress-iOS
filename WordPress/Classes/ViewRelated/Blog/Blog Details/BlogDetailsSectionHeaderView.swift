@@ -1,7 +1,6 @@
 import Gridicons
 
 class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
-    typealias EllipsisCallback = (BlogDetailsSectionHeaderView) -> Void
     @IBOutlet private var titleLabel: UILabel?
 
     @objc @IBOutlet private(set) var ellipsisButton: UIButton? {
@@ -16,7 +15,7 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    @objc var ellipsisButtonDidTouch: EllipsisCallback?
+    @objc var ellipsisButtonDidTouch: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,6 +23,6 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
     }
 
     @IBAction func ellipsisTapped() {
-        ellipsisButtonDidTouch?(self)
+        ellipsisButtonDidTouch?()
     }
 }

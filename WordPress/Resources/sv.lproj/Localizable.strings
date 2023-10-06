@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-12 15:36:13+0000 */
+/* Translation-Revision-Date: 2023-09-19 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -372,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "En fil innehåller ett skadligt kodmönster";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Ett bra namn är kort och lätt att komma ihåg.\nDu kan ändra det senare.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Ett nytt sätt att skapa och publicera engagerande innehåll på din webbplats.";
@@ -1912,8 +1909,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Fortsätt";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3435,15 +3431,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Prova nu direkt genom att lägga till några block i ditt inlägg eller din sida!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Ge din %@-webbplats ett namn";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Ge din webbplats ett namn som återspeglar dess personlighet och ämnesområde. Första intrycket är viktigt!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Ge din webbplats ett namn";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3777,10 +3766,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Information om kurser och evenemang på WordPress.com (online och fysiska möten).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Initial skärm";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Initierar återställningsprocessen";
@@ -4481,8 +4466,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Jag";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4542,7 +4526,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Omnämnande";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Meny";
 
@@ -4710,8 +4693,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Namn";
 
 /* Error to be displayed when a tag is empty */
@@ -5396,8 +5378,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Sida uppdaterad";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5749,7 +5730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6821,7 +6801,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Delning";
 
@@ -7009,8 +6988,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Hoppa över";
 
 /* Menu title to skip today's prompt. */
@@ -7030,6 +7008,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Sociala nät";
 
@@ -7171,7 +7150,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8536,9 +8514,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Använd lösenord för att logga in";
 
-/* No comment provided by engineer. */
-"Use this site" = "Använd den här webbplatsen";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Används över hela webb: i webbläsarflikar, förhandsvisningar i sociala media samt i läsaren hos WordPress.com.";
 
@@ -9102,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ojdå. Den där var ingen giltig bekräftelsekod för tvåfaktorautentisering. Dubbelkolla koden och försök en gång till!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgetar";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Breddinställningar";
 
@@ -9289,9 +9261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Du kan kontrollera bloggningsförslag och påminnelser när som helst i min webbplats, inställningar, bloggande";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kan visa statistik för en enskild webbplats under Idag i notiscentret i iOS.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Du kan redigera detta block i webbversionen av redigeraren.";
@@ -9707,6 +9676,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "Kopiera URL";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Öppna i webbläsare";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Avfärda";
 
@@ -9791,6 +9766,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "Du har slut på delningar!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Kommentarer";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Mer";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Sidor";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Inlägg";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Statistik";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "All aktivet";
 
@@ -9859,6 +9852,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Fjärrkonfiguration";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Ta bort aktuell rundtur";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Gör ditt anspråk på ditt hörn av webben med en webbplatsadress som är lätt att hitta, dela och följa.";
@@ -10324,6 +10320,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "markerad som skräppost";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "Det gick inte att synkronisera media";
+
 /* Media screen navigation title */
 "media.title" = "Media";
 
@@ -10339,8 +10338,14 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Avfärda";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Ta bort";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Avfärda";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Försök ladda upp igen";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Avfärda";
@@ -10354,11 +10359,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Öppna inställningarna";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Gratis GIF-bibliotek";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Välj bland media";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Övriga filer";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Välj från enheten";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Gratis fotobibliotek";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Ta ett foto";
@@ -10582,6 +10596,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Dagens statistik";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Visa eller dölj genvägar";
+
 /* Page title */
 "personalizeHome.title" = "Anpassa Hem-fliken";
 
@@ -10690,6 +10707,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Mer";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Sök";
@@ -10844,9 +10864,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Okänt";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Visa förslag";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Påminnelser";
@@ -11020,7 +11037,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Kontakta supporten";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Hur kan vi hjälpa dig?";
+"support.chatBot.firstMessage" = "Hej, jag är Jetpacks AI-assistent.\\n\\nVad kan jag hjälpa dig med?\\n\\nOm jag inte kan besvara din fråga hjälper jag dig att öppna ett supportärende med vårt team.";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Skicka ett meddelande …";
@@ -11157,8 +11174,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Avfärda";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Alla inlägg och flest visningar";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Alla visningar";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Alla visningar och besökare";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Flest visningar någonsin";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Flest visningar";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Kan inte ladda statistik sedan starten.";
@@ -11186,6 +11215,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Logga in på Jetpack för att se dagens statistik.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Alla visningar";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Visningar idag";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "Kan inte ladda denna veckas statistik.";
@@ -11237,6 +11272,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Besökare";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Dagens gillamarkeringar och kommentarer";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Dagens visningar";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Dagens visningar och besökare";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "kommer inte att kunna nås i fortsättningen.";

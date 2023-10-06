@@ -1,16 +1,7 @@
-Adicionamos um novo canal de suporte por chat, com um bot especialmente treinado que responde a todas as suas perguntas relacionadas ao aplicativo. Isso basta, bot. Isso basta. (Ainda quer falar com um atendente? Como sempre, você pode criar um tíquete de suporte e falar com a equipe de suporte.)
+Os widgets na tela de bloqueio agora estão disponíveis no Jetpack. Assim, você verifica as estatísticas do seu site sem precisar desbloquear o celular. Lembre-se, com grandes poderes vem grande eficiência. Ou algo parecido.
 
-Adicionamos o seletor de mídia nativo favorito de todos, que você reconhecerá no aplicativo Apple Photos. Filtre por diferentes tipos de mídia e pesquise álbuns e fotos, sem limite de quantidade. Isso é uma boa notícia para suas 3.591 fotos de gatos.
+Mudamos a forma como os alertas aparecem ao inserir mídia em blocos a partir de uma URL. Agora temos isso ao nosso favor, o que é bom.
 
-Agora você pode visualizar, realocar e remover o bloco Jetpack Paywall no editor de blocos.
+Também ficou mais fácil diferenciar o texto de espaço reservado do conteúdo nos temas com bloco.
 
-Movemos o botão “Eu” para a barra inferior da guia, que vem com alguns pequenos ajustes de design. O bloco de links de redes sociais também inclui um destaque para que você possa ver quando ele está selecionado.
-
-Removemos o atalho “Novo post de foto” do aplicativo para criar um menu menor e mais organizado. Isso é tudo, até mais.
-
-Finalmente, cortamos alguns bugs pela raiz. A partir de agora:
-
-- Você pode tirar uma foto dentro do aplicativo e fazer upload dela no seu site, mesmo que não tenha concedido ao aplicativo acesso total às suas fotos.
-- Os erros são processados e exibidos corretamente quando você tem problemas ao fazer upload de mídia.
-- A lista de páginas não deverá mais travar se o seu token de autenticação for inválido.
-- Quando estiver no editor de blocos, o aplicativo não deverá mais travar quando você transforma um bloco de colunas aninhadas em um bloco de grupo.
+Por fim, atualizamos a navegação em Meu site para que você acesse seções populares do site mais rapidamente. (Não curte esses atalhos? Não se preocupe, você pode personalizá-los do seu jeito).

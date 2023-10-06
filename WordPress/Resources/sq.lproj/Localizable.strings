@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-08-19 09:41:35+0000 */
+/* Translation-Revision-Date: 2023-09-15 08:39:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -250,6 +250,9 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s bllok. Ky bllok ka lëndë të pavlefshme";
 
+/* translators: %s: name of the synced block */
+"%s detached" = "%s u shkëput";
+
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Paraparjet e blloqeve %s vijnë së shpejti";
 
@@ -369,9 +372,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Një kartelë përmban rregullsi kodi dashakeq";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Një emër i mirë do të ishte i shkurtër dhe që mbahet mend.\nMund ta ndryshoni më vonë.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Një rrugë e re për të krijuar dhe botuar lëndë tërheqëse në sajtin tuaj.";
@@ -543,6 +543,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Shtoni çfarëdo teme";
 
 /* No comment provided by engineer. */
+"Add audio" = "Shtoni video";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Shtoni blloqe";
 
 /* No comment provided by engineer. */
@@ -550,6 +553,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Shtoni përshkrim";
+
+/* No comment provided by engineer. */
+"Add image" = "Shtoni figurë";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Shtoni figurë ose video";
@@ -611,6 +617,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Shtoni titull";
+
+/* No comment provided by engineer. */
+"Add video" = "Shtoni video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Shtim veçorish sajti";
@@ -716,6 +725,12 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Tekst Alternativ";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shkëputi modelet”.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Ndryshe, mund ta shkëputni dhe përpunoni ndarazi këtë bllok, duke prekur “Shkëpute modelin”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
@@ -1113,6 +1128,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Përpunuesi me blloqe i aktivizuar";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blloku u grupua";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blloko përpjekje dashakeqe për hyrje";
 
@@ -1127,6 +1145,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Bllokoje këtë sajt";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blloku u hoq nga grupi";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Sajti u bllokua";
@@ -1498,6 +1519,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Zgjidhni përkatësi";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Zgjidhni kartelë";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Zgjidhni një ikonë të re aplikacioni";
@@ -1879,8 +1903,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Vazhdo";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2611,6 +2634,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Përsëdyte bllokun";
 
+/* No comment provided by engineer. */
+"Dynamic" = "Dinamik";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "P.sh., Modë, Poezi, Politikë";
 
@@ -2680,6 +2706,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Përpunoni video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Përpunimi i blloqeve të njëkohësuar nuk mbulohet ende në %s për Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "Përpunimi i blloqeve të njëkohësuar nuk mbulohet ende në %s për iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
@@ -3384,15 +3416,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Provojeni, duke shtuar ca blloqe te postimi ose faqja juaj!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Jepini sajtit tuaj %@ një emër";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Jepini sajtit tuaj një emër që pasqyron personalitetin dhe subjektin e tij. Përshtypja e parë ka vlerë!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Jepini sajtit tuaj një emër";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3727,10 +3752,6 @@ translators: Block name. %s: The localized block name */
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Të dhëna mbi kurse dhe veprimtari WordPress.com (në Internet & në rrugë klasike).";
 
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Skena Fillestare";
-
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Po gatitet procesi i rikthimit";
 
@@ -3742,8 +3763,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Fut %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Bllok Audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Bllok Galerie";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Futni Udhëzues Horizontal";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Futni Bllok Figure";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3752,6 +3782,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Futni Media";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Futni Bllok Video";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Futni “crosspost”";
@@ -4350,6 +4383,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Administroni sajtin";
 
+/* No comment provided by engineer. */
+"Manual" = "Doracak";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Shmangie Dorazi";
 
@@ -4415,8 +4451,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Unë";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4476,7 +4511,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Përmendje";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
@@ -4644,8 +4678,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Emër";
 
 /* Error to be displayed when a tag is empty */
@@ -4834,6 +4867,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "S’u përzgjodh interval datash";
 
+/* No comment provided by engineer. */
+"No description" = "Pa përshkrim";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "S’ka kërcënime të zgjidhur";
 
@@ -4959,6 +4995,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "S’u gjetën kërcënime";
+
+/* No comment provided by engineer. */
+"No title" = "Pa titull";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5324,8 +5363,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Faqja u përditësua";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5674,7 +5712,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6746,7 +6783,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Ndarje Me të Tjerët";
 
@@ -6934,8 +6970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Anashkaloje";
 
 /* Menu title to skip today's prompt. */
@@ -6952,6 +6987,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Shoqërore";
 
@@ -7093,7 +7129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8458,9 +8493,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Përdorni fjalëkalimin për hyrje";
 
-/* No comment provided by engineer. */
-"Use this site" = "Përdor këtë sajt";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Përdorur nëpër web: në skeda shfletuesi, paraparje mediash shoqërore dhe te WordPress.com Reader.";
 
@@ -9024,9 +9056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hëm, ky s’është kod i vlefshëm mirëfilltësimi dyfaktorësh. Kontrolloni sërish kodin tuaj dhe riprovoni!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widget-e";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Rregullime Gjerësie";
 
@@ -9211,9 +9240,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Cytjet dhe Kujtuesit për Blogim mund t’i kontrolloni në çfarëdo kohe që nga Sajti Im, Rregullime, Blogim";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Mund të shfaqni statistikat e një sajti të vetëm, te skena Qendër iOS Sot\/Njoftime.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Këtë bllok mund ta përpunoni duke përdorur versionin web të përpunuesit.";
@@ -9524,6 +9550,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "kartelë audio";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër, ose riprovoni më vonë.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Përditëso Gravatarin";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Hidhe tej";
 
@@ -9628,6 +9660,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Used when displaying author of a plugin. */
 "by %@" = "nga %@";
+
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Vlerësojeni si të dobishme";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "koment";
@@ -10231,6 +10266,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
 
+/* Media screen navigation title */
+"media.title" = "Media";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "Objekti s’u shtua dot te Mediateka";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "Lloj i pambuluar lënde";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Ngarkimi i videove më të gjata se 5 minuta lyp një plan me pagesë.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Hidhe tej";
 
@@ -10239,6 +10286,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "Ky aplikacion lyp leje përdorimi të Kamerës, që të krijojë media të re, nëse doni ta lejoni këtë, ju lutemi, ndryshoni rregullimet mbi privatësinë.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Krijim Mediash";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Hap Rregullimet";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Zgjidhni prej Mediash";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "Zgjidhni nga Pajisje";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Bëni Foto";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Bëni Foto ose Video";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Bëni Video";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Duket sikur keni ende të instaluar aplikacionin WordPress.";
@@ -10357,6 +10428,36 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistikat e Sotme";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Lajme";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Shpërngulni përkatësitë tuaja";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Si edhe mund ta dini, Përkatësitë Google iu shitën Squarespace-it. Shpërngulini përkatësitë tuaj që sot te WordPress.com dhe do të paguajmë krejt tarifat e shpërnguljes, plus një vit shtesë në regjistrimin e përkatësisë tuaj.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Kërkoni Përkatësitë tuaja Google";
+
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Shto sajt të vetëstrehuar";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "Krijo sajt WordPress.com";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Llogari dhe rregullime";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Shtoni sajt të ri";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Krijoni një sajt të ri për biznesin tuaj, revistë ose blog personal; ose lidhni një instalim WordPress ekzistues.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "S’keni ndonjë sajt";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
 
@@ -10392,6 +10493,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kartat mund të shfaqin lëndë të ndryshme, në varësi të çka ndodh në sajtin tuaj. Po punojmë për më tepër karta dhe kontrolle.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Shfaqni ose fshihni karta";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Veprimtari së fundi";
@@ -10437,6 +10541,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Ndarja e Automatizuar nga Twitter S’është Më e Përdorshme";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Caktoni Figurë të Zgjedhur";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
@@ -10674,9 +10781,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "E panjohur";
 
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Shfaq cytje";
-
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Kujtues";
 
@@ -10838,6 +10942,63 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Vizitoni WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Po vras mendjen…";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Mbylle";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Lidhuni me asistencën";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Dërgoni një mesazh…";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Harrova hollësitë e mia për hyrje";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Pse s’bëj dot hyrjen?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Cila është adresa e sajtit tim?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Si mund ta përdor përkatësinë time vetjake te aplikacioni?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "S’ngarkoj dot foto\/video";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Ndihmë, sajti im është jashtë pune!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Raportojeni si të pasaktë";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Burime";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "S’jeni i sigurt për çfarë të pyesni?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Gabim gjatë parashtrimit të kërkesës suaj për asistencë";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Po krijohet kërkesë për asistencë…";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Çështja u krijua";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Lidhuni Me Asistencën";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Përgjigje";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Pyetje";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Bëni një pyetje te forumi i bashkësisë dhe merrni ndihmë nga grupi ynë i vullnetarëve.";

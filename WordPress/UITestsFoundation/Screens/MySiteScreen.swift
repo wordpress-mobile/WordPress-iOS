@@ -114,6 +114,9 @@ public class MySiteScreen: ScreenObject {
     var siteUrlButton: XCUIElement { siteUrlButtonGetter(app) }
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
+    // Timeout duration to overwrite value defined in XCUITestHelpers
+    var duration: TimeInterval = 5.0
+
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
@@ -144,13 +147,11 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
-
-        // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
-        guard XCUIDevice.isPhone && !moreMenuButton.isSelected else {
-            return try MySiteMoreMenuScreen()
+        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
+        if XCUIDevice.isPhone {
+            moreMenuButton.tap()
         }
 
-        moreMenuButton.tap()
         return try MySiteMoreMenuScreen()
     }
 
@@ -165,9 +166,9 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func verifySiteDisplayedInWebView(_ siteTitle: String, file: StaticString = #file, line: UInt = #line) throws -> Self {
-        XCTAssertTrue(safariButton.waitForExistence(timeout: 3))
-        XCTAssertTrue(previewDeviceButton.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.webViews.otherElements.links.staticTexts[siteTitle].waitForExistence(timeout: 3))
+        XCTAssertTrue(safariButton.waitForExistence(timeout: duration))
+        XCTAssertTrue(previewDeviceButton.waitForExistence(timeout: duration))
+        XCTAssertTrue(app.webViews.otherElements.links.staticTexts[siteTitle].waitForExistence(timeout: duration))
 
         return self
     }
@@ -179,36 +180,36 @@ public class MySiteScreen: ScreenObject {
     @discardableResult
     public func verifyFreeToPaidPlansCard(file: StaticString = #file, line: UInt = #line) -> Self {
         let cardText = app.staticTexts["Get a free domain for the first year, remove ads on your site, and increase your storage."]
-        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(), "Free to Paid plans card header was not displayed.", file: file, line: line)
-        XCTAssertTrue(cardText.waitForIsHittable(), "Free to Paid plans card text was not displayed.", file: file, line: line)
+        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(timeout: duration), "Free to Paid plans card header was not displayed.", file: file, line: line)
+        XCTAssertTrue(cardText.waitForIsHittable(timeout: duration), "Free to Paid plans card text was not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
     public func verifyPagesCard(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: Header not displayed.", file: file, line: line)
-        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(), "Pages card: Context menu button not displayed.", file: file, line: line)
-        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: \"Create Page\" button not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(timeout: duration), "Pages card: Header not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(timeout: duration), "Pages card: Context menu button not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(timeout: duration), "Pages card: \"Create Page\" button not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
     public func verifyPagesCard(hasPage pageTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(pagesCard.staticTexts[pageTitle].waitForIsHittable(), "Pages card: \"\(pageTitle)\" page not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCard.staticTexts[pageTitle].waitForIsHittable(timeout: duration), "Pages card: \"\(pageTitle)\" page not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
     public func verifyActivityLogCard(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(), "Activity Log card: header not displayed.", file: file, line: line)
-        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(), "Activity Log card: context menu not displayed.", file: file, line: line)
+        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(timeout: duration), "Activity Log card: header not displayed.", file: file, line: line)
+        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(timeout: duration), "Activity Log card: context menu not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
     public func verifyActivityLogCard(hasActivityPartial activityTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(
-            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(timeout: duration),
             "Activity Log card: \"\(activityTitle)\" activity not displayed.", file: file, line: line)
         return self
     }

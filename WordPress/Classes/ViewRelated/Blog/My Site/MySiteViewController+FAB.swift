@@ -33,7 +33,9 @@ extension MySiteViewController {
         }
 
         actions.append(PostAction(handler: newPost, source: source))
-        actions.append(PageAction(handler: newPage, source: source))
+        if blog?.supports(.pages) ?? false {
+            actions.append(PageAction(handler: newPage, source: source))
+        }
 
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source, blog: blog)
         return coordinator

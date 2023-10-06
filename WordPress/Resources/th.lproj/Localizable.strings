@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -866,8 +866,7 @@
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "ฉัน";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -889,7 +888,6 @@
 "Medium" = "ขนาดกลาง";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "เมนู";
 
@@ -1102,8 +1100,7 @@
 /* A short message explaining that a page was moved to the trash bin. */
 "Page moved to trash." = "ย้ายหน้าไปถังขยะ";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -1204,7 +1201,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -1521,8 +1517,7 @@
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "ข้าม";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
@@ -1594,7 +1589,6 @@
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -1904,9 +1898,6 @@
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "การอัปโหลดล้มเหลว";
 
-/* No comment provided by engineer. */
-"Use this site" = "ใช้เว็บนี้";
-
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -2042,9 +2033,6 @@
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "คุณกำลังอัปโหลดไฟล์สื่ออยู่  การกระทำนี้จะยกเลิกการอัปโหลดที่กำลังทำอยู่\n\nคุณแน่ใจหรือไม่?";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "คุณสามารถแสดงสถิติเว็บเดียวในการดูศูนย์กลาง วันนี้\/การเตือน iOS ";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "คุณสามารถตั้งค่าเหล่านี้ทับสำหรับแต่ละเรื่อง";

@@ -13,14 +13,14 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case blaze
     case blazeManageCampaigns
     case wordPressIndividualPluginSupport
-    case domainsDashboardCard
-    case freeToPaidPlansDashboardCard
     case pagesDashboardCard
     case activityLogDashboardCard
     case bloggingPromptsSocial
     case siteEditorMVP
     case contactSupportChatbot
     case jetpackSocialImprovements
+    case domainManagement
+    case plansInSiteCreation
 
     var defaultValue: Bool {
         switch self {
@@ -46,10 +46,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .wordPressIndividualPluginSupport:
             return AppConfiguration.isWordPress
-        case .domainsDashboardCard:
-            return false
-        case .freeToPaidPlansDashboardCard:
-            return false
         case .pagesDashboardCard:
             return false
         case .activityLogDashboardCard:
@@ -62,6 +58,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
+        case .domainManagement:
+            return false
+        case .plansInSiteCreation:
+            return false
         }
     }
 
@@ -90,10 +90,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "blaze_manage_campaigns"
         case .wordPressIndividualPluginSupport:
             return "wp_individual_plugin_overlay"
-        case .domainsDashboardCard:
-            return "dashboard_card_domain"
-        case .freeToPaidPlansDashboardCard:
-            return "dashboard_card_free_to_paid_plans"
         case .pagesDashboardCard:
             return "dashboard_card_pages"
         case .activityLogDashboardCard:
@@ -106,6 +102,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "contact_support_chatbot"
         case .jetpackSocialImprovements:
             return "jetpack_social_improvements_v1"
+        case .domainManagement:
+            return "domain_management"
+        case .plansInSiteCreation:
+            return "plans_in_site_creation"
         }
     }
 
@@ -133,10 +133,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Blaze Manage Campaigns"
         case .wordPressIndividualPluginSupport:
             return "Jetpack Individual Plugin Support for WordPress"
-        case .domainsDashboardCard:
-            return "Domains Dashboard Card"
-        case .freeToPaidPlansDashboardCard:
-            return "Free to Paid Plans Dashboard Card"
         case .pagesDashboardCard:
             return "Pages Dashboard Card"
         case .activityLogDashboardCard:
@@ -149,6 +145,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Contact Support via DocsBot"
         case .jetpackSocialImprovements:
             return "Jetpack Social Improvements v1"
+        case .domainManagement:
+            return "Domain Management"
+        case .plansInSiteCreation:
+            return "Plans in Site Creation"
         }
     }
 

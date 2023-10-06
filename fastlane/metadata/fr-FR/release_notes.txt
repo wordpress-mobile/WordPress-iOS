@@ -1,12 +1,3 @@
-L’ajout du sélecteur de médias natif que tous les utilisateurs plébiscitent est reconnaissable dans l’application Apple Photos. Vous pouvez utiliser les différents types de supports comme filtre et rechercher des albums et des photos, quel que soit leur nombre. Comme vous possédez 3 591 photos de chats, c’est une excellente nouvelle.
+Nous avons modifié l’affichage des alertes lorsque vous insérez des médias dans des blocs à partir d’une URL. C’est une excellente chose.
 
-Nous avons déplacé le bouton « Moi » à l'écart du coin supérieur et apporté quelques petites modifications au design. Le bloc Réseaux sociaux inclut un aperçu afin que vous puissiez voir quand l’option est sélectionnée.
-
-Nous avons supprimé le raccourci « Nouvel article photo » dans l’application pour créer un menu plus concis et plus clair. Bye bye !
-
-Enfin, nous avons corrigé quelques bugs.
-
-– Vous pouvez désormais prendre une photo dans l’application et la télécharger sur votre site, même si vous n’avez pas octroyé à l’application un accès complet à vos photos.
-– Les erreurs sont désormais correctement traitées et affichées en cas de problèmes lors du chargement de médias.
-– Vous ne devriez plus rencontrer un blocage de la liste des pages si votre jeton d’authentification n’est pas valide.
-– Lorsque vous utilisez l’éditeur de blocs, l’application ne devrait plus rencontrer d’incident lors de la transformation d’un bloc Colonnes imbriquées en bloc Groupe.
+Il est également plus facile de différencier un texte indicatif d’un contenu réel dans les thèmes basés sur des blocs.

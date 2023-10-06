@@ -31,7 +31,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func getSection(for blog: Blog) -> Section {
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
             blog.isAccessibleThroughWPCom() &&
-            splitViewControllerIsHorizontallyCompact {
+            (splitViewControllerIsHorizontallyCompact || !MySitesCoordinator.isSplitViewEnabled) {
             return .dashboard
         } else {
             return .siteMenu
@@ -141,6 +141,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         return UIHostingController(rootView: noSiteView)
     }()
 
+    private var isNavigationBarHidden = false
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -164,7 +166,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        setupNavBarAppearance()
+        configureNavBarAppearance(animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -190,8 +192,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
 
         trackNoSitesVisibleIfNeeded()
-
-        setupNavBarAppearance()
 
         createFABIfNeeded()
         fetchPrompt(for: blog)
@@ -294,20 +294,27 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
-    private func setupNavBarAppearance() {
-        navigationController?.setNavigationBarHidden(true, animated: false)
+    private func configureNavBarAppearance(animated: Bool) {
+        if scrollView.contentOffset.y >= 60 {
+            if isNavigationBarHidden {
+                navigationController?.setNavigationBarHidden(false, animated: animated)
+            }
+            isNavigationBarHidden = false
+        } else {
+            if !isNavigationBarHidden {
+                navigationController?.setNavigationBarHidden(true, animated: animated)
+            }
+            isNavigationBarHidden = true
+        }
     }
 
     private func resetNavBarAppearance() {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        isNavigationBarHidden = false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= 60 {
-            navigationController?.setNavigationBarHidden(false, animated: true)
-        } else {
-            navigationController?.setNavigationBarHidden(true, animated: true)
-        }
+        configureNavBarAppearance(animated: true)
     }
 
     // MARK: - Account
@@ -893,11 +900,16 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        switch currentSection {
-        case .dashboard:
-            blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
-        case .siteMenu:
-            blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+        viewController.loadViewIfNeeded()
+        if MySitesCoordinator.isSplitViewEnabled {
+            switch currentSection {
+            case .dashboard:
+                blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
+            case .siteMenu:
+                blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+            }
+        } else {
+            blogDetailsViewController?.show(viewController, sender: nil)
         }
     }
 }

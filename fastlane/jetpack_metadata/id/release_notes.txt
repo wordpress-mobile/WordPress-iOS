@@ -1,16 +1,7 @@
-Kami telah menambahkan kanal dukungan berbasis obrolan baru dengan bot yang dilatih secara khusus untuk memberikan jawaban atas semua pertanyaan seputar aplikasi. Jawaban sudah cukup, bot. Jawaban sudah cukup. (Masih ingin berbicara dengan manusia? Anda bisa membuat tiket dukungan dan menghubungi Happiness Engineer kapan saja.)
+Widget kunci layar kini tersedia di Jetpack agar Anda dapat memeriksa statistik situs Anda tanpa membuka ponsel. Ingatlah bahwa keleluasaan selalu menyertai efisiensi. Atau kurang lebih demikian.
 
-Kami telah menambahkan pemilih media asli yang disukai semua pengguna. Anda bisa menemukannya di aplikasi Apple Photos. Lakukan penyaringan berdasarkan jenis media, lalu cari album dan foto sebanyak apa pun. Anda bisa bebas memilih dari 3.591 foto kucing Anda.
+Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
 
-Kini Anda bisa melihat, memindahkan, dan menghapus blok Paywall Jetpack di editor blok.
+Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.
 
-Kami telah memindahkan tombol "Saya" ke bilah tab bawah yang hadir desain yang sedikit berbeda. Blok Tautan Media Sosial juga diberi garis tepi yang akan terlihat saat dipilih.
-
-Kami telah menghapus pintasan "Pos Foto Baru" di aplikasi agar menu menjadi lebih ringkas dan lebih jelas. Selamat tinggal.
-
-Kami sudah mengatasi beberapa bug.
-
-- Kini Anda bisa mengambil foto lewat aplikasi dan mengunggahnya ke situs Anda meskipun Anda belum memberikan aplikasi akses penuh ke foto-foto Anda.
-- Kini peringatan error berjalan dan tampil sebagaimana mestinya ketika Anda mengalami kendala saat mengunggah media.
-- Daftar Halaman tidak akan mengalami crash lagi saat token autentikasi Anda tidak valid.
-- Saat Anda mengoperasikan editor blok, aplikasi tidak akan mengalami crash lagi saat Anda mengganti blok Kolom bertumpuk menjadi blok Grup.
+Akhirnya, kami memperbarui navigasi di Situs Saya agar Anda dapat menjangkau bagian populer pada situs dengan lebih cepat. (Tidak suka pintasan ini? Jangan khawatir, Anda dapat mempersonalisasikannya sesuka hati.)

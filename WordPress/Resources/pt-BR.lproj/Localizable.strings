@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-21 14:14:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -369,9 +369,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Um arquivo contém um padrão de código malicioso";
-
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "Um bom nome é curto e fácil de lembrar.\nVocê pode alterá-lo depois.";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Uma nova maneira de criar e publicar conteúdos atraentes em seu site.";
@@ -1882,8 +1879,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continuar";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -3396,15 +3392,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Experimente adicionar alguns blocos ao seu post ou à sua página!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Dê a seu site %@ um nome";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Dê um nome para seu site que reflita sua personalidade e tópicos que serão publicados. A primeira impressão conta.";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Dê um nome ao seu site";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3738,10 +3727,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informações sobre cursos e eventos (online e presenciais) do WordPress.com.";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Tela inicial";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Iniciando o processo de restauração";
@@ -4427,8 +4412,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Eu";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4488,7 +4472,6 @@ translators: Block name. %s: The localized block name */
 "Mention" = "Menção";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
@@ -4656,8 +4639,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Nome";
 
 /* Error to be displayed when a tag is empty */
@@ -5336,8 +5318,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Página atualizada";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5689,7 +5670,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6758,7 +6738,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Compartilhamento";
 
@@ -6946,8 +6925,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Pular";
 
 /* Menu title to skip today's prompt. */
@@ -6967,6 +6945,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Social";
 
@@ -7108,7 +7087,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8470,9 +8448,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Usar senha para fazer login";
 
-/* No comment provided by engineer. */
-"Use this site" = "Usar este site";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Presente por toda a Web: em guias de navegadores, visualizações de redes sociais e no Leitor do WordPress.com.";
 
@@ -9036,9 +9011,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ooops, este não é um código de verificação em duas etapas válido. Confira o código e tente novamente!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgets";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Configurações de largura";
 
@@ -9223,9 +9195,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Você pode controlar lembretes e sugestões de publicação a qualquer momento em Meu site, Configurações, Posts no blog";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Você pode exibir as estatísticas de um único site na Central de Notificações\/Hoje do iOS.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Você pode editar este bloco na versão Web do editor.";
@@ -10311,9 +10280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "NomeDoSite.com";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Mostrar sugestões";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Lembretes";

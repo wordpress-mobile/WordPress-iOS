@@ -30,6 +30,7 @@ final class SiteCreator {
     var vertical: SiteIntentVertical?
     var information: SiteInformation?
     var address: DomainSuggestion?
+    var planId: Int?
 
     /// Generates the final object that will be posted to the backend
     ///
@@ -57,12 +58,12 @@ final class SiteCreator {
 
     /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
     var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
-    /// Flag indicating whether the domain checkout flow should appear or not.
-    var shouldShowDomainCheckout: Bool {
-        domainPurchasingEnabled && !(address?.isFree ?? false)
+    /// Flag indicating whether the checkout flow should appear or not.
+    var shouldShowCheckout: Bool {
+        domainPurchasingEnabled && planId != nil
     }
 
     /// Returns the domain suggestion if there's one,

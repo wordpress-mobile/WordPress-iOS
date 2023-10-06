@@ -1,16 +1,7 @@
-Uygulamayla ilgili tüm sorularınıza yanıt veren özel eğitimli bir botun yer aldığı sohbet tabanlı yeni bir destek kanalı ekledik. Bu yeterli, bot. Bu yeterli. (Yine de bir insanla mı konuşmak istiyorsunuz? Her zaman olduğu gibi bir destek bileti oluşturabilir ve bir Mutluluk Mühendisi ile konuşabilirsiniz.)
+Kilit ekranı bileşenleri bundan sonra Jetpack'te kullanılabilir. Böylece telefonunuzun kilidini açmadan site istatistiklerinizi kontrol edebilirsiniz. Ama unutmayın, büyük güç büyük verimlilik getirir. Ya da benzer bir şeydi.
 
-Apple Fotoğraflar uygulamanızdan tanıyacağınız, herkesin en sevdiği yerel ortam seçiciyi ekledik. Farklı ortam türlerine göre filtreleme yapın ve kaç tane olursa olsun albümleri ve fotoğrafları arayın. 3591 kedi fotoğrafınızı düşünürseniz bu iyi haber.
+Bir URL'den bloklara ortam eklerken uyarıların görünme şeklini değiştirdik. Bu bizim için iyi bir şey.
 
-Artık blok düzenleyicide Jetpack Ödeme blokunu görüntüleyebilir, yerini değiştirebilir ve kaldırabilirsiniz.
+Ayrıca, blok tabanlı temalarda yer tutucu metin ile gerçek içerik arasındaki farkı anlamak da artık daha kolay.
 
-Birkaç küçük tasarım düzenlemesiyle birlikte "Ben" düğmesini alt sekme çubuğuna taşıdık. Sosyal Bağlantı bloku artık seçili olduğunu görebilmeniz için bir taslak içeriyor.
-
-Daha kısa ve net bir menü oluşturmak için "Yeni Fotoğraf Gönderisi" kısayolunu kaldırdık. Hem de kalıcı olarak.
-
-Son olarak birkaç hatayı giderdik.
-
-- Artık uygulamaya fotoğraflarınıza tam erişim izni vermemiş olsanız dahi uygulama içinden bir fotoğraf çekebilir ve sitenize yükleyebilirsiniz.
-- Ortam yüklerken sorunla karşılaştığınızda hatalar artık düzgün bir şekilde işleniyor ve görüntüleniyor.
-- Kimlik doğrulama belirteciniz geçersiz olduğunda artık Sayfalar listesinin çökmemesi gerekiyor.
-- Blok düzenleyicisinde çalışırken, iç içe Sütunlar blokunu Grup blokuna dönüştürdüğünüzde uygulamanın artık çökmemesi gerekiyor.
+Son olarak, sitenin popüler bölümlerine daha hızlı ulaşabilmeniz için Sitem'deki gezinme deneyimini güncelledik. (Bu kısayolları sevmiyor musunuz? Üzülmeyin, onları istediğiniz şekilde kişiselleştirebilirsiniz.)

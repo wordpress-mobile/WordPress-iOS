@@ -67,5 +67,69 @@ class MediaHelper: NSObject {
         }
 
     }
+}
 
+extension Media {
+    /// Downloads remote data for the given media to a temporary directory. The
+    /// directory is cleared every time you launch the app.
+    @MainActor static func downloadRemoteData(for selection: [Media], blog: Blog) async throws -> [URL] {
+        let session = URLSession(configuration: {
+            let configuration = URLSessionConfiguration.default
+            configuration.urlCache = nil // Caching in a temporary directory
+            return configuration
+        }())
+        let authenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: blog)
+        let temporaryDirectory = Media.remoteDataTemporaryDirectoryURL
+
+        var output: [URL] = []
+        for media in selection {
+            // Try local URL
+            if let localURL = media.absoluteLocalURL,
+               FileManager.default.fileExists(at: localURL) {
+                output.append(localURL)
+                continue
+            }
+
+            // Try remote URL
+            guard let blogID = blog.dotComID?.intValue,
+                  let mediaID = media.mediaID?.intValue,
+                  let remoteURL = media.remoteURL.flatMap(URL.init) else {
+                throw URLError(.unknown)
+            }
+
+            // Check if we downloaded it before during this session
+            let filename = "\(blogID)–\(mediaID).\(remoteURL.pathExtension)"
+            let copyURL = temporaryDirectory.appendingPathComponent(filename, isDirectory: false)
+            if FileManager.default.fileExists(at: copyURL) {
+                output.append(copyURL)
+                continue
+            }
+
+            let request = try await authenticator.authenticatedRequest(for: remoteURL, host: host)
+            let (fileURL, response) = try await session.download(for: request)
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                  (200..<400).contains(statusCode) else {
+                throw URLError(.unknown)
+            }
+
+            try FileManager.default.copyItem(at: fileURL, to: copyURL)
+            output.append(copyURL)
+        }
+
+        return output
+    }
+
+    static func removeTemporaryData() {
+        _ =  remoteDataTemporaryDirectoryURL
+    }
+
+    private static let remoteDataTemporaryDirectoryURL: URL = {
+        var tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent("org.automattic.RemoteMediaTEmporaryDirectory", isDirectory: true)
+        // Remove data from the previous sessions.
+        try? FileManager.default.removeItem(at: tempDirectoryURL)
+        try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
+        return tempDirectoryURL
+    }()
 }

@@ -1,21 +1,36 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
+protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
+    /// Return a non-nil value to allow adding media using the empty state.
+    func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
+}
+
+extension SiteMediaCollectionViewControllerDelegate {
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
+    func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
+}
+
+/// The internal view controller for managing the media collection view.
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
+    weak var delegate: SiteMediaCollectionViewControllerDelegate?
+
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private lazy var refreshControl = UIRefreshControl()
-
     private lazy var fetchController = makeFetchController()
-    private let mediaPickerController: MediaPickerController
 
-    private let buttonAddMedia: SpotlightableButton = SpotlightableButton(type: .custom)
+    private let searchController = UISearchController()
 
     private var isSyncing = false
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
-    private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
+    private var selection = NSMutableOrderedSet() // `Media`
+    private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
+    private let filter: Set<MediaType>?
+    private let isShowingPendingUploads: Bool
     private let coordinator = MediaCoordinator.shared
 
     private var emptyViewState: EmptyViewState = .hidden {
@@ -27,9 +42,18 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     static let spacing: CGFloat = 2
 
-    init(blog: Blog) {
+    var selectedMedia: [Media] {
+        guard let selection = selection.array as? [Media] else {
+            assertionFailure("Invalid selection")
+            return []
+        }
+        return selection
+    }
+
+    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true) {
         self.blog = blog
-        self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
+        self.filter = filter
+        self.isShowingPendingUploads = isShowingPendingUploads
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -37,16 +61,21 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         fatalError("init(coder:) has not been implemented")
     }
 
+    func embed(in parentViewController: UIViewController) {
+        parentViewController.addChild(self)
+        parentViewController.view.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        parentViewController.view.pinSubviewToAllEdges(view)
+        didMove(toParent: parentViewController)
+
+        parentViewController.navigationItem.searchController = searchController
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        QuickStartTourGuide.shared.visited(.mediaScreen)
-
-        title = Strings.title
-        extendedLayoutIncludesOpaqueBars = true
-
         configureCollectionView()
-        configureNavigationItems()
+        configureSearchController()
 
         fetchController.delegate = self
         do {
@@ -59,12 +88,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         updateEmptyViewState()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -72,7 +95,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     private func configureCollectionView() {
-        collectionView.register(MediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+        collectionView.register(cell: SiteMediaCollectionCell.self)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,27 +109,14 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
     }
 
-    private func configureNavigationItems() {
-        if blog.userCanUploadMedia {
-            buttonAddMedia.spotlightOffset = Constants.addButtonSpotlightOffset
-            let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
-            let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
-            buttonAddMedia.setImage(image, for: .normal)
-            buttonAddMedia.addAction(UIAction { [weak self] _ in
-                QuickStartTourGuide.shared.visited(.mediaUpload)
-                self?.buttonAddMedia.shouldShowSpotlight = false
-            }, for: .menuActionTriggered)
-            buttonAddMedia.menu = mediaPickerController.makeMenu(for: self)
-            buttonAddMedia.showsMenuAsPrimaryAction = true
-            buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
-            buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
-
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonAddMedia)
-        }
+    private func configureSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = MediaViewController.spacing
+        let spacing = SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
         let itemsPerRow = availableWidth < 450 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
@@ -115,6 +125,51 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+
+    // MARK: - Editing
+
+    func setEditing(_ isEditing: Bool, allowsMultipleSelection: Bool) {
+        guard self.isEditing != isEditing else { return }
+        self.isEditing = isEditing
+        self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
+
+        deselectAll()
+    }
+
+    private func setSelect(_ isSelected: Bool, for media: Media) {
+        if isSelected {
+            selection.add(media)
+        } else {
+            selection.remove(media)
+            getViewModel(for: media).badgeText = nil
+        }
+        var index = 1
+        if collectionView.allowsMultipleSelection {
+            for media in selection {
+                if let media = media as? Media {
+                    getViewModel(for: media).badgeText = index.description
+                    index += 1
+                } else {
+                    assertionFailure("Invalid selection")
+                }
+            }
+        } else {
+            // Don't display a badge
+        }
+        delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
+    }
+
+    private func deselectAll() {
+        for media in selection {
+            if let media = media as? Media {
+                getViewModel(for: media).badgeText = nil
+            } else {
+                assertionFailure("Invalid selection")
+            }
+        }
+        selection.removeAllObjects()
+        delegate?.siteMediaViewController(self, didUpdateSelection: [])
     }
 
     // MARK: - Refresh
@@ -158,7 +213,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     private func makeFetchController() -> NSFetchedResultsController<Media> {
         let request = NSFetchRequest<Media>(entityName: Media.self.entityName())
-        request.predicate = NSPredicate(format: "blog == %@", blog)
+        request.predicate = makePredicate(searchTerm: "")
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \Media.creationDate, ascending: false),
             // Disambiguate in case media are uploaded at the same time, which
@@ -172,6 +227,21 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             sectionNameKeyPath: nil,
             cacheName: nil
         )
+    }
+
+    private func makePredicate(searchTerm: String) -> NSPredicate {
+        var predicates = [NSPredicate(format: "blog == %@", blog)]
+        if let filter {
+            let mediaTypes = filter.map(Media.string(from:))
+            predicates.append(NSPredicate(format: "mediaTypeString IN %@", mediaTypes))
+        }
+        if !isShowingPendingUploads {
+            predicates.append(NSPredicate(format: "remoteStatusNumber == %i", MediaRemoteStatus.sync.rawValue))
+        }
+        if !searchTerm.isEmpty {
+            predicates.append(NSPredicate(format: "(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", searchTerm, searchTerm, searchTerm))
+        }
+        return predicates.count == 1 ? predicates[0] : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
@@ -188,6 +258,18 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         case .delete:
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
+            if let media = anObject as? Media {
+                setSelect(false, for: media)
+
+                if let viewController = navigationController?.topViewController,
+                   viewController !== self,
+                    let detailsViewController = viewController as? MediaItemViewController,
+                   detailsViewController.media.objectID == media.objectID {
+                    navigationController?.popViewController(animated: true)
+                }
+            } else {
+                assertionFailure("Invalid object: \(anObject)")
+            }
         case .update:
             // No interested in these. The screen observe these changes separately
             // to minimize the number of reloads: `.update` is emitted too often.
@@ -228,7 +310,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
+        let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
@@ -238,17 +320,26 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-
         let media = fetchController.object(at: indexPath)
-        switch media.remoteStatus {
-        case .failed, .pushing, .processing:
-            showRetryOptions(for: media)
-        case .sync:
-            let viewController = MediaItemViewController(media: media)
-            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-            navigationController?.pushViewController(viewController, animated: true)
-        default: break
+        if isEditing {
+            setSelect(true, for: media)
+        } else {
+            switch media.remoteStatus {
+            case .failed, .pushing, .processing:
+                showRetryOptions(for: media)
+            case .sync:
+                let viewController = MediaItemViewController(media: media)
+                WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
+                navigationController?.pushViewController(viewController, animated: true)
+            default: break
+            }
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if isEditing {
+            let media = fetchController.object(at: indexPath)
+            setSelect(false, for: media)
         }
     }
 
@@ -265,6 +356,20 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         for indexPath in indexPaths {
             let media = fetchController.object(at: indexPath)
             getViewModel(for: media).cancelPrefetching()
+        }
+    }
+
+    // MARK: - UISearchResultsUpdating
+
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchTerm = searchController.searchBar.text ?? ""
+        fetchController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
+        do {
+            try fetchController.performFetch()
+            collectionView.reloadData()
+            updateEmptyViewState()
+        } catch {
+            WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
     }
 
@@ -294,11 +399,11 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     // MARK: - Helpers
 
     // Create ViewModel lazily to avoid fetching more managed objects than needed.
-    private func getViewModel(for media: Media) -> MediaCollectionCellViewModel {
+    private func getViewModel(for media: Media) -> SiteMediaCollectionCellViewModel {
         if let viewModel = viewModels[media.objectID] {
             return viewModel
         }
-        let viewModel = MediaCollectionCellViewModel(media: media)
+        let viewModel = SiteMediaCollectionCellViewModel(media: media)
         viewModels[media.objectID] = viewModel
         return viewModel
     }
@@ -306,7 +411,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
 // MARK: - MediaViewController (NoResults)
 
-extension MediaViewController: NoResultsViewHost {
+extension SiteMediaCollectionViewController: NoResultsViewHost {
     private func updateEmptyViewState() {
         let isEmpty = collectionView.numberOfItems(inSection: 0) == 0
         guard isEmpty else {
@@ -317,6 +422,8 @@ extension MediaViewController: NoResultsViewHost {
             emptyViewState = .synching
         } else if syncError != nil {
             emptyViewState = .failed
+        } else if let searchTerm = searchController.searchBar.text, !searchTerm.isEmpty {
+            emptyViewState = .emptySearch
         } else {
             emptyViewState = .empty(isAddButtonShown: blog.userCanUploadMedia)
         }
@@ -332,9 +439,12 @@ extension MediaViewController: NoResultsViewHost {
             noResultsViewController.configureForFetching()
             displayNoResults(on: view)
         case .empty(let isAddButtonShown):
-            noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown)
-            noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
+            let menu = delegate?.makeAddMediaMenu(for: self)
+            noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown && menu != nil)
+            noResultsViewController.buttonMenu = menu
             displayNoResults(on: view)
+        case .emptySearch:
+            configureAndDisplayNoResults(on: view, title: Strings.noSearchResultsTitle)
         case .failed:
             configureAndDisplayNoResults(on: view, title: Strings.syncFailed)
         }
@@ -344,27 +454,15 @@ extension MediaViewController: NoResultsViewHost {
         case hidden
         case synching
         case empty(isAddButtonShown: Bool)
+        case emptySearch
         case failed
     }
 }
 
-private enum Constants {
-    static let cellID = "cellID"
-    static let addButtonSpotlightOffset = UIOffset(horizontal: 20, vertical: -10)
-    static let addButtonContentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-}
-
 private enum Strings {
-    static let title = NSLocalizedString("media.title", value: "Media", comment: "Media screen navigation title")
     static let syncFailed = NSLocalizedString("media.syncFailed", value: "Unable to sync media", comment: "Title of error prompt shown when a sync fails.")
     static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
-}
-
-extension Blog {
-    var userCanUploadMedia: Bool {
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
-        capabilities != nil ? isUploadingFilesAllowed() : true
-    }
+    static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
 }

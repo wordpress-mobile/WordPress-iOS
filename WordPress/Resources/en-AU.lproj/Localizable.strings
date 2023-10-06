@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-05 20:42:38+0000 */
+/* Translation-Revision-Date: 2023-09-18 15:19:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.7 */
+/* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -358,9 +358,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "A file contains a malicious code pattern";
 
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "A good name is short and memorable.\nYou can change it later.";
-
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
 
@@ -390,6 +387,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ADD BLOCK HERE";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "ADD MEDIA";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Address";
@@ -591,6 +591,9 @@ translators: Block name. %s: The localized block name */
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Address";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Address Settings";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Address line %@";
@@ -897,6 +900,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+
+/* No comment provided by engineer. */
+"Arrow buttons" = "Arrow buttons";
 
 /* An example tag used in the login prologue screens.
    Art site intent topic */
@@ -1822,8 +1828,7 @@ translators: Block name. %s: The localized block name */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continue";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2524,6 +2529,9 @@ translators: Block name. %s: The localized block name */
 "Drafts" = "Drafts";
 
 /* No comment provided by engineer. */
+"Drag & drop" = "Drag & drop";
+
+/* No comment provided by engineer. */
 "Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release.";
 
 /* No comment provided by engineer. */
@@ -3179,6 +3187,9 @@ translators: Block name. %s: The localized block name */
 /* Next web page */
 "Forward" = "Forward";
 
+/* No comment provided by engineer. */
+"Four" = "Four";
+
 /* Browse free themes selection title */
 "Free" = "Free";
 
@@ -3221,6 +3232,9 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Gallery caption. %s";
 
+/* No comment provided by engineer. */
+"Gallery style" = "Gallery style";
+
 /* Gaming site intent topic */
 "Gaming" = "Gaming";
 
@@ -3258,6 +3272,9 @@ translators: Block name. %s: The localized block name */
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
 
+/* No comment provided by engineer. */
+"Get support" = "Get support";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Get the ball rolling and increase your post views by sharing your post.";
 
@@ -3291,15 +3308,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Give your %@ website a name";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Give your website a name";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3568,6 +3578,9 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Image caption. %s";
 
+/* No comment provided by engineer. */
+"Image file not found." = "Image file not found.";
+
 /* Hint for image title on image settings. */
 "Image title" = "Image title";
 
@@ -3618,10 +3631,6 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Information on WordPress.com courses and events (online & in-person).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Initial Screen";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Initialising the restore process";
@@ -3832,6 +3841,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installed";
+
+/* No comment provided by engineer. */
+"Jetpack powered" = "Jetpack powered";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
@@ -4289,8 +4301,7 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -4344,7 +4355,6 @@ translators: Block name. %s: The localized block name */
 "Medium" = "Medium";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
@@ -4498,13 +4508,15 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "My Top Ten Cafes";
 
+/* No comment provided by engineer. */
+"NEW" = "NEW";
+
 /* Title for disclaimer in the dashboard's custom What's New page. */
 "NEW!" = "NEW!";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -4981,6 +4993,9 @@ translators: Block name. %s: The localized block name */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Once you create a WordPress.com site, you can reblog content that you like to your own site.";
 
+/* No comment provided by engineer. */
+"One" = "One";
+
 /* Warning label that informs the user to only scan login codes that they generated. */
 "Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else." = "Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else.";
 
@@ -5113,6 +5128,9 @@ translators: Block name. %s: The localized block name */
 /* Caption for the recommended sections in site designs. */
 "PICKED FOR YOU" = "PICKED FOR YOU";
 
+/* No comment provided by engineer. */
+"Padding" = "Padding";
+
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
@@ -5164,8 +5182,7 @@ translators: Block name. %s: The localized block name */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Page updated";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5511,7 +5528,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -6552,7 +6568,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
 
@@ -6740,8 +6755,7 @@ translators: Block name. %s: The localized block name */
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Skip";
 
 /* Menu title to skip today's prompt. */
@@ -6758,6 +6772,7 @@ translators: Block name. %s: The localized block name */
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Social";
 
@@ -6899,7 +6914,6 @@ translators: Block name. %s: The localized block name */
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -7253,6 +7267,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognise the server response. Please, check the configuration of your site.";
 
+/* No comment provided by engineer. */
+"The basics" = "The basics";
+
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!";
 
@@ -7603,6 +7620,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Thumbnail unavailable.";
 
+/* No comment provided by engineer. */
+"Tiled gallery settings" = "Tiled gallery settings";
+
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
 "Time Format" = "Time Format";
@@ -7829,6 +7849,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter Username";
+
+/* No comment provided by engineer. */
+"Two" = "Two";
 
 /* Type menu item in share extension. */
 "Type" = "Type";
@@ -8221,9 +8244,6 @@ translators: Block name. %s: The localized block name */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Use password to sign in";
-
-/* No comment provided by engineer. */
-"Use this site" = "Use this site";
 
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader.";
@@ -8782,9 +8802,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgets";
-
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Will not be publicly displayed.";
 
@@ -8954,9 +8971,6 @@ translators: Block name. %s: The localized block name */
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "You can display a single site's stats in the iOS Today\/Notification Center view.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
@@ -9329,11 +9343,26 @@ translators: Block name. %s: The localized block name */
 /* A hint to users that they've set up blogging reminders. */
 "growAudienceCell.bloggingReminders.completed.tip" = "You set up blogging reminders";
 
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "Posting regularly can help build an audience. Reminders help keep you on track.";
+
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Dismiss";
 
 /* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Discover blogs to follow";
+
+/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Do it again";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "You've connected with other blogs";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Connect with other bloggers by following, liking and commenting on their posts.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Enable post sharing";
@@ -9341,8 +9370,20 @@ translators: Block name. %s: The localized block name */
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.completed.button" = "Connect more networks";
 
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "When you publish your next post it will be automatically shared to your connected networks.";
+
 /* A hint to users that they've set up post sharing. */
 "growAudienceCell.social.completed.title" = "Sharing is set up!";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "A tip to grow your audience";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "Views to your site so far";
 
 /* Description for view count. Singular. */
 "growAudienceCell.viewsCount.singular" = "View to your site so far";
@@ -9437,14 +9478,29 @@ translators: Block name. %s: The localized block name */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress is better with Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "Switch to the new Jetpack app";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Learn more at jetpack.com";
 
 /* Name of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.title" = "Stats & Insights";
 
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Continue to Notifications";
+
 /* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Do this later";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Switch to the Jetpack app to keep receiving real-time notifications on your device.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Get your notifications with the Jetpack app";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Switch to the Jetpack app to find, follow, and like all your favourite sites and posts with Reader.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continue to Reader";
@@ -9658,9 +9714,6 @@ translators: Block name. %s: The localized block name */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Sharing Error";
-
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Show prompts";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";

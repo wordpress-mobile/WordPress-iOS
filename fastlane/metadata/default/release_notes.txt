@@ -1,12 +1,3 @@
-We added everyone’s favorite native media picker, which you’ll recognize from your Apple Photos app. Filter by different media types and search for albums and photos, no matter how many there are. That’s good news for your 3,591 cat photos.
+We changed the way alerts appear when you’re inserting media into blocks from a URL. So we’ve got that going for us, which is nice.
 
-We moved the “Me” button away from the top corner and made a few small design tweaks. The Social Link block also includes an outline so you can see when it’s selected.
-
-We removed the “New Photo Post” shortcut in the app to create a shorter, clearer menu. So long, farewell.
-
-Finally, we squashed a few bugs.
-
-- You can now take a photo within the app and upload it to your site, even if you haven’t given the app full access to your photos.
-- Errors now process and display properly when you run into trouble while uploading media.
-- The Pages list shouldn’t crash anymore if your authentication token is invalid.
-- When you’re working in the block editor, the app should no longer crash when you transform a nested Columns block into a Group block.
+It’s also easier to tell the difference between placeholder text and actual content in block-based themes.
