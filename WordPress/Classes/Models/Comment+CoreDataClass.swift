@@ -79,10 +79,9 @@ public class Comment: NSManagedObject {
             return canModerate
         }
 
-        guard let blog = blog,
-              (blog.isHostedAtWPcom || blog.isAtomic()) else {
-                  return true
-              }
+        guard let blog = blog, blog.isHostedAtWPcom || blog.isAtomic() else {
+            return true
+        }
         return canModerate
     }
 
