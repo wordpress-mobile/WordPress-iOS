@@ -121,7 +121,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
 }
 
 
-private extension CachedAnnouncementsStore {
+extension CachedAnnouncementsStore {
 
     func cacheIsValid(for announcements: [Announcement]) -> Bool {
         guard let minimumVersion = announcements.first?.minimumAppVersion,   // there should not be more than one announcement
@@ -133,6 +133,9 @@ private extension CachedAnnouncementsStore {
         }
         return true
     }
+}
+
+private extension CachedAnnouncementsStore {
 
     var cacheExpired: Bool {
         guard let date = cache.date,
