@@ -74,8 +74,8 @@ class ReaderPostCardCell: UITableViewCell {
         }
 
         struct ControlsStackView {
-            static let reblogSpacing: CGFloat = 24.0
-            static let commentSpacing: CGFloat = 24.0
+            static let reblogSpacing: CGFloat = 16.0
+            static let commentSpacing: CGFloat = 16.0
             static let likeSpacing: CGFloat = 8.0
             static let trailingConstraint: CGFloat = 10.0
             static let bottomConstraint: CGFloat = -ContentStackView.margins + 10.0
