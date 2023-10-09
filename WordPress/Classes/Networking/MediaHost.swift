@@ -21,7 +21,7 @@ enum MediaHost: Equatable {
         isAtomic: Bool,
         siteID: Int?,
         username: String?,
-        authToken: String?,
+        authToken: @autoclosure () -> String?,
         failure: (Error) -> Void) {
 
         guard isPrivate else {
@@ -38,7 +38,7 @@ enum MediaHost: Equatable {
             return
         }
 
-        guard let authToken = authToken else {
+        guard let authToken = authToken() else {
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutAuthToken)
