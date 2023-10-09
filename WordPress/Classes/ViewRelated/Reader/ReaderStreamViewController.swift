@@ -1621,7 +1621,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        let cell = tableConfiguration.postCardCell(tableView)
+        if FeatureFlag.readerImprovements.enabled {
+            let cell = tableConfiguration.postCardCell(tableView)
+            return cell
+        }
+
+        let cell = tableConfiguration.oldPostCardCell(tableView)
         configurePostCardCell(cell, post: post)
 
         if let topic = readerTopic,
