@@ -415,6 +415,8 @@ private extension ReaderPostCardCell {
         }
         likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 
     // MARK: - Cell reuse
