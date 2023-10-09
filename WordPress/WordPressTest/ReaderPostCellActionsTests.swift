@@ -73,8 +73,8 @@ final class ReaderPostCellActionsTests: CoreDataTestCase {
         return topic
     }
 
-    private func makeCell() -> ReaderPostCardCell {
-        return Bundle.loadRootViewFromNib(type: ReaderPostCardCell.self)!
+    private func makeCell() -> OldReaderPostCardCell {
+        return Bundle.loadRootViewFromNib(type: OldReaderPostCardCell.self)!
     }
 
     private func makePost() -> ReaderPost {

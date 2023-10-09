@@ -74,8 +74,8 @@ class ReaderPostCardCell: UITableViewCell {
         }
 
         struct ControlsStackView {
-            static let reblogSpacing: CGFloat = 24.0
-            static let commentSpacing: CGFloat = 24.0
+            static let reblogSpacing: CGFloat = 16.0
+            static let commentSpacing: CGFloat = 16.0
             static let likeSpacing: CGFloat = 8.0
             static let trailingConstraint: CGFloat = 10.0
             static let bottomConstraint: CGFloat = -ContentStackView.margins + 10.0
@@ -86,7 +86,7 @@ class ReaderPostCardCell: UITableViewCell {
             static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
         }
 
-        static let iconImageSize: CGFloat = 24.0
+        static let iconImageSize: CGFloat = 20.0
         static let avatarPlaceholder = UIImage(named: "gravatar")
         static let siteIconPlaceholder = UIImage(named: "post-blavatar-placeholder")
         static let fillerViewHuggingPriority = UILayoutPriority(249.0)
@@ -167,6 +167,7 @@ private extension ReaderPostCardCell {
         imageView.layer.cornerRadius = Constants.iconImageSize / 2.0
         imageView.layer.masksToBounds = true
         imageView.image = image
+        imageView.contentMode = .scaleAspectFill
         containerView.addSubview(imageView)
         siteStackView.addArrangedSubview(containerView)
     }
@@ -181,7 +182,7 @@ private extension ReaderPostCardCell {
 
     func setupPostDate() {
         postDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        postDateLabel.font = .preferredFont(forTextStyle: .subheadline)
+        postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
         siteStackView.addArrangedSubview(postDateLabel)
@@ -217,6 +218,7 @@ private extension ReaderPostCardCell {
         featuredImageView.translatesAutoresizingMaskIntoConstraints = false
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
+        featuredImageView.contentMode = .scaleAspectFill
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
@@ -429,6 +431,8 @@ private extension ReaderPostCardCell {
         }
         likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 
     // MARK: - Cell reuse

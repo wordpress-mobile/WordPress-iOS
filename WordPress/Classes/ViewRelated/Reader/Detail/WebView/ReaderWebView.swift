@@ -12,6 +12,8 @@ class ReaderWebView: WKWebView {
 
     var postURL: URL? = nil
 
+    var usesSansSerifStyle = false
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -45,6 +47,7 @@ class ReaderWebView: WKWebView {
         <style>
         \(cssColors())
         \(cssStyles())
+        \(overrideStyles())
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
         \(content)
@@ -156,6 +159,25 @@ class ReaderWebView: WKWebView {
 
         let cssContent = try? String(contentsOf: cssURL)
         return cssContent ?? ""
+    }
+
+    private func overrideStyles() -> String {
+        guard usesSansSerifStyle else {
+            return String()
+        }
+
+        /// Some context: We are fetching the CSS file from a remote endpoint, but we store a local `reader.css` file
+        /// to override some styles for mobile-specific purposes.
+        ///
+        /// The `reader.css` forces the text to be displayed in Noto, but this method overrides it back to the
+        /// system font. Later when the `readerImprovements` flag is removed, we should remove this method and
+        /// update the CSS values in `reader.css` instead
+        return """
+            body.reader-full-post.reader-full-post__story-content {
+                font: -apple-system-body !important;
+                font-family: -apple-system, sans-serif !important;
+            }
+        """
     }
 
     /// Maps app colors to CSS colors to be applied in the webview
