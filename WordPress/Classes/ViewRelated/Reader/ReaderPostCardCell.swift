@@ -181,7 +181,7 @@ private extension ReaderPostCardCell {
 
     func setupPostDate() {
         postDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        postDateLabel.font = .preferredFont(forTextStyle: .subheadline)
+        postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
         siteStackView.addArrangedSubview(postDateLabel)

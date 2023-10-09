@@ -23,4 +23,5 @@ class ApiCredentials: NSObject {
     static let appCenterAppId = ""
     static let encryptedLogKey = ""
     static let debuggingKey = ""
+    static let docsBotId = ""
 }
