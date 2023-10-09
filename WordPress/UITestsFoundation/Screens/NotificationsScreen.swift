@@ -84,7 +84,7 @@ public class NotificationsScreen: ScreenObject {
     }
 
     public func replyToComment(withText text: String) -> Self {
-        waitAndTap(replyCommentButton)
+        tapUntilExpectedElementAppear(toTap: replyCommentButton, toAppear: replyTextView)
         replyTextView.typeText(text)
         replyButton.tap()
 
