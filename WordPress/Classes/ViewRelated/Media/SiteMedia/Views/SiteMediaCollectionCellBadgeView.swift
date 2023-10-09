@@ -1,6 +1,6 @@
 import UIKit
 
-final class MediaCollectionCellBadgeView: UIView {
+final class SiteMediaCollectionCellBadgeView: UIView {
     let textLabel = UILabel()
 
     override init(frame: CGRect) {
