@@ -1623,6 +1623,9 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         if FeatureFlag.readerImprovements.enabled {
             let cell = tableConfiguration.postCardCell(tableView)
+            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
+                                                        isLoggedIn: isLoggedIn)
+            cell.configure(with: viewModel)
             return cell
         }
 

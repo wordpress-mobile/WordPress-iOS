@@ -27,6 +27,15 @@ class ReaderPostCardCell: UITableViewCell {
 
     private let separatorView = UIView()
 
+    private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
+    private var viewModel: ReaderPostCardCellViewModel? {
+        didSet {
+            configureLabels()
+            configureImages()
+            configureButtons()
+        }
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
@@ -35,6 +44,71 @@ class ReaderPostCardCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoader.prepareForReuse()
+        resetElements()
+        addMissingViews()
+        addViewConstraints()
+    }
+
+    func configure(with viewModel: ReaderPostCardCellViewModel) {
+        self.viewModel = viewModel
+    }
+
+    // MARK: - Constants
+
+    struct Constants {
+        struct ContentStackView {
+            static let margins: CGFloat = 16.0
+            static let spacing: CGFloat = 8.0
+            static let bottomAnchor: CGFloat = 2.0
+        }
+
+        struct SiteStackView {
+            static let avatarSpacing: CGFloat = -4.0
+            static let iconSpacing: CGFloat = 8.0
+            static let siteTitleSpacing: CGFloat = 4.0
+        }
+
+        struct ControlsStackView {
+            static let reblogSpacing: CGFloat = 16.0
+            static let commentSpacing: CGFloat = 16.0
+            static let likeSpacing: CGFloat = 8.0
+            static let trailingConstraint: CGFloat = 10.0
+            static let bottomConstraint: CGFloat = -ContentStackView.margins + 10.0
+        }
+
+        struct FeaturedImage {
+            static let cornerRadius: CGFloat = 5.0
+            static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
+        }
+
+        static let iconImageSize: CGFloat = 20.0
+        static let avatarPlaceholder = UIImage(named: "gravatar")
+        static let siteIconPlaceholder = UIImage(named: "post-blavatar-placeholder")
+        static let fillerViewHuggingPriority = UILayoutPriority(249.0)
+        static let reblogButtonImage = UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
+        static let commentButtonImage = UIImage(named: "icon-reader-post-comment")?.withRenderingMode(.alwaysTemplate)
+        static let likeButtonImage = UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
+        static let likedButtonImage = UIImage(named: "icon-reader-star-fill")?.withRenderingMode(.alwaysTemplate)
+        static let menuButtonImage = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
+        static let buttonMinimumSize: CGFloat = 44.0
+        static let reblogButtonText = NSLocalizedString("reader.post.button.reblog",
+                                                        value: "Reblog",
+                                                        comment: "Text for the 'Reblog' button on the reader post card cell.")
+        static let commentButtonText = NSLocalizedString("reader.post.button.comment",
+                                                         value: "Comment",
+                                                         comment: "Text for the 'Comment' button on the reader post card cell.")
+        static let likeButtonText = NSLocalizedString("reader.post.button.like",
+                                                      value: "Like",
+                                                      comment: "Text for the 'Like' button on the reader post card cell.")
+        static let likedButtonText = NSLocalizedString("reader.post.button.liked",
+                                                       value: "Liked",
+                                                       comment: "Text for the 'Liked' button on the reader post card cell.")
+        static let separatorHeight: CGFloat = 0.5
     }
 
 }
@@ -93,6 +167,7 @@ private extension ReaderPostCardCell {
         imageView.layer.cornerRadius = Constants.iconImageSize / 2.0
         imageView.layer.masksToBounds = true
         imageView.image = image
+        imageView.contentMode = .scaleAspectFill
         containerView.addSubview(imageView)
         siteStackView.addArrangedSubview(containerView)
     }
@@ -102,7 +177,6 @@ private extension ReaderPostCardCell {
         siteTitleLabel.font = .preferredFont(forTextStyle: .subheadline).semibold()
         siteTitleLabel.numberOfLines = 1
         siteTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        siteTitleLabel.setText("Site Title") // TODO: Remove
         siteStackView.addArrangedSubview(siteTitleLabel)
     }
 
@@ -111,7 +185,6 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-        postDateLabel.setText("Post Date") // TODO: Remove
         siteStackView.addArrangedSubview(postDateLabel)
     }
 
@@ -127,7 +200,6 @@ private extension ReaderPostCardCell {
         postTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         postTitleLabel.font = .preferredFont(forTextStyle: .title3).semibold()
         postTitleLabel.numberOfLines = 2
-        postTitleLabel.setText("Post Title") // TODO: Remove
         contentStackView.addArrangedSubview(postTitleLabel)
     }
 
@@ -135,7 +207,6 @@ private extension ReaderPostCardCell {
         postSummaryLabel.translatesAutoresizingMaskIntoConstraints = false
         postSummaryLabel.font = .preferredFont(forTextStyle: .footnote)
         postSummaryLabel.numberOfLines = 3
-        postSummaryLabel.setText("Post summary") // TODO: Remove
         contentStackView.addArrangedSubview(postSummaryLabel)
     }
 
@@ -143,7 +214,7 @@ private extension ReaderPostCardCell {
         featuredImageView.translatesAutoresizingMaskIntoConstraints = false
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
-        featuredImageView.backgroundColor = .green // TODO: Remove
+        featuredImageView.contentMode = .scaleAspectFill
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
@@ -151,7 +222,6 @@ private extension ReaderPostCardCell {
         postCountsLabel.font = .preferredFont(forTextStyle: .footnote)
         postCountsLabel.numberOfLines = 1
         postCountsLabel.textColor = .secondaryLabel
-        postCountsLabel.setText("15 likes • 4 comments") // TODO: Remove
         contentStackView.addArrangedSubview(postCountsLabel)
     }
 
@@ -271,53 +341,130 @@ private extension ReaderPostCardCell {
         ]
     }
 
-    // MARK: - Constants
+    // MARK: - View configuration
 
-    struct Constants {
-        struct ContentStackView {
-            static let margins: CGFloat = 16.0
-            static let spacing: CGFloat = 8.0
-            static let bottomAnchor: CGFloat = 2.0
+    func configureLabels() {
+        configureLabel(siteTitleLabel, text: viewModel?.siteTitle)
+        configureLabel(postDateLabel, text: viewModel?.postDate)
+        configureLabel(postTitleLabel, text: viewModel?.postTitle)
+        configureLabel(postSummaryLabel, text: viewModel?.postSummary)
+        configureLabel(postCountsLabel, text: viewModel?.postCounts)
+    }
+
+    func configureLabel(_ label: UILabel, text: String?) {
+        guard let text else {
+            label.removeFromSuperview()
+            return
+        }
+        label.setText(text)
+    }
+
+    func configureImages() {
+        configureAvatar()
+        configureSiteIcon()
+        configureFeaturedImage()
+    }
+
+    func configureAvatar() {
+        guard let viewModel, viewModel.isAvatarEnabled else {
+            removeFromStackView(siteStackView, view: avatarContainerView)
+            return
+        }
+        viewModel.downloadAvatarIcon(for: avatarImageView)
+    }
+
+    func configureSiteIcon() {
+        guard let viewModel, viewModel.isSiteIconEnabled else {
+            removeFromStackView(siteStackView, view: siteIconContainerView)
+            return
+        }
+        viewModel.downloadSiteIcon(for: siteIconImageView)
+    }
+
+    func configureFeaturedImage() {
+        guard let viewModel, viewModel.isFeaturedImageEnabled else {
+            removeFromStackView(siteStackView, view: featuredImageView)
+            return
+        }
+        let imageViewSize = CGSize(width: featuredImageView.frame.width,
+                                   height: featuredImageView.frame.height)
+        viewModel.downloadFeaturedImage(with: imageLoader, size: imageViewSize)
+    }
+
+    func configureButtons() {
+        guard let viewModel else {
+            return
         }
 
-        struct SiteStackView {
-            static let avatarSpacing: CGFloat = -4.0
-            static let iconSpacing: CGFloat = 8.0
-            static let siteTitleSpacing: CGFloat = 4.0
+        if !viewModel.isReblogEnabled {
+            removeFromStackView(controlsStackView, view: reblogButton)
+        }
+        if viewModel.isCommentsEnabled {
+            configureLikeButton()
+        } else {
+            removeFromStackView(controlsStackView, view: commentButton)
+        }
+        if !viewModel.isLikesEnabled {
+            removeFromStackView(controlsStackView, view: likeButton)
+        }
+    }
+
+    func configureLikeButton() {
+        guard let isLiked = viewModel?.isPostLiked else {
+            return
+        }
+        likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
+        likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.setTitleColor(likeButton.tintColor, for: .normal)
+    }
+
+    // MARK: - Cell reuse
+
+    func addMissingViews() {
+        let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
+        let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
+        let controlViews = [reblogButton, commentButton, likeButton]
+
+        siteHeaderViews.enumerated().forEach { (index, view) in
+            addToStackView(siteStackView, view: view, index: index)
+        }
+        contentViews.enumerated().forEach { (index, view) in
+            addToStackView(contentStackView, view: view, index: index)
+        }
+        controlViews.enumerated().forEach { (index, view) in
+            addToStackView(controlsStackView, view: view, index: index)
         }
 
-        struct ControlsStackView {
-            static let reblogSpacing: CGFloat = 24.0
-            static let commentSpacing: CGFloat = 24.0
-            static let likeSpacing: CGFloat = 8.0
-            static let trailingConstraint: CGFloat = 10.0
-            static let bottomConstraint: CGFloat = -ContentStackView.margins + 10.0
-        }
+        siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.reblogSpacing, after: reblogButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.commentSpacing, after: commentButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.likeSpacing, after: likeButton)
+    }
 
-        struct FeaturedImage {
-            static let cornerRadius: CGFloat = 5.0
-            static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
+    func addToStackView(_ stackView: UIStackView, view: UIView, index: Int) {
+        guard view.superview == nil, stackView.arrangedSubviews.count >= index else {
+            return
         }
+        stackView.insertArrangedSubview(view, at: index)
+    }
 
-        static let iconImageSize: CGFloat = 24.0
-        static let avatarPlaceholder = UIImage(named: "gravatar")
-        static let siteIconPlaceholder = UIImage(named: "post-blavatar-placeholder")
-        static let fillerViewHuggingPriority = UILayoutPriority(249.0)
-        static let reblogButtonImage = UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
-        static let commentButtonImage = UIImage(named: "icon-reader-post-comment")?.withRenderingMode(.alwaysTemplate)
-        static let likeButtonImage = UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
-        static let menuButtonImage = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
-        static let buttonMinimumSize: CGFloat = 44.0
-        static let reblogButtonText = NSLocalizedString("reader.post.button.reblog",
-                                                        value: "Reblog",
-                                                        comment: "Text for the 'Reblog' button on the reader post card cell.")
-        static let commentButtonText = NSLocalizedString("reader.post.button.comment",
-                                                         value: "Comment",
-                                                         comment: "Text for the 'Comment' button on the reader post card cell.")
-        static let likeButtonText = NSLocalizedString("reader.post.button.like",
-                                                      value: "Like",
-                                                      comment: "Text for the 'Like' button on the reader post card cell.")
-        static let separatorHeight: CGFloat = 0.5
+    func removeFromStackView(_ stackView: UIStackView, view: UIView) {
+        stackView.removeArrangedSubview(view)
+        view.removeFromSuperview()
+    }
+
+    func resetElements() {
+        avatarImageView.image = Constants.avatarPlaceholder
+        siteIconImageView.image = Constants.siteIconPlaceholder
+        siteTitleLabel.text = nil
+        postDateLabel.text = nil
+        postTitleLabel.text = nil
+        postSummaryLabel.text = nil
+        featuredImageView.image = nil
+        postCountsLabel.text = nil
     }
 
 }
