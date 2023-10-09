@@ -133,6 +133,9 @@ class ReaderPostCardCell: UITableViewCell {
         static let likedButtonText = NSLocalizedString("reader.post.button.liked",
                                                        value: "Liked",
                                                        comment: "Text for the 'Liked' button on the reader post card cell.")
+        static let borderColor = UIColor(light: .systemBackground.darkVariant().withAlphaComponent(0.1),
+                                         dark: .systemBackground.lightVariant().withAlphaComponent(0.2))
+        static let borderWidth: CGFloat = 0.5
         static let separatorHeight: CGFloat = 0.5
     }
 
@@ -193,6 +196,9 @@ private extension ReaderPostCardCell {
         imageView.layer.masksToBounds = true
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.borderWidth = Constants.borderWidth
+        imageView.layer.borderColor = Constants.borderColor.cgColor
+        imageView.backgroundColor = .listForeground
         containerView.addSubview(imageView)
         siteStackView.addArrangedSubview(containerView)
     }
@@ -244,6 +250,8 @@ private extension ReaderPostCardCell {
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
         featuredImageView.contentMode = .scaleAspectFill
+        featuredImageView.layer.borderWidth = Constants.borderWidth
+        featuredImageView.layer.borderColor = Constants.borderColor.cgColor
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
