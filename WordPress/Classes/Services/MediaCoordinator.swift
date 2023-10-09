@@ -180,7 +180,7 @@ class MediaCoordinator: NSObject {
 
         processing(media)
 
-        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
+        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
         coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
 
         return media
@@ -209,7 +209,7 @@ class MediaCoordinator: NSObject {
             }
         )
 
-        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
+        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
     }
 
     private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
@@ -230,7 +230,7 @@ class MediaCoordinator: NSObject {
         trackUploadOf(media, analyticsInfo: analyticsInfo)
 
         let uploadProgress = uploadMedia(media)
-        totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
+        totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.uploadDone)
     }
 
     /// Retry the upload of a media object that previously has failed.

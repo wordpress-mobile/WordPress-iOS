@@ -65,7 +65,7 @@ extension AddressTableViewCell.ViewModel {
         )
         static let freeWithPaidPlan = NSLocalizedString(
             "domain.suggestions.row.free-with-plan",
-            value: "Free for a year with a plan",
+            value: "Free for the first year with annual paid plans",
             comment: "The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen"
         )
     }

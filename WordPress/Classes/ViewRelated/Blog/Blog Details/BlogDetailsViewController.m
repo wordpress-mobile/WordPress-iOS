@@ -1888,9 +1888,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
-    MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    if ([Feature enabled:FeatureFlagMediaModernization]) {
+        SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog];
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    } else {
+        MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
+        controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    }
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
