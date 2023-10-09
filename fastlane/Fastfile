@@ -265,6 +265,9 @@ before_all do |lane|
   # Skip these checks/steps for test lane (not needed for testing)
   next if lane == :test_without_building
 
+  # Ensure we use the latest version of the toolkit
+  check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
+
   # Fixes weird Keychain bugs
   setup_ci
 

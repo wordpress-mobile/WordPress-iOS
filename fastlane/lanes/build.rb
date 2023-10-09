@@ -135,20 +135,19 @@ platform :ios do
   #
   desc 'Builds and uploads for distribution to App Store Connect'
   lane :build_and_upload_app_store_connect do |options|
-    sentry_check_cli_installed
-
     unless options[:skip_prechecks]
-      message = "Building version #{current_release_version} (#{current_build_code}) and uploading to TestFlight\n"
-      if options[:skip_confirm]
-        UI.message(message)
-      else
-        UI.user_error!('Aborted by user request') unless UI.confirm("#{message}Do you want to continue?")
+      UI.important("Building version #{current_release_version} (#{current_build_code}) and uploading to TestFlight")
+
+      unless options[:skip_confirm]
+        UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
       end
 
       # Check local repo status
       ensure_git_status_clean unless is_ci
       ios_build_preflight
     end
+
+    sentry_check_cli_installed
 
     appstore_code_signing
 
@@ -228,11 +227,10 @@ platform :ios do
   desc 'Builds and uploads for distribution to App Center'
   lane :build_and_upload_app_center do |options|
     unless options[:skip_prechecks]
-      message = "Building internal version #{current_internal_release_version} (#{current_internal_build_code}) and uploading to AppCenter\n"
-      if options[:skip_confirm]
-        UI.message(message)
-      else
-        UI.user_error!('Aborted by user request') unless UI.confirm("#{message}Do you want to continue?")
+      UI.important("Building internal version #{current_internal_release_version} (#{current_internal_build_code}) and uploading to AppCenter")
+
+      unless options[:skip_confirm]
+        UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
       end
 
       # Check local repo status
