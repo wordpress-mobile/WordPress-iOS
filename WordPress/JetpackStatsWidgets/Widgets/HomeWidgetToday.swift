@@ -34,6 +34,7 @@ struct HomeWidgetToday: Widget {
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
-        .contentMarginsDisabled() /// Disabling additional iOS17 margins for widgets
+        .contentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets for StandBy
+        .containerBackgroundRemovable(false) /// Temporarily disable iOS 17 background removing functionality
     }
 }

@@ -53,6 +53,7 @@ struct HomeWidgetThisWeek: Widget {
         .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
         .description(LocalizableStrings.thisWeekPreviewDescription)
         .supportedFamilies([.systemMedium, .systemLarge])
-        .contentMarginsDisabled() /// Disabling additional iOS17 margins for widgets
+        .contentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
+        .containerBackgroundRemovable(false) /// Temporarily disable iOS 17 background removing functionality
     }
 }
