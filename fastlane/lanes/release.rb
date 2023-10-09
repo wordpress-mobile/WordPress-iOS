@@ -21,7 +21,7 @@ platform :ios do
 
     # The `next_release_version` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
-    confirmation_message = <<-MESSAGE
+    message = <<-MESSAGE
 
       Code Freeze:
       • New release branch from #{DEFAULT_BRANCH}: release/#{next_release_version}
@@ -35,10 +35,7 @@ platform :ios do
     MESSAGE
 
     UI.important(message)
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     # Create the release branch
     UI.message 'Creating release branch...'
@@ -121,11 +118,8 @@ platform :ios do
     ensure_git_branch(branch: '^release/') # Match branch names that begin with `release/`
     ensure_git_status_clean
 
-    UI.message("Completing code freeze for: #{current_release_version}")
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.important("Completing code freeze for: #{current_release_version}")
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
 
@@ -174,10 +168,7 @@ platform :ios do
     override_default_release_branch(options[:base_version]) unless options[:base_version].nil?
 
     UI.important(message)
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
@@ -240,10 +231,7 @@ platform :ios do
     MESSAGE
 
     UI.important(message)
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     # Check tags
     UI.user_error!("Version #{new_version} already exists! Abort!") if git_tag_exists(tag: new_version)
@@ -285,10 +273,7 @@ platform :ios do
     git_pull
 
     UI.important("Triggering hotfix build for version: #{current_release_version}")
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     trigger_release_build(branch_to_build: "release/#{current_release_version}")
   end
@@ -309,10 +294,7 @@ platform :ios do
     ensure_git_status_clean
 
     UI.important("Finalizing release: #{current_release_version}")
-
-    unless options[:skip_confirm]
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     git_pull
 

@@ -169,8 +169,8 @@ def code_freeze_internal_build_code
   # calculator can be used to calculate the next four-part version
   current_release_version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
   # Calculate the next release version, which will be used as the basis of the new build code
-  code_freeze_build_code = VERSION_CALCULATOR.next_release_version(version: current_release_version)
-  code_freeze_build_code = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: code_freeze_build_code)
+  next_release_version = VERSION_CALCULATOR.next_release_version(version: current_release_version)
+  code_freeze_build_code = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: next_release_version)
   # Return the formatted build code
   BUILD_CODE_FORMATTER.build_code(version: code_freeze_build_code)
 end
