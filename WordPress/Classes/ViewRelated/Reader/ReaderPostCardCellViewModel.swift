@@ -9,10 +9,14 @@ struct ReaderPostCardCellViewModel {
         return contentProvider.siteIconForDisplay(ofSize: Int(size))
     }
 
+    private var isRTL: Bool {
+        UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+    }
+
     var siteTitle: String? {
         if let post = contentProvider as? ReaderPost, post.isP2Type(), let author = contentProvider.authorForDisplay() {
             let strings = [author, contentProvider.blogNameForDisplay?()].compactMap { $0 }
-            return strings.joined(separator: " ▸ ")
+            return isRTL ? strings.reversed().joined(separator: " ◂ ") : strings.joined(separator: " ▸ ")
         }
 
         return contentProvider.blogNameForDisplay?()
@@ -22,7 +26,8 @@ struct ReaderPostCardCellViewModel {
         guard let dateForDisplay = contentProvider.dateForDisplay()?.toShortString() else {
             return nil
         }
-        return siteTitle != nil ? "• \(dateForDisplay)" : dateForDisplay
+        let postDateFormat = isRTL ? "%@ •" : "• %@"
+        return siteTitle != nil ? String(format: postDateFormat, dateForDisplay) : dateForDisplay
     }
 
     var postTitle: String? {
