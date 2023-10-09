@@ -27,14 +27,14 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         super.init()
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
         ReaderHeaderAction().execute(post: post, origin: origin)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
@@ -50,14 +50,14 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         ReaderCommentAction().execute(post: post, origin: origin, source: .postCard)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
             return
         }
         toggleFollowingForPost(post)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
         if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
             if let post = provider as? ReaderPost {
                 removedPosts.add(post)
@@ -71,14 +71,14 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         }
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+    func readerCell(_ cell: OldReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         guard let post = provider as? ReaderPost else {
             return
         }
         sharePost(post, fromView: sender)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
             return
         }
@@ -88,7 +88,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         })
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+    func readerCell(_ cell: OldReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         guard let post = provider as? ReaderPost,
               let origin = origin,
               let followCommentsService = FollowCommentsService(post: post) else {
@@ -109,21 +109,21 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
             return
         }
         showAttributionForPost(post)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider) {
+    func readerCell(_ cell: OldReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
         ReaderReblogAction().execute(readerPost: post, origin: origin, reblogSource: .list)
     }
 
-    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
+    func readerCellImageRequestAuthToken(_ cell: OldReaderPostCardCell) -> String? {
         return imageRequestAuthToken
     }
 

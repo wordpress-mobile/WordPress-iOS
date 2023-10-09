@@ -9,19 +9,20 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
-    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider)
-    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
+    func readerCell(_ cell: OldReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(_ cell: OldReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(_ cell: OldReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: OldReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider)
+    func readerCellImageRequestAuthToken(_ cell: OldReaderPostCardCell) -> String?
 }
 
-@objc open class ReaderPostCardCell: UITableViewCell {
+// TODO: Delete this class when Reader Improvements v1 feature flag (`readerImprovements`) is removed
+@objc open class OldReaderPostCardCell: UITableViewCell {
 
     // MARK: - Properties
 
@@ -218,7 +219,7 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
 
 // MARK: - Configuration
 
-private extension ReaderPostCardCell {
+private extension OldReaderPostCardCell {
 
     struct Constants {
         static let featuredMediaCornerRadius: CGFloat = 4
@@ -342,7 +343,7 @@ private extension ReaderPostCardCell {
 
 // MARK: - Header Configuration
 
-private extension ReaderPostCardCell {
+private extension OldReaderPostCardCell {
 
     func configureHeader() {
 
@@ -369,7 +370,7 @@ private extension ReaderPostCardCell {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            DDLogError("ReaderPostCardCell MediaHost error: \(error.localizedDescription)")
+            DDLogError("OldReaderPostCardCell MediaHost error: \(error.localizedDescription)")
         })
 
         mediaRequestAuthenticator.authenticatedRequest(
@@ -438,7 +439,7 @@ private extension ReaderPostCardCell {
 
 // MARK: - Card Configuration
 
-private extension ReaderPostCardCell {
+private extension OldReaderPostCardCell {
 
     func configureFeaturedImageView() {
         // Round the corners, and add a border
@@ -524,7 +525,7 @@ private extension ReaderPostCardCell {
 
 // MARK: - Button Configuration
 
-private extension ReaderPostCardCell {
+private extension OldReaderPostCardCell {
 
     enum CardAction: Int {
         case comment = 1
@@ -683,7 +684,7 @@ private extension ReaderPostCardCell {
 
 // MARK: - Button Actions
 
-extension ReaderPostCardCell {
+extension OldReaderPostCardCell {
 
     // MARK: - Header Tapped
 
@@ -753,7 +754,7 @@ extension ReaderPostCardCell {
 
 // MARK: - ReaderCardDiscoverAttributionViewDelegate
 
-extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
+extension OldReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }
@@ -761,7 +762,7 @@ extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
 
 // MARK: - Accessibility
 
-extension ReaderPostCardCell: Accessible {
+extension OldReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
         prepareCardForVoiceOver()
         prepareHeaderButtonForVoiceOver()
@@ -773,7 +774,7 @@ extension ReaderPostCardCell: Accessible {
     }
 }
 
-private extension ReaderPostCardCell {
+private extension OldReaderPostCardCell {
 
     func prepareCardForVoiceOver() {
         accessibilityLabel = cardAccessibilityLabel()
@@ -962,7 +963,7 @@ private extension ReaderPostCardCell {
 
 
 /// Extension providing getters to some private outlets, for testability
-extension ReaderPostCardCell {
+extension OldReaderPostCardCell {
 
     func getHeaderButtonForTesting() -> UIButton {
         return headerBlogButton
@@ -989,7 +990,7 @@ extension ReaderPostCardCell {
     }
 }
 
-extension ReaderPostCardCell: GhostableView {
+extension OldReaderPostCardCell: GhostableView {
     public func ghostAnimationWillStart() {
         borderedView.isGhostableDisabled = true
         attributionView.isHidden = true
@@ -1009,7 +1010,7 @@ extension ReaderPostCardCell: GhostableView {
     }
 }
 
-extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
+extension OldReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
         layoutIfNeeded()
 

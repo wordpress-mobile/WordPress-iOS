@@ -41,7 +41,7 @@ final class ReaderCellConfiguration {
             return
         }
 
-        guard let postCell = cell as? ReaderPostCardCell else {
+        guard let postCell = cell as? OldReaderPostCardCell else {
             return
         }
 

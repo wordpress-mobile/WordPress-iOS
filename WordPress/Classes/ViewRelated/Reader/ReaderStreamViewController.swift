@@ -1644,7 +1644,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
-        guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
+        guard cell.isKind(of: OldReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
 
@@ -2009,7 +2009,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
 
 // MARK: - Saved Posts Delegate
 extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: ReaderPostCardCell) {
+    func willRemove(_ cell: OldReaderPostCardCell) {
         if let cellIndex = tableView.indexPath(for: cell) {
             tableView.reloadRows(at: [cellIndex], with: .fade)
         }
