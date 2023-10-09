@@ -213,6 +213,7 @@ private extension ReaderPostCardCell {
         featuredImageView.translatesAutoresizingMaskIntoConstraints = false
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
+        featuredImageView.contentMode = .scaleAspectFill
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
