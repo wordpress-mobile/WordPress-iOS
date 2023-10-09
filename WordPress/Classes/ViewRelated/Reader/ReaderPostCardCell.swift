@@ -86,7 +86,7 @@ class ReaderPostCardCell: UITableViewCell {
             static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
         }
 
-        static let iconImageSize: CGFloat = 24.0
+        static let iconImageSize: CGFloat = 20.0
         static let avatarPlaceholder = UIImage(named: "gravatar")
         static let siteIconPlaceholder = UIImage(named: "post-blavatar-placeholder")
         static let fillerViewHuggingPriority = UILayoutPriority(249.0)
@@ -167,6 +167,7 @@ private extension ReaderPostCardCell {
         imageView.layer.cornerRadius = Constants.iconImageSize / 2.0
         imageView.layer.masksToBounds = true
         imageView.image = image
+        imageView.contentMode = .scaleAspectFill
         containerView.addSubview(imageView)
         siteStackView.addArrangedSubview(containerView)
     }
