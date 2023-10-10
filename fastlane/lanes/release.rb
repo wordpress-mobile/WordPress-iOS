@@ -22,7 +22,6 @@ platform :ios do
     # The `next_release_version` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
     message = <<-MESSAGE
-
       Code Freeze:
       • New release branch from #{DEFAULT_BRANCH}: release/#{next_release_version}
 
@@ -31,7 +30,6 @@ platform :ios do
 
       • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code})
       • New internal release version and build code: #{next_release_version} (#{code_freeze_internal_build_code})
-
     MESSAGE
 
     UI.important(message)
@@ -150,13 +148,11 @@ platform :ios do
 
     # Check versions
     message = <<-MESSAGE
-
       • Current build code: #{current_build_code}
       • New build code: #{next_build_code}
 
       • Current internal build code: #{current_internal_build_code}
       • New internal build code: #{next_internal_build_code}
-
     MESSAGE
 
     # Check branch
@@ -217,7 +213,6 @@ platform :ios do
 
     # Check versions
     message = <<-MESSAGE
-
       New Hotfix:
 
       • Current release version and build code: #{current_release_version} (#{current_build_code}).
@@ -227,7 +222,6 @@ platform :ios do
       • New internal release version and build code: #{new_version} (#{internal_hotfix_build_code(release_version: new_version)}).
 
       Branching from tag: #{previous_version}
-
     MESSAGE
 
     UI.important(message)
