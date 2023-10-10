@@ -307,7 +307,7 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
 
         let coreDataStack = ContextManager.shared
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
-        let blogID = TaggedManagedObjectID(saved: blog)
+        let blogID = TaggedManagedObjectID(blog)
         Task { @MainActor in
             let media: Media
             do {
