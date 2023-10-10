@@ -31,4 +31,38 @@ class MediaBuilder {
 
         return self
     }
+
+    func with(type: MediaType) -> Self {
+        media.mediaType = type
+        return self
+    }
+
+    func with(width: Int) -> Self {
+        media.width = NSNumber(integerLiteral: width)
+        return self
+    }
+
+    func with(height: Int) -> Self {
+        media.height = NSNumber(integerLiteral: height)
+        return self
+    }
+
+    func with(remoteURL url: URL) -> Self {
+        // Notice that by requiring the input to be a URL, we can confidently access its
+        // String value
+        media.remoteURL = url.absoluteString
+        return self
+    }
+
+    func with(remoteThumbnailURL url: URL) -> Self {
+        // Notice that by requiring the input to be a URL, we can confidently access its
+        // String value
+        media.remoteThumbnailURL = url.absoluteString
+        return self
+    }
+
+    func with(blog: Blog) -> Self {
+        media.blog = blog
+        return self
+    }
 }
