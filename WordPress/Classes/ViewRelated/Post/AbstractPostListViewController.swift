@@ -5,31 +5,6 @@ import WordPressShared
 import wpxmlrpc
 import WordPressFlux
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 class AbstractPostListViewController: UIViewController,
     WPContentSyncHelperDelegate,
     UISearchControllerDelegate,
@@ -609,7 +584,7 @@ class AbstractPostListViewController: UIViewController,
         // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
         // Note: Getting oldest date manually as the API may return results out of order if there are
         // differing time offsets in the created dates.
-        let oldestPost = posts.min {$0.date_created_gmt < $1.date_created_gmt}
+        let oldestPost = posts.min { ($0.date_created_gmt ?? .distantPast) < ($1.date_created_gmt ?? .distantPast) }
         filter.oldestPostDate = oldestPost?.date_created_gmt
         filter.hasMore = posts.count >= options.number.intValue
 
@@ -826,7 +801,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Searching
 
     @objc func isSearching() -> Bool {
-        return searchController.isActive && currentSearchTerm()?.count > 0
+        return searchController.isActive && !(currentSearchTerm() ?? "").isEmpty
     }
 
     @objc func currentSearchTerm() -> String? {
