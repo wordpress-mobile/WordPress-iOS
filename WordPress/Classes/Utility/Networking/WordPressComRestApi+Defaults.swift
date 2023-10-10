@@ -5,10 +5,19 @@ extension WordPressComRestApi {
     @objc public static func defaultApi(oAuthToken: String? = nil,
                                         userAgent: String? = nil,
                                         localeKey: String = WordPressComRestApi.LocaleKeyDefault) -> WordPressComRestApi {
+        let isRunningTests = NSClassFromString("XCTestCase") != nil
+        let baseURLString: String
+        if isRunningTests {
+            // This is the same value as the default .wordPressComApiBase
+            // but hardcoded so that we don't init an Environment and trigger a CoreDataStack setup in the tests, which would in turn result in multiple model loads and possible runtime inconsistencies
+            baseURLString = "https://public-api.wordpress.com/"
+        } else {
+            baseURLString = Environment.current.wordPressComApiBase
+        }
         return WordPressComRestApi(oAuthToken: oAuthToken,
                                    userAgent: userAgent,
                                    localeKey: localeKey,
-                                   baseUrlString: Environment.current.wordPressComApiBase)
+                                   baseUrlString: baseURLString)
     }
 
 
