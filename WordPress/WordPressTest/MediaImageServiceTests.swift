@@ -188,10 +188,7 @@ class MediaImageServiceTests: CoreDataTestCase {
     // MARK: - Helpers
 
     func makeEmptyBlog() -> Blog {
-        let blog = Blog.createBlankBlog(in: mainContext)
-        blog.url = "example.com/blog"
-        blog.xmlrpc = "test"
-        return blog
+        BlogBuilder.buildBlankBlog(in: mainContext)
     }
 
     /// `Media` is hardcoded to work with a specific direcoty URL managed by `MediaFileManager`

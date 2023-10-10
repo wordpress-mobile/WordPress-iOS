@@ -29,8 +29,8 @@ class SharingServiceTests: CoreDataTestCase {
     // MARK: Sync Publicize Connections
 
     func testSyncingPublicizeConnectionsForNonDotComBlogCallsACompletionBlock() throws {
-        let blog = Blog.createBlankBlog(in: mainContext)
-        blog.account = nil
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
+        XCTAssertNil(blog.account)
 
         let expect = expectation(description: "Sharing service completion block called.")
 

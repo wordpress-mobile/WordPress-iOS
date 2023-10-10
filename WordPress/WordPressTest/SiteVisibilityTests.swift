@@ -22,13 +22,13 @@ class SiteVisibilityTests: CoreDataTestCase {
     // MARK: - Helpers
 
     func makeBlog() -> Blog {
-        let blog = Blog.createBlankBlog(in: mainContext)
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
         blog.isHostedAtWPcom = true
         return blog
     }
 
     func makeJetpackBlog() -> Blog {
-        let blog = self.makeBlog()
+        let blog = makeBlog()
         blog.isHostedAtWPcom = false
         // UI in the app hides visibility settings entirely for self-hosted non-Jetpack blogs
         // so for the purposes of these tests we can assume that if a blog is self-hosted

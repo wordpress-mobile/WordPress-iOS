@@ -18,7 +18,7 @@ class BlogServiceAuthorTests: CoreDataTestCase {
     }
 
     func testUpdatingBlogAuthors() {
-        let blog = Blog.createBlankBlog(in: mainContext)
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
 
         let notFoundAuthor = blog.getAuthorWith(id: 1)
         XCTAssertNil(notFoundAuthor)
@@ -34,7 +34,7 @@ class BlogServiceAuthorTests: CoreDataTestCase {
 
     /// Authors should be marked as not deleted from the blog on initial insertion, or reinsertion after being deleted.
     func testMarkingAuthorAsNotDeleted() throws {
-        let blog = Blog.createBlankBlog(in: mainContext)
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
 
         let remoteUser = RemoteUser()
         remoteUser.userID = 1
@@ -59,7 +59,7 @@ class BlogServiceAuthorTests: CoreDataTestCase {
 
     /// Authors that are no longer included in the remote user array from the API are marked as deleted.
     func testMarkingAuthorAsDeleted() throws {
-        let blog = Blog.createBlankBlog(in: mainContext)
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
 
         let remoteUser1 = RemoteUser()
         remoteUser1.userID = 1
@@ -82,7 +82,7 @@ class BlogServiceAuthorTests: CoreDataTestCase {
     }
 
     func testQueryingBlogAuthorById() throws {
-        let blog = Blog.createBlankBlog(in: mainContext)
+        let blog = BlogBuilder.buildBlankBlog(in: mainContext)
 
         let remoteUser = RemoteUser()
         remoteUser.userID = 1

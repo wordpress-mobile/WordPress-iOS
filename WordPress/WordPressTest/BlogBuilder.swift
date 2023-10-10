@@ -214,6 +214,16 @@ final class BlogBuilder {
     }
 }
 
+extension BlogBuilder {
+
+    static func buildBlankBlog(in context: NSManagedObjectContext) -> Blog {
+        let builder = BlogBuilder(context)
+        let blog = builder.build()
+        blog.addSettingsIfNecessary()
+        return blog
+    }
+}
+
 extension Blog {
     func supportsWPComAPI() {
         guard let context = managedObjectContext else {
