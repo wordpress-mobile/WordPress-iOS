@@ -60,13 +60,14 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testSmallThumbnailForRemoteImage() async throws {
         // GIVEN
-        let media = Media(context: mainContext)
-        media.blog = makeEmptyBlog()
-        media.mediaType = .image
-        media.width = 1024
-        media.height = 680
-        let remoteURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
-        media.remoteURL = remoteURL.absoluteString
+        let media = MediaBuilder(mainContext)
+            .with(type: .image)
+            .with(width: 1024)
+            .with(height: 680)
+            .with(remoteURL: URL(string: "https://example.files.wordpress.com/2023/09/image.jpg")!)
+            .with(blog: makeEmptyBlog())
+            .build()
+        // It's necessary to save the changes because the SUT uses a derived context internally.
         try mainContext.save()
 
         // GIVEN remote image is mocked and is resized based on the parameters
@@ -92,12 +93,16 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testSmallThumbnailForRemoteVideo() async throws {
         // GIVEN
-        let media = Media(context: mainContext)
-        media.mediaType = .video
-        media.width = 1024
-        media.height = 680
-        media.remoteThumbnailURL = "https://example.files.wordpress.com/2023/09/video-thumbnail.jpg"
-        try mainContext.obtainPermanentIDs(for: [media])
+        let blog = makeEmptyBlog() // does it make a difference if the blog is set before?  ¯\_(ツ)_/¯
+        let media = MediaBuilder(mainContext)
+            .with(type: .video)
+            .with(width: 1024)
+            .with(height: 680)
+            .with(remoteThumbnailURL: URL(string: "https://example.files.wordpress.com/2023/09/video-thumbnail.jpg")!)
+            .with(blog: blog)
+            .build()
+        // It's necessary to save the changes because the SUT uses a derived context internally.
+        try mainContext.save()
 
         // GIVEN remote image is mocked and is resized based on the parameters
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
