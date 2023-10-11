@@ -239,16 +239,20 @@ platform :ios do
 
     files = {
       whats_new: JETPACK_RELEASE_NOTES_PATH,
-      app_store_name: File.join(source_metadata_folder, 'name.txt'),
-      app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-      app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-      app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
-      'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
-      'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
-      'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
-      'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
-      'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
+      # We are currently iterating on the App Store copy for Jetpack.
+      # It's therefore easier to update the English US metadata without triggering a translation.
+      # Once we'll settle on a new copy, we'll re-enable reading these sources for the GlotPress po file.
+      #
+      # app_store_name: File.join(source_metadata_folder, 'name.txt'),
+      # app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
+      # app_store_desc: File.join(source_metadata_folder, 'description.txt'),
+      # app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
+      # 'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
+      # 'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
+      # 'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
+      # 'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
+      # 'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
+      # 'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
     }
 
     ios_update_metadata_source(
