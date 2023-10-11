@@ -66,7 +66,7 @@ public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement,
     }
 
     if retries == maxRetries {
-        XCTFail("Expected element (\(elementToAppear)) still does not exists after \(maxRetries) tries.")
+        XCTFail("Expected element (\(elementToAppear)) still does not exist after \(maxRetries) tries.")
     }
 }
 
