@@ -156,8 +156,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         NSLayoutConstraint.activate([
             largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
         ])
-        largeTitleView.textAlignment = .natural
-        promptView.textAlignment = .natural
+        largeTitleView.textAlignment = .center
+        promptView.textAlignment = .center
         promptView.font = .systemFont(ofSize: 17)
     }
 
@@ -170,6 +170,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             searchBar.layer.borderWidth = 0
             searchHeader.addSubview(searchBar)
             searchBar.delegate = self
+            headerView.backgroundColor = .basicBackground
 
             NSLayoutConstraint.activate([
                 searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
