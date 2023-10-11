@@ -53,6 +53,23 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     }
 }
 
+public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement, maxRetries: Int = 10) {
+    var retries = 0
+    while retries < maxRetries {
+        if !elementToAppear.exists {
+            element.tap()
+            break
+        }
+
+        usleep(500000) // a 0.5 second delay before retrying
+        retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(elementToAppear)) still does not exist after \(maxRetries) tries.")
+    }
+}
+
 public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
