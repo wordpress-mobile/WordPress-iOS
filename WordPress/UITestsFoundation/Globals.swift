@@ -38,7 +38,7 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
 
 public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
     guard element.waitForExistence(timeout: timeout) else {
-        XCTFail("Expected element (\(element)) did not exist after \(timeout) seconds.")
+        XCTFail("Expected element (\(element)) does not exist after \(timeout) seconds.")
         return
     }
 
