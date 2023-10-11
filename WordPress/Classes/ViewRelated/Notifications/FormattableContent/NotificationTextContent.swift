@@ -60,7 +60,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     }
 
     override var kind: FormattableContentKind {
-        if let firstMedia = media.first, (firstMedia.kind == .image || firstMedia.kind == .badge) {
+        if let firstMedia = media.first, firstMedia.kind == .image || firstMedia.kind == .badge {
             return .image
         }
 
