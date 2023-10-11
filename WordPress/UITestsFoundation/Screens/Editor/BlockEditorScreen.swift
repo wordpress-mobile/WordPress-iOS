@@ -293,8 +293,8 @@ public class BlockEditorScreen: ScreenObject {
             postNowButton = app.buttons["\(action.rawValue) Now"]
         }
 
-        waitForExistAndTap(postButton)
-        waitForExistAndTap(postNowButton)
+        waitForExistenceAndTap(postButton)
+        waitForExistenceAndTap(postNowButton)
 
         if action == .publish && postType == .post {
             dismissBloggingRemindersAlertIfNeeded()
