@@ -461,6 +461,7 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
 
         // ensure that the collection view hugs its content.
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return view
     }
 

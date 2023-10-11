@@ -20,6 +20,10 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
         static let overflowReuseIdentifier = "OverflowItem"
 
+        static let metrics: ReaderInterestsStyleGuide.Metrics = {
+            return FeatureFlag.readerImprovements.enabled ? .latest : .legacy
+        }()
+
         static let interestsLabelMargin: CGFloat = 8
 
         static let cellCornerRadius: CGFloat = 4
@@ -101,16 +105,15 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         layout.delegate = self
         layout.maxNumberOfDisplayedLines = 1
-        layout.itemSpacing = Constants.cellSpacing
-        layout.cellHeight = Constants.cellHeight
+        layout.itemSpacing = Constants.metrics.cellSpacing
+        layout.cellHeight = Constants.metrics.cellHeight
         layout.allowsCentering = false
     }
 
-    private func sizeForCell(title: String, of collectionView: UICollectionView)-> CGSize {
+    private func sizeForCell(title: String, of collectionView: UICollectionView) -> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
         ]
-
 
         let title: NSString = title as NSString
 
@@ -119,7 +122,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         // Prevent 1 token from being too long
         let maxWidth = collectionView.bounds.width * Constants.maxCellWidthMultiplier
         let width = min(size.width, maxWidth)
-        size.width = width + (Constants.interestsLabelMargin * 2)
+        size.width = width + (Constants.metrics.interestsLabelMargin * 2)
 
         return size
     }
@@ -127,7 +130,12 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
         ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
 
-        cell.layer.cornerRadius = Constants.cellCornerRadius
+        if Constants.metrics.borderWidth > 0 {
+            cell.layer.borderColor = Constants.metrics.borderColor.cgColor
+            cell.layer.borderWidth = Constants.metrics.borderWidth
+        }
+
+        cell.layer.cornerRadius = Constants.metrics.cellCornerRadius
         cell.label.text = title
         cell.label.accessibilityHint = Strings.accessbilityHint
         cell.label.accessibilityTraits = .button
@@ -181,7 +189,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         configure(cell: cell, with: title)
 
-        if layout.isExpanded {
+        if layout.isExpanded || FeatureFlag.readerImprovements.enabled {
             cell.label.backgroundColor = .clear
         }
 
