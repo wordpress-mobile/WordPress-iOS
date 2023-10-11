@@ -33,6 +33,7 @@ class ReaderPostCardCell: UITableViewCell {
             configureLabels()
             configureImages()
             configureButtons()
+            configureAccessibility()
         }
     }
 
@@ -84,6 +85,30 @@ class ReaderPostCardCell: UITableViewCell {
         struct FeaturedImage {
             static let cornerRadius: CGFloat = 5.0
             static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
+        }
+
+        struct Accessibility {
+            static let siteStackViewHint = NSLocalizedString("reader.post.header.accessibility.hint",
+                                                             value: "Opens the site details for the post.",
+                                                             comment: "Accessibility hint for the site header on the reader post card cell")
+            static let reblogButtonHint = NSLocalizedString("reader.post.button.reblog.accessibility.hint",
+                                                            value: "Reblogs the post.",
+                                                            comment: "Accessibility hint for the reblog button on the reader post card cell")
+            static let commentButtonHint = NSLocalizedString("reader.post.button.comment.accessibility.hint",
+                                                             value: "Opens the comments for the post.",
+                                                             comment: "Accessibility hint for the comment button on the reader post card cell")
+            static let likeButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Likes the post.",
+                                                          comment: "Accessibility hint for the like button on the reader post card cell")
+            static let likedButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Unlikes the post.",
+                                                          comment: "Accessibility hint for the liked button on the reader post card cell")
+            static let menuButtonLabel = NSLocalizedString("reader.post.button.menu.accessibility.label",
+                                                           value: "More",
+                                                           comment: "Accessibility label for the more menu button on the reader post card cell")
+            static let menuButtonHint = NSLocalizedString("reader.post.button.menu.accessibility.hint",
+                                                          value: "Opens a menu with more actions.",
+                                                          comment: "Accessibility hint for the site header on the reader post card cell")
         }
 
         static let iconImageSize: CGFloat = 20.0
@@ -193,6 +218,10 @@ private extension ReaderPostCardCell {
         siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
         siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
         siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSiteHeader))
+        siteStackView.addGestureRecognizer(tapGesture)
+
         contentStackView.addArrangedSubview(siteStackView)
     }
 
@@ -225,7 +254,7 @@ private extension ReaderPostCardCell {
         contentStackView.addArrangedSubview(postCountsLabel)
     }
 
-    func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil) {
+    func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil, action: Selector) {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .secondaryLabel
         button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
@@ -233,16 +262,28 @@ private extension ReaderPostCardCell {
         button.setImage(image, for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
         button.setTitle(text, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
         controlsStackView.addArrangedSubview(button)
     }
 
     func setupControlButtons() {
-        setupControlButton(reblogButton, image: Constants.reblogButtonImage, text: Constants.reblogButtonText)
-        setupControlButton(commentButton, image: Constants.commentButtonImage, text: Constants.commentButtonText)
-        setupControlButton(likeButton, image: Constants.likeButtonImage, text: Constants.likeButtonText)
+        setupControlButton(reblogButton,
+                           image: Constants.reblogButtonImage,
+                           text: Constants.reblogButtonText,
+                           action: #selector(didTapReblog))
+        setupControlButton(commentButton,
+                           image: Constants.commentButtonImage,
+                           text: Constants.commentButtonText,
+                           action: #selector(didTapComment))
+        setupControlButton(likeButton,
+                           image: Constants.likeButtonImage,
+                           text: Constants.likeButtonText,
+                           action: #selector(didTapLike))
         setupFillerView()
         controlsStackView.addArrangedSubview(fillerView)
-        setupControlButton(menuButton, image: Constants.menuButtonImage)
+        setupControlButton(menuButton,
+                           image: Constants.menuButtonImage,
+                           action: #selector(didTapMore))
     }
 
     func setupFillerView() {
@@ -419,6 +460,27 @@ private extension ReaderPostCardCell {
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 
+    // MARK: - Accessibility
+
+    func configureAccessibility() {
+        siteStackView.isAccessibilityElement = true
+        siteStackView.accessibilityLabel = [viewModel?.siteTitle, viewModel?.shortPostDate].compactMap { $0 }.joined(separator: ", ")
+        siteStackView.accessibilityHint = Constants.Accessibility.siteStackViewHint
+        siteStackView.accessibilityTraits = .button
+
+        postCountsLabel.accessibilityLabel = [viewModel?.likeCount, viewModel?.commentCount].compactMap { $0 }.joined(separator: ", ")
+
+        reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
+        commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
+        likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
+        menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
+        accessibilityElements = [
+            siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
+            reblogButton, commentButton, likeButton, menuButton
+        ]
+    }
+
     // MARK: - Cell reuse
 
     func addMissingViews() {
@@ -465,6 +527,28 @@ private extension ReaderPostCardCell {
         postSummaryLabel.text = nil
         featuredImageView.image = nil
         postCountsLabel.text = nil
+    }
+
+    // MARK: - Button actions
+
+    @objc func didTapSiteHeader() {
+        viewModel?.showSiteDetails()
+    }
+
+    @objc func didTapReblog() {
+        viewModel?.reblog()
+    }
+
+    @objc func didTapComment() {
+        viewModel?.comment(with: self)
+    }
+
+    @objc func didTapLike() {
+        viewModel?.toggleLike(with: self)
+    }
+
+    @objc func didTapMore() {
+        viewModel?.showMore(with: menuButton)
     }
 
 }
