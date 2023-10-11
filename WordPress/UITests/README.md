@@ -36,7 +36,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [x] Create Scheduled Post
     - [ ] Pages:
         - [ ] Create Page from Layout
-        - [ ] Create Blank Page
+        - [x] Create Blank Page
 5. Notifications
     - [x] View Notification - Comment, Follow and Like Notifications
     - [x] Reply from Notification

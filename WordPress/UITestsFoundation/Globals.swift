@@ -36,6 +36,15 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
+public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    guard element.waitForExistence(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) does not exist after \(timeout) seconds.")
+        return
+    }
+
+    element.tap()
+}
+
 public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
