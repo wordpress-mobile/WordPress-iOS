@@ -22,12 +22,16 @@ struct ReaderPostCardCellViewModel {
         return contentProvider.blogNameForDisplay?()
     }
 
+    var shortPostDate: String? {
+        contentProvider.dateForDisplay()?.toShortString()
+    }
+
     var postDate: String? {
-        guard let dateForDisplay = contentProvider.dateForDisplay()?.toShortString() else {
+        guard let shortPostDate else {
             return nil
         }
         let postDateFormat = isRTL ? "%@ •" : "• %@"
-        return siteTitle != nil ? String(format: postDateFormat, dateForDisplay) : dateForDisplay
+        return siteTitle != nil ? String(format: postDateFormat, shortPostDate) : shortPostDate
     }
 
     var postTitle: String? {
@@ -50,18 +54,24 @@ struct ReaderPostCardCellViewModel {
         contentProvider.contentPreviewForDisplay()
     }
 
+    var commentCount: String? {
+        guard isCommentsEnabled else {
+            return nil
+        }
+        let count = contentProvider.commentCount()?.intValue ?? 0
+        return WPStyleGuide.commentCountForDisplay(count)
+    }
+
+    var likeCount: String? {
+        guard isLikesEnabled else {
+            return nil
+        }
+        let count = contentProvider.likeCount()?.intValue ?? 0
+        return WPStyleGuide.likeCountForDisplay(count)
+    }
+
     var postCounts: String? {
-        let commentCount = contentProvider.commentCount()?.intValue ?? 0
-        let likeCount = contentProvider.likeCount()?.intValue ?? 0
-        var countStrings = [String]()
-
-        if isLikesEnabled {
-            countStrings.append(WPStyleGuide.likeCountForDisplay(likeCount))
-        }
-
-        if isCommentsEnabled {
-            countStrings.append(WPStyleGuide.commentCountForDisplay(commentCount))
-        }
+        let countStrings = [likeCount, commentCount].compactMap { $0 }
         return countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
     }
 

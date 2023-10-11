@@ -33,6 +33,7 @@ class ReaderPostCardCell: UITableViewCell {
             configureLabels()
             configureImages()
             configureButtons()
+            configureAccessibility()
         }
     }
 
@@ -84,6 +85,30 @@ class ReaderPostCardCell: UITableViewCell {
         struct FeaturedImage {
             static let cornerRadius: CGFloat = 5.0
             static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
+        }
+
+        struct Accessibility {
+            static let siteStackViewHint = NSLocalizedString("reader.post.header.accessibility.hint",
+                                                             value: "Opens the site details for the post.",
+                                                             comment: "Accessibility hint for the site header on the reader post card cell")
+            static let reblogButtonHint = NSLocalizedString("reader.post.button.reblog.accessibility.hint",
+                                                            value: "Reblogs the post.",
+                                                            comment: "Accessibility hint for the reblog button on the reader post card cell")
+            static let commentButtonHint = NSLocalizedString("reader.post.button.comment.accessibility.hint",
+                                                             value: "Opens the comments for the post.",
+                                                             comment: "Accessibility hint for the comment button on the reader post card cell")
+            static let likeButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Likes the post.",
+                                                          comment: "Accessibility hint for the like button on the reader post card cell")
+            static let likedButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Unlikes the post.",
+                                                          comment: "Accessibility hint for the liked button on the reader post card cell")
+            static let menuButtonLabel = NSLocalizedString("reader.post.button.menu.accessibility.label",
+                                                           value: "More",
+                                                           comment: "Accessibility label for the more menu button on the reader post card cell")
+            static let menuButtonHint = NSLocalizedString("reader.post.button.menu.accessibility.hint",
+                                                          value: "Opens a menu with more actions.",
+                                                          comment: "Accessibility hint for the site header on the reader post card cell")
         }
 
         static let iconImageSize: CGFloat = 20.0
@@ -433,6 +458,27 @@ private extension ReaderPostCardCell {
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
         likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
+    }
+
+    // MARK: - Accessibility
+
+    func configureAccessibility() {
+        siteStackView.isAccessibilityElement = true
+        siteStackView.accessibilityLabel = [viewModel?.siteTitle, viewModel?.shortPostDate].compactMap { $0 }.joined(separator: ", ")
+        siteStackView.accessibilityHint = Constants.Accessibility.siteStackViewHint
+        siteStackView.accessibilityTraits = .button
+
+        postCountsLabel.accessibilityLabel = [viewModel?.likeCount, viewModel?.commentCount].compactMap { $0 }.joined(separator: ", ")
+
+        reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
+        commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
+        likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
+        menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
+        accessibilityElements = [
+            siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
+            reblogButton, commentButton, likeButton, menuButton
+        ]
     }
 
     // MARK: - Cell reuse
