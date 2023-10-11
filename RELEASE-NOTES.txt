@@ -1,6 +1,7 @@
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
+* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
 
 
 23.4
