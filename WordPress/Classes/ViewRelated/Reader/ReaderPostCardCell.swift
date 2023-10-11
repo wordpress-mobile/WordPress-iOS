@@ -8,6 +8,7 @@ class ReaderPostCardCell: UITableViewCell {
     private let siteStackView = UIStackView()
     private let siteIconContainerView = UIView()
     private let siteIconImageView = UIImageView()
+    private let siteIconBorderView = UIView()
     private let avatarContainerView = UIView()
     private let avatarImageView = UIImageView()
     private let siteTitleLabel = UILabel()
@@ -133,6 +134,10 @@ class ReaderPostCardCell: UITableViewCell {
         static let likedButtonText = NSLocalizedString("reader.post.button.liked",
                                                        value: "Liked",
                                                        comment: "Text for the 'Liked' button on the reader post card cell.")
+        static let borderColor = UIColor(light: .systemBackground.darkVariant().withAlphaComponent(0.1),
+                                         dark: .systemBackground.lightVariant().withAlphaComponent(0.2))
+        static let borderWidth: CGFloat = 0.5
+        static let imageSeparatorBorderWidth: CGFloat = 1.0
         static let separatorHeight: CGFloat = 0.5
     }
 
@@ -153,12 +158,8 @@ private extension ReaderPostCardCell {
         setupContentView()
         setupContentStackView()
 
-        setupIconImage(avatarImageView,
-                       containerView: avatarContainerView,
-                       image: Constants.avatarPlaceholder)
-        setupIconImage(siteIconImageView,
-                       containerView: siteIconContainerView,
-                       image: Constants.siteIconPlaceholder)
+        setupAvatarImage()
+        setupSiteIconImage()
         setupSiteTitle()
         setupPostDate()
         setupSiteStackView()
@@ -186,6 +187,30 @@ private extension ReaderPostCardCell {
         contentView.addSubview(contentStackView)
     }
 
+    func setupAvatarImage() {
+        setupIconImage(avatarImageView,
+                       containerView: avatarContainerView,
+                       image: Constants.avatarPlaceholder)
+        avatarContainerView.addSubview(avatarImageView)
+        siteStackView.addArrangedSubview(avatarContainerView)
+    }
+
+    func setupSiteIconImage() {
+        setupIconImage(siteIconImageView,
+                       containerView: siteIconContainerView,
+                       image: Constants.siteIconPlaceholder)
+        siteIconImageView.layer.masksToBounds = false
+        siteIconBorderView.translatesAutoresizingMaskIntoConstraints = false
+        siteIconBorderView.layer.frame = CGRect(x: 0, y: 0, width: Constants.iconImageSize, height: Constants.iconImageSize)
+        siteIconBorderView.layer.cornerRadius = Constants.iconImageSize / 2.0
+        siteIconBorderView.layer.borderWidth = Constants.borderWidth + Constants.imageSeparatorBorderWidth
+        siteIconBorderView.layer.borderColor = UIColor.listForeground.cgColor
+        siteIconBorderView.layer.masksToBounds = true
+        siteIconBorderView.addSubview(siteIconImageView)
+        siteIconContainerView.addSubview(siteIconBorderView)
+        siteStackView.addArrangedSubview(siteIconContainerView)
+    }
+
     func setupIconImage(_ imageView: UIImageView, containerView: UIView, image: UIImage?) {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -193,8 +218,9 @@ private extension ReaderPostCardCell {
         imageView.layer.masksToBounds = true
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
-        containerView.addSubview(imageView)
-        siteStackView.addArrangedSubview(containerView)
+        imageView.layer.borderWidth = Constants.borderWidth
+        imageView.layer.borderColor = Constants.borderColor.cgColor
+        imageView.backgroundColor = .listForeground
     }
 
     func setupSiteTitle() {
@@ -244,6 +270,8 @@ private extension ReaderPostCardCell {
         featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
         featuredImageView.layer.masksToBounds = true
         featuredImageView.contentMode = .scaleAspectFill
+        featuredImageView.layer.borderWidth = Constants.borderWidth
+        featuredImageView.layer.borderColor = Constants.borderColor.cgColor
         contentStackView.addArrangedSubview(featuredImageView)
     }
 
@@ -312,7 +340,7 @@ private extension ReaderPostCardCell {
         NSLayoutConstraint.activate(
             contentViewConstraints()
             + iconImageConstraints(avatarImageView, containerView: avatarContainerView)
-            + iconImageConstraints(siteIconImageView, containerView: siteIconContainerView)
+            + siteIconImageConstraints()
             + featuredImageContraints()
             + buttonStackViewConstraints()
             + buttonConstraints()
@@ -339,6 +367,21 @@ private extension ReaderPostCardCell {
             imageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
             imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ]
+    }
+
+    func siteIconImageConstraints() -> [NSLayoutConstraint] {
+        return [
+            siteIconContainerView.heightAnchor.constraint(greaterThanOrEqualTo: siteIconBorderView.heightAnchor),
+            siteIconContainerView.widthAnchor.constraint(greaterThanOrEqualTo: siteIconBorderView.widthAnchor),
+            siteIconBorderView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize + Constants.borderWidth + Constants.imageSeparatorBorderWidth),
+            siteIconBorderView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize + Constants.borderWidth + Constants.imageSeparatorBorderWidth),
+            siteIconBorderView.centerXAnchor.constraint(equalTo: siteIconContainerView.centerXAnchor),
+            siteIconBorderView.centerYAnchor.constraint(equalTo: siteIconContainerView.centerYAnchor),
+            siteIconImageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            siteIconImageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            siteIconImageView.centerXAnchor.constraint(equalTo: siteIconBorderView.centerXAnchor),
+            siteIconImageView.centerYAnchor.constraint(equalTo: siteIconBorderView.centerYAnchor),
         ]
     }
 
