@@ -53,11 +53,11 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     }
 }
 
-public func tapUntilExpectedElementAppear( toTap elementToTap: XCUIElement, toAppear elementToAppear: XCUIElement, maxRetries: Int = 10) {
+public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
         if !elementToAppear.exists {
-            elementToTap.tap()
+            element.tap()
             break
         }
 
