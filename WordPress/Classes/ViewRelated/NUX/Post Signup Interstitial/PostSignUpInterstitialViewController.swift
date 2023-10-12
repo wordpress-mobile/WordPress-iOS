@@ -87,8 +87,14 @@ class PostSignUpInterstitialViewController: UIViewController {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
 
-        RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
-        dismiss?(.createSite)
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: "", onDidDismiss: {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                return
+            }
+
+            RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
+            self.dismiss?(.createSite)
+        })
 
     }
 
