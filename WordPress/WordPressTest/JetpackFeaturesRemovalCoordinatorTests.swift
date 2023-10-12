@@ -23,7 +23,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -38,7 +38,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -52,7 +52,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -66,7 +66,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: true, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -81,7 +81,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -95,7 +95,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -109,7 +109,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -123,7 +123,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -137,7 +137,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -151,7 +151,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -165,7 +165,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -179,7 +179,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -193,7 +193,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -209,7 +209,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
@@ -225,7 +225,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         var flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -234,7 +234,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         remote.flags = flags
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -243,7 +243,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: false)
         remote.flags = flags
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -257,7 +257,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -266,7 +266,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
         remote.flags = flags
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -280,7 +280,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         var flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -289,7 +289,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         // When
         flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
         remote.flags = flags
-        store.update(using: remote)
+        store.update(using: remote, waitOn: self)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -344,5 +344,15 @@ private extension Date {
     var components: DateComponents {
         return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
                                                from: self)
+    }
+}
+
+private extension RemoteFeatureFlagStore {
+    func update(using remote: FeatureFlagRemote, waitOn test: XCTestCase) {
+        let exp = test.expectation(description: "Store finishes update")
+        update(using: remote) {
+            exp.fulfill()
+        }
+        test.wait(for: [exp], timeout: 1)
     }
 }
