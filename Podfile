@@ -50,7 +50,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 8.6.0-beta.1'
+  pod 'WordPressKit', '~> 8.7.0'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
@@ -147,9 +147,9 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'WordPressAuthenticator', '~> 7.0'
+  # pod 'WordPressAuthenticator', '~> 7.0'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
+  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'e3a657b160407474e8413fa77746a75a2c8d5bdb'
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
