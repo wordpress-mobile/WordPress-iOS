@@ -19,21 +19,25 @@ final class PlanWizardContentViewModelTests: XCTestCase {
 
     // MARK: - isPlanSelected
 
-    func testIsPlanSelectedWithRedirectScheme() {
-        let url = URL(string: PlanWizardContentViewModel.Constants.redirectScheme + "://")!
-
-        XCTAssertTrue(sut.isPlanSelected(url))
-    }
-
-    func testIsPlanSelectedWithRedirectSchemeAndParameters() {
-        var components = URLComponents(string: PlanWizardContentViewModel.Constants.redirectScheme + "://")!
-        components.queryItems = [.init(name: "parameter", value: "5")]
+    func testIsPlanSelectedWithPlanSlugParameters() {
+        var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
+        components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.planSlugParameter, value: "free_plan")]
 
         XCTAssertTrue(sut.isPlanSelected(components.url!))
     }
 
-    func testPlanNotSelectedWithoutRedirectScheme() {
-        let url = URL(string: "https://www.wordpress.com/plans/")!
+    func testIsPlanSelectedWithPlanSlugAndPlanIdParameters() {
+        var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
+        components.queryItems = [
+            .init(name: PlanWizardContentViewModel.Constants.planSlugParameter, value: "paid_plan"),
+            .init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "1009")
+        ]
+
+        XCTAssertTrue(sut.isPlanSelected(components.url!))
+    }
+
+    func testPlanNotSelectedWithoutPlanSlug() {
+        let url = URL(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
 
         XCTAssertFalse(sut.isPlanSelected(url))
     }
@@ -41,14 +45,14 @@ final class PlanWizardContentViewModelTests: XCTestCase {
     // MARK: - selectedPlanId
 
     func testSelectedPlanId() {
-        var components = URLComponents(string: PlanWizardContentViewModel.Constants.redirectScheme + "://")!
+        var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
         components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "125")]
 
         XCTAssertEqual(sut.selectedPlanId(from: components.url!), 125)
     }
 
     func testSelectedPlanIdWithMoreParameters() {
-        var components = URLComponents(string: PlanWizardContentViewModel.Constants.redirectScheme + "://")!
+        var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
         components.queryItems = [
             .init(name: "parameter", value: "5"),
             .init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "125"),

@@ -11,7 +11,6 @@ struct PlanWizardContentViewModel {
             queryItems.append(.init(name: Constants.paidDomainNameParameter, value: domainSuggestion.domainName))
         }
 
-        queryItems.append(.init(name: Constants.redirectParameter, value: Constants.redirectScheme + "://"))
         components.queryItems = queryItems
         return components.url!
     }
@@ -22,24 +21,36 @@ struct PlanWizardContentViewModel {
     }
 
     func isPlanSelected(_ redirectionURL: URL) -> Bool {
-        return redirectionURL.scheme == Constants.redirectScheme
+        return selectedPlanSlug(from: redirectionURL) != nil
     }
 
     func selectedPlanId(from url: URL) -> Int? {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-              let queryItem = components.queryItems?.first(where: { $0.name == Constants.planIdParameter })?.value,
-              let planId = Int(queryItem) else {
+        guard let planId = parameterValue(from: url, key: Constants.planIdParameter) else {
             return nil
         }
 
-        return planId
+        return Int(planId)
+    }
+
+    func selectedPlanSlug(from url: URL) -> String? {
+        return parameterValue(from: url, key: Constants.planSlugParameter)
     }
 
     enum Constants {
-        static let plansWebAddress = "https://container-exciting-jennings.calypso.live/jetpack-app-plans" // TODO: Set to WP.COM address
-        static let redirectParameter = "redirect_to"
-        static let redirectScheme = "jetpackappplans"
+        static let plansWebAddress = "http://calypso.localhost:3000/jetpack-app/plans" // TODO: Set to WP.COM address
         static let planIdParameter = "plan_id"
+        static let planSlugParameter = "plan_slug"
         static let paidDomainNameParameter = "paid_domain_name"
+    }
+}
+
+private extension PlanWizardContentViewModel {
+    func parameterValue(from url: URL, key: String) -> String? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              let planSlug = components.queryItems?.first(where: { $0.name == key })?.value else {
+            return nil
+        }
+
+        return planSlug
     }
 }
