@@ -38,13 +38,30 @@ class TimeZoneFormatterTests: XCTestCase {
 
         // Then TimeAtZone = "6:00 PM"
         var timeAtZone = formatter.getTimeAtZone(timeZone)
-        XCTAssertEqual("6:00 PM", timeAtZone)
+        // As of iOS 17.0, `DateFormatter` uses a narrow non-breaking space (U+202F) in output such as "7:00 PM".
+        //
+        // See:
+        // - https://unicode-explorer.com/c/202F
+        // - https://href.li/?https://developer.apple.com/forums/thread/731850
+        //
+        // An argument could be made to modify these tests, or the whole component, so that we don't need
+        // to assert on what `DateFormatter` does for us. In the meantime, let's use the proper Unicode
+        // character in the expectation.
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual("6:00\u{202F}PM", timeAtZone)
+        } else {
+            XCTAssertEqual("6:00 PM", timeAtZone)
+        }
 
         // When end of May date
         formatter = TimeZoneFormatter(currentDate: testEndOfMayDate)
 
         // Then TimeAtZone = "7:00 PM"
         timeAtZone = formatter.getTimeAtZone(timeZone)
-        XCTAssertEqual("7:00 PM", timeAtZone)
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual("7:00\u{202F}PM", timeAtZone)
+        } else {
+            XCTAssertEqual("7:00 PM", timeAtZone)
+        }
     }
 }
