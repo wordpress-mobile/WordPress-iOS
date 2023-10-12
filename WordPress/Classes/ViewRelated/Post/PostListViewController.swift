@@ -15,7 +15,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
     private var postCellIdentifier: String {
-        return isCompact || isSearching() ? postCompactCellIdentifier : postCardTextCellIdentifier
+        return isCompact ? postCompactCellIdentifier : postCardTextCellIdentifier
     }
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
@@ -199,28 +199,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func heightForFooterView() -> CGFloat {
         return postListHeightForFooterView
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard _tableViewHandler.isSearching else {
-            return 0.0
-        }
-        return Constants.searchHeaderHeight
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        guard _tableViewHandler.isSearching,
-            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
-            return UIView(frame: .zero)
-        }
-
-        let sectionInfo = _tableViewHandler.resultsController?.sections?[section]
-
-        if let sectionInfo = sectionInfo {
-            headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
-        }
-
-        return headerView
     }
 
     override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -419,12 +397,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let searchText = currentSearchTerm() ?? ""
-        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
@@ -438,11 +415,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             // Brand new local drafts have an authorID of 0.
             let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
             predicates.append(authorPredicate)
-        }
-
-        if searchText.count > 0 {
-            let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
-            predicates.append(searchPredicate)
         }
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -703,40 +675,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
 
-    // MARK: - Searching
-
-    override func updateForLocalPostsMatchingSearchText() {
-        // If the user taps and starts to type right away, avoid doing the search
-        // while the tableViewHandler is not ready yet
-        if !_tableViewHandler.isSearching, let search = currentSearchTerm(), !search.isEmpty {
-            return
-        }
-
-        super.updateForLocalPostsMatchingSearchText()
-    }
-
-    func didPresentSearchController(_ searchController: UISearchController) {
-        _tableViewHandler.isSearching = true
-    }
-
-    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        if !isSearching() {
-            return super.sortDescriptorsForFetchRequest()
-        }
-
-        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
-        return [descriptor]
-    }
-
-    override func willDismissSearchController(_ searchController: UISearchController) {
-        _tableViewHandler.isSearching = false
-        super.willDismissSearchController(searchController)
-    }
-
-    enum Animations {
-        static let searchDismissDuration: TimeInterval = 0.3
-    }
-
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
@@ -746,7 +684,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private enum Constants {
         static let exhibitionModeKey = "showCompactPosts"
-        static let searchHeaderHeight: CGFloat = 40
         static let card = "card"
         static let compact = "compact"
         static let source = "post_list"
@@ -764,20 +701,12 @@ private extension PostListViewController {
             return
         }
 
-        if searchController.isActive {
-            if currentSearchTerm()?.count == 0 {
-                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPosts)
-            } else {
-                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
-            }
-        } else {
-            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-            noResultsViewController.configure(title: noResultsTitle(),
-                                              buttonTitle: noResultsButtonTitle(),
-                                              image: noResultsImageName,
-                                              accessoryView: accessoryView)
-        }
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          image: noResultsImageName,
+                                          accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
@@ -785,7 +714,7 @@ private extension PostListViewController {
     }
 
     func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
+        if syncHelper.isSyncing == true {
             return nil
         }
 
@@ -797,11 +726,6 @@ private extension PostListViewController {
         if syncHelper.isSyncing == true {
             return NoResultsText.fetchingTitle
         }
-
-        if isSearching() {
-            return NoResultsText.noMatchesTitle
-        }
-
         return noResultsFilteredTitle()
     }
 
@@ -824,20 +748,17 @@ private extension PostListViewController {
     struct NoResultsText {
         static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let noMatchesTitle = NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
-        static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
     }
 }
 
 extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
-        let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompactOrSearching)
+        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompact)
     }
 }
