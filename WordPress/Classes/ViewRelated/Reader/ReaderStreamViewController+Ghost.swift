@@ -18,10 +18,10 @@ extension ReaderStreamViewController {
 
         ghostableTableView.separatorStyle = .none
 
-        let postCardTextCellNib = UINib(nibName: "ReaderPostCardCell", bundle: Bundle.main)
-        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: "ReaderPostCardCell")
+        let postCardTextCellNib = UINib(nibName: "OldReaderPostCardCell", bundle: Bundle.main)
+        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: "OldReaderPostCardCell")
 
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "ReaderPostCardCell", rowsPerSection: [10])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "OldReaderPostCardCell", rowsPerSection: [10])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)

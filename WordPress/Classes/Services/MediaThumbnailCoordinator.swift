@@ -79,7 +79,7 @@ class MediaThumbnailCoordinator: NSObject {
         }
 
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
-        let blogID = TaggedManagedObjectID(saved: media.blog)
+        let blogID = TaggedManagedObjectID(media.blog)
         Task { @MainActor in
             do {
                 let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)

@@ -440,7 +440,7 @@ extension WPStyleGuide {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
-        if count == 0 {
+        if count == 0 && !FeatureFlag.readerImprovements.enabled {
             return likeStr
         } else if count == 1 {
             return "\(count) \(likeStr)"
@@ -453,7 +453,7 @@ extension WPStyleGuide {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
-        if count == 0 {
+        if count == 0 && !FeatureFlag.readerImprovements.enabled {
             return commentStr
         } else if count == 1 {
             return "\(count) \(commentStr)"

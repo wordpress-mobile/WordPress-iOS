@@ -84,7 +84,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     // MARK: - Selection
 
     private func startSelection() {
-        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection)
+        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection, isSelectionOrdered: true)
 
         if allowsMultipleSelection, toolbarItems == nil {
             var toolbarItems: [UIBarButtonItem] = []

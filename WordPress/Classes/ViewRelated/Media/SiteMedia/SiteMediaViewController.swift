@@ -176,6 +176,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         coordinator.delete(media: selection, onProgress: updateProgress, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
             SVProgressHUD.showSuccess(withStatus: Strings.deletionSuccessMessage)
+
+            self?.setEditing(false)
         }, failure: {
             SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
         })
@@ -195,6 +197,11 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
                 let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
                 activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+                activityViewController.completionWithItemsHandler = { [weak self] _, isCompleted, _, _ in
+                    if isCompleted {
+                        self?.setEditing(false)
+                    }
+                }
                 present(activityViewController, animated: true, completion: nil)
             } catch {
                 // TODO: Add error handling
