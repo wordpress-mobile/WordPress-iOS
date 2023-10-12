@@ -6,19 +6,18 @@ import wpxmlrpc
 import WordPressFlux
 
 class AbstractPostListViewController: UIViewController,
-    WPContentSyncHelperDelegate,
-    UISearchControllerDelegate,
-    UISearchResultsUpdating,
-    WPTableViewHandlerDelegate,
-    // This protocol is not in an extension so that subclasses can override noConnectionMessage()
-    NetworkAwareUI {
+                                      WPContentSyncHelperDelegate,
+                                      UISearchControllerDelegate,
+                                      UISearchResultsUpdating,
+                                      WPTableViewHandlerDelegate,
+                                      NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
+{
 
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let postsFetchRequestBatchSize = Int(10)
     fileprivate static let pagesNumberOfLoadedElement = Int(100)
     fileprivate static let postsLoadMoreThreshold = Int(4)
-    fileprivate static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
 
     fileprivate static let defaultHeightForFooterView = CGFloat(44.0)
 
@@ -45,7 +44,7 @@ class AbstractPostListViewController: UIViewController,
     /// to the subclass to define this property.
     ///
     @objc var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
-    @objc var tableViewController: UITableViewController!
+    let tableViewController = UITableViewController(style: .grouped)
     @objc var reloadTableViewBeforeAppearing = false
 
     @objc var tableView: UITableView {
@@ -54,11 +53,7 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
-    @objc var refreshControl: UIRefreshControl? {
-        get {
-            return self.tableViewController.refreshControl
-        }
-    }
+    let refreshControl = UIRefreshControl()
 
     @objc lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
@@ -102,7 +97,9 @@ class AbstractPostListViewController: UIViewController,
 
     @objc var postListFooterView: PostListFooterView!
 
-    @IBOutlet var filterTabBar: FilterTabBar!
+    let filterTabBar = FilterTabBar()
+
+    private let searchResultsViewController = PostSearchViewController()
 
     @objc var searchController: UISearchController!
     @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
@@ -115,13 +112,23 @@ class AbstractPostListViewController: UIViewController,
 
     private var atLeastSyncedOnce = false
 
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
+        edgesForExtendedLayout = .all
+        extendedLayoutIncludesOpaqueBars = true
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-
+        configureTableViewController()
         configureFilterBar()
         configureTableView()
         configureFooterView()
@@ -130,10 +137,9 @@ class AbstractPostListViewController: UIViewController,
         configureSearchController()
         configureSearchHelper()
         configureAuthorFilter()
-        configureSearchBackingView()
         configureGhostableTableView()
+        configureNavigationBarAppearance()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
 
         observeNetworkStatus()
@@ -149,30 +155,20 @@ class AbstractPostListViewController: UIViewController,
             tableView.reloadData()
         }
 
-        filterTabBar.layoutIfNeeded()
         updateSelectedFilter()
 
         refreshResults()
-    }
 
-    fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
-    }
-
-    fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
-        let key = UIResponder.keyboardFrameEndUserInfoKey
-        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
-                return .zero
-        }
-
-        // Convert the frame from window coordinates
-        return view.convert(keyboardFrame, from: nil)
+        // Show it initially but allow the user to dismiss it by scrolling
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         automaticallySyncIfAppropriate()
+
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -193,6 +189,18 @@ class AbstractPostListViewController: UIViewController,
         return type(of: self).defaultHeightForFooterView
     }
 
+    private func configureTableViewController() {
+        addChild(tableViewController)
+        view.addSubview(tableViewController.view)
+        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(tableViewController.view)
+        tableViewController.didMove(toParent: self)
+
+        tableView.backgroundColor = .white
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+    }
+
     func configureNavbar() {
         // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
         // this VC's title.
@@ -203,10 +211,14 @@ class AbstractPostListViewController: UIViewController,
 
     func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-
+        filterTabBar.isLayoutMarginsRelativeArrangement = false
+        filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
-
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+
+        filterTabBar.translatesAutoresizingMaskIntoConstraints = true
+        filterTabBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 40)
+        tableView.tableHeaderView = filterTabBar
     }
 
     func configureTableView() {
@@ -241,7 +253,7 @@ class AbstractPostListViewController: UIViewController,
         }
 
         let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
-            self?.refreshControl?.endRefreshing()
+            self?.refreshControl.endRefreshing()
         }
 
         hideNoResultsView()
@@ -249,66 +261,34 @@ class AbstractPostListViewController: UIViewController,
             stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
-
-        updateBackgroundColor()
-    }
-
-    // Update controller's background color to avoid a white line below
-    // the search bar - due to a margin between searchBar and the tableView
-    private func updateBackgroundColor() {
-        if searchController.isActive && emptyResults {
-            view.backgroundColor = noResultsViewController.view.backgroundColor
-        } else {
-            view.backgroundColor = tableView.backgroundColor
-        }
     }
 
     func configureAuthorFilter() {
         fatalError("You should implement this method in the subclass")
     }
 
-    /// Subclasses should override this method (and call super) to insert the
-    /// search controller's search bar into the view hierarchy
-    @objc func configureSearchController() {
-        // Required for insets to work out correctly when the search bar becomes active
-        extendedLayoutIncludesOpaqueBars = true
-        definesPresentationContext = true
-
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.obscuresBackgroundDuringPresentation = false
-
+    private func configureSearchController() {
+        searchController = UISearchController(searchResultsController: searchResultsViewController)
         searchController.delegate = self
         searchController.searchResultsUpdater = self
+        searchController.showsSearchResultsController = true
 
-        WPStyleGuide.configureSearchBar(searchController.searchBar)
+        definesPresentationContext = true
 
-        searchController.searchBar.autocorrectionType = .default
+        navigationItem.searchController = searchController
     }
 
-    fileprivate func configureInitialScrollInsets() {
-        tableView.layoutIfNeeded()
-        tableView.contentInset = .zero
-        tableView.scrollIndicatorInsets = .zero
-        tableView.contentOffset = .zero
-    }
+    private func configureNavigationBarAppearance() {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
 
-    fileprivate func configureSearchBackingView() {
-        // This mask view is required to cover the area between the top of the search
-        // bar and the top of the screen on an iPhone X and on iOS 10.
-        let topAnchor = view.safeAreaLayoutGuide.topAnchor
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
 
-        let backingView = UIView()
-        view.addSubview(backingView)
-
-        backingView.backgroundColor = searchController.searchBar.barTintColor
-        backingView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backingView.topAnchor.constraint(equalTo: view.topAnchor),
-            backingView.bottomAnchor.constraint(equalTo: topAnchor)
-            ])
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.compactAppearance = standardAppearance
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+        navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
     func configureGhostableTableView() {
@@ -320,7 +300,7 @@ class AbstractPostListViewController: UIViewController,
             ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
             ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor),
             ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            ghostableTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor)
+            ghostableTableView.topAnchor.constraint(equalTo: tableView.topAnchor)
         ])
 
         ghostableTableView.backgroundColor = .white
@@ -467,13 +447,6 @@ class AbstractPostListViewController: UIViewController,
         updateAndPerformFetchRequest()
         tableView.reloadData()
         refreshResults()
-    }
-
-    @objc func resetTableViewContentOffset(_ animated: Bool = false) {
-        // Reset the tableView contentOffset to the top before we make any dataSource changes.
-        var tableOffset = tableView.contentOffset
-        tableOffset.y = -tableView.contentInset.top
-        tableView.setContentOffset(tableOffset, animated: animated)
     }
 
     @objc func predicateForFetchRequest() -> NSPredicate {
@@ -712,7 +685,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
         postListFooterView.showSpinner(false)
         noResultsViewController.removeFromView()
 
@@ -1081,7 +1054,6 @@ class AbstractPostListViewController: UIViewController,
     @objc func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
         updateSelectedFilter()
-        resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
     }
 
@@ -1111,8 +1083,6 @@ class AbstractPostListViewController: UIViewController,
 
         syncItemsWithUserInteraction(false)
 
-        configureInitialScrollInsets()
-
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
@@ -1125,12 +1095,9 @@ class AbstractPostListViewController: UIViewController,
     func willDismissSearchController(_ searchController: UISearchController) {
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
-
-        configureInitialScrollInsets()
     }
 
     func updateSearchResults(for searchController: UISearchController) {
-        resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
     }
 

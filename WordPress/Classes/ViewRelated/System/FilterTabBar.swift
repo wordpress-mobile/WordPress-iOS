@@ -66,6 +66,11 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var isLayoutMarginsRelativeArrangement: Bool {
+        get { stackView.isLayoutMarginsRelativeArrangement }
+        set { stackView.isLayoutMarginsRelativeArrangement = newValue }
+    }
+
     private var tabBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             if let oldValue = oldValue {

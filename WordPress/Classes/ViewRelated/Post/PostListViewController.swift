@@ -25,12 +25,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private let postCardEstimatedRowHeight = CGFloat(300.0)
     private let postListHeightForFooterView = CGFloat(50.0)
 
-    @IBOutlet var searchWrapperView: UIView!
-    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-
     private var database: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
     private lazy var _tableViewHandler: PostListTableViewHandler = {
@@ -78,13 +72,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
-
-        let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
-        let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
-        controller.blog = blog
-        controller.restorationClass = self
-
-        return controller
+        let vc = PostListViewController()
+        vc.blog = blog
+        vc.restorationClass = self
+        return vc
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
@@ -127,23 +118,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewController
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        precondition(segue.destination is UITableViewController)
-
-        super.refreshNoResultsViewController = { [weak self] noResultsViewController in
-            self?.handleRefreshNoResultsViewController(noResultsViewController)
-        }
-
-        super.tableViewController = (segue.destination as! UITableViewController)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
-        configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
@@ -152,6 +131,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         listenForAppComingToForeground()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        refreshNoResultsViewController = { [weak self] in
+            self?.handleRefreshNoResultsViewController($0)
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -240,11 +223,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return headerView
     }
 
-    private func configureFilterBarTopConstraint() {
-        filterTabBariOS10TopConstraint.isActive = false
-    }
-
-
     override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         updateGhostableTableViewOptions()
         super.selectedFilterDidChange(filterBar)
@@ -290,8 +268,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     override func configureGhostableTableView() {
@@ -317,28 +293,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBar.accessoryView = authorFilter
 
         updateAuthorFilter()
-    }
-
-    override func configureSearchController() {
-        super.configureSearchController()
-
-        searchWrapperView.addSubview(searchController.searchBar)
-
-        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
-
-        updateTableHeaderSize()
-    }
-
-    fileprivate func updateTableHeaderSize() {
-        if searchController.isActive {
-            // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = 0
-        } else {
-            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
-        }
-
-        // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = searchWrapperView
     }
 
     func showCompactOrDefault() {
@@ -761,18 +715,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.updateForLocalPostsMatchingSearchText()
     }
 
-    override func willPresentSearchController(_ searchController: UISearchController) {
-        super.willPresentSearchController(searchController)
-
-        self.filterTabBar.alpha = WPAlphaZero
-    }
-
     func didPresentSearchController(_ searchController: UISearchController) {
-        updateTableHeaderSize()
         _tableViewHandler.isSearching = true
-
-        tableView.verticalScrollIndicatorInsets.top = searchWrapperView.bounds.height
-        tableView.contentInset.top = 0
     }
 
     override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
@@ -786,16 +730,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func willDismissSearchController(_ searchController: UISearchController) {
         _tableViewHandler.isSearching = false
-        _tableViewHandler.refreshTableView()
         super.willDismissSearchController(searchController)
-    }
-
-    func didDismissSearchController(_ searchController: UISearchController) {
-        updateTableHeaderSize()
-
-        UIView.animate(withDuration: Animations.searchDismissDuration) {
-            self.filterTabBar.alpha = WPAlphaFull
-        }
     }
 
     enum Animations {
