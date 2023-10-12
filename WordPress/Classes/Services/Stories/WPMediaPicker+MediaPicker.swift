@@ -445,9 +445,12 @@ extension MediaLibraryGroup {
 
     @objc(getMediaLibraryCountForMediaTypes:ofBlog:success:failure:)
     func getMediaLibraryCount(forMediaTypes types: Set<NSNumber>, of blog: Blog, success: @escaping (Int) -> Void, failure: @escaping (Error) -> Void) {
-        guard let remote = MediaServiceRemoteFactory().remote(for: blog) else {
+        let remote: MediaServiceRemote
+        do {
+            remote = try MediaServiceRemoteFactory().remote(for: blog)
+        } catch {
             DispatchQueue.main.async {
-                failure(MediaRepository.Error.remoteAPIUnavailable)
+                failure(error)
             }
             return
         }

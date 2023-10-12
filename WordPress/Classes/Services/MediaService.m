@@ -72,7 +72,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     Blog *blog = media.blog;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    RemoteMedia *remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
@@ -184,7 +184,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     if (fieldsToUpdate != nil && [fieldsToUpdate count] > 0) {
         remoteMedia = [self remoteMediaFromMedia:media fieldsToUpdate:fieldsToUpdate];
     } else {
-        remoteMedia = [self remoteMediaFromMedia:media];
+        remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
     }
 
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
@@ -332,88 +332,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }
 
     return error;
-}
-
-#pragma mark - Deleting media
-
-- (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)(void))success
-            failure:(nullable void (^)(NSError * _Nonnull error))failure
-{
-    NSManagedObjectID *mediaObjectID = media.objectID;
-
-    void (^successBlock)(void) = ^() {
-        [self.managedObjectContext performBlock:^{
-            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
-
-            if (mediaInContext == nil) {
-                // Considering the intent of calling this method is to delete the media object,
-                // when it doesn't exist, we can simply signal success, since the intent is fulfilled.
-                success();
-                return;
-            }
-
-            [self.managedObjectContext deleteObject:mediaInContext];
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
-                                     withCompletionBlock:success
-                                                 onQueue:dispatch_get_main_queue()];
-        }];
-    };
-
-    if (media.remoteStatus != MediaRemoteStatusSync) {
-        successBlock();
-        return;
-    }
-
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-
-    [remote deleteMedia:remoteMedia
-                success:successBlock
-                failure:failure];
-}
-
-- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
-           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)(void))success
-            failure:(nullable void (^)(void))failure
-{
-    if (mediaObjects.count == 0) {
-        if (success) {
-            success();
-        }
-        return;
-    }
-
-    NSProgress *currentProgress = [NSProgress progressWithTotalUnitCount:mediaObjects.count];
-
-    dispatch_group_t group = dispatch_group_create();
-
-    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger __unused idx, BOOL * __unused stop) {
-        dispatch_group_enter(group);
-        [self deleteMedia:media success:^{
-            currentProgress.completedUnitCount++;
-            if (progress) {
-                progress(currentProgress);
-            }
-            dispatch_group_leave(group);
-        } failure:^(NSError * __unused error) {
-            dispatch_group_leave(group);
-        }];
-    }];
-
-    // After all the operations have succeeded (or failed)
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (currentProgress.completedUnitCount >= currentProgress.totalUnitCount) {
-            if (success) {
-                success();
-            }
-        } else {
-            if (failure) {
-                failure();
-            }
-        }
-    });
 }
 
 #pragma mark - Getting media
@@ -584,30 +502,6 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     if (completion) {
         completion();
     }
-}
-
-- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
-{
-    RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.mediaID = media.mediaID;
-    remoteMedia.url = [NSURL URLWithString:media.remoteURL];
-    remoteMedia.largeURL = [NSURL URLWithString:media.remoteLargeURL];
-    remoteMedia.mediumURL = [NSURL URLWithString:media.remoteMediumURL];
-    remoteMedia.date = media.creationDate;
-    remoteMedia.file = media.filename;
-    remoteMedia.extension = [media fileExtension] ?: @"unknown";
-    remoteMedia.title = media.title;
-    remoteMedia.caption = media.caption;
-    remoteMedia.descriptionText = media.desc;
-    remoteMedia.alt = media.alt;
-    remoteMedia.height = media.height;
-    remoteMedia.width = media.width;
-    remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = media.mimeType;
-	remoteMedia.videopressGUID = media.videopressGUID;
-    remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
-    remoteMedia.postID = media.postID;
-    return remoteMedia;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
