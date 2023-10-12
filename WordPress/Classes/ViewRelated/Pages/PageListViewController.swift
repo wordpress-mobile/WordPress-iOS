@@ -70,28 +70,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
     }()
 
-    // MARK: - GUI
-
-    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
-
-        let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
-        let controller = storyBoard.instantiateViewController(withIdentifier: "PageListViewController") as! PageListViewController
-
-        controller.blog = blog
-        controller.restorationClass = self
-
+        let vc = PageListViewController()
+        vc.blog = blog
+        vc.restorationClass = self
         if QuickStartTourGuide.shared.isCurrentElement(.pages) {
-            controller.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
+            vc.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
         }
-
-        return controller
+        return vc
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
@@ -135,13 +123,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewController
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.refreshNoResultsViewController = { [weak self] noResultsViewController in
-            self?.handleRefreshNoResultsViewController(noResultsViewController)
-        }
-        super.tableViewController = (segue.destination as! UITableViewController)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -153,9 +134,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
-        configureFilterBarTopConstraint()
-
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        refreshNoResultsViewController = { [weak self] in
+            self?.handleRefreshNoResultsViewController($0)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -189,10 +172,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Configuration
 
-    private func configureFilterBarTopConstraint() {
-        filterTabBariOS10TopConstraint.isActive = false
-    }
-
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
@@ -208,16 +187,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-    }
-
-    override func configureSearchController() {
-        super.configureSearchController()
-
-        tableView.tableHeaderView = searchController.searchBar
-
-        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
     override func configureAuthorFilter() {
@@ -230,10 +199,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func beginRefreshingManually() {
-        guard let refreshControl = refreshControl else {
-            return
-        }
-
         refreshControl.beginRefreshing()
         tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
     }
@@ -955,7 +920,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                                                                 self?.refreshAndReload()
                                                                 self?.handleHomepageSettingsSuccess()
                 }, failure: { error in
-                    self?.refreshControl?.endRefreshing()
+                    self?.refreshControl.endRefreshing()
                     self?.handleHomepageSettingsFailure()
                 })
             }
@@ -988,7 +953,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                                                                 self?.refreshAndReload()
                                                                 self?.handleHomepagePostsPageSettingsSuccess()
                 }, failure: { error in
-                    self?.refreshControl?.endRefreshing()
+                    self?.refreshControl.endRefreshing()
                     self?.handleHomepageSettingsFailure()
                 })
             }
@@ -1043,14 +1008,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UISearchControllerDelegate
 
-    override func willPresentSearchController(_ searchController: UISearchController) {
-        super.willPresentSearchController(searchController)
-
-        filterTabBar.alpha = WPAlphaZero
-
-        tableView.contentInset.top = -searchController.searchBar.bounds.height
-    }
-
     override func updateSearchResults(for searchController: UISearchController) {
         super.updateSearchResults(for: searchController)
     }
@@ -1066,11 +1023,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        UIView.animate(withDuration: Animations.searchDismissDuration, delay: 0, options: .curveLinear, animations: {
-            self.filterTabBar.alpha = WPAlphaFull
-        }) { _ in
-            self.hideNoResultsView()
-        }
+        self.hideNoResultsView()
     }
 
     enum Animations {
