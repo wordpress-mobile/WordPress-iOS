@@ -87,6 +87,18 @@ class RootViewCoordinator {
         self.rootViewPresenter = nil
     }
 
+    func showPostSignUpTabForNotSites() {
+        let appUIType = Self.appUIType(featureFlagStore: featureFlagStore)
+        switch appUIType {
+        case .normal:
+            rootViewPresenter?.showReaderTab()
+        case .simplified:
+            fallthrough
+        case .staticScreens:
+            rootViewPresenter?.showMySitesTab()
+        }
+    }
+
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
         switch appType {
         case .normal:
