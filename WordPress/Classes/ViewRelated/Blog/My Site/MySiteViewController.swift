@@ -28,16 +28,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private var currentSection: Section = .dashboard
 
-    private func getSection(for blog: Blog) -> Section {
-        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
-            blog.isAccessibleThroughWPCom() &&
-            (splitViewControllerIsHorizontallyCompact || !MySitesCoordinator.isSplitViewEnabled) {
-            return .dashboard
-        } else {
-            return .siteMenu
-        }
-    }
-
     @objc
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
