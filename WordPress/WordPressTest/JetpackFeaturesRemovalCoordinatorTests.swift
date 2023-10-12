@@ -347,7 +347,7 @@ private extension Date {
     }
 }
 
-private extension RemoteFeatureFlagStore {
+internal extension RemoteFeatureFlagStore {
     func update(using remote: FeatureFlagRemote, waitOn test: XCTestCase) {
         let exp = test.expectation(description: "Store finishes update")
         update(using: remote) {
