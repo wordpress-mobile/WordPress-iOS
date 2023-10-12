@@ -29,6 +29,12 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        contextManager.useAsSharedInstance(untilTestFinished: self)
+
+        // Simulate the app is signed in with a WP.com account
+        let accountService = AccountService(coreDataStack: contextManager)
+        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
+
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
