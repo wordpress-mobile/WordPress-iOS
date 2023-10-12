@@ -1,3 +1,7 @@
+23.6
+-----
+* [**] Refactor deleting media [#21748]
+
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
