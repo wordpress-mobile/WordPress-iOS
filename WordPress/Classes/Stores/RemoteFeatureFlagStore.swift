@@ -31,10 +31,10 @@ class RemoteFeatureFlagStore {
                                then callback: FetchCallback? = nil) {
         let refreshOperation = FetchRemoteFeatureFlagsOperation(remote: remote,
                                                                 deviceID: deviceID,
-                                                                completion: { result in
+                                                                completion: { [weak self] result in
             switch result {
             case .success(let flags):
-                self.cache = flags
+                self?.cache = flags
                 callback?()
             case .failure:
                 callback?()
