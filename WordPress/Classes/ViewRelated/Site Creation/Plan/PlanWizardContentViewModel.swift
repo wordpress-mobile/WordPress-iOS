@@ -37,7 +37,7 @@ struct PlanWizardContentViewModel {
     }
 
     enum Constants {
-        static let plansWebAddress = "http://calypso.localhost:3000/jetpack-app/plans" // TODO: Set to WP.COM address
+        static let plansWebAddress = "https://wordpress.com/jetpack-app/plans"
         static let planIdParameter = "plan_id"
         static let planSlugParameter = "plan_slug"
         static let paidDomainNameParameter = "paid_domain_name"
