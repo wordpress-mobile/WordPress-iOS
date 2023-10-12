@@ -1,1026 +1,597 @@
-import AutomatticTracks
-import Foundation
-import WordPressShared
-import Gridicons
 
-protocol ReaderTopicsChipsDelegate: AnyObject {
-    func didSelect(topic: String)
-    func heightDidChange()
-}
-
-@objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
-    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider)
-    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
-}
-
-@objc open class ReaderPostCardCell: UITableViewCell {
+class ReaderPostCardCell: UITableViewCell {
 
     // MARK: - Properties
 
-    // Wrapper views
-    @IBOutlet private weak var contentStackView: UIStackView!
-    @IBOutlet private weak var topicsCollectionView: TopicsCollectionView!
+    private let contentStackView = UIStackView()
 
-    // Header related Views
-    @IBOutlet private weak var headerStackView: UIStackView!
-    @IBOutlet private weak var avatarStackView: UIStackView!
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var authorAvatarImageView: UIImageView!
-    @IBOutlet private weak var headerBlogButton: UIButton!
-    @IBOutlet private weak var labelsStackView: UIStackView!
+    private let siteStackView = UIStackView()
+    private let siteIconContainerView = UIView()
+    private let siteIconImageView = UIImageView()
+    private let siteIconBorderView = UIView()
+    private let avatarContainerView = UIView()
+    private let avatarImageView = UIImageView()
+    private let siteTitleLabel = UILabel()
+    private let postDateLabel = UILabel()
 
-    @IBOutlet private weak var authorAndBlogNameStackView: UIStackView!
-    @IBOutlet private weak var authorNameLabel: UILabel!
-    @IBOutlet private weak var arrowImageView: UIImageView!
-    @IBOutlet private weak var blogNameLabel: UILabel!
+    private let postTitleLabel = UILabel()
+    private let postSummaryLabel = UILabel()
+    private let featuredImageView = CachedAnimatedImageView()
+    private let postCountsLabel = UILabel()
 
-    @IBOutlet private weak var hostAndTimeStackView: UIStackView!
-    @IBOutlet private weak var blogHostNameLabel: UILabel!
-    @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var bylineSeparatorLabel: UILabel!
+    private let controlsStackView = UIStackView()
+    private let reblogButton = UIButton()
+    private let commentButton = UIButton()
+    private let likeButton = UIButton()
+    private let fillerView = UIView()
+    private let menuButton = UIButton()
 
-    // Card views
-    @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
-    @IBOutlet private weak var actionStackView: UIStackView!
+    private let separatorView = UIView()
 
-    // Helper Views
-    @IBOutlet private weak var borderedView: UIView!
-    @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
-
-    // Action buttons
-    @IBOutlet private var actionButtons: [UIButton]!
-    @IBOutlet private weak var saveForLaterButton: UIButton!
-    @IBOutlet private weak var likeActionButton: UIButton!
-    @IBOutlet private weak var commentActionButton: UIButton!
-    @IBOutlet private weak var menuButton: UIButton!
-    @IBOutlet private weak var reblogActionButton: UIButton!
-
-    // Ghost cells placeholders
-    @IBOutlet private weak var ghostPlaceholderView: UIView!
-
-    // Spotlight view
-    private let spotlightView: UIView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
-    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
-    var spotlightIsShown: Bool = false {
+    private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
+    private var viewModel: ReaderPostCardCellViewModel? {
         didSet {
-            spotlightView.isHidden = !spotlightIsShown || !shouldShowCommentActionButton
+            configureLabels()
+            configureImages()
+            configureButtons()
+            configureAccessibility()
         }
     }
 
-    @objc open weak var delegate: ReaderPostCellDelegate?
-    private weak var contentProvider: ReaderPostContentProvider?
-
-    private var featuredImageDesiredWidth = CGFloat()
-
-    private var currentLoadedCardImageURL: String?
-    private var isSmallWidth: Bool {
-        let width = superview?.frame.width ?? 0
-        return  width <= 320
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
     }
 
-    weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
-
-    var displayTopics: Bool = false
-    var isP2Type: Bool = false
-
-    // MARK: - Accessors
-
-    var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
-
-    @objc open var headerBlogButtonIsEnabled: Bool {
-        get {
-            return headerBlogButton.isEnabled
-        }
-        set {
-            if headerBlogButton.isEnabled != newValue {
-                headerBlogButton.isEnabled = newValue
-                if newValue {
-                    blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
-                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
-                    configureArrowImage()
-                } else {
-                    blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
-                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
-                    configureArrowImage(withTint: WPStyleGuide.readerCardBlogNameLabelDisabledTextColor())
-                }
-            }
-        }
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
     }
 
-    private lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: featuredImageView)
-    }()
-
-    private lazy var readerCardTitleAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCardTitleAttributes()
-    }()
-
-    private lazy var readerCardSummaryAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCardSummaryAttributes()
-    }()
-
-    private lazy var readerCardReadingTimeAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCardReadingTimeAttributes()
-    }()
-
-    // MARK: - Lifecycle Methods
-
-    open override func awakeFromNib() {
-        super.awakeFromNib()
-
-        // This view only exists to help IB with filling in the bottom space of
-        // the cell that is later autosized according to the content's intrinsicContentSize.
-        // Otherwise, IB will make incorrect size adjustments and/or complain along the way.
-        // This is because most of our subviews actually need to match the exact height of
-        // their instrinsicContentSize.
-        // Set the helper to hidden on awake so that it is not included or calculated in the layout.
-        // Note: Ideally IB would let us have a "Remove at build time" option for views, BUT IT DONT.
-        // Brent C. Aug/25/2016
-        interfaceVerticalSizingHelperView.isHidden = true
-
-        setupMenuButton()
-
-        // Buttons must be set up before applying styles,
-        // as this tints the images used in the buttons
-        applyStyles()
-
-        applyOpaqueBackgroundColors()
-
-        configureFeaturedImageView()
-        setupSummaryLabel()
-        setupAttributionView()
-        setupSpotlightView()
-        adjustInsetsForTextDirection()
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        configureFeaturedImageIfNeeded()
-        configureButtonTitles()
-
-        // Update colors
-        applyStyles()
-        setupMenuButton()
-        configureFeaturedImageView()
-        configureAvatarImageView(avatarImageView)
-        configureAvatarImageView(authorAvatarImageView)
-    }
-
-    open override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
-
         imageLoader.prepareForReuse()
-        displayTopics = false
-        isP2Type = false
-
-        topicsCollectionView.collapse()
+        resetElements()
+        addMissingViews()
+        addViewConstraints()
     }
 
-    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        self.contentProvider = contentProvider
-
-        configureTopicsCollectionView()
-        configureHeader()
-        configureAvatarImageView(avatarImageView)
-        configureAvatarImageView(authorAvatarImageView)
-        configureFeaturedImageIfNeeded()
-        configureTitle()
-        configureSummary()
-        configureAttribution()
-        configureActionButtons()
-        configureButtonTitles()
-        prepareForVoiceOver()
+    func configure(with viewModel: ReaderPostCardCellViewModel) {
+        self.viewModel = viewModel
     }
 
-    func refreshLikeButton() {
-        configureLikeActionButton()
-        configureButtonTitles()
-    }
-
-}
-
-// MARK: - Configuration
-
-private extension ReaderPostCardCell {
+    // MARK: - Constants
 
     struct Constants {
-        static let featuredMediaCornerRadius: CGFloat = 4
-        static let imageBorderWidth: CGFloat = 1
-        static let featuredMediaTopSpacing: CGFloat = 8
-        static let headerBottomSpacing: CGFloat = 8
-        static let summaryMaxNumberOfLines: NSInteger = 2
-        static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
-        static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
-        static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
-        static let rotate90Degrees: CGFloat = CGFloat.pi / 2
-        static let spotlightXOffset: CGFloat = 10
-        static let spotlightYOffset: CGFloat = 10
-    }
-
-    // MARK: - Configuration
-
-    func setupAttributionView() {
-        attributionView.delegate = self
-    }
-
-    func setupSummaryLabel() {
-        summaryLabel.numberOfLines = Constants.summaryMaxNumberOfLines
-        summaryLabel.lineBreakMode = .byTruncatingTail
-    }
-
-    func setupMenuButton() {
-        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
-            return
+        struct ContentStackView {
+            static let margins: CGFloat = 16.0
+            static let spacing: CGFloat = 8.0
+            static let bottomAnchor: CGFloat = 2.0
         }
 
-        let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
-                                dark: .textSubtle)
-
-        let highlightColor = UIColor(light: .muriel(color: .gray, .shade10),
-                                     dark: .textQuaternary)
-
-        let tintedIcon = icon.imageWithTintColor(tintColor)
-        let highlightIcon = icon.imageWithTintColor(highlightColor)
-
-        menuButton.setImage(tintedIcon, for: .normal)
-        menuButton.setImage(highlightIcon, for: .highlighted)
-    }
-
-    private func setupSpotlightView() {
-        addSubview(spotlightView)
-        bringSubviewToFront(spotlightView)
-
-        NSLayoutConstraint.activate([
-            commentActionButton.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
-            commentActionButton.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor, constant: Constants.spotlightYOffset)
-        ])
-    }
-
-    func adjustInsetsForTextDirection() {
-        let buttonsToAdjust: [UIButton] = [
-            likeActionButton,
-            commentActionButton,
-            saveForLaterButton,
-            reblogActionButton]
-        for button in buttonsToAdjust {
-            button.flipInsetsForRightToLeftLayoutDirection()
-        }
-    }
-
-    /// Applies the default styles to the cell's subviews
-    ///
-    func applyStyles() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
-
-        WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
-        WPStyleGuide.applyReaderCardBlogNameStyle(authorNameLabel)
-
-        WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
-        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
-        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineSeparatorLabel)
-
-        WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
-        WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-
-        // Action Buttons
-        WPStyleGuide.applyReaderCardSaveForLaterButtonStyle(saveForLaterButton)
-        WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
-        WPStyleGuide.applyReaderCardLikeButtonStyle(likeActionButton)
-        WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
-    }
-
-    /// Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
-    ///
-    func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = .listForeground
-        authorNameLabel.backgroundColor = .listForeground
-        blogHostNameLabel.backgroundColor = .listForeground
-        bylineLabel.backgroundColor = .listForeground
-        titleLabel.backgroundColor = .listForeground
-        summaryLabel.backgroundColor = .listForeground
-        commentActionButton.titleLabel?.backgroundColor = .listForeground
-        likeActionButton.titleLabel?.backgroundColor = .listForeground
-        topicsCollectionView.backgroundColor = .listForeground
-    }
-
-    func configureTopicsCollectionView() {
-        guard
-            displayTopics,
-            let contentProvider = contentProvider,
-            let tags = contentProvider.tagsForDisplay?(),
-            !tags.isEmpty
-        else {
-            topicsCollectionView.isHidden = true
-            return
+        struct SiteStackView {
+            static let avatarSpacing: CGFloat = -4.0
+            static let iconSpacing: CGFloat = 8.0
+            static let siteTitleSpacing: CGFloat = 4.0
         }
 
-        topicsCollectionView.topicDelegate = self
-        topicsCollectionView.topics = tags
-        topicsCollectionView.isHidden = false
+        struct ControlsStackView {
+            static let reblogSpacing: CGFloat = 16.0
+            static let commentSpacing: CGFloat = 16.0
+            static let likeSpacing: CGFloat = 8.0
+            static let trailingConstraint: CGFloat = 10.0
+            static let bottomConstraint: CGFloat = -ContentStackView.margins + 10.0
+        }
+
+        struct FeaturedImage {
+            static let cornerRadius: CGFloat = 5.0
+            static let heightAspectMultiplier: CGFloat = 239.0 / 358.0
+        }
+
+        struct Accessibility {
+            static let siteStackViewHint = NSLocalizedString("reader.post.header.accessibility.hint",
+                                                             value: "Opens the site details for the post.",
+                                                             comment: "Accessibility hint for the site header on the reader post card cell")
+            static let reblogButtonHint = NSLocalizedString("reader.post.button.reblog.accessibility.hint",
+                                                            value: "Reblogs the post.",
+                                                            comment: "Accessibility hint for the reblog button on the reader post card cell")
+            static let commentButtonHint = NSLocalizedString("reader.post.button.comment.accessibility.hint",
+                                                             value: "Opens the comments for the post.",
+                                                             comment: "Accessibility hint for the comment button on the reader post card cell")
+            static let likeButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Likes the post.",
+                                                          comment: "Accessibility hint for the like button on the reader post card cell")
+            static let likedButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+                                                          value: "Unlikes the post.",
+                                                          comment: "Accessibility hint for the liked button on the reader post card cell")
+            static let menuButtonLabel = NSLocalizedString("reader.post.button.menu.accessibility.label",
+                                                           value: "More",
+                                                           comment: "Accessibility label for the more menu button on the reader post card cell")
+            static let menuButtonHint = NSLocalizedString("reader.post.button.menu.accessibility.hint",
+                                                          value: "Opens a menu with more actions.",
+                                                          comment: "Accessibility hint for the site header on the reader post card cell")
+        }
+
+        static let iconImageSize: CGFloat = 20.0
+        static let avatarPlaceholder = UIImage(named: "gravatar")
+        static let siteIconPlaceholder = UIImage(named: "post-blavatar-placeholder")
+        static let fillerViewHuggingPriority = UILayoutPriority(249.0)
+        static let reblogButtonImage = UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
+        static let commentButtonImage = UIImage(named: "icon-reader-post-comment")?.withRenderingMode(.alwaysTemplate)
+        static let likeButtonImage = UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
+        static let likedButtonImage = UIImage(named: "icon-reader-star-fill")?.withRenderingMode(.alwaysTemplate)
+        static let menuButtonImage = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
+        static let buttonMinimumSize: CGFloat = 44.0
+        static let reblogButtonText = NSLocalizedString("reader.post.button.reblog",
+                                                        value: "Reblog",
+                                                        comment: "Text for the 'Reblog' button on the reader post card cell.")
+        static let commentButtonText = NSLocalizedString("reader.post.button.comment",
+                                                         value: "Comment",
+                                                         comment: "Text for the 'Comment' button on the reader post card cell.")
+        static let likeButtonText = NSLocalizedString("reader.post.button.like",
+                                                      value: "Like",
+                                                      comment: "Text for the 'Like' button on the reader post card cell.")
+        static let likedButtonText = NSLocalizedString("reader.post.button.liked",
+                                                       value: "Liked",
+                                                       comment: "Text for the 'Liked' button on the reader post card cell.")
+        static let borderColor = UIColor(light: .systemBackground.darkVariant().withAlphaComponent(0.1),
+                                         dark: .systemBackground.lightVariant().withAlphaComponent(0.2))
+        static let borderWidth: CGFloat = 0.5
+        static let imageSeparatorBorderWidth: CGFloat = 1.0
+        static let separatorHeight: CGFloat = 0.5
     }
 
 }
 
-// MARK: - Header Configuration
+// MARK: - Private methods
 
 private extension ReaderPostCardCell {
 
-    func configureHeader() {
-
-        // Always reset
-        avatarImageView.image = Constants.avatarPlaceholderImage
-        authorAvatarImageView.image = Constants.authorAvatarPlaceholderImage
-
-        setSiteIcon()
-        setAuthorAvatar()
-        setBlogLabels()
-
-        avatarStackView.isHidden = avatarImageView.isHidden && authorAvatarImageView.isHidden
+    func commonInit() {
+        setupViews()
+        addViewConstraints()
     }
 
-    func setSiteIcon() {
-        let size = avatarImageView.frame.size.width * UIScreen.main.scale
+    // MARK: - View setup
 
-        guard let contentProvider = contentProvider,
-              let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
-            avatarImageView.isHidden = true
-            return
-        }
+    func setupViews() {
+        setupContentView()
+        setupContentStackView()
 
-        let mediaRequestAuthenticator = MediaRequestAuthenticator()
-        let host = MediaHost(with: contentProvider, failure: { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            DDLogError("ReaderPostCardCell MediaHost error: \(error.localizedDescription)")
-        })
+        setupAvatarImage()
+        setupSiteIconImage()
+        setupSiteTitle()
+        setupPostDate()
+        setupSiteStackView()
 
-        mediaRequestAuthenticator.authenticatedRequest(
-            for: url,
-            from: host,
-            onComplete: { request in
-                self.avatarImageView.downloadImage(usingRequest: request)
-                self.avatarImageView.isHidden = false
-            },
-            onFailure: { error in
-                WordPressAppDelegate.crashLogging?.logError(error)
-                self.avatarImageView.isHidden = true
-            })
+        setupPostTitle()
+        setupPostSummary()
+        setupFeaturedImage()
+        setupPostCounts()
+
+        setupControlButtons()
+        setupControlsStackView()
+
+        setupSeparatorView()
     }
 
-    func setAuthorAvatar() {
-        guard isP2Type,
-              let contentProvider = contentProvider,
-              let url = contentProvider.avatarURLForDisplay() else {
-            authorAvatarImageView.isHidden = true
-            return
-        }
-
-        authorAvatarImageView.isHidden = false
-        authorAvatarImageView.downloadImage(from: url, placeholderImage: Constants.authorAvatarPlaceholderImage)
+    func setupContentView() {
+        contentView.backgroundColor = .listForeground
     }
 
-    func setBlogLabels() {
-        guard let contentProvider = contentProvider else {
-            return
-        }
-
-        authorNameLabel.isHidden = !isP2Type
-        arrowImageView.isHidden = !isP2Type
-
-        if isP2Type {
-            authorNameLabel.text = contentProvider.authorForDisplay()
-            configureArrowImage()
-        }
-
-        blogNameLabel.text = blogName()
-        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
-
-        let dateString: String = datePublished()
-        bylineSeparatorLabel.isHidden = dateString.isEmpty
-        bylineLabel.text = dateString
+    func setupContentStackView() {
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.axis = .vertical
+        contentStackView.alignment = .leading
+        contentStackView.spacing = Constants.ContentStackView.spacing
+        contentView.addSubview(contentStackView)
     }
 
-    func configureArrowImage(withTint tint: UIColor = WPStyleGuide.readerCardBlogNameLabelTextColor()) {
-        arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(tint)
-
-        let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
-            Constants.rotate90Degrees :
-            Constants.rotate270Degrees
-
-        arrowImageView.transform = CGAffineTransform(rotationAngle: imageRotationAngle)
+    func setupAvatarImage() {
+        setupIconImage(avatarImageView,
+                       containerView: avatarContainerView,
+                       image: Constants.avatarPlaceholder)
+        avatarContainerView.addSubview(avatarImageView)
+        siteStackView.addArrangedSubview(avatarContainerView)
     }
 
-    func configureAvatarImageView(_ imageView: UIImageView) {
-        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
-        imageView.layer.borderWidth = Constants.imageBorderWidth
+    func setupSiteIconImage() {
+        setupIconImage(siteIconImageView,
+                       containerView: siteIconContainerView,
+                       image: Constants.siteIconPlaceholder)
+        siteIconImageView.layer.masksToBounds = false
+        siteIconBorderView.translatesAutoresizingMaskIntoConstraints = false
+        siteIconBorderView.layer.frame = CGRect(x: 0, y: 0, width: Constants.iconImageSize, height: Constants.iconImageSize)
+        siteIconBorderView.layer.cornerRadius = Constants.iconImageSize / 2.0
+        siteIconBorderView.layer.borderWidth = Constants.borderWidth + Constants.imageSeparatorBorderWidth
+        siteIconBorderView.layer.borderColor = UIColor.listForeground.cgColor
+        siteIconBorderView.layer.masksToBounds = true
+        siteIconBorderView.addSubview(siteIconImageView)
+        siteIconContainerView.addSubview(siteIconBorderView)
+        siteStackView.addArrangedSubview(siteIconContainerView)
+    }
+
+    func setupIconImage(_ imageView: UIImageView, containerView: UIView, image: UIImage?) {
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = Constants.iconImageSize / 2.0
         imageView.layer.masksToBounds = true
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.borderWidth = Constants.borderWidth
+        imageView.layer.borderColor = Constants.borderColor.cgColor
+        imageView.backgroundColor = .listForeground
     }
 
-}
-
-// MARK: - Card Configuration
-
-private extension ReaderPostCardCell {
-
-    func configureFeaturedImageView() {
-        // Round the corners, and add a border
-        featuredImageView.layer.cornerRadius = Constants.featuredMediaCornerRadius
-        featuredImageView.layer.borderColor = WPStyleGuide.readerCardFeaturedMediaBorderColor().cgColor
-        featuredImageView.layer.borderWidth = Constants.imageBorderWidth
+    func setupSiteTitle() {
+        siteTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        siteTitleLabel.font = .preferredFont(forTextStyle: .subheadline).semibold()
+        siteTitleLabel.numberOfLines = 1
+        siteTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        siteStackView.addArrangedSubview(siteTitleLabel)
     }
 
-    func configureFeaturedImageIfNeeded() {
-        guard let content = contentProvider else {
+    func setupPostDate() {
+        postDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        postDateLabel.font = .preferredFont(forTextStyle: .footnote)
+        postDateLabel.numberOfLines = 1
+        postDateLabel.textColor = .secondaryLabel
+        siteStackView.addArrangedSubview(postDateLabel)
+    }
+
+    func setupSiteStackView() {
+        siteStackView.translatesAutoresizingMaskIntoConstraints = false
+        siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSiteHeader))
+        siteStackView.addGestureRecognizer(tapGesture)
+
+        contentStackView.addArrangedSubview(siteStackView)
+    }
+
+    func setupPostTitle() {
+        postTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        postTitleLabel.font = .preferredFont(forTextStyle: .title3).semibold()
+        postTitleLabel.numberOfLines = 2
+        contentStackView.addArrangedSubview(postTitleLabel)
+    }
+
+    func setupPostSummary() {
+        postSummaryLabel.translatesAutoresizingMaskIntoConstraints = false
+        postSummaryLabel.font = .preferredFont(forTextStyle: .footnote)
+        postSummaryLabel.numberOfLines = 3
+        contentStackView.addArrangedSubview(postSummaryLabel)
+    }
+
+    func setupFeaturedImage() {
+        featuredImageView.translatesAutoresizingMaskIntoConstraints = false
+        featuredImageView.layer.cornerRadius = Constants.FeaturedImage.cornerRadius
+        featuredImageView.layer.masksToBounds = true
+        featuredImageView.contentMode = .scaleAspectFill
+        featuredImageView.layer.borderWidth = Constants.borderWidth
+        featuredImageView.layer.borderColor = Constants.borderColor.cgColor
+        contentStackView.addArrangedSubview(featuredImageView)
+    }
+
+    func setupPostCounts() {
+        postCountsLabel.font = .preferredFont(forTextStyle: .footnote)
+        postCountsLabel.numberOfLines = 1
+        postCountsLabel.textColor = .secondaryLabel
+        contentStackView.addArrangedSubview(postCountsLabel)
+    }
+
+    func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil, action: Selector) {
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .secondaryLabel
+        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.setImage(image, for: .normal)
+        button.setTitleColor(.secondaryLabel, for: .normal)
+        button.setTitle(text, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        controlsStackView.addArrangedSubview(button)
+    }
+
+    func setupControlButtons() {
+        setupControlButton(reblogButton,
+                           image: Constants.reblogButtonImage,
+                           text: Constants.reblogButtonText,
+                           action: #selector(didTapReblog))
+        setupControlButton(commentButton,
+                           image: Constants.commentButtonImage,
+                           text: Constants.commentButtonText,
+                           action: #selector(didTapComment))
+        setupControlButton(likeButton,
+                           image: Constants.likeButtonImage,
+                           text: Constants.likeButtonText,
+                           action: #selector(didTapLike))
+        setupFillerView()
+        controlsStackView.addArrangedSubview(fillerView)
+        setupControlButton(menuButton,
+                           image: Constants.menuButtonImage,
+                           action: #selector(didTapMore))
+    }
+
+    func setupFillerView() {
+        fillerView.translatesAutoresizingMaskIntoConstraints = false
+        fillerView.setContentHuggingPriority(Constants.fillerViewHuggingPriority, for: .horizontal)
+        fillerView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    }
+
+    func setupControlsStackView() {
+        controlsStackView.translatesAutoresizingMaskIntoConstraints = false
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.reblogSpacing, after: reblogButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.commentSpacing, after: commentButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.likeSpacing, after: likeButton)
+        contentView.addSubview(controlsStackView)
+    }
+
+    func setupSeparatorView() {
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.backgroundColor = .separator
+        contentView.addSubview(separatorView)
+    }
+
+    // MARK: - View constraints
+
+    func addViewConstraints() {
+        NSLayoutConstraint.activate(
+            contentViewConstraints()
+            + iconImageConstraints(avatarImageView, containerView: avatarContainerView)
+            + siteIconImageConstraints()
+            + featuredImageContraints()
+            + buttonStackViewConstraints()
+            + buttonConstraints()
+            + separatorViewConstraints()
+        )
+    }
+
+    func contentViewConstraints() -> [NSLayoutConstraint] {
+        let margins = Constants.ContentStackView.margins
+        return [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margins),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margins),
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margins),
+            contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor,
+                                                     constant: Constants.ContentStackView.bottomAnchor)
+        ]
+    }
+
+    func iconImageConstraints(_ imageView: UIImageView, containerView: UIView) -> [NSLayoutConstraint] {
+        return [
+            containerView.heightAnchor.constraint(greaterThanOrEqualTo: imageView.heightAnchor),
+            containerView.widthAnchor.constraint(greaterThanOrEqualTo: imageView.widthAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            imageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ]
+    }
+
+    func siteIconImageConstraints() -> [NSLayoutConstraint] {
+        return [
+            siteIconContainerView.heightAnchor.constraint(greaterThanOrEqualTo: siteIconBorderView.heightAnchor),
+            siteIconContainerView.widthAnchor.constraint(greaterThanOrEqualTo: siteIconBorderView.widthAnchor),
+            siteIconBorderView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize + Constants.borderWidth + Constants.imageSeparatorBorderWidth),
+            siteIconBorderView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize + Constants.borderWidth + Constants.imageSeparatorBorderWidth),
+            siteIconBorderView.centerXAnchor.constraint(equalTo: siteIconContainerView.centerXAnchor),
+            siteIconBorderView.centerYAnchor.constraint(equalTo: siteIconContainerView.centerYAnchor),
+            siteIconImageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            siteIconImageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
+            siteIconImageView.centerXAnchor.constraint(equalTo: siteIconBorderView.centerXAnchor),
+            siteIconImageView.centerYAnchor.constraint(equalTo: siteIconBorderView.centerYAnchor),
+        ]
+    }
+
+    func featuredImageContraints() -> [NSLayoutConstraint] {
+        let heightAspectRatio = featuredImageView.heightAnchor.constraint(equalTo: featuredImageView.widthAnchor,
+                                                                          multiplier: Constants.FeaturedImage.heightAspectMultiplier)
+        heightAspectRatio.priority = .defaultHigh
+        return [
+            featuredImageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor),
+            heightAspectRatio
+        ]
+    }
+
+    func buttonStackViewConstraints() -> [NSLayoutConstraint] {
+        return [
+            controlsStackView.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor),
+            controlsStackView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor,
+                                                        constant: Constants.ControlsStackView.trailingConstraint),
+            controlsStackView.bottomAnchor.constraint(equalTo: separatorView.topAnchor,
+                                                      constant: Constants.ControlsStackView.bottomConstraint),
+            controlsStackView.heightAnchor.constraint(equalToConstant: Constants.buttonMinimumSize)
+        ]
+    }
+
+    func buttonConstraints() -> [NSLayoutConstraint] {
+        let minimumSize = Constants.buttonMinimumSize
+        return [
+            reblogButton.widthAnchor.constraint(greaterThanOrEqualToConstant: minimumSize),
+            commentButton.widthAnchor.constraint(greaterThanOrEqualToConstant: minimumSize),
+            likeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: minimumSize),
+            menuButton.widthAnchor.constraint(greaterThanOrEqualToConstant: minimumSize),
+        ]
+    }
+
+    func separatorViewConstraints() -> [NSLayoutConstraint] {
+        return [
+            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorHeight)
+        ]
+    }
+
+    // MARK: - View configuration
+
+    func configureLabels() {
+        configureLabel(siteTitleLabel, text: viewModel?.siteTitle)
+        configureLabel(postDateLabel, text: viewModel?.postDate)
+        configureLabel(postTitleLabel, text: viewModel?.postTitle)
+        configureLabel(postSummaryLabel, text: viewModel?.postSummary)
+        configureLabel(postCountsLabel, text: viewModel?.postCounts)
+    }
+
+    func configureLabel(_ label: UILabel, text: String?) {
+        guard let text else {
+            label.removeFromSuperview()
             return
         }
-        guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
-            imageLoader.prepareForReuse()
-            currentLoadedCardImageURL = nil
-            featuredImageView.isHidden = true
+        label.setText(text)
+    }
 
-            contentStackView.setCustomSpacing(Constants.headerBottomSpacing, after: headerStackView)
+    func configureImages() {
+        configureAvatar()
+        configureSiteIcon()
+        configureFeaturedImage()
+    }
+
+    func configureAvatar() {
+        guard let viewModel, viewModel.isAvatarEnabled else {
+            removeFromStackView(siteStackView, view: avatarContainerView)
+            return
+        }
+        viewModel.downloadAvatarIcon(for: avatarImageView)
+    }
+
+    func configureSiteIcon() {
+        guard let viewModel, viewModel.isSiteIconEnabled else {
+            removeFromStackView(siteStackView, view: siteIconContainerView)
+            return
+        }
+        viewModel.downloadSiteIcon(for: siteIconImageView)
+    }
+
+    func configureFeaturedImage() {
+        guard let viewModel, viewModel.isFeaturedImageEnabled else {
+            removeFromStackView(siteStackView, view: featuredImageView)
+            return
+        }
+        let imageViewSize = CGSize(width: featuredImageView.frame.width,
+                                   height: featuredImageView.frame.height)
+        viewModel.downloadFeaturedImage(with: imageLoader, size: imageViewSize)
+    }
+
+    func configureButtons() {
+        guard let viewModel else {
             return
         }
 
-        contentStackView.setCustomSpacing(Constants.headerBottomSpacing + Constants.featuredMediaTopSpacing, after: headerStackView)
-
-        featuredImageView.layoutIfNeeded()
-        if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
-            (featuredImageURL.isGif && featuredImageView.animationImages == nil) ||
-            featuredImageDesiredWidth != featuredImageView.frame.size.width ||
-            featuredImageURL.absoluteString != currentLoadedCardImageURL {
-            configureFeaturedImage(featuredImageURL)
+        if !viewModel.isReblogEnabled {
+            removeFromStackView(controlsStackView, view: reblogButton)
         }
-    }
-
-    func configureFeaturedImage(_ featuredImageURL: URL) {
-        guard let contentProvider = contentProvider else {
-            return
-        }
-
-        featuredImageView.isHidden = false
-        currentLoadedCardImageURL = featuredImageURL.absoluteString
-        featuredImageDesiredWidth = featuredImageView.frame.width
-
-        let featuredImageHeight = featuredImageView.frame.height
-
-        let size = CGSize(width: featuredImageDesiredWidth, height: featuredImageHeight)
-        let host = MediaHost(with: contentProvider, failure: { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
-        })
-        imageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: size)
-    }
-
-    func configureTitle() {
-        if let title = contentProvider?.titleForDisplay(), !title.isEmpty() {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCardTitleAttributes)
-            titleLabel.isHidden = false
+        if viewModel.isCommentsEnabled {
+            configureLikeButton()
         } else {
-            titleLabel.attributedText = nil
-            titleLabel.isHidden = true
+            removeFromStackView(controlsStackView, view: commentButton)
+        }
+        if !viewModel.isLikesEnabled {
+            removeFromStackView(controlsStackView, view: likeButton)
         }
     }
 
-    func configureSummary() {
-        if let summary = contentProvider?.contentPreviewForDisplay(), !summary.isEmpty() {
-            summaryLabel.attributedText = NSAttributedString(string: summary, attributes: readerCardSummaryAttributes)
-            summaryLabel.isHidden = false
-        } else {
-            summaryLabel.attributedText = nil
-            summaryLabel.isHidden = true
-        }
-    }
-
-    func configureAttribution() {
-        if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.none {
-            attributionView.configureView(nil)
-            attributionView.isHidden = true
-        } else {
-            attributionView.configureView(contentProvider)
-            attributionView.isHidden = false
-        }
-    }
-
-}
-
-// MARK: - Button Configuration
-
-private extension ReaderPostCardCell {
-
-    enum CardAction: Int {
-        case comment = 1
-        case like
-        case reblog
-    }
-
-    func configureActionButtons() {
-        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
-            resetActionButton(commentActionButton)
-            resetActionButton(likeActionButton)
-            resetActionButton(saveForLaterButton)
-            resetActionButton(reblogActionButton)
+    func configureLikeButton() {
+        guard let isLiked = viewModel?.isPostLiked else {
             return
         }
-
-        configureSaveForLaterButton()
-        configureCommentActionButton()
-        configureLikeActionButton()
-        configureReblogActionButton()
-
-        configureActionButtonsInsets()
+        likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
+        likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 
-    func resetActionButton(_ button: UIButton) {
-        button.setTitle(nil, for: UIControl.State())
-        button.isSelected = false
-        button.isEnabled = false
+    // MARK: - Accessibility
+
+    func configureAccessibility() {
+        siteStackView.isAccessibilityElement = true
+        siteStackView.accessibilityLabel = [viewModel?.siteTitle, viewModel?.shortPostDate].compactMap { $0 }.joined(separator: ", ")
+        siteStackView.accessibilityHint = Constants.Accessibility.siteStackViewHint
+        siteStackView.accessibilityTraits = .button
+
+        postCountsLabel.accessibilityLabel = [viewModel?.likeCount, viewModel?.commentCount].compactMap { $0 }.joined(separator: ", ")
+
+        reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
+        commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
+        likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
+        menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
+        accessibilityElements = [
+            siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
+            reblogButton, commentButton, likeButton, menuButton
+        ]
     }
 
-    func configureActionButtonsInsets() {
-        actionButtons.forEach { button in
-            if isSmallWidth {
-                button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
-            } else {
-                button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-            }
-            button.setNeedsLayout()
+    // MARK: - Cell reuse
+
+    func addMissingViews() {
+        let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
+        let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
+        let controlViews = [reblogButton, commentButton, likeButton]
+
+        siteHeaderViews.enumerated().forEach { (index, view) in
+            addToStackView(siteStackView, view: view, index: index)
         }
+        contentViews.enumerated().forEach { (index, view) in
+            addToStackView(contentStackView, view: view, index: index)
+        }
+        controlViews.enumerated().forEach { (index, view) in
+            addToStackView(controlsStackView, view: view, index: index)
+        }
+
+        siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: siteIconContainerView)
+        siteStackView.setCustomSpacing(Constants.SiteStackView.siteTitleSpacing, after: siteTitleLabel)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.reblogSpacing, after: reblogButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.commentSpacing, after: commentButton)
+        controlsStackView.setCustomSpacing(Constants.ControlsStackView.likeSpacing, after: likeButton)
     }
 
-    var shouldShowLikeActionButton: Bool {
-        guard loggedInActionVisibility != .hidden else {
-            return false
-        }
-
-        guard
-            let contentProvider = contentProvider,
-            let likeCount = contentProvider.likeCount()
-        else {
-            return false
-        }
-
-        let hasLikes = likeCount.intValue > 0
-
-        guard loggedInActionVisibility.isEnabled || hasLikes else {
-            return false
-        }
-
-        return !contentProvider.isExternal()
-    }
-
-    func configureLikeActionButton() {
-        // Show likes if logged in, or if likes exist, but not if external
-        guard shouldShowLikeActionButton else {
-            resetActionButton(likeActionButton)
+    func addToStackView(_ stackView: UIStackView, view: UIView, index: Int) {
+        guard view.superview == nil, stackView.arrangedSubviews.count >= index else {
             return
         }
-
-        likeActionButton.tag = CardAction.like.rawValue
-        likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
-        likeActionButton.isSelected = contentProvider?.isLiked() ?? false
-        likeActionButton.accessibilityIdentifier = .likeActionButtonAccessibilityIdentifier
+        stackView.insertArrangedSubview(view, at: index)
     }
 
-    var shouldShowCommentActionButton: Bool {
-        guard loggedInActionVisibility != .hidden else {
-            return false
-        }
-
-        guard let contentProvider = contentProvider else {
-            return false
-        }
-
-        // Show comments if logged in and comments are enabled, or if comments exist.
-        // But only if it is from wpcom or jetpack (external is not yet supported).
-        let usesWPComAPI = contentProvider.isWPCom() || contentProvider.isJetpack()
-
-        let commentCount = contentProvider.commentCount()?.intValue ?? 0
-        let hasComments = commentCount > 0
-
-        return usesWPComAPI && (contentProvider.commentsOpen() || hasComments)
+    func removeFromStackView(_ stackView: UIStackView, view: UIView) {
+        stackView.removeArrangedSubview(view)
+        view.removeFromSuperview()
     }
 
-    func configureCommentActionButton() {
-        guard shouldShowCommentActionButton else {
-            resetActionButton(commentActionButton)
-            return
-        }
-
-        commentActionButton.tag = CardAction.comment.rawValue
-        commentActionButton.isEnabled = true
+    func resetElements() {
+        avatarImageView.image = Constants.avatarPlaceholder
+        siteIconImageView.image = Constants.siteIconPlaceholder
+        siteTitleLabel.text = nil
+        postDateLabel.text = nil
+        postTitleLabel.text = nil
+        postSummaryLabel.text = nil
+        featuredImageView.image = nil
+        postCountsLabel.text = nil
     }
 
-    func configureSaveForLaterButton() {
-        saveForLaterButton.isEnabled = true
-        let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
-        saveForLaterButton.isSelected = postIsSavedForLater
+    // MARK: - Button actions
+
+    @objc func didTapSiteHeader() {
+        viewModel?.showSiteDetails()
     }
 
-    func configureReblogActionButton() {
-        reblogActionButton.tag = CardAction.reblog.rawValue
-        reblogActionButton.isEnabled = shouldShowReblogActionButton
+    @objc func didTapReblog() {
+        viewModel?.reblog()
     }
 
-    var shouldShowReblogActionButton: Bool {
-        // reblog button is hidden if there's no content
-        guard let provider = contentProvider,
-            !provider.isPrivate(),
-            loggedInActionVisibility.isEnabled else {
-            return false
-        }
-        return true
+    @objc func didTapComment() {
+        viewModel?.comment(with: self)
     }
 
-    func configureButtonTitles() {
-        guard let provider = contentProvider else {
-            return
-        }
-
-        let likeCount = provider.likeCount()?.intValue ?? 0
-        let commentCount = provider.commentCount()?.intValue ?? 0
-
-        if self.traitCollection.horizontalSizeClass == .compact {
-            // remove title text
-            let likeTitle = likeCount > 0 ?  String(likeCount) : ""
-            let commentTitle = commentCount > 0 ? String(commentCount) : ""
-            likeActionButton.setTitle(likeTitle, for: .normal)
-            commentActionButton.setTitle(commentTitle, for: .normal)
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
-
-        } else {
-            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
-            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-
-            likeActionButton.setTitle(likeTitle, for: .normal)
-            commentActionButton.setTitle(commentTitle, for: .normal)
-
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
-        }
+    @objc func didTapLike() {
+        viewModel?.toggleLike(with: self)
     }
 
-}
-
-// MARK: - Button Actions
-
-extension ReaderPostCardCell {
-
-    // MARK: - Header Tapped
-
-    @objc func notifyDelegateHeaderWasTapped() {
-        guard headerBlogButtonIsEnabled,
-              let contentProvider = contentProvider else {
-            return
-        }
-
-        delegate?.readerCell(self, headerActionForProvider: contentProvider)
+    @objc func didTapMore() {
+        viewModel?.showMore(with: menuButton)
     }
 
-    // MARK: - Actions
-
-    @IBAction func didTapHeaderBlogButton(_ sender: UIButton) {
-        notifyDelegateHeaderWasTapped()
-    }
-
-    @IBAction func didTapMenuButton(_ sender: UIButton) {
-        guard let contentProvider = contentProvider else {
-            return
-        }
-
-        delegate?.readerCell(self, menuActionForProvider: contentProvider, fromView: sender)
-    }
-
-    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
-        guard let contentProvider = contentProvider else {
-            return
-        }
-
-        delegate?.readerCell(self, saveActionForProvider: contentProvider)
-        configureSaveForLaterButton()
-    }
-
-    @IBAction func didTapActionButton(_ sender: UIButton) {
-        guard let contentProvider = contentProvider,
-            let tag = CardAction(rawValue: sender.tag) else {
-            return
-        }
-
-        switch tag {
-        case .comment:
-            delegate?.readerCell(self, commentActionForProvider: contentProvider)
-        case .like:
-            delegate?.readerCell(self, likeActionForProvider: contentProvider)
-        case .reblog:
-            delegate?.readerCell(self, reblogActionForProvider: contentProvider)
-        }
-    }
-
-    // MARK: - Custom UI Actions
-
-    @IBAction func blogButtonTouchesDidHighlight(_ sender: UIButton) {
-        blogNameLabel.isHighlighted = true
-        authorNameLabel.isHighlighted = true
-        configureArrowImage(withTint: .primaryLight)
-    }
-
-    @IBAction func blogButtonTouchesDidEnd(_ sender: UIButton) {
-        blogNameLabel.isHighlighted = false
-        authorNameLabel.isHighlighted = false
-        configureArrowImage()
-    }
-
-}
-
-// MARK: - ReaderCardDiscoverAttributionViewDelegate
-
-extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
-    public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
-        delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
-    }
-}
-
-// MARK: - Accessibility
-
-extension ReaderPostCardCell: Accessible {
-    func prepareForVoiceOver() {
-        prepareCardForVoiceOver()
-        prepareHeaderButtonForVoiceOver()
-        prepareSaveForLaterForVoiceOver()
-        prepareCommentsForVoiceOver()
-        prepareLikeForVoiceOver()
-        prepareMenuForVoiceOver()
-        prepareReblogForVoiceOver()
-    }
-}
-
-private extension ReaderPostCardCell {
-
-    func prepareCardForVoiceOver() {
-        accessibilityLabel = cardAccessibilityLabel()
-        accessibilityHint = cardAccessibilityHint()
-        accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func cardAccessibilityLabel() -> String {
-        let authorName = postAuthor()
-        let blogTitle = blogName()
-
-        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + ", " + postTitle() + ", " + postContent()
-    }
-
-    func cardAccessibilityHint() -> String {
-        return NSLocalizedString("Shows the post content", comment: "Accessibility hint for the Reader Cell")
-    }
-
-    func prepareHeaderButtonForVoiceOver() {
-        guard headerBlogButtonIsEnabled else {
-            /// When the headerbutton is disabled, hide it from VoiceOver as well.
-            headerBlogButton.isAccessibilityElement = false
-            return
-        }
-
-        headerBlogButton.isAccessibilityElement = true
-
-        let authorName = postAuthor()
-        let blogTitle = blogName()
-
-        headerBlogButton.accessibilityLabel = headerButtonAccessibilityLabel(name: authorName, title: blogTitle)
-        headerBlogButton.accessibilityHint = headerButtonAccessibilityHint(title: blogTitle)
-        headerBlogButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func headerButtonAccessibilityLabel(name: String, title: String) -> String {
-        return authorNameAndBlogTitle(name: name, title: title) + ", " + datePublished()
-    }
-
-    func authorNameAndBlogTitle(name: String, title: String) -> String {
-        let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
-
-        return String(format: format, name, title)
-    }
-
-    func headerButtonAccessibilityHint(title: String) -> String {
-        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
-        return String(format: format, title)
-    }
-
-    func prepareSaveForLaterForVoiceOver() {
-        let isSavedForLater = contentProvider?.isSavedForLater() ?? false
-        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
-        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
-        saveForLaterButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func prepareCommentsForVoiceOver() {
-        commentActionButton.accessibilityLabel = commentsLabel()
-        commentActionButton.accessibilityHint = NSLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
-        commentActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func commentsLabel() -> String {
-        let commentCount = contentProvider?.commentCount()?.intValue ?? 0
-        let format = commentCount > 1 ? pluralCommentFormat() : singularCommentFormat()
-        return String(format: format, "\(commentCount)")
-    }
-
-    func singularCommentFormat() -> String {
-        return NSLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
-    }
-
-    func pluralCommentFormat() -> String {
-        return NSLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
-    }
-
-    func prepareLikeForVoiceOver() {
-        guard likeActionButton.isEnabled == true else {
-            return
-        }
-
-        likeActionButton.accessibilityLabel = likeLabel()
-        likeActionButton.accessibilityHint = likeHint()
-        likeActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func likeLabel() -> String {
-        return isContentLiked() ? isLikedLabel(): isNotLikedLabel()
-    }
-
-    func isContentLiked() -> Bool {
-        return contentProvider?.isLiked() ?? false
-    }
-
-    func isLikedLabel() -> String {
-        let postInMyLikes = NSLocalizedString("This post is in My Likes", comment: "Post is in my likes. Accessibility label")
-        return appendLikedCount(label: postInMyLikes)
-    }
-
-    func isNotLikedLabel() -> String {
-        let postNotInMyLikes = NSLocalizedString("This post is not in My Likes", comment: "Post is not in my likes. Accessibility label")
-        return appendLikedCount(label: postNotInMyLikes)
-    }
-
-    func appendLikedCount(label: String) -> String {
-        if let likeCount = contentProvider?.likeCountForDisplay() {
-            return label + ", " + likeCount
-        } else {
-            return label
-        }
-    }
-
-    func likeHint() -> String {
-        return isContentLiked() ? doubleTapToUnlike() : doubleTapToLike()
-    }
-
-    func doubleTapToUnlike() -> String {
-        return NSLocalizedString("Removes this post from My Likes", comment: "Removes a post from My Likes. Spoken Hint.")
-    }
-
-    func doubleTapToLike() -> String {
-        return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
-    }
-
-    func prepareMenuForVoiceOver() {
-        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
-        menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
-        menuButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func prepareReblogForVoiceOver() {
-        reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
-        reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func followLabel() -> String {
-        return followButtonIsSelected() ? followingLabel() : notFollowingLabel()
-    }
-
-    func followingLabel() -> String {
-        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
-    }
-
-    func notFollowingLabel() -> String {
-        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
-    }
-
-    func followHint() -> String {
-        return followButtonIsSelected() ? unfollow(): follow()
-    }
-
-    func unfollow() -> String {
-        return NSLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
-    }
-
-    func follow() -> String {
-        return NSLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
-    }
-
-    func followButtonIsSelected() -> Bool {
-        return contentProvider?.isFollowing() ?? false
-    }
-
-    func blogName() -> String {
-        return contentProvider?.blogNameForDisplay?() ?? ""
-    }
-
-    func postAuthor() -> String {
-        return contentProvider?.authorForDisplay() ?? ""
-    }
-
-    func postTitle() -> String {
-        return contentProvider?.titleForDisplay() ?? ""
-    }
-
-    func postContent() -> String {
-        return contentProvider?.contentPreviewForDisplay() ?? ""
-    }
-
-    func datePublished() -> String {
-        return contentProvider?.dateForDisplay()?.toMediumString() ?? ""
-    }
-}
-
-
-/// Extension providing getters to some private outlets, for testability
-extension ReaderPostCardCell {
-
-    func getHeaderButtonForTesting() -> UIButton {
-        return headerBlogButton
-    }
-
-    func getSaveForLaterButtonForTesting() -> UIButton {
-        return saveForLaterButton
-    }
-
-    func getCommentsButtonForTesting() -> UIButton {
-        return commentActionButton
-    }
-
-    func getLikeButtonForTesting() -> UIButton {
-        return likeActionButton
-    }
-
-    func getMenuButtonForTesting() -> UIButton {
-        return menuButton
-    }
-
-    func getReblogButtonForTesting() -> UIButton {
-        return reblogActionButton
-    }
-}
-
-extension ReaderPostCardCell: GhostableView {
-    public func ghostAnimationWillStart() {
-        borderedView.isGhostableDisabled = true
-        attributionView.isHidden = true
-        menuButton.layer.opacity = 0
-        commentActionButton.setTitle("", for: .normal)
-        likeActionButton.setTitle("", for: .normal)
-        authorAndBlogNameStackView.spacing = 0
-        headerBlogButton.isHidden = true
-        labelsStackView.distribution = .fillEqually
-        labelsStackView.spacing = 8
-        hostAndTimeStackView.alignment = .fill
-        bylineLabel.text = nil
-        bylineLabel.widthAnchor.constraint(equalTo: hostAndTimeStackView.widthAnchor, multiplier: 0.33).isActive = true
-        bylineLabel.isGhostableDisabled = true
-        featuredImageView.layer.borderWidth = 0
-        ghostPlaceholderView.isHidden = false
-    }
-}
-
-extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
-    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
-        layoutIfNeeded()
-
-        topicChipsDelegate?.heightDidChange()
-    }
-
-    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
-        topicChipsDelegate?.didSelect(topic: topic)
-    }
-}
-
-private extension String {
-    static let likeActionButtonAccessibilityIdentifier = "reader-like-button"
 }

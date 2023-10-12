@@ -39,7 +39,7 @@ final class MediaRepository {
             let blog = try context.existingObject(with: blogID)
             let media = Media.existingMediaWith(mediaID: mediaID, inBlog: blog) ?? Media.makeMedia(blog: blog)
             MediaHelper.update(media: media, with: remoteMedia)
-            return try .init(unsaved: media)
+            return TaggedManagedObjectID(media)
         }
     }
 

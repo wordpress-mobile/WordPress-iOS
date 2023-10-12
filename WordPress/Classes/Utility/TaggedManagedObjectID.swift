@@ -29,16 +29,6 @@ import Foundation
 struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
     let objectID: NSManagedObjectID
 
-    @available(*, deprecated, message: "Use init(_:) instead")
-    init(saved object: Model) {
-        self.init(object)
-    }
-
-    @available(*, deprecated, message: "Use init(_:) instead")
-    init(unsaved object: Model) throws {
-        self.init(object)
-    }
-
     /// Create an `TaggedManagedObjectID` instance of the given object.
     init(_ object: Model) {
         var objectID = object.objectID

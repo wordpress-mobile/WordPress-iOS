@@ -4,7 +4,7 @@
   "newScenarioState": "page_published",
   "request": {
     "method": "POST",
-    "urlPath": "/rest/v1.2/sites/106707880/posts/new",
+    "urlPath": "/rest/v1.2/sites/181851495/posts/new",
     "queryParameters": {
       "context": {
         "equalTo": "edit"
@@ -24,7 +24,7 @@
     "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "ID": 13,
-      "site_ID": 106707880,
+      "site_ID": 181851495,
       "author": {
         "ID": 152748359,
         "login": "e2eflowtestingmobile",

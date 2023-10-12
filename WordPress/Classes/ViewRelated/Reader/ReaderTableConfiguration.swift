@@ -1,7 +1,8 @@
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
-    private let readerCardCellNibName = "ReaderPostCardCell"
+    private let readerCardCellNibName = "OldReaderPostCardCell"
+    private let oldReaderCardCellReuseIdentifier = "OldReaderCardCellReuseIdentifier"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
@@ -10,7 +11,8 @@ final class ReaderTableConfiguration {
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
 
-    private let rowHeight = CGFloat(300.0)
+    private let oldRowHeight = CGFloat(300.0)
+    private let rowHeight = CGFloat(415.0)
 
     func setup(_ tableView: UITableView) {
         setupAccessibility(tableView)
@@ -30,8 +32,12 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpCardCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
+        if FeatureFlag.readerImprovements.enabled {
+            tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
+        } else {
+            let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
+            tableView.register(nib, forCellReuseIdentifier: oldReaderCardCellReuseIdentifier)
+        }
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
@@ -58,7 +64,7 @@ final class ReaderTableConfiguration {
     }
 
     func estimatedRowHeight() -> CGFloat {
-        return rowHeight
+        return FeatureFlag.readerImprovements.enabled ? rowHeight : oldRowHeight
     }
 
     func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {
@@ -67,6 +73,10 @@ final class ReaderTableConfiguration {
 
     func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
         return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+    }
+
+    func oldPostCardCell(_ tableView: UITableView) -> OldReaderPostCardCell {
+        return tableView.dequeueReusableCell(withIdentifier: oldReaderCardCellReuseIdentifier) as! OldReaderPostCardCell
     }
 
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {

@@ -31,6 +31,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private let blog: Blog
     private let filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
+    private var isSelectionOrdered = false
     private let coordinator = MediaCoordinator.shared
 
     private var emptyViewState: EmptyViewState = .hidden {
@@ -129,9 +130,14 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     // MARK: - Editing
 
-    func setEditing(_ isEditing: Bool, allowsMultipleSelection: Bool) {
+    func setEditing(
+        _ isEditing: Bool,
+        allowsMultipleSelection: Bool = true,
+        isSelectionOrdered: Bool = false
+    ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
+        self.isSelectionOrdered = isSelectionOrdered
         self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
 
         deselectAll()
@@ -142,14 +148,12 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             selection.add(media)
         } else {
             selection.remove(media)
-            getViewModel(for: media).badgeText = nil
+            getViewModel(for: media).badge = nil
         }
-        var index = 1
         if collectionView.allowsMultipleSelection {
-            for media in selection {
+            for (index, media) in selection.enumerated() {
                 if let media = media as? Media {
-                    getViewModel(for: media).badgeText = index.description
-                    index += 1
+                    getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
                 } else {
                     assertionFailure("Invalid selection")
                 }
@@ -163,7 +167,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func deselectAll() {
         for media in selection {
             if let media = media as? Media {
-                getViewModel(for: media).badgeText = nil
+                getViewModel(for: media).badge = nil
             } else {
                 assertionFailure("Invalid selection")
             }
