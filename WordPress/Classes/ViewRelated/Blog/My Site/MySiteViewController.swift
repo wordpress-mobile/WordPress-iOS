@@ -548,7 +548,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        showDetailViewController(meViewController, sender: self)
+        let navigationController = UINavigationController(rootViewController: meViewController)
+        showDetailViewController(navigationController, sender: self)
     }
 
     @objc
