@@ -1,7 +1,7 @@
-Widget kunci layar kini tersedia di Jetpack agar Anda dapat memeriksa statistik situs Anda tanpa membuka ponsel. Ingatlah bahwa keleluasaan selalu menyertai efisiensi. Atau kurang lebih demikian.
+Kami terus melenyapkan bug! (Tidak seseram yang terdengar, kok.)
 
-Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
-
-Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.
-
-Akhirnya, kami memperbarui navigasi di Situs Saya agar Anda dapat menjangkau bagian populer pada situs dengan lebih cepat. (Tidak suka pintasan ini? Jangan khawatir, Anda dapat mempersonalisasikannya sesuka hati.)
+- Anda kini dapat menyematkan URL dari X tanpa khawatir akan mendapatkan tautan yang rusak. Perbaikan yang X-tra bermanfaat, menurut kami.
+- Mengenai tautan—ketika Anda menggunakan URL media yang tidak valid, aplikasi kini akan menampilkan pesan error alih-alih mengalami crash. Lebih baik seperti ini, bukan?
+- Kontributor kini akan melihat pop-up yang benar ketika mengirimkan pos untuk ditinjau. Fiuh, leganya!
+- Kami berhasil mengatasi masalah ketika pengguna yang bukan admin dapat melihat menu plugin untuk situsnya. Hilang dari pandangan, hilang dari beban pikiran.
+- Di editor blok, aplikasi tidak akan lagi mengalami crash jika Anda membenamkan terlalu banyak blok di dalam blok … di dalam blok … Anda paham maksudnya. Tidak beda jauh dengan film Inception!
