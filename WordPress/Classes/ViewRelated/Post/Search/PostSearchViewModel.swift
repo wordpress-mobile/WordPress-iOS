@@ -7,18 +7,18 @@ final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
     var objectDidChange: (() -> Void)?
 
     private let blog: Blog
-    private let postType: PostServiceType
+    private let filters: PostListFilterSettings
     private let coreDataStack: CoreDataStack
 
     private var cancellables: [AnyCancellable] = []
     private var fetchResultsController: NSFetchedResultsController<BasePost>!
 
     init(blog: Blog,
-         postType: PostServiceType,
+         filters: PostListFilterSettings,
          coreDataStack: CoreDataStack = ContextManager.shared
     ) {
         self.blog = blog
-        self.postType = postType
+        self.filters = filters
         self.coreDataStack = coreDataStack
         super.init()
 
@@ -80,10 +80,10 @@ final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
     }
 
     private func makeEntityName() -> String {
-        switch postType {
+        switch filters.postType {
         case .post: return String(describing: Post.self)
         case .page: return String(describing: Page.self)
-        default: fatalError("Unsupported post type: \(postType)")
+        default: fatalError("Unsupported post type: \(filters.postType)")
         }
     }
 
@@ -92,9 +92,13 @@ final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
 
         // Show all original posts without a revision & revision posts.
         predicates.append(NSPredicate(format: "blog = %@ && revision = nil", blog))
+        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            // Brand new local drafts have an authorID of 0.
+            predicates.append(NSPredicate(format: "authorID = %@ || authorID = 0", userID))
+        }
         predicates.append(NSPredicate(format: "postTitle CONTAINS[cd] %@", searchTerm))
 
-        if postType == .page, let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
+        if filters.postType == .page, let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
             predicates.append(predicate)
         }
 
@@ -121,9 +125,12 @@ final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
         options.number = 20
         options.purgesLocalSync = false
         options.search = searchTerm
+        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            options.authorID = userID
+        }
 
         postService.syncPosts(
-            ofType: postType,
+            ofType: filters.postType,
             with: options,
             for: blog,
             success: { _ in },

@@ -93,7 +93,7 @@ class AbstractPostListViewController: UIViewController,
 
     let filterTabBar = FilterTabBar()
 
-    private lazy var searchResultsViewController = PostSearchViewController(viewModel: PostSearchViewModel(blog: blog, postType: postTypeToSync()))
+    private lazy var searchResultsViewController = PostSearchViewController(viewModel: PostSearchViewModel(blog: blog, filters: filterSettings))
 
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
