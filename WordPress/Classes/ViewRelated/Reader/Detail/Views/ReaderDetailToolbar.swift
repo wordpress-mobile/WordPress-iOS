@@ -475,6 +475,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let isSavedForLater = post?.isSavedForLater ?? false
         saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
         saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+
+        let isLiked = post?.isLiked ?? false
+        likeButton.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
+
+        commentButton.accessibilityHint = Constants.commentButtonHint
     }
 
     private func prepareReblogForVoiceOver() {
@@ -568,6 +573,15 @@ private extension ReaderDetailToolbar {
             comment: """
                 Title for the Comment button on the Reader Detail toolbar.
                 Note: Since the display space is limited, a short or concise translation is preferred.
+                """
+        )
+
+        static let commentButtonHint = NSLocalizedString(
+            "reader.detail.toolbar.comment.button.a11y.hint",
+            value: "Tap to view comments for this post",
+            comment: """
+                Accessibility hint for the Comment button.
+                Tapping on the button takes the user to the comment threads for the post.
                 """
         )
     }
