@@ -1,7 +1,8 @@
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-
+* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
+* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
 
 23.4
 -----
