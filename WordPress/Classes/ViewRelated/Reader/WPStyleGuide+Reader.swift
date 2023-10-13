@@ -326,9 +326,8 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
-        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
+        let icon = UIImage.gridicon(.bookmarkOutline, size: Detail.actionBarIconSize)
+        let selectedIcon = UIImage.gridicon(.bookmark, size: Detail.actionBarIconSize)
 
         button.setImage(icon, for: .normal)
         button.setImage(selectedIcon, for: .selected)
@@ -353,7 +352,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton, defaultSize: Bool = false) {
-        let size = defaultSize ? Gridicon.defaultSize : Cards.actionButtonSize
+        let size = defaultSize ? Detail.actionBarIconSize : Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
         let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 
@@ -418,8 +417,7 @@ extension WPStyleGuide {
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.reblog, size: size)
+        let icon = UIImage.gridicon(.reblog, size: Detail.actionBarIconSize)
 
         button.setImage(icon, for: .normal)
 
@@ -540,6 +538,10 @@ extension WPStyleGuide {
     public struct Detail {
         public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
+
+        public static var actionBarIconSize: CGSize {
+            return FeatureFlag.readerImprovements.enabled ? CGSize(width: 20.0, height: 20.0) : Gridicon.defaultSize
+        }
     }
 
     public struct FollowButton {
