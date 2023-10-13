@@ -9,12 +9,9 @@ final class MediaLibraryMediaPickingCoordinator {
     private var tenor: TenorPicker?
 
     private var stockPhotos: StockPhotosPicker?
-    private let mediaLibrary = MediaLibraryPicker()
 
     init(delegate: PickersDelegate) {
         self.delegate = delegate
-
-        mediaLibrary.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -118,18 +115,14 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
-        if FeatureFlag.nativePhotoPicker.enabled {
-            var configuration = PHPickerConfiguration()
-            configuration.preferredAssetRepresentationMode = .current
-            configuration.selection = .ordered
-            configuration.selectionLimit = 0 // Unlimited
+        var configuration = PHPickerConfiguration()
+        configuration.preferredAssetRepresentationMode = .current
+        configuration.selection = .ordered
+        configuration.selectionLimit = 0 // Unlimited
 
-            let picker = PHPickerViewController(configuration: configuration)
-            picker.delegate = self
-            origin.present(picker, animated: true)
-        } else {
-            mediaLibrary.presentPicker(origin: origin, blog: blog)
-        }
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        origin.present(picker, animated: true)
     }
 }
 

@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
-    case nativePhotoPicker
     case readerImprovements // pcdRpT-3Eb-p2
     case mediaModernization
 
@@ -42,8 +41,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .domainFocus:
-            return true
-        case .nativePhotoPicker:
             return true
         case .readerImprovements:
             return false
@@ -91,8 +88,6 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
-        case .nativePhotoPicker:
-            return "Native Photo Picker"
         case .readerImprovements:
             return "Reader Improvements v1"
         case .mediaModernization:
