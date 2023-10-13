@@ -269,6 +269,10 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+        guard !FeatureFlag.readerImprovements.enabled else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
@@ -298,17 +302,37 @@ extension WPStyleGuide {
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
 
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    public class func applyNewReaderFollowButtonStyle(_ button: UIButton) {
+        button.setTitleColor(.invertedLabel, for: .normal)
+        button.setTitleColor(.secondaryLabel, for: .selected)
+        button.backgroundColor = button.isSelected ? .clear : .label
+        button.layer.borderColor = UIColor.separator.cgColor
+        button.layer.cornerRadius = 5.0
+        button.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+
+        button.configuration = .plain()
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 24.0, bottom: 8.0, trailing: 24.0)
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    private class func applyCommonReaderFollowButtonStyles(_ button: UIButton) {
         button.setTitle(FollowButton.Text.followStringForDisplay, for: .normal)
         button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
 
         button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
-
         // Default accessibility label and hint.
         button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
         button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
+        guard !FeatureFlag.readerImprovements.enabled else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let followIcon = UIImage.gridicon(.readerFollow)
         let followingIcon = UIImage.gridicon(.readerFollowing)
 

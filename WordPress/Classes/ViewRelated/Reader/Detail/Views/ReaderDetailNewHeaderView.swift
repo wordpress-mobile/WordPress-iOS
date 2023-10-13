@@ -236,7 +236,10 @@ struct ReaderDetailNewHeaderView: View {
         HStack(spacing: 8.0) {
             authorStack
             Spacer()
-            followButton(isPhone: WPDeviceIdentification.isiPhone())
+            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                               isEnabled: viewModel.isFollowButtonInteractive) {
+                viewModel.didTapFollowButton()
+            }
         }
     }
 
@@ -339,42 +342,6 @@ struct ReaderDetailNewHeaderView: View {
             .font(.footnote)
             .foregroundColor(Color(.secondaryLabel))
     }
-
-    /// TODO: Update when the Follow buttons are updated.
-    @ViewBuilder
-    private func followButton(isPhone: Bool = true) -> some View {
-        let style: LegacyFollowButtonStyle = viewModel.isFollowingSite ? .following : .follow
-
-        Button {
-            viewModel.didTapFollowButton()
-        } label: {
-            if isPhone {
-                // only shows the icon as the button.
-                Image(uiImage: .gridicon(style.gridiconType, size: style.iconButtonSize))
-                    .tint(style.tintColor)
-            } else {
-                // shows both the icon and the label.
-                Label {
-                    Text(style.buttonLabel)
-                        .font(.callout)
-                        .fontWeight(style.fontWeight)
-                } icon: {
-                    Image(uiImage: .gridicon(style.gridiconType, size: style.labelIconSize).imageWithTintColor(style.labelIconTintColor)!)
-                }
-                .padding(style.buttonPadding)
-                .background(style.labelBackgroundColor)
-                .tint(style.labelTintColor)
-                .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius))
-                .overlay {
-                    RoundedRectangle(cornerRadius: style.cornerRadius)
-                        .stroke(style.borderColor, lineWidth: style.borderWidth)
-                }
-            }
-        }
-        .accessibilityLabel(style.buttonLabel)
-        .accessibilityHint(style.accessibilityHint)
-        .disabled(!viewModel.isFollowButtonInteractive)
-    }
 }
 
 // MARK: Private Helpers
@@ -386,61 +353,6 @@ fileprivate extension ReaderDetailNewHeaderView {
         static let authorImageLength: CGFloat = 20.0
     }
 
-    /// "Legacy" follow button styling.
-    /// Mostly taken from `WPStyleGuide+Reader`'s `applyReaderFollowButtonStyle`
-    ///
-    /// TODO: Remove this when the new Follow buttons are added.
-    struct LegacyFollowButtonStyle {
-        // Style for the Follow button
-        static let follow = LegacyFollowButtonStyle(
-            gridiconType: .readerFollow,
-            tintColor: Color(uiColor: .primary),
-            fontWeight: .semibold,
-            labelBackgroundColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followBackgroundColor),
-            labelTintColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followTextColor),
-            labelIconTintColor: WPStyleGuide.FollowButton.Style.followTextColor,
-            borderWidth: 0.0,
-            buttonLabel: WPStyleGuide.FollowButton.Text.followStringForDisplay,
-            accessibilityHint: WPStyleGuide.FollowButton.Text.accessibilityHint
-        )
-
-        // Style for the Following button
-        static let following = LegacyFollowButtonStyle(
-            gridiconType: .readerFollowing,
-            tintColor: Color(uiColor: .gray(.shade20)),
-            fontWeight: .regular,
-            labelBackgroundColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followingBackgroundColor),
-            labelTintColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followingIconColor),
-            labelIconTintColor: WPStyleGuide.FollowButton.Style.followingTextColor,
-            borderWidth: 1.0,
-            buttonLabel: WPStyleGuide.FollowButton.Text.followingStringForDisplay,
-            accessibilityHint: WPStyleGuide.FollowButton.Text.accessibilityHint
-        )
-
-        let gridiconType: GridiconType
-
-        // iPhone-specific styling
-        let iconButtonSize = CGSize(width: 24, height: 24)
-        let tintColor: Color
-        let iconBackgroundColor: Color = .clear
-
-        // iPad-specific styling
-        let font: Font = .callout
-        let fontWeight: Font.Weight
-        let buttonPadding = EdgeInsets(top: 6.0, leading: 12.0, bottom: 6.0, trailing: 12.0)
-        let labelBackgroundColor: Color
-        let labelTintColor: Color
-        let labelIconTintColor: UIColor
-        let cornerRadius = 4.0
-        let borderColor = Color(uiColor: .primaryButtonBorder)
-        let borderWidth: CGFloat
-        let labelIconSize = CGSize(width: WPStyleGuide.fontSizeForTextStyle(.callout),
-                                   height: WPStyleGuide.fontSizeForTextStyle(.callout))
-
-        // localization-related
-        let buttonLabel: String
-        let accessibilityHint: String
-    }
 }
 
 // MARK: - TopicCollectionView UIViewRepresentable Wrapper
