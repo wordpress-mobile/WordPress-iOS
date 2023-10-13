@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 extension View {
     func removableWidgetBackground(_ backgroundView: some View = EmptyView()) -> some View {
