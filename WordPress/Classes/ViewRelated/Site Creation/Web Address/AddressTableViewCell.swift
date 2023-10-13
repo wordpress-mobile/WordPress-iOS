@@ -6,7 +6,18 @@ final class AddressTableViewCell: UITableViewCell {
     // MARK: - Dependencies
 
     private var domainPurchasingEnabled: Bool {
-        FeatureFlag.siteCreationDomainPurchasing.enabled
+        RemoteFeatureFlag.plansInSiteCreation.enabled()
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return [domainLabel.text,
+                    trailingLabel.text,
+                    leadingLabel.text]
+                .compactMap { $0 }
+                .joined(separator: ".\n")
+        }
+        set {}
     }
 
     // MARK: - Views
@@ -18,13 +29,16 @@ final class AddressTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.domainFont
         label.textColor = Appearance.domainTextColor
+        label.numberOfLines = 2
         return label
     }()
 
-    private let tagsLabel: UILabel = {
+    private let leadingLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = Appearance.tagFont
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
@@ -49,10 +63,10 @@ final class AddressTableViewCell: UITableViewCell {
         return view
     }()
 
-    private let costLabel: UILabel = {
+    private let trailingLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.font = Appearance.domainFont
+        label.font = Appearance.regularCostFont
         label.textColor = Appearance.domainTextColor
         label.numberOfLines = 2
         return label
@@ -79,22 +93,26 @@ final class AddressTableViewCell: UITableViewCell {
             "Selects this domain to use for your site.",
             comment: "Accessibility hint for a domain in the Site Creation domains list."
         )
-        if domainPurchasingEnabled {
-            self.accessibilityElements = [domainLabel, tagsLabel, costLabel]
-        } else {
+        if !domainPurchasingEnabled {
             self.selectedBackgroundView?.backgroundColor = .clear
         }
     }
 
     private func setupSubviews() {
-        let domainAndTag = Self.stackedViews([domainLabel, tagsLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
-        let main = Self.stackedViews([domainAndTag, costLabel], axis: .horizontal, alignment: .center, distribution: .equalCentering, spacing: 0)
+        let domainAndTag = Self.stackedViews([domainLabel, leadingLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
+        let main = Self.stackedViews([domainAndTag, trailingLabel], axis: .horizontal, alignment: .center, distribution: .fill, spacing: 4)
+        domainLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        domainLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        leadingLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        leadingLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        trailingLabel.setContentHuggingPriority(.required, for: .horizontal)
+        trailingLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         main.translatesAutoresizingMaskIntoConstraints = false
         main.isLayoutMarginsRelativeArrangement = true
         main.directionalLayoutMargins = Appearance.contentMargins
         self.contentView.addSubview(main)
         self.contentView.pinSubviewToAllEdges(main)
-        self.updatePriceLabelTextAlignment()
+        self.updateTrailingLabelTextAlignment()
         self.contentView.addSubview(dotView)
         self.contentView.addSubview(checkmarkImageView)
         self.selectedBackgroundView = {
@@ -109,7 +127,11 @@ final class AddressTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         [dotView, checkmarkImageView].forEach { view in
-            view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
+            if traitCollection.layoutDirection == .leftToRight {
+                view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
+            } else {
+                view.center = CGPoint(x: contentView.frame.width - Appearance.contentMargins.leading / 2, y: bounds.midY)
+            }
         }
     }
 
@@ -118,7 +140,7 @@ final class AddressTableViewCell: UITableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.layoutDirection != previousTraitCollection?.layoutDirection {
-            self.updatePriceLabelTextAlignment()
+            self.updateTrailingLabelTextAlignment()
         }
     }
 
@@ -127,30 +149,26 @@ final class AddressTableViewCell: UITableViewCell {
     /// This is the new update method and it's called when `domainPurchasing` feature flag is enabled.
     func update(with viewModel: ViewModel) {
         self.domainLabel.text = viewModel.domain
-        self.tagsLabel.attributedText = Self.tagsAttributedString(tags: viewModel.tags)
-        self.tagsLabel.isHidden = viewModel.tags.isEmpty
-        self.costLabel.attributedText = Self.costAttributedString(cost: viewModel.cost)
+        self.leadingLabel.attributedText = Self.leadingAttributedString(tags: viewModel.tags, cost: viewModel.cost)
+        self.trailingLabel.attributedText = Self.trailingAttributedString(cost: viewModel.cost)
         self.dotView.backgroundColor = Appearance.dotColor(viewModel.tags.first)
     }
 
-    /// Updates the `costLabel` text alignment.
-    private func updatePriceLabelTextAlignment() {
+    /// Updates the `trailingLabel` text alignment.
+    private func updateTrailingLabelTextAlignment() {
         switch traitCollection.layoutDirection {
         case .rightToLeft:
             // swiftlint:disable:next natural_text_alignment
-            self.costLabel.textAlignment = .left
+            self.trailingLabel.textAlignment = .left
         default:
             // swiftlint:disable:next inverse_text_alignment
-            self.costLabel.textAlignment = .right
+            self.trailingLabel.textAlignment = .right
         }
     }
 
     // MARK: - Helpers
 
-    private static func tagsAttributedString(tags: [ViewModel.Tag]) -> NSAttributedString? {
-        guard !tags.isEmpty else {
-            return nil
-        }
+    private static func leadingAttributedString(tags: [ViewModel.Tag], cost: ViewModel.Cost) -> NSAttributedString? {
         let attributedString = NSMutableAttributedString()
         for (index, tag) in tags.enumerated() {
             let attributes: [NSAttributedString.Key: Any] = [
@@ -159,21 +177,33 @@ final class AddressTableViewCell: UITableViewCell {
             let string = index == 0 ? tag.localizedString : "\n\(tag.localizedString)"
             attributedString.append(.init(string: string, attributes: attributes))
         }
+
+        switch cost {
+        case .freeWithPaidPlan:
+            let firstYearAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: Appearance.saleCostTextColor
+            ]
+
+            let newline = attributedString.length > 0 ? "\n" : ""
+            attributedString.append(.init(string: "\(newline)\(ViewModel.Strings.freeWithPaidPlan)", attributes: firstYearAttributes))
+            return attributedString
+        default:
+            break
+        }
+
         return attributedString
     }
 
-    private static func costAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
+    private static func trailingAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
         switch cost {
         case .free:
             let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.label,
-                .font: Appearance.regularCostFont
+                .foregroundColor: UIColor.label
             ]
             return NSAttributedString(string: ViewModel.Strings.free, attributes: attributes)
         case .regular(let cost):
             var attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.label,
-                .font: Appearance.regularCostFont
+                .foregroundColor: UIColor.label
             ]
             let attributedString = NSMutableAttributedString(string: cost, attributes: attributes)
             attributes[.font] = Appearance.smallCostFont
@@ -196,6 +226,13 @@ final class AddressTableViewCell: UITableViewCell {
             let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
             attributedString.append(NSAttributedString(string: " \(sale)", attributes: saleAttributes))
             attributedString.append(.init(string: "\n\(ViewModel.Strings.firstYear)", attributes: firstYearAttributes))
+            return attributedString
+        case .freeWithPaidPlan(let cost):
+            let costAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.secondaryLabel,
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue
+            ]
+            let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
             return attributedString
         }
     }

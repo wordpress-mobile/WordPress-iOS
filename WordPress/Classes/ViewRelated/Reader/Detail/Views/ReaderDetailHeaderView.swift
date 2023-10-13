@@ -9,7 +9,7 @@ protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didSelectTopic(_ topic: String)
 }
 
-class ReaderDetailHeaderView: UIStackView, NibLoadable {
+class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var blavatarImageView: UIImageView!
     @IBOutlet weak var blogURLLabel: UILabel!

@@ -3198,7 +3198,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
         guard let uploadID = attachment.uploadID,
             let media = mediaCoordinator.media(withIdentifier: uploadID, for: post),
-            (media.remoteStatus == .pushing || media.remoteStatus == .processing)
+            media.remoteStatus == .pushing || media.remoteStatus == .processing
         else {
             return
         }

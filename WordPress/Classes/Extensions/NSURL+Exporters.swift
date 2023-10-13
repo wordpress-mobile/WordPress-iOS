@@ -1,20 +1,22 @@
 import Foundation
-import Photos
-import MobileCoreServices
-import AVFoundation
+import UniformTypeIdentifiers
 
 extension NSURL: ExportableAsset {
-
     public var assetMediaType: MediaType {
         get {
-            let url = self as URL
-            if url.isImage {
+            guard let contentType = (self as URL).typeIdentifier.flatMap(UTType.init) else {
+                return .document
+            }
+            if contentType.conforms(to: .image) {
                 return .image
-            } else if url.isVideo {
+            }
+            if contentType.conforms(to: .video) || contentType.conforms(to: .movie) {
                 return .video
+            }
+            if contentType.conforms(to: .audio) {
+                return .audio
             }
             return .document
         }
     }
-
 }

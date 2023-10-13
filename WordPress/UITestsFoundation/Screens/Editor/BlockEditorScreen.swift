@@ -60,6 +60,10 @@ public class BlockEditorScreen: ScreenObject {
         $0.otherElements["notice_title_and_message"]
     }
 
+    private let pageTitleViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Page title. Empty"]
+    }
+
     private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Post Settings"]
     }
@@ -70,6 +74,10 @@ public class BlockEditorScreen: ScreenObject {
 
     private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
+    }
+
+    private let returnButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Return"]
     }
 
     private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -102,9 +110,11 @@ public class BlockEditorScreen: ScreenObject {
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
     var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
+    var pageTitleView: XCUIElement { pageTitleViewGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
+    var returnButton: XCUIElement { returnButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
@@ -115,17 +125,33 @@ public class BlockEditorScreen: ScreenObject {
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter, redoButtonGetter, undoButtonGetter ],
+            expectedElementGetters: [
+                editorNavigationBarGetter,
+                addBlockButtonGetter,
+                editorCloseButtonGetter,
+                redoButtonGetter,
+                undoButtonGetter
+            ],
             app: app
         )
+    }
+
+    public enum postAction: String {
+        case publish = "Publish"
+        case schedule = "Schedule"
+    }
+
+    public enum postType: String {
+        case page = "page"
+        case post = "post"
     }
 
     /**
      Enters text into title field.
      - Parameter text: the test to enter into the title
      */
-    public func enterTextInTitle(text: String) -> BlockEditorScreen {
-        let titleView = postTitleView.firstMatch // Uses a localized string
+    public func enterTextInTitle(text: String, postType: postType = .post) -> BlockEditorScreen {
+        let titleView = postType == .post ? postTitleView.firstMatch : pageTitleView.firstMatch
         XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
         type(text: text, in: titleView)
 
@@ -246,11 +272,6 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
-    public enum postAction: String {
-        case publish = "Publish"
-        case schedule = "Schedule"
-    }
-
     public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
         try post(action: action)
         waitAndTap(noticeViewButton)
@@ -258,28 +279,38 @@ public class BlockEditorScreen: ScreenObject {
         return try EditorPublishEpilogueScreen()
     }
 
-    public func post(action: postAction) throws {
+    @discardableResult
+    public func post(action: postAction, postType: postType = .post) throws -> Self {
         let postButton = app.buttons[action.rawValue]
-        let postNowButton = app.buttons["\(action.rawValue) Now"]
-        var tries = 0
+        let postNowButton: XCUIElement
 
-        // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
-        // The tests would fail sometimes in the pipeline with no apparent reason.
-        repeat {
-            postButton.tap()
-            tries += 1
-        } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
+        // To handle both post types - post and page
+        if postType == .page && XCUIDevice.isPad {
+            postNowButton = app.alerts.buttons[action.rawValue]
+        } else if postType == .page && XCUIDevice.isPhone {
+            postNowButton = app.scrollViews.buttons[action.rawValue]
+        } else {
+            postNowButton = app.buttons["\(action.rawValue) Now"]
+        }
 
-        postNowButton.tap()
-        guard action == .publish else { return }
+        waitForExistenceAndTap(postButton)
+        waitForExistenceAndTap(postNowButton)
 
-        dismissBloggingRemindersAlertIfNeeded()
+        if action == .publish && postType == .post {
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+
+        return self
+    }
+
+    public func waitForNoticeToDisappear() throws {
+        waitForElementToDisappear(noticeViewButton)
     }
 
     @discardableResult
     public func openPostSettings() throws -> EditorPostSettings {
-        moreButton.tap()
-        postSettingsButton.tap()
+        waitAndTap(moreButton)
+        waitAndTap(postSettingsButton)
 
         return try EditorPostSettings()
     }
@@ -408,7 +439,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
-        guard setRemindersButton.waitForExistence(timeout: 3) else { return }
+        guard setRemindersButton.waitForExistence(timeout: 5) else { return }
 
         if XCUIDevice.isPad {
             app.swipeDown(velocity: .fast)

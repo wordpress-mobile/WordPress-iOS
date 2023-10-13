@@ -1,13 +1,13 @@
 import UIKit
 
-final class MediaCollectionCellBadgeView: UIView {
+final class SiteMediaCollectionCellBadgeView: UIView {
     let textLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         textLabel.textColor = .white
-        textLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        textLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: .semibold)
 
         let stack = UIStackView(arrangedSubviews: [textLabel])
         stack.axis = .vertical
@@ -34,5 +34,21 @@ final class MediaCollectionCellBadgeView: UIView {
         super.layoutSubviews()
 
         layer.cornerRadius = bounds.height / 2
+    }
+
+    func setBadge(_ badge: SiteMediaCollectionCellViewModel.BadgeType) {
+        switch badge {
+        case .unordered:
+            textLabel.attributedText = NSAttributedString(attachment: {
+                let attachment = NSTextAttachment()
+                let configuration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 11, weight: .semibold))
+                attachment.image = UIImage(systemName: "checkmark", withConfiguration: configuration)?.withTintColor(.white, renderingMode: .alwaysTemplate)
+                return attachment
+            }(), attributes: [
+                NSAttributedString.Key.baselineOffset: 1 // It doesn't appear visually centered othwerwise
+            ])
+        case .ordered(let index):
+            textLabel.text = (index + 1).description
+        }
     }
 }

@@ -64,7 +64,7 @@ final class MediaImageService: NSObject {
         return try? await Task.detached {
             let imageURL = try self.getCachedThumbnailURL(for: mediaID, size: size)
             let data = try Data(contentsOf: imageURL)
-            return try decompressedImage(from: data)
+            return try makeImage(from: data)
         }.value
     }
 
@@ -100,24 +100,17 @@ final class MediaImageService: NSObject {
     /// Generates a thumbnail from a local asset and saves it in cache.
     @MainActor
     private func localThumbnail(for media: Media, size: ThumbnailSize) async -> UIImage? {
-        let exporter = MediaThumbnailExporter()
-        exporter.mediaDirectoryType = .cache
-        exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
-        exporter.options.scale = 1 // In pixels
-
-        guard let sourceURL = media.absoluteLocalURL,
-              exporter.supportsThumbnailExport(forFile: sourceURL) else {
+        guard let sourceURL = media.absoluteLocalURL else {
             return nil
         }
 
-        guard let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL) else {
+        let exporter = makeThumbnailExporter(for: media, size: size)
+        guard exporter.supportsThumbnailExport(forFile: sourceURL),
+              let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
+              let image = try? await makeImage(from: export.url)
+        else {
             return nil
         }
-
-        let image = try? await Task.detached {
-            let data = try Data(contentsOf: export.url)
-            return try decompressedImage(from: data)
-        }.value
 
         // The order is important to ensure `export.url` still exists when creating an image
         saveThumbnail(for: media.objectID, size: size) { targetURL in
@@ -127,6 +120,14 @@ final class MediaImageService: NSObject {
         return image
     }
 
+    private func makeThumbnailExporter(for media: Media, size: ThumbnailSize) -> MediaThumbnailExporter {
+        let exporter = MediaThumbnailExporter()
+        exporter.mediaDirectoryType = .cache
+        exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
+        exporter.options.scale = 1 // In pixels
+        return exporter
+    }
+
     // MARK: - Remote Thumbnail
 
     /// Downloads a remote thumbnail and saves it in cache.
@@ -134,24 +135,53 @@ final class MediaImageService: NSObject {
     private func remoteThumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
         let targetSize = MediaImageService.getThumbnailSize(for: media, size: size)
         guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize) else {
+            // Self-hosted WordPress sites don't have `remoteThumbnailURL`, so
+            // the app generates the thumbnail by itself.
+            if media.mediaType == .video {
+                return try await generateThumbnailForVideo(for: media, size: size)
+            }
             throw URLError(.badURL)
         }
 
-        let host = MediaHost(with: media.blog)
+        let blogID = TaggedManagedObjectID(media.blog)
+        let host = try await coreDataStack.performQuery { context in
+            MediaHost(with: try context.existingObject(with: blogID))
+        }
         let request = try await MediaRequestAuthenticator()
             .authenticatedRequest(for: imageURL, host: host)
         guard !Task.isCancelled else {
             throw CancellationError()
         }
-        let (data, _) = try await session.data(for: request)
-
+        let (data, response) = try await session.data(for: request)
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+              (200..<400).contains(statusCode) else {
+            throw URLError(.unknown)
+        }
+        let image = try await Task.detached {
+            try makeImage(from: data)
+        }.value
         saveThumbnail(for: media.objectID, size: size) { targetURL in
             try data.write(to: targetURL)
         }
+        return image
+    }
 
-        return try await Task.detached {
-            try decompressedImage(from: data)
-        }.value
+    // MARK: - Thubmnail for Video
+
+    @MainActor
+    private func generateThumbnailForVideo(for media: Media, size: ThumbnailSize) async throws -> UIImage {
+        guard let videoURL = media.remoteURL.flatMap(URL.init) else {
+            throw URLError(.badURL)
+        }
+        let exporter = makeThumbnailExporter(for: media, size: size)
+        let (_, export) = try await exporter.exportThumbnail(forVideoURL: videoURL)
+        let image = try await makeImage(from: export.url)
+
+        // The order is important to ensure `export.url` exists when making an image
+        saveThumbnail(for: media.objectID, size: size) { targetURL in
+            try FileManager.default.moveItem(at: export.url, to: targetURL)
+        }
+        return image
     }
 
     // MARK: - Stubs
@@ -254,7 +284,13 @@ private extension Media {
             }
             // Download a non-retina version for GIFs: makes a massive difference
             // in terms of size. Example: 2.4 MB -> 350 KB.
-            let targetSize = remoteURL.isGif ? targetSize.scaled(by: 1.0 / UIScreen.main.scale) : targetSize
+            let scale = UIScreen.main.scale
+            var targetSize = targetSize
+            if remoteURL.isGif {
+                targetSize = targetSize
+                    .scaled(by: 1.0 / scale)
+                    .scaled(by: min(2, scale))
+            }
             if !isEligibleForPhoton {
                 return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
             } else {
@@ -273,11 +309,21 @@ private extension Media {
 
 // MARK: - Helpers (Decompression)
 
+private func makeImage(from fileURL: URL) async throws -> UIImage {
+    try await Task.detached {
+        let data = try Data(contentsOf: fileURL)
+        return try makeImage(from: data)
+    }.value
+}
+
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.
-private func decompressedImage(from data: Data) throws -> UIImage {
+private func makeImage(from data: Data) throws -> UIImage {
     guard let image = UIImage(data: data) else {
         throw URLError(.cannotDecodeContentData)
+    }
+    if data.isMatchingMagicNumbers(Data.gifMagicNumbers) {
+        return AnimatedImageWrapper(gifData: data) ?? image
     }
     guard isDecompressionNeeded(for: data) else {
         return image
@@ -298,6 +344,9 @@ private func isDecompressionNeeded(for data: Data) -> Bool {
 private extension Data {
     // JPEG magic numbers https://en.wikipedia.org/wiki/JPEG
     static let jpegMagicNumbers: [UInt8] = [0xFF, 0xD8, 0xFF]
+
+    // GIF magic numbers https://en.wikipedia.org/wiki/GIF
+    static let gifMagicNumbers: [UInt8] = [0x47, 0x49, 0x46]
 
     func isMatchingMagicNumbers(_ numbers: [UInt8?]) -> Bool {
         guard self.count >= numbers.count else {

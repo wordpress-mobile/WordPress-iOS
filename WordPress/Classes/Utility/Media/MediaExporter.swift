@@ -3,8 +3,8 @@ import Foundation
 enum MediaExportProgressUnits {
     static let done: Int64 = 100
     static let halfDone: Int64 = MediaExportProgressUnits.done / 2
-    static let quarterDone: Int64 = MediaExportProgressUnits.done / 4
-    static let threeQuartersDone: Int64 = (MediaExportProgressUnits.done / 4) * 3
+    static let exportDone: Int64 = 5 // Export with a new ItemProvider API is very fast
+    static let uploadDone: Int64 = 95
 }
 /// The MediaExport class represents the result of an MediaExporter.
 ///

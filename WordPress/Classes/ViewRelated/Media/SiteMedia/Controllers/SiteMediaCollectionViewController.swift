@@ -27,10 +27,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
     private var selection = NSMutableOrderedSet() // `Media`
-    private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
+    private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
+    private var isSelectionOrdered = false
     private let coordinator = MediaCoordinator.shared
 
     private var emptyViewState: EmptyViewState = .hidden {
@@ -95,7 +96,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func configureCollectionView() {
-        collectionView.register(MediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+        collectionView.register(cell: SiteMediaCollectionCell.self)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -129,9 +130,14 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     // MARK: - Editing
 
-    func setEditing(_ isEditing: Bool, allowsMultipleSelection: Bool) {
+    func setEditing(
+        _ isEditing: Bool,
+        allowsMultipleSelection: Bool = true,
+        isSelectionOrdered: Bool = false
+    ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
+        self.isSelectionOrdered = isSelectionOrdered
         self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
 
         deselectAll()
@@ -142,14 +148,12 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             selection.add(media)
         } else {
             selection.remove(media)
-            getViewModel(for: media).badgeText = nil
+            getViewModel(for: media).badge = nil
         }
-        var index = 1
         if collectionView.allowsMultipleSelection {
-            for media in selection {
+            for (index, media) in selection.enumerated() {
                 if let media = media as? Media {
-                    getViewModel(for: media).badgeText = index.description
-                    index += 1
+                    getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
                 } else {
                     assertionFailure("Invalid selection")
                 }
@@ -163,7 +167,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func deselectAll() {
         for media in selection {
             if let media = media as? Media {
-                getViewModel(for: media).badgeText = nil
+                getViewModel(for: media).badge = nil
             } else {
                 assertionFailure("Invalid selection")
             }
@@ -260,6 +264,13 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
                 setSelect(false, for: media)
+
+                if let viewController = navigationController?.topViewController,
+                   viewController !== self,
+                    let detailsViewController = viewController as? MediaItemViewController,
+                   detailsViewController.media.objectID == media.objectID {
+                    navigationController?.popViewController(animated: true)
+                }
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
@@ -303,7 +314,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
+        let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
@@ -392,11 +403,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     // MARK: - Helpers
 
     // Create ViewModel lazily to avoid fetching more managed objects than needed.
-    private func getViewModel(for media: Media) -> MediaCollectionCellViewModel {
+    private func getViewModel(for media: Media) -> SiteMediaCollectionCellViewModel {
         if let viewModel = viewModels[media.objectID] {
             return viewModel
         }
-        let viewModel = MediaCollectionCellViewModel(media: media)
+        let viewModel = SiteMediaCollectionCellViewModel(media: media)
         viewModels[media.objectID] = viewModel
         return viewModel
     }
@@ -450,10 +461,6 @@ extension SiteMediaCollectionViewController: NoResultsViewHost {
         case emptySearch
         case failed
     }
-}
-
-private enum Constants {
-    static let cellID = "cellID"
 }
 
 private enum Strings {
