@@ -483,12 +483,12 @@ private extension ReaderPostCardCell {
         if !viewModel.isReblogEnabled {
             removeFromStackView(controlsStackView, view: reblogButton)
         }
-        if viewModel.isCommentsEnabled {
-            configureLikeButton()
-        } else {
+        if !viewModel.isCommentsEnabled {
             removeFromStackView(controlsStackView, view: commentButton)
         }
-        if !viewModel.isLikesEnabled {
+        if viewModel.isLikesEnabled {
+            configureLikeButton()
+        } else {
             removeFromStackView(controlsStackView, view: likeButton)
         }
     }
