@@ -74,8 +74,7 @@ final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
     private func makeFetchRequest(searchTerm: String) -> NSFetchRequest<BasePost> {
         let request = NSFetchRequest<BasePost>(entityName: makeEntityName())
         request.predicate = makePredicate(searchTerm: searchTerm)
-        // TODO: Update sort descriptors
-        request.sortDescriptors = [NSSortDescriptor(key: "date_created_gmt", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AbstractPost.date_created_gmt, ascending: false)]
         request.fetchBatchSize = 40
         return request
     }
