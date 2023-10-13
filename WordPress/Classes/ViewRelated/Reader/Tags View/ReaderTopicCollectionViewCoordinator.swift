@@ -19,13 +19,6 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     private struct Constants {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
         static let overflowReuseIdentifier = "OverflowItem"
-
-        static let interestsLabelMargin: CGFloat = 8
-
-        static let cellCornerRadius: CGFloat = 4
-        static let cellSpacing: CGFloat = 6
-        static let cellHeight: CGFloat = 26
-        static let maxCellWidthMultiplier: CGFloat = 0.8
     }
 
     private struct Strings {
@@ -37,6 +30,10 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
          static let accessbilityHint: String = NSLocalizedString("Tap to view posts for this tag", comment: "Accessibility hint to inform the user what action the post tag chip performs")
     }
+
+    private lazy var metrics: ReaderInterestsStyleGuide.Metrics = {
+        return FeatureFlag.readerImprovements.enabled ? .latest : .legacy
+    }()
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
@@ -101,25 +98,24 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         layout.delegate = self
         layout.maxNumberOfDisplayedLines = 1
-        layout.itemSpacing = Constants.cellSpacing
-        layout.cellHeight = Constants.cellHeight
+        layout.itemSpacing = metrics.cellSpacing
+        layout.cellHeight = metrics.cellHeight
         layout.allowsCentering = false
     }
 
-    private func sizeForCell(title: String, of collectionView: UICollectionView)-> CGSize {
+    private func sizeForCell(title: String, of collectionView: UICollectionView) -> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
         ]
-
 
         let title: NSString = title as NSString
 
         var size = title.size(withAttributes: attributes)
 
         // Prevent 1 token from being too long
-        let maxWidth = collectionView.bounds.width * Constants.maxCellWidthMultiplier
+        let maxWidth = collectionView.bounds.width * metrics.maxCellWidthMultiplier
         let width = min(size.width, maxWidth)
-        size.width = width + (Constants.interestsLabelMargin * 2)
+        size.width = width + (metrics.interestsLabelMargin * 2)
 
         return size
     }
@@ -127,7 +123,12 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
         ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
 
-        cell.layer.cornerRadius = Constants.cellCornerRadius
+        if metrics.borderWidth > 0 {
+            cell.layer.borderColor = metrics.borderColor.cgColor
+            cell.layer.borderWidth = metrics.borderWidth
+        }
+
+        cell.layer.cornerRadius = metrics.cellCornerRadius
         cell.label.text = title
         cell.label.accessibilityHint = Strings.accessbilityHint
         cell.label.accessibilityTraits = .button
@@ -181,7 +182,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         configure(cell: cell, with: title)
 
-        if layout.isExpanded {
+        if layout.isExpanded || FeatureFlag.readerImprovements.enabled {
             cell.label.backgroundColor = .clear
         }
 
