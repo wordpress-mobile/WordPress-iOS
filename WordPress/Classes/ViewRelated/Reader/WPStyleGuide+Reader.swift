@@ -56,40 +56,64 @@ extension WPStyleGuide {
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
+        if FeatureFlag.readerImprovements.enabled {
+            let font = UIFont.preferredFont(forTextStyle: .subheadline).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.label
+            ]
+        } else {
+            let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor.text
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor.text
+            ]
+        }
     }
 
     @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
+        if FeatureFlag.readerImprovements.enabled {
+            let font = UIFont.preferredFont(forTextStyle: .footnote).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            let paragraphStyle = NSMutableParagraphStyle()
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
+        if FeatureFlag.readerImprovements.enabled {
+            let font = UIFont.preferredFont(forTextStyle: .footnote)
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
