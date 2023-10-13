@@ -12,6 +12,10 @@ open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var borderView: UIView!
+    @IBOutlet private weak var topViewConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var separatorViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var centeredImageViewConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var imageSpacingConstraint: NSLayoutConstraint!
 
     private weak var contentProvider: ReaderPostContentProvider?
 
@@ -82,11 +86,16 @@ private extension ReaderCrossPostCell {
     // MARK: - Appearance
 
     func applyStyles() {
+        let readerImprovements = FeatureFlag.readerImprovements.enabled
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderView?.backgroundColor = .listForeground
         label?.backgroundColor = .listForeground
         titleLabel?.backgroundColor = .listForeground
+        topViewConstraint.constant = readerImprovements ? 0.0 : 8.0
+        separatorViewHeightConstraint.constant = readerImprovements ? 0.5 : 0.0
+        centeredImageViewConstraint.isActive = !readerImprovements
+        imageSpacingConstraint.priority = readerImprovements ? .required : .defaultHigh
     }
 
     func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
