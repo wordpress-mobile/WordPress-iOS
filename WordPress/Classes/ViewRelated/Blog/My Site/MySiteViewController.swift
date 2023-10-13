@@ -548,7 +548,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        showDetailViewController(meViewController, sender: self)
+        if MySitesCoordinator.isSplitViewEnabled {
+            showDetailViewController(meViewController, sender: self)
+        } else {
+            navigationController?.pushViewController(meViewController, animated: true)
+        }
     }
 
     @objc

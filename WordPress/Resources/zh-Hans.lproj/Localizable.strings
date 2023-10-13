@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-19 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-09 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: zh_CN */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "块引用";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "区块深度嵌套，因此无法渲染。 轻点此处以了解更多详细信息。";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "区块已拷贝";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "区块菜单";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "嵌套深度超过 %d 层级的区块在移动端编辑器中可能无法正常渲染。 因此，我们建议取消区块分组或使用 Web 编辑器编辑区块，以使内容扁平化。";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "嵌套深度超过 %d 层级的区块在移动端编辑器中可能无法正常渲染。 因此，我们建议取消区块分组或使用 Web 浏览器编辑区块，以使内容扁平化。";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "博客";
@@ -2282,6 +2291,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "2017 年 12 月 17 日";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "深度嵌套区块";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6057,8 +6069,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "移除";
 
 /* Remove Person Alert Title
@@ -7280,6 +7291,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "切换为默认字体大小";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "已同步的样板";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "系统默认";
 
@@ -7327,9 +7341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "拍照";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "拍摄照片或视频";
-
-/* No comment provided by engineer. */
 "Take a Video" = "拍摄视频";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7343,6 +7354,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "轻点此处以显示更多详细信息。";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "轻点以添加新的统计信息卡片。";
@@ -8324,6 +8338,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "取消关注该博客。";
 
+/* No comment provided by engineer. */
+"Ungroup block" = "取消区块分组";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "取消隐藏";
 
@@ -8710,6 +8727,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "警告";
+
+/* No comment provided by engineer. */
+"Warning message" = "警告消息";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "通过深入分析观察您的受众增长。";
@@ -9850,14 +9870,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "删除当前导览";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "通过易于查找、共享和关注的站点地址，在网络上创建自己的一席之地。";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隐藏此内容";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "查找自定义域名";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "您的自定义域名最多可能需要 30 分钟才能开始运行。";
@@ -10317,9 +10331,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "无法同步媒体";
 
-/* Media screen navigation title */
-"media.title" = "媒体";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "无法将此项目添加到媒体库";
 
@@ -10332,6 +10343,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "忽略";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "添加新媒体";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "添加";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "选择";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "取消";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "删除";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "是否确定要永久删除这些项目？";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "是否确定要永久删除此项目？";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "无法删除所有媒体项目。";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "正在删除...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "已删除！";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "删除";
 
@@ -10340,6 +10381,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "重试上传";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "没有与您的搜索匹配的媒体";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "媒体";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "已选择 %d 张图片";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "已选择 1 张图片";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "已选择 %d 个项目";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "已选择 1 个项目";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "选择项目";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
@@ -10573,12 +10635,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "草稿文章";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "了解此应用程序";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "后续步骤";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "页面";
 
 /* Card title for the pesonalization menu */
@@ -10724,6 +10780,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "举报此用户";
 
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ 篇文章 • %2$@ 位粉丝";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
 
@@ -10831,6 +10890,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "媒体";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";

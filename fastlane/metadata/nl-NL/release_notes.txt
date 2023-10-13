@@ -1,3 +1,7 @@
-We hebben een aanpassing gedaan aan de manier waarop meldingen verschijnen als je media vanaf een URL invoegt in blokken. Dat hebben we goed voor elkaar.
+We hebben wat bugs geplet! (Het ging wat netter dan dat klinkt.)
 
-Het is ook eenvoudiger om het verschil te zien tussen placeholdertekst en daadwerkelijke content in thema's op blokbasis.
+- Je kan nu URL's van X insluiten zonder dat de link breekt. X-cellent, al zeggen we het zelf.
+- En nu we het toch over links hebben: wanneer je een ongeldige media-URL gebruikt, geeft de app nu een foutmelding weer in plaats van te crashen. Zoveel beter, toch?
+- Bijdragers zien nu de juiste pop-up wanneer ze een bericht voor beoordeling indienen. Gelukkig!
+- We hebben een probleem opgelost waarbij gebruikers die geen beheerder zijn het pluginmenu konden zien voor hun site. Uit het oog, uit het hart.
+- In de blokeditor crasht de app niet meer wanneer je te veel blokken in blokken… in blokken… nest, je snapt het wel. Wat nou, Inception.

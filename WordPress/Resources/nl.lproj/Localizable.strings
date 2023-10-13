@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-19 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-04 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: nl */
@@ -1119,6 +1119,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citaat";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Blok kan niet worden gerenderd omdat het diep is genesteld. Tik hier voor meer informatie.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok gekopieerd";
 
@@ -1170,6 +1173,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Blokkenmenu";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor. Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor. Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -2279,6 +2288,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "December 17, 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Diep genesteld blok";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6057,8 +6069,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Verwijderen";
 
 /* Remove Person Alert Title
@@ -7327,9 +7338,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Neem een foto";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Neem een foto of video";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Maak een video";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7343,6 +7351,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tik hier om help te tonen";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Tik hier voor meer informatie.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Tik hier om nieuwe statistiekenkaarten toe te voegen.";
@@ -8323,6 +8334,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Wordt gebruikt om te stoppen met het volgen van een blog.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "Groeperen blok ongedaan maken";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Verbergen uitschakelen";
@@ -9829,14 +9843,8 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Eis je eigen hoekje van het internet op met een site adres dat eenvoudig te vinden, te delen en te volgen is.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Een aangepast domein zoeken";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Het kan tot 30 minuten duren voor je aangepaste domein werkt.";
@@ -10302,6 +10310,21 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Negeren";
 
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Selecteer";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Weet je zeker dat je deze items definitief wilt verwijderen?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Verwijderen...";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Verwijderen";
 
@@ -10310,6 +10333,9 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Upload opnieuw proberen";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Er komt geen media overeen met je zoekopdracht";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
@@ -10511,12 +10537,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Conceptberichten";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Verken de app";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Volgende stappen";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pagina's";
