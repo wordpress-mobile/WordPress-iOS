@@ -276,74 +276,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         _tableViewHandler.refreshTableView()
     }
 
-    override func syncPostsMatchingSearchText() {
-        guard let searchText = searchController.searchBar.text, !searchText.isEmpty() else {
-            return
-        }
-
-        postsSyncWithSearchDidBegin()
-
-        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
-        let postService = PostService(managedObjectContext: managedObjectContext())
-        let options = PostServiceSyncOptions()
-        options.statuses = filterSettings.availablePostListFilters().flatMap { $0.statuses.strings }
-        options.authorID = author
-        options.number = 20
-        options.purgesLocalSync = false
-        options.search = searchText
-
-        postService.syncPosts(
-            ofType: postTypeToSync(),
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error) in
-                self?.postsSyncWithSearchEnded()
-            }
-        )
-    }
-
-    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        if !searchController.isActive {
-            return super.sortDescriptorsForFetchRequest()
-        }
-
-        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
-        return [descriptor]
-    }
-
-    override func updateForLocalPostsMatchingSearchText() {
-        guard searchController.isActive else {
-            hideNoResultsView()
-            return
-        }
-
-        _tableViewHandler.isSearching = true
-        updateAndPerformFetchRequest()
-        tableView.reloadData()
-
-        hideNoResultsView()
-
-        if let text = searchController.searchBar.text,
-            text.isEmpty ||
-            tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
-            showNoResultsView()
-        }
-    }
-
-    override func showNoResultsView() {
-        super.showNoResultsView()
-
-        if searchController.isActive {
-            noResultsViewController.view.frame = CGRect(x: 0.0,
-                                                        y: searchController.searchBar.bounds.height,
-                                                        width: tableView.frame.width,
-                                                        height: max(tableView.frame.height, tableView.contentSize.height))
-            tableView.bringSubviewToFront(noResultsViewController.view)
-        }
-    }
-
     override func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         guard syncHelper.hasMoreContent else {
             super.syncContentEnded(syncHelper)
@@ -383,12 +315,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let searchText = currentSearchTerm() ?? ""
-        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if recentlyTrashedPostObjectIDs.count > 0 {
 
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
@@ -397,18 +328,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(filterPredicate)
         }
 
-        if searchText.count > 0 {
-            let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
-            predicates.append(searchPredicate)
-        }
-
-        if RemoteFeatureFlag.siteEditorMVP.enabled(),
-           blog.blockEditorSettings?.isFSETheme ?? false,
-           let homepageID = blog.homepagePageID,
-           let homepageType = blog.homepageType,
-           homepageType == .page {
-            let homepagePredicate = NSPredicate(format: "postID != %i", homepageID)
-            predicates.append(homepagePredicate)
+        if let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
+            predicates.append(predicate)
         }
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -421,29 +342,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     func sectionNameKeyPath() -> String {
         let sortField = filterSettings.currentPostListFilter().sortField
         return Page.sectionIdentifier(dateKeyPath: sortField.keyPath)
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard _tableViewHandler.groupResults else {
-            return 0.0
-        }
-        return Constant.Size.pageSectionHeaderHeight
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard _tableViewHandler.groupResults else {
-            return UIView(frame: .zero)
-        }
-
-        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
-        let nibName = String(describing: PageListSectionHeaderView.self)
-        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView
-
-        if let sectionInfo = sectionInfo, let headerView = headerView {
-            headerView.setTitle(PostSearchHeader.title(forStatus: sectionInfo.name))
-        }
-
-        return headerView
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -497,7 +395,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let filterType = filterSettings.currentPostListFilter().filterType
 
         if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
-            cell.indentationWidth = _tableViewHandler.isSearching ? 0.0 : Constant.Size.pageListTableViewCellLeading
+            cell.indentationWidth = Constant.Size.pageListTableViewCellLeading
             cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
@@ -855,7 +753,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let newIndex = _tableViewHandler.index(for: selectedPage)
         let pages = _tableViewHandler.removePage(from: newIndex)
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: { [weak self] in
-            self?._tableViewHandler.isSearching = false
             self?._tableViewHandler.refreshTableView(at: index)
         }, onSuccess: { [weak self] in
             self?.handleSetParentSuccess()
@@ -1006,30 +903,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    // MARK: - UISearchControllerDelegate
-
-    override func updateSearchResults(for searchController: UISearchController) {
-        super.updateSearchResults(for: searchController)
-    }
-
-    override func willDismissSearchController(_ searchController: UISearchController) {
-        _tableViewHandler.isSearching = false
-        _tableViewHandler.refreshTableView()
-        super.willDismissSearchController(searchController)
-    }
-
-    func didPresentSearchController(_ searchController: UISearchController) {
-        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
-    }
-
-    func didDismissSearchController(_ searchController: UISearchController) {
-        self.hideNoResultsView()
-    }
-
-    enum Animations {
-        static let searchDismissDuration: TimeInterval = 0.3
-    }
-
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
@@ -1056,20 +929,12 @@ private extension PageListViewController {
             return
         }
 
-        if searchController.isActive {
-            if currentSearchTerm()?.count == 0 {
-                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPages)
-            } else {
-                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
-            }
-        } else {
-            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-            noResultsViewController.configure(title: noResultsTitle(),
-                                              buttonTitle: noResultsButtonTitle(),
-                                              image: noResultsImageName,
-                                              accessoryView: accessoryView)
-        }
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          image: noResultsImageName,
+                                          accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
@@ -1077,7 +942,7 @@ private extension PageListViewController {
     }
 
     func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
+        if syncHelper.isSyncing == true {
             return nil
         }
 
@@ -1089,11 +954,6 @@ private extension PageListViewController {
         if syncHelper.isSyncing == true {
             return NoResultsText.fetchingTitle
         }
-
-        if isSearching() {
-            return NoResultsText.noMatchesTitle
-        }
-
         return noResultsFilteredTitle()
     }
 
@@ -1116,12 +976,10 @@ private extension PageListViewController {
     struct NoResultsText {
         static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
-        static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
         static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-        static let searchPages = NSLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
         static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
     }

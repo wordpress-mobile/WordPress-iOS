@@ -8,7 +8,6 @@ import WordPressFlux
 class AbstractPostListViewController: UIViewController,
                                       WPContentSyncHelperDelegate,
                                       UISearchControllerDelegate,
-                                      UISearchResultsUpdating,
                                       WPTableViewHandlerDelegate,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
@@ -78,11 +77,6 @@ class AbstractPostListViewController: UIViewController,
         return syncHelper
     }()
 
-    @objc lazy var searchHelper: WPContentSearchHelper = {
-        let searchHelper = WPContentSearchHelper()
-        return searchHelper
-    }()
-
     @objc lazy var noResultsViewController: NoResultsViewController = {
         let noResultsViewController = NoResultsViewController.controller()
         noResultsViewController.delegate = self
@@ -99,12 +93,11 @@ class AbstractPostListViewController: UIViewController,
 
     let filterTabBar = FilterTabBar()
 
-    private let searchResultsViewController = PostSearchViewController()
+    private lazy var searchResultsViewController = PostSearchViewController(viewModel: PostSearchViewModel(blog: blog, postType: postTypeToSync()))
 
-    @objc var searchController: UISearchController!
+    private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
+
     @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
-
-    fileprivate var searchesSyncing = 0
 
     private var emptyResults: Bool {
         return tableViewHandler.resultsController?.fetchedObjects?.count == 0
@@ -135,7 +128,6 @@ class AbstractPostListViewController: UIViewController,
         configureWindowlessCell()
         configureNavbar()
         configureSearchController()
-        configureSearchHelper()
         configureAuthorFilter()
         configureGhostableTableView()
         configureNavigationBarAppearance()
@@ -174,10 +166,6 @@ class AbstractPostListViewController: UIViewController,
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if searchController?.isActive == true {
-            searchController?.isActive = false
-        }
-
         dismissAllNetworkErrorNotices()
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -197,6 +185,7 @@ class AbstractPostListViewController: UIViewController,
         tableViewController.didMove(toParent: self)
 
         tableView.backgroundColor = .white
+        tableView.sectionHeaderTopPadding = 0
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
@@ -268,9 +257,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        searchController = UISearchController(searchResultsController: searchResultsViewController)
         searchController.delegate = self
-        searchController.searchResultsUpdater = self
+        searchController.searchResultsUpdater = searchResultsViewController
         searchController.showsSearchResultsController = true
 
         definesPresentationContext = true
@@ -305,16 +293,6 @@ class AbstractPostListViewController: UIViewController,
 
         ghostableTableView.backgroundColor = .white
         ghostableTableView.isScrollEnabled = false
-    }
-
-    @objc func configureSearchHelper() {
-        searchHelper.resetConfiguration()
-        searchHelper.configureImmediateSearch({ [weak self] in
-            self?.updateForLocalPostsMatchingSearchText()
-        })
-        searchHelper.configureDeferredSearch({ [weak self] in
-            self?.syncPostsMatchingSearchText()
-        })
     }
 
     @objc func propertiesForAnalytics() -> [String: AnyObject] {
@@ -412,10 +390,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        // Set the predicate based on filtering by the oldestPostDate and not searching.
         let filter = filterSettings.currentPostListFilter()
 
-        if let oldestPostDate = filter.oldestPostDate, !isSearching() {
+        if let oldestPostDate = filter.oldestPostDate {
 
             // Filter posts by any posts newer than the filter's oldestPostDate.
             // Also include any posts that don't have a date set, such as local posts created without a connection.
@@ -424,12 +401,12 @@ class AbstractPostListViewController: UIViewController,
             predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, datePredicate])
         }
 
-        // Set up the fetchLimit based on filtering or searching
-        if filter.oldestPostDate != nil || isSearching() == true {
-            // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
+        // Set up the fetchLimit based on filtering
+        if filter.oldestPostDate != nil {
+            // If filtering by the oldestPostDate, the fetchLimit should be disabled.
             fetchRequest.fetchLimit = 0
         } else {
-            // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
+            // If not filtering by the oldestPostDate, set the fetchLimit to the default number of posts.
             fetchRequest.fetchLimit = fetchLimit
         }
 
@@ -489,7 +466,7 @@ class AbstractPostListViewController: UIViewController,
         // See estimatedHeightForRowAtIndexPath
         estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
 
-        guard isViewOnScreen() && !isSearching() else {
+        guard isViewOnScreen() else {
             return
         }
 
@@ -612,12 +589,6 @@ class AbstractPostListViewController: UIViewController,
                 }
 
                 success?(filter.hasMore)
-
-                if strongSelf.isSearching() {
-                    // If we're currently searching, go ahead and request a sync with the searchText since
-                    // an action was triggered to syncContent.
-                    strongSelf.syncPostsMatchingSearchText()
-                }
             }, failure: {[weak self] (error: Error?) -> () in
 
                 guard let strongSelf = self,
@@ -769,82 +740,6 @@ class AbstractPostListViewController: UIViewController,
 
         atLeastSyncedOnce = true
         stopGhost()
-    }
-
-    // MARK: - Searching
-
-    @objc func isSearching() -> Bool {
-        return searchController.isActive && !(currentSearchTerm() ?? "").isEmpty
-    }
-
-    @objc func currentSearchTerm() -> String? {
-        return searchController.searchBar.text
-    }
-
-    @objc func updateForLocalPostsMatchingSearchText() {
-        updateAndPerformFetchRequest()
-        tableView.reloadData()
-
-        let filter = filterSettings.currentPostListFilter()
-        if filter.hasMore && emptyResults {
-            // If the filter detects there are more posts, but there are none that match the current search
-            // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
-            hideNoResultsView()
-            postListFooterView.isHidden = true
-        } else {
-            refreshResults()
-        }
-    }
-
-    @objc func isSyncingPostsWithSearch() -> Bool {
-        return searchesSyncing > 0
-    }
-
-    @objc func postsSyncWithSearchDidBegin() {
-        searchesSyncing += 1
-        postListFooterView.showSpinner(true)
-        postListFooterView.isHidden = false
-    }
-
-    @objc func postsSyncWithSearchEnded() {
-        searchesSyncing -= 1
-        assert(searchesSyncing >= 0, "Expected Int searchesSyncing to be 0 or greater while searching.")
-        if !isSyncingPostsWithSearch() {
-            postListFooterView.showSpinner(false)
-            refreshResults()
-        }
-    }
-
-    @objc func syncPostsMatchingSearchText() {
-        guard let searchText = searchController.searchBar.text, !searchText.isEmpty() else {
-            return
-        }
-        let filter = filterSettings.currentPostListFilter()
-        guard filter.hasMore else {
-            return
-        }
-
-        postsSyncWithSearchDidBegin()
-
-        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
-        let postService = PostService(managedObjectContext: managedObjectContext())
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses.strings
-        options.authorID = author
-        options.number = 20
-        options.purgesLocalSync = false
-        options.search = searchText
-
-        postService.syncPosts(
-            ofType: postTypeToSync(),
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error) in
-                self?.postsSyncWithSearchEnded()
-            }
-        )
     }
 
     // MARK: - Actions
@@ -1086,19 +981,10 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    // MARK: - Search Controller Delegate Methods
+    // MARK: - UISearchControllerDelegate
 
     func willPresentSearchController(_ searchController: UISearchController) {
         WPAnalytics.track(.postListSearchOpened, withProperties: propertiesForAnalytics())
-    }
-
-    func willDismissSearchController(_ searchController: UISearchController) {
-        searchController.searchBar.text = nil
-        searchHelper.searchCanceled()
-    }
-
-    func updateSearchResults(for searchController: UISearchController) {
-        searchHelper.searchUpdated(searchController.searchBar.text)
     }
 
     // MARK: - NetworkAwareUI
