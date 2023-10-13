@@ -36,6 +36,6 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         .configurationDisplayName(config.displayName)
         .description(config.description)
         .supportedFamilies(config.supportFamilies)
-        .contentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
+        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
     }
 }

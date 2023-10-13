@@ -33,7 +33,7 @@ struct HomeWidgetAllTime: Widget {
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)
         .description(LocalizableStrings.allTimePreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
-        .contentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
-        .containerBackgroundRemovable(false) /// Temporarily disable iOS 17 background removing functionality
+        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
+        .iOS17ContainerBackgroundRemovable(false) /// Temporarily disable iOS 17 background removing functionality
     }
 }
