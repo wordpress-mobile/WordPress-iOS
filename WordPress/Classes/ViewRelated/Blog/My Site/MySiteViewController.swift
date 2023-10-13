@@ -894,7 +894,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
                 blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
             }
         } else {
-            blogDetailsViewController?.show(viewController, sender: nil)
+            switch currentSection {
+            case .dashboard:
+                blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
+            case .siteMenu:
+                blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
+            }
         }
     }
 }
