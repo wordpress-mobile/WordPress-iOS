@@ -535,7 +535,7 @@ private extension ReaderDetailToolbar {
 
         static let savedButtonHint = NSLocalizedString(
             "reader.detail.toolbar.saved.button.a11y.hint",
-            value: "Unsave this post.",
+            value: "Unsaves this post.",
             comment: "Accessibility hint for the 'Save Post' button when a post is already saved."
         )
 
