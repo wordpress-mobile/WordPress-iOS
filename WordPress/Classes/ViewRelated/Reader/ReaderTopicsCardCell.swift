@@ -61,6 +61,8 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         contentView.backgroundColor = .clear
     }
 
+
+    /// Configures the cell and the collection view for the new design.
     private func configureForNewDesign() {
         // set up custom collection view flow layout
         layout.interitemSpacing = 8.0
@@ -73,6 +75,9 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
         // corner radius
         containerView.layer.cornerRadius = 10.0
+
+        backgroundColor = .systemBackground
+        contentView.backgroundColor = .systemBackground
 
         // add manual separator view
         let separatorView = UIView()
