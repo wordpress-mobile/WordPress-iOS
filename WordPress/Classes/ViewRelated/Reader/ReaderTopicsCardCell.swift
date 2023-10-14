@@ -8,17 +8,26 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
+    // This constraint is inactive by default.
+    // When the `readerImprovements` flag is removed, this should be active by default from the XIB.
+    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
+
+    private let layout = ReaderTagsCollectionViewLayout()
+
     private(set) var data: [ReaderAbstractTopic] = [] {
         didSet {
             guard oldValue != data else {
                 return
             }
-
-            collectionView.reloadData()
+            refreshData()
         }
     }
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
+
+    static var defaultNibName: String {
+        FeatureFlag.readerImprovements.enabled ? "ReaderTopicsNewCardCell" : String(describing: self)
+    }
 
     func configure(_ data: [ReaderAbstractTopic]) {
         self.data = data
@@ -36,29 +45,78 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ReaderInterestsCollectionViewCell.defaultNib,
                                 forCellWithReuseIdentifier: ReaderInterestsCollectionViewCell.defaultReuseID)
+        collectionView.register(ReaderTopicCardCollectionViewCell.self,
+                                forCellWithReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier())
+
+        if FeatureFlag.readerImprovements.enabled {
+            configureForNewDesign()
+        }
     }
 
     private func applyStyles() {
-        headerLabel.font = WPStyleGuide.serifFontForTextStyle(.title2)
+        let usesNewDesign = FeatureFlag.readerImprovements.enabled
+        headerLabel.font = usesNewDesign ? WPStyleGuide.fontForTextStyle(.footnote) : WPStyleGuide.serifFontForTextStyle(.title2)
 
-        containerView.backgroundColor = .listForeground
-        headerLabel.backgroundColor = .listForeground
-        collectionView.backgroundColor = .listForeground
+        containerView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
+        headerLabel.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
+        collectionView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
 
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        backgroundColor = usesNewDesign ? .systemBackground : .clear
+        contentView.backgroundColor = usesNewDesign ? .systemBackground : .clear
+    }
+
+    private func configureForNewDesign() {
+        // activate height constraint to react to multi-line content
+        collectionViewHeightConstraint.isActive = true
+
+        // set up custom collection view flow layout
+        layout.interitemSpacing = 8.0
+        layout.lineSpacing = 8.0
+        layout.delegate = self
+        collectionView.collectionViewLayout = layout
+
+        // header title color
+        headerLabel.textColor = .secondaryLabel
+
+        // corner radius
+        containerView.layer.cornerRadius = 10.0
+    }
+
+    private func refreshData() {
+        collectionView.reloadData()
+        updateHeightConstraints()
+    }
+
+    private func updateHeightConstraints() {
+        DispatchQueue.main.async {
+            self.collectionViewHeightConstraint.constant = max(self.layout.collectionViewContentSize.height, Constants.collectionViewMinHeight)
+        }
     }
 
     private struct Constants {
         static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might like")
 
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.defaultReuseID
+
+        static let collectionViewMinHeight: CGFloat = 40.0
     }
 }
 
 // MARK: - Collection View: Datasource & Delegate
 extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        if FeatureFlag.readerImprovements.enabled {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier(), for: indexPath) as? ReaderTopicCardCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+
+            let title = data[indexPath.row].title
+            cell.titleLabel.text = title
+
+            return cell
+        }
+
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
                                                             for: indexPath) as? ReaderInterestsCollectionViewCell else {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
@@ -84,7 +142,7 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            collectionView.reloadData()
+            refreshData()
         }
     }
 
@@ -104,6 +162,7 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
 }
 
 // MARK: - Collection View: Flow Layout Delegate
+
 extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return sizeForCell(title: data[indexPath.row].title)
@@ -118,12 +177,12 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
         let title: NSString = title as NSString
 
         var size = title.size(withAttributes: attributes)
-        size.height += (CellConstants.marginY * 2)
+        size.height += (CellConstants.marginY * 2) + 2
 
         // Prevent 1 token from being too long
         let maxWidth = collectionView.bounds.width * CellConstants.maxWidthMultiplier
         let width = min(size.width, maxWidth)
-        size.width = width + (CellConstants.marginX * 2)
+        size.width = width + (CellConstants.marginX * 2) + 2
 
         return size
     }
@@ -138,4 +197,128 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
 private extension String {
     // MARK: Accessibility Identifiers Constants
     static let topicsCardCellIdentifier = "topics-card-cell-button"
+}
+
+// MARK: - New Collection View Cell
+
+class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
+
+    lazy var titleLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.adjustsFontForContentSizeCategory = true
+        $0.font = WPStyleGuide.fontForTextStyle(.footnote)
+        $0.textColor = .label
+        $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        return $0
+    }(UILabel())
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        contentView.addSubview(titleLabel)
+        contentView.pinSubviewToAllEdges(titleLabel, insets: .init(top: 8.0, left: 16.0, bottom: 8.0, right: 16.0))
+
+        contentView.backgroundColor = .clear
+        contentView.layer.cornerRadius = 5.0
+        contentView.layer.borderWidth = 1.0
+        contentView.layer.borderColor = UIColor.separator.cgColor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - New Collection View Layout
+
+class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
+
+    // MARK: Properties
+
+    var interitemSpacing: CGFloat = .zero
+
+    var lineSpacing: CGFloat = .zero
+
+    weak var delegate: UICollectionViewDelegateFlowLayout?
+
+    private var itemAttributes = [UICollectionViewLayoutAttributes]()
+
+    private var contentHeight: CGFloat = .zero
+
+    private var maxContentWidth: CGFloat {
+        guard let collectionView else {
+            return .zero
+        }
+        return collectionView.bounds.width - (collectionView.contentInset.left + collectionView.contentInset.right)
+    }
+
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return itemAttributes[safe: indexPath.row]
+    }
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        itemAttributes.filter { $0.frame.intersects(rect) }
+    }
+
+    override var collectionViewContentSize: CGSize {
+        CGSize(width: maxContentWidth, height: contentHeight)
+    }
+
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        guard let collectionView else {
+            return false
+        }
+
+        return collectionView.bounds.size != newBounds.size
+    }
+
+    override func invalidateLayout() {
+        contentHeight = 0.0
+        itemAttributes.removeAll()
+        super.invalidateLayout()
+    }
+
+    override func prepare() {
+        super.prepare()
+
+        // reset any stored attributes since we're doing a recalculation.
+        itemAttributes.removeAll()
+
+        guard let collectionView else {
+            return
+        }
+
+        let numberOfItems = collectionView.numberOfItems(inSection: .zero)
+        let insets = collectionView.contentInset
+
+        var rowCount: CGFloat = 0
+        var currentLineWidth: CGFloat = .zero
+        var size: CGSize = .zero
+
+        for row in 0..<numberOfItems {
+            let indexPath = IndexPath(row: row, section: .zero)
+            size = delegate?.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? .zero
+            var frame = CGRect(origin: .zero, size: size)
+
+            // if it exceeds maximum width, then add a new line.
+            if (currentLineWidth + size.width) > maxContentWidth {
+                rowCount += 1
+                currentLineWidth = 0.0
+            }
+
+            frame.origin.x = insets.left + currentLineWidth
+            frame.origin.y = insets.top + (rowCount * (size.height + lineSpacing))
+
+            let attribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attribute.frame = frame
+            itemAttributes.append(attribute)
+
+            // update current width buffer for the next item.
+            currentLineWidth += (size.width + interitemSpacing)
+        }
+
+        // update total content height.
+        contentHeight = insets.top + ((rowCount + 1) * size.height) + (rowCount * lineSpacing) + insets.bottom
+    }
+
 }

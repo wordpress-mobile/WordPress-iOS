@@ -5460,6 +5460,8 @@
 		FE003F5F282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
 		FE003F60282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
 		FE003F62282E73E6006F8D1D /* blogging-prompts-fetch-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */; };
+		FE015BB12ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */; };
+		FE015BB22ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */; };
 		FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE02F95E269DC14A00752A44 /* Comment+Interface.swift */; };
 		FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
@@ -9312,6 +9314,7 @@
 		FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BloggingPrompt+CoreDataClass.swift"; sourceTree = "<group>"; };
 		FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPrompt+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-fetch-success.json"; sourceTree = "<group>"; };
+		FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsNewCardCell.xib; sourceTree = "<group>"; };
 		FE02F95E269DC14A00752A44 /* Comment+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Interface.swift"; sourceTree = "<group>"; };
 		FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenter.swift; sourceTree = "<group>"; };
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
@@ -12267,6 +12270,7 @@
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */,
+				FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */,
 				F4D36AD4298498E600E6B84C /* ReaderPostBlockingController.swift */,
 			);
 			name = Controllers;
@@ -19114,6 +19118,7 @@
 				FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
+				FE015BB12ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */,
 				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
@@ -19747,6 +19752,7 @@
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
 				C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */,
+				FE015BB22ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */,
 				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
