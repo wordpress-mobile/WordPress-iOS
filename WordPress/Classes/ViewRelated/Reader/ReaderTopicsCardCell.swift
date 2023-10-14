@@ -177,12 +177,18 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
         let title: NSString = title as NSString
 
         var size = title.size(withAttributes: attributes)
-        size.height += (CellConstants.marginY * 2) + 2
+        size.height += (CellConstants.marginY * 2)
+        if FeatureFlag.readerImprovements.enabled {
+            size.height += 2 // to account for the top & bottom border width
+        }
 
         // Prevent 1 token from being too long
         let maxWidth = collectionView.bounds.width * CellConstants.maxWidthMultiplier
         let width = min(size.width, maxWidth)
-        size.width = width + (CellConstants.marginX * 2) + 2
+        size.width = width + (CellConstants.marginX * 2)
+        if FeatureFlag.readerImprovements.enabled {
+            size.width += 2 // to account for the leading & trailing border width
+        }
 
         return size
     }
