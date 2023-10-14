@@ -144,7 +144,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
             // hide the author name if it exactly matches the site name.
             // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
-            self.showsAuthorName = self.authorName != self.siteName
+            self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
             self.postTitle = post.titleForDisplay() ?? nil
             self.tags = post.tagsForDisplay() ?? []
@@ -258,6 +258,9 @@ struct ReaderDetailNewHeaderView: View {
                 authorAndTimestampView
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits([.isButton])
+        .accessibilityHint(Constants.authorStackAccessibilityHint)
         .onTapGesture {
             viewModel.didTapAuthorSection()
         }
@@ -316,7 +319,7 @@ struct ReaderDetailNewHeaderView: View {
 
     var authorAndTimestampView: some View {
         HStack(spacing: 0) {
-            if viewModel.showsAuthorName, !viewModel.authorName.isEmpty {
+            if viewModel.showsAuthorName {
                 Text(viewModel.authorName)
                     .font(.footnote)
                     .foregroundColor(Color(.text))
@@ -335,6 +338,8 @@ struct ReaderDetailNewHeaderView: View {
 
             Spacer()
         }
+        .accessibilityElement()
+        .accessibilityLabel(authorAccessibilityLabel)
     }
 
     var timestampText: Text {
@@ -351,8 +356,23 @@ fileprivate extension ReaderDetailNewHeaderView {
     struct Constants {
         static let siteIconLength: CGFloat = 40.0
         static let authorImageLength: CGFloat = 20.0
+
+        static let authorStackAccessibilityHint = NSLocalizedString(
+            "reader.detail.header.authorInfo.a11y.hint",
+            value: "Views posts from the site",
+            comment: "Accessibility hint to inform that the author section can be tapped to see posts from the site."
+        )
     }
 
+    var authorAccessibilityLabel: String {
+        var labels = [viewModel.relativePostTime]
+
+        if viewModel.showsAuthorName {
+            labels.insert(viewModel.authorName, at: .zero)
+        }
+
+        return labels.joined(separator: ", ")
+    }
 }
 
 // MARK: - TopicCollectionView UIViewRepresentable Wrapper
