@@ -11,7 +11,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     weak var delegate: ReaderRecommendedSitesCardCellDelegate?
 
     private var readerImprovements: Bool {
-        FeatureFlag.readerImprovements.enabled
+        RemoteFeatureFlag.readerImprovements.enabled()
     }
 
     override func awakeFromNib() {

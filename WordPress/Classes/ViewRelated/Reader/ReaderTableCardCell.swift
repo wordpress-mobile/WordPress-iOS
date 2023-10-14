@@ -26,7 +26,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
     private var readerImprovements: Bool {
-        FeatureFlag.readerImprovements.enabled
+        RemoteFeatureFlag.readerImprovements.enabled()
     }
 
     // Subclasses should configure these properties
@@ -144,7 +144,7 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return FeatureFlag.readerImprovements.enabled ? 16 : 0
+        return RemoteFeatureFlag.readerImprovements.enabled() ? 16 : 0
     }
 }
 

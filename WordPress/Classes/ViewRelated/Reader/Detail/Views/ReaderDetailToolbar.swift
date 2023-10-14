@@ -36,7 +36,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     private var likeButtonTitle: String {
         guard let post,
-              FeatureFlag.readerImprovements.enabled else {
+              RemoteFeatureFlag.readerImprovements.enabled() else {
             return likeLabel(count: likeCount)
         }
         return post.isLiked ? Constants.likedButtonTitle : Constants.likeButtonTitle
@@ -163,7 +163,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
 
         // TODO: Apply changes on the XIB directly once the `readerImprovements` flag is removed.
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             stackView.distribution = .fillEqually
             stackView.spacing = 16.0
             stackViewLeadingConstraint.constant = 16.0
@@ -226,7 +226,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         /// `imagePlacement` to `.top`.
         ///
         /// TODO: remove unused styles once the `readerImprovements` flag is removed.
-        guard FeatureFlag.readerImprovements.enabled else {
+        guard RemoteFeatureFlag.readerImprovements.enabled() else {
             return
         }
 
@@ -298,7 +298,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let animationDuration = 0.3
         let imageView = UIImageView(image: Constants.likedImage)
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
             /// To work around this, let's add the faux image to the image view instead, so it can be
             /// properly placed in front of the masking view.
@@ -317,7 +317,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             likeImageView.pinSubviewToAllEdges(mask)
             mask.translatesAutoresizingMaskIntoConstraints = false
 
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 likeImageView.bringSubviewToFront(imageView)
             } else {
                 likeButton.bringSubviewToFront(imageView)
@@ -426,8 +426,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let commentCount = post.commentCount()?.intValue ?? 0
-        let commentTitle = FeatureFlag.readerImprovements.enabled ? Constants.commentButtonTitle : commentLabel(count: commentCount)
-        let showTitle: Bool = FeatureFlag.readerImprovements.enabled || traitCollection.horizontalSizeClass != .compact
+        let commentTitle = RemoteFeatureFlag.readerImprovements.enabled() ? Constants.commentButtonTitle : commentLabel(count: commentCount)
+        let showTitle: Bool = RemoteFeatureFlag.readerImprovements.enabled() || traitCollection.horizontalSizeClass != .compact
 
         likeButton.setTitle(likeButtonTitle, for: .normal)
         likeButton.setTitle(likeButtonTitle, for: .highlighted)
@@ -496,7 +496,7 @@ private extension ReaderDetailToolbar {
         static let buttonImagePadding: CGFloat = 4.0
 
         static var likeImage: UIImage? {
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 // reduce gridicon images to 20x20 since they don't have intrinsic padding.
                 return UIImage(named: "icon-reader-like")?
                     .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)
@@ -506,7 +506,7 @@ private extension ReaderDetailToolbar {
         }
 
         static var likedImage: UIImage? {
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 // reduce gridicon images to 20x20 since they don't have intrinsic padding.
                 return UIImage(named: "icon-reader-liked")?
                     .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)

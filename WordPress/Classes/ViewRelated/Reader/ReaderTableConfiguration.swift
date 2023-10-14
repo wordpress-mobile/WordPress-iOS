@@ -63,7 +63,7 @@ final class ReaderTableConfiguration {
     }
 
     func estimatedRowHeight() -> CGFloat {
-        return FeatureFlag.readerImprovements.enabled ? rowHeight : oldRowHeight
+        return RemoteFeatureFlag.readerImprovements.enabled() ? rowHeight : oldRowHeight
     }
 
     func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {

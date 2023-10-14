@@ -110,7 +110,7 @@ final class ReaderShowMenuAction {
         }
 
         // Save post
-        if FeatureFlag.readerImprovements.enabled, let vc = vc as? ReaderStreamViewController {
+        if RemoteFeatureFlag.readerImprovements.enabled(), let vc = vc as? ReaderStreamViewController {
             let buttonTitle = post.isSavedForLater ? ReaderPostMenuButtonTitles.removeSavedPost: ReaderPostMenuButtonTitles.savePost
 
             alertController.addActionWithTitle(buttonTitle, style: .default) { _ in

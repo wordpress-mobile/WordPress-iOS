@@ -77,7 +77,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The actual header
     private lazy var header: UIView & ReaderDetailHeader = {
-        guard FeatureFlag.readerImprovements.enabled else {
+        guard RemoteFeatureFlag.readerImprovements.enabled() else {
             return ReaderDetailHeaderView.loadFromNib()
         }
         return ReaderDetailNewHeaderViewHost()
@@ -533,7 +533,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Configure the webview
     private func configureWebView() {
-        webView.usesSansSerifStyle = FeatureFlag.readerImprovements.enabled
+        webView.usesSansSerifStyle = RemoteFeatureFlag.readerImprovements.enabled()
         webView.navigationDelegate = self
     }
 
@@ -606,7 +606,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         headerContainerView.pinSubviewToAllEdges(header)
 
-        if !FeatureFlag.readerImprovements.enabled {
+        if !RemoteFeatureFlag.readerImprovements.enabled() {
             headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         }
     }
@@ -677,7 +677,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
         }
     }

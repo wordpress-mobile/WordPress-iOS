@@ -32,7 +32,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     private lazy var metrics: ReaderInterestsStyleGuide.Metrics = {
-        return FeatureFlag.readerImprovements.enabled ? .latest : .legacy
+        return RemoteFeatureFlag.readerImprovements.enabled() ? .latest : .legacy
     }()
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
@@ -182,7 +182,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         configure(cell: cell, with: title)
 
-        if layout.isExpanded || FeatureFlag.readerImprovements.enabled {
+        if layout.isExpanded || RemoteFeatureFlag.readerImprovements.enabled() {
             cell.label.backgroundColor = .clear
         }
 

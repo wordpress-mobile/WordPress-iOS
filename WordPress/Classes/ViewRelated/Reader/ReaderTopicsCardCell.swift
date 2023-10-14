@@ -22,7 +22,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
     static var defaultNibName: String {
-        FeatureFlag.readerImprovements.enabled ? "ReaderTopicsNewCardCell" : String(describing: self)
+        RemoteFeatureFlag.readerImprovements.enabled() ? "ReaderTopicsNewCardCell" : String(describing: self)
     }
 
     func configure(_ data: [ReaderAbstractTopic]) {
@@ -44,13 +44,13 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         collectionView.register(ReaderTopicCardCollectionViewCell.self,
                                 forCellWithReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier())
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             configureForNewDesign()
         }
     }
 
     private func applyStyles() {
-        let usesNewDesign = FeatureFlag.readerImprovements.enabled
+        let usesNewDesign = RemoteFeatureFlag.readerImprovements.enabled()
         headerLabel.font = usesNewDesign ? WPStyleGuide.fontForTextStyle(.footnote) : WPStyleGuide.serifFontForTextStyle(.title2)
 
         containerView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
@@ -110,7 +110,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier(), for: indexPath) as? ReaderTopicCardCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -182,7 +182,7 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
 
         var size = title.size(withAttributes: attributes)
         size.height += (CellConstants.marginY * 2)
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             size.height += 2 // to account for the top & bottom border width
         }
 
@@ -190,7 +190,7 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
         let maxWidth = collectionView.bounds.width * CellConstants.maxWidthMultiplier
         let width = min(size.width, maxWidth)
         size.width = width + (CellConstants.marginX * 2)
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             size.width += 2 // to account for the leading & trailing border width
         }
 
