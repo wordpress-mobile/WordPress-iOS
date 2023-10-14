@@ -58,7 +58,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         collectionView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
 
         backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = usesNewDesign ? .systemBackground : .listForeground
     }
 
 

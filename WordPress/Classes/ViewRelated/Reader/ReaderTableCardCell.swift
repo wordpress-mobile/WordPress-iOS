@@ -94,7 +94,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     private func applyStyles() {
-        containerView.backgroundColor = .listForeground
+        containerView.backgroundColor = readerImprovements ? .systemBackground : .listForeground
         tableView.backgroundColor = readerImprovements ? .secondarySystemBackground : .listForeground
         tableView.layer.cornerRadius = readerImprovements ? 10.0 : 0.0
         tableView.separatorColor = readerImprovements ? .clear : .placeholderElement
