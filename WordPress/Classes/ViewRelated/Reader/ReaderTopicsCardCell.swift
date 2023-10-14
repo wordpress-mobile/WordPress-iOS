@@ -8,10 +8,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    // This constraint is inactive by default.
-    // When the `readerImprovements` flag is removed, this should be active by default from the XIB.
-    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
-
     private let layout = ReaderTagsCollectionViewLayout()
 
     private(set) var data: [ReaderAbstractTopic] = [] {
@@ -66,9 +62,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     }
 
     private func configureForNewDesign() {
-        // activate height constraint to react to multi-line content
-        collectionViewHeightConstraint.isActive = true
-
         // set up custom collection view flow layout
         layout.interitemSpacing = 8.0
         layout.lineSpacing = 8.0
@@ -84,13 +77,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
     private func refreshData() {
         collectionView.reloadData()
-        updateHeightConstraints()
-    }
-
-    private func updateHeightConstraints() {
-        DispatchQueue.main.async {
-            self.collectionViewHeightConstraint.constant = max(self.layout.collectionViewContentSize.height, Constants.collectionViewMinHeight)
-        }
     }
 
     private struct Constants {
@@ -274,7 +260,6 @@ class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
         guard let collectionView else {
             return false
         }
-
         return collectionView.bounds.size != newBounds.size
     }
 

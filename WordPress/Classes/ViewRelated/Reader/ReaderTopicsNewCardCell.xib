@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="460" height="168"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QtT-ep-Eo1">
+                    <view contentMode="scaleToFill" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QtT-ep-Eo1">
                         <rect key="frame" x="16" y="16" width="428" height="136"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="BFW-y7-Haz">
@@ -29,11 +29,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3Vw-yu-3oz">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3Vw-yu-3oz" customClass="DynamicHeightCollectionView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="12" y="70" width="404" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="999" constant="40" id="82M-qK-m73"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="tDm-cO-RQC"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nXm-pz-kEj">
@@ -42,11 +41,6 @@
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="82M-qK-m73"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <outlet property="dataSource" destination="IA3-Z8-bh4" id="gfJ-fH-meo"/>
                                             <outlet property="delegate" destination="IA3-Z8-bh4" id="5gG-Vk-2De"/>
@@ -74,7 +68,6 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="collectionView" destination="3Vw-yu-3oz" id="uZa-5c-SdZ"/>
-                <outlet property="collectionViewHeightConstraint" destination="82M-qK-m73" id="Fa0-Vg-Ffw"/>
                 <outlet property="containerView" destination="QtT-ep-Eo1" id="hAl-Pg-yra"/>
                 <outlet property="headerLabel" destination="452-xW-WjN" id="fnu-nh-fsg"/>
             </connections>
