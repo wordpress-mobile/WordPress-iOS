@@ -351,8 +351,8 @@ private extension ReaderPostCardCell {
     func contentViewConstraints() -> [NSLayoutConstraint] {
         let margins = Constants.ContentStackView.margins
         return [
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margins),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margins),
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margins),
             contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor,
                                                      constant: Constants.ContentStackView.bottomAnchor)
