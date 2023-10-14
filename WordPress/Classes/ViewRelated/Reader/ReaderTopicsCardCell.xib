@@ -74,7 +74,6 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="collectionView" destination="dmG-5a-GZN" id="hwa-c5-qM7"/>
-                <outlet property="collectionViewHeightConstraint" destination="3sC-nr-kFk" id="bom-DS-xQv"/>
                 <outlet property="containerView" destination="AgX-9a-n5G" id="u5R-Xf-Xx2"/>
                 <outlet property="headerLabel" destination="KG8-hu-VFJ" id="gch-dc-hVr"/>
             </connections>
