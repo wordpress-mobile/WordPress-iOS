@@ -73,6 +73,19 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
         // corner radius
         containerView.layer.cornerRadius = 10.0
+
+        // add manual separator view
+        let separatorView = UIView()
+        separatorView.backgroundColor = .separator
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(separatorView)
+
+        NSLayoutConstraint.activate([
+            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
+            separatorView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
 
     private func refreshData() {
