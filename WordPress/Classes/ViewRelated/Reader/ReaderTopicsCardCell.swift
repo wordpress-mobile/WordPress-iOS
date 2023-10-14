@@ -82,8 +82,8 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
         NSLayoutConstraint.activate([
             separatorView.heightAnchor.constraint(equalToConstant: 0.5),
-            separatorView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
