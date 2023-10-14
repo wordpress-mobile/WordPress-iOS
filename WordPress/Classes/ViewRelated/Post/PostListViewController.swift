@@ -186,7 +186,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func configureNavigationButtons() {
-        navigationItem.rightBarButtonItems = [postsViewButtonItem]
+        // TODO: Remove
+        // navigationItem.rightBarButtonItems = [postsViewButtonItem]
     }
 
     @objc func togglePostsView() {

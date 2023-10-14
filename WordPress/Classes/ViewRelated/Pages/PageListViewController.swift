@@ -324,6 +324,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(filterPredicate)
         }
 
+        if filterSettings.shouldShowOnlyMyPosts() {
+            let myAuthorID = blogUserID() ?? 0
+
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
+        }
+
         if let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
             predicates.append(predicate)
         }

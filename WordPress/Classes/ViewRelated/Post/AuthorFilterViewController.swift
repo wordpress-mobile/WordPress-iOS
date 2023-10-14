@@ -155,7 +155,6 @@ private class AuthorFilterCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageView.backgroundColor = Appearance.placeholderBackgroundColor
         imageView.tintColor = Appearance.placeholderTintColor
         return imageView
     }()
@@ -231,7 +230,7 @@ private class AuthorFilterCell: UITableViewCell {
         didSet {
             switch filterType {
             case .everyone:
-                gravatarImageView.image = .gridicon(.multipleUsers, size: Metrics.multipleGravatarSize)
+                gravatarImageView.image = UIImage(named: "icon-people")
                 gravatarImageView.contentMode = .center
                 accessibilityHint = NSLocalizedString("Select to show everyone's posts.", comment: "Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site")
             case .user(let email):
@@ -258,7 +257,6 @@ private class AuthorFilterCell: UITableViewCell {
     private enum Appearance {
         static let textColor = UIColor.neutral(.shade70)
         static let placeholderTintColor = UIColor.neutral(.shade70)
-        static let placeholderBackgroundColor = UIColor.neutral(.shade10)
     }
 
     private enum Metrics {

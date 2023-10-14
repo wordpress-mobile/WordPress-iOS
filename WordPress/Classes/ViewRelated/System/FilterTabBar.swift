@@ -153,21 +153,6 @@ class FilterTabBar: UIControl {
         }
     }
 
-    /// Accessory view displayed on the leading end of the tab bar.
-    ///
-    var accessoryView: UIView? = nil {
-        didSet {
-            if let oldValue = oldValue {
-                oldValue.removeFromSuperview()
-            }
-
-            if let accessoryView = accessoryView {
-                accessoryView.setContentCompressionResistancePriority(.required, for: .horizontal)
-                stackView.insertArrangedSubview(accessoryView, at: 0)
-            }
-        }
-    }
-
     // MARK: - Tab Sizing
 
     private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
