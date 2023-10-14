@@ -56,7 +56,7 @@ extension WPStyleGuide {
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let font = UIFont.preferredFont(forTextStyle: .subheadline).semibold()
             return [
                 .font: font,
@@ -77,7 +77,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let font = UIFont.preferredFont(forTextStyle: .footnote).semibold()
             return [
                 .font: font,
@@ -96,7 +96,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let font = UIFont.preferredFont(forTextStyle: .footnote)
             return [
                 .font: font,
@@ -293,7 +293,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
-        guard !FeatureFlag.readerImprovements.enabled else {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
             applyNewReaderFollowButtonStyle(button)
             return
         }
@@ -354,7 +354,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
-        guard !FeatureFlag.readerImprovements.enabled else {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
             applyNewReaderFollowButtonStyle(button)
             return
         }
@@ -487,7 +487,7 @@ extension WPStyleGuide {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
-        if count == 0 && !FeatureFlag.readerImprovements.enabled {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return likeStr
         } else if count == 1 {
             return "\(count) \(likeStr)"
@@ -500,7 +500,7 @@ extension WPStyleGuide {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
-        if count == 0 && !FeatureFlag.readerImprovements.enabled {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return commentStr
         } else if count == 1 {
             return "\(count) \(commentStr)"
@@ -589,7 +589,7 @@ extension WPStyleGuide {
         public static let contentTextStyle: UIFont.TextStyle = .callout
 
         public static var actionBarIconSize: CGSize {
-            return FeatureFlag.readerImprovements.enabled ? CGSize(width: 20.0, height: 20.0) : Gridicon.defaultSize
+            return RemoteFeatureFlag.readerImprovements.enabled() ? CGSize(width: 20.0, height: 20.0) : Gridicon.defaultSize
         }
     }
 

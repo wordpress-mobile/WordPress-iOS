@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
-    case readerImprovements // pcdRpT-3Eb-p2
     case mediaModernization
 
     /// Returns a boolean indicating if the feature is enabled
@@ -42,8 +41,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .domainFocus:
             return true
-        case .readerImprovements:
-            return false
         case .mediaModernization:
             return false
         }
@@ -88,8 +85,6 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
-        case .readerImprovements:
-            return "Reader Improvements v1"
         case .mediaModernization:
             return "Media Modernization"
         }

@@ -32,7 +32,7 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpCardCell(_ tableView: UITableView) {
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
         } else {
             let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
@@ -64,7 +64,7 @@ final class ReaderTableConfiguration {
     }
 
     func estimatedRowHeight() -> CGFloat {
-        return FeatureFlag.readerImprovements.enabled ? rowHeight : oldRowHeight
+        return RemoteFeatureFlag.readerImprovements.enabled() ? rowHeight : oldRowHeight
     }
 
     func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {

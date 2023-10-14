@@ -86,7 +86,7 @@ private extension ReaderCrossPostCell {
     // MARK: - Appearance
 
     func applyStyles() {
-        let readerImprovements = FeatureFlag.readerImprovements.enabled
+        let readerImprovements = RemoteFeatureFlag.readerImprovements.enabled()
         backgroundColor = .clear
         contentView.backgroundColor = readerImprovements ? .systemBackground : .listBackground
         borderView?.backgroundColor = readerImprovements ? .systemBackground : .listForeground

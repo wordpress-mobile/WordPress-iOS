@@ -328,7 +328,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
     private func followButton(title: String) -> UIButton {
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let button = UIButton()
             button.isSelected = true
             WPStyleGuide.applyReaderFollowButtonStyle(button)
