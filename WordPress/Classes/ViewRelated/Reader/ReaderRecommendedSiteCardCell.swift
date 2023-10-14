@@ -5,11 +5,14 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     @IBOutlet weak var blogNameLabel: UILabel!
     @IBOutlet weak var hostNameLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
-    @IBOutlet weak var iPadFollowButton: UIButton!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var infoTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var descriptionLabel: UILabel?
+    @IBOutlet weak var headerStackView: UIStackView!
 
     weak var delegate: ReaderRecommendedSitesCardCellDelegate?
+
+    private var readerImprovements: Bool {
+        FeatureFlag.readerImprovements.enabled
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,48 +24,30 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         separatorInset = UIEdgeInsets.zero
 
         followButton.isSelected = topic.following
-        iPadFollowButton.isSelected = topic.following
-
         blogNameLabel.text = topic.title
         hostNameLabel.text = URL(string: topic.siteURL)?.host
-        descriptionLabel.text = topic.siteDescription
-        descriptionLabel.isHidden = topic.siteDescription.isEmpty
+        descriptionLabel?.text = topic.siteDescription
+        descriptionLabel?.isHidden = topic.siteDescription.isEmpty
 
         configureSiteIcon(topic)
         configureFollowButtonVisibility()
+
+        applyStyles()
     }
 
     @IBAction func didTapFollowButton(_ sender: Any) {
         // Optimistically change the value
         followButton.isSelected = !followButton.isSelected
-        iPadFollowButton.isSelected = !iPadFollowButton.isSelected
 
+        applyFollowButtonStyles()
         configureFollowButtonVisibility()
-
-        WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
 
         delegate?.handleFollowActionForCell(self)
     }
 
     private func configureFollowButtonVisibility() {
         let isLoggedIn = ReaderHelpers.isLoggedIn()
-
-        guard isLoggedIn else {
-            followButton.isHidden = true
-            iPadFollowButton.isHidden = true
-            return
-        }
-
-        let isCompact = traitCollection.horizontalSizeClass == .compact
-        let showLargeButton = !isCompact || FeatureFlag.readerImprovements.enabled
-
-        followButton.isHidden = showLargeButton
-        iPadFollowButton.isHidden = !showLargeButton
-
-        // Update the info trailing constraint to prevent clipping
-        let button = showLargeButton ? iPadFollowButton : followButton
-        let width = button?.frame.size.width ?? 0
-        infoTrailingConstraint.constant = width + Constants.buttonMargin
+        followButton.isHidden = !isLoggedIn
     }
 
     private func configureSiteIcon(_ topic: ReaderSiteTopic) {
@@ -83,7 +68,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         configureFollowButtonVisibility()
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
+            applyFollowButtonStyles()
         }
     }
 
@@ -98,17 +83,26 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         hostNameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         hostNameLabel.textColor = .textSubtle
 
-        // Description Label
-        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        descriptionLabel.textColor = .text
+        if readerImprovements {
+            descriptionLabel?.removeFromSuperview()
+        } else {
+            // Description Label
+            descriptionLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+            descriptionLabel?.textColor = .text
+        }
 
-        WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
-        WPStyleGuide.applyReaderIconFollowButtonStyle(followButton)
+        applyFollowButtonStyles()
+        headerStackView.spacing = readerImprovements ? 12.0 : 8.0
     }
 
-    private struct Constants {
-        static let buttonMargin: CGFloat = 8
+    private func applyFollowButtonStyles() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        } else {
+            WPStyleGuide.applyReaderIconFollowButtonStyle(followButton)
+        }
     }
+
 }
 
 protocol ReaderRecommendedSitesCardCellDelegate: AnyObject {
