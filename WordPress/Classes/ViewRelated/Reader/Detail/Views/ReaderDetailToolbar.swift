@@ -11,6 +11,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     @IBOutlet weak var commentButton: PostMetaButton!
     @IBOutlet weak var likeButton: PostMetaButton!
 
+    /// These are added to dynamically apply changes based on the `readerImprovements` feature flag.
+    /// Once the flag is removed, we should remove these and apply the changes directly on the XIB file.
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var stackViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackViewTrailingConstraint: NSLayoutConstraint!
+
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
 
@@ -27,6 +33,18 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     var shouldHideComments = false
 
     weak var delegate: ReaderDetailToolbarDelegate? = nil
+
+    private var likeButtonTitle: String {
+        guard let post,
+              FeatureFlag.readerImprovements.enabled else {
+            return likeLabel(count: likeCount)
+        }
+        return post.isLiked ? Constants.likedButtonTitle : Constants.likeButtonTitle
+    }
+
+    private var likeCount: Int {
+        post?.likeCount.intValue ?? 0
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -50,12 +68,26 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.post = post
         self.viewController = viewController
 
-        likeCountObserver = post.observe(\.likeCount, options: .new) { [weak self] updatedPost, _ in
+        likeCountObserver = post.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
             self?.configureLikeActionButton(true)
             self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
         }
 
-        commentCountObserver = post.observe(\.commentCount, options: .new) { [weak self] _, _ in
+        commentCountObserver = post.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
             self?.configureCommentActionButton()
         }
 
@@ -129,6 +161,14 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+
+        // TODO: Apply changes on the XIB directly once the `readerImprovements` flag is removed.
+        if FeatureFlag.readerImprovements.enabled {
+            stackView.distribution = .fillEqually
+            stackView.spacing = 16.0
+            stackViewLeadingConstraint.constant = 16.0
+            stackViewTrailingConstraint.constant = 16.0
+        }
     }
 
     // MARK: - Configuration
@@ -173,12 +213,49 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     private func configureActionButtonStyle(_ button: UIButton) {
         let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
-                                    dark: .textSubtle)
+                                    dark: .textQuaternary)
 
         WPStyleGuide.applyReaderActionButtonStyle(button,
                                                   titleColor: .textSubtle,
                                                   imageColor: .textSubtle,
                                                   disabledColor: disabledColor)
+
+        /// Configure the UIButton so it displays the button image on top of the title label.
+        /// Previously, this would be achieved through titleEdgeInsets and imageEdgeInsets, but these
+        /// will be deprecated soon. The new way to do this is through `UIButton.Configuration`, by setting
+        /// `imagePlacement` to `.top`.
+        ///
+        /// TODO: remove unused styles once the `readerImprovements` flag is removed.
+        guard FeatureFlag.readerImprovements.enabled else {
+            return
+        }
+
+        var configuration = UIButton.Configuration.plain()
+
+        // Vertically stack the button's image and title.
+        configuration.imagePlacement = .top
+        configuration.contentInsets = Constants.buttonContentInsets
+        configuration.imagePadding = Constants.buttonImagePadding
+
+        /// Override the button's title label font.
+        /// When the button's configuration exists, updating the font via `titleLabel` no longer works somehow.
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = WPStyleGuide.fontForTextStyle(.footnote)
+            return outgoing
+        }
+
+        button.configuration = configuration
+
+        /// Remove default background styles. The `.plain()` configuration adds a gray background to selected state.
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case .selected:
+                button.configuration?.background.backgroundColor = .clear
+            default:
+                return
+            }
+        }
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
@@ -186,16 +263,15 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        let likeCount = post.likeCount?.intValue ?? 0
-        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
-        // as by design spec, only display like counts
-        let title = likeLabel(count: likeCount)
-
         let selected = post.isLiked
-        let likeImage = UIImage(named: "icon-reader-like")
-        let likedImage = UIImage(named: "icon-reader-liked")
+        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
+        likeButton.accessibilityHint = selected ? Constants.likedButtonHint : Constants.likeButtonHint
 
-        configureActionButton(likeButton, title: title, image: likeImage, highlightedImage: likedImage, selected: selected)
+        configureActionButton(likeButton,
+                              title: likeButtonTitle,
+                              image: Constants.likeImage,
+                              highlightedImage: Constants.likedImage,
+                              selected: selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -215,21 +291,37 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func playLikeButtonAnimation() {
-        let likeImageView = likeButton.imageView!
-
-        let imageView = UIImageView(image: UIImage(named: "icon-reader-liked"))
-        likeButton.addSubview(imageView)
+        guard let likeImageView = likeButton.imageView else {
+            return
+        }
 
         let animationDuration = 0.3
+        let imageView = UIImageView(image: Constants.likedImage)
+
+        if FeatureFlag.readerImprovements.enabled {
+            /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
+            /// To work around this, let's add the faux image to the image view instead, so it can be
+            /// properly placed in front of the masking view.
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            likeImageView.addSubview(imageView)
+            likeImageView.pinSubviewAtCenter(imageView)
+        } else {
+            likeButton.addSubview(imageView)
+        }
 
         if likeButton.isSelected {
-            // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
+            // Prep a mask to hide the likeButton's image, since changes to visibility and alpha are ignored
             let mask = UIView(frame: frame)
             mask.backgroundColor = backgroundColor
             likeImageView.addSubview(mask)
             likeImageView.pinSubviewToAllEdges(mask)
             mask.translatesAutoresizingMaskIntoConstraints = false
-            likeButton.bringSubviewToFront(imageView)
+
+            if FeatureFlag.readerImprovements.enabled {
+                likeImageView.bringSubviewToFront(imageView)
+            } else {
+                likeButton.bringSubviewToFront(imageView)
+            }
 
             // Configure starting state
             imageView.alpha = 0.0
@@ -277,8 +369,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureCommentActionButton() {
-        WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
         commentButton.isEnabled = shouldShowCommentActionButton
+
+        commentButton.setImage(Constants.commentImage, for: .normal)
+        commentButton.setImage(Constants.commentSelectedImage, for: .selected)
+        commentButton.setImage(Constants.commentSelectedImage, for: .highlighted)
+        commentButton.setImage(Constants.commentSelectedImage, for: [.highlighted, .selected])
+        commentButton.setImage(Constants.commentImage, for: .disabled)
 
         configureActionButtonStyle(commentButton)
     }
@@ -305,7 +402,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
-        saveForLaterButton.isSelected = post?.isSavedForLater ?? false
+        let isSaved = post?.isSavedForLater ?? false
+        saveForLaterButton.isSelected = isSaved
+        prepareActionButtonsForVoiceOver()
 
         configureActionButtonStyle(saveForLaterButton)
     }
@@ -326,15 +425,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        let likeCount = post.likeCount()?.intValue ?? 0
         let commentCount = post.commentCount()?.intValue ?? 0
+        let commentTitle = FeatureFlag.readerImprovements.enabled ? Constants.commentButtonTitle : commentLabel(count: commentCount)
+        let showTitle: Bool = FeatureFlag.readerImprovements.enabled || traitCollection.horizontalSizeClass != .compact
 
-        let likeTitle = likeLabel(count: likeCount)
-        let commentTitle: String = commentLabel(count: commentCount)
-        let showTitle: Bool = traitCollection.horizontalSizeClass != .compact
-
-        likeButton.setTitle(likeTitle, for: .normal)
-        likeButton.setTitle(likeTitle, for: .highlighted)
+        likeButton.setTitle(likeButtonTitle, for: .normal)
+        likeButton.setTitle(likeButtonTitle, for: .highlighted)
 
         commentButton.setTitle(commentTitle, for: .normal)
         commentButton.setTitle(commentTitle, for: .highlighted)
@@ -379,14 +475,127 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     // MARK: - Voice Over
 
     private func prepareActionButtonsForVoiceOver() {
-        let isSavedForLater = post?.isSavedForLater ?? false
-        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
-        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+        let isSaved = post?.isSavedForLater ?? false
+        saveForLaterButton.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
+        saveForLaterButton.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
     }
 
     private func prepareReblogForVoiceOver() {
         reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogButton.accessibilityTraits = UIAccessibilityTraits.button
+    }
+}
+
+// MARK: - Private Helpers
+
+private extension ReaderDetailToolbar {
+
+    struct Constants {
+        static let buttonContentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 0, bottom: 0, trailing: 0)
+        static let buttonImagePadding: CGFloat = 4.0
+
+        static var likeImage: UIImage? {
+            if FeatureFlag.readerImprovements.enabled {
+                // reduce gridicon images to 20x20 since they don't have intrinsic padding.
+                return UIImage(named: "icon-reader-like")?
+                    .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)
+                    .withRenderingMode(.alwaysTemplate)
+            }
+            return UIImage(named: "icon-reader-like")
+        }
+
+        static var likedImage: UIImage? {
+            if FeatureFlag.readerImprovements.enabled {
+                // reduce gridicon images to 20x20 since they don't have intrinsic padding.
+                return UIImage(named: "icon-reader-liked")?
+                    .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)
+                    .withRenderingMode(.alwaysTemplate)
+            }
+            return UIImage(named: "icon-reader-liked")
+        }
+
+        static let commentImage = UIImage(named: "icon-reader-comment-outline")?
+            .imageFlippedForRightToLeftLayoutDirection()
+            .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .high)
+            .withRenderingMode(.alwaysTemplate)
+
+        static let commentSelectedImage = UIImage(named: "icon-reader-comment-outline-highlighted")?
+            .imageFlippedForRightToLeftLayoutDirection()
+            .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .high)
+            .withRenderingMode(.alwaysTemplate)
+
+        // MARK: Strings
+
+        static let savedButtonAccessibilityLabel = NSLocalizedString(
+            "reader.detail.toolbar.saved.button.a11y.label",
+            value: "Saved Post",
+            comment: "Accessibility label for the 'Save Post' button when a post has been saved."
+        )
+
+        static let savedButtonHint = NSLocalizedString(
+            "reader.detail.toolbar.saved.button.a11y.hint",
+            value: "Unsaves this post.",
+            comment: "Accessibility hint for the 'Save Post' button when a post is already saved."
+        )
+
+        static let saveButtonAccessibilityLabel = NSLocalizedString(
+            "reader.detail.toolbar.save.button.a11y.label",
+            value: "Save post",
+            comment: "Accessibility label for the 'Save Post' button."
+        )
+
+        static let saveButtonHint = NSLocalizedString(
+            "reader.detail.toolbar.save.button.a11y.hint",
+            value: "Saves this post for later.",
+            comment: "Accessibility hint for the 'Save Post' button."
+        )
+
+        static let likeButtonTitle = NSLocalizedString(
+            "reader.detail.toolbar.like.button",
+            value: "Like",
+            comment: """
+                Title for the Like button in the Reader Detail toolbar.
+                This is shown when the user has not liked the post yet.
+                Note: Since the display space is limited, a short or concise translation is preferred.
+                """
+        )
+
+        static let likeButtonHint = NSLocalizedString(
+            "reader.detail.toolbar.like.button.a11y.hint",
+            value: "Likes this post.",
+            comment: """
+                Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+                but tapping on this button will add a Like to the post.
+                """
+        )
+
+        static let likedButtonTitle = NSLocalizedString(
+            "reader.detail.toolbar.liked.button",
+            value: "Liked",
+            comment: """
+                Title for the Like button in the Reader Detail toolbar.
+                This is shown when the user has already liked the post.
+                Note: Since the display space is limited, a short or concise translation is preferred.
+                """
+        )
+
+        static let likedButtonHint = NSLocalizedString(
+            "reader.detail.toolbar.liked.button.a11y.hint",
+            value: "Unlikes this post.",
+            comment: """
+                Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+                but tapping on this button will remove their like from the post.
+                """
+        )
+
+        static let commentButtonTitle = NSLocalizedString(
+            "reader.detail.toolbar.comment.button",
+            value: "Comment",
+            comment: """
+                Title for the Comment button on the Reader Detail toolbar.
+                Note: Since the display space is limited, a short or concise translation is preferred.
+                """
+        )
     }
 }
