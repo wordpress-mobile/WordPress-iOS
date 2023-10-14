@@ -176,7 +176,7 @@ private extension ReaderPostCardCell {
     }
 
     func setupContentView() {
-        contentView.backgroundColor = .listForeground
+        contentView.backgroundColor = .systemBackground
     }
 
     func setupContentStackView() {

@@ -88,10 +88,10 @@ private extension ReaderCrossPostCell {
     func applyStyles() {
         let readerImprovements = FeatureFlag.readerImprovements.enabled
         backgroundColor = .clear
-        contentView.backgroundColor = .listBackground
-        borderView?.backgroundColor = .listForeground
-        label?.backgroundColor = .listForeground
-        titleLabel?.backgroundColor = .listForeground
+        contentView.backgroundColor = readerImprovements ? .systemBackground : .listBackground
+        borderView?.backgroundColor = readerImprovements ? .systemBackground : .listForeground
+        label?.backgroundColor = readerImprovements ? .systemBackground : .listForeground
+        titleLabel?.backgroundColor = readerImprovements ? .systemBackground : .listForeground
         topViewConstraint.constant = readerImprovements ? 0.0 : 8.0
         separatorViewHeightConstraint.constant = readerImprovements ? 0.5 : 0.0
         centeredImageViewConstraint.isActive = !readerImprovements
