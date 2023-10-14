@@ -25,9 +25,12 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
+    private var readerImprovements: Bool {
+        FeatureFlag.readerImprovements.enabled
+    }
+
     // Subclasses should configure these properties
     var headerTitle: String?
-    var headerContentInsets: UIEdgeInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,26 +56,36 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     func setupTableView() {
+        let separatorView = UIView()
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.backgroundColor = .separator
+
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToSafeArea(containerView, insets: Constants.containerInsets)
+        pinSubviewToSafeArea(containerView, insets: readerImprovements ? Constants.newContainerInsets : Constants.containerInsets)
         containerView.addSubview(tableView)
+        containerView.addSubview(separatorView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        let tableViewMargin = readerImprovements ? 16.0 : 0.0
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: tableViewMargin),
+            tableView.bottomAnchor.constraint(equalTo: separatorView.topAnchor, constant: -tableViewMargin),
+            separatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: readerImprovements ? 0.5 : 0.0),
         ])
 
         // Constraints for regular horizontal size class
         regularConstraints = [
-            tableView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
+            tableView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: tableViewMargin),
+            tableView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -tableViewMargin)
         ]
 
         // Constraints for compact horizontal size class
         compactConstraints = [
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: tableViewMargin),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -tableViewMargin)
         ]
 
         tableView.isScrollEnabled = false
@@ -82,8 +95,9 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     private func applyStyles() {
         containerView.backgroundColor = .listForeground
-        tableView.backgroundColor = .listForeground
-        tableView.separatorColor = .placeholderElement
+        tableView.backgroundColor = readerImprovements ? .secondarySystemBackground : .listForeground
+        tableView.layer.cornerRadius = readerImprovements ? 10.0 : 0.0
+        tableView.separatorColor = readerImprovements ? .clear : .placeholderElement
 
         backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -105,6 +119,9 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     private enum Constants {
         static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        static let newContainerInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let headerInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0)
+        static let newHeaderInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 0)
     }
 }
 
@@ -127,7 +144,7 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
+        return FeatureFlag.readerImprovements.enabled ? 16 : 0
     }
 }
 
@@ -141,8 +158,10 @@ extension ReaderTopicsTableCardCell: UITableViewDelegate {
         headerTitle.text = title
         header.addSubview(headerTitle)
         headerTitle.translatesAutoresizingMaskIntoConstraints = false
-        header.pinSubviewToAllEdges(headerTitle, insets: headerContentInsets)
-        headerTitle.font = WPStyleGuide.serifFontForTextStyle(.title2)
+        header.pinSubviewToAllEdges(headerTitle,
+                                    insets: readerImprovements ? Constants.newHeaderInsets : Constants.headerInsets)
+        headerTitle.font = readerImprovements ? WPStyleGuide.fontForTextStyle(.footnote) : WPStyleGuide.serifFontForTextStyle(.title2)
+        headerTitle.textColor = readerImprovements ? .secondaryLabel : .label
         return header
     }
 
