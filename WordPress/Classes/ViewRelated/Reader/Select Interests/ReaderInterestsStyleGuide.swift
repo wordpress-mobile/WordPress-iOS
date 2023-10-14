@@ -2,6 +2,38 @@ import Foundation
 import WordPressShared
 
 class ReaderInterestsStyleGuide {
+
+    struct Metrics {
+        let interestsLabelMargin: CGFloat
+        let cellCornerRadius: CGFloat
+        let cellSpacing: CGFloat
+        let cellHeight: CGFloat
+        let maxCellWidthMultiplier: CGFloat
+        let borderWidth: CGFloat
+        let borderColor: UIColor
+
+        /// The legacy metrics for the cell style before `readerImprovements` feature
+        static let legacy = Metrics(
+            interestsLabelMargin: 8.0,
+            cellCornerRadius: 4.0,
+            cellSpacing: 6.0,
+            cellHeight: 26.0,
+            maxCellWidthMultiplier: 0.8,
+            borderWidth: 0,
+            borderColor: .clear
+        )
+
+        static let latest = Metrics(
+            interestsLabelMargin: 16.0,
+            cellCornerRadius: 5.0,
+            cellSpacing: 8.0,
+            cellHeight: 34.0,
+            maxCellWidthMultiplier: 0.8,
+            borderWidth: 1.0,
+            borderColor: .separator
+        )
+    }
+
     // MARK: - View Styles
     public class func applyTitleLabelStyles(label: UILabel) {
         label.font = WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .medium)
@@ -32,7 +64,7 @@ class ReaderInterestsStyleGuide {
     public class func applyCompactCellLabelStyle(label: UILabel) {
         label.font = Self.compactCellLabelTitleFont
         label.textColor = .text
-        label.backgroundColor = .quaternaryBackground
+        label.backgroundColor = FeatureFlag.readerImprovements.enabled ? .clear : .quaternaryBackground
     }
 
     // MARK: - Next Button

@@ -70,6 +70,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
+    @IBOutlet weak var toolbarHeightConstraint: NSLayoutConstraint!
+
     /// The actual header
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
@@ -674,6 +676,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
+
+        if FeatureFlag.readerImprovements.enabled {
+            toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
+        }
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -803,6 +809,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         static let bottomMargin: CGFloat = 16
         static let toolbarHeight: CGFloat = 50
         static let delay: Double = 50
+        static let preferredToolbarHeight: CGFloat = 58.0
     }
 }
 

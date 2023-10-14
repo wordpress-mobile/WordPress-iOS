@@ -58,6 +58,13 @@ class AccountBuilder: NSObject {
     @objc
     func with(authToken: String) -> AccountBuilder {
         account.authToken = authToken
+
+        guard account.authToken != nil else {
+            // Setting the token has implicit dependencies on other WPAccount properties as well
+            // as the keychain.
+            fatalError("Setting the WPAccount authToken failed.")
+        }
+
         return self
     }
 

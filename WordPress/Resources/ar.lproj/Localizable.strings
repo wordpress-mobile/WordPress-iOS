@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-18 15:54:31+0000 */
+/* Translation-Revision-Date: 2023-10-04 13:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: ar */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "حظر الاقتباس";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "يتعذر عرض المكوّن نظرًا إلى تداخله بشكل عميق. اضغط هنا للحصول على مزيد من التفاصيل.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "المكوِّن الذي تم نسخه";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "قائمة المكوّنات";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام محرر الويب.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام متصفح الويب لديك.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "مدونة";
@@ -2282,6 +2291,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "17 ديسمبر، 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "مكوّن متداخل بشكل عميق";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6072,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "إزالة";
 
 /* Remove Person Alert Title
@@ -7283,6 +7294,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "التبديل إلى حجم الخط الافتراضي";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "الأنماط التي تمت مزامنتها";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "النظام الافتراضي";
 
@@ -7330,9 +7344,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "التقاط صورة";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "التقاط صورة أو تسجيل فيديو";
-
-/* No comment provided by engineer. */
 "Take a Video" = "تسجيل مقطع فيديو";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7357,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "أنقر هنا لإظهار المساعدة";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "اضغط هنا لعرض مزيد من التفاصيل.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "اضغط لإضافة بطاقات الإحصاءات الجديدة.";
@@ -8326,6 +8340,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "إلغاء متابعة المدونة.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "مكوّن الترقية";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "إظهار";
@@ -9850,14 +9867,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "إزالة الجولة الحالية";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "شارك مطالبتك في زاوية الويب لديك مع عنوان الموقع الذي يسهل العثور عليه ومشاركته ومتابعته.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "العثور على نطاق مخصص";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك المخصص بالعمل.";
@@ -10317,9 +10328,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "تتعذر مزامنة الوسائط";
 
-/* Media screen navigation title */
-"media.title" = "الوسائط";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "تتعذر إضافة العنصر إلى مكتبة الوسائط";
 
@@ -10332,6 +10340,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "تجاهُل";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "إضافة وسائط جديدة";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "إضافة";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "تحديد";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "إلغاء";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "حذف";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "هل تريد بالتأكيد حذف هذه العناصر نهائيًّا؟";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "هل تريد بالتأكيد حذف هذا العنصر نهائيًا؟";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "يتعذر حذف كل عناصر الوسائط.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "جارٍ الحذف...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "محذوف!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "حذف";
 
@@ -10340,6 +10378,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "إعادة محاولة الرفع";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "لا توجد وسائط مطابقة لبحثك";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "الوسائط";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "تم تحديد %d من الصور";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "تم تحديد صورة واحدة";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "تم تحديد %d من العناصر";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "تم تحديد عنصر واحد";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "تحديد العناصر";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
@@ -10573,12 +10632,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "إعداد مسودة للتدوينات";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "التعرُّف على التطبيق";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "الخطوات التالية";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "الصفحات";
 
 /* Card title for the pesonalization menu */
@@ -10715,6 +10768,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
 
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ من التدوينات • %2$@ من المتابعين";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "رجوع";
 
@@ -10822,6 +10878,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "الوسائط";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";

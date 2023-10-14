@@ -9,21 +9,6 @@ protocol GravatarUploader: AnyObject {
 }
 
 extension GravatarUploader {
-    func presentGravatarPicker(from sourceVC: UIViewController) {
-        WPAppAnalytics.track(.gravatarTapped)
-
-        let pickerViewController = GravatarPickerViewController()
-        pickerViewController.onCompletion = { [weak self] image in
-            if let updatedGravatarImage = image {
-                self?.uploadGravatarImage(updatedGravatarImage)
-            }
-
-            sourceVC.dismiss(animated: true)
-        }
-        pickerViewController.modalPresentationStyle = .formSheet
-        sourceVC.present(pickerViewController, animated: true)
-    }
-
     func uploadGravatarImage(_ newGravatar: UIImage) {
 
         let context = ContextManager.sharedInstance().mainContext

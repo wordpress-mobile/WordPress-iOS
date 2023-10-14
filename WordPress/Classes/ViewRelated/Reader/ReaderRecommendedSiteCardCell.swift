@@ -54,12 +54,13 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         }
 
         let isCompact = traitCollection.horizontalSizeClass == .compact
+        let showLargeButton = !isCompact || FeatureFlag.readerImprovements.enabled
 
-        followButton.isHidden = !isCompact
-        iPadFollowButton.isHidden = isCompact
+        followButton.isHidden = showLargeButton
+        iPadFollowButton.isHidden = !showLargeButton
 
         // Update the info trailing constraint to prevent clipping
-        let button = isCompact ? followButton : iPadFollowButton
+        let button = showLargeButton ? iPadFollowButton : followButton
         let width = button?.frame.size.width ?? 0
         infoTrailingConstraint.constant = width + Constants.buttonMargin
     }
