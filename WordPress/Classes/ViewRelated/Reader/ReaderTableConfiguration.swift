@@ -32,12 +32,11 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpCardCell(_ tableView: UITableView) {
-        if FeatureFlag.readerImprovements.enabled {
-            tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-        } else {
-            let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-            tableView.register(nib, forCellReuseIdentifier: oldReaderCardCellReuseIdentifier)
-        }
+        tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
+
+        // TODO: Delete when we remove the Reader Improvements v1 (`readerImprovements`) feature flag
+        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: oldReaderCardCellReuseIdentifier)
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
