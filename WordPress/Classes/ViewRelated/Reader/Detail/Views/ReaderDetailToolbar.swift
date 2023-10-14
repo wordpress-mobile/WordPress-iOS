@@ -535,7 +535,7 @@ private extension ReaderDetailToolbar {
 
         static let savedButtonHint = NSLocalizedString(
             "reader.detail.toolbar.saved.button.a11y.hint",
-            value: "Remove this post from my saved posts.",
+            value: "Unsave this post.",
             comment: "Accessibility hint for the 'Save Post' button when a post is already saved."
         )
 
@@ -563,7 +563,7 @@ private extension ReaderDetailToolbar {
 
         static let likeButtonHint = NSLocalizedString(
             "reader.detail.toolbar.like.button.a11y.hint",
-            value: "Tap to like this post",
+            value: "Likes this post.",
             comment: """
                 Accessibility hint for the Like button state. The button shows that the user has not liked the post,
                 but tapping on this button will add a Like to the post.
@@ -582,7 +582,7 @@ private extension ReaderDetailToolbar {
 
         static let likedButtonHint = NSLocalizedString(
             "reader.detail.toolbar.liked.button.a11y.hint",
-            value: "Tap to unlike this post",
+            value: "Unlikes this post.",
             comment: """
                 Accessibility hint for the Liked button state. The button shows that the user has liked the post,
                 but tapping on this button will remove their like from the post.
