@@ -13,11 +13,14 @@ platform :ios do
   #
   desc 'Executes the initial steps needed during code freeze'
   lane :code_freeze do |options|
-    gutenberg_dep_check
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
 
+    # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    ensure_git_status_clean
+    # Make sure that Gutenberg is configured as expected for a successful code freeze
+    gutenberg_dep_check
 
     # The `next_release_version` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
