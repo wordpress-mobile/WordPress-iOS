@@ -140,7 +140,7 @@ platform :ios do
       ios_build_preflight
     end
 
-    UI.important("Building version #{current_release_version} (#{current_build_code}) and uploading to TestFlight")
+    UI.important("Building version #{release_version_current} (#{build_code_current}) and uploading to TestFlight")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
@@ -171,7 +171,7 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? current_build_code : current_app_version
+    version = options[:beta_release] ? build_code_current : current_app_version
     create_release(
       repository: GITHUB_REPO,
       version:,
@@ -227,7 +227,7 @@ platform :ios do
       ios_build_preflight
     end
 
-    UI.important("Building internal version #{current_internal_release_version} (#{current_internal_build_code}) and uploading to AppCenter")
+    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to AppCenter")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed

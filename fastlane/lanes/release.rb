@@ -22,17 +22,17 @@ platform :ios do
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
-    # The `next_release_version` is used as the `new internal release version` value because the external and internal
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
     message = <<-MESSAGE
       Code Freeze:
-      • New release branch from #{DEFAULT_BRANCH}: release/#{next_release_version}
+      • New release branch from #{DEFAULT_BRANCH}: release/#{release_version_next}
 
-      • Current release version and build code: #{current_release_version} (#{current_build_code}).
-      • New release version and build code: #{next_release_version} (#{code_freeze_build_code}).
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
 
-      • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code})
-      • New internal release version and build code: #{next_release_version} (#{code_freeze_internal_build_code})
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
     MESSAGE
 
     UI.important(message)
@@ -41,30 +41,30 @@ platform :ios do
     # Create the release branch
     UI.message 'Creating release branch...'
     ensure_git_branch(branch: DEFAULT_BRANCH)
-    Fastlane::Helper::GitHelper.create_branch("release/#{next_release_version}", from: DEFAULT_BRANCH)
+    Fastlane::Helper::GitHelper.create_branch("release/#{release_version_next}", from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
 
     # Bump the release version and build code and write it to the `xcconfig` file
     UI.message 'Bumping release version and build code...'
     PUBLIC_VERSION_FILE.write(
-      version_short: next_release_version,
-      version_long: code_freeze_build_code
+      version_short: release_version_next,
+      version_long: build_code_code_freeze
     )
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
-    UI.success "Done! New Release Version: #{current_release_version}. New Build Code: #{current_build_code}"
+    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
 
     # Bump the internal release version and build code and write it to the `xcconfig` file
     UI.message 'Bumping internal release version and build code...'
     INTERNAL_VERSION_FILE.write(
       # The external and internal release versions are always the same. Because the external release version was
-      # already bumped, we want to just use the `current_release_version`
-      version_short: current_release_version,
-      version_long: code_freeze_internal_build_code
+      # already bumped, we want to just use the `release_version_current`
+      version_short: release_version_current,
+      version_long: build_code_code_freeze_internal
     )
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
-    UI.success "Done! New Internal Release Version: #{current_internal_release_version}. New Internal Build Code: #{current_internal_build_code}"
+    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    new_version = current_release_version
+    new_version = release_version_current
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
     extract_release_notes_for_version(
@@ -122,7 +122,7 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    UI.important("Completing code freeze for: #{current_release_version}")
+    UI.important("Completing code freeze for: #{release_version_current}")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
@@ -154,16 +154,16 @@ platform :ios do
 
     # Check versions
     message = <<-MESSAGE
-      • Current build code: #{current_build_code}
-      • New build code: #{next_build_code}
+      • Current build code: #{build_code_current}
+      • New build code: #{build_code_next}
 
-      • Current internal build code: #{current_internal_build_code}
-      • New internal build code: #{next_internal_build_code}
+      • Current internal build code: #{build_code_current_internal}
+      • New internal build code: #{build_code_next_internal}
     MESSAGE
 
     # Check branch
-    unless !options[:base_version].nil? || Fastlane::Helper::GitHelper.checkout_and_pull(release: current_release_version)
-      UI.user_error!("#{message}Release branch for version #{current_release_version} doesn't exist. Abort.")
+    unless !options[:base_version].nil? || Fastlane::Helper::GitHelper.checkout_and_pull(release: release_version_current)
+      UI.user_error!("#{message}Release branch for version #{release_version_current} doesn't exist. Abort.")
     end
 
     # Check user override
@@ -180,13 +180,13 @@ platform :ios do
     UI.message 'Bumping build code...'
     # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
     ensure_git_branch(branch: '^release/')
-    PUBLIC_VERSION_FILE.write(version_long: next_build_code)
-    UI.success "Done! New Build Code: #{current_build_code}"
+    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
+    UI.success "Done! New Build Code: #{build_code_current}"
 
     # Bump the internal build code
     UI.message 'Bumping internal build code...'
-    PUBLIC_VERSION_FILE.write(version_long: next_internal_build_code)
-    UI.success "Done! New Internal Build Code: #{current_internal_build_code}"
+    PUBLIC_VERSION_FILE.write(version_long: build_code_next_internal)
+    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
 
@@ -212,7 +212,7 @@ platform :ios do
   desc 'Creates a new hotfix branch for the given `version:x.y.z`. The branch will be cut from the `x.y` tag.'
   lane :new_hotfix_release do |options|
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
-    hotfix_build_code = hotfix_build_code(release_version: new_version)
+    build_code_hotfix = build_code_hotfix(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -222,11 +222,11 @@ platform :ios do
     message = <<-MESSAGE
       New Hotfix:
 
-      • Current release version and build code: #{current_release_version} (#{current_build_code}).
-      • New release version and build code: #{new_version} (#{hotfix_build_code}).
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{new_version} (#{build_code_hotfix}).
 
-      • Current internal release version and build code: #{current_internal_release_version} (#{current_internal_build_code}).
-      • New internal release version and build code: #{new_version} (#{internal_hotfix_build_code(release_version: new_version)}).
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
+      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal(release_version: new_version)}).
 
       Branching from tag: #{previous_version}
     MESSAGE
@@ -249,17 +249,17 @@ platform :ios do
     UI.message 'Bumping hotfix version and build code...'
     PUBLIC_VERSION_FILE.write(
       version_short: new_version,
-      version_long: hotfix_build_code
+      version_long: build_code_hotfix
     )
-    UI.success "Done! New Release Version: #{current_release_version}. New Build Code: #{current_build_code}"
+    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
 
     # Bump the internal hotfix version and build code and write it to the `xcconfig` file
     UI.message 'Bumping internal hotfix version and build code...'
     INTERNAL_VERSION_FILE.write(
       version_short: new_version,
-      version_long: internal_hotfix_build_code
+      version_long: build_code_hotfix_internal
     )
-    UI.success "Done! New Internal Release Version: #{current_internal_release_version}. New Internal Build Code: #{current_internal_build_code}"
+    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
   end
@@ -279,10 +279,10 @@ platform :ios do
     # Pull the latest hotfix release branch changes
     git_pull
 
-    UI.important("Triggering hotfix build for version: #{current_release_version}")
+    UI.important("Triggering hotfix build for version: #{release_version_current}")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
-    trigger_release_build(branch_to_build: "release/#{current_release_version}")
+    trigger_release_build(branch_to_build: "release/#{release_version_current}")
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -304,7 +304,7 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    UI.important("Finalizing release: #{current_release_version}")
+    UI.important("Finalizing release: #{release_version_current}")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     git_pull
@@ -316,17 +316,17 @@ platform :ios do
 
     # Bump the build code
     UI.message 'Bumping build code...'
-    PUBLIC_VERSION_FILE.write(version_long: next_build_code)
-    UI.success "Done! New Build Code: #{current_build_code}"
+    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
+    UI.success "Done! New Build Code: #{build_code_current}"
 
     # Bump the internal build code
     UI.message 'Bumping internal build code...'
-    INTERNAL_VERSION_FILE.write(version_long: next_internal_build_code)
+    INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
     Fastlane::Helper::Ios::GitHelper.commit_version_bump
-    UI.success "Done! New Internal Build Code: #{current_internal_build_code}"
+    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
     # Wrap up
-    version = current_release_version
+    version = release_version_current
     removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
@@ -457,5 +457,5 @@ def compute_release_branch_name(options:)
 end
 
 def release_branch_name
-  "release/#{current_release_version}"
+  "release/#{release_version_current}"
 end
