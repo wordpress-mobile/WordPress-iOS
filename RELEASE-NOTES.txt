@@ -1,6 +1,9 @@
 23.5
 -----
-
+* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
+* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
+* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
+* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
 
 23.4
 -----
@@ -11,6 +14,10 @@
 * [*] Block Editor: Limit inner blocks nesting depth to avoid call stack size exceeded crash [https://github.com/WordPress/gutenberg/pull/54382]
 * [*] Fix an issue with non-admins being able to see the plugin menu on the Atomic sites [https://github.com/wordpress-mobile/WordPress-iOS/pull/21657]
 * [**] Block Editor: Fallback to Twitter provider when embedding X URLs [https://github.com/WordPress/gutenberg/pull/54876]
+
+23.3.1
+-----
+* [*] Resolve the unresponsiveness of the compliance popover on iPhone SE devices when large fonts are enabled. [#21609]
 
 23.3
 -----

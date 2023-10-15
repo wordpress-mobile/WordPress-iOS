@@ -1,7 +1,7 @@
-Låsskärmswidgetar är nu tillgängliga för Jetpack, så att du kan kontrollera din webbplatsstatistik utan att låsa upp din telefon. Kom ihåg, god kraft medför god effektivitet. Eller något i den stilen.
+Vi har bekämpat buggar! (Det var mycket renare än det låter.)
 
-Vi har ändrat hur aviseringar visas när du infogar media i block från en URL. Det känns bra att det är ordnat.
-
-Det är också enklare att se skillnaden mellan platshållartext och faktiskt innehåll i blockbaserade teman.
-
-Slutligen har vi uppdaterat navigeringen för Min webbplats, så att du kan nå populära webbplatssektioner snabbare. (Gillar du inte dessa genvägar? Oroa dig inte, du kan anpassa dem efter eget tycke.)
+- Nu kan du bädda in URL:er från X utan att länken bryts. Ganska X-cellent, om du frågar oss.
+- På tal om länkar – när du använder en ogiltig media-URL kommer appen nu att visa ett felmeddelande istället för att krascha. Bättre, eller hur?
+- Bidragslämnare ser nu rätt popup-fönster när de skickar in inlägg för granskning. Skönt.
+- Vi har åtgärdat ett problem där användare som inte är administratörer kunde se tilläggsmenyn för sin webbplats. Ur sikte, ur sinne.
+- Appen kraschar inte längre i blockredigeraren när du placerar för många block inuti block... inuti block... ja, du fattar. Där fick du, Inception.

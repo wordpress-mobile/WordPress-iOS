@@ -36,6 +36,15 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
+public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    guard element.waitForExistence(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) does not exist after \(timeout) seconds.")
+        return
+    }
+
+    element.tap()
+}
+
 public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
@@ -50,6 +59,39 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
 
     if retries == maxRetries {
         XCTFail("Expected element (\(element)) was not hittable after \(maxRetries) tries.")
+    }
+}
+
+public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement, maxRetries: Int = 10) {
+    var retries = 0
+    while retries < maxRetries {
+        if !elementToAppear.exists {
+            element.tap()
+            break
+        }
+
+        usleep(500000) // a 0.5 second delay before retrying
+        retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(elementToAppear)) still does not exist after \(maxRetries) tries.")
+    }
+}
+
+public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
+    var retries = 0
+    while retries < maxRetries {
+        if element.exists {
+            usleep(500000)
+            break
+        }
+
+        retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(element)) was still hittable after \(maxRetries) tries.")
     }
 }
 

@@ -27,7 +27,7 @@ final class StoryMediaLoader {
 
         let coreDataStack = ContextManager.shared
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
-        let blogID = TaggedManagedObjectID(saved: post.blog)
+        let blogID = TaggedManagedObjectID(post.blog)
         files.enumerated().forEach { (idx, file) in
 
             do {

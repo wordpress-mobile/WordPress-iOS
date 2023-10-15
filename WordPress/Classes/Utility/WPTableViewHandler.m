@@ -151,7 +151,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         }
         newIndexPath = [self.resultsController indexPathForObject:obj];
 
-        if (i > visibleCellFrames.count) {
+        if (i >= visibleCellFrames.count) {
             break;
         }
 

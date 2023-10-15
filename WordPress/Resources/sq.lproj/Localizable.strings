@@ -6042,8 +6042,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Hiqe";
 
 /* Remove Person Alert Title
@@ -7307,9 +7306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Bëni një Foto";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Bëni Foto ose Video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Bëni një Video";
@@ -9805,14 +9801,8 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Formësim Së Largëti";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Afirmoni pretendimin tuaj për qoshen tuaj në internet, me një adresë sajti që është kollaj të gjendet, jepet dhe ndiqet.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Fshihe këtë";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Gjeni një përkatësi vetjake";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Mund të duhen deri në 30 minuta që përkatësia juaj vetjake të fillojë të funksionojë.";
@@ -10266,9 +10256,6 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
 
-/* Media screen navigation title */
-"media.title" = "Media";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Objekti s’u shtua dot te Mediateka";
 
@@ -10502,12 +10489,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Hartoni postime";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Njihuni me aplikacionin";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Hapat pasues";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Faqe";
