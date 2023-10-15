@@ -1,8 +1,10 @@
+23.6
+-----
+* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
+
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
-
 * [*] [WordPress-only] Fixes an issue where users would land on the Reader after signup while it should not be accessible. [#21751]
 * [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
 * [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
