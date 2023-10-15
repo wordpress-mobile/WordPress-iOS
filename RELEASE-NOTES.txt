@@ -1,7 +1,7 @@
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-
+* [*] [WordPress-only] Fixes an issue where users would land on the Reader after signup while it should not be accessible. [#21751]
 
 23.4
 -----
