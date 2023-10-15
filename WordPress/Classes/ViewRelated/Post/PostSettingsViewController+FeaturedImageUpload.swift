@@ -55,7 +55,24 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     }
 }
 
-extension PostSettingsViewController: MediaPickerViewControllerDelegate {}
+extension PostSettingsViewController: MediaPickerViewControllerDelegate {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        guard !assets.isEmpty else { return }
+
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added"])
+
+        if let media = assets.first as? Media {
+            setFeaturedImage(media: media)
+        }
+
+        dismiss(animated: true)
+        reloadFeaturedImageCell()
+    }
+
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        dismiss(animated: true)
+    }
+}
 
 // MARK: - PostSettingsViewController (Featured Image Upload)
 
@@ -66,14 +83,6 @@ extension PostSettingsViewController {
         }
         self.apost.featuredImage = media
         self.setupObservingOf(media: media)
-    }
-
-    @objc func setFeaturedImage(asset: PHAsset) {
-        guard let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost) else {
-            return
-        }
-        apost.featuredImage = media
-        setupObservingOf(media: media)
     }
 
     @objc func setFeaturedImage(media: Media) {

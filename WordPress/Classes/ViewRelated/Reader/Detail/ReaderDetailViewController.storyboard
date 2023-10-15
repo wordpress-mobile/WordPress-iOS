@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,14 +18,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
-                                <rect key="frame" x="0.0" y="44" width="414" height="768"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="764"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
-                                        <rect key="frame" x="0.0" y="0.0" width="446" height="222.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="446" height="218.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
@@ -38,13 +38,13 @@
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXQ-id-Ffz" userLabel="Likes Container View">
-                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="C8J-Hu-daf"/>
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6yS-ZE-nbR" customClass="IntrinsicTableView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="hNK-J4-GC2"/>
@@ -52,14 +52,14 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CpT-U7-bfv" customClass="IntrinsicTableView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="tci-Li-Egi"/>
                                         </constraints>
                                     </tableView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O4e-BA-8jp">
-                                        <rect key="frame" x="16" y="238.5" width="414" height="20.5"/>
+                                        <rect key="frame" x="16" y="234.5" width="414" height="20.5"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ewc-f7-89P" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="20.5"/>
@@ -140,7 +140,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vGc-hu-x5V">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="131"/>
+                                        <rect key="frame" x="0.0" y="48" width="414" height="135"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeJ-N0-e8Q">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="66"/>
@@ -171,14 +171,14 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Post Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="urB-nS-vfS">
-                                                <rect key="frame" x="0.0" y="70" width="414" height="37"/>
+                                                <rect key="frame" x="0.0" y="70" width="414" height="41"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xdF-0Y-F5a">
-                                                <rect key="frame" x="0.0" y="111" width="414" height="20"/>
+                                                <rect key="frame" x="0.0" y="115" width="414" height="20"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="PpC-lI-LMW" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -248,28 +248,28 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EKd-IB-Upn">
-                                        <rect key="frame" x="0.0" y="207" width="414" height="203"/>
+                                        <rect key="frame" x="0.0" y="215" width="414" height="213.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i7W-OY-6MY">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbt-ra-94i">
-                                                <rect key="frame" x="0.0" y="25" width="414" height="17"/>
+                                                <rect key="frame" x="0.0" y="28.5" width="414" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UdQ-G5-Hl2">
-                                                <rect key="frame" x="0.0" y="50" width="414" height="17"/>
+                                                <rect key="frame" x="0.0" y="57" width="414" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xrm-JQ-hpv">
-                                                <rect key="frame" x="0.0" y="75" width="414" height="128"/>
+                                                <rect key="frame" x="0.0" y="85.5" width="414" height="128"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jvg-nM-lV9">
                                                         <rect key="frame" x="0.0" y="0.0" width="345" height="128"/>
@@ -331,6 +331,7 @@
                         <outlet property="relatedPostsTableView" destination="CpT-U7-bfv" id="Ndh-H4-FlR"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
                         <outlet property="toolbarContainerView" destination="Qzd-gm-oIu" id="Esk-Iq-Wbd"/>
+                        <outlet property="toolbarHeightConstraint" destination="jvh-iQ-g9a" id="y6Q-1h-IBP"/>
                         <outlet property="toolbarSafeAreaView" destination="ERb-e0-U8L" id="sVN-sI-9e5"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>

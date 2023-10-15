@@ -1956,8 +1956,7 @@
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Fjarlægja";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */

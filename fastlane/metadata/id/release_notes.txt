@@ -1,3 +1,7 @@
-Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
+Kami terus melenyapkan bug! (Tidak seseram yang terdengar, kok.)
 
-Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.
+- Anda kini dapat menyematkan URL dari X tanpa khawatir akan mendapatkan tautan yang rusak. Perbaikan yang X-tra bermanfaat, menurut kami.
+- Mengenai tautan—ketika Anda menggunakan URL media yang tidak valid, aplikasi kini akan menampilkan pesan error alih-alih mengalami crash. Lebih baik seperti ini, bukan?
+- Kontributor kini akan melihat pop-up yang benar ketika mengirimkan pos untuk ditinjau. Fiuh, leganya!
+- Kami berhasil mengatasi masalah ketika pengguna yang bukan admin dapat melihat menu plugin untuk situsnya. Hilang dari pandangan, hilang dari beban pikiran.
+- Di editor blok, aplikasi tidak akan lagi mengalami crash jika Anda membenamkan terlalu banyak blok di dalam blok … di dalam blok … Anda paham maksudnya. Tidak beda jauh dengan film Inception!

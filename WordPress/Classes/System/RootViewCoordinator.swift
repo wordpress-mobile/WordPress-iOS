@@ -87,7 +87,7 @@ class RootViewCoordinator {
         self.rootViewPresenter = nil
     }
 
-    func showPostSignUpTabForNotSites() {
+    func showPostSignUpTabForNoSites() {
         let appUIType = Self.appUIType(featureFlagStore: featureFlagStore)
         switch appUIType {
         case .normal:

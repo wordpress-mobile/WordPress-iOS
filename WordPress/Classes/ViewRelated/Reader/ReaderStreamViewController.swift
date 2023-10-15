@@ -598,7 +598,7 @@ import Combine
             return
         }
 
-        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && FeatureFlag.readerImprovements.enabled
+        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && RemoteFeatureFlag.readerImprovements.enabled()
         let headerView = {
             guard isNewSiteHeader else {
                 return header
@@ -719,11 +719,11 @@ import Combine
 
         if ReaderHelpers.isTopicTag(topic) {
             // don't display any title for the tag stream for the new design.
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 return
             }
             title = NSLocalizedString("Topic", comment: "Topic page title")
-        } else if FeatureFlag.readerImprovements.enabled && ReaderHelpers.topicType(topic) == .site {
+        } else if RemoteFeatureFlag.readerImprovements.enabled() && ReaderHelpers.topicType(topic) == .site {
             title = ""
         } else {
             title = topic.title
@@ -1651,7 +1651,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let cell = tableConfiguration.postCardCell(tableView)
             let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                         isLoggedIn: isLoggedIn,
