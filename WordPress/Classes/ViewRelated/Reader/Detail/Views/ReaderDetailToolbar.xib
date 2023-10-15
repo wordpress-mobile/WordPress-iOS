@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opk-iy-IwF" customClass="ReaderDetailToolbar" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="99"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-0W-AQZ">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
@@ -20,7 +20,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
-                    <rect key="frame" x="28" y="426" width="358" height="44"/>
+                    <rect key="frame" x="28" y="27.5" width="358" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -101,8 +101,11 @@
                 <outlet property="likeButton" destination="1Ht-4U-b7J" id="cZs-ZL-BT4"/>
                 <outlet property="reblogButton" destination="TVh-aP-o67" id="iyb-fz-V0I"/>
                 <outlet property="saveForLaterButton" destination="kYk-HZ-8zf" id="YaG-nx-qsB"/>
+                <outlet property="stackView" destination="TSN-68-1mv" id="6DM-P6-cng"/>
+                <outlet property="stackViewLeadingConstraint" destination="sW1-Ik-cCa" id="lds-dr-DNC"/>
+                <outlet property="stackViewTrailingConstraint" destination="ibp-zt-iup" id="ggo-IN-DhM"/>
             </connections>
-            <point key="canvasLocation" x="167" y="-132"/>
+            <point key="canvasLocation" x="166.66666666666669" y="134.26339285714286"/>
         </view>
     </objects>
     <resources>

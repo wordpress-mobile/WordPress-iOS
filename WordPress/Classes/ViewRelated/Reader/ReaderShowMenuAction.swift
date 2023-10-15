@@ -109,6 +109,19 @@ final class ReaderShowMenuAction {
                                                })
         }
 
+        // Save post
+        if RemoteFeatureFlag.readerImprovements.enabled(), let vc = vc as? ReaderStreamViewController {
+            let buttonTitle = post.isSavedForLater ? ReaderPostMenuButtonTitles.removeSavedPost: ReaderPostMenuButtonTitles.savePost
+
+            alertController.addActionWithTitle(buttonTitle, style: .default) { _ in
+                if vc.contentType == .saved {
+                    vc.removePost(post)
+                } else {
+                    vc.togglePostSave(post)
+                }
+            }
+        }
+
         // Following
         if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow

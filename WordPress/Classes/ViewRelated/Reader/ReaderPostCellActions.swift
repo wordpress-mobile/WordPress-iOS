@@ -1,3 +1,4 @@
+// TODO: Consider deleting and moving actions when Reader Improvements v1 feature flag (`readerImprovements`) is removed
 /// Action commands in Reader cells
 class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
@@ -83,7 +84,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderLikeAction().execute(with: post, context: context, completion: {
+        ReaderLikeAction().execute(with: post, completion: {
             cell.refreshLikeButton()
         })
     }

@@ -56,9 +56,9 @@ public class MySitesScreen: ScreenObject {
     }
 
     @discardableResult
-    public func switchToSite(withTitle title: String) throws -> MySiteScreen {
+    public func switchToSite(withTitle title: String) throws -> MySiteMoreMenuScreen {
         app.cells[title].tap()
-        return try MySiteScreen()
+        return try MySiteMoreMenuScreen()
     }
 
     public func closeModalIfNeeded() {

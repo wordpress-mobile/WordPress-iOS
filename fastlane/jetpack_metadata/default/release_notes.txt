@@ -1,7 +1,7 @@
-Lock screen widgets are now available on Jetpack so you can check your site stats without unlocking your phone. Just remember, with great power comes great efficiency. Or something like that.
+We’ve been squashing bugs! (It was a lot cleaner than it sounds.)
 
-We changed the way alerts appear when you’re inserting media into blocks from a URL. So we’ve got that going for us, which is nice.
-
-It’s also easier to tell the difference between placeholder text and actual content in block-based themes.
-
-Finally, we updated the navigation in My Site so you can reach popular sections of the site faster. (Don’t love these shortcuts? Don’t worry, you can personalize them to your heart’s content.)
+- You can now embed URLs from X without getting a broken link. Pretty X-cellent, if you ask us.
+- Speaking of links—when you use an invalid media URL, the app will now display an error message instead of crashing. Better, right?
+- Contributors will now see the correct pop-up when submitting posts for review. Phew.
+- We fixed a problem where non-admin users could see the plugin menu for their site. Out of sight, out of mind.
+- In the block editor, the app will no longer crash when you nest too many blocks within blocks… within blocks… you get the idea. Take that, Inception.
