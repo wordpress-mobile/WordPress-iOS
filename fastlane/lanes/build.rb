@@ -171,7 +171,7 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? build_code_current : current_app_version
+    version = options[:beta_release] ? build_code_current : release_version_current
     create_release(
       repository: GITHUB_REPO,
       version:,
