@@ -1,7 +1,7 @@
-I widget della schermata di blocco sono ora disponibili su Jetpack così potrai verificare le statistiche del sito senza sbloccare il telefono. Ricorda solo che da una grande potenza deriva una grande efficienza. O qualcosa del genere.
+Abbiamo rimosso i bug. Erano meno di quello che sembrava.
 
-Abbiamo modificato il modo in cui vengono visualizzati gli avvisi quando inserisci elementi multimediali nei blocchi da un URL. Quindi ce l'abbiamo fatta, il che è un bene.
-
-È anche più semplice distinguere tra il testo del segnaposto e il contenuto effettivo presenti nei temi basati su blocchi.
-
-Infine, abbiamo aggiornato la navigazione in Il mio sito in modo tale da raggiungere più velocemente le sezioni più visitate del sito. Non ti piacciono queste scorciatoie? Non preoccuparti, puoi personalizzarle a tuo piacimento.
+- Ora puoi incorporare URL da X senza che il link risulti interrotto. Proprio excellent con la X.
+- Parlando di link: quando utilizzi un URL a contenuto multimediale non valido, l'app mostra un messaggio di errore invece di arrestarsi. Meglio, vero?
+- I collaboratori ora visualizzeranno il popup corretto quando invieranno gli articoli per la revisione. Meno male.
+- Abbiamo risolto un problema per cui gli utenti non amministratori potevano vedere il menu dei plugin per il loro sito. Occhio non vede, cuore non duole.
+- Nell'editor a blocchi, l'app non si arresterà più quando effettui la nidificazione di troppi blocchi all'interno dei blocchi e poi all'interno di altri blocchi e di altri blocchi ancora… Non succede neanche in Inception.

@@ -548,7 +548,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        showDetailViewController(meViewController, sender: self)
+        if MySitesCoordinator.isSplitViewEnabled {
+            showDetailViewController(meViewController, sender: self)
+        } else {
+            navigationController?.pushViewController(meViewController, animated: true)
+        }
     }
 
     @objc
@@ -884,6 +888,8 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
         blogDetailsViewController?.showDetailView(for: subsection)
     }
 
+    // TODO: Refactor presentation from routes
+    // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         viewController.loadViewIfNeeded()
         if MySitesCoordinator.isSplitViewEnabled {
@@ -894,7 +900,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
                 blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
             }
         } else {
-            blogDetailsViewController?.show(viewController, sender: nil)
+            switch currentSection {
+            case .dashboard:
+                blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
+            case .siteMenu:
+                blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
+            }
         }
     }
 }

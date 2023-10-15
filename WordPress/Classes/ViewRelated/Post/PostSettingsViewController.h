@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
-#import <WPMediaPicker/WPMediaPickerViewController.h>
 
 @protocol FeaturedImageDelegate
 
@@ -8,7 +7,7 @@
 
 @end
 
-@interface PostSettingsViewController : UITableViewController <WPMediaPickerViewControllerDelegate>
+@interface PostSettingsViewController : UITableViewController
 
 - (nonnull instancetype)initWithPost:(nonnull AbstractPost *)aPost;
 - (void)endEditingAction:(nullable id)sender;
@@ -20,5 +19,6 @@
 @property (nonatomic, weak, nullable) id<FeaturedImageDelegate> featuredImageDelegate;
 
 - (void)reloadData;
+- (void)reloadFeaturedImageCell;
 
 @end

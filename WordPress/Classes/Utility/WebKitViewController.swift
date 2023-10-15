@@ -30,7 +30,11 @@ extension WebKitAuthenticatable {
 
 class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
-    @objc let progressView = WebProgressView()
+    @objc let progressView: WebProgressView = {
+        let progressView = WebProgressView()
+        progressView.isHidden = true
+        return progressView
+    }()
     @objc let titleView = NavigationTitleView()
     let analyticsSource: String?
 
@@ -86,6 +90,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var customTitle: String?
+    @objc var displayStatusInNavigationBar = true
     private let opensNewInSafari: Bool
     let linkBehavior: LinkBehavior
 
@@ -128,6 +133,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         opensNewInSafari = configuration.opensNewInSafari
         onClose = configuration.onClose
         analyticsSource = configuration.analyticsSource
+        displayStatusInNavigationBar = configuration.displayStatusInNavigationBar
 
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -253,6 +259,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     // MARK: Navigation bar setup
 
     @objc func configureNavigation() {
+        guard displayStatusInNavigationBar else {
+            return
+        }
+
         setupNavBarTitleView()
         setupRefreshButton()
 
@@ -470,6 +480,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard displayStatusInNavigationBar else {
+            return
+        }
+
         guard let object = object as? WKWebView,
             object == webView,
             let keyPath = keyPath else {
