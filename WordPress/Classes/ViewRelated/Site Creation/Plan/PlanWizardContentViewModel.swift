@@ -8,7 +8,7 @@ struct PlanWizardContentViewModel {
         var queryItems: [URLQueryItem] = []
 
         if let domainSuggestion = siteCreator.address, !domainSuggestion.isFree {
-            queryItems.append(.init(name: Constants.paidDomainNameParameter, value: domainSuggestion.domainName))
+            queryItems.append(.init(name: Constants.InputParameter.paidDomainName, value: domainSuggestion.domainName))
         }
 
         components.queryItems = queryItems
@@ -25,7 +25,7 @@ struct PlanWizardContentViewModel {
     }
 
     func selectedPlanId(from url: URL) -> Int? {
-        guard let planId = parameterValue(from: url, key: Constants.planIdParameter) else {
+        guard let planId = parameterValue(from: url, key: Constants.OutputParameter.planId) else {
             return nil
         }
 
@@ -33,14 +33,25 @@ struct PlanWizardContentViewModel {
     }
 
     func selectedPlanSlug(from url: URL) -> String? {
-        return parameterValue(from: url, key: Constants.planSlugParameter)
+        return parameterValue(from: url, key: Constants.OutputParameter.planSlug)
     }
 
-    enum Constants {
+    func selectedDomainName(from url: URL) -> String? {
+        return parameterValue(from: url, key: Constants.OutputParameter.domainName)
+    }
+
+    struct Constants {
         static let plansWebAddress = "https://wordpress.com/jetpack-app/plans"
-        static let planIdParameter = "plan_id"
-        static let planSlugParameter = "plan_slug"
-        static let paidDomainNameParameter = "paid_domain_name"
+
+        struct InputParameter {
+            static let paidDomainName = "paid_domain_name"
+        }
+
+        struct OutputParameter {
+            static let planId = "plan_id"
+            static let planSlug = "plan_slug"
+            static let domainName = "domain_name"
+        }
     }
 }
 

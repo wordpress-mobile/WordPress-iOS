@@ -1,7 +1,9 @@
 import UIKit
 
 final class PlanWizardContent: WebKitViewController {
-    typealias PlanSelectionCallback = (Int?) -> Void
+    typealias PlanId = Int
+    typealias DomainName = String
+    typealias PlanSelectionCallback = (PlanId?, DomainName?) -> Void
 
     private let viewModel: PlanWizardContentViewModel
     private let completion: PlanSelectionCallback
@@ -29,7 +31,7 @@ final class PlanWizardContent: WebKitViewController {
         }
 
         if viewModel.isPlanSelected(url) {
-            completion(viewModel.selectedPlanId(from: url))
+            completion(viewModel.selectedPlanId(from: url), viewModel.selectedDomainName(from: url))
             decisionHandler(.cancel)
             return
         }
