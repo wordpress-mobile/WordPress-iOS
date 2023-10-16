@@ -106,9 +106,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         if let token = selectedTokens.lazy.compactMap({ $0 as? PostSearchAuthorToken }).first {
             return token.authorID
         }
-        if settings.shouldShowOnlyMyPosts(), let userID = blog.userID {
-            return userID
-        }
+        // TODO: Should we continue with this production version behavior?
+//        if settings.shouldShowOnlyMyPosts(), let userID = blog.userID {
+//            return userID
+//        }
         return nil
     }
 
