@@ -7,6 +7,7 @@
 * [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
 * [*] [WordPress-only] fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
 * [**] [Jetpack-only] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
+* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
 23.4
 -----
