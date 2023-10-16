@@ -414,6 +414,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
+        if filterSettings.shouldShowOnlyMyPosts() {
+            let myAuthorID = blogUserID() ?? 0
+
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
+        }
+
         let searchText = currentSearchTerm() ?? ""
         let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
