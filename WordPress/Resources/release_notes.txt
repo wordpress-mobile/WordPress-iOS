@@ -1,7 +1,9 @@
-We’ve been squashing bugs! (It was a lot cleaner than it sounds.)
+* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
+* [*] [WordPress-only] Fixes an issue where users would land on the Reader after signup while it should not be accessible. [#21751]
+* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
+* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
+* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
+* [*] [WordPress-only] fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
+* [**] [Jetpack-only] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
+* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
-- You can now embed URLs from X without getting a broken link. Pretty X-cellent, if you ask us.
-- Speaking of links—when you use an invalid media URL, the app will now display an error message instead of crashing. Better, right?
-- Contributors will now see the correct pop-up when submitting posts for review. Phew.
-- We fixed a problem where non-admin users could see the plugin menu for their site. Out of sight, out of mind.
-- In the block editor, the app will no longer crash when you nest too many blocks within blocks… within blocks… you get the idea. Take that, Inception.
