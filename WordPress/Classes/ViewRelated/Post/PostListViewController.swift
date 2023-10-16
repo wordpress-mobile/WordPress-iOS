@@ -144,15 +144,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.createPost()
             }, source: Constants.source)
         ]
-        if blog.supports(.stories) {
-            actions.insert(StoryAction(handler: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                let presenter = RootViewCoordinator.sharedPresenter
-                presenter.showStoryEditor(blog: self.blog, title: nil, content: nil)
-            }, source: Constants.source), at: 0)
-        }
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
 
