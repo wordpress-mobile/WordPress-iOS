@@ -1,12 +1,8 @@
 import UIKit
 import Combine
 
-// TODO: Add loading and empty states
 final class PostSearchViewController: UITableViewController, UISearchResultsUpdating, NSFetchedResultsControllerDelegate {
     private let viewModel: PostSearchViewModel
-    private var fetchResultsViewController: NSFetchedResultsController<BasePost> {
-        viewModel.fetchResultsController
-    }
 
     init(viewModel: PostSearchViewModel) {
         self.viewModel = viewModel
@@ -23,18 +19,20 @@ final class PostSearchViewController: UITableViewController, UISearchResultsUpda
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellID")
 
-        fetchResultsViewController.delegate = self
+        viewModel.objectDidChange = { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
+
+    // MARK: - UITableViewController
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        fetchResultsViewController.fetchedObjects?.count ?? 0
+        viewModel.numberOfPosts
     }
 
-    // TODO: Update new cells and display in sections
-    // TODO: Add context menus and navigation (reuse with the plain list)
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
-        let post = fetchResultsViewController.object(at: indexPath)
+        let post = viewModel.posts(at: indexPath)
         cell.textLabel?.text = post.titleForDisplay()
         return cell
     }
@@ -42,12 +40,6 @@ final class PostSearchViewController: UITableViewController, UISearchResultsUpda
     // MARK: - UISearchResultsUpdating
 
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.searchText = searchController.searchBar.text ?? ""
-    }
-
-    // MARK: - NSFetchedResultsControllerDelegate
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.reloadData()
+        viewModel.searchTerm = searchController.searchBar.text ?? ""
     }
 }

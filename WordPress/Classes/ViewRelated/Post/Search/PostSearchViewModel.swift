@@ -1,23 +1,26 @@
 import Foundation
 import Combine
 
-final class PostSearchViewModel {
-    @Published var searchText = ""
+final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
+    @Published var searchTerm = ""
+
+    var objectDidChange: (() -> Void)?
 
     private let blog: Blog
-    private let postType: PostServiceType
+    private let filters: PostListFilterSettings
     private let coreDataStack: CoreDataStack
-    private var cancellables: [AnyCancellable] = []
 
-    private(set) var fetchResultsController: NSFetchedResultsController<BasePost>!
+    private var cancellables: [AnyCancellable] = []
+    private var fetchResultsController: NSFetchedResultsController<BasePost>!
 
     init(blog: Blog,
-         postType: PostServiceType,
+         filters: PostListFilterSettings,
          coreDataStack: CoreDataStack = ContextManager.shared
     ) {
         self.blog = blog
-        self.postType = postType
+        self.filters = filters
         self.coreDataStack = coreDataStack
+        super.init()
 
         fetchResultsController = NSFetchedResultsController(
             fetchRequest: makeFetchRequest(searchTerm: ""),
@@ -25,12 +28,13 @@ final class PostSearchViewModel {
             sectionNameKeyPath: nil,
             cacheName: nil
         )
+        fetchResultsController.delegate = self
 
-        $searchText.dropFirst().sink { [weak self] in
+        $searchTerm.dropFirst().sink { [weak self] in
             self?.performLocalSearch(with: $0)
         }.store(in: &cancellables)
 
-        $searchText
+        $searchTerm
             .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
             .removeDuplicates()
             .filter { $0.count > 1 }
@@ -39,32 +43,47 @@ final class PostSearchViewModel {
         }.store(in: &cancellables)
     }
 
+    // MARK: - Data Source
+
+    var numberOfPosts: Int {
+        fetchResultsController.fetchedObjects?.count ?? 0
+    }
+
+    func posts(at indexPath: IndexPath) -> BasePost {
+        fetchResultsController.object(at: indexPath)
+    }
+
+    // MARK: - NSFetchedResultsControllerDelegate
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        objectDidChange?()
+    }
+
     // MARK: - Local Search
 
     private func performLocalSearch(with searchTerm: String) {
         fetchResultsController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
         do {
             try fetchResultsController.performFetch()
+            objectDidChange?()
         } catch {
             assertionFailure("Failed to perform search: \(error)")
         }
     }
 
-    // TODO: Move search to the background
     private func makeFetchRequest(searchTerm: String) -> NSFetchRequest<BasePost> {
         let request = NSFetchRequest<BasePost>(entityName: makeEntityName())
         request.predicate = makePredicate(searchTerm: searchTerm)
-        // TODO: Update sort descriptors
-        request.sortDescriptors = [NSSortDescriptor(key: "date_created_gmt", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AbstractPost.date_created_gmt, ascending: false)]
         request.fetchBatchSize = 40
         return request
     }
 
     private func makeEntityName() -> String {
-        switch postType {
+        switch filters.postType {
         case .post: return String(describing: Post.self)
         case .page: return String(describing: Page.self)
-        default: fatalError("Unsupported post type: \(postType)")
+        default: fatalError("Unsupported post type: \(filters.postType)")
         }
     }
 
@@ -73,9 +92,13 @@ final class PostSearchViewModel {
 
         // Show all original posts without a revision & revision posts.
         predicates.append(NSPredicate(format: "blog = %@ && revision = nil", blog))
-        predicates.append(NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText))
+        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            // Brand new local drafts have an authorID of 0.
+            predicates.append(NSPredicate(format: "authorID = %@ || authorID = 0", userID))
+        }
+        predicates.append(NSPredicate(format: "postTitle CONTAINS[cd] %@", searchTerm))
 
-        if postType == .page, let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
+        if filters.postType == .page, let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
             predicates.append(predicate)
         }
 
@@ -95,29 +118,23 @@ final class PostSearchViewModel {
 
     // MARK: - Remote Search (Sync)
 
-    // TODO: Implement remove search
     private func syncPostsMatchingSearchTerm(_ searchTerm: String) {
-//        let filter = filterSettings.currentPostListFilter()
-//        guard filter.hasMore else {
-//            return
-//        }
-
         let postService = PostService(managedObjectContext: coreDataStack.mainContext)
 
         let options = PostServiceSyncOptions()
         options.number = 20
         options.purgesLocalSync = false
         options.search = searchTerm
+        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            options.authorID = userID
+        }
 
         postService.syncPosts(
-            ofType: postType,
+            ofType: filters.postType,
             with: options,
             for: blog,
-            success: { _ in
-                // TODO:
-            }, failure: { _ in
-                // TODO:
-            }
+            success: { _ in },
+            failure: { _ in }
         )
     }
 }
