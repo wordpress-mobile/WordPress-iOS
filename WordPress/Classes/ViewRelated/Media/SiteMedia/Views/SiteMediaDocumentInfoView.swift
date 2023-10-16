@@ -1,5 +1,10 @@
 import UIKit
 
+struct SiteMediaDocumentInfoViewModel {
+    let image: UIImage
+    let title: String?
+}
+
 final class SiteMediaDocumentInfoView: UIView {
     let iconView = UIImageView()
     let titleLabel = UILabel()
@@ -27,16 +32,29 @@ final class SiteMediaDocumentInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(_ viewModel: SiteMediaCollectionCellViewModel) {
-        switch viewModel.mediaType {
-        case .document, .powerpoint:
-            iconView.image = .gridicon(.pages)
-            titleLabel.text = viewModel.filename
-        case .audio:
-            iconView.image = .gridicon(.audio)
-            titleLabel.text = viewModel.filename
-        default:
-            break
-        }
+    func configure(_ viewModel: SiteMediaDocumentInfoViewModel) {
+        iconView.image = viewModel.image
+        titleLabel.text = viewModel.title
+    }
+}
+
+extension SiteMediaDocumentInfoViewModel {
+    static func make(with media: Media) -> SiteMediaDocumentInfoViewModel {
+        SiteMediaDocumentInfoViewModel(image: getIcon(for: media.mediaType), title: media.filename)
+    }
+}
+
+private func getIcon(for mediaType: MediaType) -> UIImage {
+    switch mediaType {
+    case .document, .powerpoint:
+        return .gridicon(.pages)
+    case .audio:
+        return .gridicon(.audio)
+    case .image:
+        return .gridicon(.camera)
+    case .video:
+        return .gridicon(.videoCamera)
+    @unknown default:
+        return .gridicon(.pages)
     }
 }

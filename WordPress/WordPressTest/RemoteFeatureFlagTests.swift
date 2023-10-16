@@ -22,8 +22,8 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        store.update(using: mock)
-        store.update(using: mock)
+        store.update(using: mock, waitOn: self)
+        store.update(using: mock, waitOn: self)
 
         wait(for: [exp], timeout: 1.0)
     }
@@ -42,7 +42,7 @@ class RemoteFeatureFlagTests: XCTestCase {
         let mock = MockFeatureFlagRemote(mockFlags: MockFeatureFlag.remoteCases)
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
-        store.update(using: mock)
+        store.update(using: mock, waitOn: self)
 
         // All of the remotely defined values should be present
         XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature.remoteKey))

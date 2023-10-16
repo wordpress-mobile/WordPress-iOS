@@ -19,7 +19,7 @@ class MediaRepositoryTests: CoreDataTestCase {
 
         contextManager.saveContextAndWait(mainContext)
 
-        blogID = .init(saved: blog)
+        blogID = TaggedManagedObjectID(blog)
         remote = MediaServiceRemoteStub()
         repository = MediaRepository(coreDataStack: contextManager, remoteFactory: MediaServiceRemoteFactoryStub(remote: remote))
     }
@@ -40,7 +40,7 @@ class MediaRepositoryTests: CoreDataTestCase {
         remote.getMediaResult = .failure(NSError.testInstance(code: 404))
 
         do {
-            let mediaID = try await repository.getMedia(withID: 1, in: blogID)
+            let _ = try await repository.getMedia(withID: 1, in: blogID)
             XCTFail("The getMedia call should throw")
         } catch let error as NSError {
             XCTAssertEqual(error.code, 404)

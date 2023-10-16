@@ -5997,8 +5997,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Remover";
 
 /* Remove Person Alert Title
@@ -7265,9 +7264,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Tirar uma foto";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Fotografar ou filmar";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Gravar um vídeo";
@@ -9615,9 +9611,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurações remotas";
-
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Marque sua presença na Web com um endereço de site fácil de encontrar, compartilhar e seguir.";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar isso";

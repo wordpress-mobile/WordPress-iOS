@@ -1,10 +1,10 @@
 {
   "scenarioName": "new_page_flow",
-  "requiredScenarioState": "page_published",
-  "newScenarioState": "new_pages_list",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "initial_pages_list",
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.2/sites/106707880/posts",
+    "urlPath": "/rest/v1.2/sites/181851495/posts",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -16,85 +16,12 @@
   },
   "response": {
     "status": 200,
-    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
-      "found": 4,
+      "found": 3,
       "posts": [
         {
-          "ID": 13,
-          "site_ID": 106707880,
-          "author": {
-            "ID": 152748359,
-            "login": "e2eflowtestingmobile",
-            "email": "e2eflowtestingmobile@example.com",
-            "name": "e2eflowtestingmobile",
-            "first_name": "",
-            "last_name": "",
-            "nice_name": "e2eflowtestingmobile",
-            "URL": "https://infocusphotographers.com",
-            "avatar_URL": "https://1.gravatar.com/avatar/7a4015c11be6a342f65e0e169092d402?s=96&d=identicon&r=G",
-            "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
-            "site_ID": 1
-          },
-          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
-          "modified": "{{now format=customformat}}",
-          "title": "New Blank Page",
-          "URL": "https://infocusphotographers.com/new-blank-page/",
-          "short_URL": "https://wp.me/abc123",
-          "content": "<!-- wp:paragraph -->\n<p>Creating a new blank page</p>\n<!-- /wp:paragraph -->",
-          "excerpt": "",
-          "slug": "new-blank-page",
-          "guid": "https://infocusphotographers.com/new-blank-page/",
-          "status": "publish",
-          "sticky": false,
-          "password": "",
-          "parent": false,
-          "type": "page",
-          "discussion": {
-            "comments_open": false,
-            "comment_status": "closed",
-            "pings_open": false,
-            "ping_status": "closed",
-            "comment_count": 0
-          },
-          "likes_enabled": true,
-          "sharing_enabled": true,
-          "like_count": 0,
-          "i_like": false,
-          "is_reblogged": false,
-          "is_following": false,
-          "global_ID": "abc123",
-          "featured_image": "",
-          "format": "standard",
-          "geo": false,
-          "menu_order": 0,
-          "page_template": "",
-          "publicize_URLs": [],
-          "terms": {},
-          "tags": {},
-          "categories": {},
-          "attachments": {},
-          "attachment_count": 0,
-          "metadata": [],
-          "meta": {
-            "links": {
-              "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/13",
-              "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/13/help",
-              "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
-              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/13/replies/",
-              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/13/likes/"
-            }
-          },
-          "capabilities": {
-            "publish_post": true,
-            "delete_post": true,
-            "edit_post": true
-          },
-          "other_URLs": {}
-        },
-        {
           "ID": 51,
-          "site_ID": 106707880,
+          "site_ID": 181851495,
           "author": {
             "ID": 152748359,
             "login": "kkevin",
@@ -152,9 +79,9 @@
               "post_count": 6,
               "meta": {
                 "links": {
-                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
-                  "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
-                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/categories/slug:uncategorized",
+                  "help": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/categories/slug:uncategorized/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181851495"
                 }
               },
               "parent": 0
@@ -165,11 +92,11 @@
           "metadata": [],
           "meta": {
             "links": {
-              "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/51",
-              "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/51/help",
-              "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
-              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/51/replies/",
-              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/51/likes/"
+              "self": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/51",
+              "help": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/51/help",
+              "site": "https://public-api.wordpress.com/rest/v1.2/sites/181851495",
+              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/51/replies/",
+              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/51/likes/"
             }
           },
           "capabilities": {
@@ -181,7 +108,7 @@
         },
         {
           "ID": 6,
-          "site_ID": 106707880,
+          "site_ID": 181851495,
           "author": {
             "ID": 152748359,
             "login": "kkevin",
@@ -254,11 +181,11 @@
           ],
           "meta": {
             "links": {
-              "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/6",
-              "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/6/help",
-              "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
-              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/6/replies/",
-              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/6/likes/"
+              "self": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/6",
+              "help": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/6/help",
+              "site": "https://public-api.wordpress.com/rest/v1.2/sites/181851495",
+              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/6/replies/",
+              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/6/likes/"
             }
           },
           "capabilities": {
@@ -270,7 +197,7 @@
         },
         {
           "ID": 7,
-          "site_ID": 106707880,
+          "site_ID": 181851495,
           "author": {
             "ID": 152748359,
             "login": "kkevin",
@@ -343,11 +270,11 @@
           ],
           "meta": {
             "links": {
-              "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/7",
-              "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/7/help",
-              "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
-              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/7/replies/",
-              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/7/likes/"
+              "self": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/7",
+              "help": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/7/help",
+              "site": "https://public-api.wordpress.com/rest/v1.2/sites/181851495",
+              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181851495/posts/7/replies/",
+              "likes": "https://public-api.wordpress.com/rest/v1.2/sites/181851495/posts/7/likes/"
             }
           },
           "capabilities": {

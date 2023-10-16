@@ -60,6 +60,10 @@ public class BlockEditorScreen: ScreenObject {
         $0.otherElements["notice_title_and_message"]
     }
 
+    private let pageTitleViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Page title. Empty"]
+    }
+
     private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Post Settings"]
     }
@@ -106,6 +110,7 @@ public class BlockEditorScreen: ScreenObject {
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
     var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
+    var pageTitleView: XCUIElement { pageTitleViewGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
@@ -131,12 +136,22 @@ public class BlockEditorScreen: ScreenObject {
         )
     }
 
+    public enum postAction: String {
+        case publish = "Publish"
+        case schedule = "Schedule"
+    }
+
+    public enum postType: String {
+        case page = "page"
+        case post = "post"
+    }
+
     /**
      Enters text into title field.
      - Parameter text: the test to enter into the title
      */
-    public func enterTextInTitle(text: String) -> BlockEditorScreen {
-        let titleView = postTitleView.firstMatch // Uses a localized string
+    public func enterTextInTitle(text: String, postType: postType = .post) -> BlockEditorScreen {
+        let titleView = postType == .post ? postTitleView.firstMatch : pageTitleView.firstMatch
         XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
         type(text: text, in: titleView)
 
@@ -257,11 +272,6 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
-    public enum postAction: String {
-        case publish = "Publish"
-        case schedule = "Schedule"
-    }
-
     public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
         try post(action: action)
         waitAndTap(noticeViewButton)
@@ -270,21 +280,23 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     @discardableResult
-    public func post(action: postAction) throws -> Self {
+    public func post(action: postAction, postType: postType = .post) throws -> Self {
         let postButton = app.buttons[action.rawValue]
-        let postNowButton = app.buttons["\(action.rawValue) Now"]
-        var tries = 0
+        let postNowButton: XCUIElement
 
-        // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
-        // The tests would fail sometimes in the pipeline with no apparent reason.
-        repeat {
-            postButton.tap()
-            tries += 1
-        } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
+        // To handle both post types - post and page
+        if postType == .page && XCUIDevice.isPad {
+            postNowButton = app.alerts.buttons[action.rawValue]
+        } else if postType == .page && XCUIDevice.isPhone {
+            postNowButton = app.scrollViews.buttons[action.rawValue]
+        } else {
+            postNowButton = app.buttons["\(action.rawValue) Now"]
+        }
 
-        postNowButton.tap()
+        waitForExistenceAndTap(postButton)
+        waitForExistenceAndTap(postNowButton)
 
-        if action == .publish {
+        if action == .publish && postType == .post {
             dismissBloggingRemindersAlertIfNeeded()
         }
 
@@ -427,7 +439,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
-        guard setRemindersButton.waitForExistence(timeout: 3) else { return }
+        guard setRemindersButton.waitForExistence(timeout: 5) else { return }
 
         if XCUIDevice.isPad {
             app.swipeDown(velocity: .fast)

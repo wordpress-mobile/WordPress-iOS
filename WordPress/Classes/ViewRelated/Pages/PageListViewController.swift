@@ -220,10 +220,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    override func configureAuthorFilter() {
-        // Noop
-    }
-
     override func configureFooterView() {
         super.configureFooterView()
         tableView.tableFooterView = UIView(frame: .zero)

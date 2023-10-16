@@ -23,16 +23,8 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     objc_setAssociatedObject(viewController, &associateObjectKey, menuController, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
     for button in [headerView.imageViewButton, headerView.gravatarButton] as [UIButton] {
-        if FeatureFlag.nativePhotoPicker.enabled {
-            button.menu = menuController.makeMenu()
-            button.showsMenuAsPrimaryAction = true
-        } else {
-            button.addAction(UIAction { [weak controller, weak viewController] _ in
-                if let viewController = viewController {
-                    controller?.presentGravatarPicker(viewController)
-                }
-            }, for: .touchUpInside)
-        }
+        button.menu = menuController.makeMenu()
+        button.showsMenuAsPrimaryAction = true
     }
     viewController.tableView.tableHeaderView = headerView
     return viewController
@@ -162,22 +154,6 @@ private class MyProfileController: SettingsController {
                 aboutMeRow
                 ])
             ])
-    }
-
-    // MARK: Actions
-
-    fileprivate func presentGravatarPicker(_ viewController: ImmuTableViewController) {
-        WPAppAnalytics.track(.gravatarTapped)
-
-        let pickerViewController = GravatarPickerViewController()
-        pickerViewController.onCompletion = { [weak self] image in
-            if let updatedGravatarImage = image {
-                self?.uploadGravatarImage(updatedGravatarImage, presenter: viewController)
-            }
-            viewController.dismiss(animated: true)
-        }
-        pickerViewController.modalPresentationStyle = .formSheet
-        viewController.present(pickerViewController, animated: true)
     }
 
     // MARK: - Helpers
