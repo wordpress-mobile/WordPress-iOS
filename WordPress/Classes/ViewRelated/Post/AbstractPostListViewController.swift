@@ -258,6 +258,7 @@ class AbstractPostListViewController: UIViewController,
         searchController.delegate = self
         searchController.searchResultsUpdater = searchResultsViewController
         searchController.showsSearchResultsController = true
+        searchResultsViewController.searchController = searchController
 
         definesPresentationContext = true
 
@@ -1043,17 +1044,6 @@ class AbstractPostListViewController: UIViewController,
         // presenting.
         dismissAllNetworkErrorNotices()
         super.present(viewControllerToPresent, animated: flag, completion: completion)
-    }
-
-    // MARK: - Accessibility
-
-    override func accessibilityPerformEscape() -> Bool {
-        guard searchController.isActive else {
-            return super.accessibilityPerformEscape()
-        }
-
-        searchController.isActive = false
-        return true
     }
 }
 
