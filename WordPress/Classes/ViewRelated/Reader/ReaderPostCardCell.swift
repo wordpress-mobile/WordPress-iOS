@@ -139,6 +139,7 @@ class ReaderPostCardCell: UITableViewCell {
         static let borderWidth: CGFloat = 0.5
         static let imageSeparatorBorderWidth: CGFloat = 1.0
         static let separatorHeight: CGFloat = 0.5
+        static let likeButtonIdentifier = "reader-like-button"
     }
 
 }
@@ -516,6 +517,7 @@ private extension ReaderPostCardCell {
         reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
         commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
         likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        likeButton.accessibilityIdentifier = Constants.likeButtonIdentifier
         menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
         menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
         accessibilityElements = [

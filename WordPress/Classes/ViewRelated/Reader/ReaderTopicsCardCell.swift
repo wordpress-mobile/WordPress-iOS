@@ -117,6 +117,8 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
 
             let title = data[indexPath.row].title
             cell.titleLabel.text = title
+            cell.titleLabel.accessibilityIdentifier = .topicsCardCellIdentifier
+            cell.titleLabel.accessibilityTraits = .button
 
             return cell
         }

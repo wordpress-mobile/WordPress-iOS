@@ -64,7 +64,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .plansInSiteCreation:
             return false
         case .readerImprovements:
-            return false
+            return true
         }
     }
 
