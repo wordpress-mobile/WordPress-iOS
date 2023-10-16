@@ -25534,7 +25534,6 @@
 				C7124E4F2638528F00929318 /* JetpackPrologueViewController.swift in Sources */,
 				FE341706275FA157005D5CA7 /* RichCommentContentRenderer.swift in Sources */,
 				08240C2F2AB8A2DD00E7AEA8 /* DomainListCard.swift in Sources */,
-				01E61E5B29F03DEC002E544E /* DashboardDomainsCardSearchView.swift in Sources */,
 				FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */,
 				0107E15D28FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
 				FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */,

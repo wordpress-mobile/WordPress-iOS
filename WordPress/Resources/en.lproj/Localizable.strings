@@ -1583,9 +1583,6 @@
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Change Settings";
 
-/* Change site icon button */
-"Change Site Icon" = "Change Site Icon";
-
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Change the device type used for preview";
 
@@ -1727,9 +1724,6 @@
 
 /* No comment provided by engineer. */
 "Choose image" = "Choose image";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
 
 /* No comment provided by engineer. */
 "Choose image or video" = "Choose image or video";
@@ -2830,6 +2824,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Kudos, your site is live!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Action Required";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Active";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Complete Setup";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Error";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Expired";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Expiring Soon";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Failed";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "In Progress";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Renew";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Verify Email";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Verifying";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Best Alternative";
 
@@ -2838,6 +2865,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Free";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Free for the first year with annual paid plans";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recommended";
@@ -7175,6 +7205,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comment";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Like";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Likes this post.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Liked";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Unlikes this post.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Saves this post for later.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Save post";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Unsaves this post.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Saved Post";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Search";
 
@@ -7188,11 +7255,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comment";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Opens the comments for the post.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Like";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Likes the post.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Liked";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Opens a menu with more actions.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "More";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblog";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Reblogs the post.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Opens the site details for the post.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Block this user";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Remove Saved Post";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Report this user";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Save";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ posts • %2$@ followers";
@@ -8005,9 +8109,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Set as Posts Page";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Set Featured Image";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Set Parent";
@@ -8295,6 +8396,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domains";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Select domain";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Document, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Image, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Unknown creation date";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Select media.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
