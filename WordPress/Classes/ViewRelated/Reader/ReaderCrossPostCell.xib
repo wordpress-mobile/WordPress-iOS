@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +22,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="D38-SH-Xvw" userLabel="Content Stack View">
-                        <rect key="frame" x="0.0" y="8" width="320" height="106"/>
+                        <rect key="frame" x="0.0" y="8" width="320" height="105.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4qr-gg-TCP">
                                 <rect key="frame" x="16" y="12" width="288" height="56.5"/>
@@ -49,6 +50,7 @@
                                         <constraints>
                                             <constraint firstItem="WUC-gY-tp6" firstAttribute="centerY" secondItem="31R-gx-fKg" secondAttribute="centerY" id="2vK-eZ-fEe"/>
                                             <constraint firstItem="JOq-VL-EJD" firstAttribute="centerY" secondItem="31R-gx-fKg" secondAttribute="centerY" id="CVJ-He-ikX"/>
+                                            <constraint firstItem="JOq-VL-EJD" firstAttribute="leading" secondItem="WUC-gY-tp6" secondAttribute="trailing" priority="750" constant="-4" id="MKI-vh-ILf"/>
                                             <constraint firstItem="WUC-gY-tp6" firstAttribute="leading" secondItem="31R-gx-fKg" secondAttribute="leading" id="bTR-cF-WMZ"/>
                                             <constraint firstAttribute="trailing" secondItem="JOq-VL-EJD" secondAttribute="trailing" id="nXv-EE-H7w"/>
                                             <constraint firstItem="JOq-VL-EJD" firstAttribute="leading" secondItem="WUC-gY-tp6" secondAttribute="centerX" id="tdQ-IG-5vq"/>
@@ -72,6 +74,13 @@
                         </subviews>
                         <edgeInsets key="layoutMargins" top="12" left="16" bottom="8" right="16"/>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8KL-zb-Rhp" userLabel="Separator View">
+                        <rect key="frame" x="0.0" y="113.5" width="320" height="0.5"/>
+                        <color key="backgroundColor" systemColor="separatorColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="83K-DW-Kad" userLabel="Separator View Height Constraint"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -79,8 +88,11 @@
                     <constraint firstItem="Phn-de-LXH" firstAttribute="top" secondItem="yQG-5S-y1g" secondAttribute="top" constant="8" id="90n-YF-4D3"/>
                     <constraint firstItem="D38-SH-Xvw" firstAttribute="top" secondItem="Phn-de-LXH" secondAttribute="top" id="Kig-9E-kqG"/>
                     <constraint firstItem="D38-SH-Xvw" firstAttribute="leading" secondItem="yQG-5S-y1g" secondAttribute="leading" id="ML0-ur-kuZ"/>
-                    <constraint firstAttribute="bottom" secondItem="D38-SH-Xvw" secondAttribute="bottom" id="cvY-j5-xr1"/>
+                    <constraint firstAttribute="trailing" secondItem="8KL-zb-Rhp" secondAttribute="trailing" id="T6r-Yd-Hvo"/>
+                    <constraint firstItem="8KL-zb-Rhp" firstAttribute="leading" secondItem="yQG-5S-y1g" secondAttribute="leading" id="cbm-54-7KD"/>
+                    <constraint firstItem="8KL-zb-Rhp" firstAttribute="top" secondItem="D38-SH-Xvw" secondAttribute="bottom" id="cvY-j5-xr1"/>
                     <constraint firstAttribute="trailing" secondItem="D38-SH-Xvw" secondAttribute="trailing" id="iA4-0B-XeM"/>
+                    <constraint firstAttribute="bottom" secondItem="8KL-zb-Rhp" secondAttribute="bottom" id="oX5-Jj-INT"/>
                     <constraint firstAttribute="bottom" secondItem="Phn-de-LXH" secondAttribute="bottom" id="rJ7-0T-oeM"/>
                     <constraint firstAttribute="trailing" secondItem="Phn-de-LXH" secondAttribute="trailing" constant="-1" id="tsp-4A-wom"/>
                 </constraints>
@@ -89,10 +101,19 @@
                 <outlet property="avatarImageView" destination="JOq-VL-EJD" id="qv3-Of-zZc"/>
                 <outlet property="blavatarImageView" destination="WUC-gY-tp6" id="U2a-iV-k1I"/>
                 <outlet property="borderView" destination="Phn-de-LXH" id="ZGz-sk-ljb"/>
+                <outlet property="centeredImageViewConstraint" destination="tdQ-IG-5vq" id="9Br-Hm-9ie"/>
+                <outlet property="imageSpacingConstraint" destination="MKI-vh-ILf" id="1eX-0w-Loe"/>
                 <outlet property="label" destination="5MU-iV-oPy" id="9OI-1R-pcP"/>
+                <outlet property="separatorViewHeightConstraint" destination="83K-DW-Kad" id="yOD-bY-Wa6"/>
                 <outlet property="titleLabel" destination="lca-uT-huN" id="cRk-nM-vEy"/>
+                <outlet property="topViewConstraint" destination="90n-YF-4D3" id="5LU-8N-Rsi"/>
             </connections>
             <point key="canvasLocation" x="535" y="470"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="separatorColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

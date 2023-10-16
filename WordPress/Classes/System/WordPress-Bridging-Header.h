@@ -108,7 +108,6 @@
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPUserAgent.h"
-#import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPLogger.h"
 #import "WPException.h"
 

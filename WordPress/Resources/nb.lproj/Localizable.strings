@@ -4225,8 +4225,7 @@ translators: Block name. %s: The localized block name */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Slett";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -5171,9 +5170,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Ta et bilde";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Ta et bilde eller en video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Ta en video";

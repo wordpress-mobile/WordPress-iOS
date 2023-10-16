@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-19 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-04 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.9 */
 /* Language: tr */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Alıntı";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Blok derin bir şekilde iç içe geçtiği için işlenemez. Daha fazla ayrıntı için buraya dokunun.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok kopyalandı";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Bloklar menüsü";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web düzenleyicisini kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web tarayıcınızı kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -2282,6 +2291,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "Aralık 17, 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Derin şekilde iç içe geçmiş blok";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6072,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Kaldır";
 
 /* Remove Person Alert Title
@@ -7283,6 +7294,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Varsayılan yazı tipi boyutuna geçer";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Senkronize edilmiş desenler";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Sistem varsayılanı";
 
@@ -7330,9 +7344,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Fotoğraf çek";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Fotoğraf veya Video Çek";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Video Çek";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7357,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Yardımı görüntülemek için buraya dokunun";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Daha fazla ayrıntı görüntülemek için buraya dokunun.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Yeni istatistik kartları eklemek için dokunun.";
@@ -8326,6 +8340,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Blogu takip etmeyi bırakır.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "Bloku gruptan çıkar";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Göster";
@@ -9856,14 +9873,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Mevcut Turu Kaldır";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Bulması, paylaşması ve takip etmesi kolay bir site adresiyle internet dünyasındaki yerinizi alın.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Özel bir alan adı bulun";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Özel alan adınızın çalışmaya başlaması 30 dakika kadar sürebilir.";
@@ -10323,9 +10334,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Ortam senkronize edilemiyor";
 
-/* Media screen navigation title */
-"media.title" = "Ortam";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Öğe Ortam kütüphanesine eklenemez";
 
@@ -10338,6 +10346,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Kapat";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Yeni ortam ekle";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Ekle";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Seç";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "İptal et";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Sil";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Seçili öğeleri kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Tüm ortam dosyaları silinemiyor.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Siliniyor...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Silindi!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Sil";
 
@@ -10346,6 +10384,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Yüklemeyi Yeniden Dene";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Aramanızla eşleşen ortam yok";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Ortam";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d Görsel Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 Görsel Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d Öğe Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 Öğe Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Öğeleri Seçin";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
@@ -10579,12 +10638,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "Taslak yazılar";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Uygulamayı tanıyın";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Sonraki adımlar";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Sayfalar";
 
 /* Card title for the pesonalization menu */
@@ -10730,6 +10783,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Bu kullanıcıyı bildir";
 
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ gönderi • %2$@ takipçi";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Geri";
 
@@ -10837,6 +10893,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "SiteAdi.com";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Ortam";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";

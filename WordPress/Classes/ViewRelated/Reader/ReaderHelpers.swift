@@ -72,6 +72,12 @@ struct ReaderPostMenuButtonTitles {
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
     static let followConversation = NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
     static let unFollowConversation = NSLocalizedString("Unfollow conversation", comment: "Verb. Button title. The user is following the comments on a post.")
+    static let savePost = NSLocalizedString("reader.post.menu.save.post",
+                                            value: "Save",
+                                            comment: "The title of a button that saves a post.")
+    static let removeSavedPost = NSLocalizedString("reader.post.menu.remove.post",
+                                                   value: "Remove Saved Post",
+                                                   comment: "The title of a button that removes a saved post.")
 }
 
 /// A collection of helper methods used by the Reader.

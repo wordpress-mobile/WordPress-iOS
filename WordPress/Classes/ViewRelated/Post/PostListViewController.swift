@@ -261,18 +261,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
     }
 
-    override func configureAuthorFilter() {
-        guard filterSettings.canFilterByAuthor() else {
-            return
-        }
-
-        let authorFilter = AuthorFilterButton()
-        authorFilter.addTarget(self, action: #selector(showAuthorSelectionPopover(_:)), for: .touchUpInside)
-        filterTabBar.accessoryView = authorFilter
-
-        updateAuthorFilter()
-    }
-
     func showCompactOrDefault() {
         updateGhostableTableViewOptions()
 
@@ -323,41 +311,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func lastSyncDate() -> Date? {
         return blog?.lastPostsSync
-    }
-
-    // MARK: - Actions
-
-    @objc
-    private func showAuthorSelectionPopover(_ sender: UIView) {
-        let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
-                                                          gravatarEmail: blog.account?.email) { [weak self] filter in
-                                                            if filter != self?.filterSettings.currentPostAuthorFilter() {
-                                                                UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: sender)
-                                                            }
-
-                                                            self?.filterSettings.setCurrentPostAuthorFilter(filter)
-                                                            self?.updateAuthorFilter()
-                                                            self?.refreshAndReload()
-                                                            self?.syncItemsWithUserInteraction(false)
-                                                            self?.dismiss(animated: true)
-        }
-
-        ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
-        filterController.popoverPresentationController?.permittedArrowDirections = .up
-
-        present(filterController, animated: true)
-    }
-
-    private func updateAuthorFilter() {
-        guard let accessoryView = filterTabBar.accessoryView as? AuthorFilterButton else {
-            return
-        }
-
-        if filterSettings.currentPostAuthorFilter() == .everyone {
-            accessoryView.filterType = .everyone
-        } else {
-            accessoryView.filterType = .user(gravatarEmail: blog.account?.email)
-        }
     }
 
     // MARK: - Data Model Interaction

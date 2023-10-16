@@ -189,10 +189,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
 
-    override func configureAuthorFilter() {
-        // Noop
-    }
-
     override func configureFooterView() {
         super.configureFooterView()
         tableView.tableFooterView = UIView(frame: .zero)

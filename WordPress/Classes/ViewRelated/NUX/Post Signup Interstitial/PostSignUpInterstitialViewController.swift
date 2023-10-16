@@ -86,9 +86,15 @@ class PostSignUpInterstitialViewController: UIViewController {
         tracker.track(click: .createNewSite, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
+        let source = "post_signup"
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                return
+            }
 
-        RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
-        dismiss?(.createSite)
+            RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
+            self.dismiss?(.createSite)
+        })
 
     }
 
@@ -104,7 +110,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBAction func cancel(_ sender: Any) {
         dismiss?(.none)
 
-        RootViewCoordinator.sharedPresenter.showReaderTab()
+        RootViewCoordinator.shared.showPostSignUpTabForNoSites()
 
         tracker.track(click: .dismiss, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)

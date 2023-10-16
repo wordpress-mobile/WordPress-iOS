@@ -129,10 +129,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     @objc func canFilterByAuthor() -> Bool {
-        if postType == .post {
-            return blog.isMultiAuthor && blog.userID != nil
-        }
-        return false
+        return blog.isMultiAuthor && blog.userID != nil
     }
 
     @objc func authorIDFilter() -> NSNumber? {
