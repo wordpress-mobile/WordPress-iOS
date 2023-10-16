@@ -253,6 +253,8 @@
 		08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FC31CDBF96000304BA7 /* MenuItemTagsViewController.m */; };
 		08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FC51CDBF96000304BA7 /* MenuItemTypeSelectionView.m */; };
 		08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */; };
+		08240C2E2AB8A2DD00E7AEA8 /* DomainListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08240C2D2AB8A2DD00E7AEA8 /* DomainListCard.swift */; };
+		08240C2F2AB8A2DD00E7AEA8 /* DomainListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08240C2D2AB8A2DD00E7AEA8 /* DomainListCard.swift */; };
 		082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 082635BA1CEA69280088030C /* MenuItemsViewController.m */; };
 		0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */; };
 		082A645B291C2DD700668D2C /* Routes+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A645A291C2DD700668D2C /* Routes+Jetpack.swift */; };
@@ -5922,6 +5924,7 @@
 		08216FC51CDBF96000304BA7 /* MenuItemTypeSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTypeSelectionView.m; sourceTree = "<group>"; };
 		08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTypeViewController.h; sourceTree = "<group>"; };
 		08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTypeViewController.m; sourceTree = "<group>"; };
+		08240C2D2AB8A2DD00E7AEA8 /* DomainListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainListCard.swift; sourceTree = "<group>"; };
 		082635B91CEA69280088030C /* MenuItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsViewController.h; sourceTree = "<group>"; };
 		082635BA1CEA69280088030C /* MenuItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsViewController.m; sourceTree = "<group>"; };
 		0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPAppAnalytics+Media.swift"; sourceTree = "<group>"; };
@@ -9943,6 +9946,13 @@
 			path = "Feature Highlight";
 			sourceTree = "<group>";
 		};
+		08240C2C2AB8A28D00E7AEA8 /* Domain Management */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Domain Management";
+			sourceTree = "<group>";
+		};
 		083ED8CA2A4322A7007F89B3 /* EEUUSCompliance */ = {
 			isa = PBXGroup;
 			children = (
@@ -10394,6 +10404,7 @@
 			isa = PBXGroup;
 			children = (
 				02BF30512271D76F00616558 /* Domain credit */,
+				08240C2C2AB8A28D00E7AEA8 /* Domain Management */,
 				437EF0C820F79C0C0086129B /* Domain registration */,
 				3F3DD0B426FD18D400F5F121 /* Utility */,
 				3F55A01826FCB0BD0049D379 /* Views */,
@@ -12011,6 +12022,7 @@
 				F47E154929E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift */,
 				B07F133D2A16C69800AF7FCF /* PlanSelectionViewController.swift */,
 				011F52D92A1CA53300B04114 /* CheckoutViewController.swift */,
+				08240C2D2AB8A2DD00E7AEA8 /* DomainListCard.swift */,
 			);
 			path = "Domain registration";
 			sourceTree = "<group>";
@@ -22227,6 +22239,7 @@
 				F53FF3AA23EA725C001AD596 /* SiteIconView.swift in Sources */,
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
+				08240C2E2AB8A2DD00E7AEA8 /* DomainListCard.swift in Sources */,
 				46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
 				DCF892CC282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */,
 				08D553662821286300AA1E8D /* Tooltip.swift in Sources */,
@@ -25520,6 +25533,8 @@
 				FABB26012602FC2C00C8785C /* ReaderShareAction.swift in Sources */,
 				C7124E4F2638528F00929318 /* JetpackPrologueViewController.swift in Sources */,
 				FE341706275FA157005D5CA7 /* RichCommentContentRenderer.swift in Sources */,
+				08240C2F2AB8A2DD00E7AEA8 /* DomainListCard.swift in Sources */,
+				01E61E5B29F03DEC002E544E /* DashboardDomainsCardSearchView.swift in Sources */,
 				FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */,
 				0107E15D28FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
 				FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */,
