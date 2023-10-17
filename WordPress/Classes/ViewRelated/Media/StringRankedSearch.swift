@@ -45,7 +45,6 @@ struct StringRankedSearch {
         (0.025 * bonusForCountMatch)
     }
 
-
     private func bonusForDistanceBetweenMatches(_ indices: [Int], words: [String]) -> Double {
         let distance = zip(indices.dropLast(), indices.dropFirst())
             .map { $1 - $0 }

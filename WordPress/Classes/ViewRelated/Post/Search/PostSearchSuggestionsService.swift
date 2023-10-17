@@ -50,7 +50,7 @@ actor PostSearchSuggestionsService {
         let search = StringRankedSearch(searchTerm: searchTerm)
         return tokens.compactMap {
             let score = search.score(for: $0.displayName)
-            guard score > 0.7 else { return nil }
+            guard score > 0.8 else { return nil }
             return RankedToken(token: $0, score: score)
         }
     }
@@ -81,7 +81,7 @@ actor PostSearchSuggestionsService {
         let search = StringRankedSearch(searchTerm: searchTerm)
         return tokens.compactMap {
             let score = search.score(for: $0.tag)
-            guard score > 0.7 else { return nil }
+            guard score > 0.8 else { return nil }
             return RankedToken(token: $0, score: score)
         }
     }

@@ -107,7 +107,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             let token = viewModel.suggestedTokens[indexPath.row]
             let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
             cell.configure(with: token, isLast: isLast)
-            cell.separatorInset = UIEdgeInsets(top: 0, left: isLast ? 0 : view.bounds.size.width, bottom: 0, right: 0)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
             // TODO: Update the cell design
