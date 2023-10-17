@@ -4,7 +4,6 @@ protocol DashboardPostsSyncManagerListener: AnyObject {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
                      for statuses: [BasePost.Status])
 }
 
@@ -74,17 +73,17 @@ class DashboardPostsSyncManager {
                 self?.syncPosts(blog: blog, postType: postType, statuses: toBeSynced)
             }, failure: { [weak self] error in
                 postType.stopSyncingStatuses(toBeSynced, for: blog)
-                self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, posts: nil, for: toBeSynced)
+                self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, for: toBeSynced)
             })
             return
         }
 
         postService.syncPosts(ofType: postType.postServiceType, with: options, for: blog) { [weak self] posts in
             postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: true, blog: blog, postType: postType, posts: posts, for: toBeSynced)
+            self?.notifyListenersOfPostsSync(success: true, blog: blog, postType: postType, for: toBeSynced)
         } failure: { [weak self] error in
             postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, posts: nil, for: toBeSynced)
+            self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, for: toBeSynced)
         }
     }
 
@@ -97,10 +96,9 @@ class DashboardPostsSyncManager {
     private func notifyListenersOfPostsSync(success: Bool,
                                             blog: Blog,
                                             postType: PostType,
-                                            posts: [AbstractPost]?,
                                             for statuses: [BasePost.Status]) {
         for aListener in listeners {
-            aListener.postsSynced(success: success, blog: blog, postType: postType, posts: posts, for: statuses)
+            aListener.postsSynced(success: success, blog: blog, postType: postType, for: statuses)
         }
     }
 

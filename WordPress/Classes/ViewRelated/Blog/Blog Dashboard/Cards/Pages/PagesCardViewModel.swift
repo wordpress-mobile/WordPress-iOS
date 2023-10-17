@@ -271,7 +271,6 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
                      for statuses: [BasePost.Status]) {
         guard postType == .page,
               self.blog == blog else {

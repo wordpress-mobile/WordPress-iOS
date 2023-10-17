@@ -286,7 +286,6 @@ extension PostsCardViewModel: DashboardPostsSyncManagerListener {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
                      for statuses: [BasePost.Status]) {
         let currentStatuses = postListFilter.statuses
         guard postType == .post,
