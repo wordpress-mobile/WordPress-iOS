@@ -232,7 +232,7 @@ private extension PagesCardViewModel {
     func sync() {
         isSyncing = true
         let filter = filter
-        DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .page, statuses: filter.statuses.strings)
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .page, statuses: filter.statuses)
     }
 
     func hideLoading() {
@@ -271,8 +271,7 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
-                     for statuses: [String]) {
+                     for statuses: [BasePost.Status]) {
         guard postType == .page,
               self.blog == blog else {
             return
