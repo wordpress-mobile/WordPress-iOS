@@ -4,12 +4,14 @@ import UIKit
 /// work in the background.
 actor PostSearchSuggestionsService {
     private let blogID: TaggedManagedObjectID<Blog>
+    private let isEnabled: Bool
     private var cachedAuthorTokens: [PostSearchAuthorToken]?
     private var cachedTags: [PostSearchTagToken]?
     private let coreData: CoreDataStack
 
     init(blog: Blog, coreData: CoreDataStack = ContextManager.shared) {
         self.blogID = TaggedManagedObjectID(blog)
+        self.isEnabled = blog.isAccessibleThroughWPCom()
         self.coreData = coreData
     }
 
@@ -17,7 +19,9 @@ actor PostSearchSuggestionsService {
         guard searchTerm.count > 1 else {
             return [] // Not enough input
         }
-
+        guard isEnabled else {
+            return []
+        }
         async let authors = getAuthorTokens(for: searchTerm, selectedTokens: selectedTokens)
         async let tags = getTagTokens(for: searchTerm, selectedTokens: selectedTokens)
 
