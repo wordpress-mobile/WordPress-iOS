@@ -58,7 +58,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             }.store(in: &cancellables)
 
         viewModel.$footerState
-            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .throttle(for: 0.33, scheduler: DispatchQueue.main, latest: true)
             .removeDuplicates()
             .sink { [weak self] in self?.didUpdateFooterState($0) }
             .store(in: &cancellables)

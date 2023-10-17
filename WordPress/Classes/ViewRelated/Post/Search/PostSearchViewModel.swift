@@ -72,15 +72,18 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     }
 
     func didSelectToken(at index: Int) {
-        selectedTokens.append(suggestedTokens[index])
+        let token = suggestedTokens[index]
+        cancelCurrentRemoteSearch()
         suggestedTokens = []
+        posts = []
+        selectedTokens.append(token)
         searchTerm = ""
     }
 
     // MARK: - Search (Remote)
 
     private func performRemoteSearch() {
-        self.searchService?.delegate = nil // Stop receiving updates from the previous service
+        cancelCurrentRemoteSearch()
 
         guard searchTerm.count > 1 || !selectedTokens.isEmpty else {
             if !posts.isEmpty {
@@ -102,14 +105,18 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         self.searchService = service
     }
 
+    private func cancelCurrentRemoteSearch() {
+        // Stop receiving updates from the previous service
+        self.searchService?.delegate = nil
+    }
+
     private func getSelectedAuthorID() -> NSNumber? {
         if let token = selectedTokens.lazy.compactMap({ $0 as? PostSearchAuthorToken }).first {
             return token.authorID
         }
-        // TODO: Should we continue with this production version behavior?
-//        if settings.shouldShowOnlyMyPosts(), let userID = blog.userID {
-//            return userID
-//        }
+        if settings.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            return userID
+        }
         return nil
     }
 
