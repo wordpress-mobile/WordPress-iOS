@@ -73,7 +73,11 @@ PODS:
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.9.1):
+<<<<<<< HEAD
+  - WordPressKit (8.6.0):
+=======
+  - WordPressKit (8.7.0):
+>>>>>>> 32b11f817d (Update WordPressKit version)
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -125,8 +129,12 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
-  - WordPressKit (>= 8.9.1, ~> 8.9)
+  - WordPressAuthenticator (~> 7.0)
+<<<<<<< HEAD
+  - WordPressKit (~> 8.6.0-beta.1)
+=======
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/add-all-domains-endpoint`)
+>>>>>>> 32b11f817d (Update WordPressKit version)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -163,8 +171,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -183,7 +189,14 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
+<<<<<<< HEAD
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
+=======
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.105.0.podspec
+  WordPressKit:
+    :branch: task/add-all-domains-endpoint
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+>>>>>>> 32b11f817d (Update WordPressKit version)
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -193,6 +206,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
+  WordPressKit:
+    :commit: fa2e7d8b823e959b8eb1f583f588e7fa6a46eb7f
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -225,8 +241,13 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
-  WordPressKit: e774ca87068b8ea02bbb0bd0b75b98aa5d722cb9
+<<<<<<< HEAD
+  WordPressAuthenticator: c12572a8500f1eaf1e8b0d71c8655cc3455a0682
+  WordPressKit: 83014f9798b4407b3ca45516f3e17cd47ac4d319
+=======
+  WordPressAuthenticator: 132ccf00a41443e0ebd792d9a36ff5697a8f5414
+  WordPressKit: a5432c2e3c2247c2b83b3ebf0acec75ae00782ef
+>>>>>>> 32b11f817d (Update WordPressKit version)
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
@@ -240,6 +261,10 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: d1c39154c0208187cdbc28e2ef2b968f382fdf4f
+<<<<<<< HEAD
+PODFILE CHECKSUM: cf5916eb5a5176e1ec0eaf60b4c1f0ad12fb6f52
+=======
+PODFILE CHECKSUM: 8987c29c80465f325c396c54ef1967c9dc1eb8bb
+>>>>>>> 32b11f817d (Update WordPressKit version)
 
 COCOAPODS: 1.14.2
