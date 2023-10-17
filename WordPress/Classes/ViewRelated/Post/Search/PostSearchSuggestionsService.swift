@@ -1,41 +1,5 @@
 import UIKit
 
-protocol PostSearchToken {
-    var icon: UIImage? { get }
-    var value: String { get }
-    var id: AnyHashable { get }
-}
-
-extension PostSearchToken {
-    func asSearchToken() -> UISearchToken {
-        let token = UISearchToken(icon: icon, text: value)
-        token.representedObject = self
-        return token
-    }
-}
-
-struct PostSearchAuthorToken: Hashable, PostSearchToken {
-    let authorID: NSNumber
-    let displayName: String?
-
-    var icon: UIImage? { UIImage(systemName: "person.circle") }
-    var value: String { displayName ?? "" }
-    var id: AnyHashable { self }
-
-    init(author: BlogAuthor) {
-        self.authorID = author.userID
-        self.displayName = author.displayName
-    }
-}
-
-struct PostSearchTagToken: Hashable, PostSearchToken {
-    let tag: String
-
-    var icon: UIImage? { UIImage(systemName: "number.circle") }
-    var value: String { tag }
-    var id: AnyHashable { self }
-}
-
 /// Suggests search token for the given input and context. Performs all of the
 /// work in the background.
 actor PostSearchSuggestionsService {

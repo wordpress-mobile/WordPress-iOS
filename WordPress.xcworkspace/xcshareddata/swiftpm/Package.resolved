@@ -2,102 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "AutomatticAbout",
-        "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
-        "state": {
-          "branch": null,
-          "revision": "0f784591b324e5d3ddc5771808ef8eca923e3de2",
-          "version": "1.1.2"
-        }
-      },
-      {
-        "package": "Charts",
-        "repositoryURL": "https://github.com/danielgindi/Charts",
-        "state": {
-          "branch": null,
-          "revision": "07b23476ad52b926be772f317d8f1d4511ee8d02",
-          "version": "4.1.0"
-        }
-      },
-      {
-        "package": "CwlCatchException",
-        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
-        "state": {
-          "branch": null,
-          "revision": "35f9e770f54ce62dd8526470f14c6e137cef3eea",
-          "version": "2.1.1"
-        }
-      },
-      {
-        "package": "CwlPreconditionTesting",
-        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
-        "state": {
-          "branch": null,
-          "revision": "c21f7bab5ca8eee0a9998bbd17ca1d0eb45d4688",
-          "version": "2.1.0"
-        }
-      },
-      {
-        "package": "Lottie",
-        "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "4ca8023b820b7d5d5ae1e2637c046e3dab0f45d0",
-          "version": "3.4.2"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble",
-        "state": {
-          "branch": null,
-          "revision": "1f3bde57bde12f5e7b07909848c071e9b73d6edc",
-          "version": "10.0.0"
-        }
-      },
-      {
-        "package": "ScreenObject",
-        "repositoryURL": "https://github.com/Automattic/ScreenObject",
-        "state": {
-          "branch": null,
-          "revision": "328db56c62aab91440ec5e07cc9f7eef6e26a26e",
-          "version": "0.2.3"
-        }
-      },
-      {
-        "package": "swift-algorithms",
-        "repositoryURL": "https://github.com/apple/swift-algorithms",
-        "state": {
-          "branch": null,
-          "revision": "b14b7f4c528c942f121c8b860b9410b2bf57825e",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics",
-        "state": {
-          "branch": null,
-          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
-          "version": "1.0.2"
-        }
-      },
-      {
         "package": "BuildkiteTestCollector",
         "repositoryURL": "https://github.com/buildkite/test-collector-swift",
         "state": {
           "branch": null,
           "revision": "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
           "version": "0.3.0"
-        }
-      },
-      {
-        "package": "XCUITestHelpers",
-        "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
-        "state": {
-          "branch": null,
-          "revision": "5179cb69d58b90761cc713bdee7740c4889d3295",
-          "version": "0.4.0"
         }
       }
     ]

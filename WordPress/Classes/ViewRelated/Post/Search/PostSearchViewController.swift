@@ -69,7 +69,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(tableView)
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.tokenCellID)
+        tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.postCellID)
 
         tableView.dataSource = dataSource
@@ -103,18 +103,11 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
     private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch SectionID(rawValue: indexPath.section)! {
         case .tokens:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.tokenCellID, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.tokenCellID, for: indexPath) as! PostSearchTokenTableCell
             let token = viewModel.suggestedTokens[indexPath.row]
-            var configuration = cell.defaultContentConfiguration()
-            configuration.text = token.value
-            configuration.image = token.icon
-            configuration.imageProperties.tintColor = .secondaryLabel
-            cell.contentConfiguration = configuration
-            if indexPath.row == viewModel.suggestedTokens.count - 1 {
-                cell.separatorInset = UIEdgeInsets.zero
-            } else {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0)
-            }
+            let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
+            cell.configure(with: token, isLast: isLast)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: isLast ? 0 : view.bounds.size.width, bottom: 0, right: 0)
             return cell
         case .posts:
             // TODO: Update the cell design

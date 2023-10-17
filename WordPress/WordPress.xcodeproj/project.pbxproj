@@ -481,6 +481,10 @@
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CB424F62AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */; };
 		0CB424F72AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */; };
+		0CB424EE2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */; };
+		0CB424EF2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */; };
+		0CB424F12ADEE52A0080B807 /* PostSearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */; };
+		0CB424F22ADEE52A0080B807 /* PostSearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -6161,6 +6165,8 @@
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
 		0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidColorActivityIndicator.swift; sourceTree = "<group>"; };
+		0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchTokenTableCell.swift; sourceTree = "<group>"; };
+		0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchToken.swift; sourceTree = "<group>"; };
 		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -10267,8 +10273,10 @@
 			isa = PBXGroup;
 			children = (
 				0CD9CC9E2AD73A560044A33C /* PostSearchViewController.swift */,
-				0CA10F6C2ADAE86D00CE75AC /* PostSearchSuggestionsService.swift */,
 				0CD9CCA22AD831590044A33C /* PostSearchViewModel.swift */,
+				0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */,
+				0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */,
+				0CA10F6C2ADAE86D00CE75AC /* PostSearchSuggestionsService.swift */,
 				0CA10FA62ADB76ED00CE75AC /* PostSearchService.swift */,
 			);
 			path = Search;
@@ -22309,6 +22317,7 @@
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
 				FECA442F28350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */,
+				0CB424EE2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				C81CCD65243AECA200A83E27 /* TenorGIF.swift in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
@@ -22777,6 +22786,7 @@
 				836498CE281735CC00A2C170 /* BloggingPromptsHeaderView.swift in Sources */,
 				3F43703F2893201400475B6E /* JetpackOverlayViewController.swift in Sources */,
 				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
+				0CB424F12ADEE52A0080B807 /* PostSearchToken.swift in Sources */,
 				98AA6D1126B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
 				7E4A773720F802A8001C706D /* ActivityRangesFactory.swift in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
@@ -24263,6 +24273,7 @@
 				FABB223D2602FC2C00C8785C /* ThisWeekWidgetStats.swift in Sources */,
 				FABB223E2602FC2C00C8785C /* PostAutoUploadMessageProvider.swift in Sources */,
 				FABB223F2602FC2C00C8785C /* GutenbergMediaPickerHelper.swift in Sources */,
+				0CB424EF2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */,
 				FABB22402602FC2C00C8785C /* FeatureFlag.swift in Sources */,
 				3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */,
 				80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */,
@@ -24819,6 +24830,7 @@
 				FABB23D22602FC2C00C8785C /* PostServiceOptions.m in Sources */,
 				FABB23D32602FC2C00C8785C /* DiffTitleValue.swift in Sources */,
 				FABB23D42602FC2C00C8785C /* ReaderCommentsViewController.swift in Sources */,
+				0CB424F22ADEE52A0080B807 /* PostSearchToken.swift in Sources */,
 				FABB23D52602FC2C00C8785C /* SiteCreationRequest+Validation.swift in Sources */,
 				FABB23D62602FC2C00C8785C /* FormattableContentGroup.swift in Sources */,
 				FABB23D72602FC2C00C8785C /* MenuItemSourceViewController.m in Sources */,
