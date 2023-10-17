@@ -10,7 +10,14 @@ final class PostListHeaderView: UIView {
         return stackView
     }()
 
+    private lazy var labelsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        return stackView
+    }()
+
     private let dateLabel = UILabel()
+    private let dotLabel = UILabel()
     private let authorLabel = UILabel()
     private let ellipsisButton = UIButton(type: .custom)
 
@@ -35,7 +42,21 @@ final class PostListHeaderView: UIView {
     // MARK: - Setup
 
     private func setupView() {
-        let dotLabel = UILabel()
+        setupLabelStackView()
+        setupEllipsisButton()
+
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.addArrangedSubviews([
+            labelsStackView,
+            ellipsisButton
+        ])
+        mainStackView.spacing = 16
+
+        addSubview(mainStackView)
+        pinSubviewToAllEdges(mainStackView)
+    }
+
+    private func setupLabelStackView() {
         dotLabel.text = "\u{2022}"
 
         let labels = [
@@ -56,26 +77,23 @@ final class PostListHeaderView: UIView {
             }
         }
 
-        let labelsStackView = UIStackView(arrangedSubviews: labels)
         labelsStackView.translatesAutoresizingMaskIntoConstraints = false
+        labelsStackView.addArrangedSubviews(labels)
         labelsStackView.spacing = 2
+    }
 
+    private func setupEllipsisButton() {
         ellipsisButton.translatesAutoresizingMaskIntoConstraints = false
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
         ellipsisButton.tintColor = .listIcon
+        ellipsisButton.addTarget(self, action: #selector(ellipsisButtonTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             ellipsisButton.widthAnchor.constraint(equalToConstant: 24)
         ])
+    }
 
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.addArrangedSubviews([
-            labelsStackView,
-            ellipsisButton
-        ])
-        mainStackView.spacing = 16
-
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+    @objc private func ellipsisButtonTapped() {
+        // TODO
     }
 }
