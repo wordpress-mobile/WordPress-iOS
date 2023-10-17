@@ -51,7 +51,6 @@ final class PostSearchService {
         options.purgesLocalSync = false
         options.search = criteria.searchTerm
         options.authorID = criteria.authorID
-        // TODO: Add support for `tag` parameter
         options.tag = criteria.tag
 
         let postService = PostService(managedObjectContext: coreDataStack.mainContext)

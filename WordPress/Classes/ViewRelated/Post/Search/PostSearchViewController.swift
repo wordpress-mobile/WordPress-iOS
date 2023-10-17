@@ -6,13 +6,11 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     enum SectionID: Int, CaseIterable {
         case tokens = 0
-        case separator
         case posts
     }
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case separator
         case post(NSManagedObjectID)
     }
 
@@ -72,7 +70,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         view.pinSubviewToAllEdges(tableView)
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.tokenCellID)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.separatorCellID)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.postCellID)
 
         tableView.dataSource = dataSource
@@ -96,11 +93,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         let tokenIDs = viewModel.suggestedTokens.map { ItemID.token($0.id) }
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
-        snapshot.appendSections([SectionID.separator])
-        if !viewModel.suggestedTokens.isEmpty {
-            snapshot.appendItems([ItemID.separator], toSection: SectionID.separator)
-        }
-
         snapshot.appendSections([SectionID.posts])
         let postIDs = viewModel.posts.map { ItemID.post($0.objectID) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
@@ -118,24 +110,14 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             configuration.image = token.icon
             configuration.imageProperties.tintColor = .secondaryLabel
             cell.contentConfiguration = configuration
-            cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0)
-            return cell
-        case .separator:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.separatorCellID, for: indexPath)
-            if cell.viewWithTag(25) == nil {
-                cell.backgroundColor = UIColor.secondarySystemBackground
-                cell.selectionStyle = .none
+            if indexPath.row == viewModel.suggestedTokens.count - 1 {
+                cell.separatorInset = UIEdgeInsets.zero
+            } else {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0)
-
-                let sizingView = UIView()
-                sizingView.tag = 25
-                sizingView.translatesAutoresizingMaskIntoConstraints = false
-                cell.contentView.addSubview(sizingView)
-                cell.contentView.pinSubviewToAllEdges(sizingView)
-                sizingView.heightAnchor.constraint(equalToConstant: 16).isActive = true
             }
             return cell
         case .posts:
+            // TODO: Update the cell design
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
             let post = viewModel.posts[indexPath.row]
             var configuration = cell.defaultContentConfiguration()
@@ -180,8 +162,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         switch SectionID(rawValue: indexPath.section)! {
         case .tokens:
             viewModel.didSelectToken(at: indexPath.row)
-        case .separator:
-            break
         case .posts:
             break // TODO: Show post
         }
@@ -206,6 +186,5 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
 private enum Constants {
     static let postCellID = "postCellID"
-    static let separatorCellID = "separatorCellID"
     static let tokenCellID = "suggestedTokenCellID"
 }
