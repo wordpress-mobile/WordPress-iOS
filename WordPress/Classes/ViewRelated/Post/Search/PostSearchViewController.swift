@@ -98,6 +98,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         dataSource.apply(snapshot, animatingDifferences: false)
+
+        updateSuggestedTokenCells()
     }
 
     private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -128,6 +130,16 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             configuration.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = configuration
             return cell
+        }
+    }
+
+    // The diffable data source prevents the reloads of the existing cells
+    private func updateSuggestedTokenCells() {
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            if let cell = tableView.cellForRow(at: indexPath) as? PostSearchTokenTableCell {
+                let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
+                cell.separator.isHidden = !isLast
+            }
         }
     }
 

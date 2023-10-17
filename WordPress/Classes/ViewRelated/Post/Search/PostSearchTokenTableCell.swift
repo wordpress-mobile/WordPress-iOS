@@ -6,7 +6,7 @@ final class PostSearchTokenTableCell: UITableViewCell {
     private lazy var stackView = UIStackView(arrangedSubviews: [
         iconView, titleLabel, UIView()
     ])
-    private let separator = UIView()
+    let separator = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
