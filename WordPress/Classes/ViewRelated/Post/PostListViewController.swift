@@ -158,6 +158,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let bundle = Bundle.main
 
         // Register the cells
+        tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
 
         let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
@@ -306,18 +307,22 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        guard let interactivePostView = cell as? InteractivePostView,
-            let configurablePostView = cell as? ConfigurablePostView else {
-                fatalError("Cell does not implement the required protocols")
+//        TODO: Remove later
+//        guard let interactivePostView = cell as? InteractivePostView,
+//            let configurablePostView = cell as? ConfigurablePostView else {
+//                fatalError("Cell does not implement the required protocols")
+//        }
+//
+//        interactivePostView.setInteractionDelegate(self)
+//        interactivePostView.setActionSheetDelegate(self)
+//
+//        configurablePostView.configure(with: post)
+
+        // TODO: Hide author if only showing my posts?
+        guard let cell = cell as? PostListCell else {
+            return
         }
-
-        interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate(self)
-
-        configurablePostView.configure(with: post)
-
-        configurePostCell(cell)
-        configureRestoreCell(cell)
+        cell.configure(with: PostListItemViewModel(post: post))
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
@@ -326,26 +331,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = postCardRestoreCellIdentifier
         } else {
-            identifier = postCellIdentifier
+            identifier = PostListCell.defaultReuseID
         }
 
         return identifier
-    }
-
-    private func configurePostCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? PostCardCell else {
-            return
-        }
-
-        cell.shouldHideAuthor = showingJustMyPosts
-    }
-
-    private func configureRestoreCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? RestorePostTableViewCell else {
-            return
-        }
-
-        cell.isCompact = isCompact
     }
 
     // MARK: - Post Actions
