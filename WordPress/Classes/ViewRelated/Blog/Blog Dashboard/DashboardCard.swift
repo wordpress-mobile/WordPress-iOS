@@ -92,7 +92,11 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil) -> Bool {
+    func shouldShow(
+        for blog: Blog,
+        apiResponse: BlogDashboardRemoteEntity? = nil,
+        isJetpack: Bool = AppConfiguration.isJetpack
+    ) -> Bool {
         switch self {
         case .jetpackInstall:
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
@@ -127,7 +131,7 @@ enum DashboardCard: String, CaseIterable {
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
-            return FeatureFlag.domainFocus.enabled && AppConfiguration.isJetpack
+            return FeatureFlag.domainFocus.enabled && isJetpack
         }
     }
 

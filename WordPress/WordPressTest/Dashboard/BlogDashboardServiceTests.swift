@@ -22,7 +22,18 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
-        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
+        service = BlogDashboardService(
+            managedObjectContext: mainContext,
+            // At the time of writing, tests will fail when the service (DashboardCard under the hood)
+            // is running "as if in Jetpack".
+            //
+            // See https://github.com/wordpress-mobile/WordPress-iOS/pull/21740
+            isJetpack: false,
+            remoteService: remoteServiceMock,
+            persistence: persistenceMock,
+            repository: repositoryMock,
+            postsParser: postsParserMock
+        )
 
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)

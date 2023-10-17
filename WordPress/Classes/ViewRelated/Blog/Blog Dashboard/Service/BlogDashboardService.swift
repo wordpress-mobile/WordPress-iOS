@@ -7,12 +7,17 @@ final class BlogDashboardService {
     private let persistence: BlogDashboardPersistence
     private let postsParser: BlogDashboardPostsParser
     private let repository: UserPersistentRepository
+    private let isJetpack: Bool
 
-    init(managedObjectContext: NSManagedObjectContext,
-         remoteService: DashboardServiceRemote? = nil,
-         persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
-         repository: UserPersistentRepository = UserDefaults.standard,
-         postsParser: BlogDashboardPostsParser? = nil) {
+    init(
+        managedObjectContext: NSManagedObjectContext,
+        isJetpack: Bool,
+        remoteService: DashboardServiceRemote? = nil,
+        persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
+        repository: UserPersistentRepository = UserDefaults.standard,
+        postsParser: BlogDashboardPostsParser? = nil
+    ) {
+        self.isJetpack = isJetpack
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
         self.repository = repository
@@ -88,7 +93,7 @@ private extension BlogDashboardService {
         let personalizationService = BlogDashboardPersonalizationService(repository: repository, siteID: dotComID)
         var cards: [DashboardCardModel] = DashboardCard.allCases.compactMap { card in
             guard personalizationService.isEnabled(card),
-                  card.shouldShow(for: blog, apiResponse: entity) else {
+                  card.shouldShow(for: blog, apiResponse: entity, isJetpack: isJetpack) else {
                 return nil
             }
             return DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
