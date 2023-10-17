@@ -63,6 +63,16 @@ final class PostListCell: UITableViewCell, Reusable {
             snippetLabel.isHidden = true
         }
 
+        imageLoader.prepareForReuse()
+        featuredImageView.isHidden = viewModel.imageURL == nil
+        if let imageURL = viewModel.imageURL {
+            let host = MediaHost(with: viewModel.post) { error in
+                WordPressAppDelegate.crashLogging?.logError(error)
+            }
+            let preferredSize = CGSize(width: 44, height: 44)
+            imageLoader.loadImage(with: imageURL, from: host, preferredSize: preferredSize)
+        }
+
         statusLabel.text = viewModel.status
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
@@ -123,6 +133,7 @@ final class PostListCell: UITableViewCell, Reusable {
 
     private func setupFeaturedImageView() {
         featuredImageView.translatesAutoresizingMaskIntoConstraints = false
+        featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.layer.masksToBounds = true
         featuredImageView.layer.cornerRadius = 5
 
