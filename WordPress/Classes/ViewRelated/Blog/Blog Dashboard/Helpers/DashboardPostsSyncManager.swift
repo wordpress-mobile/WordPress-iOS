@@ -5,7 +5,7 @@ protocol DashboardPostsSyncManagerListener: AnyObject {
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
                      posts: [AbstractPost]?,
-                     for statuses: [String])
+                     for statuses: [BasePost.Status])
 }
 
 class DashboardPostsSyncManager {
@@ -50,7 +50,7 @@ class DashboardPostsSyncManager {
         }
     }
 
-    func syncPosts(blog: Blog, postType: PostType, statuses: [String]) {
+    func syncPosts(blog: Blog, postType: PostType, statuses: [BasePost.Status]) {
         let toBeSynced = postType.statusesNotBeingSynced(statuses, for: blog)
         guard toBeSynced.isEmpty == false else {
             return
@@ -59,7 +59,7 @@ class DashboardPostsSyncManager {
         postType.markStatusesAsBeingSynced(toBeSynced, for: blog)
 
         let options = PostServiceSyncOptions()
-        options.statuses = toBeSynced
+        options.statuses = toBeSynced.strings
         options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
         options.order = .descending
@@ -98,7 +98,7 @@ class DashboardPostsSyncManager {
                                             blog: Blog,
                                             postType: PostType,
                                             posts: [AbstractPost]?,
-                                            for statuses: [String]) {
+                                            for statuses: [BasePost.Status]) {
         for aListener in listeners {
             aListener.postsSynced(success: success, blog: blog, postType: postType, posts: posts, for: statuses)
         }
@@ -119,8 +119,8 @@ private extension DashboardPostsSyncManager.PostType {
         }
     }
 
-    func statusesNotBeingSynced(_ statuses: [String], for blog: Blog) -> [String] {
-        var currentlySyncing: [String]
+    func statusesNotBeingSynced(_ statuses: [BasePost.Status], for blog: Blog) -> [BasePost.Status] {
+        var currentlySyncing: [BasePost.Status]
         switch self {
         case .post:
             currentlySyncing = blog.dashboardState.postsSyncingStatuses
@@ -131,7 +131,7 @@ private extension DashboardPostsSyncManager.PostType {
         return notCurrentlySyncing
     }
 
-    func markStatusesAsBeingSynced(_ toBeSynced: [String], for blog: Blog) {
+    func markStatusesAsBeingSynced(_ toBeSynced: [BasePost.Status], for blog: Blog) {
         switch self {
         case .post:
             blog.dashboardState.postsSyncingStatuses.append(contentsOf: toBeSynced)
@@ -140,7 +140,7 @@ private extension DashboardPostsSyncManager.PostType {
         }
     }
 
-    func stopSyncingStatuses(_ statuses: [String], for blog: Blog) {
+    func stopSyncingStatuses(_ statuses: [BasePost.Status], for blog: Blog) {
         switch self {
         case .post:
             blog.dashboardState.postsSyncingStatuses = blog.dashboardState.postsSyncingStatuses.filter({ !statuses.contains($0) })
