@@ -16,15 +16,10 @@ GEM
   specs:
     CFPropertyList (3.0.6)
       rexml
-    activesupport (7.1.1)
-      base64
-      bigdecimal
+    activesupport (7.0.8)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      connection_pool (>= 2.2.5)
-      drb
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
-      mutex_m
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
@@ -52,7 +47,6 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     babosa (1.0.4)
     base64 (0.1.1)
-    bigdecimal (3.1.4)
     buildkit (1.5.0)
       sawyer (>= 0.6)
     chroma (0.2.0)
@@ -104,7 +98,6 @@ GEM
       highline (~> 2.0.0)
     commonmarker (0.23.10)
     concurrent-ruby (1.2.2)
-    connection_pool (2.4.1)
     cork (0.3.0)
       colored2 (~> 3.1)
     danger (9.3.2)
@@ -142,8 +135,6 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
-    drb (2.1.1)
-      ruby2_keywords
     emoji_regex (3.2.3)
     escape (0.0.4)
     ethon (0.16.0)
@@ -306,7 +297,6 @@ GEM
     molinillo (0.8.0)
     multi_json (1.15.0)
     multipart-post (2.3.0)
-    mutex_m (0.1.2)
     nanaimo (0.3.0)
     nap (1.1.0)
     naturally (2.2.1)
