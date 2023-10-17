@@ -206,7 +206,8 @@ final public class PushNotificationsManager: NSObject {
                         handleAuthenticationNotification,
                         handleInactiveNotification,
                         handleBackgroundNotification,
-                        handleQuickStartLocalNotification]
+                        handleQuickStartLocalNotification,
+                        JetpackAppStoreNotificationHandler.handleJetpackAppInstallationNotification]
 
         for handler in handlers {
             if handler(userInfo, userInteraction, completionHandler) {

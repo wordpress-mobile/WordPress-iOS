@@ -193,6 +193,10 @@
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
+		01A3FF5A2ADE9A39007C8364 /* JetpackAppStoreInstallationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3FF592ADE9A38007C8364 /* JetpackAppStoreInstallationCoordinator.swift */; };
+		01A3FF5B2ADE9A39007C8364 /* JetpackAppStoreInstallationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3FF592ADE9A38007C8364 /* JetpackAppStoreInstallationCoordinator.swift */; };
+		01A3FF5D2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3FF5C2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift */; };
+		01A3FF5E2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3FF5C2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift */; };
 		01A8508B2A8A126400BD8A97 /* support_chat_widget.css in Resources */ = {isa = PBXBuildFile; fileRef = 01A8508A2A8A126400BD8A97 /* support_chat_widget.css */; };
 		01A8508C2A8A126400BD8A97 /* support_chat_widget.css in Resources */ = {isa = PBXBuildFile; fileRef = 01A8508A2A8A126400BD8A97 /* support_chat_widget.css */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -5861,6 +5865,8 @@
 		0189AF042ACAD89700F63393 /* ShoppingCartService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartService.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
+		01A3FF592ADE9A38007C8364 /* JetpackAppStoreInstallationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackAppStoreInstallationCoordinator.swift; sourceTree = "<group>"; };
+		01A3FF5C2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackAppStoreNotificationHandler.swift; sourceTree = "<group>"; };
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -9857,6 +9863,15 @@
 			name = Coordinators;
 			sourceTree = "<group>";
 		};
+		01A3FF582ADE9A17007C8364 /* JetpackAppInstallation */ = {
+			isa = PBXGroup;
+			children = (
+				01A3FF592ADE9A38007C8364 /* JetpackAppStoreInstallationCoordinator.swift */,
+				01A3FF5C2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift */,
+			);
+			path = JetpackAppInstallation;
+			sourceTree = "<group>";
+		};
 		01E258002ACC36DC00F09666 /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -13538,6 +13553,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				01A3FF582ADE9A17007C8364 /* JetpackAppInstallation */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
 				B50C0C441EF429D500372C65 /* Aztec */,
@@ -21357,6 +21373,7 @@
 				7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */,
 				7E504D4A21A5B8D400E341A8 /* PostEditorNavigationBarManager.swift in Sources */,
 				F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
+				01A3FF5D2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift in Sources */,
 				73CB13972289BEFB00265F49 /* Charts+LargeValueFormatter.swift in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */,
@@ -21778,6 +21795,7 @@
 				178DDD1B266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
 				C3B5545329661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */,
+				01A3FF5A2ADE9A39007C8364 /* JetpackAppStoreInstallationCoordinator.swift in Sources */,
 				3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */,
 				FFEECFFC2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */,
@@ -24389,6 +24407,7 @@
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,
 				4A2C73F52A95856000ACE79E /* PostRepository.swift in Sources */,
 				98DCF4A6275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
+				01A3FF5E2ADE9B83007C8364 /* JetpackAppStoreNotificationHandler.swift in Sources */,
 				FABB22C42602FC2C00C8785C /* ReaderPostCellActions.swift in Sources */,
 				FABB22C52602FC2C00C8785C /* ActivityStore.swift in Sources */,
 				FABB22C62602FC2C00C8785C /* NSAttributedString+WPRichText.swift in Sources */,
@@ -24587,6 +24606,7 @@
 				FABB23492602FC2C00C8785C /* MenuItemSourceCell.m in Sources */,
 				FABB234A2602FC2C00C8785C /* BlogDetailsViewController.m in Sources */,
 				FABB234B2602FC2C00C8785C /* UIBarButtonItem+MeBarButton.swift in Sources */,
+				01A3FF5B2ADE9A39007C8364 /* JetpackAppStoreInstallationCoordinator.swift in Sources */,
 				80D9D00129E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
 				FABB234C2602FC2C00C8785C /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
