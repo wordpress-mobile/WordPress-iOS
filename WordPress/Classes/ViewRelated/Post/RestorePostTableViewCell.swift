@@ -13,11 +13,6 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     private weak var delegate: InteractivePostViewDelegate?
 
-    var isCompact: Bool = false {
-        didSet {
-            isCompact ? configureCompact() : configureDefault()
-        }
-    }
     var post: Post?
 
     func configure(with post: Post) {
@@ -45,14 +40,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
         restoreButton.setTitle(buttonTitle, for: .normal)
         restoreButton.setImage(.gridicon(.undo, size: CGSize(width: Constants.imageSize,
                                                              height: Constants.imageSize)), for: .normal)
-    }
 
-    private func configureCompact() {
-        topMargin.constant = Constants.compactMargin
-        postContentView.layer.borderWidth = 0
-    }
-
-    private func configureDefault() {
         topMargin.constant = Constants.defaultMargin
         postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor.cgColor
         postContentView.layer.borderWidth = .hairlineBorderWidth
@@ -82,7 +70,6 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     private enum Constants {
         static let defaultMargin: CGFloat = 16
-        static let compactMargin: CGFloat = 0
         static let imageSize: CGFloat = 18.0
     }
 }

@@ -6,17 +6,10 @@ import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    private let postCompactCellIdentifier = "PostCompactCellIdentifier"
-    private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    private let postCompactCellNibName = "PostCompactCell"
-    private let postCardTextCellNibName = "PostCardCell"
     private let postCardRestoreCellNibName = "RestorePostTableViewCell"
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
-    private var postCellIdentifier: String {
-        return isCompact ? postCompactCellIdentifier : postCardTextCellIdentifier
-    }
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
@@ -24,8 +17,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private let postCardEstimatedRowHeight = CGFloat(300.0)
     private let postListHeightForFooterView = CGFloat(50.0)
-
-    private var database: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
     private lazy var _tableViewHandler: PostListTableViewHandler = {
         let tableViewHandler = PostListTableViewHandler(tableView: tableView)
@@ -43,27 +34,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private var postViewIcon: UIImage? {
-        return isCompact ? UIImage(named: "icon-post-view-card") : .gridicon(.listUnordered)
-    }
-
     private lazy var postActionSheet: PostActionSheet = {
         return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
     }()
 
-    private lazy var postsViewButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(image: postViewIcon, style: .done, target: self, action: #selector(togglePostsView))
-    }()
-
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
-    }
-
-    private var isCompact: Bool = false {
-        didSet {
-            database.set(isCompact, forKey: Constants.exhibitionModeKey)
-            showCompactOrDefault()
-        }
     }
 
     /// If set, when the post list appear it will show the tab for this status
@@ -123,10 +99,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
-        updateGhostableTableViewOptions()
-
-        configureNavigationButtons()
-
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
 
@@ -155,12 +127,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        configureCompactOrDefault()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         toggleCreateButton()
@@ -176,45 +142,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    func configureNavigationButtons() {
-        // TODO: Remove
-        // navigationItem.rightBarButtonItems = [postsViewButtonItem]
-    }
-
-    @objc func togglePostsView() {
-        isCompact.toggle()
-
-        WPAppAnalytics.track(.postListToggleButtonPressed, withProperties: ["mode": isCompact ? Constants.compact: Constants.card])
-    }
-
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
         return postListHeightForFooterView
-    }
-
-    override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        updateGhostableTableViewOptions()
-        super.selectedFilterDidChange(filterBar)
-    }
-
-    override func refresh(_ sender: AnyObject) {
-        updateGhostableTableViewOptions()
-        super.refresh(sender)
-    }
-
-    /// Update the `GhostOptions` to correctly show compact or default cells
-    private func updateGhostableTableViewOptions() {
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [50])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        ghostableTableView.removeGhostContent()
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-    }
-
-    private func configureCompactOrDefault() {
-        isCompact = database.object(forKey: Constants.exhibitionModeKey) as? Bool ?? false
     }
 
     override func configureTableView() {
@@ -227,11 +158,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let bundle = Bundle.main
 
         // Register the cells
-        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: bundle)
-        tableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
-
-        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: bundle)
-        tableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
 
         let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
@@ -244,26 +170,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.configureGhostableTableView()
 
         ghostingEnabled = true
-
-        // Register the cells
-        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
-        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
-
-        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
-    }
-
-    func showCompactOrDefault() {
-        updateGhostableTableViewOptions()
-
-        postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
-        postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
-        postsViewButtonItem.image = postViewIcon
-
-        if isViewOnScreen() {
-            tableView.reloadSections([0], with: .automatic)
-            ghostableTableView.reloadSections([0], with: .automatic)
-        }
     }
 
     private func configureInitialFilterIfNeeded() {
@@ -704,6 +610,6 @@ private extension PostListViewController {
 
 extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
-        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompact)
+        postActionSheet.show(for: postCardStatusViewModel, from: view)
     }
 }
