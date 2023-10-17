@@ -11,7 +11,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case post(NSManagedObjectID)
+        case post(PostSearchResult.ID)
     }
 
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -94,7 +94,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
         snapshot.appendSections([SectionID.posts])
-        let postIDs = viewModel.posts.map { ItemID.post($0.objectID) }
+        let postIDs = viewModel.posts.map { ItemID.post($0.id) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -114,19 +114,10 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         case .posts:
             // TODO: Update the cell design
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
-            let post = viewModel.posts[indexPath.row]
+            let result = viewModel.posts[indexPath.row]
             var configuration = cell.defaultContentConfiguration()
-            let title = post.titleForDisplay() ?? ""
-            let string = NSMutableAttributedString(string: title, attributes: [
-                .font: UIFont.preferredFont(forTextStyle: .body)
-            ])
-            if let range = title.range(of: viewModel.searchTerm, options: [.caseInsensitive, .diacriticInsensitive]) {
-                string.setAttributes([
-                    .backgroundColor: UIColor.systemYellow.withAlphaComponent(0.25)
-                ], range: NSRange(range, in: title))
-            }
-            configuration.attributedText = string
-            configuration.secondaryText = post.latest().dateStringForDisplay()
+            configuration.attributedText = result.title
+            configuration.secondaryText = result.post.latest().dateStringForDisplay()
             configuration.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = configuration
             return cell

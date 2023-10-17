@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 protocol PostSearchServiceDelegate: AnyObject {
-    func service(_ service: PostSearchService, didAppendPosts posts: [AbstractPost])
+    func service(_ service: PostSearchService, didAppendPosts page: [PostSearchResult])
     func serviceDidUpdateState(_ service: PostSearchService)
 }
 
@@ -77,12 +77,48 @@ final class PostSearchService {
 
             let newPosts = posts.filter { !postIDs.contains($0.objectID) }
             postIDs.formUnion(newPosts.map(\.objectID))
-            delegate?.service(self, didAppendPosts: newPosts)
+
+            preprocess(newPosts) { [weak self] in
+                guard let self else { return }
+                self.delegate?.service(self, didAppendPosts: $0)
+            }
         case .failure(let error):
             self.error = error
         }
         isLoading = false
         delegate?.serviceDidUpdateState(self)
+    }
+
+    private func preprocess(_ posts: [AbstractPost], _ completion: @escaping ([PostSearchResult]) -> Void) {
+        let rawTitles = posts.map(\.postTitle)
+        let searchTerm = criteria.searchTerm
+        DispatchQueue.global().async {
+            let terms = searchTerm
+                .components(separatedBy: .whitespaces)
+                .filter { !$0.isEmpty }
+            let titles = rawTitles.map { PostSearchService.makeTitle(for: $0 ?? "", terms: terms) }
+            let results = zip(posts, titles).map {
+                PostSearchResult(post: $0, title: $1, searchTerm: searchTerm)
+            }
+            DispatchQueue.main.async {
+                completion(results)
+            }
+        }
+    }
+}
+
+struct PostSearchResult {
+    let post: AbstractPost
+    /// Preprocessed titles with highlighted search ranges.
+    let title: NSAttributedString
+    let searchTerm: String
+
+    var id: ID { ID(objectID: post.objectID, searchTerm: searchTerm) }
+
+    struct ID: Hashable {
+        let objectID: NSManagedObjectID
+        /// Adding search term because the cell updates as the term changes.
+        let searchTerm: String
     }
 }
 
@@ -90,4 +126,59 @@ struct PostSearchCriteria: Hashable {
     let searchTerm: String
     let authorID: NSNumber?
     let tag: String?
+}
+
+extension PostSearchService {
+    // Both decoding & searching are expensive, so the service performs these
+    // operations in the background.
+    static func makeTitle(for title: String, terms: [String]) -> NSAttributedString {
+        let title = title
+            .trimmingCharacters(in: .whitespaces)
+            .stringByDecodingXMLCharacters()
+
+        let ranges = terms.flatMap {
+            title.ranges(of: $0, options: [.caseInsensitive, .diacriticInsensitive])
+        }.sorted { $0.lowerBound < $1.lowerBound }
+
+        let string = NSMutableAttributedString(string: title, attributes: [
+            .font: WPStyleGuide.fontForTextStyle(.body)
+        ])
+        for range in collapseAdjacentRanges(ranges, in: title) {
+            string.setAttributes([
+                .backgroundColor: UIColor.systemYellow.withAlphaComponent(0.25)
+            ], range: NSRange(range, in: title))
+        }
+        return string
+    }
+
+    private static func collapseAdjacentRanges(_ ranges: [Range<String.Index>], in string: String) -> [Range<String.Index>] {
+        var output: [Range<String.Index>] = []
+        var ranges = ranges
+        while let rhs = ranges.popLast() {
+            if let lhs = ranges.last,
+               rhs.lowerBound > string.startIndex,
+               lhs.upperBound == string.index(before: rhs.lowerBound),
+               string[string.index(before: rhs.lowerBound)].isWhitespace {
+                let range = lhs.lowerBound..<rhs.upperBound
+                ranges.removeLast()
+                ranges.append(range)
+            } else {
+                output.append(rhs)
+            }
+        }
+        return output
+    }
+}
+
+private extension String {
+    func ranges(of string: String, options: String.CompareOptions) -> [Range<String.Index>] {
+        var ranges: [Range<String.Index>] = []
+        var startIndex = self.startIndex
+        while startIndex < endIndex,
+              let range = range(of: string, options: options, range: startIndex..<endIndex) {
+            ranges.append(range)
+            startIndex = range.upperBound
+        }
+        return ranges
+    }
 }

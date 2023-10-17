@@ -485,6 +485,7 @@
 		0CB424EF2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */; };
 		0CB424F12ADEE52A0080B807 /* PostSearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */; };
 		0CB424F22ADEE52A0080B807 /* PostSearchToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */; };
+		0CB424F42ADF3CBE0080B807 /* PostSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F32ADF3CBE0080B807 /* PostSearchServiceTests.swift */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -6167,6 +6168,7 @@
 		0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidColorActivityIndicator.swift; sourceTree = "<group>"; };
 		0CB424ED2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchTokenTableCell.swift; sourceTree = "<group>"; };
 		0CB424F02ADEE52A0080B807 /* PostSearchToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchToken.swift; sourceTree = "<group>"; };
+		0CB424F32ADF3CBE0080B807 /* PostSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchServiceTests.swift; sourceTree = "<group>"; };
 		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -12312,6 +12314,7 @@
 				59ECF87A1CB7061D00E68F25 /* PostSharingControllerTests.swift */,
 				F18B43771F849F580089B817 /* PostAttachmentTests.swift */,
 				8B6BD54F24293FBE00DB8F28 /* PrepublishingNudgesViewControllerTests.swift */,
+				0CB424F32ADF3CBE0080B807 /* PostSearchServiceTests.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -23552,6 +23555,7 @@
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
 				F4DD58362A168229009A772D /* ReaderPostCellActionsTests.swift in Sources */,
 				3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */,
+				0CB424F42ADF3CBE0080B807 /* PostSearchServiceTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
 				8B7623382384373E00AB3EE7 /* PageListViewControllerTests.swift in Sources */,
