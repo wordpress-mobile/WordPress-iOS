@@ -330,16 +330,18 @@ extension WPStyleGuide {
     }
 
     public class func applyNewReaderFollowButtonStyle(_ button: UIButton) {
+        let font: UIFont = .preferredFont(forTextStyle: .subheadline)
         button.setTitleColor(.invertedLabel, for: .normal)
         button.setTitleColor(.secondaryLabel, for: .selected)
         button.backgroundColor = button.isSelected ? .clear : .label
         button.layer.borderColor = UIColor.separator.cgColor
         button.layer.cornerRadius = 5.0
-        button.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        button.titleLabel?.font = font
         button.tintColor = .clear
 
         button.configuration = .plain()
         button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 24.0, bottom: 8.0, trailing: 24.0)
+        button.configuration?.titleTextAttributesTransformer = .transformer(with: font)
         applyCommonReaderFollowButtonStyles(button)
     }
 
