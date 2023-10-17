@@ -167,12 +167,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
 
-    override func configureGhostableTableView() {
-        super.configureGhostableTableView()
-
-        ghostingEnabled = true
-    }
-
     private func configureInitialFilterIfNeeded() {
         guard let initialFilterWithPostStatus = initialFilterWithPostStatus else {
             return
