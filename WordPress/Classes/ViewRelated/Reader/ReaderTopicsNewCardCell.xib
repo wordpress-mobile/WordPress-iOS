@@ -33,7 +33,7 @@
                                         <rect key="frame" x="16" y="52" width="396" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="tDm-cO-RQC"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tDm-cO-RQC"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nXm-pz-kEj">
                                             <size key="itemSize" width="128" height="128"/>
