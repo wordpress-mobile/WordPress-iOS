@@ -297,7 +297,24 @@ private extension PostServiceRemote {
 
 extension PostRepository {
 
-    func paginate<P: AbstractPost>(type: P.Type = P.self, statuses: [BasePost.Status], authorUserID: NSNumber? = nil, offset: Int, number: Int, in blogID: TaggedManagedObjectID<Blog>) async throws -> [TaggedManagedObjectID<P>] {
+    /// Fetch posts or pages from the given site page by page. All fetched posts are saved to the local database.
+    ///
+    /// - Parameters:
+    ///   - type: `Post.self` and `Page.self` are the only acceptable types.
+    ///   - statuses: Filter posts or pages with given status.
+    ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
+    ///   - number: Number of posts or pages should be fetched. Pass 0 to fetch all posts or pages in one request.
+    ///   - blogID: The blog from which to fetch posts or pages
+    /// - Returns: Object identifiers of the fetched posts.
+    func paginate<P: AbstractPost>(
+        type: P.Type = P.self,
+        statuses: [BasePost.Status],
+        authorUserID: NSNumber? = nil,
+        offset: Int,
+        number: Int,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> [TaggedManagedObjectID<P>] {
         try await fetch(
             type: type,
             statuses: statuses,
@@ -311,7 +328,28 @@ extension PostRepository {
         )
     }
 
-    func search<P: AbstractPost>(type: P.Type = P.self, input: String? = nil, statuses: [BasePost.Status], authorUserID: NSNumber? = nil, limit: Int, orderBy: PostServiceResultsOrdering, descending: Bool, in blogID: TaggedManagedObjectID<Blog>) async throws -> [TaggedManagedObjectID<P>] {
+    /// Search posts or pages in the given site. All fetched posts are saved to the local database.
+    ///
+    /// - Parameters:
+    ///   - type: `Post.self` and `Page.self` are the only acceptable types.
+    ///   - input: The text input from user. Or `nil` for searching all posts or pages.
+    ///   - statuses: Filter posts or pages with given status.
+    ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - limit: Number of posts or pages should be fetched. Pass 0 to fetch all posts or pages in one request.
+    ///   - orderBy: The property by which to sort posts or pages.
+    ///   - descending: Whether to sort the results in descending order.
+    ///   - blogID: The blog from which to search posts or pages
+    /// - Returns: Object identifiers of the search result.
+    func search<P: AbstractPost>(
+        type: P.Type = P.self,
+        input: String?,
+        statuses: [BasePost.Status],
+        authorUserID: NSNumber? = nil,
+        limit: Int,
+        orderBy: PostServiceResultsOrdering,
+        descending: Bool,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> [TaggedManagedObjectID<P>] {
         try await fetch(
             type: type,
             searchInput: input,
