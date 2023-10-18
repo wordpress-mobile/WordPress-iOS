@@ -233,11 +233,18 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
         contentView.backgroundColor = .clear
         contentView.layer.cornerRadius = 5.0
         contentView.layer.borderWidth = 1.0
-        contentView.layer.borderColor = UIColor.separator.cgColor
+        contentView.layer.borderColor = UIColor(light: .separator, dark: Constants.darkModeSeparatorColor).cgColor
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private struct Constants {
+        // This is a customized `.separator` color with the alpha updated to 1.0.
+        // With the default color on top of the gray background, the border appears almost invisible on certain devices.
+        // More context: p1697541472738849-slack-C05N140C8H5
+        static let darkModeSeparatorColor = UIColor(red: 0.33, green: 0.33, blue: 0.35, alpha: 1.0)
     }
 }
 
