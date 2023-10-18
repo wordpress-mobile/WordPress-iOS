@@ -7,8 +7,8 @@ Please refer to the sections below for more detailed information. The instructio
 ### Getting Started
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode `14.3.1` or newer.
-1. From a command line, run `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
-1. Now, run `cd WordPress-iOS` to enter the working directory.
+1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
+1. In a terminal, enter the `WordPress-iOS` directory where it was cloned.
 
 #### Create WordPress.com API Credentials
 
