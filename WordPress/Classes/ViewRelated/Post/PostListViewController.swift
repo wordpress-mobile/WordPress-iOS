@@ -219,10 +219,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PostsTable"
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = postCardEstimatedRowHeight
+        tableView.separatorStyle = .singleLine
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.separatorStyle = .none
 
         let bundle = Bundle.main
 
