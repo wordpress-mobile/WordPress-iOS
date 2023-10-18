@@ -228,3 +228,165 @@ final class PostRepository {
     }
 
 }
+
+// MARK: - Posts/Pages List
+
+private final class PostRepositoryPostsSerivceRemoteOptions: NSObject, PostServiceRemoteOptions {
+    struct Options {
+        var statuses: [String]?
+        var number: Int = 100
+        var offset: Int = 0
+        var order: PostServiceResultsOrder = .descending
+        var orderBy: PostServiceResultsOrdering = .byDate
+        var authorID: NSNumber?
+        var search: String?
+        var meta: String? = "autosave"
+    }
+
+    var options: Options
+
+    init(options: Options) {
+        self.options = options
+    }
+
+    func statuses() -> [String]? {
+        options.statuses
+    }
+
+    func number() -> NSNumber {
+        NSNumber(value: options.number)
+    }
+
+    func offset() -> NSNumber {
+        NSNumber(value: options.offset)
+    }
+
+    func order() -> PostServiceResultsOrder {
+        options.order
+    }
+
+    func orderBy() -> PostServiceResultsOrdering {
+        options.orderBy
+    }
+
+    func authorID() -> NSNumber? {
+        options.authorID
+    }
+
+    func search() -> String? {
+        options.search
+    }
+
+    func meta() -> String? {
+        options.meta
+    }
+}
+
+private extension PostServiceRemote {
+
+    func getPosts(ofType type: String, options: PostRepositoryPostsSerivceRemoteOptions) async throws -> [RemotePost] {
+        try await withCheckedThrowingContinuation { continuation in
+            self.getPostsOfType(type, options: self.dictionary(with: options), success: {
+                continuation.resume(returning: $0 ?? [])
+            }, failure: {
+                continuation.resume(throwing: $0!)
+            })
+        }
+    }
+}
+
+extension PostRepository {
+
+    func paginate<P: AbstractPost>(type: P.Type = P.self, statuses: [BasePost.Status], authorUserID: NSNumber? = nil, offset: Int, number: Int, in blogID: TaggedManagedObjectID<Blog>) async throws -> [TaggedManagedObjectID<P>] {
+        try await fetch(
+            type: type,
+            statuses: statuses,
+            authorUserID: authorUserID,
+            range: offset...(offset + max(number - 1, 0)),
+            orderBy: .byDate,
+            descending: true,
+            // Only delete other local posts if the current call is the first pagination request.
+            deleteOtherLocalPosts: offset == 0,
+            in: blogID
+        )
+    }
+
+    func search<P: AbstractPost>(type: P.Type = P.self, input: String? = nil, statuses: [BasePost.Status], authorUserID: NSNumber? = nil, limit: Int, orderBy: PostServiceResultsOrdering, descending: Bool, in blogID: TaggedManagedObjectID<Blog>) async throws -> [TaggedManagedObjectID<P>] {
+        try await fetch(
+            type: type,
+            searchInput: input,
+            statuses: statuses,
+            authorUserID: authorUserID,
+            range: 0...max(limit - 1, 0),
+            orderBy: orderBy,
+            descending: descending,
+            deleteOtherLocalPosts: false,
+            in: blogID
+        )
+    }
+
+    private func fetch<P: AbstractPost>(
+        type: P.Type,
+        searchInput: String? = nil,
+        statuses: [BasePost.Status]?,
+        authorUserID: NSNumber?,
+        range: ClosedRange<Int>,
+        orderBy: PostServiceResultsOrdering = .byDate,
+        descending: Bool = true,
+        deleteOtherLocalPosts: Bool,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> [TaggedManagedObjectID<P>] {
+        assert(type == Post.self || type == Page.self, "Only support fetching Post or Page")
+        assert(range.lowerBound >= 0)
+
+        let postType: String
+        if type == Post.self {
+            postType = "post"
+        } else if type == Page.self {
+            postType = "page"
+        } else {
+            // There is an assertion above to ensure the app doesn't fall into this case.
+            return []
+        }
+
+        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
+            let blog = try context.existingObject(with: blogID)
+            return remoteFactory.forBlog(blog)
+        }
+        guard let remote else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+
+        let options = PostRepositoryPostsSerivceRemoteOptions(options: .init(
+            statuses: statuses?.strings,
+            number: range.count,
+            offset: range.lowerBound,
+            order: descending ? .descending : .ascending,
+            orderBy: orderBy,
+            authorID: authorUserID,
+            search: searchInput
+        ))
+        let remotePosts = try await remote.getPosts(ofType: postType, options: options)
+
+        let updatedPosts = try await coreDataStack.performAndSave { context in
+            let updatedPosts = PostHelper.merge(
+                remotePosts,
+                ofType: postType,
+                withStatuses: statuses?.strings,
+                byAuthor: authorUserID,
+                for: try context.existingObject(with: blogID),
+                purgeExisting: deleteOtherLocalPosts,
+                in: context
+            )
+            return updatedPosts.compactMap {
+                guard let post = $0 as? P else {
+                    fatalError("Expecting a \(postType) as \(type), but got \($0)")
+                }
+                return TaggedManagedObjectID(post)
+            }
+        }
+
+        return updatedPosts
+    }
+
+}
