@@ -60,8 +60,11 @@ class ReaderDetailNewHeaderViewHost: UIView {
         guard let swiftUIView = subviews.first else {
             return
         }
-        swiftUIView.invalidateIntrinsicContentSize()
-        layoutIfNeeded()
+
+        DispatchQueue.main.async {
+            swiftUIView.invalidateIntrinsicContentSize()
+            self.layoutIfNeeded()
+        }
     }
 }
 
