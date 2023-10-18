@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -148,9 +148,6 @@
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Nedostaje naslov kategorije.";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Odaberi sliku s mog uređaja";
 
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
@@ -783,9 +780,6 @@
 
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "Pogledajte upute";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Postavi istaknutu sliku";
 
 /* Link to plugin's Settings
    Section title

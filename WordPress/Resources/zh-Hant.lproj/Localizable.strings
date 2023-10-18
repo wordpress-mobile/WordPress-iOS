@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-05 08:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "變更設定";
 
-/* Change site icon button */
-"Change Site Icon" = "變更網站圖示";
-
 /* Change Username title. */
 "Change Username" = "變更使用者名稱";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "選擇首頁";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "從我的裝置選擇圖片";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "選擇頁面";
@@ -6709,9 +6703,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for connected service in Publicize stat. */
 "Service" = "服務";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "設定精選圖片";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */

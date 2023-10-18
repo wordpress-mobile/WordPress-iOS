@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -731,9 +731,6 @@
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Keresőmotorok";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Kiemelt kép beállítása";
 
 /* Link to plugin's Settings
    Section title

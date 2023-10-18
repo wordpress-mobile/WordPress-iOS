@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1008,9 +1008,6 @@ translators: Block name. %s: The localized block name */
    Main title */
 "Change Password" = "Endre passord";
 
-/* Change site icon button */
-"Change Site Icon" = "Endre sideikon";
-
 /* Change Username title. */
 "Change Username" = "Endre brukernavn";
 
@@ -1061,9 +1058,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the button to progress with the selected site homepage design
    Title for the button to progress with the selected site homepage design. */
 "Choose" = "Velg";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Velg bilde fra min enhet";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Velg sider";
@@ -4661,9 +4655,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Tjeneste";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Velg fremhevet bilde";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-09-15 08:39:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1403,9 +1403,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ndryshoni Rregullimet";
 
-/* Change site icon button */
-"Change Site Icon" = "Ndryshoni Ikonë Sajti";
-
 /* Change Username title. */
 "Change Username" = "Ndryshoni Emër Përdoruesi";
 
@@ -1501,9 +1498,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Zgjidhni Faqe Hyrëse";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Zgjedhje Figure Nga Pajisja Ime";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Zgjidhni Faqe";
@@ -6682,9 +6676,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Shërbim";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Vëre Si Figurë të Zgjedhur";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-03 14:29:29+0000 */
+/* Translation-Revision-Date: 2023-10-17 05:45:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Modifică setările";
 
-/* Change site icon button */
-"Change Site Icon" = "Schimbă iconul site-ului";
-
 /* Change Username title. */
 "Change Username" = "Schimbă numele de utilizator";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Alege prima pagină";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Alege o imagine de pe dispozitivul meu";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Alege Pagini";
@@ -6713,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviciu";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Setează imaginea reprezentativă";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Setează părinte";
@@ -9891,6 +9882,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Felicitări, site-ul tău este live!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Este necesară o acțiune";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Activ";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Finalizează inițializarea";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Eroare";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Expirat";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Expiră în curând";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Eșuat";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "În curs de desfășurare";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Reînnoiește";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Confirmă adresa de email";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Verific";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Cea mai bună alternativă";
 
@@ -9899,6 +9923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratuit";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratuit în primul an, cu orice plan cu plată anuală";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recomandat";
@@ -10767,6 +10794,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mai multe";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Vezi articolele de pe site";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comentează";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Apreciază";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Apreciază acest articol.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Apreciat";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Anulează aprecierea acestui articol.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Salvează acest articol pentru mai târziu.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Salvează articolul";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Anulează salvarea acestui articol.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Articol salvat";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Caută";
 
@@ -10780,11 +10844,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comentează";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Deschide comentariile la articol.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Apreciază";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Apreciază articolul.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Apreciat";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Deschide un meniu cu mai multe acțiuni.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Mai multe";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Republicare";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Republică articolul.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Deschide detaliile despre site pentru articol.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blochează acest utilizator";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Înlătură articolul salvat";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportează acest utilizator";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Salvează";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ articole • %2$@ urmăritori";
@@ -10896,6 +10997,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "numelesiteuluitau.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domenii";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Selectează domeniul";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Document, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Imagine, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Dată creare necunoscută";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Selectează media.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
@@ -11060,7 +11185,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut o apreciere.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";

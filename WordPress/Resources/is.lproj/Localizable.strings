@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: is */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -2144,9 +2144,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Þjónusta";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Velja sem einkennismynd";
 
 /* Link to plugin's Settings
    Section title

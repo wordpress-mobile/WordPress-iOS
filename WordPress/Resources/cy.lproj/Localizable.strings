@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.10 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1978,9 +1978,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Gwasanaeth";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Gosod Delwedd Nodwedd";
 
 /* Link to plugin's Settings
    Section title
