@@ -17,15 +17,8 @@ final class PostListCell: UITableViewCell, Reusable {
         return stackView
     }()
 
-    private lazy var textStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        return stackView
-    }()
-
     private let headerView = PostListHeaderView()
-    private let titleLabel = UILabel()
-    private let snippetLabel = UILabel()
+    private let titleAndSnippetLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
     private let statusLabel = UILabel()
 
@@ -49,23 +42,8 @@ final class PostListCell: UITableViewCell, Reusable {
     func configure(with viewModel: PostListItemViewModel) {
         headerView.configure(with: viewModel)
 
-        if let title = viewModel.title, !title.isEmpty {
-            titleLabel.text = title
-            titleLabel.isHidden = false
-        } else {
-            titleLabel.isHidden = true
-        }
+        configureTitleAndSnippet(with: viewModel)
 
-        if let snippet = viewModel.snippet, !snippet.isEmpty {
-            snippetLabel.text = snippet
-            snippetLabel.isHidden = false
-        } else {
-            snippetLabel.isHidden = true
-        }
-
-        titleLabel.numberOfLines = snippetLabel.isHidden ? 3 : 2
-        snippetLabel.numberOfLines = titleLabel.isHidden ? 3 : 2
-        
         imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
@@ -81,24 +59,40 @@ final class PostListCell: UITableViewCell, Reusable {
         statusLabel.isHidden = viewModel.status.isEmpty
     }
 
+    private func configureTitleAndSnippet(with viewModel: PostListItemViewModel) {
+        var titleAndSnippetString = NSMutableAttributedString()
+
+        if let title = viewModel.title, !title.isEmpty {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
+                .foregroundColor: UIColor.text
+            ]
+            let titleAttributedString = NSAttributedString(string: "\(title)\n", attributes: attributes)
+            titleAndSnippetString.append(titleAttributedString)
+        }
+
+        if let snippet = viewModel.snippet, !snippet.isEmpty {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
+                .foregroundColor: UIColor.textSubtle
+            ]
+            let snippetAttributedString = NSAttributedString(string: snippet, attributes: attributes)
+            titleAndSnippetString.append(snippetAttributedString)
+        }
+
+        titleAndSnippetLabel.attributedText = titleAndSnippetString
+    }
+
     // MARK: - Setup
 
     private func setupViews() {
-        setupTitleLabel()
-        setupSnippetLabel()
+        setupTitleAndSnippetLabel()
         setupFeaturedImageView()
         setupStatusLabel()
 
-        textStackView.translatesAutoresizingMaskIntoConstraints = false
-        textStackView.addArrangedSubviews([
-            titleLabel,
-            snippetLabel
-        ])
-        textStackView.spacing = 2
-
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubviews([
-            textStackView,
+            titleAndSnippetLabel,
             featuredImageView
         ])
         contentStackView.spacing = 16
@@ -119,20 +113,10 @@ final class PostListCell: UITableViewCell, Reusable {
         contentView.backgroundColor = .systemBackground
     }
 
-    private func setupTitleLabel() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.numberOfLines = 2
-        titleLabel.textColor = .text
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
-    }
-
-    private func setupSnippetLabel() {
-        snippetLabel.translatesAutoresizingMaskIntoConstraints = false
-        snippetLabel.adjustsFontForContentSizeCategory = true
-        snippetLabel.numberOfLines = 2
-        snippetLabel.textColor = .textSubtle
-        snippetLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+    private func setupTitleAndSnippetLabel() {
+        titleAndSnippetLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleAndSnippetLabel.adjustsFontForContentSizeCategory = true
+        titleAndSnippetLabel.numberOfLines = 3
     }
 
     private func setupFeaturedImageView() {
