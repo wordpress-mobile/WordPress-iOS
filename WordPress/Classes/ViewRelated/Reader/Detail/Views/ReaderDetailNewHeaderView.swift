@@ -237,7 +237,8 @@ struct ReaderDetailNewHeaderView: View {
             authorStack
             Spacer()
             ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                               isEnabled: viewModel.isFollowButtonInteractive) {
+                               isEnabled: viewModel.isFollowButtonInteractive,
+                               size: .compact) {
                 viewModel.didTapFollowButton()
             }
         }
