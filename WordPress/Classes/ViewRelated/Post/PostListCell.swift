@@ -113,6 +113,7 @@ final class PostListCell: UITableViewCell, Reusable {
 
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
+        contentView.backgroundColor = .systemBackground
     }
 
     private func setupTitleLabel() {
