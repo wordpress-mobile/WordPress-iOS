@@ -19,7 +19,15 @@ struct PostListItemViewModel {
         self.title = post.titleForDisplay()
         self.snippet = post.contentPreviewForDisplay()
         self.imageURL = post.featuredImageURL
-        self.date = post.displayDate()
+        self.date = post.displayDate()?.capitalizeFirstWord
         self.accessibilityIdentifier = post.slugForDisplay()
+    }
+}
+
+private extension String {
+    var capitalizeFirstWord: String {
+        let firstLetter = self.prefix(1).capitalized
+        let remainingLetters = self.dropFirst()
+        return firstLetter + remainingLetters
     }
 }
