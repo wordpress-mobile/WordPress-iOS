@@ -1,8 +1,5 @@
 # WordPress for iOS #
 
-[![Build status](https://badge.buildkite.com/2f3fbb17bfbb5bba508efd80f1ea8d640db5ca2465a516a457.svg)](https://buildkite.com/automattic/wordpress-ios)
-[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-
 ## Build Instructions
 
 Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line.
