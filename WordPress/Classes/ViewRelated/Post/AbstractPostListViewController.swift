@@ -186,7 +186,7 @@ class AbstractPostListViewController: UIViewController,
         view.pinSubviewToAllEdges(tableViewController.view)
         tableViewController.didMove(toParent: self)
 
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .systemBackground
         tableView.sectionHeaderTopPadding = 0
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
