@@ -304,9 +304,10 @@ extension PostRepository {
     ///   - statuses: Filter posts or pages with given status.
     ///   - authorUserID: Filter posts or pages that are authored by given user.
     ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
-    ///   - number: Number of posts or pages should be fetched. Pass 0 to fetch all posts or pages in one request.
+    ///   - number: Number of posts or pages should be fetched.
     ///   - blogID: The blog from which to fetch posts or pages
     /// - Returns: Object identifiers of the fetched posts.
+    /// - SeeAlso: https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/posts/
     func paginate<P: AbstractPost>(
         type: P.Type = P.self,
         statuses: [BasePost.Status],
@@ -335,11 +336,12 @@ extension PostRepository {
     ///   - input: The text input from user. Or `nil` for searching all posts or pages.
     ///   - statuses: Filter posts or pages with given status.
     ///   - authorUserID: Filter posts or pages that are authored by given user.
-    ///   - limit: Number of posts or pages should be fetched. Pass 0 to fetch all posts or pages in one request.
+    ///   - limit: Number of posts or pages should be fetched.
     ///   - orderBy: The property by which to sort posts or pages.
     ///   - descending: Whether to sort the results in descending order.
     ///   - blogID: The blog from which to search posts or pages
     /// - Returns: Object identifiers of the search result.
+    /// - SeeAlso: https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/posts/
     func search<P: AbstractPost>(
         type: P.Type = P.self,
         input: String?,
