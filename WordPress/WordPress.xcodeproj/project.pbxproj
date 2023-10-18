@@ -472,6 +472,8 @@
 		0CB4057A29C8DDEE008EED0A /* BlogDashboardPersonalizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */; };
 		0CB4057D29C8DF83008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
+		0CB424F62AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */; };
+		0CB424F72AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -6146,6 +6148,7 @@
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
+		0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidColorActivityIndicator.swift; sourceTree = "<group>"; };
 		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -12479,6 +12482,7 @@
 				D8A3A5AD206A059100992576 /* StockPhotos */,
 				FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */,
 				7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */,
+				0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */,
 				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
 				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
 				B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */,
@@ -22666,6 +22670,7 @@
 				FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */,
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				3250490724F988220036B47F /* Interpolation.swift in Sources */,
+				0CB424F62AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */,
 				0C8FC9A12A8BC8630059DCE4 /* PHPickerController+Extensions.swift in Sources */,
 				E17FEAD8221490F7006E1D2D /* PostEditorAnalyticsSession.swift in Sources */,
 				738B9A5221B85CF20005062B /* SiteCreationWizardLauncher.swift in Sources */,
@@ -25193,6 +25198,7 @@
 				FABB24FC2602FC2C00C8785C /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				FA4B203929A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */,
 				083ED8CD2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */,
+				0CB424F72AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */,
 				FABB24FD2602FC2C00C8785C /* StockPhotosDataLoader.swift in Sources */,
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
