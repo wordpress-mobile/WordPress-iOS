@@ -120,7 +120,7 @@ final class PostListCell: UITableViewCell, Reusable {
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.numberOfLines = 2
         titleLabel.textColor = .text
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
     }
 
     private func setupSnippetLabel() {
