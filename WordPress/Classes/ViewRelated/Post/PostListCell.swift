@@ -49,20 +49,23 @@ final class PostListCell: UITableViewCell, Reusable {
     func configure(with viewModel: PostListItemViewModel) {
         headerView.configure(with: viewModel)
 
-        if let title = viewModel.title {
+        if let title = viewModel.title, !title.isEmpty {
             titleLabel.text = title
             titleLabel.isHidden = false
         } else {
             titleLabel.isHidden = true
         }
 
-        if let snippet = viewModel.snippet {
+        if let snippet = viewModel.snippet, !snippet.isEmpty {
             snippetLabel.text = snippet
             snippetLabel.isHidden = false
         } else {
             snippetLabel.isHidden = true
         }
 
+        titleLabel.numberOfLines = snippetLabel.isHidden ? 3 : 2
+        snippetLabel.numberOfLines = titleLabel.isHidden ? 3 : 2
+        
         imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
