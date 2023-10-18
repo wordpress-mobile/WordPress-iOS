@@ -4,8 +4,6 @@
 
 Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line.
 
-> Please note – these setup instructions only apply to Intel-based machines. M1-based Mac support is coming, but isn't yet supported by our tooling.
-
 ### Getting Started
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 11.2.1 or newer.
