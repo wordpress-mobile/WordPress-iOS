@@ -24,13 +24,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="118"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Header Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="452-xW-WjN">
-                                        <rect key="frame" x="12" y="8" width="404" height="32"/>
+                                        <rect key="frame" x="16" y="8" width="396" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3Vw-yu-3oz" customClass="DynamicHeightCollectionView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="52" width="404" height="50"/>
+                                        <rect key="frame" x="16" y="52" width="396" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="tDm-cO-RQC"/>
@@ -47,7 +47,7 @@
                                         </connections>
                                     </collectionView>
                                 </subviews>
-                                <edgeInsets key="layoutMargins" top="8" left="12" bottom="16" right="12"/>
+                                <edgeInsets key="layoutMargins" top="8" left="16" bottom="16" right="16"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
