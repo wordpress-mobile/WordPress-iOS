@@ -6,7 +6,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 ### Getting Started
 
-1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 11.2.1 or newer.
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode `14.3.1` or newer.
 1. From a command line, run `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
 1. Now, run `cd WordPress-iOS` to enter the working directory.
 
