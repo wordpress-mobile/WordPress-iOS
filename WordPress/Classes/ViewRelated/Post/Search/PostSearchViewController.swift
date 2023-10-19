@@ -11,7 +11,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case post(NSManagedObjectID)
+        case result(NSManagedObjectID)
     }
 
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -95,7 +95,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
         snapshot.appendSections([SectionID.posts])
-        let postIDs = viewModel.posts.map { ItemID.post($0.objectID) }
+        let postIDs = viewModel.results.map { ItemID.result($0.objectID) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -113,12 +113,12 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
-            let item = viewModel.posts[indexPath.row]
-            if let post = item as? Post {
+            switch viewModel.results[indexPath.row] {
+            case .post(let post):
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
-                cell.configure(with: .init(post: post))
+                cell.configure(with: post)
                 return cell
-            } else if let page = item as? Page {
+            case .page(let page):
                 // TODO: Update the cell design
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath)
                 var configuration = cell.defaultContentConfiguration()
@@ -127,8 +127,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 configuration.secondaryTextProperties.color = .secondaryLabel
                 cell.contentConfiguration = configuration
                 return cell
-            } else {
-                fatalError("Unsupported item: \(type(of: item))")
             }
         }
     }

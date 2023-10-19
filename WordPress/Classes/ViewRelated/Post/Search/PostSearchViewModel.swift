@@ -10,7 +10,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         didSet { didUpdateData?() }
     }
 
-    private(set) var posts: [AbstractPost] = [] {
+    private(set) var results: [PostSearchResultItem] = [] {
         didSet { didUpdateData?() }
     }
 
@@ -21,6 +21,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private let coreData: CoreDataStack
     private let entityName: String
 
+    private var postViewModels: [NSManagedObjectID: PostListItemViewModel] = [:]
     private var searchService: PostSearchService?
     private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
@@ -75,7 +76,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         let token = suggestedTokens[index]
         cancelCurrentRemoteSearch()
         suggestedTokens = []
-        posts = []
+        results = []
         selectedTokens.append(token)
         searchTerm = ""
     }
@@ -86,8 +87,8 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         cancelCurrentRemoteSearch()
 
         guard searchTerm.count > 1 || !selectedTokens.isEmpty else {
-            if !posts.isEmpty {
-                posts = []
+            if !results.isEmpty {
+                results = []
             }
             return
         }
@@ -125,11 +126,12 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     func service(_ service: PostSearchService, didAppendPosts posts: [AbstractPost]) {
         assert(Thread.isMainThread)
 
+        let items = posts.map(getSearchResultItem)
         if isRefreshing {
-            self.posts = posts
+            self.results = items
             isRefreshing = false
         } else {
-            self.posts += posts
+            self.results += items
         }
     }
 
@@ -137,15 +139,37 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         assert(Thread.isMainThread)
 
         if isRefreshing && service.error != nil {
-            posts = []
+            results = []
         }
-        if service.isLoading && (!isRefreshing || posts.isEmpty) {
+        if service.isLoading && (!isRefreshing || results.isEmpty) {
             footerState = .loading
         } else if service.error != nil {
             footerState = .error
         } else {
             footerState = nil
         }
+    }
+
+    // MARK: - Results
+
+    private func getSearchResultItem(for item: AbstractPost) -> PostSearchResultItem {
+        switch item {
+        case let post as Post:
+            return .post(getViewModel(for: post))
+        case let page as Page:
+            return .page(page)
+        default:
+            fatalError("Unsupported item: \(type(of: item))")
+        }
+    }
+
+    private func getViewModel(for post: Post) -> PostListItemViewModel {
+        if let viewModel = postViewModels[post.objectID] {
+            return viewModel
+        }
+        let viewModel = PostListItemViewModel(post: post)
+        postViewModels[post.objectID] = viewModel
+        return viewModel
     }
 
     // MARK: - Search Tokens
@@ -157,6 +181,20 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             let tokens = await suggestionsService.getSuggestion(for: searchTerm, selectedTokens: selectedTokens)
             guard !Task.isCancelled else { return }
             self.suggestedTokens = tokens
+        }
+    }
+}
+
+enum PostSearchResultItem {
+    case post(PostListItemViewModel)
+    case page(Page)
+
+    var objectID: NSManagedObjectID {
+        switch self {
+        case .post(let viewModel):
+            return viewModel.post.objectID
+        case .page(let page):
+            return page.objectID
         }
     }
 }
