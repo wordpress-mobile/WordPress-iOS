@@ -7,9 +7,7 @@ import UIKit
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
-            static let pageSectionHeaderHeight = CGFloat(40.0)
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
-            static let pageCellWithTagEstimatedRowHeight = CGFloat(60.0)
             static let pageListTableViewCellLeading = CGFloat(16.0)
         }
 
@@ -20,7 +18,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellIdentifier = "RestorePageCellIdentifier"
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
-            static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
 
         struct Events {
@@ -31,12 +28,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         static let editorUrl = "site-editor.php?canvas=edit"
     }
-
-    fileprivate lazy var sectionFooterSeparatorView: UIView = {
-        let footer = UIView()
-        footer.backgroundColor = .neutral(.shade10)
-        return footer
-    }()
 
     private lazy var _tableViewHandler: PageListTableViewHandler = {
         let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
@@ -55,8 +46,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    lazy var homepageSettingsService = {
-        return HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
+    private lazy var homepageSettingsService = {
+        HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
     }()
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -108,7 +99,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return controllerWithBlog(restoredBlog)
     }
 
-
     // MARK: - UIStateRestoring
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -119,7 +109,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         super.encodeRestorableState(with: coder)
     }
-
 
     // MARK: - UIViewController
 
@@ -191,6 +180,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func configureFooterView() {
         super.configureFooterView()
+
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
@@ -279,7 +269,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-
     // MARK: - Model Interaction
 
     /// Retrieves the page object at the specified index path.
@@ -344,13 +333,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
-
     // MARK: - Table View Handling
-
-    func sectionNameKeyPath() -> String {
-        let sortField = filterSettings.currentPostListFilter().sortField
-        return Page.sectionIdentifier(dateKeyPath: sortField.keyPath)
-    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -991,5 +974,4 @@ private extension PageListViewController {
         static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
     }
-
 }
