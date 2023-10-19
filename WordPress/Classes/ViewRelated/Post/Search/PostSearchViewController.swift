@@ -70,7 +70,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         view.pinSubviewToAllEdges(tableView)
 
         tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.postCellID)
+        tableView.register(PostListCell.self, forCellReuseIdentifier: Constants.postCellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.pageCellID)
 
         tableView.dataSource = dataSource
         tableView.delegate = self
@@ -112,15 +113,23 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
-            // TODO: Update the cell design
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
-            let post = viewModel.posts[indexPath.row]
-            var configuration = cell.defaultContentConfiguration()
-            configuration.text = post.titleForDisplay()
-            configuration.secondaryText = post.latest().dateStringForDisplay()
-            configuration.secondaryTextProperties.color = .secondaryLabel
-            cell.contentConfiguration = configuration
-            return cell
+            let item = viewModel.posts[indexPath.row]
+            if let post = item as? Post {
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
+                cell.configure(with: .init(post: post))
+                return cell
+            } else if let page = item as? Page {
+                // TODO: Update the cell design
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath)
+                var configuration = cell.defaultContentConfiguration()
+                configuration.text = page.titleForDisplay()
+                configuration.secondaryText = page.latest().dateStringForDisplay()
+                configuration.secondaryTextProperties.color = .secondaryLabel
+                cell.contentConfiguration = configuration
+                return cell
+            } else {
+                fatalError("Unsupported item: \(type(of: item))")
+            }
         }
     }
 
@@ -182,5 +191,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
 private enum Constants {
     static let postCellID = "postCellID"
+    static let pageCellID = "pageCellID"
     static let tokenCellID = "suggestedTokenCellID"
 }
