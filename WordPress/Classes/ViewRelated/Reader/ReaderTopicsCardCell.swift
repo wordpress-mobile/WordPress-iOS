@@ -219,6 +219,7 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
         $0.adjustsFontForContentSizeCategory = true
         $0.font = WPStyleGuide.fontForTextStyle(.footnote)
         $0.textColor = .label
+        $0.numberOfLines = 1
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return $0
     }(UILabel())
@@ -262,6 +263,10 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
 
 // MARK: - New Collection View Layout
 
+/// This tries to achieve a horizontal `UIStackView` layout that can automatically wrap into a new line.
+///
+/// Note that this depends on the collection view cells having the same height.
+/// Different cell heights are not supported yet by this layout.
 class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
 
     // MARK: Properties
@@ -269,6 +274,11 @@ class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
     var interitemSpacing: CGFloat = .zero
 
     var lineSpacing: CGFloat = .zero
+
+    private var isRightToLeft: Bool {
+        let layoutDirection = collectionView?.traitCollection.layoutDirection ?? .leftToRight
+        return layoutDirection == .rightToLeft
+    }
 
     weak var delegate: UICollectionViewDelegateFlowLayout?
 
@@ -322,33 +332,44 @@ class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
         let insets = collectionView.contentInset
 
         var rowCount: CGFloat = 0
-        var currentLineWidth: CGFloat = .zero
-        var size: CGSize = .zero
+        var itemHeight: CGFloat = 0.0
+        var availableLineWidth = maxContentWidth
 
-        for row in 0..<numberOfItems {
-            let indexPath = IndexPath(row: row, section: .zero)
-            size = delegate?.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? .zero
+        for index in 0..<numberOfItems {
+            let indexPath = IndexPath(row: index, section: .zero)
+            let size = delegate?.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? .zero
             var frame = CGRect(origin: .zero, size: size)
 
-            // if it exceeds maximum width, then add a new line.
-            if (currentLineWidth + size.width) > maxContentWidth {
-                rowCount += 1
-                currentLineWidth = 0.0
+            if itemHeight == 0 {
+                itemHeight = size.height
             }
 
-            frame.origin.x = insets.left + currentLineWidth
-            frame.origin.y = insets.top + (rowCount * (size.height + lineSpacing))
+            // check if the size will exceed available line width
+            if interitemSpacing + size.width > availableLineWidth {
+                rowCount += 1
+                availableLineWidth = maxContentWidth
+            }
 
+            // at this point, we know that the item's width + line spacing fits into the current line.
+            frame.origin.y = insets.top + rowCount * (size.height + lineSpacing)
+            frame.origin.x = {
+                if isRightToLeft {
+                    return availableLineWidth - size.width - insets.right
+                }
+                return insets.left + maxContentWidth - availableLineWidth
+            }()
+
+            // add a layout attribute with the current item's frame.
             let attribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attribute.frame = frame
             itemAttributes.append(attribute)
 
-            // update current width buffer for the next item.
-            currentLineWidth += (size.width + interitemSpacing)
+            // update the available line width for the next item.
+            availableLineWidth -= (interitemSpacing + size.width)
         }
 
         // update total content height.
-        contentHeight = insets.top + ((rowCount + 1) * size.height) + (rowCount * lineSpacing) + insets.bottom
+        contentHeight = insets.top + ((rowCount + 1) * itemHeight) + (rowCount * lineSpacing) + insets.bottom
     }
 
 }
