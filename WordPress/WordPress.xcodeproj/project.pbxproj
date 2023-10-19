@@ -1267,6 +1267,7 @@
 		4AA33F022999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */; };
 		4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
 		4AA33F05299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
+		4AA7EE0F2ADF7367007D261D /* PostRepositoryPostsListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */; };
 		4AAD69082A6F68A5007FE77E /* MediaRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
@@ -6869,6 +6870,7 @@
 		4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderListTopic+Creation.swift"; sourceTree = "<group>"; };
 		4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSiteTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTagTopic+Lookup.swift"; sourceTree = "<group>"; };
+		4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryPostsListTests.swift; sourceTree = "<group>"; };
 		4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRepositoryTests.swift; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
@@ -15478,6 +15480,7 @@
 				570B037622F1FFF6009D8411 /* PostCoordinatorFailedPostsFetcherTests.swift */,
 				57569CF1230485680052EE14 /* PostAutoUploadInteractorTests.swift */,
 				4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */,
+				4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */,
 				57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */,
 				57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */,
 				575802122357C41200E4C63C /* MediaCoordinatorTests.swift */,
@@ -23563,6 +23566,7 @@
 				3FFE3C0828FE00D10021BB96 /* StatsSegmentedControlDataTests.swift in Sources */,
 				015BA4EB29A788A300920F4B /* StatsTotalInsightsCellTests.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
+				4AA7EE0F2ADF7367007D261D /* PostRepositoryPostsListTests.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				806BA11C2A492B0F00052422 /* BlazeCampaignDetailsWebViewModelTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
