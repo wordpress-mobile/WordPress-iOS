@@ -2,13 +2,12 @@
 
 ## Build Instructions
 
-Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line.
+Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line inside the repository.
 
 ### Getting Started
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
-1. In a terminal, enter the `WordPress-iOS` directory where it was cloned.
 
 #### Create WordPress.com API Credentials
 
