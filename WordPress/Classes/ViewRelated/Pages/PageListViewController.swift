@@ -332,8 +332,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(authorPredicate)
         }
 
-        if let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
-            predicates.append(predicate)
+        if RemoteFeatureFlag.siteEditorMVP.enabled(),
+                   blog.blockEditorSettings?.isFSETheme ?? false,
+                   let homepageID = blog.homepagePageID,
+                   let homepageType = blog.homepageType,
+           homepageType == .page {
+            predicates.append(NSPredicate(format: "postID != %i", homepageID))
         }
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)

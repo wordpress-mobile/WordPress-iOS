@@ -1,140 +1,162 @@
 import Foundation
 import Combine
 
-final class PostSearchViewModel: NSObject, NSFetchedResultsControllerDelegate {
+final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     @Published var searchTerm = ""
+    @Published var selectedTokens: [any PostSearchToken] = []
+    @Published private(set) var footerState: PagingFooterView.State?
 
-    var objectDidChange: (() -> Void)?
+    private(set) var suggestedTokens: [any PostSearchToken] = [] {
+        didSet { didUpdateData?() }
+    }
+
+    private(set) var posts: [PostSearchResult] = [] {
+        didSet { didUpdateData?() }
+    }
+
+    var didUpdateData: (() -> Void)? // Send updates on `didSet` (unlike @Published)
 
     private let blog: Blog
-    private let filters: PostListFilterSettings
-    private let coreDataStack: CoreDataStack
+    private let settings: PostListFilterSettings
+    private let coreData: CoreDataStack
+    private let entityName: String
 
+    private var searchService: PostSearchService?
+    private var localSearchTask: Task<Void, Never>?
+    private let suggestionsService: PostSearchSuggestionsService
+    private var suggestionsTask: Task<Void, Never>?
+    private var isRefreshing = false
     private var cancellables: [AnyCancellable] = []
-    private var fetchResultsController: NSFetchedResultsController<BasePost>!
 
     init(blog: Blog,
-         filters: PostListFilterSettings,
-         coreDataStack: CoreDataStack = ContextManager.shared
+        filters: PostListFilterSettings,
+        coreData: CoreDataStack = ContextManager.shared
     ) {
         self.blog = blog
-        self.filters = filters
-        self.coreDataStack = coreDataStack
+        self.settings = filters
+        self.coreData = coreData
+        self.suggestionsService = PostSearchSuggestionsService(blog: blog, coreData: coreData)
+
+        switch settings.postType {
+        case .post: self.entityName = String(describing: Post.self)
+        case .page: self.entityName = String(describing: Page.self)
+        default: fatalError("Unsupported post type: \(settings.postType)")
+        }
+
         super.init()
 
-        fetchResultsController = NSFetchedResultsController(
-            fetchRequest: makeFetchRequest(searchTerm: ""),
-            managedObjectContext: coreDataStack.mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        fetchResultsController.delegate = self
-
-        $searchTerm.dropFirst().sink { [weak self] in
-            self?.performLocalSearch(with: $0)
-        }.store(in: &cancellables)
-
         $searchTerm
-            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .dropFirst()
             .removeDuplicates()
-            .filter { $0.count > 1 }
-            .sink { [weak self] in
-                self?.syncPostsMatchingSearchTerm($0)
-        }.store(in: &cancellables)
+            .sink { [weak self] in self?.updateSuggestedTokens(for: $0) }
+            .store(in: &cancellables)
+
+        $searchTerm.map { $0.trimmingCharacters(in: .whitespaces) }
+            .combineLatest($selectedTokens)
+            .dropFirst()
+            .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
+            .removeDuplicates { $0.0 == $1.0 && $0.1.map(\.id) == $1.1.map(\.id) }
+            .sink { [weak self] _ in self?.performRemoteSearch() }
+            .store(in: &cancellables)
     }
 
-    // MARK: - Data Source
+    // MARK: - Events
 
-    var numberOfPosts: Int {
-        fetchResultsController.fetchedObjects?.count ?? 0
+    func didReachBottom() {
+        guard let searchService, searchService.error == nil else { return }
+        searchService.loadMore()
     }
 
-    func posts(at indexPath: IndexPath) -> BasePost {
-        fetchResultsController.object(at: indexPath)
+    func didTapRefreshButton() {
+        searchService?.loadMore()
     }
 
-    // MARK: - NSFetchedResultsControllerDelegate
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        objectDidChange?()
+    func didSelectToken(at index: Int) {
+        let token = suggestedTokens[index]
+        cancelCurrentRemoteSearch()
+        suggestedTokens = []
+        posts = []
+        selectedTokens.append(token)
+        searchTerm = ""
     }
 
-    // MARK: - Local Search
+    // MARK: - Search (Remote)
 
-    private func performLocalSearch(with searchTerm: String) {
-        fetchResultsController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
-        do {
-            try fetchResultsController.performFetch()
-            objectDidChange?()
-        } catch {
-            assertionFailure("Failed to perform search: \(error)")
-        }
-    }
+    private func performRemoteSearch() {
+        cancelCurrentRemoteSearch()
 
-    private func makeFetchRequest(searchTerm: String) -> NSFetchRequest<BasePost> {
-        let request = NSFetchRequest<BasePost>(entityName: makeEntityName())
-        request.predicate = makePredicate(searchTerm: searchTerm)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \AbstractPost.date_created_gmt, ascending: false)]
-        request.fetchBatchSize = 40
-        return request
-    }
-
-    private func makeEntityName() -> String {
-        switch filters.postType {
-        case .post: return String(describing: Post.self)
-        case .page: return String(describing: Page.self)
-        default: fatalError("Unsupported post type: \(filters.postType)")
-        }
-    }
-
-    private func makePredicate(searchTerm: String) -> NSPredicate {
-        var predicates = [NSPredicate]()
-
-        // Show all original posts without a revision & revision posts.
-        predicates.append(NSPredicate(format: "blog = %@ && revision = nil", blog))
-        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
-            // Brand new local drafts have an authorID of 0.
-            predicates.append(NSPredicate(format: "authorID = %@ || authorID = 0", userID))
-        }
-        predicates.append(NSPredicate(format: "postTitle CONTAINS[cd] %@", searchTerm))
-
-        if filters.postType == .page, let predicate = PostSearchViewModel.makeHomepagePredicate(for: blog) {
-            predicates.append(predicate)
+        guard searchTerm.count > 1 || !selectedTokens.isEmpty else {
+            if !posts.isEmpty {
+                posts = []
+            }
+            return
         }
 
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
+        self.isRefreshing = true // Order is important
 
-    static func makeHomepagePredicate(for blog: Blog) -> NSPredicate? {
-        guard RemoteFeatureFlag.siteEditorMVP.enabled(),
-           blog.blockEditorSettings?.isFSETheme ?? false,
-           let homepageID = blog.homepagePageID,
-           let homepageType = blog.homepageType,
-              homepageType == .page else {
-            return nil
-        }
-        return NSPredicate(format: "postID != %i", homepageID)
-    }
-
-    // MARK: - Remote Search (Sync)
-
-    private func syncPostsMatchingSearchTerm(_ searchTerm: String) {
-        let postService = PostService(managedObjectContext: coreDataStack.mainContext)
-
-        let options = PostServiceSyncOptions()
-        options.number = 20
-        options.purgesLocalSync = false
-        options.search = searchTerm
-        if filters.shouldShowOnlyMyPosts(), let userID = blog.userID {
-            options.authorID = userID
-        }
-
-        postService.syncPosts(
-            ofType: filters.postType,
-            with: options,
-            for: blog,
-            success: { _ in },
-            failure: { _ in }
+        let criteria = PostSearchCriteria(
+            searchTerm: searchTerm,
+            authorID: getSelectedAuthorID(),
+            tag: selectedTokens.lazy.compactMap({ $0 as? PostSearchTagToken }).first?.tag
         )
+        let service = PostSearchService(blog: blog, settings: settings, criteria: criteria)
+        service.delegate = self
+        service.loadMore()
+        self.searchService = service
+    }
+
+    private func cancelCurrentRemoteSearch() {
+        // Stop receiving updates from the previous service
+        self.searchService?.delegate = nil
+    }
+
+    private func getSelectedAuthorID() -> NSNumber? {
+        if let token = selectedTokens.lazy.compactMap({ $0 as? PostSearchAuthorToken }).first {
+            return token.authorID
+        }
+        if settings.shouldShowOnlyMyPosts(), let userID = blog.userID {
+            return userID
+        }
+        return nil
+    }
+
+    // MARK: - PostSearchServiceDelegate
+
+    func service(_ service: PostSearchService, didAppendPosts posts: [PostSearchResult]) {
+        assert(Thread.isMainThread)
+
+        if isRefreshing {
+            self.posts = posts
+            isRefreshing = false
+        } else {
+            self.posts += posts
+        }
+    }
+
+    func serviceDidUpdateState(_ service: PostSearchService) {
+        assert(Thread.isMainThread)
+
+        if isRefreshing && service.error != nil {
+            posts = []
+        }
+        if service.isLoading && (!isRefreshing || posts.isEmpty) {
+            footerState = .loading
+        } else if service.error != nil {
+            footerState = .error
+        } else {
+            footerState = nil
+        }
+    }
+
+    // MARK: - Search Tokens
+
+    private func updateSuggestedTokens(for searchTerm: String) {
+        let selectedTokens = self.selectedTokens
+        suggestionsTask?.cancel()
+        suggestionsTask = Task { @MainActor in
+            let tokens = await suggestionsService.getSuggestion(for: searchTerm, selectedTokens: selectedTokens)
+            guard !Task.isCancelled else { return }
+            self.suggestedTokens = tokens
+        }
     }
 }

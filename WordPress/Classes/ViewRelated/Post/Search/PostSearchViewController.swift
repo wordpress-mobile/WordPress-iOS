@@ -1,8 +1,28 @@
 import UIKit
 import Combine
 
-final class PostSearchViewController: UITableViewController, UISearchResultsUpdating, NSFetchedResultsControllerDelegate {
+final class PostSearchViewController: UIViewController, UITableViewDelegate, UISearchResultsUpdating {
+    weak var searchController: UISearchController?
+
+    enum SectionID: Int, CaseIterable {
+        case tokens = 0
+        case posts
+    }
+
+    enum ItemID: Hashable {
+        case token(AnyHashable)
+        case post(PostSearchResult.ID)
+    }
+
+    private let tableView = UITableView(frame: .zero, style: .plain)
+
+    private lazy var dataSource = UITableViewDiffableDataSource<SectionID, ItemID> (tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
+        self?.tableView(tableView, cellForRowAt: indexPath)
+    }
+
     private let viewModel: PostSearchViewModel
+
+    private var cancellables: [AnyCancellable] = []
 
     init(viewModel: PostSearchViewModel) {
         self.viewModel = viewModel
@@ -17,29 +37,150 @@ final class PostSearchViewController: UITableViewController, UISearchResultsUpda
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellID")
+        configureTableView()
 
-        viewModel.objectDidChange = { [weak self] in
-            self?.tableView.reloadData()
+        viewModel.didUpdateData = { [weak self] in
+            self?.reloadData()
+        }
+
+        viewModel.$searchTerm.removeDuplicates().sink { [weak self] in
+            if self?.searchController?.searchBar.text != $0 {
+                self?.searchController?.searchBar.text = $0
+            }
+        }.store(in: &cancellables)
+
+        viewModel.$selectedTokens
+            .removeDuplicates { $0.map(\.id) == $1.map(\.id) }
+            .sink { [weak self] in
+                self?.searchController?.searchBar.searchTextField.tokens = $0.map {
+                    $0.asSearchToken()
+                }
+            }.store(in: &cancellables)
+
+        viewModel.$footerState
+            .throttle(for: 0.33, scheduler: DispatchQueue.main, latest: true)
+            .removeDuplicates()
+            .sink { [weak self] in self?.didUpdateFooterState($0) }
+            .store(in: &cancellables)
+    }
+
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(tableView)
+
+        tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.postCellID)
+
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.sizeToFitFooterView()
+    }
+
+    // MARK: - Data Source
+
+    private func reloadData() {
+        assert(Thread.isMainThread)
+
+        var snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>()
+
+        snapshot.appendSections([SectionID.tokens])
+        let tokenIDs = viewModel.suggestedTokens.map { ItemID.token($0.id) }
+        snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
+
+        snapshot.appendSections([SectionID.posts])
+        let postIDs = viewModel.posts.map { ItemID.post($0.id) }
+        snapshot.appendItems(postIDs, toSection: SectionID.posts)
+
+        dataSource.apply(snapshot, animatingDifferences: false)
+
+        updateSuggestedTokenCells()
+    }
+
+    private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch SectionID(rawValue: indexPath.section)! {
+        case .tokens:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.tokenCellID, for: indexPath) as! PostSearchTokenTableCell
+            let token = viewModel.suggestedTokens[indexPath.row]
+            let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
+            cell.configure(with: token, isLast: isLast)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
+            return cell
+        case .posts:
+            // TODO: Update the cell design
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
+            let result = viewModel.posts[indexPath.row]
+            var configuration = cell.defaultContentConfiguration()
+            configuration.attributedText = result.title
+            configuration.secondaryText = result.post.latest().dateStringForDisplay()
+            configuration.secondaryTextProperties.color = .secondaryLabel
+            cell.contentConfiguration = configuration
+            return cell
         }
     }
 
-    // MARK: - UITableViewController
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfPosts
+    // The diffable data source prevents the reloads of the existing cells
+    private func updateSuggestedTokenCells() {
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            if let cell = tableView.cellForRow(at: indexPath) as? PostSearchTokenTableCell {
+                let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
+                cell.separator.isHidden = !isLast
+            }
+        }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
-        let post = viewModel.posts(at: indexPath)
-        cell.textLabel?.text = post.titleForDisplay()
-        return cell
+    private func didUpdateFooterState(_ state: PagingFooterView.State?) {
+        guard let state else {
+            tableView.tableFooterView = nil
+            return
+        }
+        switch state {
+        case .loading:
+            tableView.tableFooterView = PagingFooterView(state: .loading)
+        case .error:
+            let footerView = PagingFooterView(state: .error)
+            footerView.buttonRetry.addAction(UIAction { [viewModel] _ in
+                viewModel.didTapRefreshButton()
+            }, for: .touchUpInside)
+            tableView.tableFooterView = footerView
+        }
+        tableView.sizeToFitFooterView()
+    }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch SectionID(rawValue: indexPath.section)! {
+        case .tokens:
+            viewModel.didSelectToken(at: indexPath.row)
+        case .posts:
+            break // TODO: Show post
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
+            viewModel.didReachBottom()
+        }
     }
 
     // MARK: - UISearchResultsUpdating
 
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.searchTerm = searchController.searchBar.text ?? ""
+        let searchBar = searchController.searchBar
+        viewModel.searchTerm = searchBar.text ?? ""
+        viewModel.selectedTokens = searchBar.searchTextField.tokens.map {
+            $0.representedObject as! PostSearchToken
+        }
     }
+}
+
+private enum Constants {
+    static let postCellID = "postCellID"
+    static let tokenCellID = "suggestedTokenCellID"
 }
