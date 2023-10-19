@@ -16,7 +16,8 @@ struct LockScreenChartWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreen
         let days = data[keyPath: value]
         let viewModel = LockScreenChartViewModel(
             siteName: data.siteName,
-            title: title,
+            valueTitle: LocalizableStrings.chartViewsLabel,
+            emptyChartTitle: title,
             columns: days.map { day in
                 LockScreenChartViewModel.Column(date: day.date, value: day.viewsCount)
             },

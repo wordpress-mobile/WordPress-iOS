@@ -8,46 +8,71 @@ struct LockScreenChartView: View {
     let viewModel: LockScreenChartViewModel
 
     var body: some View {
-        if family == .accessoryRectangular {
-            ZStack {
-                AccessoryWidgetBackground()
-                VStack(alignment: .leading) {
+        ZStack {
+            VStack(alignment: .leading) {
+                HStack() {
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer(minLength: 0)
-                    if isChartShown {
-                        Text(String(format: LocalizableStrings.chartViewsLabel, viewModel.total.abbreviatedString()))
-                            .font(.system(size: LockScreenFieldView.ValueFontSize.small, weight: .bold))
-                            .lineLimit(1)
-                            .allowsTightening(true)
-                            .minimumScaleFactor(0.6)
-                        Spacer(minLength: 0)
+                    LockScreenSiteTitleView(title: dateInterval(viewModel.columns), alignment: .trailing)
+                }
+                Spacer(minLength: 0)
+                if isChartShown {
+                    Text(String(format: LocalizableStrings.chartViewsLabel, viewModel.total.abbreviatedString()))
+                        .font(.system(size: LockScreenFieldView.ValueFontSize.small, weight: .heavy))
+                        .lineLimit(1)
+                        .allowsTightening(true)
+                        .minimumScaleFactor(0.6)
+                    Spacer(minLength: 4)
+                    ZStack {
                         Chart {
                             ForEach(viewModel.columns, id: \.self) { column in
-                                BarMark(
+                                AreaMark(
                                     x: .value(LocalizableStrings.chartXAxisLabel, column.date),
                                     y: .value(LocalizableStrings.chartYAxisLabel, column.value)
                                 )
-                                .cornerRadius(6)
+                                .interpolationMethod(.catmullRom)
+                                .foregroundStyle(.secondary)
                             }
                         }
                         .chartYAxis(.hidden)
                         .chartXAxis(.hidden)
-                    } else {
-                        LockScreenFieldView(title: viewModel.title, value: viewModel.total.abbreviatedString())
+                        .mask(LinearGradient(gradient: Gradient(stops: [
+                            .init(color: .black, location: 0.75),
+                            .init(color: .clear, location: 1)
+                        ]), startPoint: .top, endPoint: .bottom))
+
+                        Chart {
+                            ForEach(viewModel.columns, id: \.self) { column in
+                                LineMark(
+                                    x: .value(LocalizableStrings.chartXAxisLabel, column.date),
+                                    y: .value(LocalizableStrings.chartYAxisLabel, column.value)
+                                )
+                                .interpolationMethod(.catmullRom)
+                            }
+                        }
+                        .chartYAxis(.hidden)
+                        .chartXAxis(.hidden)
                     }
+                } else {
+                    LockScreenFieldView(title: viewModel.emptyChartTitle, value: viewModel.total.abbreviatedString())
                 }
-                .padding(
-                    EdgeInsets(top: 4, leading: 8, bottom: isChartShown ? 0 : 4, trailing: 8)
-                )
             }
-            .cornerRadius(8)
-        } else {
-            Text("Not implemented for widget family \(family.debugDescription)")
         }
     }
 
     private var isChartShown: Bool {
-        viewModel.total > 0 && viewModel.columns.count == 14
+        viewModel.total > 0 && viewModel.columns.count > 0
+    }
+
+    private func dateInterval(_ columns: [LockScreenChartViewModel.Column]) -> String {
+        guard columns.count > 1 else { return "" }
+
+        let dates = columns.map { $0.date }.sorted { $0 < $1 }
+
+        return (dates[0]..<dates[dates.count - 1]).formatted(
+            Date.IntervalFormatStyle()
+                .weekday(.abbreviated)
+        )
     }
 }
 
@@ -55,28 +80,42 @@ struct LockScreenChartView: View {
 struct LockScreenChartView_Previews: PreviewProvider {
     static let viewModel = LockScreenChartViewModel(
         siteName: "My WordPress Site",
-        title: "Views This Week",
-        columns: Array<Int>(0...13).map {
-            LockScreenChartViewModel.Column(date: Date(timeIntervalSinceNow: -Double($0)), value: $0 + 10 + 3 * ($0 % 2))
-            },
+        valueTitle: LocalizableStrings.chartViewsLabel,
+        emptyChartTitle: "Views This Week",
+        columns: generateWeekDates().enumerated().map {
+            LockScreenChartViewModel.Column(date: $1, value: $0 == 3 ? 0 : $0 + 10 + 3 * ($0 % 2))
+        },
         updatedTime: Date()
     )
 
     static let incompleteViewModel = LockScreenChartViewModel(
         siteName: "My WordPress Site",
-        title: "Views This Week",
-        columns: Array<Int>(0...8).map {
-            LockScreenChartViewModel.Column(date: Date(timeIntervalSinceNow: -Double($0)), value: $0 + 10 + 3 * ($0 % 2))
-            },
+        valueTitle: LocalizableStrings.chartViewsLabel,
+        emptyChartTitle: "Views This Week",
+        columns: generateWeekDates()[0...3].enumerated().map {
+            LockScreenChartViewModel.Column(date: $1, value: $0 + 10 + 3 * ($0 % 2))
+        },
         updatedTime: Date()
     )
 
     static let emptyViewModel = LockScreenChartViewModel(
         siteName: "My WordPress Site",
-        title: "Views This Week",
+        valueTitle: LocalizableStrings.chartViewsLabel,
+        emptyChartTitle: "Views This Week",
         columns: [],
         updatedTime: Date()
     )
+
+    static func generateWeekDates() -> [Date] {
+        var dates: [Date] = []
+        let calendar = Calendar.current
+        for i in 0..<7 {
+            if let date = calendar.date(byAdding: .day, value: i, to: Date(timeIntervalSince1970: -60 * 60 * 60)) {
+                dates.append(date)
+            }
+        }
+        return dates
+    }
 
     static var previews: some View {
         Group {

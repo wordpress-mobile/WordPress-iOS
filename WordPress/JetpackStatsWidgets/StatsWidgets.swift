@@ -11,6 +11,7 @@ struct JetpackStatsWidgets: WidgetBundle {
             LockScreenStatsWidget(config: LockScreenTodayViewsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenTodayViewsVisitorsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenTodayLikesCommentsStatWidgetConfig())
+            LockScreenStatsWidget(config: LockScreenThisWeekViewsChartWidgetConfig())
             LockScreenStatsWidget(config: LockScreenAllTimeViewsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenAllTimeViewsVisitorsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenAllTimePostsBestViewsStatWidgetConfig())
