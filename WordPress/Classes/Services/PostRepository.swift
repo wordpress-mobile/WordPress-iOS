@@ -418,7 +418,7 @@ extension PostRepository {
                 purgeExisting: deleteOtherLocalPosts,
                 in: context
             )
-            return updatedPosts.compactMap {
+            return updatedPosts.map {
                 guard let post = $0 as? P else {
                     fatalError("Expecting a \(postType) as \(type), but got \($0)")
                 }
