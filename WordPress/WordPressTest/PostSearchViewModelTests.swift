@@ -2,13 +2,13 @@ import XCTest
 
 @testable import WordPress
 
-class PostSearchServiceTests: XCTestCase {
+class PostSearchViewModelTests: XCTestCase {
     func testThatAdjacentRangesAreCollapsed() throws {
         // GIVEN
         let title = "one two xxxxx one"
 
         // WHEN
-        let string = PostSearchService.makeTitle(for: title, terms: ["one", "two"])
+        let string = PostSearchViewModel.higlight(title, terms: ["one", "two"])
 
         // THEN
         XCTAssertTrue(string.hasAttribute(.backgroundColor, in: NSRange(location: 0, length: 7)))
@@ -21,7 +21,7 @@ class PostSearchServiceTests: XCTestCase {
         let title = "One xxxxx óne"
 
         // WHEN
-        let string = PostSearchService.makeTitle(for: title, terms: ["one"])
+        let string = PostSearchViewModel.higlight(title, terms: ["one"])
 
         // THEN
         XCTAssertTrue(string.hasAttribute(.backgroundColor, in: NSRange(location: 0, length: 3)))
