@@ -49,7 +49,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         $searchTerm
             .dropFirst()
             .removeDuplicates()
-            .sink { [weak self] in self?.updateSuggestedTokens(for: $0) }
+            .sink { [weak self] in self?.didUpdateSearchTerm($0) }
             .store(in: &cancellables)
 
         $searchTerm.map { $0.trimmingCharacters(in: .whitespaces) }
@@ -62,6 +62,11 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     }
 
     // MARK: - Events
+
+    private func didUpdateSearchTerm(_ searchTerm: String) {
+        updateHighlightForSearchResults(for: searchTerm)
+        updateSuggestedTokens(for: searchTerm)
+    }
 
     func didReachBottom() {
         guard let searchService, searchService.error == nil else { return }
@@ -133,6 +138,9 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         } else {
             self.results += items
         }
+
+        // Updating for current searchTerm, not the one that the service searched for
+        updateHighlightForSearchResults(for: searchTerm)
     }
 
     func serviceDidUpdateState(_ service: PostSearchService) {
@@ -170,6 +178,25 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         let viewModel = PostListItemViewModel(post: post)
         postViewModels[post.objectID] = viewModel
         return viewModel
+    }
+
+    // MARK: - Highlighter
+
+    private func updateHighlightForSearchResults(for searchTerm: String) {
+        let terms = searchTerm
+            .trimmingCharacters(in: .whitespaces)
+            .components(separatedBy: .whitespaces)
+            .filter { !$0.isEmpty }
+        for item in results {
+            switch item {
+            case .post(let viewModel):
+                let string = NSMutableAttributedString(attributedString: viewModel.title)
+                PostSearchViewModel.highlight(terms: terms, in: string)
+                viewModel.title = string
+            case .page:
+                break // TODO: Implement highlighting
+            }
+        }
     }
 
     // MARK: - Search Tokens

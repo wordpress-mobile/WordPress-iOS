@@ -13,9 +13,9 @@ final class PostSearchService {
 
     weak var delegate: PostSearchServiceDelegate?
 
+    let criteria: PostSearchCriteria
     private let blog: Blog
     private let settings: PostListFilterSettings
-    private let criteria: PostSearchCriteria
     private let coreDataStack: CoreDataStack
 
     private var postIDs: Set<NSManagedObjectID> = []
