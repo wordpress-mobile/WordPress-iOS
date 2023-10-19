@@ -1,6 +1,6 @@
 import Foundation
 
-struct PostListItemViewModel {
+final class PostListItemViewModel {
     let post: Post
     let title: String?
     let snippet: String?
@@ -8,11 +8,11 @@ struct PostListItemViewModel {
     let date: String?
     let accessibilityIdentifier: String?
 
-    private var statusViewModel: PostCardStatusViewModel { .init(post: post) }
-
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var author: String { statusViewModel.author }
+
+    private let statusViewModel: PostCardStatusViewModel
 
     init(post: Post) {
         self.post = post
@@ -20,6 +20,7 @@ struct PostListItemViewModel {
         self.snippet = post.contentPreviewForDisplay()
         self.imageURL = post.featuredImageURL
         self.date = post.displayDate()?.capitalizeFirstWord
+        self.statusViewModel = PostCardStatusViewModel(post: post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
 }
