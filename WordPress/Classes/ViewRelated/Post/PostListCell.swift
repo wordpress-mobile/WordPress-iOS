@@ -24,7 +24,7 @@ final class PostListCell: UITableViewCell, Reusable {
 
     // MARK: - Properties
 
-    private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
+    private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
 
     // MARK: - Initializers
 
@@ -50,8 +50,7 @@ final class PostListCell: UITableViewCell, Reusable {
             let host = MediaHost(with: viewModel.post) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }
-            let preferredSize = CGSize(width: 44, height: 44)
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: preferredSize)
+            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
         }
 
         statusLabel.text = viewModel.status
@@ -126,8 +125,8 @@ final class PostListCell: UITableViewCell, Reusable {
         featuredImageView.layer.cornerRadius = 5
 
         NSLayoutConstraint.activate([
-            featuredImageView.widthAnchor.constraint(equalToConstant: 64),
-            featuredImageView.heightAnchor.constraint(equalToConstant: 64),
+            featuredImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
+            featuredImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
         ])
     }
 
@@ -137,4 +136,8 @@ final class PostListCell: UITableViewCell, Reusable {
         statusLabel.numberOfLines = 1
         statusLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
     }
+}
+
+private enum Constants {
+    static let imageSize = CGSize(width: 64, height: 64)
 }

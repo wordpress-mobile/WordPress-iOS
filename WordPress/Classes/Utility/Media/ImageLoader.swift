@@ -32,7 +32,7 @@ import AutomatticTracks
     // MARK: Private Fields
 
     private unowned let imageView: CachedAnimatedImageView
-    private let loadingIndicator: CircularProgressView
+    private let loadingIndicator: ActivityIndicatorType
 
     private var successHandler: ImageLoaderSuccessBlock?
     private var errorHandler: ImageLoaderFailureBlock?
@@ -47,16 +47,27 @@ import AutomatticTracks
         return requestOptions
     }()
 
-    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
+    @objc convenience init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
+        self.init(imageView: imageView, gifStrategy: gifStrategy, loadingIndicator: nil)
+    }
+
+    init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loadingIndicator: ActivityIndicatorType?) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
-        loadingIndicator = CircularProgressView(style: .primary)
+
+        if let loadingIndicator {
+            self.loadingIndicator = loadingIndicator
+        } else {
+            let loadingIndicator = CircularProgressView(style: .primary)
+            WPStyleGuide.styleProgressViewWhite(loadingIndicator)
+            self.loadingIndicator = loadingIndicator
+        }
 
         super.init()
 
-        WPStyleGuide.styleProgressViewWhite(loadingIndicator)
-        imageView.addLoadingIndicator(loadingIndicator, style: .fullView)
+        imageView.addLoadingIndicator(self.loadingIndicator, style: .fullView)
     }
+
 
     /// Removes the gif animation and prevents it from animate again.
     /// Call this in a table/collection cell's `prepareForReuse()`.
@@ -298,7 +309,7 @@ import AutomatticTracks
             }
 
             if self.imageView.shouldShowLoadingIndicator {
-                self.loadingIndicator.state = .error
+                (self.loadingIndicator as? CircularProgressView)?.state = .error
             }
 
             self.errorHandler?(error)
