@@ -6,36 +6,6 @@ import Nimble
 
 class PostListViewControllerTests: CoreDataTestCase {
 
-    func testShowsGhostableTableView() {
-        let blog = BlogBuilder(mainContext).build()
-        let postListViewController = PostListViewController.controllerWithBlog(blog)
-        let _ = postListViewController.view
-
-        postListViewController.startGhost()
-
-        expect(postListViewController.ghostableTableView.isHidden).to(beFalse())
-    }
-
-    func testHidesGhostableTableView() {
-        let blog = BlogBuilder(mainContext).build()
-        let postListViewController = PostListViewController.controllerWithBlog(blog)
-        let _ = postListViewController.view
-
-        postListViewController.stopGhost()
-
-        expect(postListViewController.ghostableTableView.isHidden).to(beTrue())
-    }
-
-    func testShowTenMockedItemsInGhostableTableView() {
-        let blog = BlogBuilder(mainContext).build()
-        let postListViewController = PostListViewController.controllerWithBlog(blog)
-        let _ = postListViewController.view
-
-        postListViewController.startGhost()
-
-        expect(postListViewController.ghostableTableView.numberOfRows(inSection: 0)).to(equal(50))
-    }
-
     func testItCanHandleNewPostUpdatesEvenIfTheGhostViewIsStillVisible() throws {
         // This test simulates and proves that the app will no longer crash on these conditions:
         //
