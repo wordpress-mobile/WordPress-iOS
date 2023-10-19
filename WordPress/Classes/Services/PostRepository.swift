@@ -241,6 +241,7 @@ private final class PostRepositoryPostsSerivceRemoteOptions: NSObject, PostServi
         var authorID: NSNumber?
         var search: String?
         var meta: String? = "autosave"
+        var tag: String?
     }
 
     var options: Options
@@ -279,6 +280,10 @@ private final class PostRepositoryPostsSerivceRemoteOptions: NSObject, PostServi
 
     func meta() -> String? {
         options.meta
+    }
+
+    func tag() -> String! {
+        options.tag
     }
 }
 
