@@ -28,8 +28,8 @@ class BlogDashboardState {
         !hasCachedData && failedToLoad
     }
 
-    @Atomic var postsSyncingStatuses: [String] = []
-    @Atomic var pagesSyncingStatuses: [String] = []
+    @Atomic var postsSyncingStatuses: [BasePost.Status] = []
+    @Atomic var pagesSyncingStatuses: [BasePost.Status] = []
 
     private init() { }
 
