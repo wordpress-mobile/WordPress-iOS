@@ -140,16 +140,14 @@ platform :ios do
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [String] base_version (default: _current app version_) If set, bases the beta on the specified version
-  #                  and `release/<base_version>` branch instead of the current one. Useful for triggering betas on hotfixes for example.
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    # Check out the up-to-date default branch, the designated starting point for the new beta
-    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+    ensure_git_branch(branch: '^release/')
 
     # Check versions
     message = <<-MESSAGE
@@ -159,14 +157,6 @@ platform :ios do
       • Current internal build code: #{build_code_current_internal}
       • New internal build code: #{build_code_next_internal}
     MESSAGE
-
-    # Check branch
-    unless !options[:base_version].nil? || Fastlane::Helper::GitHelper.checkout_and_pull(release: release_version_current)
-      UI.user_error!("#{message}Release branch for version #{release_version_current} doesn't exist. Abort.")
-    end
-
-    # Check user override
-    override_default_release_branch(options[:base_version]) unless options[:base_version].nil?
 
     UI.important(message)
     UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
