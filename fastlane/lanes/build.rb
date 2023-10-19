@@ -227,7 +227,7 @@ platform :ios do
       ios_build_preflight
     end
 
-    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to AppCenter")
+    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
     UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
