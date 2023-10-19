@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import Combine
 
 final class PostListCell: UITableViewCell, Reusable {
 
@@ -21,6 +22,7 @@ final class PostListCell: UITableViewCell, Reusable {
     private let titleAndSnippetLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
     private let statusLabel = UILabel()
+    private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
 
@@ -39,10 +41,18 @@ final class PostListCell: UITableViewCell, Reusable {
 
     // MARK: - Public
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        cancellables = []
+    }
+
     func configure(with viewModel: PostListItemViewModel) {
         headerView.configure(with: viewModel)
 
-        configureTitleAndSnippet(with: viewModel)
+        viewModel.$title.sink { [titleAndSnippetLabel] in
+            titleAndSnippetLabel.attributedText = $0
+        }.store(in: &cancellables)
 
         imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
@@ -56,30 +66,6 @@ final class PostListCell: UITableViewCell, Reusable {
         statusLabel.text = viewModel.status
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
-    }
-
-    private func configureTitleAndSnippet(with viewModel: PostListItemViewModel) {
-        var titleAndSnippetString = NSMutableAttributedString()
-
-        if let title = viewModel.title, !title.isEmpty {
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-                .foregroundColor: UIColor.text
-            ]
-            let titleAttributedString = NSAttributedString(string: "\(title)\n", attributes: attributes)
-            titleAndSnippetString.append(titleAttributedString)
-        }
-
-        if let snippet = viewModel.snippet, !snippet.isEmpty {
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-                .foregroundColor: UIColor.textSubtle
-            ]
-            let snippetAttributedString = NSAttributedString(string: snippet, attributes: attributes)
-            titleAndSnippetString.append(snippetAttributedString)
-        }
-
-        titleAndSnippetLabel.attributedText = titleAndSnippetString
     }
 
     // MARK: - Setup
