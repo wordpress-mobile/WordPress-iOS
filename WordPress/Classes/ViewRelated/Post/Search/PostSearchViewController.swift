@@ -75,6 +75,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
         tableView.dataSource = dataSource
         tableView.delegate = self
+        tableView.sectionHeaderTopPadding = 0
     }
 
     override func viewDidLayoutSubviews() {
