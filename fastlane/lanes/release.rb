@@ -40,7 +40,6 @@ platform :ios do
 
     # Create the release branch
     UI.message 'Creating release branch...'
-    ensure_git_branch(branch: DEFAULT_BRANCH)
     Fastlane::Helper::GitHelper.create_branch("release/#{release_version_next}", from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
 
