@@ -61,7 +61,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         contentView.backgroundColor = usesNewDesign ? .systemBackground : .listForeground
     }
 
-
     /// Configures the cell and the collection view for the new design.
     private func configureForNewDesign() {
         // set up custom collection view flow layout
@@ -230,14 +229,34 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
         contentView.addSubview(titleLabel)
         contentView.pinSubviewToAllEdges(titleLabel, insets: .init(top: 8.0, left: 16.0, bottom: 8.0, right: 16.0))
 
-        contentView.backgroundColor = .clear
         contentView.layer.cornerRadius = 5.0
         contentView.layer.borderWidth = 1.0
-        contentView.layer.borderColor = UIColor.separator.cgColor
+        updateColors()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if let previousTraitCollection,
+           traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateColors()
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func updateColors() {
+        contentView.backgroundColor = .clear
+        contentView.layer.borderColor = UIColor(light: .separator, dark: Constants.darkModeSeparatorColor).cgColor
+    }
+
+    private struct Constants {
+        // This is a customized `.separator` color with the alpha updated to 1.0.
+        // With the default color on top of the gray background, the border appears almost invisible on certain devices.
+        // More context: p1697541472738849-slack-C05N140C8H5
+        static let darkModeSeparatorColor = UIColor(red: 0.33, green: 0.33, blue: 0.35, alpha: 1.0)
     }
 }
 
