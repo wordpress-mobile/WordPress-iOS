@@ -47,15 +47,6 @@ static CGFloat const FeaturedImageSize = 120.0;
     [self setNeedsDisplay];
 }
 
-- (ImageLoader *)featuredImageLoader
-{
-    if (_featuredImageLoader == nil) {
-        _featuredImageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView
-                                                          gifStrategy:GIFStrategyLargeGIFs];
-    }
-    return _featuredImageLoader;
-}
-
 - (NSDateFormatter *)dateFormatter
 {
     if (_dateFormatter == nil) {

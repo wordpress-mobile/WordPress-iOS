@@ -14,7 +14,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         struct Identifiers {
             static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
             static let pageCellIdentifier = "PageCellIdentifier"
-            static let pageCellNibName = "PageListTableViewCell"
             static let restorePageCellIdentifier = "RestorePageCellIdentifier"
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
@@ -169,8 +168,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let bundle = Bundle.main
 
         // Register the cells
-        let pageCellNib = UINib(nibName: Constant.Identifiers.pageCellNibName, bundle: bundle)
-        tableView.register(pageCellNib, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
+        tableView.register(PageListCell.self, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
 
         let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
@@ -372,12 +370,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
+        if let cell = cell as? PageListCell {
+            cell.configure(with: PageListItemViewModel(page: page))
+        }
         return cell
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         guard let cell = cell as? BasePageListCell else {
-            preconditionFailure("The cell should be of class \(String(describing: BasePageListCell.self))")
+            return
         }
 
         cell.accessoryType = .none
@@ -385,6 +386,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let page = pageAtIndexPath(indexPath)
         let filterType = filterSettings.currentPostListFilter().filterType
 
+        // TODO: Implement indenting for child pages (#21818)
         if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
             cell.indentationWidth = Constant.Size.pageListTableViewCellLeading
             cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
