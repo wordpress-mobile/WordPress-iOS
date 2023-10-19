@@ -15,15 +15,6 @@ class PostListFilterSettings: NSObject {
     enum AuthorFilter: UInt {
         case mine = 0
         case everyone = 1
-
-        var stringValue: String {
-            switch self {
-            case .mine:
-                return NSLocalizedString("Me", comment: "Label for the post author filter. This filter shows posts only authored by the current user.")
-            case .everyone:
-                return NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
-            }
-        }
     }
     /// Initializes a new PostListFilterSettings instance
     /// - Parameter blog: the blog which owns the list of posts

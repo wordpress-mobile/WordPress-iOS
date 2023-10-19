@@ -31,13 +31,17 @@ class AuthorFilterViewController: UITableViewController {
         AuthorFilter.everyone
     ]
 
+    private let postType: PostServiceType
+
     init(initialSelection: PostListFilterSettings.AuthorFilter,
          gravatarEmail: String? = nil,
+         postType: PostServiceType,
          onSelectionChanged: ((PostListFilterSettings.AuthorFilter) -> Void)? = nil) {
 
         self.gravatarEmail = gravatarEmail
         self.onSelectionChanged = onSelectionChanged
         self.currentSelection = initialSelection
+        self.postType = postType
 
         super.init(style: .grouped)
 
@@ -74,25 +78,37 @@ class AuthorFilterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.authorFilterCell, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.authorFilterCell, for: indexPath) as! AuthorFilterCell
 
-
-        if let cell = cell as? AuthorFilterCell,
-            let filter = PostListFilterSettings.AuthorFilter(rawValue: UInt(indexPath.row)) {
+        if let filter = PostListFilterSettings.AuthorFilter(rawValue: UInt(indexPath.row)) {
             switch filter {
             case .everyone:
                 cell.filterType = .everyone
             case .mine:
                 cell.filterType = .user(gravatarEmail: gravatarEmail)
             }
-
-            cell.accessoryType = (filter == currentSelection) ? .checkmark : .none
-
-            cell.title = filter.stringValue
+            cell.title = makeTitle(for: filter)
             cell.separatorIsHidden = indexPath.row != 0
         }
 
         return cell
+    }
+
+    private func makeTitle(for filter: PostListFilterSettings.AuthorFilter) -> String {
+        switch postType {
+        case .post:
+            switch filter {
+            case .mine: return Strings.postsByMe
+            case .everyone: return Strings.postsByEveryone
+            }
+        case .page:
+            switch filter {
+            case .mine: return Strings.pagesByMe
+            case .everyone: return Strings.pagesByEveryone
+            }
+        default:
+            fatalError("Unsupported post type: \(postType)")
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -149,7 +165,6 @@ class AuthorFilterViewController: UITableViewController {
 /// an optional gravatar in a circular image view.
 ///
 private class AuthorFilterCell: UITableViewCell {
-
     private let gravatarImageView: CircularImageView = {
         let imageView = CircularImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +178,7 @@ private class AuthorFilterCell: UITableViewCell {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = Fonts.titleFont
-        titleLabel.textColor = Appearance.textColor
+        titleLabel.textColor = .label
         return titleLabel
     }()
 
@@ -198,26 +213,26 @@ private class AuthorFilterCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        addSubview(stackView)
-        addSubview(separator)
+        contentView.addSubview(stackView)
+        contentView.addSubview(separator)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.horizontalPadding),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Metrics.horizontalPadding),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Metrics.horizontalPadding),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             gravatarImageView.widthAnchor.constraint(equalToConstant: Metrics.gravatarSize.width),
             gravatarImageView.heightAnchor.constraint(equalToConstant: Metrics.gravatarSize.height),
-            ])
+        ])
 
-        stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(gravatarImageView)
 
         NSLayoutConstraint.activate([
-            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            separator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
-            ])
+        ])
 
         tintColor = .primary(.shade40)
     }
@@ -236,9 +251,9 @@ private class AuthorFilterCell: UITableViewCell {
             case .user(let email):
                 gravatarImageView.contentMode = .scaleAspectFill
 
-                let placeholder = UIImage.gridicon(.user, size: Metrics.gravatarSize)
+                let placeholder = UIImage(named: "comment-author-gravatar")
                 if let email = email {
-                    gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: placeholder)
+                    gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: placeholder ?? UIImage())
                 } else {
                     gravatarImageView.image = placeholder
                 }
@@ -251,18 +266,23 @@ private class AuthorFilterCell: UITableViewCell {
     // MARK: - Constants
 
     private enum Fonts {
-        static let titleFont = UIFont.systemFont(ofSize: 16.0)
+        static let titleFont = UIFont.systemFont(ofSize: 17)
     }
 
     private enum Appearance {
-        static let textColor = UIColor.neutral(.shade70)
         static let placeholderTintColor = UIColor.neutral(.shade70)
     }
 
     private enum Metrics {
-        static let stackViewSpacing: CGFloat = 10.0
-        static let horizontalPadding: CGFloat = 16.0
-        static let gravatarSize = CGSize(width: 28.0, height: 28.0)
-        static let multipleGravatarSize = CGSize(width: 20.0, height: 20.0)
+        static let stackViewSpacing: CGFloat = 10
+        static let horizontalPadding: CGFloat = 16
+        static let gravatarSize = CGSize(width: 24, height: 24)
     }
+}
+
+private enum Strings {
+    static let postsByMe = NSLocalizedString("postsList.postsByMe", value: "Posts by me", comment: "Menu option for filtering posts by me")
+    static let postsByEveryone = NSLocalizedString("postsList.postsByEveryone", value: "Posts by everyone", comment: "Menu option for filtering posts by everyone")
+    static let pagesByMe = NSLocalizedString("pagesList.pagesByMe", value: "Pages by me", comment: "Menu option for filtering posts by me")
+    static let pagesByEveryone = NSLocalizedString("pagesList.pagesByEveryone", value: "Pages by everyone", comment: "Menu option for filtering posts by everyone")
 }
