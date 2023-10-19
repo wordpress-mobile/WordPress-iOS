@@ -211,6 +211,9 @@ platform :ios do
   #
   desc 'Creates a new hotfix branch for the given `version:x.y.z`. The branch will be cut from the `x.y` tag.'
   lane :new_hotfix_release do |options|
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
+
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
     build_code_hotfix = build_code_hotfix(release_version: new_version)
 
@@ -240,8 +243,6 @@ platform :ios do
 
     # Create the hotfix branch
     UI.message 'Creating hotfix branch...'
-    # Verify that there's nothing in progress in the working copy
-    ensure_git_status_clean
     Fastlane::Helper::GitHelper.create_branch("release/#{new_version}", from: previous_version)
     UI.success "Done! New hotfix branch is: #{git_branch}"
 
