@@ -93,6 +93,7 @@ extension Tracks {
         case lockScreenAllTimeViewsWidgetUpdated = "all_time_views_lockscreen_widget_updated"
         case lockScreenAllTimeViewsVisitorsWidgetUpdated = "all_time_views_visitors_lockscreen_widget_updated"
         case lockScreenAllTimePostsBestViewsWidgetUpdated = "all_time_posts_best_views_lockscreen_widget_updated"
+        case lockScreenThisWeekViewsWidgetUpdated = "this_week_views_lockscreen_widget_updated"
 
         static func widgetUpdated(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> ExtensionEvents {
             switch widgetKind {
@@ -114,6 +115,8 @@ extension Tracks {
                  return .lockScreenAllTimeViewsVisitorsWidgetUpdated
              case .lockScreenAllTimePostsBestViews:
                  return .lockScreenAllTimePostsBestViewsWidgetUpdated
+            case .lockScreenThisWeekViews:
+                return .lockScreenThisWeekViewsWidgetUpdated
             }
         }
     }
