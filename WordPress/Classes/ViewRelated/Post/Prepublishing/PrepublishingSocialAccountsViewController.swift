@@ -201,9 +201,14 @@ private extension PrepublishingSocialAccountsViewController {
     }
 
     var indexPathsForDisabledConnections: [IndexPath] {
-        connections.indexed().compactMap { index, _ in
-            valueForConnection(at: index) ? nil : IndexPath(row: index, section: .zero)
+        var indexPaths: [IndexPath] = []
+        for (index, _) in connections.enumerated() {
+            if valueForConnection(at: index) {
+                indexPaths.append(IndexPath(row: index, section: .zero))
+            }
         }
+
+        return indexPaths
     }
 
     var shouldDisplayWarning: Bool {

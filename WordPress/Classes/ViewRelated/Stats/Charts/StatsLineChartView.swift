@@ -1,5 +1,5 @@
 import UIKit
-import Charts
+import DGCharts
 
 // MARK: - StatsLineChartViewDelegate
 

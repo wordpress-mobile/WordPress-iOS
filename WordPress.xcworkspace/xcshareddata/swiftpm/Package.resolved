@@ -11,12 +11,12 @@
         }
       },
       {
-        "package": "Charts",
+        "package": "DGCharts",
         "repositoryURL": "https://github.com/danielgindi/Charts",
         "state": {
           "branch": null,
-          "revision": "07b23476ad52b926be772f317d8f1d4511ee8d02",
-          "version": "4.1.0"
+          "revision": "0a229f8c914b0ec93798cee058cf75b339297513",
+          "version": "5.0.0"
         }
       },
       {
@@ -62,24 +62,6 @@
           "branch": null,
           "revision": "328db56c62aab91440ec5e07cc9f7eef6e26a26e",
           "version": "0.2.3"
-        }
-      },
-      {
-        "package": "swift-algorithms",
-        "repositoryURL": "https://github.com/apple/swift-algorithms",
-        "state": {
-          "branch": null,
-          "revision": "bcd4f369ac962bc3e5244c9df778739f8f5bdbf1",
-          "version": "1.1.0"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics.git",
-        "state": {
-          "branch": null,
-          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
-          "version": "1.0.2"
         }
       },
       {
