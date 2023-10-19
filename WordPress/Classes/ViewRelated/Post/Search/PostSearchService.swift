@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 protocol PostSearchServiceDelegate: AnyObject {
-    func service(_ service: PostSearchService, didAppendPosts page: [PostSearchResult])
+    func service(_ service: PostSearchService, didAppendPosts page: [AbstractPost])
     func serviceDidUpdateState(_ service: PostSearchService)
 }
 
@@ -77,48 +77,12 @@ final class PostSearchService {
 
             let newPosts = posts.filter { !postIDs.contains($0.objectID) }
             postIDs.formUnion(newPosts.map(\.objectID))
-
-            preprocess(newPosts) { [weak self] in
-                guard let self else { return }
-                self.delegate?.service(self, didAppendPosts: $0)
-            }
+            self.delegate?.service(self, didAppendPosts: newPosts)
         case .failure(let error):
             self.error = error
         }
         isLoading = false
         delegate?.serviceDidUpdateState(self)
-    }
-
-    private func preprocess(_ posts: [AbstractPost], _ completion: @escaping ([PostSearchResult]) -> Void) {
-        let rawTitles = posts.map(\.postTitle)
-        let searchTerm = criteria.searchTerm
-        DispatchQueue.global().async {
-            let terms = searchTerm
-                .components(separatedBy: .whitespaces)
-                .filter { !$0.isEmpty }
-            let titles = rawTitles.map { PostSearchViewModel.higlight($0 ?? "", terms: terms) }
-            let results = zip(posts, titles).map {
-                PostSearchResult(post: $0, title: $1, searchTerm: searchTerm)
-            }
-            DispatchQueue.main.async {
-                completion(results)
-            }
-        }
-    }
-}
-
-struct PostSearchResult {
-    let post: AbstractPost
-    /// Preprocessed titles with highlighted search ranges.
-    let title: NSAttributedString
-    let searchTerm: String
-
-    var id: ID { ID(objectID: post.objectID, searchTerm: searchTerm) }
-
-    struct ID: Hashable {
-        let objectID: NSManagedObjectID
-        /// Adding search term because the cell updates as the term changes.
-        let searchTerm: String
     }
 }
 

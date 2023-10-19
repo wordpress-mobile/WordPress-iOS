@@ -10,7 +10,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         didSet { didUpdateData?() }
     }
 
-    private(set) var posts: [PostSearchResult] = [] {
+    private(set) var posts: [AbstractPost] = [] {
         didSet { didUpdateData?() }
     }
 
@@ -122,7 +122,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
     // MARK: - PostSearchServiceDelegate
 
-    func service(_ service: PostSearchService, didAppendPosts posts: [PostSearchResult]) {
+    func service(_ service: PostSearchService, didAppendPosts posts: [AbstractPost]) {
         assert(Thread.isMainThread)
 
         if isRefreshing {

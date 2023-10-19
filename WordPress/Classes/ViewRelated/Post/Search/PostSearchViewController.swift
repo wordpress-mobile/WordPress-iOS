@@ -11,7 +11,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case post(PostSearchResult.ID)
+        case post(NSManagedObjectID)
     }
 
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -94,7 +94,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
         snapshot.appendSections([SectionID.posts])
-        let postIDs = viewModel.posts.map { ItemID.post($0.id) }
+        let postIDs = viewModel.posts.map { ItemID.post($0.objectID) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -114,10 +114,10 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         case .posts:
             // TODO: Update the cell design
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
-            let result = viewModel.posts[indexPath.row]
+            let post = viewModel.posts[indexPath.row]
             var configuration = cell.defaultContentConfiguration()
-            configuration.attributedText = result.title
-            configuration.secondaryText = result.post.latest().dateStringForDisplay()
+            configuration.text = post.titleForDisplay()
+            configuration.secondaryText = post.latest().dateStringForDisplay()
             configuration.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = configuration
             return cell
