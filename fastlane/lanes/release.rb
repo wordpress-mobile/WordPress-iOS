@@ -36,7 +36,7 @@ platform :ios do
     MESSAGE
 
     UI.important(message)
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     # Create the release branch
     UI.message 'Creating release branch...'
@@ -122,7 +122,7 @@ platform :ios do
     ensure_git_status_clean
 
     UI.important("Completing code freeze for: #{release_version_current}")
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
 
@@ -169,7 +169,7 @@ platform :ios do
     override_default_release_branch(options[:base_version]) unless options[:base_version].nil?
 
     UI.important(message)
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
@@ -234,7 +234,7 @@ platform :ios do
     MESSAGE
 
     UI.important(message)
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     # Check tags
     UI.user_error!("Version #{new_version} already exists! Abort!") if git_tag_exists(tag: new_version)
@@ -280,7 +280,7 @@ platform :ios do
     git_pull
 
     UI.important("Triggering hotfix build for version: #{release_version_current}")
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     trigger_release_build(branch_to_build: "release/#{release_version_current}")
   end
@@ -305,7 +305,7 @@ platform :ios do
     ensure_git_status_clean
 
     UI.important("Finalizing release: #{release_version_current}")
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     git_pull
 
