@@ -45,7 +45,7 @@ public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval
     element.tap()
 }
 
-public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
+public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     var retries = 0
     while retries < maxRetries {
         if element.isHittable {
@@ -53,7 +53,7 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
             break
         }
 
-        usleep(500000) // a 0.5 second delay before retrying
+        usleep(250000) // a 0.25 second delay before retrying
         retries += 1
     }
 
