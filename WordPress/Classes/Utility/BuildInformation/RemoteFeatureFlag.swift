@@ -60,7 +60,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
         case .domainManagement:
-            return false // TODO: Update as `AppConfiguration.isJetpack`
+            return true
         case .plansInSiteCreation:
             return false
         case .readerImprovements:

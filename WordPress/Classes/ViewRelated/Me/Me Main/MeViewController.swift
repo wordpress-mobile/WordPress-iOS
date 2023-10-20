@@ -212,26 +212,14 @@ class MeViewController: UITableViewController {
                                               accessibilityIdentifier: "About"))
 
                 return rows
-            }()),
-            .init(headerText: HeaderTitles.products, rows: {
-                return [myDomainsRow()] // TODO: Add my domains only if feature flag is enabled. Otherwise only "Purchases"
-            }()),
+            }())
+        ]
 
-#if JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
-                return [
-                    ButtonRow(title: MyDomainsViewController.Strings.title) { action in
-                        let controller = MyDomainsViewController()
-                        let navigationController = UINavigationController(rootViewController: controller)
-                        self.present(navigationController, animated: true) {
-                            self.tableView.deselectSelectedRowWithAnimation(true)
-                        }
-                    }
-                ]
+                return [myDomainsRow()]
             }()))
         }
-#endif
 
         // last section
         sections.append(
