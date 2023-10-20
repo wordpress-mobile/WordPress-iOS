@@ -2,9 +2,9 @@ import SwiftUI
 
 struct LockScreenFieldView: View {
     struct ValueFontSize {
-        static let `default`: CGFloat = 20
-        static let medium: CGFloat = 18
-        static let small: CGFloat = 16
+        static let `default`: CGFloat = 22
+        static let medium: CGFloat = 20
+        static let small: CGFloat = 18
     }
 
     let title: String
@@ -27,7 +27,7 @@ struct LockScreenFieldView: View {
             Spacer(minLength: 0)
             Text(value)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: valueFontSize, weight: .bold))
+                .font(.system(size: valueFontSize, weight: .heavy))
                 .minimumScaleFactor(0.6)
                 .foregroundColor(.white)
                 .allowsTightening(true)
