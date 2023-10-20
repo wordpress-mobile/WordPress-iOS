@@ -22,6 +22,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private let entityName: String
 
     private var postViewModels: [NSManagedObjectID: PostListItemViewModel] = [:]
+    private var pageViewModels: [NSManagedObjectID: PageListItemViewModel] = [:]
     private var searchService: PostSearchService?
     private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
@@ -165,7 +166,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         case let post as Post:
             return .post(getViewModel(for: post))
         case let page as Page:
-            return .page(page)
+            return .page(getViewModel(for: page))
         default:
             fatalError("Unsupported item: \(type(of: item))")
         }
@@ -177,6 +178,15 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         }
         let viewModel = PostListItemViewModel(post: post)
         postViewModels[post.objectID] = viewModel
+        return viewModel
+    }
+
+    private func getViewModel(for page: Page) -> PageListItemViewModel {
+        if let viewModel = pageViewModels[page.objectID] {
+            return viewModel
+        }
+        let viewModel = PageListItemViewModel(page: page)
+        pageViewModels[page.objectID] = viewModel
         return viewModel
     }
 
@@ -193,8 +203,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
                 let string = NSMutableAttributedString(attributedString: viewModel.content)
                 PostSearchViewModel.highlight(terms: terms, in: string)
                 viewModel.content = string
-            case .page:
-                break // TODO: Implement highlighting
+            case .page(let viewModel):
+                let string = NSMutableAttributedString(attributedString: viewModel.title)
+                PostSearchViewModel.highlight(terms: terms, in: string)
+                viewModel.title = string
             }
         }
     }
@@ -214,14 +226,14 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
 enum PostSearchResultItem {
     case post(PostListItemViewModel)
-    case page(Page)
+    case page(PageListItemViewModel)
 
     var objectID: NSManagedObjectID {
         switch self {
         case .post(let viewModel):
             return viewModel.post.objectID
-        case .page(let page):
-            return page.objectID
+        case .page(let viewModel):
+            return viewModel.page.objectID
         }
     }
 }
