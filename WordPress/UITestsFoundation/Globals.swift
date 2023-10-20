@@ -62,10 +62,10 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     }
 }
 
-public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement, maxRetries: Int = 10) {
+public func tapUntilCondition(element: XCUIElement, condition: Bool, description: String, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
-        if !elementToAppear.exists {
+        if !condition {
             element.tap()
             break
         }
@@ -75,7 +75,7 @@ public func tap(element: XCUIElement, untilAppears elementToAppear: XCUIElement,
     }
 
     if retries == maxRetries {
-        XCTFail("Expected element (\(elementToAppear)) still does not exist after \(maxRetries) tries.")
+        XCTFail("Condition \(description) still not met after \(maxRetries) tries.")
     }
 }
 
