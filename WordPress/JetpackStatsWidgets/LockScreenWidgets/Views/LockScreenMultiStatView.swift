@@ -10,8 +10,9 @@ struct LockScreenMultiStatView: View {
         if family == .accessoryRectangular {
             ZStack {
                 VStack(alignment: .leading) {
+                    Spacer()
                     LockScreenSiteTitleView(title: viewModel.siteName)
-                    Spacer(minLength: 0)
+                    Spacer().frame(height: 4)
                     HStack(alignment: .bottom) {
                         LockScreenFieldView(
                             title: viewModel.primaryField.title,
@@ -27,6 +28,7 @@ struct LockScreenMultiStatView: View {
                         )
                         Spacer()
                     }
+                    Spacer()
                 }
             }
             .accessibilityElement(children: .combine)

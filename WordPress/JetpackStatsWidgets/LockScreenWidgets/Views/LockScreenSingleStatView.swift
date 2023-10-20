@@ -10,9 +10,11 @@ struct LockScreenSingleStatView: View {
         if family == .accessoryRectangular {
             ZStack {
                 VStack(alignment: .leading) {
+                    Spacer()
                     LockScreenSiteTitleView(title: viewModel.siteName)
-                    Spacer(minLength: 0)
+                    Spacer().frame(height: 4)
                     LockScreenFieldView(title: viewModel.title, value: viewModel.value.abbreviatedString())
+                    Spacer()
                 }
             }
             .accessibilityElement(children: .combine)

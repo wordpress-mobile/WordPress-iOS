@@ -24,18 +24,16 @@ struct LockScreenFieldView: View {
 
     var body: some View {
         VStack {
-            Spacer(minLength: 0)
             Text(value)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: valueFontSize, weight: .heavy))
-                .minimumScaleFactor(0.6)
+                .minimumScaleFactor(0.9)
                 .foregroundColor(.white)
                 .allowsTightening(true)
                 .lineLimit(1)
-            Spacer(minLength: 0)
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 10))
+                .font(.system(size: 11))
                 .minimumScaleFactor(0.9)
                 .allowsTightening(true)
                 .lineLimit(1)
