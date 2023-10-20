@@ -21,8 +21,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private let coreData: CoreDataStack
     private let entityName: String
 
-    private var postViewModels: [NSManagedObjectID: PostListItemViewModel] = [:]
-    private var pageViewModels: [NSManagedObjectID: PageListItemViewModel] = [:]
+    private var cachedItems: [NSManagedObjectID: PostSearchResultItem] = [:]
     private var searchService: PostSearchService?
     private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
@@ -161,33 +160,21 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
     // MARK: - Results
 
-    private func getSearchResultItem(for item: AbstractPost) -> PostSearchResultItem {
-        switch item {
+    private func getSearchResultItem(for post: AbstractPost) -> PostSearchResultItem {
+        if let item = cachedItems[post.objectID] {
+            return item
+        }
+        let item: PostSearchResultItem
+        switch post {
         case let post as Post:
-            return .post(getViewModel(for: post))
+            item = .post(PostListItemViewModel(post: post))
         case let page as Page:
-            return .page(getViewModel(for: page))
+            item = .page(PageListItemViewModel(page: page))
         default:
-            fatalError("Unsupported item: \(type(of: item))")
+            fatalError("Unsupported item: \(type(of: post))")
         }
-    }
-
-    private func getViewModel(for post: Post) -> PostListItemViewModel {
-        if let viewModel = postViewModels[post.objectID] {
-            return viewModel
-        }
-        let viewModel = PostListItemViewModel(post: post)
-        postViewModels[post.objectID] = viewModel
-        return viewModel
-    }
-
-    private func getViewModel(for page: Page) -> PageListItemViewModel {
-        if let viewModel = pageViewModels[page.objectID] {
-            return viewModel
-        }
-        let viewModel = PageListItemViewModel(page: page)
-        pageViewModels[page.objectID] = viewModel
-        return viewModel
+        cachedItems[post.objectID] = item
+        return item
     }
 
     // MARK: - Highlighter
