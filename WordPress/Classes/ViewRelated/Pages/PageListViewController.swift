@@ -333,6 +333,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Table View Handling
 
+    func sectionNameKeyPath() -> String {
+        let sortField = filterSettings.currentPostListFilter().sortField
+        return Page.sectionIdentifier(dateKeyPath: sortField.keyPath)
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
