@@ -182,9 +182,8 @@ class MeViewController: UITableViewController {
 
         let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled && !(account?.settings?.twoStepEnabled ?? false)
 
-        return ImmuTable(sections: [
-            // first section
-            .init(rows: {
+        var sections: [ImmuTableSection] = [
+            ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
                     var loggedInRows = [myProfile, accountSettings]
@@ -196,9 +195,8 @@ class MeViewController: UITableViewController {
                 }
                 return rows
             }()),
-
             // middle section
-            .init(rows: {
+            ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
                 rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
@@ -214,16 +212,23 @@ class MeViewController: UITableViewController {
                                               accessibilityIdentifier: "About"))
 
                 return rows
-            }()),
-            .init(headerText: HeaderTitles.products, rows: {
-                return [myDomainsRow()] // TODO: Add my domains only if feature flag is enabled. Otherwise only "Purchases"
-            }()),
+            }())
+        ]
 
-            // last section
+        if RemoteFeatureFlag.domainManagement.enabled() {
+            sections.append(.init(headerText: HeaderTitles.products, rows: {
+                return [myDomainsRow()]
+            }()))
+        }
+
+        // last section
+        sections.append(
             .init(headerText: wordPressComAccount, rows: {
                 return [loggedIn ? logOut : logIn]
             }())
-        ])
+        )
+
+        return ImmuTable(sections: sections)
     }
     private func myDomainsRow() -> ImmuTableRow {
         ButtonRow(title: "My Domains", action: presentMyDomains())
