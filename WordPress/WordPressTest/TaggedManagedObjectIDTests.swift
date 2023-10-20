@@ -16,7 +16,7 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
 
     func testQueryUnsaved() throws {
         let post = PostBuilder(contextManager.mainContext).with(title: "Test post").build()
-        let id = try TaggedManagedObjectID(post)
+        let id = TaggedManagedObjectID(post)
 
         try contextManager.mainContext.save()
 
@@ -28,7 +28,7 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
     func testQueryUnsavedUsingTheSameContext() throws {
         let context = contextManager.mainContext
         let post = PostBuilder(context).with(title: "Test post").build()
-        let id = try TaggedManagedObjectID(post)
+        let id = TaggedManagedObjectID(post)
 
         let result = try context.existingObject(with: id)
         XCTAssertEqual(result.postTitle, "Test post")
@@ -36,7 +36,7 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
 
     func testQueryUnsavedUsingDifferentContext() throws {
         let post = PostBuilder(contextManager.mainContext).build()
-        let id = try TaggedManagedObjectID(post)
+        let id = TaggedManagedObjectID(post)
 
         let newContext = contextManager.newDerivedContext()
 
@@ -45,7 +45,7 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
 
     func testEqutable() throws {
         let post = PostBuilder(contextManager.mainContext).with(title: "Test post").build()
-        let unsaveID = try TaggedManagedObjectID(post)
+        let unsaveID = TaggedManagedObjectID(post)
         try contextManager.mainContext.save()
         let savedID = TaggedManagedObjectID(post)
 

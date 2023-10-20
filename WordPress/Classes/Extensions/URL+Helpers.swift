@@ -161,30 +161,6 @@ extension NSURL {
 }
 
 extension URL {
-    func appendingLocale() -> URL {
-        guard let selfComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
-                return self
-        }
-
-        let localeIdentifier = Locale.current.identifier
-
-        var newComponents = URLComponents()
-        newComponents.scheme = selfComponents.scheme
-        newComponents.host = selfComponents.host
-        newComponents.path = selfComponents.path
-
-        var selfQueryItems = selfComponents.queryItems ?? []
-
-        let localeQueryItem = URLQueryItem(name: "locale", value: localeIdentifier)
-        selfQueryItems.append(localeQueryItem)
-
-        newComponents.queryItems = selfQueryItems
-
-        return newComponents.url ?? self
-    }
-}
-
-extension URL {
     /// Appends query items to the URL.
     /// - Parameter newQueryItems: The new query items to add to the URL. These will **not** overwrite any existing items but are appended to the existing list.
     /// - Returns: The URL with added query items.

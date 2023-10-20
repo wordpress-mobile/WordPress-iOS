@@ -93,11 +93,12 @@ class MediaImageServiceTests: CoreDataTestCase {
     func testSmallThumbnailForRemoteVideo() async throws {
         // GIVEN
         let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
         media.mediaType = .video
         media.width = 1024
         media.height = 680
         media.remoteThumbnailURL = "https://example.files.wordpress.com/2023/09/video-thumbnail.jpg"
-        try mainContext.obtainPermanentIDs(for: [media])
+        try mainContext.save()
 
         // GIVEN remote image is mocked and is resized based on the parameters
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
@@ -117,11 +118,12 @@ class MediaImageServiceTests: CoreDataTestCase {
         let videoURL = try XCTUnwrap(Bundle.test.url(forResource: "test-video-device-gps", withExtension: "m4v"))
 
         let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
         media.mediaType = .video
         media.width = 640
         media.height = 360
         media.remoteURL = videoURL.absoluteString
-        try mainContext.obtainPermanentIDs(for: [media])
+        try mainContext.save()
 
         // WHEN
         let thumbnail = try await sut.thumbnail(for: media)

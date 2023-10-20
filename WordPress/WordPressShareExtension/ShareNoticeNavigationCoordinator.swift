@@ -58,7 +58,7 @@ class ShareNoticeNavigationCoordinator {
         }
 
         let repository = PostRepository(coreDataStack: ContextManager.shared)
-        let blogID = TaggedManagedObjectID(saved: blog)
+        let blogID = TaggedManagedObjectID(blog)
         Task { @MainActor in
             do {
                 let postObjectID = try await repository.getPost(withID: postID, from: blogID)

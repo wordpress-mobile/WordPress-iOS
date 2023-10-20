@@ -66,20 +66,16 @@ class EpilogueUserInfoCell: UITableViewCell {
     }
 
     private func setupGravatarButton(viewController: UIViewController) {
-        if FeatureFlag.nativePhotoPicker.enabled {
-            let menuController = AvatarMenuController(viewController: viewController)
-            menuController.onAvatarSelected = { [weak self] in
-                self?.uploadGravatarImage($0)
-            }
-            self.avatarMenuController = menuController // Just retaining it
-            gravatarButton.menu = menuController.makeMenu()
-            gravatarButton.showsMenuAsPrimaryAction = true
-            gravatarButton.addAction(UIAction { _ in
-                AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-            }, for: .menuActionTriggered)
-        } else {
-            gravatarButton.addTarget(self, action: #selector(gravatarTapped), for: .touchUpInside)
+        let menuController = AvatarMenuController(viewController: viewController)
+        menuController.onAvatarSelected = { [weak self] in
+            self?.uploadGravatarImage($0)
         }
+        self.avatarMenuController = menuController // Just retaining it
+        gravatarButton.menu = menuController.makeMenu()
+        gravatarButton.showsMenuAsPrimaryAction = true
+        gravatarButton.addAction(UIAction { _ in
+            AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+        }, for: .menuActionTriggered)
     }
 
     /// Starts the Activity Indicator Animation, and hides the Username + Fullname labels.
@@ -149,14 +145,6 @@ private extension EpilogueUserInfoCell {
 // MARK: - Gravatar uploading
 //
 extension EpilogueUserInfoCell: GravatarUploader {
-    @objc func gravatarTapped() {
-        AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-        guard let viewController else {
-            return assertionFailure()
-        }
-        presentGravatarPicker(from: viewController)
-    }
-
     /// Update the UI based on the status of the gravatar upload
     func updateGravatarStatus(_ status: GravatarUploaderStatus) {
         gravatarStatus = status

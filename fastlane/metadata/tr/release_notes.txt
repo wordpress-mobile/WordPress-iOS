@@ -1,3 +1,7 @@
-Bir URL'den bloklara ortam eklerken uyarıların görünme şeklini değiştirdik. Bu bizim için iyi bir şey.
+Hataları ezip geçiyoruz! (Göründüğünden daha merhametli davranıyoruz.)
 
-Ayrıca, blok tabanlı temalarda yer tutucu metin ile gerçek içerik arasındaki farkı anlamak da artık daha kolay.
+- Artık X'ten URL'leri gömerken bozuk bağlantı almayacaksınız. Bize sorarsanız, oldukça mükemmel.
+- Bağlantılardan bahsetmişken, geçersiz bir ortam URL'si kullandığınızda, uygulama artık çökmeyecek ve bunun yerine bir hata mesajı görüntüleyecek. Daha iyi, değil mi?
+- Katkıda bulunanlar artık gönderilerini incelemeye gönderirken doğru açılır pencereyi görecekler. Harika!
+- Yönetici olmayan kullanıcıların kendi siteleri için eklenti menüsünü görebildiği bir sorunu çözdük. Gözden uzak olan gönülden de uzak olur.
+- Blok düzenleyicide, blokların içine çok fazla blok yerleştirdiğinizde uygulama artık çökmeyecek. Inception'a benziyor.

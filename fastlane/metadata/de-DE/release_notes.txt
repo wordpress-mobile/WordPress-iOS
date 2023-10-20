@@ -1,3 +1,7 @@
-Wir haben die Art und Weise geändert, wie Warnmeldungen angezeigt werden, wenn du Medien von einer URL in Blöcke einfügst. Das hätten wir schon einmal, das ist gut.
+Wir haben Bugs zerquetscht! (Es war viel sauberer, als es klingt.)
 
-Außerdem ist es jetzt einfacher, in blockbasierten Themes den Unterschied zwischen Platzhaltertext und tatsächlichem Inhalt zu erkennen.
+- Du kannst jetzt URLs von X einbetten, ohne dass ein Link kaputt geht. Ziemlich X-zellent, wenn du uns fragst.
+- Apropos Links – wenn du eine ungültige Medien-URL verwendest, zeigt die App jetzt eine Fehlermeldung an, anstatt abzustürzen. Besser, oder?
+- Wenn du Beiträge zur Überprüfung einreichst, wird jetzt das richtige Pop-up angezeigt. Puh.
+- Wir haben ein Problem behoben, bei dem Nicht-Administratoren das Plugin-Menü für ihre Website sehen konnten. Aus den Augen, aus dem Sinn.
+- Im Block-Editor stürzt die App nicht mehr ab, wenn du zu viele Blöcke innerhalb von Blöcken verschachtelst ... innerhalb von Blöcken ... du verstehst schon. Nimm das, Inception.

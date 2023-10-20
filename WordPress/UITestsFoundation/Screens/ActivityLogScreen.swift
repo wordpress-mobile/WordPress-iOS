@@ -12,8 +12,11 @@ public class ActivityLogScreen: ScreenObject {
         $0.buttons["Activity Type"].firstMatch
     }
 
-    var dateRangeButton: XCUIElement { dateRangeButtonGetter(app) }
     var activityTypeButton: XCUIElement { activityTypeButtonGetter(app) }
+    var dateRangeButton: XCUIElement { dateRangeButtonGetter(app) }
+
+    // Timeout duration to overwrite value defined in XCUITestHelpers
+    var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         tabBar = try TabNavComponent()
@@ -31,7 +34,7 @@ public class ActivityLogScreen: ScreenObject {
     @discardableResult
     public func verifyActivityLogScreen(hasActivityPartial activityTitle: String) -> Self {
         XCTAssertTrue(
-            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(timeout: duration),
             "Activity Log Screen: \"\(activityTitle)\" activity not displayed.")
         return self
     }

@@ -16,7 +16,7 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: FeatureFlag.readerImprovements.enabled)
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: RemoteFeatureFlag.readerImprovements.enabled())
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -32,7 +32,7 @@ import WordPressShared
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = {
-            guard FeatureFlag.readerImprovements.enabled else {
+            guard RemoteFeatureFlag.readerImprovements.enabled() else {
                 return topic.title
             }
             return topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")

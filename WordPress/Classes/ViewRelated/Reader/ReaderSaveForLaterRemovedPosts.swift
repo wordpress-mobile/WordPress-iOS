@@ -1,3 +1,4 @@
+// TODO: Delete this when the reader improvements v1 (`readerImprovements`) feature flag is removed
 final class ReaderSaveForLaterRemovedPosts {
     private var removedPosts: [ReaderPost]
 

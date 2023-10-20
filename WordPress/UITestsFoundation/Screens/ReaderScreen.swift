@@ -55,8 +55,12 @@ public class ReaderScreen: ScreenObject {
         $0.staticTexts["no-results-label-stack-view"]
     }
 
+    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["More"]
+    }
+
     private let savePostButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Save post"]
+        $0.buttons["Save"]
     }
 
     var backButton: XCUIElement { backButtonGetter(app) }
@@ -69,6 +73,7 @@ public class ReaderScreen: ScreenObject {
     var noResultsView: XCUIElement { noResultsViewGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
     var readerTable: XCUIElement { readerTableGetter(app) }
+    var moreButton: XCUIElement { moreButtonGetter(app) }
     var savePostButton: XCUIElement { savePostButtonGetter(app) }
     var savedButton: XCUIElement { savedButtonGetter(app) }
     var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
@@ -96,7 +101,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func openLastPostComments() throws -> CommentsScreen {
-        let commentButton = getLastPost().buttons["0 comment"]
+        let commentButton = getLastPost().buttons["Comment"]
         guard commentButton.waitForIsHittable() else { fatalError("ReaderScreen.Post: Comments button not loaded") }
         commentButton.tap()
         return try CommentsScreen()
@@ -177,6 +182,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func followTopic() -> Self {
+        _ = followButton.waitForExistence(timeout: 3)
         followButton.tap()
 
         return self
@@ -193,6 +199,7 @@ public class ReaderScreen: ScreenObject {
     public func saveFirstPost() throws -> (ReaderScreen, String) {
         XCTAssertTrue(readerTable.waitForExistence(timeout: 3))
         let postLabel = readerTable.cells.firstMatch.label
+        moreButton.firstMatch.tap()
         savePostButton.firstMatch.tap()
 
         // An alert about saved post is displayed the first time a post is saved
@@ -260,11 +267,11 @@ public class ReaderScreen: ScreenObject {
 
 private extension String {
     static let emptyListLabel = "Empty list"
-    static let postLiked = "This post is in My Likes"
+    static let postLiked = "Liked"
     static let postNotEqualOneError = "There should only be 1 post!"
     static let postNotEqualSavedPostError = "Post displayed does not match saved post!"
     static let postNotGreaterThanOneError = "There shouldn't only be 1 post!"
-    static let postNotLiked = "This post is not in My Likes"
+    static let postNotLiked = "Like"
     static let withoutPosts = "without posts"
     static let withPosts = "with posts"
 }

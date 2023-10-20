@@ -83,7 +83,7 @@ import Combine
     }
 
     /// An alias for the apps's main context
-    private var viewContext: NSManagedObjectContext {
+    var viewContext: NSManagedObjectContext {
         coreDataStack.mainContext
     }
 
@@ -201,6 +201,7 @@ import Combine
                 trackSavedListAccessed()
             }
             postCellActions?.visibleConfirmation = contentType != .saved
+            showConfirmation = contentType != .saved
         }
     }
 
@@ -217,6 +218,9 @@ import Combine
     private var readerTopicChangesObserver: AnyCancellable?
 
     private weak var streamHeader: ReaderStreamHeader?
+
+    private var removedPosts = Set<ReaderPost>()
+    private var showConfirmation = true
 
     // MARK: - Factory Methods
 
@@ -398,6 +402,7 @@ import Combine
 
         if contentType == .saved {
             postCellActions?.clearRemovedPosts()
+            clearRemovedPosts()
         }
 
         if shouldShowCommentSpotlight {
@@ -593,7 +598,7 @@ import Combine
             return
         }
 
-        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && FeatureFlag.readerImprovements.enabled
+        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && RemoteFeatureFlag.readerImprovements.enabled()
         let headerView = {
             guard isNewSiteHeader else {
                 return header
@@ -714,11 +719,11 @@ import Combine
 
         if ReaderHelpers.isTopicTag(topic) {
             // don't display any title for the tag stream for the new design.
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 return
             }
             title = NSLocalizedString("Topic", comment: "Topic page title")
-        } else if FeatureFlag.readerImprovements.enabled && ReaderHelpers.topicType(topic) == .site {
+        } else if RemoteFeatureFlag.readerImprovements.enabled() && ReaderHelpers.topicType(topic) == .site {
             title = ""
         } else {
             title = topic.title
@@ -954,6 +959,31 @@ import Combine
         WPAnalytics.trackReader(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
+    func removePost(_ post: ReaderPost) {
+        guard let posts = content.content as? [ReaderPost],
+              let row = posts.firstIndex(of: post) else {
+            return
+        }
+        removedPosts.insert(post)
+        let cellIndex = IndexPath(row: row, section: 0)
+        tableView.reloadRows(at: [cellIndex], with: .fade)
+    }
+
+    func clearRemovedPosts() {
+        removedPosts.forEach(togglePostSave)
+        removedPosts.removeAll()
+    }
+
+    func togglePostSave(_ post: ReaderPost) {
+        let origin: ReaderSaveForLaterOrigin = contentType == .saved ? .savedStream : .otherStream
+
+        if !post.isSavedForLater {
+            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
+        }
+
+        let saveAction = ReaderSaveForLaterAction(visibleConfirmation: showConfirmation)
+        saveAction.execute(with: post, context: viewContext, origin: origin, viewController: self)
+    }
 
     // MARK: - Analytics
 
@@ -1615,13 +1645,22 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if contentType == .saved, postCellActions?.postIsRemoved(post) == true {
+        if contentType == .saved && (postCellActions?.postIsRemoved(post) == true || removedPosts.contains(post)) {
             let cell = undoCell(tableView)
             configureUndoCell(cell, with: post)
             return cell
         }
 
-        let cell = tableConfiguration.postCardCell(tableView)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let cell = tableConfiguration.postCardCell(tableView)
+            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
+                                                        isLoggedIn: isLoggedIn,
+                                                        parentViewController: self)
+            cell.configure(with: viewModel)
+            return cell
+        }
+
+        let cell = tableConfiguration.oldPostCardCell(tableView)
         configurePostCardCell(cell, post: post)
 
         if let topic = readerTopic,
@@ -1644,7 +1683,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
-        guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
+        guard cell.isKind(of: OldReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
 
@@ -2007,9 +2046,10 @@ extension ReaderStreamViewController: ReaderContentViewController {
     }
 }
 
+// TODO: Delete when the reader improvements v1 (`readerImprovements`) flag is removed
 // MARK: - Saved Posts Delegate
 extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: ReaderPostCardCell) {
+    func willRemove(_ cell: OldReaderPostCardCell) {
         if let cellIndex = tableView.indexPath(for: cell) {
             tableView.reloadRows(at: [cellIndex], with: .fade)
         }
@@ -2021,9 +2061,10 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),
-            let post: ReaderPost = content.object(at: cellIndex) {
-                postCellActions?.restoreUnsavedPost(post)
-                tableView.reloadRows(at: [cellIndex], with: .fade)
+           let post: ReaderPost = content.object(at: cellIndex) {
+            postCellActions?.restoreUnsavedPost(post)
+            removedPosts.remove(post)
+            tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
 }

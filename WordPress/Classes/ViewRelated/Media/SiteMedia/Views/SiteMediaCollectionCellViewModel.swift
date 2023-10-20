@@ -1,15 +1,18 @@
 import UIKit
 
 final class SiteMediaCollectionCellViewModel {
+    let mediaID: TaggedManagedObjectID<Media>
+
     var onImageLoaded: ((UIImage) -> Void)?
+
     @Published private(set) var overlayState: CircularProgressView.State?
     @Published private(set) var durationText: String?
-    @Published var badgeText: String?
-    var filename: String? { media.filename }
-    let mediaID: TaggedManagedObjectID<Media>
-    let mediaType: MediaType
+    @Published private(set) var documentInfo: SiteMediaDocumentInfoViewModel?
+
+    @Published var badge: BadgeType?
 
     private let media: Media
+    private let mediaType: MediaType
     private let service: MediaImageService
     private let coordinator: MediaCoordinator
     private let cache: MemoryCache
@@ -19,6 +22,11 @@ final class SiteMediaCollectionCellViewModel {
     private var imageTask: Task<Void, Never>?
     private var progressObserver: NSKeyValueObservation?
     private var observations: [NSKeyValueObservation] = []
+
+    enum BadgeType {
+        case unordered
+        case ordered(index: Int)
+    }
 
     deinit {
         imageTask?.cancel()
@@ -35,23 +43,28 @@ final class SiteMediaCollectionCellViewModel {
         self.coordinator = coordinator
         self.cache = cache
 
-        if media.mediaType == .video {
+        observations.append(media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
+            self?.updateOverlayState()
+        })
+
+        observations.append(media.observe(\.localURL, options: [.new]) { [weak self] media, _ in
+            self?.didUpdateLocalThumbnail()
+        })
+
+        switch mediaType {
+        case .document, .powerpoint, .audio:
+            observations.append(media.observe(\.filename, options: [.initial, .new]) { [weak self] media, _ in
+                self?.documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
+            })
+        default: break
+        }
+
+        if mediaType == .video {
             observations.append(media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
                 // Using `rounded()` to match the behavior of the Photos app
                 self?.durationText = makeString(forDuration: media.duration().rounded())
             })
         }
-
-        observations.append(media.observe(\.remoteStatusNumber, options: [.new]) { [weak self] _, _ in
-            self?.updateOverlayState()
-        })
-
-        // No sure why but `.initial` didn't work.
-        self.updateOverlayState()
-
-        observations.append(media.observe(\.localURL, options: [.new]) { [weak self] media, _ in
-            self?.didUpdateLocalThumbnail()
-        })
     }
 
     // MARK: - View Lifecycle
@@ -80,9 +93,16 @@ final class SiteMediaCollectionCellViewModel {
         cancelThumbnailRequestIfNeeded()
     }
 
-    // MARK: - Thumbnail
+    // MARK: - Loading Thumbnail
+
+    private var supportsThumbnails: Bool {
+        mediaType == .image || mediaType == .video
+    }
 
     private func fetchThumbnailIfNeeded() {
+        guard supportsThumbnails else {
+            return
+        }
         guard isVisible || isPrefetchingNeeded else {
             return
         }
@@ -115,6 +135,9 @@ final class SiteMediaCollectionCellViewModel {
         if !Task.isCancelled {
             if let image {
                 onImageLoaded?(image)
+                documentInfo = nil
+            } else {
+                documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
             }
             imageTask = nil
         }
@@ -122,7 +145,8 @@ final class SiteMediaCollectionCellViewModel {
 
     /// Returns the image from the memory cache.
     func getCachedThubmnail() -> UIImage? {
-        cache.getImage(forKey: makeCacheKey(for: media))
+        guard supportsThumbnails else { return nil}
+        return cache.getImage(forKey: makeCacheKey(for: media))
     }
 
     private func makeCacheKey(for media: Media) -> String {
@@ -135,7 +159,7 @@ final class SiteMediaCollectionCellViewModel {
         fetchThumbnailIfNeeded()
     }
 
-    // MARK: - State
+    // MARK: - Upload State
 
     private func updateOverlayState() {
         switch media.remoteStatus {
@@ -190,6 +214,8 @@ final class SiteMediaCollectionCellViewModel {
 
     var accessibilityHint: String { Strings.accessibilityHint }
 }
+
+// MARK: - Helpers
 
 private enum Strings {
     static let accessibilityUnknownCreationDate = NSLocalizedString("siteMedia.accessibilityUnknownCreationDate", value: "Unknown creation date", comment: "Accessibility label to use when creation date from media asset is not know.")

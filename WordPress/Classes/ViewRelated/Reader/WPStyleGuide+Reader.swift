@@ -56,40 +56,64 @@ extension WPStyleGuide {
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .subheadline).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.label
+            ]
+        } else {
+            let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor.text
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor.text
+            ]
+        }
     }
 
     @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .footnote).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            let paragraphStyle = NSMutableParagraphStyle()
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .footnote)
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
@@ -269,6 +293,10 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
@@ -298,17 +326,38 @@ extension WPStyleGuide {
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
 
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    public class func applyNewReaderFollowButtonStyle(_ button: UIButton) {
+        button.setTitleColor(.invertedLabel, for: .normal)
+        button.setTitleColor(.secondaryLabel, for: .selected)
+        button.backgroundColor = button.isSelected ? .clear : .label
+        button.layer.borderColor = UIColor.separator.cgColor
+        button.layer.cornerRadius = 5.0
+        button.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        button.tintColor = .clear
+
+        button.configuration = .plain()
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 24.0, bottom: 8.0, trailing: 24.0)
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    private class func applyCommonReaderFollowButtonStyles(_ button: UIButton) {
         button.setTitle(FollowButton.Text.followStringForDisplay, for: .normal)
         button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
 
         button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
-
         // Default accessibility label and hint.
         button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
         button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let followIcon = UIImage.gridicon(.readerFollow)
         let followingIcon = UIImage.gridicon(.readerFollowing)
 
@@ -326,9 +375,8 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
-        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
+        let icon = UIImage.gridicon(.bookmarkOutline, size: Detail.actionBarIconSize)
+        let selectedIcon = UIImage.gridicon(.bookmark, size: Detail.actionBarIconSize)
 
         button.setImage(icon, for: .normal)
         button.setImage(selectedIcon, for: .selected)
@@ -353,7 +401,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton, defaultSize: Bool = false) {
-        let size = defaultSize ? Gridicon.defaultSize : Cards.actionButtonSize
+        let size = defaultSize ? Detail.actionBarIconSize : Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
         let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 
@@ -418,8 +466,7 @@ extension WPStyleGuide {
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.reblog, size: size)
+        let icon = UIImage.gridicon(.reblog, size: Detail.actionBarIconSize)
 
         button.setImage(icon, for: .normal)
 
@@ -440,7 +487,7 @@ extension WPStyleGuide {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
-        if count == 0 {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return likeStr
         } else if count == 1 {
             return "\(count) \(likeStr)"
@@ -453,7 +500,7 @@ extension WPStyleGuide {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
-        if count == 0 {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return commentStr
         } else if count == 1 {
             return "\(count) \(commentStr)"
@@ -540,6 +587,10 @@ extension WPStyleGuide {
     public struct Detail {
         public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
+
+        public static var actionBarIconSize: CGSize {
+            return RemoteFeatureFlag.readerImprovements.enabled() ? CGSize(width: 20.0, height: 20.0) : Gridicon.defaultSize
+        }
     }
 
     public struct FollowButton {

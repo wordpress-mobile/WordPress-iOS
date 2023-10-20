@@ -152,9 +152,9 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     }
 }
 
-final class ReaderPostCardCellTests: XCTestCase {
+final class OldReaderPostCardCellTests: XCTestCase {
 
-    private var cell: ReaderPostCardCell?
+    private var cell: OldReaderPostCardCell?
     private var mock: ReaderPostContentProvider?
 
     private struct TestConstants {
@@ -168,7 +168,7 @@ final class ReaderPostCardCellTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mock = MockContentProvider()
-        cell = Bundle.loadRootViewFromNib(type: ReaderPostCardCell.self)
+        cell = Bundle.loadRootViewFromNib(type: OldReaderPostCardCell.self)
         cell?.configureCell(mock!)
     }
 

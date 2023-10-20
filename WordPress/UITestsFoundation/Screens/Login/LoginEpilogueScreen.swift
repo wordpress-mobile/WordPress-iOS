@@ -57,6 +57,7 @@ public class LoginEpilogueScreen: ScreenObject {
         )
     }
 
+    @discardableResult
     public func continueWithSelectedSite(_ siteAddress: String? = nil) throws -> MySiteScreen {
         if let title = siteAddress {
             let selectedSite = loginEpilogueTable.cells[title]

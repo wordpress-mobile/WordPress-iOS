@@ -36,10 +36,36 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
-public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
+public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    guard element.waitForExistence(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) does not exist after \(timeout) seconds.")
+        return
+    }
+
+    element.tap()
+}
+
+public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     var retries = 0
     while retries < maxRetries {
         if element.isHittable {
+            element.tap()
+            break
+        }
+
+        usleep(250000) // a 0.25 second delay before retrying
+        retries += 1
+    }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(element)) was not hittable after \(maxRetries) tries.")
+    }
+}
+
+public func tapUntilCondition(element: XCUIElement, condition: Bool, description: String, maxRetries: Int = 10) {
+    var retries = 0
+    while retries < maxRetries {
+        if !condition {
             element.tap()
             break
         }
@@ -49,7 +75,7 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
     }
 
     if retries == maxRetries {
-        XCTFail("Expected element (\(element)) was not hittable after \(maxRetries) tries.")
+        XCTFail("Condition \(description) still not met after \(maxRetries) tries.")
     }
 }
 

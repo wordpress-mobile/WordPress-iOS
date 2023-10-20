@@ -626,7 +626,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         // Otherwise a share notification
         let category = notification.request.content.categoryIdentifier
 
-        guard (category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier),
+        guard category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier,
             (userInfo.object(forKey: ShareNoticeUserInfoKey.originatedFromAppExtension) as? Bool) == true,
             let postUploadOpID = userInfo.object(forKey: ShareNoticeUserInfoKey.postUploadOpID) as? String  else {
                 return

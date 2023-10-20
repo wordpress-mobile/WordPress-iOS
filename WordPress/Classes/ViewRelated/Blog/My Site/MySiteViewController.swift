@@ -28,16 +28,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private var currentSection: Section = .dashboard
 
-    private func getSection(for blog: Blog) -> Section {
-        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
-            blog.isAccessibleThroughWPCom() &&
-            (splitViewControllerIsHorizontallyCompact || !MySitesCoordinator.isSplitViewEnabled) {
-            return .dashboard
-        } else {
-            return .siteMenu
-        }
-    }
-
     @objc
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -72,11 +62,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
+    private let viewModel: MySiteViewModel
+
     // MARK: - Initializers
 
     init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
+        self.viewModel = MySiteViewModel()
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -124,18 +117,18 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private var noSitesScrollView: UIScrollView?
     private var noSitesRefreshControl: UIRefreshControl?
     private lazy var noSitesViewController: UIHostingController = {
-        let viewModel = NoSitesViewModel(
+        let noSitesViewModel = NoSitesViewModel(
             appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
-            account: defaultAccount()
+            account: viewModel.defaultAccount
         )
         let configuration = AddNewSiteConfiguration(
-            canCreateWPComSite: defaultAccount() != nil,
+            canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
             launchSiteCreation: self.launchSiteCreationFromNoSites,
             launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
         )
         let noSiteView = NoSitesView(
-            viewModel: viewModel,
+            viewModel: noSitesViewModel,
             addNewSiteConfiguration: configuration
         )
         return UIHostingController(rootView: noSiteView)
@@ -317,21 +310,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         configureNavBarAppearance(animated: true)
     }
 
-    // MARK: - Account
-
-    private func defaultAccount() -> WPAccount? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-    }
-
     // MARK: - Main Blog
-
-    /// Convenience method to retrieve the main blog for an account when none is selected.
-    ///
-    /// - Returns:the main blog for an account (last selected, or first blog in list).
-    ///
-    private func mainBlog() -> Blog? {
-        return Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
-    }
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
     /// There's no scenario where this is shown empty, for an account that HAS blogs.
@@ -340,7 +319,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// the account's primary blog, or the first blog we find for the account).
     ///
     private func showBlogDetailsForMainBlogOrNoSites() {
-        guard let mainBlog = mainBlog() else {
+        guard let mainBlog = viewModel.mainBlog else {
             showNoSites()
             return
         }
@@ -351,7 +330,13 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
 
-        let section = getSection(for: blog)
+        let section = viewModel.getSection(
+            for: blog,
+            jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
+            splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact,
+            isSplitViewEnabled: MySitesCoordinator.isSplitViewEnabled
+        )
+
         self.currentSection = section
         switch section {
         case .siteMenu:
@@ -368,7 +353,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     @objc
     private func syncBlogs() {
-        guard let account = defaultAccount() else {
+        guard let account = viewModel.defaultAccount else {
             return
         }
 
@@ -563,7 +548,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        showDetailViewController(meViewController, sender: self)
+        if MySitesCoordinator.isSplitViewEnabled {
+            showDetailViewController(meViewController, sender: self)
+        } else {
+            navigationController?.pushViewController(meViewController, animated: true)
+        }
     }
 
     @objc
@@ -899,6 +888,8 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
         blogDetailsViewController?.showDetailView(for: subsection)
     }
 
+    // TODO: Refactor presentation from routes
+    // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         viewController.loadViewIfNeeded()
         if MySitesCoordinator.isSplitViewEnabled {
@@ -909,7 +900,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
                 blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
             }
         } else {
-            blogDetailsViewController?.show(viewController, sender: nil)
+            switch currentSection {
+            case .dashboard:
+                blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
+            case .siteMenu:
+                blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
+            }
         }
     }
 }
