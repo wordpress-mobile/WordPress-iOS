@@ -6345,6 +6345,9 @@ Please install the %3$@ to use the app with this site.";
 /* Divider on initial auth view separating auth options. */
 "Or" = "Or";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Or choose another form of authentication.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Or log in by _entering your site address_.";
 
@@ -6681,7 +6684,7 @@ Please install the %3$@ to use the app with this site.";
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Please enter the password for your WordPress.com account to log in with your Apple ID.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app." = "Please enter the verification code from your authenticator app.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Please enter your credentials";
@@ -9216,9 +9219,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Text me a code instead";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Text me a code via SMS";
 
 /* Title of a button style */
 "Text Only" = "Text Only";
@@ -9650,6 +9655,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the timezone setting
    Title for the time zone selector */
 "Time Zone" = "Time Zone";
+
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Time's up, but don't worry, your security is our priority. Please try again!";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
@@ -10289,6 +10297,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "Use %@ to find sites and tags.";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Use a security key";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Use block editor";
 
@@ -10492,6 +10503,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Waiting for Google to complete…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Waiting for security key";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Waiting...";
@@ -10869,6 +10884,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Whoops, something went wrong and we couldn't log you in. Please try again!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Whoops, something went wrong. Please try again!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Whoops, that security key does not seem valid. Please try again with another one";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!";
