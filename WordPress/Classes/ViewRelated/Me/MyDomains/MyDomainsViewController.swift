@@ -32,7 +32,7 @@ final class MyDomainsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "My Domains" // FIXME: Localize
+        title = Strings.title
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
         navigationItem.rightBarButtonItem = .init(systemItem: .add)
@@ -59,9 +59,19 @@ final class MyDomainsViewController: UIViewController {
             identifier: nil,
             discoverabilityTitle: nil,
             attributes: .init(),
-            state: .mixed,
+            state: .off,
             handler: { (action) in
             // Perform action
         })
+    }
+}
+
+private extension MyDomainsViewController {
+    enum Strings {
+        static let title = NSLocalizedString(
+            "domain.management.title",
+            value: "My Domains",
+            comment: "Domain Management Screen Title"
+        )
     }
 }
