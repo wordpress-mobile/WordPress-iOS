@@ -377,32 +377,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let cell = cell as? BasePageListCell else {
-            return
-        }
-
-        cell.accessoryType = .none
-
-        let page = pageAtIndexPath(indexPath)
-        let filterType = filterSettings.currentPostListFilter().filterType
-
         // TODO: Implement indenting for child pages (#21818)
-        if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
-            cell.indentationWidth = Constant.Size.pageListTableViewCellLeading
-            cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
-            cell.onAction = { [weak self] cell, button, page in
-                self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
-            }
-        } else if cell.reuseIdentifier == Constant.Identifiers.restorePageCellIdentifier {
-            cell.selectionStyle = .none
-            cell.onAction = { [weak self] cell, _, page in
-                self?.handleRestoreAction(fromCell: cell, forPage: page)
-            }
-        }
-
-        cell.contentView.backgroundColor = UIColor.listForeground
-
-        cell.configureCell(page)
+        // TODO: Implement cntext menus (#21717)
+//        if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
+//            cell.indentationWidth = Constant.Size.pageListTableViewCellLeading
+//            cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
+//            cell.onAction = { [weak self] cell, button, page in
+//                self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
+//            }
+//        }
     }
 
     fileprivate func cellIdentifierForPage(_ page: Page) -> String {
@@ -776,12 +759,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageManagedOjbect as? Page
         return page
-    }
-
-    fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
-        restorePost(page) { [weak self] in
-            self?._tableViewHandler.refreshTableView(at: self?.tableView.indexPath(for: cell))
-        }
     }
 
     private func addSetHomepageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
