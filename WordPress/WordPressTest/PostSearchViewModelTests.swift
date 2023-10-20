@@ -2,13 +2,13 @@ import XCTest
 
 @testable import WordPress
 
-class PostSearchServiceTests: XCTestCase {
+class PostSearchViewModelTests: XCTestCase {
     func testThatAdjacentRangesAreCollapsed() throws {
         // GIVEN
-        let title = "one two xxxxx one"
+        let string = NSMutableAttributedString(string: "one two xxxxx one")
 
         // WHEN
-        let string = PostSearchService.makeTitle(for: title, terms: ["one", "two"])
+        PostSearchViewModel.highlight(terms: ["one", "two"], in: string)
 
         // THEN
         XCTAssertTrue(string.hasAttribute(.backgroundColor, in: NSRange(location: 0, length: 7)))
@@ -18,10 +18,10 @@ class PostSearchServiceTests: XCTestCase {
 
     func testThatCaseIsIgnored() {
         // GIVEN
-        let title = "One xxxxx óne"
+        let string = NSMutableAttributedString(string: "One xxxxx óne")
 
         // WHEN
-        let string = PostSearchService.makeTitle(for: title, terms: ["one"])
+        PostSearchViewModel.highlight(terms: ["one"], in: string)
 
         // THEN
         XCTAssertTrue(string.hasAttribute(.backgroundColor, in: NSRange(location: 0, length: 3)))

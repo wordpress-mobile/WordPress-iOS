@@ -11,7 +11,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case post(PostSearchResult.ID)
+        case result(NSManagedObjectID)
     }
 
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -70,10 +70,12 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         view.pinSubviewToAllEdges(tableView)
 
         tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.postCellID)
+        tableView.register(PostListCell.self, forCellReuseIdentifier: Constants.postCellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.pageCellID)
 
         tableView.dataSource = dataSource
         tableView.delegate = self
+        tableView.sectionHeaderTopPadding = 0
     }
 
     override func viewDidLayoutSubviews() {
@@ -94,7 +96,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
         snapshot.appendSections([SectionID.posts])
-        let postIDs = viewModel.posts.map { ItemID.post($0.id) }
+        let postIDs = viewModel.results.map { ItemID.result($0.objectID) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -112,15 +114,21 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
-            // TODO: Update the cell design
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath)
-            let result = viewModel.posts[indexPath.row]
-            var configuration = cell.defaultContentConfiguration()
-            configuration.attributedText = result.title
-            configuration.secondaryText = result.post.latest().dateStringForDisplay()
-            configuration.secondaryTextProperties.color = .secondaryLabel
-            cell.contentConfiguration = configuration
-            return cell
+            switch viewModel.results[indexPath.row] {
+            case .post(let post):
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
+                cell.configure(with: post)
+                return cell
+            case .page(let page):
+                // TODO: Update the cell design
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath)
+                var configuration = cell.defaultContentConfiguration()
+                configuration.text = page.titleForDisplay()
+                configuration.secondaryText = page.latest().dateStringForDisplay()
+                configuration.secondaryTextProperties.color = .secondaryLabel
+                cell.contentConfiguration = configuration
+                return cell
+            }
         }
     }
 
@@ -182,5 +190,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
 private enum Constants {
     static let postCellID = "postCellID"
+    static let pageCellID = "pageCellID"
     static let tokenCellID = "suggestedTokenCellID"
 }
