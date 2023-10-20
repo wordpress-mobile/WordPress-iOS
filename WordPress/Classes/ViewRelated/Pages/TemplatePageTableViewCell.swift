@@ -37,11 +37,11 @@ private struct TemplatePageView: View {
     private var text: some View {
         VStack(alignment: .leading, spacing: 2.0) {
             Text(Constants.title)
-                .font(Font(WPStyleGuide.notoBoldFontForTextStyle(.headline)))
-                .foregroundColor(Color(UIColor.text))
+                .font(Font(WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)))
+                .foregroundColor(Color(UIColor.label))
             Text(Constants.subtitle)
-                .font(.subheadline)
-                .foregroundColor(Color(UIColor.textSubtle))
+                .font(.footnote)
+                .foregroundColor(Color(UIColor.secondaryLabel))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
