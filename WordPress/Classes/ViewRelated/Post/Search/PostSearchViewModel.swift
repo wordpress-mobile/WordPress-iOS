@@ -190,9 +190,9 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         for item in results {
             switch item {
             case .post(let viewModel):
-                let string = NSMutableAttributedString(attributedString: viewModel.title)
+                let string = NSMutableAttributedString(attributedString: viewModel.content)
                 PostSearchViewModel.highlight(terms: terms, in: string)
-                viewModel.title = string
+                viewModel.content = string
             case .page:
                 break // TODO: Implement highlighting
             }

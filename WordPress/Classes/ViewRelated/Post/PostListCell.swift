@@ -19,7 +19,7 @@ final class PostListCell: UITableViewCell, Reusable {
     }()
 
     private let headerView = PostListHeaderView()
-    private let titleAndSnippetLabel = UILabel()
+    private let contentLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
     private let statusLabel = UILabel()
     private var cancellables: [AnyCancellable] = []
@@ -50,8 +50,8 @@ final class PostListCell: UITableViewCell, Reusable {
     func configure(with viewModel: PostListItemViewModel) {
         headerView.configure(with: viewModel)
 
-        viewModel.$title.sink { [titleAndSnippetLabel] in
-            titleAndSnippetLabel.attributedText = $0
+        viewModel.$content.sink { [contentLabel] in
+            contentLabel.attributedText = $0
         }.store(in: &cancellables)
 
         imageLoader.prepareForReuse()
@@ -71,13 +71,13 @@ final class PostListCell: UITableViewCell, Reusable {
     // MARK: - Setup
 
     private func setupViews() {
-        setupTitleAndSnippetLabel()
+        setupcontentLabel()
         setupFeaturedImageView()
         setupStatusLabel()
 
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubviews([
-            titleAndSnippetLabel,
+            contentLabel,
             featuredImageView
         ])
         contentStackView.spacing = 16
@@ -98,10 +98,10 @@ final class PostListCell: UITableViewCell, Reusable {
         contentView.backgroundColor = .systemBackground
     }
 
-    private func setupTitleAndSnippetLabel() {
-        titleAndSnippetLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleAndSnippetLabel.adjustsFontForContentSizeCategory = true
-        titleAndSnippetLabel.numberOfLines = 3
+    private func setupcontentLabel() {
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.adjustsFontForContentSizeCategory = true
+        contentLabel.numberOfLines = 3
     }
 
     private func setupFeaturedImageView() {

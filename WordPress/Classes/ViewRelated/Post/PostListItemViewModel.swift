@@ -2,7 +2,7 @@ import Foundation
 
 final class PostListItemViewModel {
     let post: Post
-    @Published var title: NSAttributedString
+    @Published var content: NSAttributedString
     let imageURL: URL?
     let date: String?
     let accessibilityIdentifier: String?
@@ -15,7 +15,7 @@ final class PostListItemViewModel {
 
     init(post: Post) {
         self.post = post
-        self.title = makeContentAttributedString(for: post)
+        self.content = makeContentAttributedString(for: post)
         self.imageURL = post.featuredImageURL
         self.date = post.displayDate()?.capitalizeFirstWord
         self.statusViewModel = PostCardStatusViewModel(post: post)
