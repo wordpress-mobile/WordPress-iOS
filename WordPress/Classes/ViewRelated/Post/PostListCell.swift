@@ -47,8 +47,8 @@ final class PostListCell: UITableViewCell, Reusable {
         cancellables = []
     }
 
-    func configure(with viewModel: PostListItemViewModel) {
-        headerView.configure(with: viewModel)
+    func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
+        headerView.configure(with: viewModel, delegate: delegate)
 
         viewModel.$content.sink { [contentLabel] in
             contentLabel.attributedText = $0

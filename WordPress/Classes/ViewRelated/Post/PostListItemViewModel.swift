@@ -6,12 +6,11 @@ final class PostListItemViewModel {
     let imageURL: URL?
     let date: String?
     let accessibilityIdentifier: String?
+    let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var author: String { statusViewModel.author }
-
-    private let statusViewModel: PostCardStatusViewModel
 
     init(post: Post) {
         self.post = post

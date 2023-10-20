@@ -314,7 +314,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let cell = cell as? PostListCell else {
             return
         }
-        cell.configure(with: PostListItemViewModel(post: post))
+        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
