@@ -32,7 +32,7 @@ struct PostMenuHelper {
         return buttons
             .filter { !unsupportedButtons.contains($0) }
             .map { button in
-                UIAction(title: button.title, handler: { _ in
+                UIAction(title: button.title, image: button.icon, handler: { _ in
                     button.performAction(for: post, view: presentingView, delegate: delegate)
                 })
             }
@@ -41,7 +41,7 @@ struct PostMenuHelper {
 
 protocol PostMenuAction {
     var title: String { get }
-    var icon: String { get }
+    var icon: UIImage? { get }
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate)
 }
 
@@ -65,8 +65,22 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         }
     }
 
-    var icon: String {
-        ""
+    var icon: UIImage? {
+        switch self {
+        case .edit: UIImage()
+        case .retry: UIImage()
+        case .view: UIImage(systemName: "eye")
+        case .more: UIImage()
+        case .publish: UIImage(named: "globe")
+        case .stats: UIImage(systemName: "chart.bar.xaxis")
+        case .duplicate: UIImage(systemName: "doc.on.doc")
+        case .moveToDraft: UIImage(systemName: "pencil.line")
+        case .trash: UIImage(systemName: "trash")
+        case .cancelAutoUpload: UIImage()
+        case .share: UIImage(systemName: "square.and.arrow.up")
+        case .copyLink: UIImage(systemName: "link")
+        case .blaze: UIImage(systemName: "flame")
+        }
     }
 
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate) {
@@ -101,7 +115,6 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
     }
 
     private enum Strings {
-        static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
         static let cancelAutoUpload = NSLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let duplicate = NSLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
