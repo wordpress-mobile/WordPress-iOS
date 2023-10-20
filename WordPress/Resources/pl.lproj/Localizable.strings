@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.10 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */

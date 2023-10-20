@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 15:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-18 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.10 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9849,6 +9849,21 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Gefeliciteerd, je site is online!";
 
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Configuratie voltooien";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Verloopt binnenkort";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "Nog steeds bezig";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Verlengen";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "E-mail verifiëren";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Beste alternatief";
 
@@ -9857,6 +9872,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratis";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Het eerste jaar gratis bij elk betaald abonnement";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Aanbevolen";
@@ -10628,6 +10646,25 @@ Example: 27 social shares remaining in the next 30 days */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Bekijkt berichten van de site";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Vindt dit bericht leuk.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Geliked";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Vindt dit bericht niet meer leuk.";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Bewaart dit bericht niet meer.";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
 
@@ -10641,8 +10678,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Opent de reacties op het bericht.";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Vindt het bericht leuk.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Geliked";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Rebloggen";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Reblogt het bericht.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Opent de sitegegevens voor het bericht.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Deze gebruiker blokkeren";
+
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Opgeslagen bericht verwijderen";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Deze gebruiker rapporteren";

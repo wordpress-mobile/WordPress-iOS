@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-19 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.10 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9876,6 +9876,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "おめでとうございます ! サイトが公開されました。";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "アクションが必要";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "有効";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "設定を完了";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "エラー";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "期限切れ";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "まもなく期限切れ";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "失敗";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "進行中";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "更新";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "メールを確認";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "認証中";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "こちらもおすすめ";
 
@@ -9884,6 +9917,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "無料";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "年間有料プランでは初年度無料";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "おすすめ";
@@ -10752,6 +10788,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "詳細";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "サイトからの投稿を表示します";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "コメント";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "いいね";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "この投稿に「いいね」を付けます。";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "いいね済み";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "この投稿の「いいね」を外します。";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "後で読めるようにこの投稿を保存します。";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "投稿を保存";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "この投稿の保存を解除します。";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "保存済みの投稿";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "検索";
 
@@ -10765,11 +10838,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "コメント";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "投稿のコメントを開きます。";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "いいね";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "投稿に「いいね」を付けます。";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "いいね済み";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "その他のアクションのあるメニューを開きます。";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "詳細";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "リブログ";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "投稿をリブログします。";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "投稿のサイト詳細を開きます。";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "このユーザーをブロックする";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "保存済み投稿を削除";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "このユーザーを報告";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "保存";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@件の投稿 • %2$@人のフォロワー";
@@ -10878,6 +10988,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "ドメイン";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "ドメインを選択";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "音声ファイル (%@)";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "文書 (%@)";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "画像 (%@)";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "動画 (%@)";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "作成日不明";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "メディアを選択します。";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "メディア";

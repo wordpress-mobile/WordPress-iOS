@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 13:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-19 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.10 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9876,6 +9876,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "כל הכבוד, האתר שלך פורסם!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "נדרשת פעולה";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "פעיל";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "להשלים את ההגדרה";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "שגיאה";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "התוקף פג";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "התוקף יפוג בקרוב";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "נכשל";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "בביצוע";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "לחדש";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "לאמת את האימייל";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "מאמת";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "החלופה הטובה ביותר";
 
@@ -9884,6 +9917,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "חינם";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "בחינם לשנה הראשונה ברכישת תוכנית שנתית בתשלום";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "מומלץ";
@@ -10749,6 +10785,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "עוד";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "מציג פוסטים של האתר";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "תגובה";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "לייק";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "סימן לייק לפוסט הזה.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "קיבל לייק";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "מבטל את הלייק לפוסט.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "שומר את הפוסט הנוכחי למועד מאוחר יותר.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "לשמור את הפוסט";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "מבטל את שמירת הפוסט הנוכחי.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "הפוסט נשמר";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "חיפוש";
 
@@ -10762,11 +10835,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "תגובה";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "פותח את התגובות של הפוסט.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "לייק";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "הוסיף לייק לפוסט.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "קיבל לייק";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "פותח תפריט שכולל פעולות נוספות.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "עוד";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "לפרסם מחדש בבלוג";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "מפרסם מחדש את הפוסט בבלוג.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "פותח את פרטי האתר עבור הפוסט.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "לחסום את המשתמש";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "להסיר פוסט שמור";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "לדווח על המשתמש הזה";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "לשמור";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ פוסטים • %2$@ עוקבים";
@@ -10878,6 +10988,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "דומיינים";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "לבחור דומיין";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "אודיו, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "מסמך, ‎%@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "תמונה, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "וידאו, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "תאריך יצירה לא ידוע";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "יש לבחור מדיה.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "מדיה";
