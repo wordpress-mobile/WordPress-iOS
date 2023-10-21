@@ -73,7 +73,11 @@ PODS:
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
+<<<<<<< HEAD
   - WordPressKit (8.9.1):
+=======
+  - WordPressKit (8.7.1):
+>>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -125,8 +129,13 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
+<<<<<<< HEAD
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
   - WordPressKit (>= 8.9.1, ~> 8.9)
+=======
+  - WordPressAuthenticator (~> 7.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/add-all-domains-endpoint`)
+>>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -183,7 +192,14 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
+<<<<<<< HEAD
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
+=======
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
+  WordPressKit:
+    :branch: task/add-all-domains-endpoint
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+>>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -228,8 +244,13 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
+<<<<<<< HEAD
   WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
   WordPressKit: e774ca87068b8ea02bbb0bd0b75b98aa5d722cb9
+=======
+  WordPressAuthenticator: c12572a8500f1eaf1e8b0d71c8655cc3455a0682
+  WordPressKit: 33a0571389da6b40c765398a8c84da72f5514a6f
+>>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   WPMediaPicker: 332812329cbdc672cdb3>85b8ac3a389f668d3012
@@ -243,6 +264,10 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: d1c39154c0208187cdbc28e2ef2b968f382fdf4f
+=======
+PODFILE CHECKSUM: 0e6aa34593e367cb871ca85f553ba70a429f3687
+>>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
 
 COCOAPODS: 1.14.2
