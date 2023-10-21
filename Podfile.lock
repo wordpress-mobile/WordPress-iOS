@@ -73,11 +73,7 @@ PODS:
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-<<<<<<< HEAD
   - WordPressKit (8.6.0):
-=======
-  - WordPressKit (8.7.0):
->>>>>>> 32b11f817d (Update WordPressKit version)
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -185,14 +181,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-<<<<<<< HEAD
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
-=======
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.105.0.podspec
-  WordPressKit:
-    :branch: task/add-all-domains-endpoint
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
->>>>>>> 32b11f817d (Update WordPressKit version)
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
