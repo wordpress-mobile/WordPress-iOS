@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-15 08:39:30+0000 */
+/* Translation-Revision-Date: 2023-10-18 12:01:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1403,9 +1403,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ndryshoni Rregullimet";
 
-/* Change site icon button */
-"Change Site Icon" = "Ndryshoni Ikonë Sajti";
-
 /* Change Username title. */
 "Change Username" = "Ndryshoni Emër Përdoruesi";
 
@@ -1501,9 +1498,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Zgjidhni Faqe Hyrëse";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Zgjedhje Figure Nga Pajisja Ime";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Zgjidhni Faqe";
@@ -2273,6 +2267,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "17 Dhjetor, 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Bllok i futur thellë brenda të tjerësh";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6683,9 +6680,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Shërbim";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Vëre Si Figurë të Zgjedhur";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Caktojeni Mëmë";
@@ -7261,6 +7255,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Kalon te Madhësi parazgjedhje e Shkronjave";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Modele të njëkohësuar";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Parazgjedhje sistemi";
 
@@ -7321,6 +7318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Prekeni këtu që të shfaqet ndihmë";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Prekeni këtu, që të shihni më tepër hollësi.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Prekeni që të shtoni skeda të reja statistikash.";
@@ -8302,6 +8302,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Ndal ndjekjen e blogut.";
 
+/* No comment provided by engineer. */
+"Ungroup block" = "Hiqe bllokun nga grupi";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "Shfshihe";
 
@@ -8688,6 +8691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Kujdes";
+
+/* No comment provided by engineer. */
+"Warning message" = "Mesazh sinjalizimi";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Vëzhgoni shtimin e publikut tuaj, me mjete analizimi në thellësi.";
@@ -9651,6 +9657,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Hidhe tej";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "Kopjoji URL-në";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Hape në Shfletues";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Hidhe tej";
 
@@ -9735,6 +9747,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "Ju janë mbaruar ndarjet!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Komente";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Më tepër";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Faqe";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Postime";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Statistika";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Krejt veprimtaria";
 
@@ -9815,6 +9845,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Përgëzime, sajti tuaj u bë!";
+
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Lypset Veprim";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Aktive";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Plotësoni Ujdisjen";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Gabim";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "E skaduar";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Skadon Së Shpejti";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "E dështuar";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "Në Ecuri e Sipër";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Alternativa Më e Mirë";
@@ -10268,8 +10322,50 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Hidhe tej";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Shtoni media të re";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Shtoni";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Përzgjidhni";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Anuloje";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Fshiji";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Jeni i sigurt që doni të fshihen përgjithmonë këto objekte?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Jeni i sigurt që doni të fshihet përgjithmonë ky objekt?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "S’arrihet të fshihen krejt objektet media.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Po fshihet…";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "U fshi!";
+
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Fshije";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Hidhe tej";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Riprovo Ngarkimin";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "S’ka media që përputhet me kërkimin tuaj";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Media";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
@@ -10283,11 +10379,20 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Hap Rregullimet";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Librari GIF-esh e lirë";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Zgjidhni prej Mediash";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Kartela të Tjera";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Zgjidhni nga Pajisje";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Fototekë e Lirë";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Bëni Foto";
@@ -10611,6 +10716,22 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
 
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Më tepër";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Komentoni";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "E ruan këtë postim për më vonë.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Ruaje postimin";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Postimi u Ruajt";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Kërko";
 
@@ -10621,11 +10742,23 @@ Tapping on this row allows the user to edit the sharing message. */
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
 "reader.notice.follow.site.unknown" = "këtë sajt";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Komentoni";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Më tepër";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Riblogojeni";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bllokoje këtë përdorues";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportojeni këtë përdorues";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Ruaje";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Mbrapsht";
@@ -10734,6 +10867,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "EmriiSajtitTuaj.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Përkatësi";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Përzgjidhni përkatësi";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Dokument, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Figurë, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Datë krijimi e panjohur";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Përzgjidhni media.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Media";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
@@ -11094,6 +11254,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Që të shihni statistikat për sot, hyni në llogarinë tuaj Jetpack.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Parje Gjatë Krejt Kohës";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Parje Sot";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "S’arrihet të ngarkohen statistika të kësaj jave.";

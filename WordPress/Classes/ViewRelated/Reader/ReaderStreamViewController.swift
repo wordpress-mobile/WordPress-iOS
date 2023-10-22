@@ -804,13 +804,18 @@ import Combine
         tableView.tableHeaderView = headerView
     }
 
-
     /// Scrolls to the top of the list of posts.
-    ///
     @objc func scrollViewToTop() {
-        tableView.setContentOffset(.zero, animated: true)
-    }
+        guard RemoteFeatureFlag.readerImprovements.enabled(),
+              tableView.numberOfRows(inSection: .zero) > 0 else {
+            tableView.setContentOffset(.zero, animated: true)
+            return
+        }
 
+        /// `scrollToRow` somehow works better when the first cell has dynamic height. With `setContentOffset`,
+        /// sometimes it doesn't perfectly scroll to the top, thus making the top cell appear clipped.
+        tableView.scrollToRow(at: IndexPath(row: .zero, section: .zero), at: .top, animated: true)
+    }
 
     /// Returns the analytics property dictionary for the current topic.
     private func topicPropertyForStats() -> [AnyHashable: Any]? {

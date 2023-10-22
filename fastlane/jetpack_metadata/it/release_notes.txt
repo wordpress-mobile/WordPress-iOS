@@ -1,7 +1,0 @@
-Abbiamo rimosso i bug. Erano meno di quello che sembrava.
-
-- Ora puoi incorporare URL da X senza che il link risulti interrotto. Proprio excellent con la X.
-- Parlando di link: quando utilizzi un URL a contenuto multimediale non valido, l'app mostra un messaggio di errore invece di arrestarsi. Meglio, vero?
-- I collaboratori ora visualizzeranno il popup corretto quando invieranno gli articoli per la revisione. Meno male.
-- Abbiamo risolto un problema per cui gli utenti non amministratori potevano vedere il menu dei plugin per il loro sito. Occhio non vede, cuore non duole.
-- Nell'editor a blocchi, l'app non si arresterà più quando effettui la nidificazione di troppi blocchi all'interno dei blocchi e poi all'interno di altri blocchi e di altri blocchi ancora… Non succede neanche in Inception.
