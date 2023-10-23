@@ -13,7 +13,7 @@ import WidgetKit
 
     private static func properties(from widgetInfo: Result<[WidgetInfo], Error>) -> [String: String] {
         guard let installedWidgets = try? widgetInfo.get() else {
-            return ["widgets": ""]
+            return [:]
         }
 
         let widgetAnalyticNames: [String] = installedWidgets.map { widgetInfo in
@@ -21,22 +21,26 @@ import WidgetKit
                 DDLogWarn("⚠️ Make sure the widget: \(widgetInfo.kind), has the correct kind.")
                 return "\(widgetInfo.kind)_\(widgetInfo.family)"
             }
-            return "\(Events.eventPrefix(for: eventKind))_\(widgetInfo.family)"
+            return "\(Events.eventPrefix(for: eventKind).rawValue)_\(widgetInfo.family.description.lowercased())"
         }
 
-        return ["widgets": widgetAnalyticNames.joined(separator: ",")]
+        let dict = Dictionary(uniqueKeysWithValues: widgetAnalyticNames.map { name in
+            return (name, "true")
+        })
+
+        return dict
     }
 
     private enum Events: String {
-        case homeTodayWidget = "today_home_extension_widget"
-        case homeAllTimeWidget = "alltime_home_extension_widget"
-        case homeThisWeekWidget = "thisweek_home_extension_widget"
-        case lockScreenTodayViewsWidget = "today_views_lockscreen_widget"
-        case lockScreenTodayLikesCommentsWidget = "today_likes_comments_lockscreen_widget"
-        case lockScreenTodayViewsVisitorsWidget = "today_views_visitors_lockscreen_widget"
-        case lockScreenAllTimeViewsWidget = "all_time_views_lockscreen_widget"
-        case lockScreenAllTimeViewsVisitorsWidget = "all_time_views_visitors_lockscreen_widget"
-        case lockScreenAllTimePostsBestViewsWidget = "all_time_posts_best_views_lockscreen_widget"
+        case homeTodayWidget = "widget_today_home_extension"
+        case homeAllTimeWidget = "widget_alltime_home_extension"
+        case homeThisWeekWidget = "widget_thisweek_home_extension"
+        case lockScreenTodayViewsWidget = "widget_today_views_lockscreen"
+        case lockScreenTodayLikesCommentsWidget = "widget_today_likes_comments_lockscreen"
+        case lockScreenTodayViewsVisitorsWidget = "widget_today_views_visitors_lockscreen"
+        case lockScreenAllTimeViewsWidget = "widget_all_time_views_lockscreen"
+        case lockScreenAllTimeViewsVisitorsWidget = "widget_all_time_views_visitors_lockscreen"
+        case lockScreenAllTimePostsBestViewsWidget = "widget_all_time_posts_best_views_lockscreen"
 
         static func eventPrefix(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> Events {
             switch widgetKind {
