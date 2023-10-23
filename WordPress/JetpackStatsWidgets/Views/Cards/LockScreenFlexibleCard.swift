@@ -1,67 +1,32 @@
 import SwiftUI
 
-/// A card with a title and a numeric or string value that can be either vertically or horizontally stacked shown on LockScreen without background
+/// A card with a title and a string value that is shown on LockScreen without background
 struct LockScreenFlexibleCard: View {
-    let axis: Axis
     let title: LocalizedString
-    let value: Value
+    let description: LocalizedString
     let lineLimit: Int
 
-    init(axis: Axis, title: LocalizedString, value: Value, lineLimit: Int = 1) {
-        self.axis = axis
+    init(title: LocalizedString, description: LocalizedString, lineLimit: Int = 1) {
         self.title = title
-        self.value = value
+        self.description = description
         self.lineLimit = lineLimit
     }
 
-    enum Value {
-        case number(Int)
-        case description(String)
-    }
-
-    @ViewBuilder
-    private var descriptionView: some View {
-
-        switch value {
-
-        case .number(let number):
-
-            StatsValueView(value: number,
-                           font: Appearance.textFont,
-                           fontWeight: Appearance.textFontWeight,
-                           foregroundColor: Appearance.textColor,
-                           lineLimit: lineLimit)
-
-        case .description(let description):
-
-            Text(description)
-                .font(Appearance.textFont)
-                .fontWeight(Appearance.textFontWeight)
-                .foregroundColor(Appearance.textColor)
-                .lineLimit(lineLimit)
-        }
-    }
-
-    private var titleView: some View {
-        Text(title)
-            .font(Appearance.titleFont)
-            .foregroundColor(Appearance.titleColor)
-    }
-
     var body: some View {
-        switch axis {
-        case .vertical:
-            VStack(alignment: .leading) {
-                descriptionView
-                titleView
+        VStack(alignment: .leading) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Image("icon-jetpack")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                Text(description)
+                    .font(Appearance.textFont)
+                    .fontWeight(Appearance.textFontWeight)
+                    .foregroundColor(Appearance.textColor)
+                    .lineLimit(lineLimit)
             }
-
-        case .horizontal:
-            HStack {
-                descriptionView
-                Spacer()
-                titleView
-            }
+            Text(title)
+                .font(Appearance.titleFont)
+                .foregroundColor(Appearance.titleColor)
         }
     }
 }

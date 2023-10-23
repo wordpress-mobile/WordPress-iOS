@@ -36,7 +36,7 @@ struct SingleStatView: View {
             } else {
                 VStack(alignment: .leading) {
                     Spacer()
-                    LockScreenFlexibleCard(axis: .vertical, title: title, value: .description(description), lineLimit: 2)
+                    LockScreenFlexibleCard(title: title, description: description, lineLimit: 2)
                     Spacer().frame(height: 4)
                     LockScreenVerticalCard(title: valueTitle, value: value)
                     Spacer()
