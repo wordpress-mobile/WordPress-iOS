@@ -34,10 +34,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private lazy var postActionSheet: PostActionSheet = {
-        return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
-    }()
-
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
     }
@@ -586,11 +582,5 @@ private extension PostListViewController {
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
-    }
-}
-
-extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
-//        postActionSheet.show(for: postCardStatusViewModel, from: view)
     }
 }
