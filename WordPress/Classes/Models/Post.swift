@@ -364,7 +364,9 @@ class Post: AbstractPost {
 
     override func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
-        title = title.stringByDecodingXMLCharacters()
+        title = title
+            .stringByDecodingXMLCharacters()
+            .strippingHTML()
 
         if title.count == 0 && contentPreviewForDisplay().count == 0 && !hasRemote() {
             title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")

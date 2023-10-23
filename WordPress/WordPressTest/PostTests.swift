@@ -254,6 +254,9 @@ class PostTests: CoreDataTestCase {
         post.postTitle = "hello world"
         XCTAssertEqual(post.titleForDisplay(), "hello world")
 
+        post.postTitle = "hello <i>world</i>"
+        XCTAssertEqual(post.titleForDisplay(), "hello world")
+
         post.postTitle = "    "
         XCTAssertEqual(post.titleForDisplay(), NSLocalizedString("(no title)", comment: "(no title)"))
     }
