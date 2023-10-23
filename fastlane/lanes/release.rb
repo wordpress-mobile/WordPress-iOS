@@ -88,7 +88,10 @@ platform :ios do
       release_notes_file_path: release_notes_source_path,
       extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
     )
-    ios_update_release_notes(new_version:)
+    ios_update_release_notes(
+      new_version:,
+      release_notes_file_path: release_notes_source_path
+    )
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
