@@ -43,7 +43,7 @@ struct PostMenuHelper {
         let post = statusViewModel.post
 
         return buttons.map { button in
-            UIAction(title: button.title, image: button.icon, attributes: button.attributes, handler: { _ in
+            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes, handler: { _ in
                 button.performAction(for: post, view: presentingView, delegate: delegate)
             })
         }
@@ -51,29 +51,13 @@ struct PostMenuHelper {
 }
 
 protocol PostMenuAction {
-    var title: String { get }
     var icon: UIImage? { get }
     var attributes: UIMenuElement.Attributes { get }
+    func title(for post: Post) -> String
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate)
 }
 
 extension PostCardStatusViewModel.Button: PostMenuAction {
-
-    var title: String {
-        switch self {
-        case .retry: Strings.retry
-        case .view: Strings.view
-        case .publish: Strings.publish
-        case .stats: Strings.stats
-        case .duplicate: Strings.duplicate
-        case .moveToDraft: Strings.draft
-        case .trash: Strings.trash
-        case .cancelAutoUpload: Strings.cancelAutoUpload
-        case .share: Strings.share
-        case .copyLink: Strings.copyLink
-        case .blaze: Strings.blaze
-        }
-    }
 
     var icon: UIImage? {
         switch self {
@@ -95,6 +79,22 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         switch self {
         case .trash: [.destructive]
         default: []
+        }
+    }
+
+    func title(for post: Post) -> String {
+        switch self {
+        case .retry: Strings.retry
+        case .view: Strings.view
+        case .publish: Strings.publish
+        case .stats: Strings.stats
+        case .duplicate: Strings.duplicate
+        case .moveToDraft: Strings.draft
+        case .trash: post.status == .trash ? Strings.delete : Strings.trash
+        case .cancelAutoUpload: Strings.cancelAutoUpload
+        case .share: Strings.share
+        case .copyLink: Strings.copyLink
+        case .blaze: Strings.blaze
         }
     }
 
