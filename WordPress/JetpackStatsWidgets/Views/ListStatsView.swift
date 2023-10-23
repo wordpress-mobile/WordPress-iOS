@@ -33,6 +33,7 @@ struct ListStatsView: View {
                 }
             }
         }
+        .removableWidgetBackground()
     }
 }
 

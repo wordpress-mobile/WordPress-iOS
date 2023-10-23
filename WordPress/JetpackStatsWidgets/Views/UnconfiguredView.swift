@@ -10,6 +10,7 @@ struct UnconfiguredView: View {
             .foregroundColor(Color(.secondaryLabel))
             .multilineTextAlignment(.center)
             .padding()
+            .removableWidgetBackground()
     }
 
     var unconfiguredMessage: LocalizedString {
