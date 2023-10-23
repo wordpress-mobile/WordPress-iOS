@@ -11,37 +11,49 @@ struct PostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu {
-        let actions = makeActions(presentingView: presentingView, delegate: delegate)
-        return UIMenu(title: "", options: .displayInline, children: actions)
+        let sections = makeSections(presentingView: presentingView, delegate: delegate)
+        return UIMenu(title: "", options: .displayInline, children: sections)
     }
 
-    /// Creates an array of post actions
+    /// Creates post actions grouped into sections
     ///
     /// - parameters:
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
-    private func makeActions(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIAction] {
-        let unsupportedButtons: [PostCardStatusViewModel.Button] = [.edit, .more]
+    private func makeSections(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIMenu] {
+        return statusViewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { section in
+                let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)
+                return UIMenu(title: "", options: .displayInline, children: actions)
+            }
+    }
+
+    /// Creates post actions
+    ///
+    /// - parameters:
+    ///   - buttons: The list of buttons to turn into post actions
+    ///   - presentingView: The view presenting the menu
+    ///   - delegate: The delegate that performs post actions
+    private func makeActions(
+        for buttons: [PostCardStatusViewModel.Button],
+        presentingView: UIView,
+        delegate: InteractivePostViewDelegate
+    ) -> [UIAction] {
         let post = statusViewModel.post
 
-        let buttons: [PostCardStatusViewModel.Button] = {
-            let groups = statusViewModel.buttonGroups
-            return groups.primary + groups.secondary
-        }()
-
-        return buttons
-            .filter { !unsupportedButtons.contains($0) }
-            .map { button in
-                UIAction(title: button.title, image: button.icon, handler: { _ in
-                    button.performAction(for: post, view: presentingView, delegate: delegate)
-                })
-            }
+        return buttons.map { button in
+            UIAction(title: button.title, image: button.icon, attributes: button.attributes, handler: { _ in
+                button.performAction(for: post, view: presentingView, delegate: delegate)
+            })
+        }
     }
 }
 
 protocol PostMenuAction {
     var title: String { get }
     var icon: UIImage? { get }
+    var attributes: UIMenuElement.Attributes { get }
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate)
 }
 
@@ -49,10 +61,8 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
 
     var title: String {
         switch self {
-        case .edit: Strings.edit
         case .retry: Strings.retry
         case .view: Strings.view
-        case .more: ""
         case .publish: Strings.publish
         case .stats: Strings.stats
         case .duplicate: Strings.duplicate
@@ -67,11 +77,9 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
 
     var icon: UIImage? {
         switch self {
-        case .edit: UIImage()
         case .retry: UIImage()
         case .view: UIImage(systemName: "eye")
-        case .more: UIImage()
-        case .publish: UIImage(named: "globe")
+        case .publish: UIImage(systemName: "icon.globe")
         case .stats: UIImage(systemName: "chart.bar.xaxis")
         case .duplicate: UIImage(systemName: "doc.on.doc")
         case .moveToDraft: UIImage(systemName: "pencil.line")
@@ -83,16 +91,19 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         }
     }
 
+    var attributes: UIMenuElement.Attributes {
+        switch self {
+        case .trash: [.destructive]
+        default: []
+        }
+    }
+
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate) {
         switch self {
-        case .edit:
-            delegate.edit(post)
         case .retry:
             delegate.retry(post)
         case .view:
             delegate.view(post)
-        case .more:
-            WordPressAppDelegate.crashLogging?.logMessage("Cannot handle unexpected action. This is a configuration error.", level: .error)
         case .publish:
             delegate.publish(post)
         case .stats:
@@ -124,7 +135,6 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
         static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
-        static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
         static let share = NSLocalizedString("Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
         static let copyLink = NSLocalizedString("Copy Link", comment: "Copy the post url and paste anywhere in phone")

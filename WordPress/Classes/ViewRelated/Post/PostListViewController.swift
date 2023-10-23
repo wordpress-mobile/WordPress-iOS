@@ -591,6 +591,6 @@ private extension PostListViewController {
 
 extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
-        postActionSheet.show(for: postCardStatusViewModel, from: view)
+//        postActionSheet.show(for: postCardStatusViewModel, from: view)
     }
 }

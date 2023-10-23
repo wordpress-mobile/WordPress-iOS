@@ -298,15 +298,15 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         // Convert to Set for O(1) complexity of contains()
-        let primaryButtons = Set(viewModel.buttonGroups.primary)
-
-        editButton.isHidden = !primaryButtons.contains(.edit)
-        retryButton.isHidden = !primaryButtons.contains(.retry)
-        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
-        publishButton.isHidden = !primaryButtons.contains(.publish)
-        viewButton.isHidden = !primaryButtons.contains(.view)
-        moreButton.isHidden = !primaryButtons.contains(.more)
-        trashButton.isHidden = !primaryButtons.contains(.trash)
+//        let primaryButtons = Set(viewModel.buttonGroups.primary)
+//
+//        editButton.isHidden = !primaryButtons.contains(.edit)
+//        retryButton.isHidden = !primaryButtons.contains(.retry)
+//        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
+//        publishButton.isHidden = !primaryButtons.contains(.publish)
+//        viewButton.isHidden = !primaryButtons.contains(.view)
+//        moreButton.isHidden = !primaryButtons.contains(.more)
+//        trashButton.isHidden = !primaryButtons.contains(.trash)
     }
 
     private func configureAccessibility() {
