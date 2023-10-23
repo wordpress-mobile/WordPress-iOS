@@ -30,6 +30,12 @@ final class MyDomainsViewController: UIViewController {
         }
     }
 
+    // MARK: - Views
+
+    private let tableView = UITableView()
+
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Strings.title
@@ -50,6 +56,14 @@ final class MyDomainsViewController: UIViewController {
         let menu = UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: actions)
         navigationItem.rightBarButtonItem?.menu = menu
 
+        self.setupSubviews()
+
+    }
+
+    private func setupSubviews() {
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(tableView)
+        self.view.pinSubviewToAllEdges(tableView)
     }
 
     private func menuAction(withTitle title: String, handler: UIActionHandler) -> UIAction {
