@@ -32,7 +32,7 @@ import WidgetKit
     }
 
     private enum Events: String {
-        case homeTodayWidget = "widget_today_home_extension"
+        case homeTodayWidget = "widget_today_home"
         case homeAllTimeWidget = "widget_all_time_home"
         case homeThisWeekWidget = "widget_thisweek_home_extension"
         case lockScreenTodayViewsWidget = "widget_today_views_lockscreen"
