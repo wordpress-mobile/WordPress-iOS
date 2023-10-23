@@ -1,3 +1,0 @@
-We hebben een aanpassing gedaan aan de manier waarop meldingen verschijnen als je media vanaf een URL invoegt in blokken. Dat hebben we goed voor elkaar.
-
-Het is ook eenvoudiger om het verschil te zien tussen placeholdertekst en daadwerkelijke content in thema's op blokbasis.

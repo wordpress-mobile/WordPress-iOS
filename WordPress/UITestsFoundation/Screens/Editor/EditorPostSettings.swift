@@ -142,7 +142,7 @@ public class EditorPostSettings: ScreenObject {
 
         // Selects the first day of the next month
         nextMonthButton.tap()
-        firstCalendarDayButton.tap()
+        tapUntilCondition(element: firstCalendarDayButton, condition: firstCalendarDayButton.isSelected, description: "First Day button selected")
 
         doneButton.tap()
         return self

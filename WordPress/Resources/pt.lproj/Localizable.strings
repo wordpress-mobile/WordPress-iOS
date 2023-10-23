@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -498,9 +498,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Erro de certificado";
-
-/* Change site icon button */
-"Change Site Icon" = "Alterar ícone do site";
 
 /* Change Username title. */
 "Change Username" = "Alterar nome de utilizador";
@@ -2237,8 +2234,7 @@
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Remover";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -2444,9 +2440,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviço";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Definir imagem de destaque";
 
 /* Link to plugin's Settings
    Section title

@@ -128,7 +128,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         super.init(scrollableView: table,
                    mainTitle: Strings.mainTitle,
                    prompt: Strings.prompt,
-                   primaryActionTitle: Strings.createSite,
+                   primaryActionTitle: creator.domainPurchasingEnabled ? Strings.selectDomain : Strings.createSite,
                    accessoryView: searchHeader)
     }
 
@@ -145,6 +145,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         loadHeaderView()
         addAddressHintView()
         configureUIIfNeeded()
+        navigationItem.backButtonTitle = Strings.backButtonTitle
     }
 
     private func configureUIIfNeeded() {
@@ -155,8 +156,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         NSLayoutConstraint.activate([
             largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
         ])
-        largeTitleView.textAlignment = .natural
-        promptView.textAlignment = .natural
+        largeTitleView.textAlignment = .center
+        promptView.textAlignment = .center
         promptView.font = .systemFont(ofSize: 17)
     }
 
@@ -169,6 +170,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             searchBar.layer.borderWidth = 0
             searchHeader.addSubview(searchBar)
             searchBar.delegate = self
+            headerView.backgroundColor = .basicBackground
 
             NSLayoutConstraint.activate([
                 searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
@@ -506,6 +508,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
+        static let selectDomain: String = NSLocalizedString("siteCreation.domains.buttons.selectDomain",
+                                                            value: "Select domain",
+                                                            comment: "Button to progress to the next step after selecting domain in Site Creation")
         static let searchPlaceholder: String = NSLocalizedString("Type a name for your site",
                                                                  comment: "Site creation. Seelect a domain, search field placeholder")
         static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.",
@@ -514,6 +519,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                            comment: "Suggested domains")
         static let noMatch: String = NSLocalizedString("This domain is unavailable",
                                                        comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
+        static let backButtonTitle = NSLocalizedString("siteCreation.domain.backButton.title",
+                                                       value: "Domains",
+                                                       comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
+        )
     }
 }
 

@@ -1,7 +1,0 @@
-Sperrbildschirm-Widgets sind jetzt auf Jetpack verfügbar. Du kannst nun also deine Website-Statistiken überprüfen, ohne dein Smartphone zu entsperren. Aber denk dran: Aus großer Macht folgt große Effizienz. Oder so ähnlich.
-
-Benachrichtigungen werden nun anders angezeigt, wenn du über eine URL Medien in Blöcke einfügst. Ist das nicht fabelhaft?
-
-Außerdem können Platzhaltertext und tatsächlicher Inhalt in blockbasierten Themes nun leichter unterschieden werden.
-
-Zu guter Letzt haben wir die Navigation unter „Meine Website“ aktualisiert, wodurch du schneller zu beliebten Abschnitten der Website gelangen kannst. (Du magst diese Tastaturkürzel nicht? Keine Sorge, du kannst sie nach Herzenslust anpassen.)

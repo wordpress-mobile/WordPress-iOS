@@ -1,3 +1,0 @@
-Hemos cambiado la forma en que aparecen las alertas al insertar medios en bloques desde una URL. Así que tenemos eso a nuestro favor.
-
-- También es más fácil distinguir entre el texto del marcador de posición y el contenido real en los temas basados en bloques.

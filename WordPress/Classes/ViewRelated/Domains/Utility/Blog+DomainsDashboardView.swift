@@ -44,4 +44,16 @@ extension Blog {
     var freeDomainIsPrimary: Bool {
         freeDomain?.isPrimaryDomain ?? false
     }
+
+    var primaryDomain: Domain? {
+        guard let domainsSet = domains as? Set<ManagedDomain>,
+              let freeDomain = (domainsSet.first { $0.isPrimary == true }) else {
+            return nil
+        }
+        return Domain(managedDomain: freeDomain)
+    }
+
+    var primaryDomainAddress: String {
+        primaryDomain?.domainName ?? ""
+    }
 }

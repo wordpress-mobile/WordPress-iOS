@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: is */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1956,8 +1956,7 @@
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Fjarlægja";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -2145,9 +2144,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Þjónusta";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Velja sem einkennismynd";
 
 /* Link to plugin's Settings
    Section title

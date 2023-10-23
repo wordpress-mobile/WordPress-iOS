@@ -56,40 +56,64 @@ extension WPStyleGuide {
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .subheadline).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.label
+            ]
+        } else {
+            let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor.text
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor.text
+            ]
+        }
     }
 
     @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .footnote).semibold()
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            let paragraphStyle = NSMutableParagraphStyle()
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let font = UIFont.preferredFont(forTextStyle: .footnote)
+            return [
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]
+        } else {
+            let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font,
-            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
-        ]
+            return [
+                .paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
+            ]
+        }
     }
 
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
@@ -269,6 +293,10 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
@@ -298,17 +326,41 @@ extension WPStyleGuide {
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
 
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    public class func applyNewReaderFollowButtonStyle(_ button: UIButton,
+                                                      contentInsets: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 24.0, bottom: 8.0, trailing: 24.0)) {
+        let font: UIFont = .preferredFont(forTextStyle: .subheadline)
+        button.setTitleColor(.invertedLabel, for: .normal)
+        button.setTitleColor(.secondaryLabel, for: .selected)
+        button.backgroundColor = button.isSelected ? .clear : .label
+        button.layer.borderColor = UIColor.separator.cgColor
+        button.layer.cornerRadius = 5.0
+        button.titleLabel?.font = font
+        button.tintColor = .clear
+
+        button.configuration = .plain()
+        button.configuration?.contentInsets = contentInsets
+        button.configuration?.titleTextAttributesTransformer = .transformer(with: font)
+        applyCommonReaderFollowButtonStyles(button)
+    }
+
+    private class func applyCommonReaderFollowButtonStyles(_ button: UIButton) {
         button.setTitle(FollowButton.Text.followStringForDisplay, for: .normal)
         button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
 
         button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
-
         // Default accessibility label and hint.
         button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
         button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
+            applyNewReaderFollowButtonStyle(button)
+            return
+        }
         let followIcon = UIImage.gridicon(.readerFollow)
         let followingIcon = UIImage.gridicon(.readerFollowing)
 
@@ -325,15 +377,12 @@ extension WPStyleGuide {
         button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
+    // Reader Detail Toolbar Save button
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
-        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
-
-        button.setImage(icon, for: .normal)
-        button.setImage(selectedIcon, for: .selected)
-        button.setImage(selectedIcon, for: .highlighted)
-        button.setImage(selectedIcon, for: [.highlighted, .selected])
+        button.setImage(ReaderDetail.saveToolbarIcon, for: .normal)
+        button.setImage(ReaderDetail.saveSelectedToolbarIcon, for: .selected)
+        button.setImage(ReaderDetail.saveSelectedToolbarIcon, for: .highlighted)
+        button.setImage(ReaderDetail.saveSelectedToolbarIcon, for: [.highlighted, .selected])
 
         applyReaderActionButtonStyle(button)
     }
@@ -352,6 +401,8 @@ extension WPStyleGuide {
         applyReaderStreamActionButtonStyle(button)
     }
 
+    // NOTE: this is currently unused in the new designs because of the call to `applyReaderStreamActionButtonStyle`,
+    // which causes the image to be "double-tinted" and results in a different display color.
     @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton, defaultSize: Bool = false) {
         let size = defaultSize ? Gridicon.defaultSize : Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
@@ -418,10 +469,7 @@ extension WPStyleGuide {
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
-        let size = Gridicon.defaultSize
-        let icon = UIImage.gridicon(.reblog, size: size)
-
-        button.setImage(icon, for: .normal)
+        button.setImage(ReaderDetail.reblogToolbarIcon, for: .normal)
 
         WPStyleGuide.applyReaderReblogActionButtonTitle(button, showTitle: showTitle)
         WPStyleGuide.applyReaderActionButtonStyle(button)
@@ -440,7 +488,7 @@ extension WPStyleGuide {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
-        if count == 0 && !FeatureFlag.readerImprovements.enabled {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return likeStr
         } else if count == 1 {
             return "\(count) \(likeStr)"
@@ -453,7 +501,7 @@ extension WPStyleGuide {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
-        if count == 0 && !FeatureFlag.readerImprovements.enabled {
+        if count == 0 && !RemoteFeatureFlag.readerImprovements.enabled() {
             return commentStr
         } else if count == 1 {
             return "\(count) \(commentStr)"
@@ -540,6 +588,64 @@ extension WPStyleGuide {
     public struct Detail {
         public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
+    }
+
+    public struct ReaderDetail {
+        private static var readerImprovements: Bool {
+            return RemoteFeatureFlag.readerImprovements.enabled()
+        }
+
+        public static var reblogToolbarIcon: UIImage? {
+            if readerImprovements {
+                return UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
+            }
+            return UIImage.gridicon(.reblog, size: Gridicon.defaultSize)
+        }
+
+        static var commentToolbarIcon: UIImage? {
+            let imageName = readerImprovements ? "icon-reader-post-comment" : "icon-reader-comment-outline"
+            return UIImage(named: imageName)?
+                .imageFlippedForRightToLeftLayoutDirection()
+                .withRenderingMode(.alwaysTemplate)
+        }
+
+        static var commentHighlightedToolbarIcon: UIImage? {
+            if readerImprovements {
+                // note: we don't have a highlighted variant in the new version.
+                return commentToolbarIcon
+            }
+            return UIImage(named: "icon-reader-comment-outline-highlighted")?
+                .imageFlippedForRightToLeftLayoutDirection()
+                .withRenderingMode(.alwaysTemplate)
+        }
+
+        public static var saveToolbarIcon: UIImage? {
+            if readerImprovements {
+                return UIImage(named: "icon-reader-save-outline")
+            }
+            return UIImage.gridicon(.bookmarkOutline, size: Gridicon.defaultSize)
+        }
+
+        public static var saveSelectedToolbarIcon: UIImage? {
+            if readerImprovements {
+                return UIImage(named: "icon-reader-save-fill")
+            }
+            return UIImage.gridicon(.bookmark, size: Gridicon.defaultSize)
+        }
+
+        static var likeToolbarIcon: UIImage? {
+            if readerImprovements {
+                return UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
+            }
+            return UIImage(named: "icon-reader-like")
+        }
+
+        static var likeSelectedToolbarIcon: UIImage? {
+            if readerImprovements {
+                return UIImage(named: "icon-reader-star-fill")?.withRenderingMode(.alwaysTemplate)
+            }
+            return UIImage(named: "icon-reader-liked")
+        }
     }
 
     public struct FollowButton {

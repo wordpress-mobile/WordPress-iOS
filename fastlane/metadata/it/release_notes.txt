@@ -1,3 +1,0 @@
-Abbiamo modificato il modo in cui vengono visualizzati gli avvisi quando inserisci elementi multimediali nei blocchi da un URL. Quindi ce l'abbiamo fatta, il che è un bene.
-
-È anche più semplice distinguere tra il testo del segnaposto e il contenuto effettivo presenti nei temi basati su blocchi.

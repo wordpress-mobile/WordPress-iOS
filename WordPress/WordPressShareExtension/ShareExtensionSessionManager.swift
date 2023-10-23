@@ -97,7 +97,7 @@ import WordPressFlux
 
             // Sync the remote post to WPiOS so that we can open it for editing if needed.
             let repository = PostRepository(coreDataStack: ContextManager.shared)
-            let blogID = TaggedManagedObjectID(saved: blog)
+            let blogID = TaggedManagedObjectID(blog)
             let postID = postUploadOp.remotePostID
             Task { @MainActor in
                 do {

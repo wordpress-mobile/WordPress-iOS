@@ -60,6 +60,14 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["Preview Device"]
     }
 
+    private let pagesCardPublishedLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[pagesCardId].staticTexts["Published"]
+    }
+
+    private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Domains Row"]
+    }
+
     private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Reader"]
     }
@@ -104,6 +112,7 @@ public class MySiteScreen: ScreenObject {
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
+    var pagesCardPublishedLabel: XCUIElement { pagesCardPublishedLabelGetter(app) }
     var previewDeviceButton: XCUIElement { previewDeviceButtonGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
@@ -115,7 +124,7 @@ public class MySiteScreen: ScreenObject {
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
     // Timeout duration to overwrite value defined in XCUITestHelpers
-    var duration: TimeInterval = 5.0
+    var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -254,6 +263,14 @@ public class MySiteScreen: ScreenObject {
     public func verifyCheckSiteTitleNoticeDisplayed(_ siteTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(noticeTitle.exists, file: file, line: line)
         XCTAssertTrue(noticeTitle.label.contains("Select \(siteTitle) to set a new title"), "Notice does not contain site title!")
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyPagePublished(title: String) -> Self {
+        XCTAssertTrue(pagesCard.staticTexts[title].waitForExistence(timeout: 3))
+        XCTAssertTrue(pagesCardPublishedLabel.waitForExistence(timeout: 3))
 
         return self
     }

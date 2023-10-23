@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-06-04 17:31:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: en_GB */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1388,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Change Settings";
 
-/* Change site icon button */
-"Change Site Icon" = "Change Site Icon";
-
 /* Change Username title. */
 "Change Username" = "Change Username";
 
@@ -1486,9 +1483,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Choose Homepage";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose image from my device";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
@@ -6009,8 +6003,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Remove";
 
 /* Remove Person Alert Title
@@ -6651,9 +6644,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Set Featured Image";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Set Parent";
@@ -7277,9 +7267,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Take A Photo";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Take a Photo or Video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Take a Video";
@@ -9643,14 +9630,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Remote Config";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Find a custom domain";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";

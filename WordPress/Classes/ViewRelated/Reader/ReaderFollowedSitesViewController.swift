@@ -326,6 +326,25 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     private func post(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
+
+    private func followButton(title: String) -> UIButton {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            let button = UIButton()
+            let contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
+            button.isSelected = true
+            WPStyleGuide.applyNewReaderFollowButtonStyle(button, contentInsets: contentInsets)
+            button.tintColor = .clear
+            button.sizeToFit()
+            return button
+        } else {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
+            button.imageView?.tintColor = UIColor.success
+            let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
+            button.accessibilityLabel = String(format: unfollowSiteString, title)
+            return button
+        }
+    }
 }
 
 // MARK: - No Results Handling
@@ -420,12 +439,8 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         cell.imageView?.backgroundColor = UIColor.listForeground
 
         if showsAccessoryFollowButtons {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
-            button.imageView?.tintColor = UIColor.success
+            let button = followButton(title: site.title)
             button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
-            let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
-            button.accessibilityLabel = String(format: unfollowSiteString, site.title)
             cell.accessoryView = button
             cell.accessibilityElements = [button]
         } else {

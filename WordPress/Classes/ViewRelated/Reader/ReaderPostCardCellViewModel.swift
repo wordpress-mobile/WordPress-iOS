@@ -22,12 +22,16 @@ struct ReaderPostCardCellViewModel {
         return contentProvider.blogNameForDisplay?()
     }
 
+    var shortPostDate: String? {
+        contentProvider.dateForDisplay()?.toShortString()
+    }
+
     var postDate: String? {
-        guard let dateForDisplay = contentProvider.dateForDisplay()?.toShortString() else {
+        guard let shortPostDate else {
             return nil
         }
         let postDateFormat = isRTL ? "%@ •" : "• %@"
-        return siteTitle != nil ? String(format: postDateFormat, dateForDisplay) : dateForDisplay
+        return siteTitle != nil ? String(format: postDateFormat, shortPostDate) : shortPostDate
     }
 
     var postTitle: String? {
@@ -50,19 +54,31 @@ struct ReaderPostCardCellViewModel {
         contentProvider.contentPreviewForDisplay()
     }
 
+    var commentCount: String? {
+        guard isCommentsEnabled,
+              let count = contentProvider.commentCount()?.intValue,
+              count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.commentCountForDisplay(count)
+    }
+
+    var likeCount: String? {
+        guard isLikesEnabled,
+              let count = contentProvider.likeCount()?.intValue,
+              count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.likeCountForDisplay(count)
+    }
+
     var postCounts: String? {
-        let commentCount = contentProvider.commentCount()?.intValue ?? 0
-        let likeCount = contentProvider.likeCount()?.intValue ?? 0
-        var countStrings = [String]()
-
-        if isLikesEnabled {
-            countStrings.append(WPStyleGuide.likeCountForDisplay(likeCount))
-        }
-
-        if isCommentsEnabled {
-            countStrings.append(WPStyleGuide.commentCountForDisplay(commentCount))
-        }
+        let countStrings = [likeCount, commentCount].compactMap { $0 }
         return countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
+    }
+
+    private var readerPost: ReaderPost? {
+        contentProvider as? ReaderPost
     }
 
     var isPostLiked: Bool {
@@ -103,10 +119,16 @@ struct ReaderPostCardCellViewModel {
 
     private let contentProvider: ReaderPostContentProvider
     private let actionVisibility: ReaderActionsVisibility
+    private weak var parentViewController: ReaderStreamViewController?
 
-    init(contentProvider: ReaderPostContentProvider, isLoggedIn: Bool) {
+    private var followCommentsService: FollowCommentsService?
+
+    init(contentProvider: ReaderPostContentProvider,
+         isLoggedIn: Bool,
+         parentViewController: ReaderStreamViewController) {
         self.contentProvider = contentProvider
         self.actionVisibility = .visible(enabled: isLoggedIn)
+        self.parentViewController = parentViewController
     }
 
     // MARK: - Functions
@@ -149,6 +171,63 @@ struct ReaderPostCardCellViewModel {
             DDLogError(error)
         })
         imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
+    }
+
+    func showSiteDetails() {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+        ReaderHeaderAction().execute(post: readerPost, origin: parentViewController)
+    }
+
+    func reblog() {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+        ReaderReblogAction().execute(readerPost: readerPost, origin: parentViewController, reblogSource: .list)
+    }
+
+    func comment(with cell: UITableViewCell) {
+        guard let readerPost, let parentViewController else {
+            return
+        }
+
+        if let indexPath = parentViewController.tableView.indexPath(for: cell),
+           let topic = parentViewController.readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           parentViewController.shouldShowCommentSpotlight {
+            parentViewController.reloadReaderDiscoverNudgeFlow(at: indexPath)
+        }
+
+        ReaderCommentAction().execute(post: readerPost, origin: parentViewController, source: .postCard)
+    }
+
+    func toggleLike(with cell: ReaderPostCardCell) {
+        guard let readerPost else {
+            return
+        }
+
+        ReaderLikeAction().execute(with: readerPost)
+    }
+
+    mutating func showMore(with anchor: UIView) {
+        guard let readerPost,
+              let parentViewController,
+              let followCommentsService = FollowCommentsService(post: readerPost) else {
+            return
+        }
+        self.followCommentsService = followCommentsService
+
+        ReaderMenuAction(logged: actionVisibility.isEnabled).execute(
+            post: readerPost,
+            context: parentViewController.viewContext,
+            readerTopic: parentViewController.readerTopic,
+            anchor: anchor,
+            vc: parentViewController,
+            source: ReaderPostMenuSource.card,
+            followCommentsService: followCommentsService
+        )
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
 }

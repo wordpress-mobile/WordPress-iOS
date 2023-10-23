@@ -12,7 +12,7 @@ extension WPTabBarController {
     override open var childForStatusBarStyle: UIViewController? {
         guard
             let topViewController = readerNavigationController?.topViewController,
-            ((topViewController as? DefinesVariableStatusBarStyle) != nil)
+            (topViewController as? DefinesVariableStatusBarStyle) != nil
         else {
             return nil
         }

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-21 08:16:02+0000 */
+/* Translation-Revision-Date: 2023-10-05 08:23:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1376,9 +1376,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Změnit nastavení";
 
-/* Change site icon button */
-"Change Site Icon" = "Změnit ikonu webu";
-
 /* Change Username title. */
 "Change Username" = "Změnit uživatelské jméno";
 
@@ -1474,9 +1471,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Zvolit domovskou stránku";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Vyberte obrázek z mého zařízení";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Vyberte stránky";
@@ -5973,8 +5967,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Odstranit";
 
 /* Remove Person Alert Title
@@ -6609,9 +6602,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Náhledový obrázek";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Nastavit nadřazené";
@@ -7235,9 +7225,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Udělat fotku";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Pořiďte fotografii nebo video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Pořiďte video";
@@ -8614,6 +8601,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Varování";
+
+/* No comment provided by engineer. */
+"Warning message" = "Varovná zpráva";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Sledujte, jak vaše publikum roste pomocí hloubkové analýzy.";

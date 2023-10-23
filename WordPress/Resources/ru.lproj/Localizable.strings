@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-18 06:48:01+0000 */
+/* Translation-Revision-Date: 2023-10-16 18:22:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Цитата";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Блок невозможно отобразить, поскольку он глубоко вложен. Нажмите здесь, чтобы получить более подробную информацию.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Блок скопирован";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Меню \"Блоки\"";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Блоки, вложенные глубже, чем %d уровней, могут отображаться неправильно в мобильном редакторе. По этой причине мы рекомендуем сгладить содержимое, разгруппировав блок или отредактировать блок с помощью веб-редактора.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Блоки, вложенные глубже, чем %d уровней, могут отображаться неправильно в мобильном редакторе. По этой причине мы рекомендуем сгладить содержимое, разгруппировав блок или отредактировать его с помощью веб-браузера.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Блог";
@@ -1409,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Изменить настройки";
 
-/* Change site icon button */
-"Change Site Icon" = "Изменить значок сайта";
-
 /* Change Username title. */
 "Change Username" = "Сменить имя пользователя";
 
@@ -1507,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Выбор главной страницы";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Выбрать изображение с моего устройства";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Выбрать страницы";
@@ -2282,6 +2285,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "Декабрь 17, 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Глубоко вложенный блок";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6066,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Удалить";
 
 /* Remove Person Alert Title
@@ -6702,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Служба";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Установить миниатюру";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Назначить родителя";
@@ -7283,6 +7285,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Переход к размеру шрифта по умолчанию";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Синхронизированные паттерны";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Системные параметры по умолчанию";
 
@@ -7330,9 +7335,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Сделайте фото";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Сделать фото или записать видео";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Записать видео";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7348,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Нажмите тут для показа справки";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Нажмите здесь, чтобы посмотреть подробную информацию.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Коснитесь, чтобы добавить новые карточки статистики.";
@@ -8327,6 +8332,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Отписаться от блога.";
 
+/* No comment provided by engineer. */
+"Ungroup block" = "Разгруппировать блок";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "Показать";
 
@@ -8713,6 +8721,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Предупреждение";
+
+/* No comment provided by engineer. */
+"Warning message" = "Предупреждающее сообщение";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Следите за ростом вашей аудитории с глубокой аналитикой.";
@@ -9856,14 +9867,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Удалить текущий тур";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Займите себе место в Интернете: зарегистрируйте адрес сайта, который будет легко запомнить и порекомендовать друзьям.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Свернуть";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Найти особый домен";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Это может занять до 30 минут, после чего ваш особый домен начнёт работать.";
@@ -9877,6 +9882,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Ура, ваш сайт работает!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Требуется действие";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Активен";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Завершить установку";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Ошибка";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Просрочен";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Срок регистрации скоро истекает";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Сбой";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "В процессе";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Продлить";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Подтвердить Email";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Проверка";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Лучшая альтернатива";
 
@@ -9885,6 +9923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Бесплатно";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Бесплатно на первый год при покупке любого годового тарифного плана";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Рекомендуемые";
@@ -10323,9 +10364,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Невозможно синхронизировать медиа";
 
-/* Media screen navigation title */
-"media.title" = "Медиа";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Невозможно добавить файл в библиотеку медиафайлов.";
 
@@ -10338,6 +10376,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Закрыть";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Добавить медиафайл";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Добавить";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Выбрать";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Отменить";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Удалить";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Вы хотите навсегда удалить эти элементы?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Вы хотите навсегда удалить этот элемент?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Невозможно удалить все медиафайлы.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Удаление...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Удалено!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Удалить";
 
@@ -10346,6 +10414,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Повторить загрузку";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Нет медиафайлов по критериям поиска";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Медиа";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "Выбраны изображения: %d";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "Выбрано одно изображение";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "Выбрано элементов: %d";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "Выбран один элемент";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Выбрать элементы";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Закрыть";
@@ -10579,12 +10668,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "Черновики записей";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Изучите приложение";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Следующие шаги";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Страницы";
 
 /* Card title for the pesonalization menu */
@@ -10711,6 +10794,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Далее";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Просмотр записей с сайта";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Комментарий";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Нравится";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Отмечает запись как понравившуюся.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Понравилось";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Снимает отметку \"понравилось\" с записи.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Сохраняет эту запись на потом.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Сохранить запись";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Удаляет сохранение этой записи.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Сохраненная запись";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Поиск";
 
@@ -10724,11 +10844,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Комментировать";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Открыть комментарии к записи.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Нравится";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Отмечает запись как понравившуюся.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Понравилось";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Открывает меню с другими действиями.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Далее";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Реблог";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Перепубликовать эту запись";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Открыть подробности на сайте для записи.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Заблокировать этого пользователя";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Удалить сохраненную запись";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Пожаловаться на этого пользователя";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Сохранить";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "Записей: %1$@ • Подписчиков: %2$@";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Назад";
@@ -10837,6 +10997,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Домены";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Выберите домен";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Аудиозапись, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Документ, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Изображение, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Видеофайл, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Неизвестная дата создания";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Выберите медиафайл.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Медиа";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Конфиденциальность";

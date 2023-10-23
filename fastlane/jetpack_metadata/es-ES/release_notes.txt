@@ -1,7 +1,0 @@
-Los widgets de pantalla de bloqueo ya están disponibles en Jetpack para que puedas consultar las estadísticas de tu sitio sin desbloquear el teléfono. Recuerda que una gran potencia conlleva una gran eficiencia. O algo así.
-
-Hemos cambiado la forma en que aparecen las alertas al insertar medios en bloques desde una URL. Así que tenemos eso a nuestro favor.
-
-- También es más fácil distinguir entre el texto del marcador de posición y el contenido real en los temas basados en bloques.
-
-Por último, hemos actualizado la navegación en Mi sitio para que puedas llegar más rápidamente a las secciones más populares del sitio. (¿No te gustan estos atajos? No te preocupes, puedes personalizarlos a tu gusto).

@@ -233,22 +233,28 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
   lane :update_jetpack_appstore_strings do |options|
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
-    custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+    # Commented out to silence RuboCop about unused vars.
+    # See details below for why that was done and why we should keep the definition in the codebase for future use.
+    # source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
+    # custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
     version = options.fetch(:version, get_app_version)
 
     files = {
-      whats_new: JETPACK_RELEASE_NOTES_PATH,
-      app_store_name: File.join(source_metadata_folder, 'name.txt'),
-      app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-      app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-      app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
-      'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
-      'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
-      'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
-      'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
-      'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
+      whats_new: JETPACK_RELEASE_NOTES_PATH
+      # We are currently iterating on the App Store copy for Jetpack.
+      # It's therefore easier to update the English US metadata without triggering a translation.
+      # Once we'll settle on a new copy, we'll re-enable reading these sources for the GlotPress po file.
+      #
+      # app_store_name: File.join(source_metadata_folder, 'name.txt'),
+      # app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
+      # app_store_desc: File.join(source_metadata_folder, 'description.txt'),
+      # app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
+      # 'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
+      # 'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
+      # 'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
+      # 'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
+      # 'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
+      # 'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
     }
 
     ios_update_metadata_source(

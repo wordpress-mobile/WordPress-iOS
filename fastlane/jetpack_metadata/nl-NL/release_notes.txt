@@ -1,7 +1,0 @@
-Widgets voor schermvergrendeling zijn nu beschikbaar in Jetpack zodat je je site-statistieken kan controleren zonder je telefoon te hoeven ontgrendelen. En bedenk, bij veel kracht hoort veel efficiëntie. Of zoiets.
-
-We hebben een aanpassing gedaan aan de manier waarop meldingen verschijnen als je media vanaf een URL invoegt in blokken. Dat hebben we goed voor elkaar.
-
-Het is ook eenvoudiger om het verschil te zien tussen placeholdertekst en daadwerkelijke content in thema's op blokbasis.
-
-Ten slotte hebben we de navigatie in Mijn site bijgewerkt waardoor je sneller op populaire gedeelten van de site komt. (Vind je deze snellere routes niets? Geen zorgen, je kan ze naar hartenlust aanpassen.)
