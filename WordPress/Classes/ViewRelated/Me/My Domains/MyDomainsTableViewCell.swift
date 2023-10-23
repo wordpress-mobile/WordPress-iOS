@@ -24,5 +24,5 @@ final class MyDomainsTableViewCell: UITableViewCell {
         self.hostingController?.view.layoutIfNeeded()
     }
 
-    typealias ViewModel = DomainListCard.DomainInfo
+    typealias ViewModel = DomainListCard.ViewModel
 }

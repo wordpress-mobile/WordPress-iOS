@@ -1,17 +1,17 @@
 import SwiftUI
 
 struct DomainListCard: View {
-    struct DomainInfo {
+    struct ViewModel {
         let domainName: String
-        let domainHeadline: String
-        let state: State
+        let domainHeadline: String?
+        let status: String
         let description: String?
         let date: String?
     }
 
-    private let domainInfo: DomainInfo
+    private let domainInfo: ViewModel
 
-    init(domainInfo: DomainInfo) {
+    init(domainInfo: ViewModel) {
         self.domainInfo = domainInfo
     }
 
@@ -23,8 +23,10 @@ struct DomainListCard: View {
     private var textContainerVStack: some View {
         VStack(alignment: .leading, spacing: Length.Padding.single) {
             domainText
-            domainHeadline
-                .padding(.bottom, Length.Padding.single)
+            if let value = domainInfo.domainHeadline {
+                domainHeadline(value)
+                    .padding(.bottom, Length.Padding.single)
+            }
             statusHStack
         }
     }
@@ -35,8 +37,8 @@ struct DomainListCard: View {
             .foregroundColor(.primary)
     }
 
-    private var domainHeadline: some View {
-        Text(domainInfo.domainHeadline)
+    private func domainHeadline(_ value: String) -> some View {
+        Text(value)
             .font(.subheadline)
             .foregroundColor(.secondary)
     }
@@ -52,21 +54,21 @@ struct DomainListCard: View {
     private var statusText: some View {
         HStack(spacing: Length.Padding.single) {
             Circle()
-                .fill(domainInfo.state.indicatorColor)
+//                .fill(domainInfo.status.indicatorColor)
                 .frame(
                     width: Length.Padding.single,
                     height: Length.Padding.single
                 )
-            Text(domainInfo.state.text)
-                .foregroundColor(domainInfo.state.textColor)
-                .font(.subheadline.weight(domainInfo.state.fontWeight))
+            Text(domainInfo.status)
+                .foregroundColor(domainInfo.status.textColor)
+                .font(.subheadline.weight(domainInfo.status.fontWeight))
         }
     }
 
     private var expirationText: some View {
         Text(domainInfo.date ?? "—")
             .font(.subheadline)
-            .foregroundColor(domainInfo.state.expireTextColor)
+            .foregroundColor(domainInfo.status.expireTextColor)
     }
 
     private func descriptionText(_ description: String) -> some View {
@@ -222,6 +224,30 @@ extension DomainListCard {
     }
 }
 
+// MARK: - View Model
+
+extension DomainListCard.ViewModel: MyDomainViewModel {
+
+    init(domain: DomainsService.AllDomainsListItem) {
+        let domainHeadline: String? = {
+            guard !domain.isDomainOnlySite else {
+                return nil
+            }
+            return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
+        }()
+        self.init(
+            domainName: domain.domain,
+            domainHeadline: domainHeadline,
+            state: .active,
+            description: nil,
+            date: "August 25th 2023"
+        )
+    }
+}
+
+
+// MARK: - Previews
+
 struct DomainListCard_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -230,7 +256,7 @@ struct DomainListCard_Previews: PreviewProvider {
                 domainInfo: .init(
                     domainName: "domain.cool.cool",
                     domainHeadline: "A Cool Website",
-                    state: .actionRequired,
+                    status: .actionRequired,
                     description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
                     date: "Expires Aug 15 2004"
                 )
@@ -238,18 +264,5 @@ struct DomainListCard_Previews: PreviewProvider {
         }
         .ignoresSafeArea()
         .environment(\.colorScheme, .light)
-    }
-}
-
-extension DomainListCard.DomainInfo: MyDomainViewModel {
-
-    init(domain: DomainsService.AllDomainsListItem) {
-        self.init(
-            domainName: "google.com",
-            domainHeadline: "Google",
-            state: .active,
-            description: nil,
-            date: "August 25th 2023"
-        )
     }
 }

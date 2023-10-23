@@ -140,7 +140,7 @@ final class MyDomainsViewController: UIViewController {
         static let myDomain = String(describing: MyDomainsTableViewCell.self)
     }
 
-    typealias ViewModel = MyDomainsViewModel<DomainListCard.DomainInfo>
+    typealias ViewModel = MyDomainsViewModel<DomainListCard.ViewModel>
 }
 
 // MARK: - UITableViewDataSource
