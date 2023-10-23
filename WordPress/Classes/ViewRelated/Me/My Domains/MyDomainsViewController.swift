@@ -32,7 +32,7 @@ final class MyDomainsViewController: UIViewController {
 
     // MARK: - Views
 
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
     // MARK: - View Lifecycle
 
@@ -61,6 +61,14 @@ final class MyDomainsViewController: UIViewController {
     }
 
     private func setupSubviews() {
+        // Setup search bar
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = Strings.searchBar
+        self.navigationItem.searchController = searchController
+
+        // Setup tableView
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
@@ -80,12 +88,8 @@ final class MyDomainsViewController: UIViewController {
     }
 }
 
-private extension MyDomainsViewController {
-    enum Strings {
-        static let title = NSLocalizedString(
-            "domain.management.title",
-            value: "My Domains",
-            comment: "Domain Management Screen Title"
-        )
-    }
+// MARK: - UISearchControllerDelegate & UISearchBarDelegate
+
+extension MyDomainsViewController: UISearchControllerDelegate, UISearchBarDelegate {
+
 }
