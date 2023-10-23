@@ -54,6 +54,5 @@ struct HomeWidgetThisWeek: Widget {
         .description(LocalizableStrings.thisWeekPreviewDescription)
         .supportedFamilies([.systemMedium, .systemLarge])
         .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
-        .iOS17ContainerBackgroundRemovable(false) /// Temporarily disable iOS 17 background removing functionality
     }
 }

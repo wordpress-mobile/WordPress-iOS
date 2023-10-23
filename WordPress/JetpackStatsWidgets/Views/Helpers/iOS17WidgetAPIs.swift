@@ -13,19 +13,10 @@ extension View {
     }
 }
 
-/// Silence warnings on Xcode 14
 extension WidgetConfiguration {
     func iOS17ContentMarginsDisabled() -> some WidgetConfiguration {
         if #available(iOSApplicationExtension 17.0, *) {
             return contentMarginsDisabled()
-        } else {
-            return self
-        }
-    }
-
-    func iOS17ContainerBackgroundRemovable(_ isRemovable: Bool = true) -> some WidgetConfiguration {
-        if #available(iOSApplicationExtension 17.0, *) {
-            return containerBackgroundRemovable(isRemovable)
         } else {
             return self
         }
