@@ -1,25 +1,20 @@
 # WordPress for iOS #
 
-[![Build status](https://badge.buildkite.com/2f3fbb17bfbb5bba508efd80f1ea8d640db5ca2465a516a457.svg)](https://buildkite.com/automattic/wordpress-ios)
-[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-
 ## Build Instructions
 
-Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line.
-
-> Please note – these setup instructions only apply to Intel-based machines. M1-based Mac support is coming, but isn't yet supported by our tooling.
+Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line inside the repository.
 
 ### Getting Started
 
-1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 11.2.1 or newer.
-1. From a command line, run `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
-1. Now, run `cd WordPress-iOS` to enter the working directory.
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
+1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
 
 #### Create WordPress.com API Credentials
 
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
-1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
+1. Set **Website URL** to any valid host, **Redirect URLs** to `https://localhost`, and **Type** to `Native`.
+1. Click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
 
 #### Configure Your WordPress App Development Environment

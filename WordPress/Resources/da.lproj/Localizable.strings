@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -1235,9 +1235,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Vælg udvalgt billede";
 
 /* Link to plugin's Settings
    Section title

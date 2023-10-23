@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1412,9 +1412,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ubah Pengaturan";
 
-/* Change site icon button */
-"Change Site Icon" = "Ubah Ikon Situs";
-
 /* Change Username title. */
 "Change Username" = "Ubah Nama Pengguna";
 
@@ -1510,9 +1507,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Pilih Halaman Beranda";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Pilih Gambar dari Perangkat Saya";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Pilih Halaman";
@@ -6707,9 +6701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Layanan";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Atur Gambar Unggulan";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Atur Induk";
@@ -9882,6 +9873,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Selamat, situs Anda sudah aktif!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Tindakan Diperlukan";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Aktif";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Selesaikan Penyiapan";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Error";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Kedaluwarsa";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Segera Berakhir";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Gagal";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "Sedang Berlangsung";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Perpanjang";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Verifikasi email";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Memverifikasi";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Alternatif Terbaik";
 
@@ -9890,6 +9914,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratis";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratis selama satu tahun pertama dengan paket berbayar tahunan";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Direkomendasikan";
@@ -10758,6 +10785,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Lainnya";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Komentar";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Suka";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Menyukai pos.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Disukai";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Tidak menyukai pos.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Menyimpan pos ini untuk nanti.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Simpan pos";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Membatalkan penyimpanan pos.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Pos yang Disimpan";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Pencarian";
 
@@ -10771,11 +10835,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "pembaca.pemberitahuan.pengguna.blokir.gagal";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Komentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Membuka komentar untuk pos.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Suka";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Menyukai pos.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Disukai";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Membuka menu dengan tindakan lain.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Lainnya";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblog";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Reblog pos.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Membuka detail situs untuk pos.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blokir pengguna ini";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Buang Pos yang Disimpan";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Laporkan pengguna ini";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Simpan";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ pos • %2$@ pengikut";
@@ -10884,6 +10985,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "NamaSitusAnda.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domain";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Pilih domain";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Dokumen, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Gambar, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Tanggal pembuatan tidak diketahui";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Pilih media.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";

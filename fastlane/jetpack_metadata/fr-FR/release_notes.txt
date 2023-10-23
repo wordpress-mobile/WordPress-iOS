@@ -1,7 +1,0 @@
-Nous avons corrigé des bugs ! (C’était bien moins terrible que ça en a l’air.)
-
-- Vous pouvez désormais intégrer des URL depuis X sans obtenir un lien mort. De l’X-cellent travail, si vous voulez notre avis.
-- En parlant de liens : lorsque vous utilisez une URL non valide pour un média, l’application affiche désormais un message d’erreur au lieu de planter. C’est mieux, non ?
-- Les contributeurs verront désormais la bonne pop-up lorsqu’ils soumettront leurs publications à examen. Ouf !
-- Nous avons résolu un problème qui faisait que des utilisateurs pouvaient voir le menu d’extension de leur site sans être administrateurs. Loin des yeux, loin du cœur…
-- Dans l’éditeur de blocs, l’application ne plante plus lorsque vous imbriquez trop de blocs les uns dans les autres, puis dans les autres… vous avez compris l’idée. Et toc, prends ça Inception.

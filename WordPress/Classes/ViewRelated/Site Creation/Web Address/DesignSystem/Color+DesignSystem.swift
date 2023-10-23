@@ -9,6 +9,9 @@ public extension Color {
             public static let secondary = Color(DesignSystemColorNames.Foreground.secondary)
             public static let tertiary = Color(DesignSystemColorNames.Foreground.tertiary)
             public static let quaternary = Color(DesignSystemColorNames.Foreground.quaternary)
+            public static let success = Color(DesignSystemColorNames.Foreground.success)
+            public static let warning = Color(DesignSystemColorNames.Foreground.warning)
+            public static let error = Color(DesignSystemColorNames.Foreground.error)
         }
 
         public enum Background {
@@ -45,6 +48,9 @@ internal enum DesignSystemColorNames {
         internal static let secondary = "foregroundSecondary"
         internal static let tertiary = "foregroundTertiary"
         internal static let quaternary = "foregroundQuaternary"
+        internal static let success = "success"
+        internal static let warning = "warning"
+        internal static let error = "error"
     }
 
     internal enum Background {

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-02 19:57:34+0000 */
+/* Translation-Revision-Date: 2023-10-18 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Einstellungen ändern";
 
-/* Change site icon button */
-"Change Site Icon" = "Website-Icon ändern";
-
 /* Change Username title. */
 "Change Username" = "Benutzernamen ändern";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Startseite auswählen";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Bild von meinem Gerät auswählen";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Seiten auswählen";
@@ -6713,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Dienst";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Beitragsbild festlegen";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Übergeordnete festlegen";
@@ -9891,6 +9882,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Super, deine Website ist live!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Handlung erforderlich";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Aktiv";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Einrichtung abschließen";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Fehler";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Abgelaufen";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Läuft bald ab";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Fehlgeschlagen";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "In Bearbeitung";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Verlängern";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "E-Mail-Adresse verifizieren";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Wird geprüft";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Beste Alternative";
 
@@ -9899,6 +9923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Kostenlos";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Bei kostenpflichtigen Jahrestarifen im ersten Jahr kostenlos";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Empfohlen";
@@ -10767,6 +10794,33 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mehr";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Zeigt Beiträge von der Website an";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Kommentar";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Markiert diesen Beitrag mit einem „Like“.";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Entfernt das „Like“ für diesen Beitrag.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Speichert diesen Beitrag für später.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Beitrag speichern";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Hebt die Speicherung dieses Beitrags auf.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Gespeicherter Beitrag";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Suche";
 
@@ -10780,11 +10834,42 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Kommentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Öffnet die Kommentare für den Beitrag.";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Markiert den Beitrag mit einem „Like“.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Öffnet ein Menü mit weiteren Aktionen.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Mehr";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Rebloggen";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Rebloggt den Beitrag.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Öffnet die Websitedetails des Beitrags.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Diesen Benutzer blockieren";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Gespeicherten Beitrag entfernen";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Diesen Benutzer melden";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Speichern";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ Beiträge • %2$@ Follower";
@@ -10896,6 +10981,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "DeineWebsite.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domains";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Domain auswählen";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Dokument, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Bild, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Erstellungsdatum unbekannt";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Wähle Medien aus.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Medien";

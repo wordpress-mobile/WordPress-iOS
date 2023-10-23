@@ -9,15 +9,13 @@ struct LockScreenSingleStatView: View {
     var body: some View {
         if family == .accessoryRectangular {
             ZStack {
-                AccessoryWidgetBackground().cornerRadius(8)
                 VStack(alignment: .leading) {
+                    Spacer()
                     LockScreenSiteTitleView(title: viewModel.siteName)
-                    Spacer(minLength: 0)
+                    Spacer().frame(height: 4)
                     LockScreenFieldView(title: viewModel.title, value: viewModel.value.abbreviatedString())
+                    Spacer()
                 }
-                .padding(
-                    EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-                )
             }
             .accessibilityElement(children: .combine)
         } else {

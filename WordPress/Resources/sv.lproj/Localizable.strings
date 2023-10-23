@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ändra inställningar";
 
-/* Change site icon button */
-"Change Site Icon" = "Byt webbplatsikon";
-
 /* Change Username title. */
 "Change Username" = "Ändra användarnamn";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Välj startsida";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Välj bild från min enhet";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Välj sidor";
@@ -6713,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Tjänst";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Ange utvald bild";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Ange överordnad";
@@ -9891,6 +9882,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Grattis, din webbplats är live!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Åtgärd krävs";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Aktiv";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Slutför konfiguration";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Fel";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Har löpt ut";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Löper ut snart";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Misslyckades";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "Pågår";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Förnya";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Verifiera e-post";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Verifierar";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Bästa alternativ";
 
@@ -9899,6 +9923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratis";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratis första året med årliga betalpaket";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Rekommenderad";
@@ -10767,6 +10794,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mer";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Visar inlägg från webbplatsen";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Kommentar";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Gilla";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Gillar detta inlägg.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Gillat";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Tar bort gillamarkeringen för detta inlägg.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Sparar detta inlägg till senare.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Spara inlägg";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Gör inlägget osparat.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Sparat inlägg";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Sök";
 
@@ -10780,11 +10844,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Kommentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Öppnar kommentarerna för inlägget.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Gilla";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Gillar inlägget.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Gillat";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Öppnar en meny med fler åtgärder.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Mer";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblogga";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Rebloggar inlägget.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Öppnar webbplatsinformationen för inlägget.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blockera denna användare";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Ta bort sparat inlägg";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Rapportera denna användare";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Spara";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ inlägg • %2$@ följare";
@@ -10896,6 +10997,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domäner";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Välj domän";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Ljudfil, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Dokument, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Bild, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Okänt skapandedatum";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Välj media.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";

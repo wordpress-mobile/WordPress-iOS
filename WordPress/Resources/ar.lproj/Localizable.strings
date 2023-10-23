@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 13:54:07+0000 */
+/* Translation-Revision-Date: 2023-10-18 14:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "تغيير الإعدادات";
 
-/* Change site icon button */
-"Change Site Icon" = "تغيير رمز الموقع";
-
 /* Change Username title. */
 "Change Username" = "تغيير اسم المستخدم";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Choose Homepage";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "اختيار صور من جهازي";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "اختيار الصفحات";
@@ -6713,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "الخدمة";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "تعيين صورة بارزة";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "تعيين الأصل";
@@ -9882,6 +9873,21 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "أحسنت، أصبح موقعك نابضًا بالحياة!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "الإجراء مطلوب";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "إعداد كامل";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "قيد التقدم";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "التحقق من البريد الإلكتروني";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "التحقق";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "أفضل بديل";
 
@@ -9890,6 +9896,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "مجانًا";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "مجاني للعام الأول مع الخطط السنوية المدفوعة";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "موصى به";
@@ -10749,6 +10758,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "مزيد";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "لعرض التدوينات الواردة من الموقع";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "للإعجاب بهذه التدوينة.";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "لإلغاء الإعجاب هذه التدوينة.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "لحفظ هذه التدوينة لوقت لاحق.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "حفظ التدوينة";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "لإلغاء حفظ هذه التدوينة.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "تدوينة محفوظة";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "البحث";
 
@@ -10762,8 +10794,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "لفتح التعليقات الخاصة بالتدوينة.";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "للإعجاب بالتدوينة.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "لفتح قائمة تتضمن مزيدًا من الإجراءات.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "مزيد";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "إعادة تدوين التدوينة";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "لفتح تفاصيل التدوينة في الموقع.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "حظر هذا المستخدم";
+
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "إزالة التدوينات المحفوظة";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
@@ -10878,6 +10932,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "النطاقات";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "الصورة، %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "الفيديو، %@";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "حدِّد الوسائط.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "الوسائط";
