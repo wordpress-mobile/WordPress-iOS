@@ -17,7 +17,7 @@ struct DomainListCard: View {
 
     var body: some View {
         textContainerVStack
-        .padding()
+            .padding(Length.Padding.double)
     }
 
     private var textContainerVStack: some View {
@@ -26,7 +26,6 @@ struct DomainListCard: View {
             domainHeadline
                 .padding(.bottom, Length.Padding.single)
             statusHStack
-                .padding(.bottom, Length.Padding.double)
         }
     }
 

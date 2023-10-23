@@ -93,6 +93,9 @@ final class MyDomainsViewController: UIViewController {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        self.tableView.contentInset.top = Layout.interRowSpacing
+        self.tableView.sectionHeaderHeight = Layout.interRowSpacing / 2
+        self.tableView.sectionFooterHeight = tableView.sectionHeaderHeight
         self.tableView.register(MyDomainsTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
@@ -128,6 +131,10 @@ final class MyDomainsViewController: UIViewController {
     }
 
     // MARK: - Types
+
+    private enum Layout {
+        static let interRowSpacing = Length.Padding.double
+    }
 
     private enum CellIdentifiers {
         static let myDomain = String(describing: MyDomainsTableViewCell.self)

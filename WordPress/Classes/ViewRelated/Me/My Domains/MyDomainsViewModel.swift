@@ -41,7 +41,7 @@ class MyDomainsViewModel<T: MyDomainViewModel> {
         service.fetchAllDomains(resolveStatus: true, noWPCOM: true) { result in
             switch result {
             case .success(let domains):
-                self.domains = domains
+                self.domains = .init(repeating: domains[0], count: 10)
             case .failure:
                 break
             }
