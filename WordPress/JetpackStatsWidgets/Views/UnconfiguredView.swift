@@ -3,11 +3,12 @@ import SwiftUI
 struct UnconfiguredView: View {
 
     var timelineEntry: StatsWidgetEntry
+    @Environment(\.showsWidgetContainerBackground) var showsWidgetContainerBackground: Bool
 
     var body: some View {
         Text(unconfiguredMessage)
             .font(.footnote)
-            .foregroundColor(Color(.secondaryLabel))
+            .foregroundColor(showsWidgetContainerBackground ? Color(.secondaryLabel) : Color(.label))
             .multilineTextAlignment(.center)
             .padding()
             .removableWidgetBackground()
