@@ -4,8 +4,8 @@ struct LockScreenSiteTitleView: View {
     let title: String
 
     var body: some View {
-        HStack(spacing: 2) {
-            Image(.iconJetpack)
+        HStack(spacing: 4) {
+            Image("icon-jetpack")
                 .resizable()
                 .frame(width: 11, height: 11)
             Text(title)
