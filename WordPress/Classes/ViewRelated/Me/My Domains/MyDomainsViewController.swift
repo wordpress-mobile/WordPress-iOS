@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class MyDomainsViewController: UIViewController {
     enum Action: String {
@@ -30,11 +31,28 @@ final class MyDomainsViewController: UIViewController {
         }
     }
 
-    // MARK: - Init
+    // MARK: - Dependencies
+
+    private let viewModel: ViewModel
 
     // MARK: - Views
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+
+    // MARK: - Observation
+
+    private var cancellable = Set<AnyCancellable>()
+
+    // MARK: - Init
+
+    init(viewModel: ViewModel = .init()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View Lifecycle
 
@@ -59,7 +77,8 @@ final class MyDomainsViewController: UIViewController {
         navigationItem.rightBarButtonItem?.menu = menu
 
         self.setupSubviews()
-
+        self.observeState()
+        self.viewModel.loadData()
     }
 
     private func setupSubviews() {
@@ -72,8 +91,25 @@ final class MyDomainsViewController: UIViewController {
 
         // Setup tableView
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.tableView.dataSource = self
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
+    }
+
+    private func observeState() {
+        self.viewModel.$state.sink { [weak self] state in
+            guard let self else {
+                return
+            }
+            switch state {
+            case .normal, .loading:
+                self.tableView.reloadData()
+            case .error:
+                break
+            case .empty:
+                break
+            }
+        }.store(in: &cancellable)
     }
 
     private func menuAction(withTitle title: String, handler: UIActionHandler) -> UIAction {
@@ -88,6 +124,10 @@ final class MyDomainsViewController: UIViewController {
             // Perform action
         })
     }
+
+    // MARK: - Types
+
+    typealias ViewModel = MyDomainsViewModel<DomainListCard.DomainInfo>
 }
 
 // MARK: - UITableViewDataSource
@@ -95,11 +135,11 @@ final class MyDomainsViewController: UIViewController {
 extension MyDomainsViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfDomains
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -1,7 +1,12 @@
 import Foundation
 import Combine
 
-class MyDomainsViewModel {
+protocol MyDomainViewModel {
+
+    init(domain: DomainsService.AllDomainsListItem)
+}
+
+class MyDomainsViewModel<T: MyDomainViewModel> {
 
     // MARK: - Dependencies
 
@@ -10,7 +15,9 @@ class MyDomainsViewModel {
     // MARK: - Properties
 
     @Published
-    private var state: State = .empty
+    private(set) var state: State = .empty
+
+    private var domains = [Domain]()
 
     // MARK: - Init
 
@@ -24,24 +31,44 @@ class MyDomainsViewModel {
         try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
     }
 
-    // MARK: - Load Data
+    // MARK: - Load Domains
 
     func loadData() {
         guard let service = domainsService else {
             return
         }
+        self.state = .loading
         service.fetchAllDomains(resolveStatus: true, noWPCOM: true) { result in
-
+            switch result {
+            case .success(let domains):
+                self.domains = domains
+            case .failure:
+                break
+            }
+            self.state = .normal
         }
+    }
+
+    // MARK: - Accessing Domains
+
+    var numberOfDomains: Int {
+        return domains.count
+    }
+
+    func domain(atIndex index: Int) -> T {
+        return .init(domain: domains[index])
     }
 
     // MARK: - Types
 
     enum State {
+        case normal
         case loading
         case empty
         case error(MyDomainsErrorViewModel)
     }
+
+    private typealias Domain = DomainsService.AllDomainsListItem
 
 }
 

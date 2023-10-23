@@ -257,3 +257,16 @@ struct DomainListCard_Previews: PreviewProvider {
         .environment(\.colorScheme, .light)
     }
 }
+
+extension DomainListCard.DomainInfo: MyDomainViewModel {
+
+    init(domain: DomainsService.AllDomainsListItem) {
+        self.init(
+            domainName: "google.com",
+            domainHeadline: "Google",
+            state: .active,
+            description: "Hello",
+            date: "August 25th 2023"
+        )
+    }
+}
