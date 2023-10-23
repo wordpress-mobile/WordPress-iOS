@@ -43,7 +43,7 @@ import WidgetKit
             case .homeToday:
                 return .homeTodayWidget
             case .homeAllTime:
-                return .homeThisWeekWidget
+                return .homeAllTimeWidget
             case .homeThisWeek:
                 return .homeThisWeekWidget
             case .lockScreenTodayViews:
