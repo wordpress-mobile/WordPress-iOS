@@ -19,9 +19,8 @@ class TemplatePageTableViewCell: UITableViewCell {
 
     private func applyStyles() {
         backgroundColor = .neutral(.shade5)
-        separatorInset = .zero
+        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
-
 }
 
 private struct TemplatePageView: View {
@@ -30,7 +29,7 @@ private struct TemplatePageView: View {
             text
             icon
         }
-        .padding(EdgeInsets(top: 4.0, leading: 16.0, bottom: 8.0, trailing: 16.0))
+        .padding(EdgeInsets(top: 12.0, leading: 16.0, bottom: 12.0, trailing: 16.0))
         .background(Color(UIColor.listForeground))
     }
 

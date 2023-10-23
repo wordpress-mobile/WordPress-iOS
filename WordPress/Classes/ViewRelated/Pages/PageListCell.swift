@@ -59,6 +59,8 @@ final class PageListCell: UITableViewCell, Reusable {
     // MARK: - Setup
 
     private func setupViews() {
+        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+
         setupLabels()
         setupFeaturedImageView()
         setupEllipsisButton()
