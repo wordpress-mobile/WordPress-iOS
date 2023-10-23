@@ -43,7 +43,8 @@ struct PostMenuHelper {
         let post = statusViewModel.post
 
         return buttons.map { button in
-            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes, handler: { _ in
+            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes, handler: { [weak delegate] _ in
+                guard let delegate else { return }
                 button.performAction(for: post, view: presentingView, delegate: delegate)
             })
         }
