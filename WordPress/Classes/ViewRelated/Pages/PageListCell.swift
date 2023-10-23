@@ -12,6 +12,7 @@ final class PageListCell: UITableViewCell, Reusable {
     private let featuredImageView = CachedAnimatedImageView()
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
+    private var indentionIconView = UIImageView()
     private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
@@ -38,7 +39,7 @@ final class PageListCell: UITableViewCell, Reusable {
         imageLoader.prepareForReuse()
     }
 
-    func configure(with viewModel: PageListItemViewModel, indentation: Int) {
+    func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false) {
         viewModel.$title.sink { [titleLabel] in
             titleLabel.attributedText = $0
         }.store(in: &cancellables)
@@ -56,9 +57,15 @@ final class PageListCell: UITableViewCell, Reusable {
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
         }
 
-        let leading = 16 + CGFloat(indentation) * 16
-        separatorInset = UIEdgeInsets(top: 0, left: leading, bottom: 0, right: 0)
-        contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: leading, bottom: 12, trailing: 16)
+        separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
+        contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: 16 + CGFloat(max(0, indentation - 1)) * 32,
+            bottom: 12,
+            trailing: 16
+        )
+        indentionIconView.isHidden = indentation == 0
+        indentionIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
     }
 
     // MARK: - Setup
@@ -67,6 +74,10 @@ final class PageListCell: UITableViewCell, Reusable {
         setupLabels()
         setupFeaturedImageView()
         setupEllipsisButton()
+
+        indentionIconView.image = UIImage(named: "subdirectory")
+        indentionIconView.setContentHuggingPriority(.required, for: .horizontal)
+        indentionIconView.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let badgesStackView = UIStackView(arrangedSubviews: [
             badgeIconView, badgesLabel, UIView()
@@ -81,7 +92,7 @@ final class PageListCell: UITableViewCell, Reusable {
         labelsStackView.axis = .vertical
 
         contentStackView.addArrangedSubviews([
-            labelsStackView, featuredImageView, ellipsisButton
+            indentionIconView, labelsStackView, featuredImageView, ellipsisButton
         ])
         contentStackView.spacing = 8
         contentStackView.alignment = .center

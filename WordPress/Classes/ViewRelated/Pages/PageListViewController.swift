@@ -375,12 +375,23 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         if let cell = cell as? PageListCell {
-            let filterType = filterSettings.currentPostListFilter().filterType
-            let indentation = filterType == .published ? page.hierarchyIndex : 0
-            cell.configure(with: PageListItemViewModel(page: page), indentation: indentation)
+            let indentation = getIndentationLevel(at: indexPath)
+            let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
+            cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory)
         }
 
         return cell
+    }
+
+    private func getIndentationLevel(at indexPath: IndexPath) -> Int {
+        guard filterSettings.currentPostListFilter().filterType == .published else {
+            return 0
+        }
+        let lowerBound = _tableViewHandler.showEditorHomepage ? 1 : 0
+        guard indexPath.row > lowerBound else {
+            return 0
+        }
+        return pageAtIndexPath(indexPath).hierarchyIndex
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
