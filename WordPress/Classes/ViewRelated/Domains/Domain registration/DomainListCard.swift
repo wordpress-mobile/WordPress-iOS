@@ -16,18 +16,7 @@ struct DomainListCard: View {
     }
 
     var body: some View {
-        VStack {
-            HStack(spacing: Length.Padding.double) {
-                textContainerVStack
-                chevronIcon
-            }
-
-            if let description = domainInfo.description {
-                Divider()
-                    .padding(.bottom, Length.Padding.double)
-                descriptionText(description)
-            }
-        }
+        textContainerVStack
         .padding()
     }
 
@@ -85,11 +74,6 @@ struct DomainListCard: View {
         Text(description)
             .font(.subheadline)
             .foregroundColor(.secondary)
-    }
-
-    private var chevronIcon: some View {
-        Image(systemName: "chevron.right")
-            .foregroundColor(.DS.Foreground.secondary)
     }
 }
 
@@ -265,7 +249,7 @@ extension DomainListCard.DomainInfo: MyDomainViewModel {
             domainName: "google.com",
             domainHeadline: "Google",
             state: .active,
-            description: "Hello",
+            description: nil,
             date: "August 25th 2023"
         )
     }

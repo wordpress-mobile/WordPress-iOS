@@ -92,6 +92,8 @@ final class MyDomainsViewController: UIViewController {
         // Setup tableView
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.register(MyDomainsTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }
@@ -127,12 +129,16 @@ final class MyDomainsViewController: UIViewController {
 
     // MARK: - Types
 
+    private enum CellIdentifiers {
+        static let myDomain = String(describing: MyDomainsTableViewCell.self)
+    }
+
     typealias ViewModel = MyDomainsViewModel<DomainListCard.DomainInfo>
 }
 
 // MARK: - UITableViewDataSource
 
-extension MyDomainsViewController: UITableViewDataSource {
+extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfDomains
@@ -143,7 +149,15 @@ extension MyDomainsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        fatalError()
+        let domain = viewModel.domain(atIndex: indexPath.section)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! MyDomainsTableViewCell
+        cell.accessoryType = .disclosureIndicator
+        cell.update(with: domain, parent: self)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
