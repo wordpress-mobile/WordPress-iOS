@@ -3,6 +3,7 @@
 
 * [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 * [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
+* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
 
 23.5
 -----
