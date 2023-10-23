@@ -126,17 +126,17 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
     }
 
     private enum Strings {
-        static let cancelAutoUpload = NSLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
-        static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
-        static let duplicate = NSLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
-        static let publish = NSLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
-        static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
-        static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
-        static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
-        static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
-        static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
-        static let share = NSLocalizedString("Share", comment: "Share the post.")
+        static let cancelAutoUpload = NSLocalizedString("posts.cancelUpload.actionTitle", value: "Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
+        static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
+        static let duplicate = NSLocalizedString("posts.duplicate.actionTitle", value: "Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
+        static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish Now", comment: "Label for an option that moves a publishes a post immediately")
+        static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to Draft", comment: "Label for an option that moves a post to the draft folder")
+        static let delete = NSLocalizedString("posts.delete.actionTitle", value: "Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
+        static let trash = NSLocalizedString("posts.trash.actionTitle", value: "Move to Trash", comment: "Label for a option that moves a post to the trash folder")
+        static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
+        static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
+        static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
-        static let copyLink = NSLocalizedString("Copy Link", comment: "Copy the post url and paste anywhere in phone")
+        static let copyLink = NSLocalizedString("posts.copyLink.actionTitle", value: "Copy Link", comment: "Copy the post url and paste anywhere in phone")
     }
 }
