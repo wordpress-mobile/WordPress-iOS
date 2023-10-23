@@ -147,8 +147,8 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-#  pod 'WordPressAuthenticator', '~> 7.2'
-   pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/20985-login-with-site-address-is-blocked-after-failing-the-first-attempt'
+  pod 'WordPressAuthenticator', '~> 7.2.1-beta.1'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
