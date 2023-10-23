@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-05 08:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-19 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1418,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "설정 변경";
 
-/* Change site icon button */
-"Change Site Icon" = "사이트 아이콘 변경";
-
 /* Change Username title. */
 "Change Username" = "사용자 이름 변경";
 
@@ -1516,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "홈페이지 선택";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "내 기기에서 이미지 선택";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "페이지 선택";
@@ -6713,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "서비스";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "특성 이미지 설정";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "상위 항목 설정";
@@ -9888,6 +9879,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "사이트가 활성화되었습니다.";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "조치 필요";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "활성";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "설정 완료";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "오류";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "만료됨";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "곧 만료됨";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "실패";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "진행 중";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "갱신";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "이메일 확인";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "확인 중";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "최선의 대안";
 
@@ -9896,6 +9920,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "무료";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "연간 유료 요금제에서는 첫해 무료";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "권장";
@@ -10764,6 +10791,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "더 보기";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "사이트의 글 미리보기";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "댓글";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "좋아요";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "이 글을 좋아합니다.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "좋아함";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "이 글의 좋아요를 취소합니다.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "나중에 사용할 수 있게 이 글을 저장";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "글 저장";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "이 글의 저장을 취소합니다.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "글이 저장됨";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "검색";
 
@@ -10777,11 +10841,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "댓글";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "글의 댓글이 열립니다.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "좋아요";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "게시글을 좋아합니다.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "좋아함";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "추가 작업이 포함된 메뉴가 열립니다.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "더 보기";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "리블로그";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "글을 리블로그합니다.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "글의 사이트 세부 정보가 열립니다.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "이 사용자 차단";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "저장된 글 제거";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "이 사용자 신고";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "저장";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@개 글 • %2$@명 팔로워";
@@ -10893,6 +10994,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "도메인";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "도메인 선택";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "오디오, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "문서, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "이미지, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "비디오, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "알 수 없는 생성일";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "미디어를 선택합니다.";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "미디어";

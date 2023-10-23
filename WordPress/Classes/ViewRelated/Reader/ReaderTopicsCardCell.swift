@@ -61,7 +61,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         contentView.backgroundColor = usesNewDesign ? .systemBackground : .listForeground
     }
 
-
     /// Configures the cell and the collection view for the new design.
     private func configureForNewDesign() {
         // set up custom collection view flow layout
@@ -220,6 +219,7 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
         $0.adjustsFontForContentSizeCategory = true
         $0.font = WPStyleGuide.fontForTextStyle(.footnote)
         $0.textColor = .label
+        $0.numberOfLines = 1
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return $0
     }(UILabel())
@@ -230,19 +230,43 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
         contentView.addSubview(titleLabel)
         contentView.pinSubviewToAllEdges(titleLabel, insets: .init(top: 8.0, left: 16.0, bottom: 8.0, right: 16.0))
 
-        contentView.backgroundColor = .clear
         contentView.layer.cornerRadius = 5.0
         contentView.layer.borderWidth = 1.0
-        contentView.layer.borderColor = UIColor.separator.cgColor
+        updateColors()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if let previousTraitCollection,
+           traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateColors()
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    private func updateColors() {
+        contentView.backgroundColor = .clear
+        contentView.layer.borderColor = UIColor(light: .separator, dark: Constants.darkModeSeparatorColor).cgColor
+    }
+
+    private struct Constants {
+        // This is a customized `.separator` color with the alpha updated to 1.0.
+        // With the default color on top of the gray background, the border appears almost invisible on certain devices.
+        // More context: p1697541472738849-slack-C05N140C8H5
+        static let darkModeSeparatorColor = UIColor(red: 0.33, green: 0.33, blue: 0.35, alpha: 1.0)
+    }
 }
 
 // MARK: - New Collection View Layout
 
+/// This tries to achieve a horizontal `UIStackView` layout that can automatically wrap into a new line.
+///
+/// Note that this depends on the collection view cells having the same height.
+/// Different cell heights are not supported yet by this layout.
 class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
 
     // MARK: Properties
@@ -250,6 +274,11 @@ class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
     var interitemSpacing: CGFloat = .zero
 
     var lineSpacing: CGFloat = .zero
+
+    private var isRightToLeft: Bool {
+        let layoutDirection = collectionView?.traitCollection.layoutDirection ?? .leftToRight
+        return layoutDirection == .rightToLeft
+    }
 
     weak var delegate: UICollectionViewDelegateFlowLayout?
 
@@ -303,33 +332,44 @@ class ReaderTagsCollectionViewLayout: UICollectionViewLayout {
         let insets = collectionView.contentInset
 
         var rowCount: CGFloat = 0
-        var currentLineWidth: CGFloat = .zero
-        var size: CGSize = .zero
+        var itemHeight: CGFloat = 0.0
+        var availableLineWidth = maxContentWidth
 
-        for row in 0..<numberOfItems {
-            let indexPath = IndexPath(row: row, section: .zero)
-            size = delegate?.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? .zero
+        for index in 0..<numberOfItems {
+            let indexPath = IndexPath(row: index, section: .zero)
+            let size = delegate?.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? .zero
             var frame = CGRect(origin: .zero, size: size)
 
-            // if it exceeds maximum width, then add a new line.
-            if (currentLineWidth + size.width) > maxContentWidth {
-                rowCount += 1
-                currentLineWidth = 0.0
+            if itemHeight == 0 {
+                itemHeight = size.height
             }
 
-            frame.origin.x = insets.left + currentLineWidth
-            frame.origin.y = insets.top + (rowCount * (size.height + lineSpacing))
+            // check if the size will exceed available line width
+            if interitemSpacing + size.width > availableLineWidth {
+                rowCount += 1
+                availableLineWidth = maxContentWidth
+            }
 
+            // at this point, we know that the item's width + line spacing fits into the current line.
+            frame.origin.y = insets.top + rowCount * (size.height + lineSpacing)
+            frame.origin.x = {
+                if isRightToLeft {
+                    return availableLineWidth - size.width - insets.right
+                }
+                return insets.left + maxContentWidth - availableLineWidth
+            }()
+
+            // add a layout attribute with the current item's frame.
             let attribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attribute.frame = frame
             itemAttributes.append(attribute)
 
-            // update current width buffer for the next item.
-            currentLineWidth += (size.width + interitemSpacing)
+            // update the available line width for the next item.
+            availableLineWidth -= (interitemSpacing + size.width)
         }
 
         // update total content height.
-        contentHeight = insets.top + ((rowCount + 1) * size.height) + (rowCount * lineSpacing) + insets.bottom
+        contentHeight = insets.top + ((rowCount + 1) * itemHeight) + (rowCount * lineSpacing) + insets.bottom
     }
 
 }

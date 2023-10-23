@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-05 08:23:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1376,9 +1376,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Změnit nastavení";
 
-/* Change site icon button */
-"Change Site Icon" = "Změnit ikonu webu";
-
 /* Change Username title. */
 "Change Username" = "Změnit uživatelské jméno";
 
@@ -1474,9 +1471,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Zvolit domovskou stránku";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Vyberte obrázek z mého zařízení";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Vyberte stránky";
@@ -6607,9 +6601,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Náhledový obrázek";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
