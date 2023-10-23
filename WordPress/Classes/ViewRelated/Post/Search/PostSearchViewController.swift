@@ -71,7 +71,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
         tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
         tableView.register(PostListCell.self, forCellReuseIdentifier: Constants.postCellID)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.pageCellID)
+        tableView.register(PageListCell.self, forCellReuseIdentifier: Constants.pageCellID)
 
         tableView.dataSource = dataSource
         tableView.delegate = self
@@ -120,13 +120,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 cell.configure(with: post)
                 return cell
             case .page(let page):
-                // TODO: Update the cell design
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath)
-                var configuration = cell.defaultContentConfiguration()
-                configuration.text = page.titleForDisplay()
-                configuration.secondaryText = page.latest().dateStringForDisplay()
-                configuration.secondaryTextProperties.color = .secondaryLabel
-                cell.contentConfiguration = configuration
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
+                cell.configure(with: page)
                 return cell
             }
         }
