@@ -21,6 +21,7 @@ struct LockScreenSingleStatView: View {
             .accessibilityElement(children: .combine)
         } else {
             Text("Not implemented for widget family \(family.debugDescription)")
+                .removableWidgetBackground()
         }
     }
 }

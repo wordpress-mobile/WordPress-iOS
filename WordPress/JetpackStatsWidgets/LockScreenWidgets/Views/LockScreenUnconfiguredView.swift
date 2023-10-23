@@ -17,6 +17,7 @@ struct LockScreenUnconfiguredView: View {
             .removableWidgetBackground()
         } else {
             Text("Not implemented for widget family \(family.debugDescription)")
+                .removableWidgetBackground()
         }
     }
 }
