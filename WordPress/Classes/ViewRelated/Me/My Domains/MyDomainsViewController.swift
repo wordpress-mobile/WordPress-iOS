@@ -30,6 +30,8 @@ final class MyDomainsViewController: UIViewController {
         }
     }
 
+    // MARK: - Init
+
     // MARK: - Views
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -85,6 +87,23 @@ final class MyDomainsViewController: UIViewController {
             handler: { (action) in
             // Perform action
         })
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension MyDomainsViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fatalError()
     }
 }
 

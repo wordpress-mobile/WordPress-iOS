@@ -3549,6 +3549,7 @@
 		F4026B1D2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */; };
 		F4026B1E2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */; };
 		F4141EE42AE7152F000D2AAE /* MyDomainsViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */; };
+		F4141EE62AE71AF0000D2AAE /* MyDomainsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */; };
 		F41BDD73290BBDCA00B7F2B0 /* MigrationActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */; };
 		F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */; };
 		F41BDD7B29114E2400B7F2B0 /* MigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */; };
@@ -8938,6 +8939,7 @@
 		F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainRegistrationCardCell.swift; sourceTree = "<group>"; };
 		F40CC35C2954991C00D75A95 /* WordPress 146.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 146.xcdatamodel"; sourceTree = "<group>"; };
 		F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyDomainsViewController+Strings.swift"; sourceTree = "<group>"; };
+		F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsViewModel.swift; sourceTree = "<group>"; };
 		F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsView.swift; sourceTree = "<group>"; };
 		F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFlowCoordinator.swift; sourceTree = "<group>"; };
 		F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStep.swift; sourceTree = "<group>"; };
@@ -10124,6 +10126,7 @@
 			children = (
 				08D61F202AD0635100BF3D00 /* MyDomainsViewController.swift */,
 				F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */,
+				F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */,
 			);
 			path = "My Domains";
 			sourceTree = "<group>";
@@ -25591,6 +25594,7 @@
 				FABB26152602FC2C00C8785C /* CocoaLumberjack.swift in Sources */,
 				3FA62FD426FE2E4B0020793A /* ShapeWithTextView.swift in Sources */,
 				FABB26162602FC2C00C8785C /* WPUploadStatusButton.m in Sources */,
+				F4141EE62AE71AF0000D2AAE /* MyDomainsViewModel.swift in Sources */,
 				FABB26172602FC2C00C8785C /* MediaExternalExporter.swift in Sources */,
 				FABB26182602FC2C00C8785C /* RegisterDomainDetailsViewModel+SectionDefinitions.swift in Sources */,
 				FABB26192602FC2C00C8785C /* ActionRow.swift in Sources */,
