@@ -121,7 +121,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 return cell
             case .page(let page):
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
-                cell.configure(with: page)
+                cell.configure(with: page, indentation: 0)
                 return cell
             }
         }

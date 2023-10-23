@@ -374,19 +374,18 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let identifier = cellIdentifierForPage(page)
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
-        configureCell(cell, at: indexPath)
         if let cell = cell as? PageListCell {
-            cell.configure(with: PageListItemViewModel(page: page))
+            let filterType = filterSettings.currentPostListFilter().filterType
+            let indentation = filterType == .published ? page.hierarchyIndex : 0
+            cell.configure(with: PageListItemViewModel(page: page), indentation: indentation)
         }
+
         return cell
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        // TODO: Implement indenting for child pages (#21818)
         // TODO: Implement cntext menus (#21717)
 //        if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
-//            cell.indentationWidth = Constant.Size.pageListTableViewCellLeading
-//            cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
 //            cell.onAction = { [weak self] cell, button, page in
 //                self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
 //            }
