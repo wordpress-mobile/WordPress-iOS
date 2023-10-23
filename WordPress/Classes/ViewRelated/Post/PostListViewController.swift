@@ -494,6 +494,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
 
+    func comments(_ post: AbstractPost) {
+        // TODO: track event
+        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
+    }
+
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {

@@ -19,8 +19,8 @@ class PostCardStatusViewModel: NSObject {
         case trash
         case cancelAutoUpload
         case share
-        case copyLink
         case blaze
+        case comments
     }
 
     let post: Post
@@ -174,10 +174,6 @@ class PostCardStatusViewModel: NSObject {
             buttons.append(.share)
         }
 
-        if post.status != .trash {
-            buttons.append(.copyLink)
-        }
-
         if autoUploadInteractor.canRetryUpload(of: post) ||
             autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
             post.isFailed && isInternetReachable {
@@ -210,11 +206,9 @@ class PostCardStatusViewModel: NSObject {
         var buttons = [Button]()
 
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(), post.status == .publish && post.hasRemote() {
-            buttons.append(.stats)
+            buttons.append(contentsOf: [.stats, .comments])
         }
-
-        // TODO: Add reader and comments
-
+        
         return ButtonSection(buttons: buttons)
     }
 
