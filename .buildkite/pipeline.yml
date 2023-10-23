@@ -116,7 +116,7 @@ steps:
               image: "public.ecr.aws/docker/library/ruby:3.2.2"
               propagate-environment: true
               environment:
-                - "GITHUB_TOKEN"
+                - "DANGER_GITHUB_API_TOKEN"
         if: "build.pull_request.id != null"
         agents:
           queue: "default"

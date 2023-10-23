@@ -1,7 +1,5 @@
 #!/bin/bash -eu
 
-export DANGER_GITHUB_API_TOKEN=${GITHUB_TOKEN}
-
 echo "--- :rubygems: Setting up Gems"
 bundle install
 
