@@ -12,13 +12,13 @@ class AbstractPostListViewController: UIViewController,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
 
-    fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
-    fileprivate static let HTTPErrorCodeForbidden = Int(403)
-    fileprivate static let postsFetchRequestBatchSize = Int(10)
-    fileprivate static let pagesNumberOfLoadedElement = Int(100)
-    fileprivate static let postsLoadMoreThreshold = Int(4)
+    private static let postsControllerRefreshInterval = TimeInterval(300)
+    private static let httpErrorCodeForbidden = 403
+    private static let postsFetchRequestBatchSize = 10
+    private static let pagesNumberOfLoadedElement = 100
+    private static let postsLoadMoreThreshold = 4
 
-    fileprivate static let defaultHeightForFooterView = CGFloat(44.0)
+    private static let defaultHeightForFooterView = CGFloat(44.0)
 
     private var fetchBatchSize: Int {
         return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
@@ -32,14 +32,14 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
-    @objc var blog: Blog!
+    var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
     /// to the subclass to define this property.
     ///
-    @objc var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
+    var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
     let tableViewController = UITableViewController(style: .grouped)
-    @objc var reloadTableViewBeforeAppearing = false
+    private var reloadTableViewBeforeAppearing = false
 
     @objc var tableView: UITableView {
         get {
@@ -51,37 +51,31 @@ class AbstractPostListViewController: UIViewController,
 
     let refreshControl = UIRefreshControl()
 
-    @objc lazy var tableViewHandler: WPTableViewHandler = {
+    lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
-
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
         tableViewHandler.updateRowAnimation = .none
-
         return tableViewHandler
     }()
 
-    @objc lazy var syncHelper: WPContentSyncHelper = {
+    lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
-
         syncHelper.delegate = self
-
         return syncHelper
     }()
 
-    @objc lazy var noResultsViewController: NoResultsViewController = {
+    lazy var noResultsViewController: NoResultsViewController = {
         let noResultsViewController = NoResultsViewController.controller()
         noResultsViewController.delegate = self
-
         return noResultsViewController
     }()
 
-    @objc lazy var filterSettings: PostListFilterSettings = {
+    lazy var filterSettings: PostListFilterSettings = {
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
     }()
 
-
-    @objc var postListFooterView: PostListFooterView!
+    var postListFooterView: PostListFooterView!
 
     let filterTabBar = FilterTabBar()
 
@@ -89,7 +83,7 @@ class AbstractPostListViewController: UIViewController,
 
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
-    @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
+    private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var emptyResults: Bool {
         return tableViewHandler.resultsController?.fetchedObjects?.count == 0
@@ -652,7 +646,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc func handleSyncFailure(_ error: NSError) {
         if error.domain == WPXMLRPCFaultErrorDomain
-            && error.code == type(of: self).HTTPErrorCodeForbidden {
+            && error.code == type(of: self).httpErrorCodeForbidden {
             promptForPassword()
             return
         }
@@ -767,7 +761,7 @@ class AbstractPostListViewController: UIViewController,
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as NSError?, error.code == type(of: strongSelf).httpErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
@@ -843,7 +837,7 @@ class AbstractPostListViewController: UIViewController,
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as NSError?, error.code == type(of: strongSelf).httpErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
