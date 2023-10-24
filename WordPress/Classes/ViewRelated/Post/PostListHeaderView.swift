@@ -21,6 +21,11 @@ final class PostListHeaderView: UIView {
     private let authorLabel = UILabel()
     private let ellipsisButton = UIButton(type: .custom)
 
+    // MARK: - Properties
+
+    private var post: Post?
+    private var viewModel: PostListItemViewModel?
+
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -34,9 +39,19 @@ final class PostListHeaderView: UIView {
 
     // MARK: - Public
 
-    func configure(with viewModel: PostListItemViewModel) {
+    func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
+        if let delegate {
+            configureEllipsisButton(with: viewModel, delegate: delegate)
+        }
+
         authorLabel.text = viewModel.author
         dateLabel.text = viewModel.date
+    }
+
+    private func configureEllipsisButton(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate) {
+        let menuHelper = PostMenuHelper(statusViewModel: viewModel.statusViewModel)
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
     }
 
     // MARK: - Setup

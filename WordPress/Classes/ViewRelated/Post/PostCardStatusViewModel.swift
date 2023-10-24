@@ -4,13 +4,14 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
-    private static let maximumPrimaryButtons = 3
+
+    struct ButtonSection {
+        let buttons: [Button]
+    }
 
     enum Button {
-        case edit
         case retry
         case view
-        case more
         case publish
         case stats
         case duplicate
@@ -20,13 +21,6 @@ class PostCardStatusViewModel: NSObject {
         case share
         case copyLink
         case blaze
-    }
-
-    struct ButtonGroups: Equatable {
-        /// The main buttons shown in the Post List
-        let primary: [Button]
-        /// Shown under the _More_
-        let secondary: [Button]
     }
 
     let post: Post
@@ -145,96 +139,88 @@ class PostCardStatusViewModel: NSObject {
     }
 
     /// Returns what buttons are visible
-    ///
-    /// The order matters here. For the primary buttons, we do not currently support dynamic
-    /// buttons in the UI. Technically, we may end up with situations where there are no buttons
-    /// visible. But we've carefully considered the possible situations so this does not happen.
-    ///
-    /// The order of the Buttons are important here, especially for the secondary buttons which
-    /// dictate what buttons are shown in the action sheet after pressing _More_.
-    var buttonGroups: ButtonGroups {
-        let maxPrimaryButtons = PostCardStatusViewModel.maximumPrimaryButtons
+    var buttonSections: [ButtonSection] {
+        return [
+            createPrimarySection(),
+            createSecondarySection(),
+            createBlazeSection(),
+            createNavigationSection(),
+            createTrashSection()
+        ]
+    }
 
-        let allButtons: [Button] = {
-            var buttons = [Button]()
+    private func createPrimarySection() -> ButtonSection {
+        var buttons = [Button]()
 
-            buttons.append(.edit)
+        if !post.isFailed {
+            buttons.append(.view)
+        }
 
-            if !post.isFailed {
-                buttons.append(.view)
-            }
+        return ButtonSection(buttons: buttons)
+    }
 
-            if autoUploadInteractor.canRetryUpload(of: post) {
-                buttons.append(.retry)
-            }
+    private func createSecondarySection() -> ButtonSection {
+        var buttons = [Button]()
 
-            if post.isFailed && isInternetReachable {
-                buttons.append(.retry)
-            }
+        if post.status != .draft {
+            buttons.append(.moveToDraft)
+        }
 
-            if canCancelAutoUpload && !isInternetReachable {
-                buttons.append(.cancelAutoUpload)
-            }
+        if post.status == .publish || post.status == .draft {
+            buttons.append(.duplicate)
+        }
 
-            if autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit {
-                buttons.append(.retry)
-            }
+        if post.status == .publish && post.hasRemote() {
+            buttons.append(.share)
+        }
 
-            if canPublish {
-                buttons.append(.publish)
-            }
+        if post.status != .trash {
+            buttons.append(.copyLink)
+        }
 
-            if post.status == .publish && post.hasRemote() {
-                if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
-                    buttons.append(.stats)
-                }
-                buttons.append(.share)
-            }
+        if autoUploadInteractor.canRetryUpload(of: post) ||
+            autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
+            post.isFailed && isInternetReachable {
+            buttons.append(.retry)
+        }
 
-            if isBlazeFlagEnabled && post.canBlaze {
-                buttons.append(.blaze)
-            }
+        if canCancelAutoUpload && !isInternetReachable {
+            buttons.append(.cancelAutoUpload)
+        }
 
-            if post.status == .publish || post.status == .draft {
-                buttons.append(.duplicate)
-            }
+        if canPublish {
+            buttons.append(.publish)
+        }
 
-            if post.status != .draft {
-                buttons.append(.moveToDraft)
-            }
+        return ButtonSection(buttons: buttons)
+    }
 
-            if post.status != .trash {
-                buttons.append(.copyLink)
-            }
+    private func createBlazeSection() -> ButtonSection {
+        var buttons = [Button]()
 
-            buttons.append(.trash)
+        if isBlazeFlagEnabled && post.canBlaze {
+            buttons.append(.blaze)
+        }
 
-            return buttons
-        }()
+        return ButtonSection(buttons: buttons)
+    }
 
-        // If allButtons is [one, two, three, four], set the primary to [one, two, “more”].
-        // If allButtons is [one, two, three], set the primary to the same.
-        let primaryButtons: [Button] = {
-            if allButtons.count <= maxPrimaryButtons {
-                return allButtons
-            }
 
-            var primary = allButtons.prefix(maxPrimaryButtons - 1)
-            primary.append(.more)
-            return Array(primary)
-        }()
+    private func createNavigationSection() -> ButtonSection {
+        var buttons = [Button]()
 
-        // If allButtons is [one, two, three, four], set the secondary to [three, four].
-        // If allButtons is [one, two, three], set the secondary to [].
-        let secondaryButtons: [Button] = {
-            if allButtons.count > maxPrimaryButtons {
-                return Array(allButtons.suffix(from: maxPrimaryButtons - 1))
-            } else {
-                return []
-            }
-        }()
+        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(), post.status == .publish && post.hasRemote() {
+            buttons.append(.stats)
+        }
 
-        return ButtonGroups(primary: primaryButtons, secondary: secondaryButtons)
+        // TODO: Add reader and comments
+
+        return ButtonSection(buttons: buttons)
+    }
+
+
+    private func createTrashSection() -> ButtonSection {
+        return ButtonSection(buttons: [.trash])
     }
 
     private var canCancelAutoUpload: Bool {
