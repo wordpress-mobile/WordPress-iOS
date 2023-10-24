@@ -1,12 +1,16 @@
 import SwiftUI
 
 struct DomainListCard: View {
+
     struct ViewModel {
+
         let domainName: String
         let domainHeadline: String?
-        let status: String
-        let description: String?
+        let status: Status?
         let date: String?
+
+        typealias Status = DomainsService.AllDomainsListItem.Status
+        typealias StatusType = DomainsService.AllDomainsListItem.StatusType
     }
 
     private let domainInfo: ViewModel
@@ -23,10 +27,7 @@ struct DomainListCard: View {
     private var textContainerVStack: some View {
         VStack(alignment: .leading, spacing: Length.Padding.single) {
             domainText
-            if let value = domainInfo.domainHeadline {
-                domainHeadline(value)
-                    .padding(.bottom, Length.Padding.single)
-            }
+            domainHeadline
             statusHStack
         }
     }
@@ -37,10 +38,16 @@ struct DomainListCard: View {
             .foregroundColor(.primary)
     }
 
-    private func domainHeadline(_ value: String) -> some View {
-        Text(value)
-            .font(.subheadline)
-            .foregroundColor(.secondary)
+    private var domainHeadline: some View {
+        Group {
+            if let value = domainInfo.domainHeadline {
+                Text(value)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     private var statusHStack: some View {
@@ -52,181 +59,94 @@ struct DomainListCard: View {
     }
 
     private var statusText: some View {
-        HStack(spacing: Length.Padding.single) {
-            Circle()
-//                .fill(domainInfo.status.indicatorColor)
-                .frame(
-                    width: Length.Padding.single,
-                    height: Length.Padding.single
-                )
-            Text(domainInfo.status)
-                .foregroundColor(domainInfo.status.textColor)
-                .font(.subheadline.weight(domainInfo.status.fontWeight))
+        Group {
+            if let status = domainInfo.status {
+                HStack(spacing: Length.Padding.single) {
+                    Circle()
+                        .fill(status.type.indicatorColor)
+                        .frame(
+                            width: Length.Padding.single,
+                            height: Length.Padding.single
+                        )
+                    Text(status.value)
+                        .foregroundColor(status.type.textColor)
+                        .font(.subheadline.weight(status.type.fontWeight))
+                }
+            } else {
+                EmptyView()
+            }
         }
     }
 
     private var expirationText: some View {
-        Text(domainInfo.date ?? "—")
-            .font(.subheadline)
-            .foregroundColor(domainInfo.status.expireTextColor)
-    }
-
-    private func descriptionText(_ description: String) -> some View {
-        Text(description)
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-    }
-}
-
-extension DomainListCard {
-    enum State {
-        case completeSetup
-        case failed
-        case error
-        case inProgress
-        case actionRequired
-        case expired
-        case expiringSoon
-        case renew
-        case verifying
-        case verifyEmail
-        case active
-
-        fileprivate var text: String {
-            switch self {
-            case .completeSetup:
-                return NSLocalizedString(
-                    "domain.status.complete.setup",
-                    value: "Complete Setup",
-                    comment: "Status of a domain in `Complete Setup` state"
-                )
-            case .failed:
-                return NSLocalizedString(
-                    "domain.status.failed",
-                    value: "Failed",
-                    comment: "Status of a domain in `Failed` state"
-                )
-            case .error:
-                return NSLocalizedString(
-                    "domain.status.error",
-                    value: "Error",
-                    comment: "Status of a domain in `Error` state"
-                )
-            case .inProgress:
-                return NSLocalizedString(
-                    "domain.status.in.progress",
-                    value: "In Progress",
-                    comment: "Status of a domain in `In Progress` state"
-                )
-            case .actionRequired:
-                return NSLocalizedString(
-                    "domain.status.action.required",
-                    value: "Action Required",
-                    comment: "Status of a domain in `Action Required` state"
-                )
-            case .expired:
-                return NSLocalizedString(
-                    "domain.status.expired",
-                    value: "Expired",
-                    comment: "Status of a domain in `Expired` state"
-                )
-            case .expiringSoon:
-                return NSLocalizedString(
-                    "domain.status.expiring.soon",
-                    value: "Expiring Soon",
-                    comment: "Status of a domain in `Expiring Soon` state"
-                )
-            case .renew:
-                return NSLocalizedString(
-                    "domain.status.renew",
-                    value: "Renew",
-                    comment: "Status of a domain in `Renew` state"
-                )
-            case .verifying:
-                return NSLocalizedString(
-                    "domain.status.verifying",
-                    value: "Verifying",
-                    comment: "Status of a domain in `Verifying` state"
-                )
-            case .verifyEmail:
-                return NSLocalizedString(
-                    "domain.status.verify.email",
-                    value: "Verify Email",
-                    comment: "Status of a domain in `Verify Email` state"
-                )
-            case .active:
-                return NSLocalizedString(
-                    "domain.status.active",
-                    value: "Active",
-                    comment: "Status of a domain in `Active` state"
-                )
-            }
-        }
-
-        fileprivate var fontWeight: Font.Weight {
-            switch self {
-            case .error,
-                    .expired,
-                    .expiringSoon:
-                return .bold
-            default:
-                return .regular
-            }
-        }
-
-        fileprivate var indicatorColor: Color {
-            switch self {
-            case .active:
-                return Color.DS.Foreground.success
-            case .completeSetup,
-                    .actionRequired,
-                    .expired,
-                    .expiringSoon:
-                return Color.DS.Foreground.warning
-            case .failed,
-                    .error:
-                return Color.DS.Foreground.error
-            case .inProgress,
-                    .renew,
-                    .verifying,
-                    .verifyEmail:
-                return Color.DS.Foreground.secondary
-            }
-        }
-
-        fileprivate var textColor: Color {
-            switch self {
-            case .completeSetup,
-                    .actionRequired,
-                    .expired,
-                    .expiringSoon:
-                return Color.DS.Foreground.warning
-            case .failed,
-                    .error:
-                return Color.DS.Foreground.error
-            case .inProgress,
-                    .renew,
-                    .verifying,
-                    .verifyEmail,
-                    .active:
-                return Color.DS.Foreground.primary
-            }
-        }
-
-        fileprivate var expireTextColor: Color {
-            switch self {
-            case .expired:
-                return Color.DS.Foreground.warning
-            default:
-                return Color.DS.Foreground.secondary
+        Group {
+            if let date = domainInfo.date {
+                Text(date)
+                    .font(.subheadline)
+                    .foregroundColor(domainInfo.status?.type.expireTextColor ?? Color.DS.Foreground.secondary)
+            } else {
+                EmptyView()
             }
         }
     }
 }
+
+private extension DomainListCard.ViewModel.StatusType {
+
+    var fontWeight: Font.Weight {
+        switch self {
+        case .error, .alert:
+            return .bold
+        default:
+            return .regular
+        }
+    }
+
+    var indicatorColor: Color {
+        switch self {
+        case .success, .premium:
+            return Color.DS.Foreground.success
+        case .warning:
+            return Color.DS.Foreground.warning
+        case .alert, .error:
+            return Color.DS.Foreground.error
+        case .neutral:
+            return Color.DS.Foreground.secondary
+        }
+    }
+
+    var textColor: Color {
+        switch self {
+        case .warning:
+            return Color.DS.Foreground.warning
+        case .alert, .error:
+            return Color.DS.Foreground.error
+        default:
+            return Color.DS.Foreground.primary
+        }
+    }
+
+    var expireTextColor: Color {
+        switch self {
+        case .warning:
+            return Color.DS.Foreground.warning
+        default:
+            return Color.DS.Foreground.secondary
+        }
+    }
+}
+
 
 // MARK: - View Model
 
 extension DomainListCard.ViewModel: MyDomainViewModel {
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
 
     init(domain: DomainsService.AllDomainsListItem) {
         let domainHeadline: String? = {
@@ -235,12 +155,26 @@ extension DomainListCard.ViewModel: MyDomainViewModel {
             }
             return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
         }()
+        let expiryDate: String? = {
+            guard let date = domain.expiryDate else {
+                return nil
+            }
+            let formatted = Self.dateFormatter.string(from: date)
+            return "\(Strings.expires) \(formatted)"
+        }()
         self.init(
             domainName: domain.domain,
             domainHeadline: domainHeadline,
-            state: .active,
-            description: nil,
-            date: "August 25th 2023"
+            status: domain.status,
+            date: expiryDate
+        )
+    }
+
+    private enum Strings {
+        static let expires = NSLocalizedString(
+            "domain.management.card.expires.label",
+            value: "Expires",
+            comment: "The expires label of the domain card in My Domains screen."
         )
     }
 }
@@ -248,21 +182,21 @@ extension DomainListCard.ViewModel: MyDomainViewModel {
 
 // MARK: - Previews
 
-struct DomainListCard_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color(.systemBackground)
-            DomainListCard(
-                domainInfo: .init(
-                    domainName: "domain.cool.cool",
-                    domainHeadline: "A Cool Website",
-                    status: .actionRequired,
-                    description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
-                    date: "Expires Aug 15 2004"
-                )
-            )
-        }
-        .ignoresSafeArea()
-        .environment(\.colorScheme, .light)
-    }
-}
+//struct DomainListCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack {
+//            Color(.systemBackground)
+//            DomainListCard(
+//                domainInfo: .init(
+//                    domainName: "domain.cool.cool",
+//                    domainHeadline: "A Cool Website",
+//                    status: .actionRequired,
+//                    description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
+//                    date: "Expires Aug 15 2004"
+//                )
+//            )
+//        }
+//        .ignoresSafeArea()
+//        .environment(\.colorScheme, .light)
+//    }
+//}
