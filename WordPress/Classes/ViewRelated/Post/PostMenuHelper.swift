@@ -43,7 +43,7 @@ struct PostMenuHelper {
         let post = statusViewModel.post
 
         return buttons.map { button in
-            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes, handler: { [weak delegate] _ in
+            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak delegate] _ in
                 guard let delegate else { return }
                 button.performAction(for: post, view: presentingView, delegate: delegate)
             })
@@ -53,7 +53,7 @@ struct PostMenuHelper {
 
 protocol PostMenuAction {
     var icon: UIImage? { get }
-    var attributes: UIMenuElement.Attributes { get }
+    var attributes: UIMenuElement.Attributes? { get }
     func title(for post: Post) -> String
     func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate)
 }
@@ -76,10 +76,12 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         }
     }
 
-    var attributes: UIMenuElement.Attributes {
+    var attributes: UIMenuElement.Attributes? {
         switch self {
-        case .trash: [.destructive]
-        default: []
+        case .trash:
+            return [UIMenuElement.Attributes.destructive]
+        default:
+            return nil
         }
     }
 
