@@ -62,17 +62,17 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
 
     var icon: UIImage? {
         switch self {
-        case .retry: UIImage()
-        case .view: UIImage(systemName: "eye")
-        case .publish: UIImage(systemName: "globe")
-        case .stats: UIImage(systemName: "chart.bar")
-        case .duplicate: UIImage(systemName: "doc.on.doc")
-        case .moveToDraft: UIImage(systemName: "pencil.line")
-        case .trash: UIImage(systemName: "trash")
-        case .cancelAutoUpload: UIImage()
-        case .share: UIImage(systemName: "square.and.arrow.up")
-        case .copyLink: UIImage(systemName: "link")
-        case .blaze: UIImage(systemName: "flame")
+        case .retry: return UIImage()
+        case .view: return UIImage(systemName: "eye")
+        case .publish: return UIImage(systemName: "globe")
+        case .stats: return UIImage(systemName: "chart.bar")
+        case .duplicate: return UIImage(systemName: "doc.on.doc")
+        case .moveToDraft: return UIImage(systemName: "pencil.line")
+        case .trash: return UIImage(systemName: "trash")
+        case .cancelAutoUpload: return UIImage()
+        case .share: return UIImage(systemName: "square.and.arrow.up")
+        case .copyLink: return UIImage(systemName: "link")
+        case .blaze: return UIImage(systemName: "flame")
         }
     }
 
@@ -87,17 +87,17 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
 
     func title(for post: Post) -> String {
         switch self {
-        case .retry: Strings.retry
-        case .view: Strings.view
-        case .publish: Strings.publish
-        case .stats: Strings.stats
-        case .duplicate: Strings.duplicate
-        case .moveToDraft: Strings.draft
-        case .trash: post.status == .trash ? Strings.delete : Strings.trash
-        case .cancelAutoUpload: Strings.cancelAutoUpload
-        case .share: Strings.share
-        case .copyLink: Strings.copyLink
-        case .blaze: Strings.blaze
+        case .retry: return Strings.retry
+        case .view: return Strings.view
+        case .publish: return Strings.publish
+        case .stats: return Strings.stats
+        case .duplicate: return Strings.duplicate
+        case .moveToDraft: return Strings.draft
+        case .trash: return post.status == .trash ? Strings.delete : Strings.trash
+        case .cancelAutoUpload: return Strings.cancelAutoUpload
+        case .share: return Strings.share
+        case .copyLink: return Strings.copyLink
+        case .blaze: return Strings.blaze
         }
     }
 
