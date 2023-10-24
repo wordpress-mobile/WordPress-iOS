@@ -1,15 +1,9 @@
 import Foundation
 
-
 final class PageListTableViewHandler: WPTableViewHandler {
-    var isSearching: Bool = false
     var status: PostListFilter.Status = .published
     var groupResults: Bool {
-        if isSearching {
-            return true
-        }
-
-        return status == .scheduled
+        status == .scheduled
     }
 
     var showEditorHomepage: Bool {
@@ -34,10 +28,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
         return resultsController(with: fetchRequest, context: managedObjectContext(), performFetch: false)
     }()
 
-    private lazy var searchResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: BasePost.statusKeyPath, performFetch: false)
-    }()
-
     private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: sectionNameKeyPath())
     }()
@@ -53,11 +43,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
-        if isSearching {
-            return searchResultsController
-        }
-
-        return groupResults ? groupedResultsController : flatResultsController
+        groupResults ? groupedResultsController : flatResultsController
     }
 
     override func refreshTableView() {
