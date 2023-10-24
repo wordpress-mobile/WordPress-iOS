@@ -208,7 +208,7 @@ class PostCardStatusViewModel: NSObject {
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(), post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
         }
-        
+
         return ButtonSection(buttons: buttons)
     }
 

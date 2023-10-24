@@ -495,7 +495,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func comments(_ post: AbstractPost) {
-        // TODO: track event
+        WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
         let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
     }
