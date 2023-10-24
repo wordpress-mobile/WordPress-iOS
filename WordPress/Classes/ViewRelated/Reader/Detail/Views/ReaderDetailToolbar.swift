@@ -248,6 +248,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return outgoing
         }
 
+        // Don't allow the button title to wrap.
+        configuration.titleLineBreakMode = .byTruncatingTail
+
         button.configuration = configuration
 
         /// Remove default background styles. The `.plain()` configuration adds a gray background to selected state.
