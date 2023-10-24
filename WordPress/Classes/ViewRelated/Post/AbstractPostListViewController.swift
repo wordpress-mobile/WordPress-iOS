@@ -903,11 +903,6 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    func updateFilter(index: Int) {
-        filterSettings.setCurrentFilterIndex(index)
-        refreshAndReload()
-    }
-
     func updateSelectedFilter() {
         if filterTabBar.selectedIndex != filterSettings.currentFilterIndex() {
             filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)

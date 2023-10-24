@@ -2229,7 +2229,6 @@
 		8B92D69727CD51FA001F5371 /* DashboardGhostCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B92D69527CD51FA001F5371 /* DashboardGhostCardCell.swift */; };
 		8B93412F257029F60097D0AC /* FilterChipButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93412E257029F50097D0AC /* FilterChipButton.swift */; };
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
-		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8BA125EB27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */; };
 		8BA125EC27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */; };
 		8BA77BCB2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
@@ -7571,7 +7570,6 @@
 		8B92D69527CD51FA001F5371 /* DashboardGhostCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGhostCardCell.swift; sourceTree = "<group>"; };
 		8B93412E257029F50097D0AC /* FilterChipButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChipButton.swift; sourceTree = "<group>"; };
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
-		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8B9E15DAF3E1A369E9BE3407 /* Pods-WordPressUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+PinSubviewPriority.swift"; sourceTree = "<group>"; };
 		8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderCardDiscoverAttributionView.xib; sourceTree = "<group>"; };
@@ -12258,7 +12256,6 @@
 		57E3C98223835A57004741DB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */,
 				F543AF5623A84E4D0022F595 /* PublishSettingsControllerTests.swift */,
 				F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */,
 			);
@@ -23562,7 +23559,6 @@
 				E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */,
 				57D66B9D234BB78B005A2D74 /* PostServiceWPComTests.swift in Sources */,
 				DCF892D0282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift in Sources */,
-				8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				9A9D34FD23607CCC00BC95A3 /* AsyncOperationTests.swift in Sources */,
