@@ -460,6 +460,7 @@ private extension ReaderPostCardCell {
 
     func configureSiteIcon() {
         guard let viewModel, viewModel.isSiteIconEnabled else {
+            siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: avatarContainerView)
             removeFromStackView(siteStackView, view: siteIconContainerView)
             return
         }
