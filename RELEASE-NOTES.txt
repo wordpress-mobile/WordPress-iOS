@@ -150,6 +150,7 @@
 * [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a background thread. [#20846]
 * [**] [internal] Make sure a database tidy-up task (null blog property sanitizer) is completed before any other Core Data queries. [#20867]
 * [**] [Jetpack-only] Added a dashboard card for purchasing plans. [#20693, #20805, #20697, #20731, #20710]
+* [*] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
 
 22.5
 -----
