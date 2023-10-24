@@ -1,4 +1,4 @@
-    #import "PostListFooterView.h"
+#import "PostListFooterView.h"
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
