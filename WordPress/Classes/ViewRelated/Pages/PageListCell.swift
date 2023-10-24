@@ -75,6 +75,7 @@ final class PageListCell: UITableViewCell, Reusable {
         setupFeaturedImageView()
         setupEllipsisButton()
 
+        indentationIconView.tintColor = .secondaryLabel
         indentationIconView.image = UIImage(named: "subdirectory")
         indentationIconView.setContentHuggingPriority(.required, for: .horizontal)
         indentationIconView.setContentCompressionResistancePriority(.required, for: .horizontal)
