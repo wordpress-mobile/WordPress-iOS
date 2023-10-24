@@ -331,16 +331,6 @@ class MeViewController: UITableViewController {
         }
     }
 
-    private func presentMyDomains() -> ImmuTableAction {
-        return { [unowned self] _ in
-            let controller = MyDomainsViewController()
-            let navigationController = UINavigationController(rootViewController: controller)
-            self.present(navigationController, animated: true) {
-                self.tableView.deselectSelectedRowWithAnimation(true)
-            }
-        }
-    }
-
     fileprivate func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
