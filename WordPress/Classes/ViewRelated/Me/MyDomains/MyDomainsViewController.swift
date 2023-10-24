@@ -13,7 +13,7 @@ final class MyDomainsViewController: UIViewController {
     }
 }
 
-private extension MyDomainsViewController {
+extension MyDomainsViewController {
     enum Strings {
         static let title = NSLocalizedString(
             "domain.management.title",

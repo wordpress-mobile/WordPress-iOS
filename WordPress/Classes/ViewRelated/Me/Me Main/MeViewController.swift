@@ -215,11 +215,21 @@ class MeViewController: UITableViewController {
             }())
         ]
 
+#if JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
-                return [myDomainsRow()]
+                return [
+                    ButtonRow(title: MyDomainsViewController.Strings.title) { action in
+                        let controller = MyDomainsViewController()
+                        let navigationController = UINavigationController(rootViewController: controller)
+                        self.present(navigationController, animated: true) {
+                            self.tableView.deselectSelectedRowWithAnimation(true)
+                        }
+                    }
+                ]
             }()))
         }
+#endif
 
         // last section
         sections.append(
@@ -229,9 +239,6 @@ class MeViewController: UITableViewController {
         )
 
         return ImmuTable(sections: sections)
-    }
-    private func myDomainsRow() -> ImmuTableRow {
-        ButtonRow(title: "My Domains", action: presentMyDomains())
     }
 
     // MARK: - UITableViewDelegate
@@ -328,16 +335,6 @@ class MeViewController: UITableViewController {
             }
 
             self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
-        }
-    }
-
-    private func presentMyDomains() -> ImmuTableAction {
-        return { [unowned self] _ in
-            let controller = MyDomainsViewController()
-            let navigationController = UINavigationController(rootViewController: controller)
-            self.present(navigationController, animated: true) {
-                self.tableView.deselectSelectedRowWithAnimation(true)
-            }
         }
     }
 
