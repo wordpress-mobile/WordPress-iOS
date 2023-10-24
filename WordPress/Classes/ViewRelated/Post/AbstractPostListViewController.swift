@@ -18,8 +18,6 @@ class AbstractPostListViewController: UIViewController,
     private static let pagesNumberOfLoadedElement = 100
     private static let postsLoadMoreThreshold = 4
 
-    private static let defaultHeightForFooterView = CGFloat(44.0)
-
     private var fetchBatchSize: Int {
         return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
     }
@@ -75,8 +73,6 @@ class AbstractPostListViewController: UIViewController,
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
     }()
 
-    var postListFooterView: PostListFooterView!
-
     let filterTabBar = FilterTabBar()
 
     private lazy var searchResultsViewController = PostSearchViewController(viewModel: PostSearchViewModel(blog: blog, filters: filterSettings))
@@ -110,7 +106,6 @@ class AbstractPostListViewController: UIViewController,
         configureTableViewController()
         configureFilterBar()
         configureTableView()
-        configureFooterView()
         configureNavbar()
         configureSearchController()
         configureAuthorFilter()
@@ -155,10 +150,6 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Configuration
 
-    func heightForFooterView() -> CGFloat {
-        return type(of: self).defaultHeightForFooterView
-    }
-
     private func configureTableViewController() {
         addChild(tableViewController)
         view.addSubview(tableViewController.view)
@@ -194,24 +185,6 @@ class AbstractPostListViewController: UIViewController,
 
     func configureTableView() {
         assert(false, "You should implement this method in the subclass")
-    }
-
-    func configureFooterView() {
-
-        let mainBundle = Bundle.main
-
-        guard let footerView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)![0] as? PostListFooterView else {
-            preconditionFailure("Could not load the footer view from the nib file.")
-        }
-
-        postListFooterView = footerView
-        postListFooterView.showSpinner(false)
-
-        var frame = postListFooterView.frame
-        frame.size.height = heightForFooterView()
-
-        postListFooterView.frame = frame
-        tableView.tableFooterView = postListFooterView
     }
 
     private func refreshResults() {
@@ -309,7 +282,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - GUI: No results view logic
 
     func hideNoResultsView() {
-        postListFooterView.isHidden = false
+        setFooterHidden(false)
         noResultsViewController.removeFromView()
     }
 
@@ -319,7 +292,7 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        postListFooterView.isHidden = true
+        setFooterHidden(true)
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -578,12 +551,13 @@ class AbstractPostListViewController: UIViewController,
     }
 
     let loadMoreCounter = LoadMoreCounter()
+
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
         loadMoreCounter.increment(properties: propertiesForAnalytics())
 
-        postListFooterView.showSpinner(true)
+        setFooterHidden(false)
 
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
@@ -629,7 +603,7 @@ class AbstractPostListViewController: UIViewController,
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl.endRefreshing()
-        postListFooterView.showSpinner(false)
+        setFooterHidden(true)
         noResultsViewController.removeFromView()
 
         if emptyResults {
@@ -929,7 +903,16 @@ class AbstractPostListViewController: UIViewController,
         return ReachabilityUtils.noConnectionMessage()
     }
 
-    // MARK: - Others
+    // MARK: - Misc
+
+    private func setFooterHidden(_ isHidden: Bool) {
+        if isHidden {
+            tableView.tableFooterView = nil
+        } else {
+            tableView.tableFooterView = PagingFooterView(state: .loading)
+            tableView.sizeToFitFooterView()
+        }
+    }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         // We override this method to dismiss any Notice that is currently being shown. If we

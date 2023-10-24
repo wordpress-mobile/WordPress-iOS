@@ -176,12 +176,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
 
-    override func configureFooterView() {
-        super.configureFooterView()
-
-        tableView.tableFooterView = UIView(frame: .zero)
-    }
-
     fileprivate func beginRefreshingManually() {
         refreshControl.beginRefreshing()
         tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
