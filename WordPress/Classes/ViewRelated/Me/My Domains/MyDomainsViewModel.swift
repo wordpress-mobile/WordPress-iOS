@@ -35,17 +35,18 @@ class MyDomainsViewModel<T: MyDomainViewModel> {
 
     func loadData() {
         guard let service = domainsService else {
+            self.state = .error
             return
         }
         self.state = .loading
         service.fetchAllDomains(resolveStatus: true, noWPCOM: true) { result in
             switch result {
             case .success(let domains):
-                self.domains = .init(repeating: domains[0], count: 10)
+                self.domains = domains
+                self.state = .normal
             case .failure:
-                break
+                self.state = .error
             }
-            self.state = .normal
         }
     }
 
@@ -65,14 +66,8 @@ class MyDomainsViewModel<T: MyDomainViewModel> {
         case normal
         case loading
         case empty
-        case error(MyDomainsErrorViewModel)
+        case error
     }
 
     private typealias Domain = DomainsService.AllDomainsListItem
-
-}
-
-struct MyDomainsErrorViewModel {
-    let title: String
-    let description: String
 }

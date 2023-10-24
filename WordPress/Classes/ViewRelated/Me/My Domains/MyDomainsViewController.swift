@@ -39,6 +39,10 @@ final class MyDomainsViewController: UIViewController {
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
+    // MARK: - Properties
+
+    private lazy var state: ViewModel.State = viewModel.state
+
     // MARK: - Observation
 
     private var cancellable = Set<AnyCancellable>()
@@ -96,7 +100,9 @@ final class MyDomainsViewController: UIViewController {
         self.tableView.contentInset.top = Layout.interRowSpacing
         self.tableView.sectionHeaderHeight = Layout.interRowSpacing / 2
         self.tableView.sectionFooterHeight = tableView.sectionHeaderHeight
+        self.tableView.verticalScrollIndicatorInsets.top = -tableView.contentInset.top
         self.tableView.register(MyDomainsTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
+        self.tableView.register(MyDomainsActivityIndicatorTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.activityIndicator)
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }
@@ -106,6 +112,7 @@ final class MyDomainsViewController: UIViewController {
             guard let self else {
                 return
             }
+            self.state = state
             switch state {
             case .normal, .loading:
                 self.tableView.reloadData()
@@ -138,6 +145,7 @@ final class MyDomainsViewController: UIViewController {
 
     private enum CellIdentifiers {
         static let myDomain = String(describing: MyDomainsTableViewCell.self)
+        static let activityIndicator = String(describing: MyDomainsActivityIndicatorTableViewCell.self)
     }
 
     typealias ViewModel = MyDomainsViewModel<DomainListCard.ViewModel>
@@ -148,7 +156,10 @@ final class MyDomainsViewController: UIViewController {
 extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.numberOfDomains
+        switch state {
+        case .loading: return 1
+        default: return viewModel.numberOfDomains
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -156,11 +167,16 @@ extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let domain = viewModel.domain(atIndex: indexPath.section)
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! MyDomainsTableViewCell
-        cell.accessoryType = .disclosureIndicator
-        cell.update(with: domain, parent: self)
-        return cell
+        switch state {
+        case .loading:
+            return tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.activityIndicator, for: indexPath)
+        default:
+            let domain = viewModel.domain(atIndex: indexPath.section)
+            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! MyDomainsTableViewCell
+            cell.accessoryType = .disclosureIndicator
+            cell.update(with: domain, parent: self)
+            return cell
+        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

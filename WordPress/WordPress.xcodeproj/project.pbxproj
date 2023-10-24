@@ -3551,6 +3551,7 @@
 		F4141EE42AE7152F000D2AAE /* MyDomainsViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */; };
 		F4141EE62AE71AF0000D2AAE /* MyDomainsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */; };
 		F4141EE82AE72DC4000D2AAE /* MyDomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */; };
+		F4141EEA2AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */; };
 		F41BDD73290BBDCA00B7F2B0 /* MigrationActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */; };
 		F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */; };
 		F41BDD7B29114E2400B7F2B0 /* MigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */; };
@@ -8942,6 +8943,7 @@
 		F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyDomainsViewController+Strings.swift"; sourceTree = "<group>"; };
 		F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsViewModel.swift; sourceTree = "<group>"; };
 		F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsTableViewCell.swift; sourceTree = "<group>"; };
+		F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsActivityIndicatorTableViewCell.swift; sourceTree = "<group>"; };
 		F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsView.swift; sourceTree = "<group>"; };
 		F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFlowCoordinator.swift; sourceTree = "<group>"; };
 		F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStep.swift; sourceTree = "<group>"; };
@@ -10130,6 +10132,7 @@
 				F4141EE22AE7152F000D2AAE /* MyDomainsViewController+Strings.swift */,
 				F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */,
 				F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */,
+				F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */,
 			);
 			path = "My Domains";
 			sourceTree = "<group>";
@@ -24585,6 +24588,7 @@
 				FABB232F2602FC2C00C8785C /* URL+Helpers.swift in Sources */,
 				FABB23302602FC2C00C8785C /* WPStyleGuide+Aztec.swift in Sources */,
 				FABB23312602FC2C00C8785C /* SettingsCommon.swift in Sources */,
+				F4141EEA2AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift in Sources */,
 				17C1D6922670E4A2006C8970 /* UIFont+Fitting.swift in Sources */,
 				FABB23322602FC2C00C8785C /* FormatBarItemProviders.swift in Sources */,
 				082A645C291C2DD700668D2C /* Routes+Jetpack.swift in Sources */,
