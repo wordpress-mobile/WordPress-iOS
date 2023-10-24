@@ -11,6 +11,8 @@ final class PageListCell: UITableViewCell, Reusable {
     private let badgesLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
     private let ellipsisButton = UIButton(type: .custom)
+    private let contentStackView = UIStackView()
+    private var indentationIconView = UIImageView()
     private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
@@ -37,7 +39,7 @@ final class PageListCell: UITableViewCell, Reusable {
         imageLoader.prepareForReuse()
     }
 
-    func configure(with viewModel: PageListItemViewModel) {
+    func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false) {
         viewModel.$title.sink { [titleLabel] in
             titleLabel.attributedText = $0
         }.store(in: &cancellables)
@@ -54,16 +56,29 @@ final class PageListCell: UITableViewCell, Reusable {
             }
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
         }
+
+        separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
+        contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: 16 + CGFloat(max(0, indentation - 1)) * 32,
+            bottom: 12,
+            trailing: 16
+        )
+        indentationIconView.isHidden = indentation == 0
+        indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
     }
 
     // MARK: - Setup
 
     private func setupViews() {
-        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
         setupLabels()
         setupFeaturedImageView()
         setupEllipsisButton()
+
+        indentationIconView.tintColor = .secondaryLabel
+        indentationIconView.image = UIImage(named: "subdirectory")
+        indentationIconView.setContentHuggingPriority(.required, for: .horizontal)
+        indentationIconView.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let badgesStackView = UIStackView(arrangedSubviews: [
             badgeIconView, badgesLabel, UIView()
@@ -77,13 +92,12 @@ final class PageListCell: UITableViewCell, Reusable {
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        let contentStackView = UIStackView(arrangedSubviews: [
-            labelsStackView, featuredImageView, ellipsisButton
+        contentStackView.addArrangedSubviews([
+            indentationIconView, labelsStackView, featuredImageView, ellipsisButton
         ])
         contentStackView.spacing = 8
         contentStackView.alignment = .center
         contentStackView.isLayoutMarginsRelativeArrangement = true
-        contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
 
         NSLayoutConstraint.activate([
             badgeIconView.heightAnchor.constraint(equalToConstant: 18),
