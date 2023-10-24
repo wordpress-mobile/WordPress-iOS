@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-20 18:33:55+0000 */
+/* Translation-Revision-Date: 2023-10-18 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Bloquear cita";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "El bloque no se puede procesar debido a que está profundamente anidado. Toca aquí para más detalles.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Bloque copiado";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Menú de bloques";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Los bloques anidados a más profundidad de %d niveles puede que no se procesen correctamente en el editor móvil. Por este motivo, recomendamos allanar el contenido desagrupando el bloque o editando el bloque usando el editor web.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Los bloques anidados a más profundidad de %d niveles puede que no se procesen correctamente en el editor móvil. Por este motivo, recomendamos allanar el contenido desagrupando el bloque o editando el bloque usando tu navegador web.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1409,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Cambiar ajustes";
 
-/* Change site icon button */
-"Change Site Icon" = "Cambiar icono del sitio";
-
 /* Change Username title. */
 "Change Username" = "Cambiar nombre de usuario";
 
@@ -1507,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Elegir página de inicio";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Elige una imagen de mi dispositivo";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Elegir las páginas";
@@ -2282,6 +2285,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "17 de diciembre de 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Bloque profundamente anidado";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6066,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Eliminar";
 
 /* Remove Person Alert Title
@@ -6702,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Servicio";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Establecer la imagen destacada";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Establecer como padre";
@@ -7283,6 +7285,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Cambia al tamaño de fuente por defecto";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Patrones sincronizados";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Valores por defecto del sistema";
 
@@ -7330,9 +7335,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Haz una foto";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Haz una foto o un vídeo";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Haz un vídeo";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7348,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toca aquí para mostrar la ayuda";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Toca aquí para mostrar más detalles.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Toca para añadir nuevas tarjetas de estadísticas.";
@@ -8327,6 +8332,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Deja de seguir el blog.";
 
+/* No comment provided by engineer. */
+"Ungroup block" = "Desagrupar bloque";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "Dejar de ocultar";
 
@@ -8713,6 +8721,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Advertencia";
+
+/* No comment provided by engineer. */
+"Warning message" = "Mensaje de advertencia";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Observa cómo crece tu audiencia con analíticas avanzadas.";
@@ -9856,14 +9867,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Eliminar recorrido actual";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Hazte con tu rincón en Internet con una dirección web fácil de encontrar, de compartir y de seguir.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar esto";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Encuentra un dominio personalizado";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Puede tardar hasta 30 minutos en que tu dominio personalizado empiece a funcionar.";
@@ -9877,6 +9882,36 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "¡Genial, tu sitio está listo!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Acción requerida";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Activa";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Completar instalación";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Caducado";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Caduca pronto";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Fallido";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "En curso";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Renovar";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Verificar correo electrónico";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Verificando";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Mejor alternativa";
 
@@ -9885,6 +9920,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratis";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratis durante el primer año con los planes de pago anuales";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recomendado";
@@ -10323,9 +10361,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "No se pueden sincronizar los medios";
 
-/* Media screen navigation title */
-"media.title" = "Medios";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "El elemento no se pudo añadir a la biblioteca de medios";
 
@@ -10338,6 +10373,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Descartar";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Añadir nuevo medio";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Añadir";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Seleccionar";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Cancelar";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Borrar";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "¿Seguro que quieres borrar permanentemente estos elementos?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "¿Seguro que quieres borrar permanentemente este elemento?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "No ha sido posible eliminar todos los elementos multimedia.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Borrando...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "¡Borrado!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Borrar";
 
@@ -10346,6 +10411,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Reintentar la subida";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Ningún medio coincide con tu búsqueda";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Medios";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d Imágenes seleccionadas";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 imagen seleccionada";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d elementos seleccionados";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 elemento seleccionado";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Seleccionar elementos";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Descartar";
@@ -10579,12 +10665,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "Entradas borrador";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Anímate a conocer la aplicación";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Siguientes pasos";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Páginas";
 
 /* Card title for the pesonalization menu */
@@ -10711,6 +10791,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Más";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Muestra las entradas del sitio";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comentar";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Me gusta";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Da me gusta a la entrada.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Me gustó";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Anula el me gusta de la entrada.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Guarda esta entrada para más tarde.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Guardar entrada";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Deja de guardar la entrada.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Entrada guardada";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Buscar";
 
@@ -10724,11 +10841,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "lector.aviso.bloqueo.usuario.erróneo";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Abre los comentarios de la entrada.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Me gusta";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Da me gusta a la entrada.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Me gustó";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Abre un menú con más acciones.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Más";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Rebloguear";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Vuelve a publicar la entrada.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Abre los detalles del sitio de la entrada.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bloquear a este usuario";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Borrar entrada guardada";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Denunciar a este usuario";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Guardar";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ entradas - %2$@ seguidores";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Volver";
@@ -10837,6 +10994,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Dominios";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Elegir dominio";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Documento, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Imagen: %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Vídeo, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Fecha de creación desconocida";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Elige medios.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Medios";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacidad";

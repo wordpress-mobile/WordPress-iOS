@@ -220,10 +220,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    override func configureAuthorFilter() {
-        // Noop
-    }
-
     override func configureFooterView() {
         super.configureFooterView()
         tableView.tableFooterView = UIView(frame: .zero)
@@ -416,6 +412,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if let blog = blog {
             let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
             predicates.append(basePredicate)
+        }
+
+        if filterSettings.shouldShowOnlyMyPosts() {
+            let myAuthorID = blogUserID() ?? 0
+
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
         }
 
         let searchText = currentSearchTerm() ?? ""

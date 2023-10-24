@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-19 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-18 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Alıntı";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Blok derin bir şekilde iç içe geçtiği için işlenemez. Daha fazla ayrıntı için buraya dokunun.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok kopyalandı";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Bloklar menüsü";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web düzenleyicisini kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web tarayıcınızı kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1409,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ayarları değiştir";
 
-/* Change site icon button */
-"Change Site Icon" = "Site simgesini değiştir";
-
 /* Change Username title. */
 "Change Username" = "Kullanıcı adını değiştir";
 
@@ -1507,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Ana sayfa seçin";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Cihazımdan Görsel seç";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Sayfa Seç";
@@ -2282,6 +2285,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "Aralık 17, 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Derin şekilde iç içe geçmiş blok";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6066,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Kaldır";
 
 /* Remove Person Alert Title
@@ -6702,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Hizmet";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Öne çıkarılan görsel ayarla";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Ana sayfayı belirleyin";
@@ -7283,6 +7285,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Varsayılan yazı tipi boyutuna geçer";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Senkronize edilmiş desenler";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Sistem varsayılanı";
 
@@ -7330,9 +7335,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Fotoğraf çek";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Fotoğraf veya Video Çek";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Video Çek";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7348,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Yardımı görüntülemek için buraya dokunun";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Daha fazla ayrıntı görüntülemek için buraya dokunun.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Yeni istatistik kartları eklemek için dokunun.";
@@ -8326,6 +8331,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Blogu takip etmeyi bırakır.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "Bloku gruptan çıkar";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Göster";
@@ -9856,14 +9864,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Mevcut Turu Kaldır";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Bulması, paylaşması ve takip etmesi kolay bir site adresiyle internet dünyasındaki yerinizi alın.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Özel bir alan adı bulun";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Özel alan adınızın çalışmaya başlaması 30 dakika kadar sürebilir.";
@@ -9877,6 +9879,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Tebrikler, siteniz yayında!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Eylem Gerekli";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Etkin";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Kurulumu Tamamla";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Hata";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Süresi Dolmuş";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Süresi Yakında Dolacak";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Başarısız";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "Devam Ediyor";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Yenile";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "E-posta Adresini Doğrula";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Doğrulanıyor";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "En İyi Alternatif";
 
@@ -9885,6 +9920,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Ücretsiz";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Yıllık ücretli paketlerde ilk yıl ücretsizdir.";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Önerilen";
@@ -10323,9 +10361,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Ortam senkronize edilemiyor";
 
-/* Media screen navigation title */
-"media.title" = "Ortam";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Öğe Ortam kütüphanesine eklenemez";
 
@@ -10338,6 +10373,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Kapat";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Yeni ortam ekle";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Ekle";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Seç";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "İptal et";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Sil";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Seçili öğeleri kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Tüm ortam dosyaları silinemiyor.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Siliniyor...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Silindi!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Sil";
 
@@ -10346,6 +10411,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Yüklemeyi Yeniden Dene";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Aramanızla eşleşen ortam yok";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Ortam";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d Görsel Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 Görsel Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d Öğe Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 Öğe Seçildi";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Öğeleri Seçin";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
@@ -10579,12 +10665,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "Taslak yazılar";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Uygulamayı tanıyın";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Sonraki adımlar";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Sayfalar";
 
 /* Card title for the pesonalization menu */
@@ -10711,6 +10791,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Daha Fazla";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Sitedeki gönderileri gösterir";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Yorumla";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Beğen";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Bu gönderiyi beğenir.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Beğenildi";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Bu gönderinin beğenisini kaldırır.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Bu gönderiyi sonrası için kaydeder.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Gönderiyi kaydet";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Gönderinin kaydını kaldırır.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Kaydedilen Gönderi";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Arama";
 
@@ -10724,11 +10841,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Yorumla";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Gönderinin yorumlarını açar.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Beğen";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Gönderiyi beğenir.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Beğenildi";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Daha fazla işlem içeren bir menü açar.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Daha Fazla";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblogla";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Gönderiyi rebloglar.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Gönderinin site ayrıntılarını açar.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bu kullanıcıyı engelle";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Kaydedilen Gönderiyi Kaldır";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Bu kullanıcıyı bildir";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Kaydet";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ gönderi • %2$@ takipçi";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Geri";
@@ -10837,6 +10994,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "SiteAdi.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Alan adları";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Alan adı seç";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Ses, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Belge, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Görsel, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Bilinmeyen oluşturma tarihi";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Ortam dosyası seçin.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Ortam";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";

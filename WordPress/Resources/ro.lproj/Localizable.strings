@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-18 15:03:09+0000 */
+/* Translation-Revision-Date: 2023-10-17 05:45:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1122,6 +1122,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "bloc citat";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Blocul nu poate fi randat deoarece este imbricat în adâncime. Atinge aici pentru mai multe detalii.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Bloc copiat";
 
@@ -1173,6 +1176,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Meniu blocuri";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blocurile imbricate în adâncime pe mai mult de %d niveluri pot să nu fie randate corect în editorul pentru dispozitive mobile. Din acest motiv, recomandăm aplatizarea conținutului prin anularea grupării blocului sau prin editarea blocului folosind editorul web.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blocurile imbricate în adâncime pe mai mult de %d niveluri pot să nu fie randate corect în editorul pentru dispozitive mobile. Din acest motiv, recomandăm aplatizarea conținutului prin anularea grupării blocului sau prin editarea blocului folosind navigatorul tău web.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1409,9 +1418,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Modifică setările";
 
-/* Change site icon button */
-"Change Site Icon" = "Schimbă iconul site-ului";
-
 /* Change Username title. */
 "Change Username" = "Schimbă numele de utilizator";
 
@@ -1507,9 +1513,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Alege prima pagină";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Alege o imagine de pe dispozitivul meu";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Alege Pagini";
@@ -2282,6 +2285,9 @@ translators: Block name. %s: The localized block name */
 
 /* Only December needs to be translated */
 "December 17, 2017" = "17 decembrie 2017";
+
+/* No comment provided by engineer. */
+"Deeply nested block" = "Bloc imbricat în adâncime";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -6060,8 +6066,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Îndepărtează";
 
 /* Remove Person Alert Title
@@ -6702,9 +6707,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviciu";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Setează imaginea reprezentativă";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Setează părinte";
@@ -7283,6 +7285,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Comută la dimensiune font implicită";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Modele sincronizate";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Implicit de sistem";
 
@@ -7330,9 +7335,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "Fă o poză";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Fă o fotografie sau un video";
-
-/* No comment provided by engineer. */
 "Take a Video" = "Fă un video";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7348,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Atinge aici pentru a afișa ajutorul";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "Atinge aici pentru a arăta mai multe detalii.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Atinge pentru a adăuga carduri noi cu statistici.";
@@ -8153,7 +8158,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to create new invite links." = "Nu pot să creez legături noi la invitații.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Nu pot șterge toate elementele media.";
+"Unable to delete all media items." = "Nu pot să șterg toate elementele media.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nu pot șterge elementul media.";
@@ -8326,6 +8331,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Anulează urmărirea blogului.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "Anulează gruparea blocului";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Anulează ascunderea";
@@ -8713,6 +8721,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Avertizare";
+
+/* No comment provided by engineer. */
+"Warning message" = "Mesaj de avertizare";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Urmărești cum îți crește audiența cu analitice detaliate.";
@@ -9856,14 +9867,8 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Înlătură turul curent";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Rezervă-ți partea ta pe web cu o adresă de site ușor de găsit, partajat și urmărit.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ascunde asta";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "Găsește un domeniu personalizat";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Poate să dureze până la 30 de minute până când domeniul tău personalizat va începe să funcționeze.";
@@ -9877,6 +9882,39 @@ Example: Reply to Pamela Nguyen */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Felicitări, site-ul tău este live!";
 
+/* Status of a domain in `Action Required` state */
+"domain.status.action.required" = "Este necesară o acțiune";
+
+/* Status of a domain in `Active` state */
+"domain.status.active" = "Activ";
+
+/* Status of a domain in `Complete Setup` state */
+"domain.status.complete.setup" = "Finalizează inițializarea";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Eroare";
+
+/* Status of a domain in `Expired` state */
+"domain.status.expired" = "Expirat";
+
+/* Status of a domain in `Expiring Soon` state */
+"domain.status.expiring.soon" = "Expiră în curând";
+
+/* Status of a domain in `Failed` state */
+"domain.status.failed" = "Eșuat";
+
+/* Status of a domain in `In Progress` state */
+"domain.status.in.progress" = "În curs de desfășurare";
+
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Reînnoiește";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Confirmă adresa de email";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Verific";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Cea mai bună alternativă";
 
@@ -9885,6 +9923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratuit";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratuit în primul an, cu orice plan cu plată anuală";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recomandat";
@@ -10323,9 +10364,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Nu pot să sincronizez elementele media";
 
-/* Media screen navigation title */
-"media.title" = "Media";
-
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Elementul nu a putut fi adăugat în biblioteca Media";
 
@@ -10338,6 +10376,36 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Refuză";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Adaugă element media nou";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "Adaugă";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "Selectează";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Anulează";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Șterge";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "Sigur vrei să ștergi definitiv aceste elemente?";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "Sigur vrei să ștergi definitiv acest element?";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Nu pot să șterg toate elementele media.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "Șterg...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Ștearsă!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Șterge";
 
@@ -10346,6 +10414,27 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "Reîncearcă încărcarea";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "Nu s-a potrivit niciun element media cu căutarea ta";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "Media";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "Ai selectat %d imagini";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "Ai selectat o imagine";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "Ai selectat %d elemente";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "Ai selectat 1 element";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Selectează elementele";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Refuză";
@@ -10579,12 +10668,6 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.draftPosts" = "Redactează articole";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "Vezi ce face aplicația";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "Pașii următori";
-
-/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pagini";
 
 /* Card title for the pesonalization menu */
@@ -10711,6 +10794,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mai multe";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Vezi articolele de pe site";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comentează";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Apreciază";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Apreciază acest articol.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Apreciat";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Anulează aprecierea acestui articol.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Salvează acest articol pentru mai târziu.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Salvează articolul";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Anulează salvarea acestui articol.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Articol salvat";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Caută";
 
@@ -10724,11 +10844,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comentează";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Deschide comentariile la articol.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Apreciază";
+
+/* Accessibility hint for the like button on the reader post card cell
+   Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Apreciază articolul.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Apreciat";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Deschide un meniu cu mai multe acțiuni.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Mai multe";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Republicare";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Republică articolul.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Deschide detaliile despre site pentru articol.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blochează acest utilizator";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Înlătură articolul salvat";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportează acest utilizator";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Salvează";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ articole • %2$@ urmăritori";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Înapoi";
@@ -10837,6 +10997,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "numelesiteuluitau.com";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domenii";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Selectează domeniul";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Document, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Imagine, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Dată creare necunoscută";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Selectează media.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Media";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";

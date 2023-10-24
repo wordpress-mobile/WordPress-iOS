@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -674,9 +674,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Zmeniť heslo";
-
-/* Change site icon button */
-"Change Site Icon" = "Zmeniť ikonu webovej stránky";
 
 /* Change Username title. */
 "Change Username" = "Zmeniť užívateľské meno";
@@ -3031,8 +3028,7 @@
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Odstrániť";
 
 /* Remove Person Alert Title
@@ -3364,9 +3360,6 @@
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Nastaviť ilustračný obrázok";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */

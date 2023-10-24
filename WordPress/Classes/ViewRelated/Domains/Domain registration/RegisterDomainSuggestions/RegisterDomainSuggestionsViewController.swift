@@ -175,7 +175,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.siteName = siteName
             vc.blog = site
             vc.domainSelectionType = domainSelectionType
-            vc.freeSiteAddress = site.freeSiteAddress
+            vc.primaryDomainAddress = site.primaryDomainAddress
 
             if site.hasBloggerPlan {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])

@@ -6,4 +6,5 @@ enum SiteCreationStep {
     case intent
     case segments
     case siteAssembly
+    case plan
 }

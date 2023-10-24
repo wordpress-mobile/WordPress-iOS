@@ -1,3 +1,0 @@
-Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
-
-Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.

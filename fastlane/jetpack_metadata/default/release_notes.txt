@@ -1,7 +1,7 @@
-Lock screen widgets are now available on Jetpack so you can check your site stats without unlocking your phone. Just remember, with great power comes great efficiency. Or something like that.
+* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
+* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
+* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
+* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
+* [**] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
+* [***] [internal] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
-We changed the way alerts appear when you’re inserting media into blocks from a URL. So we’ve got that going for us, which is nice.
-
-It’s also easier to tell the difference between placeholder text and actual content in block-based themes.
-
-Finally, we updated the navigation in My Site so you can reach popular sections of the site faster. (Don’t love these shortcuts? Don’t worry, you can personalize them to your heart’s content.)

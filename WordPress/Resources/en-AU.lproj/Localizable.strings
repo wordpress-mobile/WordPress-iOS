@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-09-18 15:19:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1343,9 +1343,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Change Settings";
 
-/* Change site icon button */
-"Change Site Icon" = "Change Site Icon";
-
 /* Change Username title. */
 "Change Username" = "Change Username";
 
@@ -1438,9 +1435,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the button to progress with the selected site homepage design
    Title for the button to progress with the selected site homepage design. */
 "Choose" = "Choose";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
@@ -5852,8 +5846,7 @@ translators: Block name. %s: The localized block name */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Remove";
 
 /* Remove Person Alert Title
@@ -6468,9 +6461,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Set Featured Image";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
@@ -7092,9 +7082,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Take a Photo";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Take a Photo or Video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Take a Video";

@@ -139,6 +139,7 @@ class ReaderPostCardCell: UITableViewCell {
         static let borderWidth: CGFloat = 0.5
         static let imageSeparatorBorderWidth: CGFloat = 1.0
         static let separatorHeight: CGFloat = 0.5
+        static let likeButtonIdentifier = "reader-like-button"
     }
 
 }
@@ -176,7 +177,7 @@ private extension ReaderPostCardCell {
     }
 
     func setupContentView() {
-        contentView.backgroundColor = .listForeground
+        contentView.backgroundColor = .systemBackground
     }
 
     func setupContentStackView() {
@@ -351,8 +352,8 @@ private extension ReaderPostCardCell {
     func contentViewConstraints() -> [NSLayoutConstraint] {
         let margins = Constants.ContentStackView.margins
         return [
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margins),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margins),
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margins),
             contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor,
                                                      constant: Constants.ContentStackView.bottomAnchor)
@@ -483,12 +484,12 @@ private extension ReaderPostCardCell {
         if !viewModel.isReblogEnabled {
             removeFromStackView(controlsStackView, view: reblogButton)
         }
-        if viewModel.isCommentsEnabled {
-            configureLikeButton()
-        } else {
+        if !viewModel.isCommentsEnabled {
             removeFromStackView(controlsStackView, view: commentButton)
         }
-        if !viewModel.isLikesEnabled {
+        if viewModel.isLikesEnabled {
+            configureLikeButton()
+        } else {
             removeFromStackView(controlsStackView, view: likeButton)
         }
     }
@@ -516,6 +517,7 @@ private extension ReaderPostCardCell {
         reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
         commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
         likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        likeButton.accessibilityIdentifier = Constants.likeButtonIdentifier
         menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
         menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
         accessibilityElements = [

@@ -598,7 +598,7 @@ import Combine
             return
         }
 
-        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && FeatureFlag.readerImprovements.enabled
+        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && RemoteFeatureFlag.readerImprovements.enabled()
         let headerView = {
             guard isNewSiteHeader else {
                 return header
@@ -719,11 +719,11 @@ import Combine
 
         if ReaderHelpers.isTopicTag(topic) {
             // don't display any title for the tag stream for the new design.
-            if FeatureFlag.readerImprovements.enabled {
+            if RemoteFeatureFlag.readerImprovements.enabled() {
                 return
             }
             title = NSLocalizedString("Topic", comment: "Topic page title")
-        } else if FeatureFlag.readerImprovements.enabled && ReaderHelpers.topicType(topic) == .site {
+        } else if RemoteFeatureFlag.readerImprovements.enabled() && ReaderHelpers.topicType(topic) == .site {
             title = ""
         } else {
             title = topic.title
@@ -804,13 +804,18 @@ import Combine
         tableView.tableHeaderView = headerView
     }
 
-
     /// Scrolls to the top of the list of posts.
-    ///
     @objc func scrollViewToTop() {
-        tableView.setContentOffset(.zero, animated: true)
-    }
+        guard RemoteFeatureFlag.readerImprovements.enabled(),
+              tableView.numberOfRows(inSection: .zero) > 0 else {
+            tableView.setContentOffset(.zero, animated: true)
+            return
+        }
 
+        /// `scrollToRow` somehow works better when the first cell has dynamic height. With `setContentOffset`,
+        /// sometimes it doesn't perfectly scroll to the top, thus making the top cell appear clipped.
+        tableView.scrollToRow(at: IndexPath(row: .zero, section: .zero), at: .top, animated: true)
+    }
 
     /// Returns the analytics property dictionary for the current topic.
     private func topicPropertyForStats() -> [AnyHashable: Any]? {
@@ -1651,7 +1656,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if FeatureFlag.readerImprovements.enabled {
+        if RemoteFeatureFlag.readerImprovements.enabled() {
             let cell = tableConfiguration.postCardCell(tableView)
             let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                         isLoggedIn: isLoggedIn,

@@ -509,6 +509,9 @@ import Foundation
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
+    // Widgets
+    case widgetsLoadedOnApplicationOpened
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1387,6 +1390,10 @@ import Foundation
             return "free_to_paid_plan_dashboard_card_tapped"
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // Widgets
+        case .widgetsLoadedOnApplicationOpened:
+            return "widgets_loaded_on_application_opened"
 
         } // END OF SWITCH
     }
