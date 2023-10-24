@@ -135,7 +135,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
-        prepareApplicationForUITests(application)
+        UITestConfigurator.prepareApplicationForUITests(application)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)

@@ -4,6 +4,7 @@ struct UITestConfigurator {
     static func prepareApplicationForUITests(_ application: UIApplication) {
         disableAnimations(application)
         logoutAtLaunch()
+        disableCompliancePopover()
     }
 
     /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
@@ -22,6 +23,12 @@ struct UITestConfigurator {
     private static func logoutAtLaunch() {
         if CommandLine.arguments.contains("-logout-at-launch") {
             AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
+    private static func disableCompliancePopover() {
+        if CommandLine.arguments.contains("-ui-testing") {
+            UserDefaults.standard.didShowCompliancePopup = true
         }
     }
 }
