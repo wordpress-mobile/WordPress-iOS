@@ -6,8 +6,14 @@ final class MyDomainsViewController: UIViewController {
         title = Strings.title
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
-        let action = UIAction { _ in
-            // Present add domain screen.
+        let action = UIAction { [weak self] _ in
+            let viewController = DomainsDashboardFactory.makeDomainsSuggestionViewController(
+                blog: Blog(context: ContextManager.shared.mainContext),
+                domainSelectionType: .registerWithPaidPlan) {
+                    print("** DISMISSED **")
+                }
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self?.present(navigationController, animated: true)
         }
         navigationItem.rightBarButtonItem = .init(systemItem: .add, primaryAction: action)
     }
