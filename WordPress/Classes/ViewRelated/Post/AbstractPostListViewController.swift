@@ -495,6 +495,14 @@ class AbstractPostListViewController: UIViewController,
         assert(false, "You should implement this method in the subclass")
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        0
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        nil
+    }
+
     func tableViewDidChangeContent(_ tableView: UITableView) {
         refreshResults()
     }
