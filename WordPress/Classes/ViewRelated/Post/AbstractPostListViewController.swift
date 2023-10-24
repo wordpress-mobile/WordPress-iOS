@@ -32,9 +32,6 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
-    private(set) var ghostableTableView = UITableView()
-    var ghostingEnabled = false
-
     @objc var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
@@ -128,7 +125,6 @@ class AbstractPostListViewController: UIViewController,
         configureNavbar()
         configureSearchController()
         configureAuthorFilter()
-        configureGhostableTableView()
         configureNavigationBarAppearance()
 
         tableView.reloadData()
@@ -138,8 +134,6 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        startGhost()
 
         if reloadTableViewBeforeAppearing {
             reloadTableViewBeforeAppearing = false
@@ -242,7 +236,6 @@ class AbstractPostListViewController: UIViewController,
 
         hideNoResultsView()
         if emptyResults {
-            stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
     }
@@ -269,22 +262,6 @@ class AbstractPostListViewController: UIViewController,
         navigationItem.compactAppearance = standardAppearance
         navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
         navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
-    }
-
-    func configureGhostableTableView() {
-        view.addSubview(ghostableTableView)
-        ghostableTableView.isHidden = true
-
-        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
-            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor),
-            ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            ghostableTableView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        ])
-
-        ghostableTableView.backgroundColor = .white
-        ghostableTableView.isScrollEnabled = false
     }
 
     @objc func propertiesForAnalytics() -> [String: AnyObject] {
@@ -675,7 +652,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncContentStart(_ syncHelper: WPContentSyncHelper) {
-        startGhost()
         atLeastSyncedOnce = true
     }
 
@@ -683,8 +659,6 @@ class AbstractPostListViewController: UIViewController,
         refreshControl.endRefreshing()
         postListFooterView.showSpinner(false)
         noResultsViewController.removeFromView()
-
-        stopGhost()
 
         if emptyResults {
             // This is a special case.  Core data can be a bit slow about notifying
@@ -704,8 +678,6 @@ class AbstractPostListViewController: UIViewController,
             promptForPassword()
             return
         }
-
-        stopGhost()
 
         dismissAllNetworkErrorNotices()
 
@@ -735,35 +707,6 @@ class AbstractPostListViewController: UIViewController,
         WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
             self.present(navController, animated: true)
         }
-    }
-
-    // MARK: - Ghost cells
-
-    final func startGhost() {
-        guard ghostingEnabled, emptyResults else {
-            return
-        }
-
-        if isViewOnScreen() {
-            ghostableTableView.startGhostAnimation()
-        }
-        ghostableTableView.isHidden = false
-        noResultsViewController.view.isHidden = true
-    }
-
-    final func stopGhost() {
-        ghostableTableView.isHidden = true
-        ghostableTableView.stopGhostAnimation()
-        noResultsViewController.view.isHidden = false
-    }
-
-    private func stopGhostIfConnectionIsNotAvailable() {
-        guard WordPressAppDelegate.shared?.connectionAvailable == false else {
-            return
-        }
-
-        atLeastSyncedOnce = true
-        stopGhost()
     }
 
     // MARK: - Actions
@@ -997,8 +940,6 @@ class AbstractPostListViewController: UIViewController,
         filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
         refreshAndReload()
-
-        startGhost()
 
         syncItemsWithUserInteraction(false)
 
