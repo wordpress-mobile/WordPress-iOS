@@ -12,7 +12,7 @@ final class PageListCell: UITableViewCell, Reusable {
     private let featuredImageView = CachedAnimatedImageView()
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
-    private var indentionIconView = UIImageView()
+    private var indentationIconView = UIImageView()
     private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
@@ -64,8 +64,8 @@ final class PageListCell: UITableViewCell, Reusable {
             bottom: 12,
             trailing: 16
         )
-        indentionIconView.isHidden = indentation == 0
-        indentionIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
+        indentationIconView.isHidden = indentation == 0
+        indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
     }
 
     // MARK: - Setup
@@ -75,9 +75,9 @@ final class PageListCell: UITableViewCell, Reusable {
         setupFeaturedImageView()
         setupEllipsisButton()
 
-        indentionIconView.image = UIImage(named: "subdirectory")
-        indentionIconView.setContentHuggingPriority(.required, for: .horizontal)
-        indentionIconView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        indentationIconView.image = UIImage(named: "subdirectory")
+        indentationIconView.setContentHuggingPriority(.required, for: .horizontal)
+        indentationIconView.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let badgesStackView = UIStackView(arrangedSubviews: [
             badgeIconView, badgesLabel, UIView()
@@ -92,7 +92,7 @@ final class PageListCell: UITableViewCell, Reusable {
         labelsStackView.axis = .vertical
 
         contentStackView.addArrangedSubviews([
-            indentionIconView, labelsStackView, featuredImageView, ellipsisButton
+            indentationIconView, labelsStackView, featuredImageView, ellipsisButton
         ])
         contentStackView.spacing = 8
         contentStackView.alignment = .center
