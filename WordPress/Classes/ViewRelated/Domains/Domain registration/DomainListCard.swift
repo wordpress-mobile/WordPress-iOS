@@ -155,26 +155,33 @@ extension DomainListCard.ViewModel: MyDomainViewModel {
             }
             return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
         }()
-        let expiryDate: String? = {
-            guard let date = domain.expiryDate else {
+        let date: String? = {
+            guard let date = domain.expiryDate, domain.hasRegistration else {
                 return nil
             }
+            let expired = date < Date()
+            let notice = expired ? Strings.expired : Strings.renews
             let formatted = Self.dateFormatter.string(from: date)
-            return "\(Strings.expires) \(formatted)"
+            return "\(notice) \(formatted)"
         }()
         self.init(
             domainName: domain.domain,
             domainHeadline: domainHeadline,
             status: domain.status,
-            date: expiryDate
+            date: date
         )
     }
 
     private enum Strings {
-        static let expires = NSLocalizedString(
-            "domain.management.card.expires.label",
-            value: "Expires",
-            comment: "The expires label of the domain card in My Domains screen."
+        static let expired = NSLocalizedString(
+            "domain.management.card.expired.label",
+            value: "Expired",
+            comment: "The expired label of the domain card in My Domains screen."
+        )
+        static let renews = NSLocalizedString(
+            "domain.management.card.renews.label",
+            value: "Renews",
+            comment: "The renews label of the domain card in My Domains screen."
         )
     }
 }
