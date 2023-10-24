@@ -61,11 +61,6 @@ class AbstractPostListViewController: UIViewController,
         return tableViewHandler
     }()
 
-    @objc lazy var estimatedHeightsCache: NSCache = { () -> NSCache<AnyObject, AnyObject> in
-        let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
-        return estimatedHeightsCache
-    }()
-
     @objc lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
 
@@ -426,23 +421,11 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Table View Handling
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
-        // likes to reload rows in a strange way.
-        // It uses the estimated height as a starting value for reloading animations.
-        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
-        // the cell heights during reload animations.
-        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
-        // Brent C. August 2/2016
-        if let height = estimatedHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
-            // Return the previously known height as it was cached via willDisplayCell.
-            return height
-        }
-        // Otherwise return whatever we have set to the tableView explicitly, and ideally a pretty close value.
-        return tableView.estimatedRowHeight
+        110
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -462,11 +445,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        // Cache the cell's layout height as the currently known height, for estimation.
-        // See estimatedHeightForRowAtIndexPath
-        estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
-
         guard isViewOnScreen() else {
             return
         }
