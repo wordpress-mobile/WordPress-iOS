@@ -35,34 +35,10 @@ final class MyDomainsViewController: UIViewController {
         title = Strings.title
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
-        navigationItem.rightBarButtonItem = .init(systemItem: .add)
-        let addToSiteAction = menuAction(withTitle: Action.addToSite.title) { action in
-            print("add to site")
+        let action = UIAction { _ in
+            // Present add domain screen.
         }
-        let purchaseAction = menuAction(withTitle: Action.purchase.title) { action in
-            print("purchase")
-        }
-        let transferAction = menuAction(withTitle: Action.transfer.title) { action in
-            print("transfer")
-        }
-
-        let actions = [addToSiteAction, purchaseAction, transferAction]
-        let menu = UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: actions)
-        navigationItem.rightBarButtonItem?.menu = menu
-
-    }
-
-    private func menuAction(withTitle title: String, handler: UIActionHandler) -> UIAction {
-        .init(
-            title: title,
-            image: nil,
-            identifier: nil,
-            discoverabilityTitle: nil,
-            attributes: .init(),
-            state: .off,
-            handler: { (action) in
-            // Perform action
-        })
+        navigationItem.rightBarButtonItem = .init(systemItem: .add, primaryAction: action)
     }
 }
 
