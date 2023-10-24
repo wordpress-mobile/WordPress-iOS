@@ -20,8 +20,6 @@ class AbstractPostListViewController: UIViewController,
 
     fileprivate static let defaultHeightForFooterView = CGFloat(44.0)
 
-    fileprivate let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
-
     private var fetchBatchSize: Int {
         return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
     }
@@ -127,7 +125,6 @@ class AbstractPostListViewController: UIViewController,
         configureFilterBar()
         configureTableView()
         configureFooterView()
-        configureWindowlessCell()
         configureNavbar()
         configureSearchController()
         configureAuthorFilter()
@@ -232,10 +229,6 @@ class AbstractPostListViewController: UIViewController,
 
         postListFooterView.frame = frame
         tableView.tableFooterView = postListFooterView
-    }
-
-    @objc func configureWindowlessCell() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
     private func refreshResults() {
@@ -378,22 +371,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         tableView.sendSubviewToBack(noResultsViewController.view)
-    }
-
-    // MARK: - TableView Helpers
-
-    @objc func dequeCellForWindowlessLoadingIfNeeded(_ tableView: UITableView) -> UITableViewCell? {
-        // As also seen in ReaderStreamViewController:
-        // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
-        // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
-        // The result is the cells do not show the correct layouts relative to superview margins.
-        // HACK: kurzee, 2016-07-12
-        // Use a generic cell in this situation and reload the table view once its back in a window.
-        if tableView.window == nil {
-            reloadTableViewBeforeAppearing = true
-            return tableView.dequeueReusableCell(withIdentifier: abstractPostWindowlessCellIdenfitier)
-        }
-        return nil
     }
 
     // MARK: - TableViewHandler Delegate Methods
