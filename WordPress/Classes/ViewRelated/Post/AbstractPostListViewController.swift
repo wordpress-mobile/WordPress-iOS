@@ -523,29 +523,27 @@ class AbstractPostListViewController: UIViewController,
             ofType: postType,
             with: options,
             for: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
+            success: { [weak self] posts in
+                guard let self, let posts else {
                     return
                 }
 
                 if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: {[weak self] (error: Error?) -> () in
+            }, failure: { [weak self] error in
 
-                guard let strongSelf = self,
-                    let error = error else {
+                guard let self, let error else {
                     return
                 }
 
                 failure?(error as NSError)
 
                 if userInteraction == true {
-                    strongSelf.handleSyncFailure(error as NSError)
+                    self.handleSyncFailure(error as NSError)
                 }
         })
     }
@@ -575,24 +573,21 @@ class AbstractPostListViewController: UIViewController,
             ofType: postType,
             with: options,
             for: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                        return
+            success: { [weak self] posts in
+                guard let self, let posts else {
+                    return
                 }
 
                 if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: { (error) -> () in
-
-                guard let error = error else {
+            }, failure: { error in
+                guard let error else {
                     return
                 }
-
                 failure?(error as NSError)
             })
     }
@@ -729,25 +724,24 @@ class AbstractPostListViewController: UIViewController,
                 PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
-        }, failure: { [weak self] (error) in
-
-            guard let strongSelf = self else {
+        }, failure: { [weak self] error in
+            guard let self else {
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).httpErrorCodeForbidden {
-                strongSelf.promptForPassword()
+            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
+                self.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = strongSelf.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-                strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
+            if let index = self.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
+                self.recentlyTrashedPostObjectIDs.remove(at: index)
                 // We don't really know what happened here, why did the request fail?
                 // Maybe we could not delete the post or maybe the post was already deleted
                 // It is safer to re fetch the results than to reload that specific row
                 DispatchQueue.main.async {
-                    strongSelf.updateAndPerformFetchRequestRefreshingResults()
+                    self.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
         })
@@ -773,7 +767,7 @@ class AbstractPostListViewController: UIViewController,
 
         postService.restore(apost, success: { [weak self] in
 
-            guard let strongSelf = self else {
+            guard let self else {
                 return
             }
 
@@ -781,7 +775,7 @@ class AbstractPostListViewController: UIViewController,
 
             // Make sure the post still exists.
             do {
-                apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
+                apost = try self.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
             } catch {
                 DDLogError("\(error)")
                 return
@@ -794,30 +788,30 @@ class AbstractPostListViewController: UIViewController,
             if let postStatus = apost.status {
                 // If the post was restored, see if it appears in the current filter.
                 // If not, prompt the user to let it know under which filter it appears.
-                let filter = strongSelf.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
+                let filter = self.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
 
-                if filter.filterType == strongSelf.filterSettings.currentPostListFilter().filterType {
+                if filter.filterType == self.filterSettings.currentPostListFilter().filterType {
                     return
                 }
 
-                strongSelf.promptThatPostRestoredToFilter(filter)
+                self.promptThatPostRestoredToFilter(filter)
 
                 // Reindex the restored post in spotlight
                 SearchManager.shared.indexItem(apost)
             }
-        }) { [weak self] (error) in
+        }) { [weak self] error in
 
-            guard let strongSelf = self else {
+            guard let self else {
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).httpErrorCodeForbidden {
-                strongSelf.promptForPassword()
+            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
+                self.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
+            self.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
     }
 
