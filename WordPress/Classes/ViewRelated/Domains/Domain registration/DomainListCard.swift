@@ -182,21 +182,20 @@ extension DomainListCard.ViewModel: MyDomainViewModel {
 
 // MARK: - Previews
 
-//struct DomainListCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ZStack {
-//            Color(.systemBackground)
-//            DomainListCard(
-//                domainInfo: .init(
-//                    domainName: "domain.cool.cool",
-//                    domainHeadline: "A Cool Website",
-//                    status: .actionRequired,
-//                    description: "This domain requires explicit user consent to complete the registration. Please check the email sent for further details.",
-//                    date: "Expires Aug 15 2004"
-//                )
-//            )
-//        }
-//        .ignoresSafeArea()
-//        .environment(\.colorScheme, .light)
-//    }
-//}
+struct DomainListCard_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            Color(.systemBackground)
+            DomainListCard(
+                domainInfo: .init(
+                    domainName: "domain.cool.cool",
+                    domainHeadline: "A Cool Website",
+                    status: .init(value: "Active", type: .success),
+                    date: "Expires Aug 15 2004"
+                )
+            )
+        }
+        .ignoresSafeArea()
+        .environment(\.colorScheme, .light)
+    }
+}
