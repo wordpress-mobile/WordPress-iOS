@@ -10123,17 +10123,8 @@
 		08D61F1F2AD0633600BF3D00 /* All Domains */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				F4141EF02AE99F14000D2AAE /* View Models */,
 				F4141EEF2AE99EE2000D2AAE /* Views */,
-=======
-				08D61F202AD0635100BF3D00 /* AllDomainsListViewController.swift */,
-				F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */,
-				F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */,
-				F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */,
-				F4141EE92AE74ADA000D2AAE /* AllDomainsListActivityIndicatorTableViewCell.swift */,
-				F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */,
->>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains)
 			);
 			path = "All Domains";
 			sourceTree = "<group>";
