@@ -46,6 +46,7 @@ final class PostListHeaderView: UIView {
 
         authorLabel.text = viewModel.author
         dateLabel.text = viewModel.date
+        dateLabel.textColor = viewModel.post.status == .trash ? .systemRed : .secondaryLabel
     }
 
     private func configureEllipsisButton(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate) {
@@ -59,6 +60,8 @@ final class PostListHeaderView: UIView {
     private func setupView() {
         setupLabelStackView()
         setupEllipsisButton()
+
+        dateLabel.setContentCompressionResistancePriority(.init(rawValue: 800), for: .horizontal)
 
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addArrangedSubviews([

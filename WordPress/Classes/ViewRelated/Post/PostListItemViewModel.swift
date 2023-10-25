@@ -16,7 +16,7 @@ final class PostListItemViewModel {
         self.post = post
         self.content = makeContentAttributedString(for: post)
         self.imageURL = post.featuredImageURL
-        self.date = post.displayDate()?.capitalizeFirstWord
+        self.date = AbstractPostHelper.getLocalizedDate(for: post)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
@@ -48,12 +48,4 @@ private func makeContentAttributedString(for post: Post) -> NSAttributedString {
     }
 
     return string
-}
-
-private extension String {
-    var capitalizeFirstWord: String {
-        let firstLetter = self.prefix(1).capitalized
-        let remainingLetters = self.dropFirst()
-        return firstLetter + remainingLetters
-    }
 }
