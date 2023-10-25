@@ -220,9 +220,14 @@ class MeViewController: UITableViewController {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
                 return [
                     ButtonRow(title: AllDomainsListViewController.Strings.title) { action in
+<<<<<<< HEAD
                         self.showOrPushController(AllDomainsListViewController()) { [weak self] in
                             self?.tableView.deselectSelectedRowWithAnimation(true)
                         }
+=======
+                        self.showOrPushController(AllDomainsListViewController())
+                        self.tableView.deselectSelectedRowWithAnimation(true)
+>>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains)
                     }
                 ]
             }()))
