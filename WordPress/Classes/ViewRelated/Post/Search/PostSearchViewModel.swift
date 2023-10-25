@@ -15,16 +15,11 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
     enum ItemID: Hashable {
         case token(AnyHashable)
-        case result(NSManagedObjectID)
+        case post(NSManagedObjectID)
     }
 
-    private(set) var suggestedTokens: [any PostSearchToken] = [] {
-        didSet { reload() }
-    }
-
-    private(set) var posts: [AbstractPost] = [] {
-        didSet { reload() }
-    }
+    private(set) var suggestedTokens: [any PostSearchToken] = []
+    private(set) var posts: [AbstractPost] = []
 
     private let blog: Blog
     private let settings: PostListFilterSettings
@@ -70,8 +65,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             .sink { [weak self] _ in self?.performRemoteSearch() }
             .store(in: &cancellables)
 
-        // TODO:
-//        NotificationCenter.default.addObserver(self, selector: #selector(reloadData(with:)), name: NSManagedObjectContext.didChangeObjectsNotification, object: ContextManager.shared.mainContext)
+        NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: coreData.mainContext)
+            .sink { [weak self] in self?.reload(with: $0) }
+            .store(in: &cancellables)
 
         reload()
     }
@@ -82,6 +79,38 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         snapshot = makeSnapshot()
     }
 
+    private func reload(with notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let existingObjects = Set(posts)
+        var updated = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>) ?? []
+        var deleted = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? []
+
+        updated.formIntersection(existingObjects)
+        deleted.formIntersection(existingObjects)
+
+        guard !updated.isEmpty || !deleted.isEmpty else {
+            return
+        }
+
+        var snapshot = makeSnapshot()
+        for object in updated {
+            cachedItems[object.objectID] = nil
+        }
+        snapshot.reloadItems(updated.map({ ItemID.post($0.objectID) }))
+
+        for object in deleted {
+            cachedItems[object.objectID] = nil
+            if let post = object as? AbstractPost,
+               let index = posts.firstIndex(of: post) {
+                posts.remove(at: index)
+            }
+            snapshot.deleteItems(deleted.map({ ItemID.post($0.objectID) }))
+        }
+
+        self.snapshot = snapshot
+    }
+
     private func makeSnapshot() -> NSDiffableDataSourceSnapshot<SectionID, ItemID> {
         var snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>()
 
@@ -90,7 +119,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
 
         snapshot.appendSections([SectionID.posts])
-        let postIDs = posts.map { ItemID.result($0.objectID) }
+        let postIDs = posts.map { ItemID.post($0.objectID) }
         snapshot.appendItems(postIDs, toSection: SectionID.posts)
 
         return snapshot
@@ -119,11 +148,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         posts = []
         selectedTokens.append(token)
         searchTerm = ""
-    }
-
-    func apply( notification: NSNotification) {
-        // TODO: Reload all the needed ViewModels and the respective search term highlughts
-        // TODO: Create a snapshot and send to the screen (this will support cancellation)
+        reload()
     }
 
     // MARK: - Search (Remote)
@@ -134,6 +159,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         guard searchTerm.count > 1 || !selectedTokens.isEmpty else {
             if !posts.isEmpty {
                 posts = []
+                reload()
             }
             return
         }
@@ -180,6 +206,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
         // Updating for current searchTerm, not the one that the service searched for
         updateHighlightForSearchResults(for: searchTerm)
+        reload()
     }
 
     func serviceDidUpdateState(_ service: PostSearchService) {
@@ -212,6 +239,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         default:
             fatalError("Unsupported item: \(type(of: post))")
         }
+        updateHighlight(for: item, terms: getSearchTerms(from: searchTerm))
         cachedItems[post.objectID] = item
         return item
     }
@@ -219,24 +247,23 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     // MARK: - Highlighter
 
     private func updateHighlightForSearchResults(for searchTerm: String) {
-        let terms = searchTerm
-            .trimmingCharacters(in: .whitespaces)
-            .components(separatedBy: .whitespaces)
-            .filter { !$0.isEmpty }
+        let terms = getSearchTerms(from: searchTerm)
         for post in posts {
-            guard let item = cachedItems[post.objectID] else {
-                continue
-            }
-            switch item {
-            case .post(let viewModel):
-                let string = NSMutableAttributedString(attributedString: viewModel.content)
-                PostSearchViewModel.highlight(terms: terms, in: string)
-                viewModel.content = string
-            case .page(let viewModel):
-                let string = NSMutableAttributedString(attributedString: viewModel.title)
-                PostSearchViewModel.highlight(terms: terms, in: string)
-                viewModel.title = string
-            }
+            guard let item = cachedItems[post.objectID] else { continue }
+            updateHighlight(for: item, terms: terms)
+        }
+    }
+
+    private func updateHighlight(for item: PostSearchResultItem, terms: [String]) {
+        switch item {
+        case .post(let viewModel):
+            let string = NSMutableAttributedString(attributedString: viewModel.content)
+            PostSearchViewModel.highlight(terms: terms, in: string)
+            viewModel.content = string
+        case .page(let viewModel):
+            let string = NSMutableAttributedString(attributedString: viewModel.title)
+            PostSearchViewModel.highlight(terms: terms, in: string)
+            viewModel.title = string
         }
     }
 
@@ -249,8 +276,16 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             let tokens = await suggestionsService.getSuggestion(for: searchTerm, selectedTokens: selectedTokens)
             guard !Task.isCancelled else { return }
             self.suggestedTokens = tokens
+            self.reload()
         }
     }
+}
+
+private func getSearchTerms(from searchTerm: String) -> [String] {
+    searchTerm
+        .trimmingCharacters(in: .whitespaces)
+        .components(separatedBy: .whitespaces)
+        .filter { !$0.isEmpty }
 }
 
 enum PostSearchResultItem {
