@@ -24,7 +24,7 @@ import WidgetKit
             return "\(Events.eventPrefix(for: eventKind).rawValue)_\(widgetInfo.family.description.lowercased())"
         }
 
-        let dict = Dictionary(uniqueKeysWithValues: widgetAnalyticNames.map { name in
+        let dict = Dictionary(uniqueKeysWithValues: Set(widgetAnalyticNames).map { name in
             return (name, "true")
         })
 
