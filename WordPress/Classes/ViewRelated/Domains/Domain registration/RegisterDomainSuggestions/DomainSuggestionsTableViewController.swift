@@ -33,7 +33,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     weak var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
     var domainSelectionType: DomainSelectionType?
-    var freeSiteAddress: String = ""
+    var primaryDomainAddress: String = ""
 
     var useFadedColorForParentDomains: Bool {
         return false
@@ -299,10 +299,10 @@ extension DomainSuggestionsTableViewController {
         textLabel.minimumScaleFactor = 0.5
 
         let template = NSLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
-        let formatted = String(format: template, freeSiteAddress)
+        let formatted = String(format: template, primaryDomainAddress)
         let attributed = NSMutableAttributedString(string: formatted, attributes: [:])
 
-        if let range = formatted.range(of: freeSiteAddress) {
+        if let range = formatted.range(of: primaryDomainAddress) {
             attributed.addAttributes([.font: textLabel.font.bold()], range: NSRange(range, in: formatted))
         }
 

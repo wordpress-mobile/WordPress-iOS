@@ -330,8 +330,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     private func followButton(title: String) -> UIButton {
         if RemoteFeatureFlag.readerImprovements.enabled() {
             let button = UIButton()
+            let contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
             button.isSelected = true
-            WPStyleGuide.applyReaderFollowButtonStyle(button)
+            WPStyleGuide.applyNewReaderFollowButtonStyle(button, contentInsets: contentInsets)
             button.tintColor = .clear
             button.sizeToFit()
             return button

@@ -1,3 +1,13 @@
+23.6
+-----
+
+* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
+* [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
+* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
+* [*] Fix an issue that leads to an ambiguous error message when an incorrect SMS 2FA code is submitted. [#21863]
+* [*] Fix an issue where two 2FA controllers were being opened at the same time when logging in. [#21865]
+
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
@@ -7,7 +17,6 @@
 * [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
 * [*] [WordPress-only] fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
 * [**] [Jetpack-only] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
-* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
 23.4
 -----

@@ -1,7 +1,0 @@
-Vi har bekämpat buggar! (Det var mycket renare än det låter.)
-
-- Nu kan du bädda in URL:er från X utan att länken bryts. Ganska X-cellent, om du frågar oss.
-- På tal om länkar – när du använder en ogiltig media-URL kommer appen nu att visa ett felmeddelande istället för att krascha. Bättre, eller hur?
-- Bidragslämnare ser nu rätt popup-fönster när de skickar in inlägg för granskning. Skönt.
-- Vi har åtgärdat ett problem där användare som inte är administratörer kunde se tilläggsmenyn för sin webbplats. Ur sikte, ur sinne.
-- Appen kraschar inte längre i blockredigeraren när du placerar för många block inuti block... inuti block... ja, du fattar. Där fick du, Inception.

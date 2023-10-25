@@ -24,10 +24,6 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
                 placeholderContent: config.placeholderContent
             )
         ) { (entry: LockScreenStatsWidgetEntry) -> LockScreenStatsWidgetsView in
-            defer {
-                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: config.kind)
-            }
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
                 viewProvider: config.viewProvider
