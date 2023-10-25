@@ -11,7 +11,7 @@ import WidgetKit
         }
     }
 
-    private static func properties(from widgetInfo: Result<[WidgetInfo], Error>) -> [String: String] {
+    private static func properties(from widgetInfo: Result<[WidgetInfo], Error>) -> [String: Int] {
         guard let installedWidgets = try? widgetInfo.get() else {
             return [:]
         }
@@ -24,9 +24,9 @@ import WidgetKit
             return "\(Events.eventPrefix(for: eventKind).rawValue)_\(widgetInfo.family.description.lowercased())"
         }
 
-        let dict = Dictionary(uniqueKeysWithValues: Set(widgetAnalyticNames).map { name in
-            return (name, "true")
-        })
+        let dict = widgetAnalyticNames.reduce(into: [String: Int]()) { partialResult, name in
+            partialResult[name, default: 0] += 1
+        }
 
         return dict
     }
