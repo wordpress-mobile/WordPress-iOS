@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DomainListCard: View {
+struct AllDomainsListCardView: View {
 
     private let viewModel: ViewModel
 
@@ -82,7 +82,7 @@ struct DomainListCard: View {
     typealias ViewModel = AllDomainsListItemViewModel
 }
 
-private extension DomainListCard.ViewModel.StatusType {
+private extension AllDomainsListCardView.ViewModel.StatusType {
 
     var fontWeight: Font.Weight {
         switch self {
@@ -133,7 +133,7 @@ struct DomainListCard_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color(.systemBackground)
-            DomainListCard(
+            AllDomainsListCardView(
                 viewModel: .init(
                     name: "domain.cool.cool",
                     description: "A Cool Website",
