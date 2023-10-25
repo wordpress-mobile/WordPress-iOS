@@ -59,6 +59,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             if self?.searchController?.searchBar.text != $0 {
                 self?.searchController?.searchBar.text = $0
             }
+            self?.updateHighlighsForVisibleCells(searchTerm: $0)
         }.store(in: &cancellables)
 
         viewModel.$selectedTokens
@@ -95,16 +96,21 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             return cell
         case .posts:
             let post = viewModel.posts[indexPath.row]
-            switch viewModel.getSearchResultItem(for: post) {
-            case .post(let post):
+            switch post {
+            case let post as Post:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
                 assert(listViewController is InteractivePostViewDelegate)
-                cell.configure(with: post, delegate: listViewController as? InteractivePostViewDelegate)
+                let viewModel = PostListItemViewModel(post: post)
+                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                updateHighlighs(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
-            case .page(let page):
+            case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
-                cell.configure(with: page)
+                cell.configure(with: PageListItemViewModel(page: page))
+                updateHighlighs(for: [cell], searchTerm: viewModel.searchTerm)
                 return cell
+            default:
+                fatalError("Unsupported item: \(type(of: post))")
             }
         }
     }
@@ -178,10 +184,37 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             $0.representedObject as! PostSearchToken
         }
     }
+
+    // MARK: - Highlighter
+
+    private func updateHighlighsForVisibleCells(searchTerm: String) {
+        let cells = (tableView.indexPathsForVisibleRows ?? [])
+            .compactMap(tableView.cellForRow)
+        updateHighlighs(for: cells, searchTerm: searchTerm)
+    }
+
+    private func updateHighlighs(for cells: [UITableViewCell], searchTerm: String) {
+        let terms = searchTerm
+            .trimmingCharacters(in: .whitespaces)
+            .components(separatedBy: .whitespaces)
+            .filter { !$0.isEmpty }
+        for cell in cells {
+            guard let cell = cell as? PostSearchResultCell else { continue }
+
+            assert(cell.attributedText != nil)
+            let string = NSMutableAttributedString(attributedString: cell.attributedText ?? .init())
+            PostSearchViewModel.highlight(terms: terms, in: string)
+            cell.attributedText = string
+        }
+    }
 }
 
 private enum Constants {
     static let postCellID = "postCellID"
     static let pageCellID = "pageCellID"
     static let tokenCellID = "suggestedTokenCellID"
+}
+
+protocol PostSearchResultCell: AnyObject {
+    var attributedText: NSAttributedString? { get set }
 }

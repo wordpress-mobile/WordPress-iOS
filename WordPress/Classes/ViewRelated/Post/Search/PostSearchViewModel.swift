@@ -26,7 +26,6 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private let coreData: CoreDataStack
     private let entityName: String
 
-    private var cachedItems: [NSManagedObjectID: PostSearchResultItem] = [:]
     private var searchService: PostSearchService?
     private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
@@ -54,7 +53,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         $searchTerm
             .dropFirst()
             .removeDuplicates()
-            .sink { [weak self] in self?.didUpdateSearchTerm($0) }
+            .sink { [weak self] in self?.updateSuggestedTokens(for: $0) }
             .store(in: &cancellables)
 
         $searchTerm.map { $0.trimmingCharacters(in: .whitespaces) }
@@ -94,13 +93,9 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         }
 
         var snapshot = makeSnapshot()
-        for object in updated {
-            cachedItems[object.objectID] = nil
-        }
         snapshot.reloadItems(updated.map({ ItemID.post($0.objectID) }))
 
         for object in deleted {
-            cachedItems[object.objectID] = nil
             if let post = object as? AbstractPost,
                let index = posts.firstIndex(of: post) {
                 posts.remove(at: index)
@@ -126,11 +121,6 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     }
 
     // MARK: - Events
-
-    private func didUpdateSearchTerm(_ searchTerm: String) {
-        updateHighlightForSearchResults(for: searchTerm)
-        updateSuggestedTokens(for: searchTerm)
-    }
 
     func didReachBottom() {
         guard let searchService, searchService.error == nil else { return }
@@ -203,9 +193,6 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         } else {
             self.posts += posts
         }
-
-        // Updating for current searchTerm, not the one that the service searched for
-        updateHighlightForSearchResults(for: searchTerm)
         reload()
     }
 
@@ -224,49 +211,6 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         }
     }
 
-    // MARK: - Search Results
-
-    func getSearchResultItem(for post: AbstractPost) -> PostSearchResultItem {
-        if let item = cachedItems[post.objectID] {
-            return item
-        }
-        let item: PostSearchResultItem
-        switch post {
-        case let post as Post:
-            item = .post(PostListItemViewModel(post: post))
-        case let page as Page:
-            item = .page(PageListItemViewModel(page: page))
-        default:
-            fatalError("Unsupported item: \(type(of: post))")
-        }
-        updateHighlight(for: item, terms: getSearchTerms(from: searchTerm))
-        cachedItems[post.objectID] = item
-        return item
-    }
-
-    // MARK: - Highlighter
-
-    private func updateHighlightForSearchResults(for searchTerm: String) {
-        let terms = getSearchTerms(from: searchTerm)
-        for post in posts {
-            guard let item = cachedItems[post.objectID] else { continue }
-            updateHighlight(for: item, terms: terms)
-        }
-    }
-
-    private func updateHighlight(for item: PostSearchResultItem, terms: [String]) {
-        switch item {
-        case .post(let viewModel):
-            let string = NSMutableAttributedString(attributedString: viewModel.content)
-            PostSearchViewModel.highlight(terms: terms, in: string)
-            viewModel.content = string
-        case .page(let viewModel):
-            let string = NSMutableAttributedString(attributedString: viewModel.title)
-            PostSearchViewModel.highlight(terms: terms, in: string)
-            viewModel.title = string
-        }
-    }
-
     // MARK: - Search Tokens
 
     private func updateSuggestedTokens(for searchTerm: String) {
@@ -279,16 +223,4 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             self.reload()
         }
     }
-}
-
-private func getSearchTerms(from searchTerm: String) -> [String] {
-    searchTerm
-        .trimmingCharacters(in: .whitespaces)
-        .components(separatedBy: .whitespaces)
-        .filter { !$0.isEmpty }
-}
-
-enum PostSearchResultItem {
-    case post(PostListItemViewModel)
-    case page(PageListItemViewModel)
 }

@@ -2,7 +2,7 @@ import Foundation
 
 final class PostListItemViewModel {
     let post: Post
-    @Published var content: NSAttributedString
+    let content: NSAttributedString
     let imageURL: URL?
     let date: String?
     let accessibilityIdentifier: String?
