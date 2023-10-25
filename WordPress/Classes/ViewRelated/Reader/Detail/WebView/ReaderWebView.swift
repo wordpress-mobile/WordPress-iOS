@@ -210,8 +210,8 @@ class ReaderWebView: WKWebView {
               dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
               --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
-              --main-link-color: #\(UIColor.primary.color(for: trait).hexString() ?? "");
-              --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "");
+              --main-link-color: #\(UIColor.muriel(color: .init(name: .blue)).color(for: trait).hexString() ?? "");
+              --main-link-active-color: #\(UIColor.muriel(name: .blue, .shade30).color(for: trait).hexString() ?? "");
             }
         """
     }
