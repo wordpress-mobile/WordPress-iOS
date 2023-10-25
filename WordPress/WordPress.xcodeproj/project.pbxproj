@@ -196,6 +196,8 @@
 		01A8508C2A8A126400BD8A97 /* support_chat_widget.css in Resources */ = {isa = PBXBuildFile; fileRef = 01A8508A2A8A126400BD8A97 /* support_chat_widget.css */; };
 		01ABF1702AD578B3004331BD /* WidgetAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */; };
 		01ABF1712AD578B3004331BD /* WidgetAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */; };
+		01B5C3C72AE7FC61007055BB /* UITestConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B5C3C62AE7FC61007055BB /* UITestConfigurator.swift */; };
+		01B5C3C82AE7FC61007055BB /* UITestConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B5C3C62AE7FC61007055BB /* UITestConfigurator.swift */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
 		01CE500E290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -5867,6 +5869,7 @@
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
 		01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAnalytics.swift; sourceTree = "<group>"; };
+		01B5C3C62AE7FC61007055BB /* UITestConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestConfigurator.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFieldView.swift; sourceTree = "<group>"; };
@@ -9863,6 +9866,14 @@
 			name = Coordinators;
 			sourceTree = "<group>";
 		};
+		01B5C3C52AE7FC3B007055BB /* UITesting */ = {
+			isa = PBXGroup;
+			children = (
+				01B5C3C62AE7FC61007055BB /* UITestConfigurator.swift */,
+			);
+			name = UITesting;
+			sourceTree = "<group>";
+		};
 		01E258002ACC36DC00F09666 /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -13707,6 +13718,7 @@
 		8584FDB719243E550019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				01B5C3C52AE7FC3B007055BB /* UITesting */,
 				0107E0F128FD6A3100DE87DB /* Constants */,
 				803BB97E295957A200B3F6D6 /* Root View */,
 				BE87E19E1BD4052F0075D45B /* 3DTouch */,
@@ -22488,6 +22500,7 @@
 				D82253DC2199411F0014D0E2 /* SiteAddressService.swift in Sources */,
 				83B1D037282C62620061D911 /* BloggingPromptsAttribution.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
+				01B5C3C72AE7FC61007055BB /* UITestConfigurator.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
@@ -24743,6 +24756,7 @@
 				FABB23B22602FC2C00C8785C /* StatsChildRowsView.swift in Sources */,
 				FABB23B32602FC2C00C8785C /* Menu.m in Sources */,
 				FABB23B42602FC2C00C8785C /* BlogListViewController.m in Sources */,
+				01B5C3C82AE7FC61007055BB /* UITestConfigurator.swift in Sources */,
 				837A53D82AD8C3A400B941A2 /* ReaderFollowButton.swift in Sources */,
 				FABB23B52602FC2C00C8785C /* JetpackScanStatusCell.swift in Sources */,
 				FABB23B62602FC2C00C8785C /* NoteBlockCommentTableViewCell.swift in Sources */,
