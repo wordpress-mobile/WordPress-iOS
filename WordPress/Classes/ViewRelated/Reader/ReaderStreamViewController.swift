@@ -598,13 +598,15 @@ import Combine
             return
         }
 
-        let isNewSiteHeader = ReaderHelpers.isTopicSite(topic) && !isContentFiltered && RemoteFeatureFlag.readerImprovements.enabled()
+        let isNewHeader = RemoteFeatureFlag.readerImprovements.enabled() && !isContentFiltered
+        let isNewSiteHeader = isNewHeader && ReaderHelpers.isTopicSite(topic)
+
         let headerView = {
             guard isNewSiteHeader else {
                 return header
             }
 
-            // The container view is so that the header respects the safe area boundaries and expands
+            // The container view is added so that the header respects the safe area boundaries and expands
             // the header's background color to the screen's edges.
             let containerView = UIView()
             containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -637,8 +639,23 @@ import Combine
             constraints.append(contentsOf: [
                 header.topAnchor.constraint(equalTo: headerView.topAnchor),
                 header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-                header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: tableView.readableContentGuide.trailingAnchor),
+                header.leadingAnchor.constraint(equalTo: tableView.readableContentGuide.leadingAnchor),
+            ])
+        }
+
+        // manually add a separator for the new header views.
+        if isNewHeader {
+            let borderView = UIView()
+            borderView.backgroundColor = .separator
+            borderView.translatesAutoresizingMaskIntoConstraints = false
+            headerView.addSubview(borderView)
+
+            constraints.append(contentsOf: [
+                borderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+                borderView.heightAnchor.constraint(equalToConstant: 0.5),
+                borderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                borderView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
 
