@@ -696,6 +696,20 @@ import Combine
         content.refresh()
         refreshTableViewHeaderLayout()
 
+        // TODO: Find a better fix.
+        // This is a workaround to get the recommended tags card to properly resize after reloading content on tab change.
+        // Even though the collection view layout returned the correct height, the cell somehow kept its original bounds.
+        //
+        // This workaround is limited only to the Discover feed, to prevent unwanted side effects on other tabs.
+        // Also because the recommended tags card is only shown in Discover.
+        if let topic = readerTopic,
+           RemoteFeatureFlag.readerImprovements.enabled(),
+           ReaderHelpers.topicIsDiscover(topic) {
+            DispatchQueue.main.async {
+                self.heightDidChange()
+            }
+        }
+
         if synchronize {
             syncIfAppropriate()
         }
