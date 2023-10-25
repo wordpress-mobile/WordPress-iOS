@@ -125,7 +125,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/submitting-wrong-sms-2fa-results-in-vague-error-message`)
+  - WordPressAuthenticator (~> 7.2.1-beta.2)
   - WordPressKit (>= 8.7.1, ~> 8.7)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
@@ -163,6 +163,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WordPressUI
@@ -183,9 +184,6 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
-  WordPressAuthenticator:
-    :branch: fix/submitting-wrong-sms-2fa-results-in-vague-error-message
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -195,9 +193,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
-  WordPressAuthenticator:
-    :commit: 6c9d9b0aeaaec6565a4624bedbe67756c9b9d132
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -245,6 +240,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 0eaa9256303831c61784f6625bb9d4170e318af0
+PODFILE CHECKSUM: fe27477bb386333975be481e9f9718ea47ec4e29
 
 COCOAPODS: 1.12.1
