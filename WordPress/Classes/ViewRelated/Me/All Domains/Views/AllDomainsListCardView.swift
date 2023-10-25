@@ -129,7 +129,7 @@ private extension AllDomainsListCardView.ViewModel.StatusType {
 
 // MARK: - Previews
 
-struct DomainListCard_Previews: PreviewProvider {
+struct AllDomainsListCardView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color(.systemBackground)

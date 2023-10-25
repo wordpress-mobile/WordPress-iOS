@@ -3,10 +3,10 @@ import SwiftUI
 
 final class AllDomainsListTableViewCell: UITableViewCell {
 
-    private var hostingController: UIHostingController<DomainListCard>?
+    private var hostingController: UIHostingController<AllDomainsListCardView>?
 
     func update(with viewModel: ViewModel, parent: UIViewController) {
-        let content = DomainListCard(viewModel: viewModel)
+        let content = AllDomainsListCardView(viewModel: viewModel)
 
         if let hostingController {
             hostingController.rootView = content
@@ -25,5 +25,5 @@ final class AllDomainsListTableViewCell: UITableViewCell {
         self.hostingController?.view.layoutIfNeeded()
     }
 
-    typealias ViewModel = DomainListCard.ViewModel
+    typealias ViewModel = AllDomainsListCardView.ViewModel
 }
