@@ -308,10 +308,12 @@ private extension ReaderPostCardCell {
     }
 
     func setupControlButtons() {
-        setupControlButton(reblogButton,
-                           image: Constants.reblogButtonImage,
-                           text: Constants.reblogButtonText,
-                           action: #selector(didTapReblog))
+        if !usesAccessibilitySize {
+            setupControlButton(reblogButton,
+                               image: Constants.reblogButtonImage,
+                               text: Constants.reblogButtonText,
+                               action: #selector(didTapReblog))
+        }
         setupControlButton(commentButton,
                            image: Constants.commentButtonImage,
                            text: Constants.commentButtonText,
@@ -536,7 +538,7 @@ private extension ReaderPostCardCell {
         accessibilityElements = [
             siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
             reblogButton, commentButton, likeButton, menuButton
-        ]
+        ].filter { $0 != reblogButton || !self.usesAccessibilitySize } // skip reblog button if a11y size is active.
     }
 
     // MARK: - Cell reuse
@@ -544,7 +546,10 @@ private extension ReaderPostCardCell {
     func addMissingViews() {
         let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
         let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
-        let controlViews = [reblogButton, commentButton, likeButton]
+        let controlViews = [reblogButton, commentButton, likeButton].filter {
+            // skip reblog button if a11y size is active.
+            $0 != reblogButton || !self.usesAccessibilitySize
+        }
 
         siteHeaderViews.enumerated().forEach { (index, view) in
             addToStackView(siteStackView, view: view, index: index)
