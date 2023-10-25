@@ -31,7 +31,7 @@ view_changes_need_screenshots.view_changes_need_screenshots
 
 pr_size_checker.check_diff_size
 
-# skip for draft PRs and for WIP features unless the PR is against "develop" or "release/x.x" branches
+# skip check for draft PRs and for WIP features unless the PR is against the main branch or release branch
 milestone_checker.check_milestone_due_date(days_before_due: 4) if !github.pr_draft? && (!wip_feature? || (release_branch? || main_branch?))
 
 rubocop.lint(inline_comment: true, fail_on_inline_comment: true, include_cop_names: true)

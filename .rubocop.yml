@@ -1,14 +1,8 @@
-inherit_mode:
-  merge:
-    - Include
-
 AllCops:
   Exclude:
     - DerivedData/**/*
     - Pods/**/*
     - vendor/**/*
-  Include:
-    - .buildkite/danger/**/*
   NewCops: enable
 
 Metrics/BlockLength:
@@ -42,4 +36,3 @@ Style/AsciiComments:
 Naming/FileName:
   Exclude:
     - fastlane/Matchfile
-    - .buildkite/danger/Dangerfile
