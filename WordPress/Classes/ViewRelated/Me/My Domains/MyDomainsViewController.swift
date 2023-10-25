@@ -150,7 +150,7 @@ final class MyDomainsViewController: UIViewController {
         static let activityIndicator = String(describing: MyDomainsActivityIndicatorTableViewCell.self)
     }
 
-    typealias ViewModel = MyDomainsViewModel<DomainListCard.ViewModel>
+    typealias ViewModel = MyDomainsViewModel
 }
 
 // MARK: - UITableViewDataSource

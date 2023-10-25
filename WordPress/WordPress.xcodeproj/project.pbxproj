@@ -3552,6 +3552,7 @@
 		F4141EE62AE71AF0000D2AAE /* MyDomainsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */; };
 		F4141EE82AE72DC4000D2AAE /* MyDomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */; };
 		F4141EEA2AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */; };
+		F4141EEC2AE945C7000D2AAE /* AllDomainsItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EEB2AE945C7000D2AAE /* AllDomainsItemViewModel.swift */; };
 		F41BDD73290BBDCA00B7F2B0 /* MigrationActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */; };
 		F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */; };
 		F41BDD7B29114E2400B7F2B0 /* MigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */; };
@@ -8944,6 +8945,7 @@
 		F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsViewModel.swift; sourceTree = "<group>"; };
 		F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsTableViewCell.swift; sourceTree = "<group>"; };
 		F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDomainsActivityIndicatorTableViewCell.swift; sourceTree = "<group>"; };
+		F4141EEB2AE945C7000D2AAE /* AllDomainsItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsItemViewModel.swift; sourceTree = "<group>"; };
 		F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsView.swift; sourceTree = "<group>"; };
 		F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFlowCoordinator.swift; sourceTree = "<group>"; };
 		F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStep.swift; sourceTree = "<group>"; };
@@ -10133,6 +10135,7 @@
 				F4141EE52AE71AF0000D2AAE /* MyDomainsViewModel.swift */,
 				F4141EE72AE72DC4000D2AAE /* MyDomainsTableViewCell.swift */,
 				F4141EE92AE74ADA000D2AAE /* MyDomainsActivityIndicatorTableViewCell.swift */,
+				F4141EEB2AE945C7000D2AAE /* AllDomainsItemViewModel.swift */,
 			);
 			path = "My Domains";
 			sourceTree = "<group>";
@@ -24841,6 +24844,7 @@
 				FABB23F22602FC2C00C8785C /* Animator.swift in Sources */,
 				03216ECD27995F3500D444CA /* SchedulingViewControllerPresenter.swift in Sources */,
 				FABB23F32602FC2C00C8785C /* SiteStatsDashboardViewController.swift in Sources */,
+				F4141EEC2AE945C7000D2AAE /* AllDomainsItemViewModel.swift in Sources */,
 				9895401226C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
 				FABB23F42602FC2C00C8785C /* MediaSettings.swift in Sources */,
 				FABB23F52602FC2C00C8785C /* DomainCreditRedemptionSuccessViewController.swift in Sources */,
