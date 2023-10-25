@@ -5,15 +5,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
     weak var searchController: UISearchController?
     weak var listViewController: AbstractPostListViewController?
 
-    enum SectionID: Int, CaseIterable {
-        case tokens = 0
-        case posts
-    }
-
-    enum ItemID: Hashable {
-        case token(AnyHashable)
-        case result(NSManagedObjectID)
-    }
+    private typealias SectionID = PostSearchViewModel.SectionID
+    private typealias ItemID = PostSearchViewModel.ItemID
 
     private let tableView = UITableView(frame: .zero, style: .plain)
 
@@ -39,10 +32,28 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         super.viewDidLoad()
 
         configureTableView()
+        bindViewModel()
+    }
 
-        viewModel.didUpdateData = { [weak self] in
-            self?.reloadData()
-        }
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(tableView)
+
+        tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
+        tableView.register(PostListCell.self, forCellReuseIdentifier: Constants.postCellID)
+        tableView.register(PageListCell.self, forCellReuseIdentifier: Constants.pageCellID)
+
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+        tableView.sectionHeaderTopPadding = 0
+    }
+
+    private func bindViewModel() {
+        viewModel.$snapshot.sink { [weak self] in
+            self?.dataSource.apply($0, animatingDifferences: false)
+            self?.updateSuggestedTokenCells()
+        }.store(in: &cancellables)
 
         viewModel.$searchTerm.removeDuplicates().sink { [weak self] in
             if self?.searchController?.searchBar.text != $0 {
@@ -65,45 +76,13 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             .store(in: &cancellables)
     }
 
-    private func configureTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(tableView)
-
-        tableView.register(PostSearchTokenTableCell.self, forCellReuseIdentifier: Constants.tokenCellID)
-        tableView.register(PostListCell.self, forCellReuseIdentifier: Constants.postCellID)
-        tableView.register(PageListCell.self, forCellReuseIdentifier: Constants.pageCellID)
-
-        tableView.dataSource = dataSource
-        tableView.delegate = self
-        tableView.sectionHeaderTopPadding = 0
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.sizeToFitFooterView()
     }
 
-    // MARK: - Data Source
-
-    private func reloadData() {
-        assert(Thread.isMainThread)
-
-        var snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>()
-
-        snapshot.appendSections([SectionID.tokens])
-        let tokenIDs = viewModel.suggestedTokens.map { ItemID.token($0.id) }
-        snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
-
-        snapshot.appendSections([SectionID.posts])
-        let postIDs = viewModel.results.map { ItemID.result($0.objectID) }
-        snapshot.appendItems(postIDs, toSection: SectionID.posts)
-
-        dataSource.apply(snapshot, animatingDifferences: false)
-
-        updateSuggestedTokenCells()
-    }
+    // MARK: - UITableViewDataSource
 
     private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch SectionID(rawValue: indexPath.section)! {
@@ -115,7 +94,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
-            switch viewModel.results[indexPath.row] {
+            let post = viewModel.posts[indexPath.row]
+            switch viewModel.getSearchResultItem(for: post) {
             case .post(let post):
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
                 assert(listViewController is InteractivePostViewDelegate)
@@ -167,15 +147,17 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             // TODO: Move to viewWillAppear (the way editor is displayed doesn't allow)
             tableView.deselectRow(at: indexPath, animated: true)
 
-            switch viewModel.results[indexPath.row] {
-            case .post(let viewModel):
-                guard viewModel.post.status != .trash else { return }
+            switch viewModel.posts[indexPath.row] {
+            case let post as Post:
+                guard post.status != .trash else { return }
                 (listViewController as! PostListViewController)
-                    .edit(viewModel.post)
-            case .page(let viewModel):
-                guard viewModel.page.status != .trash else { return }
+                    .edit(post)
+            case let page as Page:
+                guard page.status != .trash else { return }
                 (listViewController as! PageListViewController)
-                    .editPage(viewModel.page)
+                    .editPage(page)
+            default:
+                fatalError("Unsupported post")
             }
             break // TODO: Show post
         }
