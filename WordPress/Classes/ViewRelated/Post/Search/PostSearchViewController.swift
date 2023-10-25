@@ -118,7 +118,8 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             switch viewModel.results[indexPath.row] {
             case .post(let post):
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
-                cell.configure(with: post)
+                assert(listViewController is InteractivePostViewDelegate)
+                cell.configure(with: post, delegate: listViewController as? InteractivePostViewDelegate)
                 return cell
             case .page(let page):
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
