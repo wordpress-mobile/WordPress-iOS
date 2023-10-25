@@ -148,6 +148,10 @@ class ReaderPostCardCell: UITableViewCell {
 
 private extension ReaderPostCardCell {
 
+    var usesAccessibilitySize: Bool {
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
     func commonInit() {
         setupViews()
         addViewConstraints()
@@ -237,7 +241,11 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-        siteStackView.addArrangedSubview(postDateLabel)
+
+        // if accessibility size
+        if !usesAccessibilitySize {
+            siteStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupSiteStackView() {
@@ -250,6 +258,10 @@ private extension ReaderPostCardCell {
         siteStackView.addGestureRecognizer(tapGesture)
 
         contentStackView.addArrangedSubview(siteStackView)
+
+        if usesAccessibilitySize {
+            contentStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupPostTitle() {
@@ -430,7 +442,7 @@ private extension ReaderPostCardCell {
 
     func configureLabels() {
         configureLabel(siteTitleLabel, text: viewModel?.siteTitle)
-        configureLabel(postDateLabel, text: viewModel?.postDate)
+        configureLabel(postDateLabel, text: usesAccessibilitySize ? viewModel?.shortPostDate : viewModel?.postDate)
         configureLabel(postTitleLabel, text: viewModel?.postTitle)
         configureLabel(postSummaryLabel, text: viewModel?.postSummary)
         configureLabel(postCountsLabel, text: viewModel?.postCounts)
