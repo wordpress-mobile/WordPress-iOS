@@ -92,15 +92,17 @@ final class MyDomainsViewController: UIViewController {
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = Strings.searchBar
         self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.extendedLayoutIncludesOpaqueBars = true
+        self.edgesForExtendedLayout = .top
 
         // Setup tableView
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        self.tableView.sectionHeaderHeight = .leastNormalMagnitude
+        self.tableView.sectionFooterHeight = Layout.interRowSpacing
         self.tableView.contentInset.top = Layout.interRowSpacing
-        self.tableView.sectionHeaderHeight = Layout.interRowSpacing / 2
-        self.tableView.sectionFooterHeight = tableView.sectionHeaderHeight
-        self.tableView.verticalScrollIndicatorInsets.top = -tableView.contentInset.top
         self.tableView.register(MyDomainsTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
         self.tableView.register(MyDomainsActivityIndicatorTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.activityIndicator)
         self.view.addSubview(tableView)
@@ -154,6 +156,16 @@ final class MyDomainsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Workaround to accurately control section height using `tableView.sectionHeaderHeight`.
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Workaround to accurately control footer height using `tableView.sectionFooterHeight`.
+        return UIView()
+    }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         switch state {
