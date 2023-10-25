@@ -29,12 +29,8 @@ class AllDomainsListViewModel {
     // MARK: - Load Domains
 
     func loadData() {
-        guard let service = domainsService else {
-            self.state = .error
-            return
-        }
         self.state = .loading
-        service.fetchAllDomains(resolveStatus: true, noWPCOM: true) { result in
+        self.fetchAllDomains { result in
             switch result {
             case .success(let domains):
                 self.domains = domains
@@ -43,6 +39,14 @@ class AllDomainsListViewModel {
                 self.state = .error
             }
         }
+    }
+
+    private func fetchAllDomains(completion: @escaping (DomainsService.AllDomainsEndpointResult) -> Void) {
+        guard let service = domainsService else {
+            completion(.failure(ViewModelError.internalError(reason: "The `domainsService` property is nil")))
+            return
+        }
+        service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
     }
 
     // MARK: - Accessing Domains
@@ -65,4 +69,8 @@ class AllDomainsListViewModel {
     }
 
     private typealias Domain = DomainsService.AllDomainsListItem
+
+    private enum ViewModelError: Error {
+        case internalError(reason: String)
+    }
 }

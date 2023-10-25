@@ -8946,6 +8946,7 @@
 		F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListTableViewCell.swift; sourceTree = "<group>"; };
 		F4141EE92AE74ADA000D2AAE /* AllDomainsListActivityIndicatorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListActivityIndicatorTableViewCell.swift; sourceTree = "<group>"; };
 		F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListItemViewModel.swift; sourceTree = "<group>"; };
+		F4141EED2AE972E1000D2AAE /* all-domains-mock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "all-domains-mock.json"; sourceTree = "<group>"; };
 		F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsView.swift; sourceTree = "<group>"; };
 		F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFlowCoordinator.swift; sourceTree = "<group>"; };
 		F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStep.swift; sourceTree = "<group>"; };
@@ -10129,6 +10130,7 @@
 				F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */,
 				F4141EE92AE74ADA000D2AAE /* AllDomainsListActivityIndicatorTableViewCell.swift */,
 				F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */,
+				F4141EED2AE972E1000D2AAE /* all-domains-mock.json */,
 			);
 			path = "All Domains";
 			sourceTree = "<group>";
