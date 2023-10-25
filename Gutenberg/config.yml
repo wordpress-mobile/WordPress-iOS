@@ -2,7 +2,7 @@
  # If both are set, tag will take precedence.
  #
  # We have automation that reads and updates this file.
- # Leaving commented keys is discouraged, because as the automation would ignore them and the resulting updates would be noisy
+ # Leaving commented keys is discouraged, because the automation would ignore them and the resulting updates would be noisy
  # If you want to use a local version, please use the LOCAL_GUTENBERG environment variable when calling CocoaPods.
  #
  # Example:
