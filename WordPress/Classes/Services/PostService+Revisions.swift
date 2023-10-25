@@ -29,6 +29,26 @@ extension PostService {
         }, failure: failure)
     }
 
+    /// Check if the given post matches the latest revision on the site and logs an error event if it doesn't.
+    @objc(checkLatestRevisionForPost:usingRemote:)
+    func checkLatestRevision(for post: AbstractPost, using remote: PostServiceRemote) -> Void {
+        guard let postID = post.postID,
+              postID.int64Value > 0,
+              let restApi = (remote as? PostServiceRemoteREST),
+              let localRevision = post.revisions?.first as? NSNumber
+        else {
+            return
+        }
+
+        restApi.getPostLatestRevisionID(for: postID) { latestRemoteRevision in
+            if let latestRemoteRevision, latestRemoteRevision != localRevision {
+                DDLogError("The latest revision (\(latestRemoteRevision)) of the post (id: \(postID) is about to be overwriten by an edit that's based on revision \(localRevision)")
+                WordPressAppDelegate.logError(NSError(domain: "PostEditor.OverwritePost", code: 1))
+            }
+        } failure: { _ in
+            // Do nothing
+        }
+    }
 
     // MARK: Private methods
 
