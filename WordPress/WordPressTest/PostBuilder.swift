@@ -8,11 +8,15 @@ import Foundation
 class PostBuilder {
     private let post: Post
 
-    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {
+    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil, canBlaze: Bool = false) {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
 
         // Non-null Core Data properties
-        post.blog = blog ?? BlogBuilder(context).build()
+        if let blog {
+            post.blog = blog
+        } else {
+            post.blog = canBlaze ? BlogBuilder(context).canBlaze().build() : BlogBuilder(context).build()
+        }
     }
 
     private static func buildPost(context: NSManagedObjectContext) -> Post {
@@ -71,7 +75,6 @@ class PostBuilder {
         post.autosaveIdentifier = 1
         return self
     }
-
 
     func withImage() -> PostBuilder {
         post.pathForDisplayImage = "https://localhost/image.png"

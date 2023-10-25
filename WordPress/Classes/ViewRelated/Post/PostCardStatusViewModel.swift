@@ -29,7 +29,7 @@ class PostCardStatusViewModel: NSObject {
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
     private let isInternetReachable: Bool
-
+    private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
 
     var progressBlock: ((Float) -> Void)? = nil {
@@ -50,9 +50,11 @@ class PostCardStatusViewModel: NSObject {
 
     init(post: Post,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
+         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
+        self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
         super.init()
     }
@@ -205,7 +207,7 @@ class PostCardStatusViewModel: NSObject {
     private func createNavigationSection() -> ButtonSection {
         var buttons = [Button]()
 
-        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(), post.status == .publish && post.hasRemote() {
+        if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
         }
 

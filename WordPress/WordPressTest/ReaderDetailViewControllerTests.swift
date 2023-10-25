@@ -51,7 +51,7 @@ class ReaderDetailViewControllerTests: XCTestCase {
 class ReaderPostBuilder: PostBuilder {
     private let post: ReaderPost
 
-    override init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {
+    override init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil, canBlaze: Bool = false) {
         post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: context) as! ReaderPost
     }
 
