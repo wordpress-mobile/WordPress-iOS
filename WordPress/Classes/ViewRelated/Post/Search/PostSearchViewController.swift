@@ -3,6 +3,7 @@ import Combine
 
 final class PostSearchViewController: UIViewController, UITableViewDelegate, UISearchResultsUpdating {
     weak var searchController: UISearchController?
+    weak var listViewController: AbstractPostListViewController?
 
     enum SectionID: Int, CaseIterable {
         case tokens = 0
@@ -162,6 +163,19 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         case .tokens:
             viewModel.didSelectToken(at: indexPath.row)
         case .posts:
+            // TODO: Move to viewWillAppear (the way editor is displayed doesn't allow)
+            tableView.deselectRow(at: indexPath, animated: true)
+
+            switch viewModel.results[indexPath.row] {
+            case .post(let viewModel):
+                guard viewModel.post.status != .trash else { return }
+                (listViewController as! PostListViewController)
+                    .edit(viewModel.post)
+            case .page(let viewModel):
+                guard viewModel.page.status != .trash else { return }
+                (listViewController as! PageListViewController)
+                    .editPage(viewModel.page)
+            }
             break // TODO: Show post
         }
     }

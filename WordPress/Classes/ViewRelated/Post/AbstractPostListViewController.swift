@@ -207,6 +207,7 @@ class AbstractPostListViewController: UIViewController,
         searchController.searchResultsUpdater = searchResultsViewController
         searchController.showsSearchResultsController = true
         searchResultsViewController.searchController = searchController
+        searchResultsViewController.listViewController = self
 
         definesPresentationContext = true
 
