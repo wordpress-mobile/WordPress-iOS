@@ -12,15 +12,11 @@ class AbstractPostListViewController: UIViewController,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
 
-    fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
-    fileprivate static let HTTPErrorCodeForbidden = Int(403)
-    fileprivate static let postsFetchRequestBatchSize = Int(10)
-    fileprivate static let pagesNumberOfLoadedElement = Int(100)
-    fileprivate static let postsLoadMoreThreshold = Int(4)
-
-    fileprivate static let defaultHeightForFooterView = CGFloat(44.0)
-
-    fileprivate let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
+    private static let postsControllerRefreshInterval = TimeInterval(300)
+    private static let httpErrorCodeForbidden = 403
+    private static let postsFetchRequestBatchSize = 10
+    private static let pagesNumberOfLoadedElement = 100
+    private static let postsLoadMoreThreshold = 4
 
     private var fetchBatchSize: Int {
         return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
@@ -34,17 +30,14 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
-    private(set) var ghostableTableView = UITableView()
-    var ghostingEnabled = false
-
-    @objc var blog: Blog!
+    var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
     /// to the subclass to define this property.
     ///
-    @objc var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
+    var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
     let tableViewController = UITableViewController(style: .grouped)
-    @objc var reloadTableViewBeforeAppearing = false
+    private var reloadTableViewBeforeAppearing = false
 
     @objc var tableView: UITableView {
         get {
@@ -56,42 +49,29 @@ class AbstractPostListViewController: UIViewController,
 
     let refreshControl = UIRefreshControl()
 
-    @objc lazy var tableViewHandler: WPTableViewHandler = {
+    lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
-
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
         tableViewHandler.updateRowAnimation = .none
-
         return tableViewHandler
     }()
 
-    @objc lazy var estimatedHeightsCache: NSCache = { () -> NSCache<AnyObject, AnyObject> in
-        let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
-        return estimatedHeightsCache
-    }()
-
-    @objc lazy var syncHelper: WPContentSyncHelper = {
+    lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
-
         syncHelper.delegate = self
-
         return syncHelper
     }()
 
-    @objc lazy var noResultsViewController: NoResultsViewController = {
+    lazy var noResultsViewController: NoResultsViewController = {
         let noResultsViewController = NoResultsViewController.controller()
         noResultsViewController.delegate = self
-
         return noResultsViewController
     }()
 
-    @objc lazy var filterSettings: PostListFilterSettings = {
+    lazy var filterSettings: PostListFilterSettings = {
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
     }()
-
-
-    @objc var postListFooterView: PostListFooterView!
 
     let filterTabBar = FilterTabBar()
 
@@ -99,7 +79,7 @@ class AbstractPostListViewController: UIViewController,
 
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
-    @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
+    private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     private var emptyResults: Bool {
         return tableViewHandler.resultsController?.fetchedObjects?.count == 0
@@ -126,12 +106,9 @@ class AbstractPostListViewController: UIViewController,
         configureTableViewController()
         configureFilterBar()
         configureTableView()
-        configureFooterView()
-        configureWindowlessCell()
         configureNavbar()
         configureSearchController()
         configureAuthorFilter()
-        configureGhostableTableView()
         configureNavigationBarAppearance()
 
         tableView.reloadData()
@@ -141,8 +118,6 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        startGhost()
 
         if reloadTableViewBeforeAppearing {
             reloadTableViewBeforeAppearing = false
@@ -174,10 +149,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     // MARK: - Configuration
-
-    func heightForFooterView() -> CGFloat {
-        return type(of: self).defaultHeightForFooterView
-    }
 
     private func configureTableViewController() {
         addChild(tableViewController)
@@ -216,28 +187,6 @@ class AbstractPostListViewController: UIViewController,
         assert(false, "You should implement this method in the subclass")
     }
 
-    func configureFooterView() {
-
-        let mainBundle = Bundle.main
-
-        guard let footerView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)![0] as? PostListFooterView else {
-            preconditionFailure("Could not load the footer view from the nib file.")
-        }
-
-        postListFooterView = footerView
-        postListFooterView.showSpinner(false)
-
-        var frame = postListFooterView.frame
-        frame.size.height = heightForFooterView()
-
-        postListFooterView.frame = frame
-        tableView.tableFooterView = postListFooterView
-    }
-
-    @objc func configureWindowlessCell() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
-    }
-
     private func refreshResults() {
         guard isViewLoaded == true else {
             return
@@ -249,7 +198,6 @@ class AbstractPostListViewController: UIViewController,
 
         hideNoResultsView()
         if emptyResults {
-            stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
     }
@@ -276,22 +224,6 @@ class AbstractPostListViewController: UIViewController,
         navigationItem.compactAppearance = standardAppearance
         navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
         navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
-    }
-
-    func configureGhostableTableView() {
-        view.addSubview(ghostableTableView)
-        ghostableTableView.isHidden = true
-
-        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
-            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor),
-            ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            ghostableTableView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        ])
-
-        ghostableTableView.backgroundColor = .white
-        ghostableTableView.isScrollEnabled = false
     }
 
     @objc func propertiesForAnalytics() -> [String: AnyObject] {
@@ -350,7 +282,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - GUI: No results view logic
 
     func hideNoResultsView() {
-        postListFooterView.isHidden = false
+        setFooterHidden(false)
         noResultsViewController.removeFromView()
     }
 
@@ -360,7 +292,7 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        postListFooterView.isHidden = true
+        setFooterHidden(true)
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -378,22 +310,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         tableView.sendSubviewToBack(noResultsViewController.view)
-    }
-
-    // MARK: - TableView Helpers
-
-    @objc func dequeCellForWindowlessLoadingIfNeeded(_ tableView: UITableView) -> UITableViewCell? {
-        // As also seen in ReaderStreamViewController:
-        // We want to avoid dequeuing card cells when we're not present in a window, on the iPad.
-        // Doing so can create a situation where cells are not updated with the correct NSTraitCollection.
-        // The result is the cells do not show the correct layouts relative to superview margins.
-        // HACK: kurzee, 2016-07-12
-        // Use a generic cell in this situation and reload the table view once its back in a window.
-        if tableView.window == nil {
-            reloadTableViewBeforeAppearing = true
-            return tableView.dequeueReusableCell(withIdentifier: abstractPostWindowlessCellIdenfitier)
-        }
-        return nil
     }
 
     // MARK: - TableViewHandler Delegate Methods
@@ -472,27 +388,23 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Table View Handling
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
-        // likes to reload rows in a strange way.
-        // It uses the estimated height as a starting value for reloading animations.
-        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
-        // the cell heights during reload animations.
-        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
-        // Brent C. August 2/2016
-        if let height = estimatedHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
-            // Return the previously known height as it was cached via willDisplayCell.
-            return height
-        }
-        // Otherwise return whatever we have set to the tableView explicitly, and ideally a pretty close value.
-        return tableView.estimatedRowHeight
+        110
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         assert(false, "You should implement this method in the subclass")
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        0
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        nil
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
@@ -500,11 +412,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        // Cache the cell's layout height as the currently known height, for estimation.
-        // See estimatedHeightForRowAtIndexPath
-        estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
-
         guard isViewOnScreen() else {
             return
         }
@@ -616,40 +523,39 @@ class AbstractPostListViewController: UIViewController,
             ofType: postType,
             with: options,
             for: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
+            success: { [weak self] posts in
+                guard let self, let posts else {
                     return
                 }
 
                 if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: {[weak self] (error: Error?) -> () in
+            }, failure: { [weak self] error in
 
-                guard let strongSelf = self,
-                    let error = error else {
+                guard let self, let error else {
                     return
                 }
 
                 failure?(error as NSError)
 
                 if userInteraction == true {
-                    strongSelf.handleSyncFailure(error as NSError)
+                    self.handleSyncFailure(error as NSError)
                 }
         })
     }
 
     let loadMoreCounter = LoadMoreCounter()
+
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
         loadMoreCounter.increment(properties: propertiesForAnalytics())
 
-        postListFooterView.showSpinner(true)
+        setFooterHidden(false)
 
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
@@ -667,39 +573,33 @@ class AbstractPostListViewController: UIViewController,
             ofType: postType,
             with: options,
             for: blog,
-            success: {[weak self] posts in
-                guard let strongSelf = self,
-                    let posts = posts else {
-                        return
+            success: { [weak self] posts in
+                guard let self, let posts else {
+                    return
                 }
 
                 if posts.count > 0 {
-                    strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: { (error) -> () in
-
-                guard let error = error else {
+            }, failure: { error in
+                guard let error else {
                     return
                 }
-
                 failure?(error as NSError)
             })
     }
 
     func syncContentStart(_ syncHelper: WPContentSyncHelper) {
-        startGhost()
         atLeastSyncedOnce = true
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl.endRefreshing()
-        postListFooterView.showSpinner(false)
+        setFooterHidden(true)
         noResultsViewController.removeFromView()
-
-        stopGhost()
 
         if emptyResults {
             // This is a special case.  Core data can be a bit slow about notifying
@@ -715,12 +615,10 @@ class AbstractPostListViewController: UIViewController,
 
     @objc func handleSyncFailure(_ error: NSError) {
         if error.domain == WPXMLRPCFaultErrorDomain
-            && error.code == type(of: self).HTTPErrorCodeForbidden {
+            && error.code == type(of: self).httpErrorCodeForbidden {
             promptForPassword()
             return
         }
-
-        stopGhost()
 
         dismissAllNetworkErrorNotices()
 
@@ -750,35 +648,6 @@ class AbstractPostListViewController: UIViewController,
         WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
             self.present(navController, animated: true)
         }
-    }
-
-    // MARK: - Ghost cells
-
-    final func startGhost() {
-        guard ghostingEnabled, emptyResults else {
-            return
-        }
-
-        if isViewOnScreen() {
-            ghostableTableView.startGhostAnimation()
-        }
-        ghostableTableView.isHidden = false
-        noResultsViewController.view.isHidden = true
-    }
-
-    final func stopGhost() {
-        ghostableTableView.isHidden = true
-        ghostableTableView.stopGhostAnimation()
-        noResultsViewController.view.isHidden = false
-    }
-
-    private func stopGhostIfConnectionIsNotAvailable() {
-        guard WordPressAppDelegate.shared?.connectionAvailable == false else {
-            return
-        }
-
-        atLeastSyncedOnce = true
-        stopGhost()
     }
 
     // MARK: - Actions
@@ -855,25 +724,24 @@ class AbstractPostListViewController: UIViewController,
                 PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
-        }, failure: { [weak self] (error) in
-
-            guard let strongSelf = self else {
+        }, failure: { [weak self] error in
+            guard let self else {
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
+            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
+                self.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = strongSelf.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-                strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
+            if let index = self.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
+                self.recentlyTrashedPostObjectIDs.remove(at: index)
                 // We don't really know what happened here, why did the request fail?
                 // Maybe we could not delete the post or maybe the post was already deleted
                 // It is safer to re fetch the results than to reload that specific row
                 DispatchQueue.main.async {
-                    strongSelf.updateAndPerformFetchRequestRefreshingResults()
+                    self.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
         })
@@ -899,7 +767,7 @@ class AbstractPostListViewController: UIViewController,
 
         postService.restore(apost, success: { [weak self] in
 
-            guard let strongSelf = self else {
+            guard let self else {
                 return
             }
 
@@ -907,7 +775,7 @@ class AbstractPostListViewController: UIViewController,
 
             // Make sure the post still exists.
             do {
-                apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
+                apost = try self.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
             } catch {
                 DDLogError("\(error)")
                 return
@@ -920,30 +788,30 @@ class AbstractPostListViewController: UIViewController,
             if let postStatus = apost.status {
                 // If the post was restored, see if it appears in the current filter.
                 // If not, prompt the user to let it know under which filter it appears.
-                let filter = strongSelf.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
+                let filter = self.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
 
-                if filter.filterType == strongSelf.filterSettings.currentPostListFilter().filterType {
+                if filter.filterType == self.filterSettings.currentPostListFilter().filterType {
                     return
                 }
 
-                strongSelf.promptThatPostRestoredToFilter(filter)
+                self.promptThatPostRestoredToFilter(filter)
 
                 // Reindex the restored post in spotlight
                 SearchManager.shared.indexItem(apost)
             }
-        }) { [weak self] (error) in
+        }) { [weak self] error in
 
-            guard let strongSelf = self else {
+            guard let self else {
                 return
             }
 
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
+            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
+                self.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
+            self.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
     }
 
@@ -997,11 +865,6 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    func updateFilter(index: Int) {
-        filterSettings.setCurrentFilterIndex(index)
-        refreshAndReload()
-    }
-
     func updateSelectedFilter() {
         if filterTabBar.selectedIndex != filterSettings.currentFilterIndex() {
             filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
@@ -1012,8 +875,6 @@ class AbstractPostListViewController: UIViewController,
         filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
         refreshAndReload()
-
-        startGhost()
 
         syncItemsWithUserInteraction(false)
 
@@ -1036,7 +897,16 @@ class AbstractPostListViewController: UIViewController,
         return ReachabilityUtils.noConnectionMessage()
     }
 
-    // MARK: - Others
+    // MARK: - Misc
+
+    private func setFooterHidden(_ isHidden: Bool) {
+        if isHidden {
+            tableView.tableFooterView = nil
+        } else {
+            tableView.tableFooterView = PagingFooterView(state: .loading)
+            tableView.sizeToFitFooterView()
+        }
+    }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         // We override this method to dismiss any Notice that is currently being shown. If we

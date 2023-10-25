@@ -16,7 +16,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private let statsCacheInterval = TimeInterval(300) // 5 minutes
 
     private let postCardEstimatedRowHeight = CGFloat(300.0)
-    private let postListHeightForFooterView = CGFloat(50.0)
 
     private lazy var _tableViewHandler: PostListTableViewHandler = {
         let tableViewHandler = PostListTableViewHandler(tableView: tableView)
@@ -139,10 +138,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     // MARK: - Configuration
-
-    override func heightForFooterView() -> CGFloat {
-        return postListHeightForFooterView
-    }
 
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PostsTable"
@@ -277,10 +272,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
-            return windowlessCell
-        }
-
         let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)

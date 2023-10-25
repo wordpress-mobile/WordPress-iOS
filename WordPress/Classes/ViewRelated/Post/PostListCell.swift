@@ -71,7 +71,9 @@ final class PostListCell: UITableViewCell, Reusable {
     // MARK: - Setup
 
     private func setupViews() {
-        setupcontentLabel()
+        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+
+        setupContentLabel()
         setupFeaturedImageView()
         setupStatusLabel()
 
@@ -95,10 +97,9 @@ final class PostListCell: UITableViewCell, Reusable {
 
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
-        contentView.backgroundColor = .systemBackground
     }
 
-    private func setupcontentLabel() {
+    private func setupContentLabel() {
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.adjustsFontForContentSizeCategory = true
         contentLabel.numberOfLines = 3

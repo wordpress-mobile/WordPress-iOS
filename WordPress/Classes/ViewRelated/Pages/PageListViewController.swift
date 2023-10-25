@@ -176,12 +176,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
 
-    override func configureFooterView() {
-        super.configureFooterView()
-
-        tableView.tableFooterView = UIView(frame: .zero)
-    }
-
     fileprivate func beginRefreshingManually() {
         refreshControl.beginRefreshing()
         tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
@@ -354,10 +348,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
-            return windowlessCell
-        }
-
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
             let identifier = Constant.Identifiers.templatePageCellIdentifier
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
