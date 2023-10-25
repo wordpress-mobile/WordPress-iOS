@@ -79,7 +79,7 @@ struct DomainListCard: View {
         }
     }
 
-    typealias ViewModel = AllDomainsItemViewModel
+    typealias ViewModel = AllDomainsListItemViewModel
 }
 
 private extension DomainListCard.ViewModel.StatusType {

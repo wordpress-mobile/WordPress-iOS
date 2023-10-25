@@ -1,6 +1,6 @@
 import Foundation
 
-struct AllDomainsItemViewModel {
+struct AllDomainsListItemViewModel {
 
     let name: String
     let description: String?
@@ -25,7 +25,7 @@ struct AllDomainsItemViewModel {
     typealias StatusType = DomainsService.AllDomainsListItem.StatusType
 }
 
-extension AllDomainsItemViewModel {
+extension AllDomainsListItemViewModel {
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

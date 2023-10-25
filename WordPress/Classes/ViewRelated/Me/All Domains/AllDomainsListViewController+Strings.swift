@@ -1,6 +1,6 @@
 import Foundation
 
-extension MyDomainsViewController {
+extension AllDomainsListViewController {
 
     enum Strings {
         static let title = NSLocalizedString(

@@ -1,6 +1,6 @@
 import UIKit
 
-final class MyDomainsActivityIndicatorTableViewCell: UITableViewCell {
+final class AllDomainsListActivityIndicatorTableViewCell: UITableViewCell {
 
     private let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
 

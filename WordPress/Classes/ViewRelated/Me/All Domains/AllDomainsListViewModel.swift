@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-class MyDomainsViewModel {
+class AllDomainsListViewModel {
 
     // MARK: - Dependencies
 
@@ -51,7 +51,7 @@ class MyDomainsViewModel {
         return domains.count
     }
 
-    func domain(atIndex index: Int) -> AllDomainsItemViewModel {
+    func domain(atIndex index: Int) -> AllDomainsListItemViewModel {
         return .init(domain: domains[index])
     }
 

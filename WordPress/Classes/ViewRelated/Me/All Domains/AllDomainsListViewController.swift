@@ -1,35 +1,7 @@
 import UIKit
 import Combine
 
-final class MyDomainsViewController: UIViewController {
-    enum Action: String {
-        case addToSite
-        case purchase
-        case transfer
-
-        var title: String {
-            switch self {
-            case .addToSite:
-                return NSLocalizedString(
-                    "domain.management.fab.add.domain.title",
-                    value: "Add domain to site",
-                    comment: "Domain Management FAB Add Domain title"
-                )
-            case .purchase:
-                return NSLocalizedString(
-                    "domain.management.fab.purchase.domain.title",
-                    value: "Purchase domain only",
-                    comment: "Domain Management FAB Purchase Domain title"
-                )
-            case .transfer:
-                return NSLocalizedString(
-                    "domain.management.fab.transfer.domain.title",
-                    value: "Transfer domain(s)",
-                    comment: "Domain Management FAB Transfer Domain title"
-                )
-            }
-        }
-    }
+final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Dependencies
 
@@ -103,8 +75,8 @@ final class MyDomainsViewController: UIViewController {
         self.tableView.sectionHeaderHeight = .leastNormalMagnitude
         self.tableView.sectionFooterHeight = Layout.interRowSpacing
         self.tableView.contentInset.top = Layout.interRowSpacing
-        self.tableView.register(MyDomainsTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
-        self.tableView.register(MyDomainsActivityIndicatorTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.activityIndicator)
+        self.tableView.register(AllDomainsListTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
+        self.tableView.register(AllDomainsListActivityIndicatorTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.activityIndicator)
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }
@@ -146,16 +118,16 @@ final class MyDomainsViewController: UIViewController {
     }
 
     private enum CellIdentifiers {
-        static let myDomain = String(describing: MyDomainsTableViewCell.self)
-        static let activityIndicator = String(describing: MyDomainsActivityIndicatorTableViewCell.self)
+        static let myDomain = String(describing: AllDomainsListTableViewCell.self)
+        static let activityIndicator = String(describing: AllDomainsListActivityIndicatorTableViewCell.self)
     }
 
-    typealias ViewModel = MyDomainsViewModel
+    typealias ViewModel = AllDomainsListViewModel
 }
 
 // MARK: - UITableViewDataSource
 
-extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
+extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // Workaround to accurately control section height using `tableView.sectionHeaderHeight`.
@@ -184,7 +156,7 @@ extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
             return tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.activityIndicator, for: indexPath)
         default:
             let domain = viewModel.domain(atIndex: indexPath.section)
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! MyDomainsTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! AllDomainsListTableViewCell
             cell.accessoryType = .disclosureIndicator
             cell.update(with: domain, parent: self)
             return cell
@@ -198,6 +170,6 @@ extension MyDomainsViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - UISearchControllerDelegate & UISearchBarDelegate
 
-extension MyDomainsViewController: UISearchControllerDelegate, UISearchBarDelegate {
+extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarDelegate {
 
 }

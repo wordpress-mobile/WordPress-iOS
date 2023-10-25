@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-final class MyDomainsTableViewCell: UITableViewCell {
+final class AllDomainsListTableViewCell: UITableViewCell {
 
     private var hostingController: UIHostingController<DomainListCard>?
 
