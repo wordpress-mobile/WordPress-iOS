@@ -60,19 +60,10 @@ private func makeBadgesString(for page: Page) -> NSAttributedString {
     if page.hasLocalChanges() {
         badges.append(Strings.badgeLocalChanges)
     }
-    var string = NSMutableAttributedString()
-    for (index, badge) in badges.enumerated() {
-        if string.length > 0 {
-            string.append(NSAttributedString(string: " · ", attributes: [
-                .foregroundColor: UIColor.secondaryLabel
-            ]))
-        }
-        string.append(NSAttributedString(string: badge, attributes: [
-            .foregroundColor: colors[index] ?? UIColor.secondaryLabel
-        ]))
-    }
-    string.addAttribute(.font, value: WPStyleGuide.fontForTextStyle(.footnote), range: NSRange(location: 0, length: string.length))
-    return string
+
+    return AbstractPostHelper.makeBadgesString(with: badges.enumerated().map { index, badge in
+        (badge, colors[index])
+    })
 }
 
 private enum Strings {

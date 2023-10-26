@@ -28,6 +28,22 @@ enum AbstractPostHelper {
         }
         return nil
     }
+
+    static func makeBadgesString(with badges: [(String, UIColor?)]) -> NSAttributedString {
+        var string = NSMutableAttributedString()
+        for (badge, color) in badges {
+            if string.length > 0 {
+                string.append(NSAttributedString(string: " · ", attributes: [
+                    .foregroundColor: UIColor.secondaryLabel
+                ]))
+            }
+            string.append(NSAttributedString(string: badge, attributes: [
+                .foregroundColor: color ?? UIColor.secondaryLabel
+            ]))
+        }
+        string.addAttribute(.font, value: WPStyleGuide.fontForTextStyle(.footnote), range: NSRange(location: 0, length: string.length))
+        return string
+    }
 }
 
 private enum Strings {
