@@ -98,6 +98,6 @@ class WPAccountLookupTests: CoreDataTestCase {
 
     @discardableResult
     func makeAccount(_ additionalSetup: (AccountBuilder) -> (AccountBuilder) = { $0 }) -> WPAccount {
-        additionalSetup(AccountBuilder(contextManager)).build()
+        additionalSetup(AccountBuilder(contextManager.mainContext)).build()
     }
 }

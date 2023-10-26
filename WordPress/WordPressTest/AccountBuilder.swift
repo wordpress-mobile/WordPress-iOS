@@ -6,14 +6,11 @@ import Foundation
 ///
 @objc
 class AccountBuilder: NSObject {
-    private let coreDataStack: CoreDataStack
     private var account: WPAccount
 
     @objc
-    init(_ coreDataStack: CoreDataStack) {
-        self.coreDataStack = coreDataStack
-
-        account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: coreDataStack.mainContext) as! WPAccount
+    init(_ context: NSManagedObjectContext) {
+        account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.uuid = UUID().uuidString
 
         super.init()
