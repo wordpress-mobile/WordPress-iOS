@@ -30,7 +30,7 @@ enum AbstractPostHelper {
     }
 
     static func makeBadgesString(with badges: [(String, UIColor?)]) -> NSAttributedString {
-        var string = NSMutableAttributedString()
+        let string = NSMutableAttributedString()
         for (badge, color) in badges {
             if string.length > 0 {
                 string.append(NSAttributedString(string: " · ", attributes: [
@@ -47,9 +47,9 @@ enum AbstractPostHelper {
 }
 
 private enum Strings {
-    static let published = NSLocalizedString("post.publishedTimeAgo", value: "Published %@", comment: "Post status and date for list cells")
-    static let scheduled = NSLocalizedString("post.scheduledForDate", value: "Scheduled %@", comment: "Post status and date for list cells")
-    static let created = NSLocalizedString("post.createdTimeAgo", value: "Created %@", comment: "Post status and date for list cells")
-    static let edited = NSLocalizedString("post.editedTimeAgo", value: "Edited %@", comment: "Post status and date for list cells")
-    static let trashed = NSLocalizedString("post.trashedTimeAgo", value: "Trashed %@", comment: "Post status and date for list cells")
+    static let published = NSLocalizedString("post.publishedTimeAgo", value: "Published %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
+    static let scheduled = NSLocalizedString("post.scheduledForDate", value: "Scheduled %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
+    static let created = NSLocalizedString("post.createdTimeAgo", value: "Created %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
+    static let edited = NSLocalizedString("post.editedTimeAgo", value: "Edited %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
+    static let trashed = NSLocalizedString("post.trashedTimeAgo", value: "Trashed %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
 }
