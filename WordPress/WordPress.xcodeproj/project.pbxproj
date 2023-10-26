@@ -2220,7 +2220,6 @@
 		8B749E9025AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B749E8F25AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift */; };
 		8B74A9A8268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */; };
 		8B74A9A9268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */; };
-		8B7623382384373E00AB3EE7 /* PageListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7623372384373E00AB3EE7 /* PageListViewControllerTests.swift */; };
 		8B7C97E325A8BFA2004A3373 /* JetpackActivityLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C97E225A8BFA2004A3373 /* JetpackActivityLogViewController.swift */; };
 		8B7F25A724E6EDB4007D82CC /* TopicsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F25A624E6EDB4007D82CC /* TopicsCollectionView.swift */; };
 		8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F51C824EED804008CF5B5 /* ReaderTracker.swift */; };
@@ -7567,7 +7566,6 @@
 		8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackCapabilitiesService.swift; sourceTree = "<group>"; };
 		8B749E8F25AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackCapabilitiesServiceTests.swift; sourceTree = "<group>"; };
 		8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RewindStatus+multiSite.swift"; sourceTree = "<group>"; };
-		8B7623372384373E00AB3EE7 /* PageListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListViewControllerTests.swift; sourceTree = "<group>"; };
 		8B7C97E225A8BFA2004A3373 /* JetpackActivityLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackActivityLogViewController.swift; sourceTree = "<group>"; };
 		8B7F25A624E6EDB4007D82CC /* TopicsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicsCollectionView.swift; sourceTree = "<group>"; };
 		8B7F51C824EED804008CF5B5 /* ReaderTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTracker.swift; sourceTree = "<group>"; };
@@ -13911,7 +13909,6 @@
 		8B7623362384372F00AB3EE7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8B7623372384373E00AB3EE7 /* PageListViewControllerTests.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -23568,7 +23565,6 @@
 				0CB424F42ADF3CBE0080B807 /* PostSearchViewModelTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
-				8B7623382384373E00AB3EE7 /* PageListViewControllerTests.swift in Sources */,
 				D88A64B0208DA093008AE9BC /* StockPhotosResultsPageTests.swift in Sources */,
 				0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */,
 				B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */,
