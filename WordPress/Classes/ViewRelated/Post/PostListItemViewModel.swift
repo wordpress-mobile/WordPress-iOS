@@ -47,5 +47,9 @@ private func makeContentAttributedString(for post: Post) -> NSAttributedString {
         string.append(snippetAttributedString)
     }
 
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.paragraphSpacing = 4
+    string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
+
     return string
 }
