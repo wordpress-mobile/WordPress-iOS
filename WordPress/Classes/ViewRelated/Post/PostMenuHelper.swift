@@ -130,8 +130,8 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
 
     private enum Strings {
         static let cancelAutoUpload = NSLocalizedString("posts.cancelUpload.actionTitle", value: "Cancel upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
-        static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Go to stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
-        static let comments = NSLocalizedString("posts.comments.actionTitle", value: "Go to comments", comment: "Label for post comments option. Tapping comments statistics for a post.")
+        static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
+        static let comments = NSLocalizedString("posts.comments.actionTitle", value: "Comments", comment: "Label for post comments option. Tapping displays comments for a post.")
         static let duplicate = NSLocalizedString("posts.duplicate.actionTitle", value: "Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to draft", comment: "Label for an option that moves a post to the draft folder")
