@@ -1,7 +1,7 @@
 import Foundation
 
 enum AbstractPostHelper {
-    static func getLocalizedDate(for post: AbstractPost) -> String? {
+    static func getLocalizedStatusWithDate(for post: AbstractPost) -> String? {
         let timeZone = post.blog.timeZone
 
         switch post.status {

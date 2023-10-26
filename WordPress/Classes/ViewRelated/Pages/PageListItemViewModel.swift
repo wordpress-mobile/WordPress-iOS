@@ -4,7 +4,7 @@ final class PageListItemViewModel {
     let page: Page
     let title: NSAttributedString
     let badgeIcon: UIImage?
-    let badges: String
+    let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
 
@@ -37,15 +37,19 @@ private func makeBadgeIcon(for page: Page) -> UIImage? {
     return nil
 }
 
-private func makeBadgesString(for page: Page) -> String {
+private func makeBadgesString(for page: Page) -> NSAttributedString {
     var badges: [String] = []
+    var colors: [Int: UIColor] = [:]
     if page.isSiteHomepage {
         badges.append(Strings.badgeHomepage)
     } else if page.isSitePostsPage {
         badges.append(Strings.badgePosts)
     }
-    if let displayDate = page.displayDate() {
-        badges.append(displayDate.capitalized)
+    if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: page) {
+        if page.status == .trash {
+            colors[badges.endIndex] = .systemRed
+        }
+        badges.append(date)
     }
     if page.hasPrivateState {
         badges.append(Strings.badgePrivatePage)
@@ -56,7 +60,19 @@ private func makeBadgesString(for page: Page) -> String {
     if page.hasLocalChanges() {
         badges.append(Strings.badgeLocalChanges)
     }
-    return badges.joined(separator: " · ")
+    var string = NSMutableAttributedString()
+    for (index, badge) in badges.enumerated() {
+        if string.length > 0 {
+            string.append(NSAttributedString(string: " · ", attributes: [
+                .foregroundColor: UIColor.secondaryLabel
+            ]))
+        }
+        string.append(NSAttributedString(string: badge, attributes: [
+            .foregroundColor: colors[index] ?? UIColor.secondaryLabel
+        ]))
+    }
+    string.addAttribute(.font, value: WPStyleGuide.fontForTextStyle(.footnote), range: NSRange(location: 0, length: string.length))
+    return string
 }
 
 private enum Strings {

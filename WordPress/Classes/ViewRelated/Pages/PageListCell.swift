@@ -50,7 +50,7 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
 
         badgeIconView.image = viewModel.badgeIcon
         badgeIconView.isHidden = viewModel.badgeIcon == nil
-        badgesLabel.text = viewModel.badges
+        badgesLabel.attributedText = viewModel.badges
 
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
@@ -118,9 +118,6 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         titleLabel.numberOfLines = 1
 
         badgeIconView.tintColor = UIColor.secondaryLabel
-
-        badgesLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        badgesLabel.textColor = UIColor.secondaryLabel
     }
 
     private func setupFeaturedImageView() {

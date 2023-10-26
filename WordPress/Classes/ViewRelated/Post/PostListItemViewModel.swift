@@ -16,7 +16,7 @@ final class PostListItemViewModel {
         self.post = post
         self.content = makeContentAttributedString(for: post)
         self.imageURL = post.featuredImageURL
-        self.date = AbstractPostHelper.getLocalizedDate(for: post)
+        self.date = AbstractPostHelper.getLocalizedStatusWithDate(for: post)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
