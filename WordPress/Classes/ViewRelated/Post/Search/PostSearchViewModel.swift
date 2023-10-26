@@ -6,22 +6,26 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     @Published var selectedTokens: [any PostSearchToken] = []
     @Published private(set) var footerState: PagingFooterView.State?
 
-    private(set) var suggestedTokens: [any PostSearchToken] = [] {
-        didSet { didUpdateData?() }
+    @Published private(set) var snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>()
+
+    enum SectionID: Int, CaseIterable {
+        case tokens = 0
+        case posts
     }
 
-    private(set) var results: [PostSearchResultItem] = [] {
-        didSet { didUpdateData?() }
+    enum ItemID: Hashable {
+        case token(AnyHashable)
+        case post(NSManagedObjectID)
     }
 
-    var didUpdateData: (() -> Void)? // Send updates on `didSet` (unlike @Published)
+    private(set) var suggestedTokens: [any PostSearchToken] = []
+    private(set) var posts: [AbstractPost] = []
 
     private let blog: Blog
     private let settings: PostListFilterSettings
     private let coreData: CoreDataStack
     private let entityName: String
 
-    private var cachedItems: [NSManagedObjectID: PostSearchResultItem] = [:]
     private var searchService: PostSearchService?
     private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
@@ -49,7 +53,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         $searchTerm
             .dropFirst()
             .removeDuplicates()
-            .sink { [weak self] in self?.didUpdateSearchTerm($0) }
+            .sink { [weak self] in self?.updateSuggestedTokens(for: $0) }
             .store(in: &cancellables)
 
         $searchTerm.map { $0.trimmingCharacters(in: .whitespaces) }
@@ -59,14 +63,64 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             .removeDuplicates { $0.0 == $1.0 && $0.1.map(\.id) == $1.1.map(\.id) }
             .sink { [weak self] _ in self?.performRemoteSearch() }
             .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: coreData.mainContext)
+            .sink { [weak self] in self?.reload(with: $0) }
+            .store(in: &cancellables)
+
+        reload()
+    }
+
+    // MARK: - Snapshot
+
+    private func reload() {
+        snapshot = makeSnapshot()
+    }
+
+    private func reload(with notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let existingObjects = Set(posts)
+        var updated = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>) ?? []
+        var deleted = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? []
+
+        updated.formIntersection(existingObjects)
+        deleted.formIntersection(existingObjects)
+
+        guard !updated.isEmpty || !deleted.isEmpty else {
+            return
+        }
+
+        var snapshot = makeSnapshot()
+        snapshot.reloadItems(updated.map({ ItemID.post($0.objectID) }))
+
+        for object in deleted {
+            if let post = object as? AbstractPost,
+               let index = posts.firstIndex(of: post) {
+                posts.remove(at: index)
+            }
+            snapshot.deleteItems(deleted.map({ ItemID.post($0.objectID) }))
+        }
+
+        self.snapshot = snapshot
+    }
+
+    private func makeSnapshot() -> NSDiffableDataSourceSnapshot<SectionID, ItemID> {
+        var snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>()
+
+        snapshot.appendSections([SectionID.tokens])
+        let tokenIDs = suggestedTokens.map { ItemID.token($0.id) }
+        snapshot.appendItems(tokenIDs, toSection: SectionID.tokens)
+
+        snapshot.appendSections([SectionID.posts])
+        let postIDs = posts.map { ItemID.post($0.objectID) }
+        snapshot.appendItems(postIDs, toSection: SectionID.posts)
+
+        return snapshot
     }
 
     // MARK: - Events
-
-    private func didUpdateSearchTerm(_ searchTerm: String) {
-        updateHighlightForSearchResults(for: searchTerm)
-        updateSuggestedTokens(for: searchTerm)
-    }
 
     func didReachBottom() {
         guard let searchService, searchService.error == nil else { return }
@@ -81,9 +135,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         let token = suggestedTokens[index]
         cancelCurrentRemoteSearch()
         suggestedTokens = []
-        results = []
+        posts = []
         selectedTokens.append(token)
         searchTerm = ""
+        reload()
     }
 
     // MARK: - Search (Remote)
@@ -92,8 +147,9 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         cancelCurrentRemoteSearch()
 
         guard searchTerm.count > 1 || !selectedTokens.isEmpty else {
-            if !results.isEmpty {
-                results = []
+            if !posts.isEmpty {
+                posts = []
+                reload()
             }
             return
         }
@@ -131,70 +187,27 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     func service(_ service: PostSearchService, didAppendPosts posts: [AbstractPost]) {
         assert(Thread.isMainThread)
 
-        let items = posts.map(getSearchResultItem)
         if isRefreshing {
-            self.results = items
+            self.posts = posts
             isRefreshing = false
         } else {
-            self.results += items
+            self.posts += posts
         }
-
-        // Updating for current searchTerm, not the one that the service searched for
-        updateHighlightForSearchResults(for: searchTerm)
+        reload()
     }
 
     func serviceDidUpdateState(_ service: PostSearchService) {
         assert(Thread.isMainThread)
 
         if isRefreshing && service.error != nil {
-            results = []
+            posts = []
         }
-        if service.isLoading && (!isRefreshing || results.isEmpty) {
+        if service.isLoading && (!isRefreshing || posts.isEmpty) {
             footerState = .loading
         } else if service.error != nil {
             footerState = .error
         } else {
             footerState = nil
-        }
-    }
-
-    // MARK: - Results
-
-    private func getSearchResultItem(for post: AbstractPost) -> PostSearchResultItem {
-        if let item = cachedItems[post.objectID] {
-            return item
-        }
-        let item: PostSearchResultItem
-        switch post {
-        case let post as Post:
-            item = .post(PostListItemViewModel(post: post))
-        case let page as Page:
-            item = .page(PageListItemViewModel(page: page))
-        default:
-            fatalError("Unsupported item: \(type(of: post))")
-        }
-        cachedItems[post.objectID] = item
-        return item
-    }
-
-    // MARK: - Highlighter
-
-    private func updateHighlightForSearchResults(for searchTerm: String) {
-        let terms = searchTerm
-            .trimmingCharacters(in: .whitespaces)
-            .components(separatedBy: .whitespaces)
-            .filter { !$0.isEmpty }
-        for item in results {
-            switch item {
-            case .post(let viewModel):
-                let string = NSMutableAttributedString(attributedString: viewModel.content)
-                PostSearchViewModel.highlight(terms: terms, in: string)
-                viewModel.content = string
-            case .page(let viewModel):
-                let string = NSMutableAttributedString(attributedString: viewModel.title)
-                PostSearchViewModel.highlight(terms: terms, in: string)
-                viewModel.title = string
-            }
         }
     }
 
@@ -207,20 +220,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             let tokens = await suggestionsService.getSuggestion(for: searchTerm, selectedTokens: selectedTokens)
             guard !Task.isCancelled else { return }
             self.suggestedTokens = tokens
-        }
-    }
-}
-
-enum PostSearchResultItem {
-    case post(PostListItemViewModel)
-    case page(PageListItemViewModel)
-
-    var objectID: NSManagedObjectID {
-        switch self {
-        case .post(let viewModel):
-            return viewModel.post.objectID
-        case .page(let viewModel):
-            return viewModel.page.objectID
+            self.reload()
         }
     }
 }
