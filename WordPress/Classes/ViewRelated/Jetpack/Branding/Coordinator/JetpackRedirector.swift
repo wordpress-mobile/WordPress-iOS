@@ -1,4 +1,5 @@
 import Foundation
+import StoreKit
 
 class JetpackRedirector {
 
@@ -30,8 +31,26 @@ class JetpackRedirector {
 
         // First, check if the WordPress app can open Jetpack by testing its URL scheme.
         // if we can potentially open Jetpack app, let's open it through universal link to avoid scheme conflicts (e.g., a certain game :-).
-        // finally, if the user might not have Jetpack installed, direct them to App Store page.
-        let urlToOpen = UIApplication.shared.canOpenURL(jetpackDeepLinkURL) ? jetpackUniversalLinkURL : jetpackAppStoreURL
-        UIApplication.shared.open(urlToOpen)
+        // finally, if the user might not have Jetpack installed, open App Store view controller through StoreKit.
+        if UIApplication.shared.canOpenURL(jetpackDeepLinkURL) {
+            UIApplication.shared.open(jetpackUniversalLinkURL)
+        } else {
+            showJetpackAppInstallation(fallbackURL: jetpackAppStoreURL)
+        }
+    }
+
+    private static func showJetpackAppInstallation(fallbackURL: URL) {
+        let viewController = RootViewCoordinator.sharedPresenter.rootViewController
+        let storeProductVC = SKStoreProductViewController()
+        let appID = [SKStoreProductParameterITunesItemIdentifier: "1565481562"]
+
+        storeProductVC.loadProduct(withParameters: appID) { (result, error) in
+            if result {
+                viewController.present(storeProductVC, animated: true)
+            } else if let error = error {
+                DDLogError("Failed loading Jetpack App product: \(error.localizedDescription)")
+                UIApplication.shared.open(fallbackURL)
+            }
+        }
     }
 }
