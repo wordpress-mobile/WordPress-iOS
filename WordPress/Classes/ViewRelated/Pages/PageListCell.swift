@@ -52,7 +52,6 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         badgeIconView.isHidden = viewModel.badgeIcon == nil
         badgesLabel.text = viewModel.badges
 
-        imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: viewModel.page) { error in

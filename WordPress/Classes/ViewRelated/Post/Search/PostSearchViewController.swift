@@ -59,7 +59,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             if self?.searchController?.searchBar.text != $0 {
                 self?.searchController?.searchBar.text = $0
             }
-            self?.updateHighlighsForVisibleCells(searchTerm: $0)
+            self?.updateHighlightsForVisibleCells(searchTerm: $0)
         }.store(in: &cancellables)
 
         viewModel.$selectedTokens
@@ -102,12 +102,12 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 assert(listViewController is InteractivePostViewDelegate)
                 let viewModel = PostListItemViewModel(post: post)
                 cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
-                updateHighlighs(for: [cell], searchTerm: self.viewModel.searchTerm)
+                updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
                 cell.configure(with: PageListItemViewModel(page: page))
-                updateHighlighs(for: [cell], searchTerm: viewModel.searchTerm)
+                updateHighlights(for: [cell], searchTerm: viewModel.searchTerm)
                 return cell
             default:
                 fatalError("Unsupported item: \(type(of: post))")
@@ -187,13 +187,13 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     // MARK: - Highlighter
 
-    private func updateHighlighsForVisibleCells(searchTerm: String) {
+    private func updateHighlightsForVisibleCells(searchTerm: String) {
         let cells = (tableView.indexPathsForVisibleRows ?? [])
             .compactMap(tableView.cellForRow)
-        updateHighlighs(for: cells, searchTerm: searchTerm)
+        updateHighlights(for: cells, searchTerm: searchTerm)
     }
 
-    private func updateHighlighs(for cells: [UITableViewCell], searchTerm: String) {
+    private func updateHighlights(for cells: [UITableViewCell], searchTerm: String) {
         let terms = searchTerm
             .trimmingCharacters(in: .whitespaces)
             .components(separatedBy: .whitespaces)
