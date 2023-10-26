@@ -148,6 +148,10 @@ class ReaderPostCardCell: UITableViewCell {
 
 private extension ReaderPostCardCell {
 
+    var usesAccessibilitySize: Bool {
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
     func commonInit() {
         setupViews()
         addViewConstraints()
@@ -237,7 +241,11 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-        siteStackView.addArrangedSubview(postDateLabel)
+
+        // if accessibility size
+        if !usesAccessibilitySize {
+            siteStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupSiteStackView() {
@@ -250,6 +258,10 @@ private extension ReaderPostCardCell {
         siteStackView.addGestureRecognizer(tapGesture)
 
         contentStackView.addArrangedSubview(siteStackView)
+
+        if usesAccessibilitySize {
+            contentStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupPostTitle() {
@@ -296,10 +308,12 @@ private extension ReaderPostCardCell {
     }
 
     func setupControlButtons() {
-        setupControlButton(reblogButton,
-                           image: Constants.reblogButtonImage,
-                           text: Constants.reblogButtonText,
-                           action: #selector(didTapReblog))
+        if !usesAccessibilitySize {
+            setupControlButton(reblogButton,
+                               image: Constants.reblogButtonImage,
+                               text: Constants.reblogButtonText,
+                               action: #selector(didTapReblog))
+        }
         setupControlButton(commentButton,
                            image: Constants.commentButtonImage,
                            text: Constants.commentButtonText,
@@ -430,7 +444,7 @@ private extension ReaderPostCardCell {
 
     func configureLabels() {
         configureLabel(siteTitleLabel, text: viewModel?.siteTitle)
-        configureLabel(postDateLabel, text: viewModel?.postDate)
+        configureLabel(postDateLabel, text: usesAccessibilitySize ? viewModel?.shortPostDate : viewModel?.postDate)
         configureLabel(postTitleLabel, text: viewModel?.postTitle)
         configureLabel(postSummaryLabel, text: viewModel?.postSummary)
         configureLabel(postCountsLabel, text: viewModel?.postCounts)
@@ -524,7 +538,7 @@ private extension ReaderPostCardCell {
         accessibilityElements = [
             siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
             reblogButton, commentButton, likeButton, menuButton
-        ]
+        ].filter { $0 != reblogButton || !self.usesAccessibilitySize } // skip reblog button if a11y size is active.
     }
 
     // MARK: - Cell reuse
@@ -532,7 +546,10 @@ private extension ReaderPostCardCell {
     func addMissingViews() {
         let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
         let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
-        let controlViews = [reblogButton, commentButton, likeButton]
+        let controlViews = [reblogButton, commentButton, likeButton].filter {
+            // skip reblog button if a11y size is active.
+            $0 != reblogButton || !self.usesAccessibilitySize
+        }
 
         siteHeaderViews.enumerated().forEach { (index, view) in
             addToStackView(siteStackView, view: view, index: index)
