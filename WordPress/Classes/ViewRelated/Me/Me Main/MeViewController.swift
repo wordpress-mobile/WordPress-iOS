@@ -182,9 +182,8 @@ class MeViewController: UITableViewController {
 
         let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled && !(account?.settings?.twoStepEnabled ?? false)
 
-        return ImmuTable(sections: [
-            // first section
-            .init(rows: {
+        var sections: [ImmuTableSection] = [
+            ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
                     var loggedInRows = [myProfile, accountSettings]
@@ -196,9 +195,8 @@ class MeViewController: UITableViewController {
                 }
                 return rows
             }()),
-
             // middle section
-            .init(rows: {
+            ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
                 rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
@@ -214,13 +212,33 @@ class MeViewController: UITableViewController {
                                               accessibilityIdentifier: "About"))
 
                 return rows
-            }()),
+            }())
+        ]
 
-            // last section
+#if JETPACK
+        if RemoteFeatureFlag.domainManagement.enabled() {
+            sections.append(.init(headerText: HeaderTitles.products, rows: {
+                return [
+                    ButtonRow(title: MyDomainsViewController.Strings.title) { action in
+                        let controller = MyDomainsViewController()
+                        let navigationController = UINavigationController(rootViewController: controller)
+                        self.present(navigationController, animated: true) {
+                            self.tableView.deselectSelectedRowWithAnimation(true)
+                        }
+                    }
+                ]
+            }()))
+        }
+#endif
+
+        // last section
+        sections.append(
             .init(headerText: wordPressComAccount, rows: {
                 return [loggedIn ? logOut : logIn]
             }())
-        ])
+        )
+
+        return ImmuTable(sections: sections)
     }
 
     // MARK: - UITableViewDelegate
@@ -374,8 +392,8 @@ class MeViewController: UITableViewController {
         }
 
         if let sections = handler?.viewModel.sections,
-            let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
-            let row = sections[section].rows.firstIndex(where: matchRow) {
+           let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
+           let row = sections[section].rows.firstIndex(where: matchRow) {
             let indexPath = IndexPath(row: row, section: section)
 
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
@@ -574,6 +592,11 @@ private extension MeViewController {
 
     enum HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+        static let products = NSLocalizedString(
+            "me.products.header",
+            value: "Products",
+            comment: "Products header text in Me Screen."
+        )
     }
 
     enum LogoutAlert {

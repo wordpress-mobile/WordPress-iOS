@@ -55,18 +55,20 @@ struct ReaderPostCardCellViewModel {
     }
 
     var commentCount: String? {
-        guard isCommentsEnabled else {
+        guard isCommentsEnabled,
+              let count = contentProvider.commentCount()?.intValue,
+              count > 0 else {
             return nil
         }
-        let count = contentProvider.commentCount()?.intValue ?? 0
         return WPStyleGuide.commentCountForDisplay(count)
     }
 
     var likeCount: String? {
-        guard isLikesEnabled else {
+        guard isLikesEnabled,
+              let count = contentProvider.likeCount()?.intValue,
+              count > 0 else {
             return nil
         }
-        let count = contentProvider.likeCount()?.intValue ?? 0
         return WPStyleGuide.likeCountForDisplay(count)
     }
 

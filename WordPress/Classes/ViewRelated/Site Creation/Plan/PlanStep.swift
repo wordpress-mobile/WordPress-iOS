@@ -5,8 +5,9 @@ final class PlanStep: WizardStep {
 
     internal var content: UIViewController {
         let viewModel = PlanWizardContentViewModel(siteCreator: creator)
-        return PlanWizardContent(viewModel: viewModel) { [weak self] planId in
+        return PlanWizardContent(viewModel: viewModel) { [weak self] planId, domainName in
             self?.creator.planId = planId
+            self?.creator.addressFromPlanSelection = domainName
             self?.delegate?.nextStep()
         }
     }

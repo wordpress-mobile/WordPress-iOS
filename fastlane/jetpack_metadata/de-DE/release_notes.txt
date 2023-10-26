@@ -1,7 +1,0 @@
-Wir haben einige Fehler beseitigt! (Das war weniger aufwendig als gedacht.)
-
-- Du kannst jetzt URLs aus X einbetten, ohne fehlerhafte Links zu erhalten. Ziemlich gut, wenn du uns fragst.
-- Hinsichtlich Links: Bei Verwendung einer ungültigen Medien-URL zeigt die App jetzt eine Fehlermeldung an und stürzt nicht mehr ab. Besser, oder?
-- Mitarbeiter sehen jetzt das richtige Pop-up, wenn sie Beiträge zur Überprüfung einreichen. Was ein Glück.
-- Wir haben ein Problem behoben, das dazu führte, dass Benutzer ohne Administratorrechte das Plugin-Menü für ihre Website sehen konnten. Aus den Augen, aus dem Sinn.
-- Im Block-Editor stürzt die App nicht mehr ab, wenn du zu viele ineinanderverschachtelte Blöcke hast. Was sagst du dazu?

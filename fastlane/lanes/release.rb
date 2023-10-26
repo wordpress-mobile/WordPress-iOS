@@ -94,7 +94,7 @@ platform :ios do
     ios_betabuild_prechecks(options)
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
-    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    lint_localizations
     ios_bump_version_beta
 
     if prompt_for_confirmation(
@@ -164,7 +164,7 @@ platform :ios do
     check_all_translations(interactive: true)
 
     download_localized_strings_and_metadata(options)
-    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    lint_localizations
     ios_bump_version_beta
 
     # Wrap up
@@ -245,6 +245,13 @@ lane :gutenberg_dep_check do
     # If a tag is present, the commit value is ignored
     UI.message("Gutenberg version: #{source[:tag]}")
   end
+end
+
+lane :lint_localizations do |options|
+  ios_lint_localizations(
+    input_dir: 'WordPress/Resources',
+    allow_retry: options.fetch(:allow_retry, true)
+  )
 end
 
 # Returns the path to the extracted Release Notes file for the given `app`.
