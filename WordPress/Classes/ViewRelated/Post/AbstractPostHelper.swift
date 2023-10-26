@@ -14,8 +14,8 @@ enum AbstractPostHelper {
                 return String(format: Strings.published, dateCreated.toMediumString(inTimeZone: timeZone))
             }
         case .trash:
-            if let dateCreated = post.dateCreated {
-                return String(format: Strings.trashed, dateCreated.toMediumString(inTimeZone: timeZone))
+            if let dateModified = post.dateModified {
+                return String(format: Strings.trashed, dateModified.toMediumString(inTimeZone: timeZone))
             }
         default:
             break
