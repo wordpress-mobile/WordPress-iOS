@@ -11,11 +11,11 @@ final class PostListItemViewModel {
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
 
-    init(post: Post, isAuthorBadgeHidden: Bool = false) {
+    init(post: Post) {
         self.post = post
         self.content = makeContentString(for: post)
         self.imageURL = post.featuredImageURL
-        self.badges = makeBadgesString(for: post, isAuthorBadgeHidden: isAuthorBadgeHidden)
+        self.badges = makeBadgesString(for: post)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
@@ -53,13 +53,13 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     return string
 }
 
-private func makeBadgesString(for post: Post, isAuthorBadgeHidden: Bool) -> NSAttributedString {
+private func makeBadgesString(for post: Post) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
     if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
         let color: UIColor? = post.status == .trash ? .systemRed : nil
         badges.append((date, color))
     }
-    if !isAuthorBadgeHidden, let author = post.authorForDisplay() {
+    if let author = post.authorForDisplay() {
         badges.append((author, nil))
     }
     return AbstractPostHelper.makeBadgesString(with: badges)

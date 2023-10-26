@@ -301,8 +301,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let cell = cell as? PostListCell else {
             return
         }
-        let viewModel = PostListItemViewModel(post: post, isAuthorBadgeHidden: filterSettings.shouldShowOnlyMyPosts())
-        cell.configure(with: viewModel, delegate: self)
+        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
