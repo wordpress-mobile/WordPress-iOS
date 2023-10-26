@@ -63,7 +63,7 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
     var icon: UIImage? {
         switch self {
         case .retry: return UIImage()
-        case .view: return UIImage(systemName: "eye")
+        case .view: return UIImage(systemName: "safari")
         case .publish: return UIImage(systemName: "globe")
         case .stats: return UIImage(systemName: "chart.bar")
         case .duplicate: return UIImage(systemName: "doc.on.doc")
