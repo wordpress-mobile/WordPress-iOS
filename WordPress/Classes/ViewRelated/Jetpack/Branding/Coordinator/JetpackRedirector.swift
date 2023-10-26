@@ -40,9 +40,11 @@ class JetpackRedirector {
     }
 
     private static func showJetpackAppInstallation(fallbackURL: URL) {
-        let viewController = RootViewCoordinator.sharedPresenter.rootViewController
+        let viewController = RootViewCoordinator.sharedPresenter.rootViewController.topmostPresentedViewController
         let storeProductVC = SKStoreProductViewController()
         let appID = [SKStoreProductParameterITunesItemIdentifier: "1565481562"]
+
+        configureNavigationBarAppearance(storeProductVC)
 
         storeProductVC.loadProduct(withParameters: appID) { (result, error) in
             if result {
@@ -53,4 +55,40 @@ class JetpackRedirector {
             }
         }
     }
+
+    // MARK: - SKStoreProductViewController navigation bar appearance
+
+    /// Sets SKStoreProductViewController navigation bar color as system background color
+    ///
+    /// Application's global navigation appearance settings interferes with SKStoreProductViewController
+    /// which requires for this temporary workaround
+    private static func configureNavigationBarAppearance(_ controller: SKStoreProductViewController) {
+        /// Temporarily override global navigation bar color to force non-transparent navigation bar
+        let previousNavigationBarBackgroundColor = UINavigationBar.appearance().backgroundColor
+        UINavigationBar.appearance().backgroundColor  = UIColor.systemBackground
+
+        /// Reset to default navigation bar color
+        storeProductViewControllerObserver = StoreProductViewControllerObserver(onDismiss: {
+            UINavigationBar.appearance().backgroundColor = previousNavigationBarBackgroundColor
+            storeProductViewControllerObserver = nil
+        })
+
+        controller.delegate = storeProductViewControllerObserver
+    }
+
+    /// Observe product view controller dismissal
+    class StoreProductViewControllerObserver: NSObject, SKStoreProductViewControllerDelegate {
+        private let onDismiss: () -> ()
+
+        init(onDismiss: @escaping () -> ()) {
+            self.onDismiss = onDismiss
+            super.init()
+        }
+
+        func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+            onDismiss()
+        }
+    }
+
+    private static var storeProductViewControllerObserver: StoreProductViewControllerObserver?
 }
