@@ -430,7 +430,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: page)
     }
 
-    fileprivate func editPage(_ page: Page) {
+    func editPage(_ page: Page) {
         let didOpenEditor = PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
 
         if didOpenEditor {

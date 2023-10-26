@@ -2,7 +2,7 @@ import Foundation
 
 final class PageListItemViewModel {
     let page: Page
-    @Published var title: NSAttributedString
+    let title: NSAttributedString
     let badgeIcon: UIImage?
     let badges: String
     let imageURL: URL?

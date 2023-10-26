@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import Combine
 
-final class PageListCell: UITableViewCell, Reusable {
+final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
 
     // MARK: - Views
 
@@ -18,6 +18,13 @@ final class PageListCell: UITableViewCell, Reusable {
     // MARK: - Properties
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+
+    // MARK: - PostSearchResultCell
+
+    var attributedText: NSAttributedString? {
+        get { titleLabel.attributedText }
+        set { titleLabel.attributedText = newValue }
+    }
 
     // MARK: - Initializers
 
@@ -35,20 +42,16 @@ final class PageListCell: UITableViewCell, Reusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        cancellables = []
         imageLoader.prepareForReuse()
     }
 
     func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false) {
-        viewModel.$title.sink { [titleLabel] in
-            titleLabel.attributedText = $0
-        }.store(in: &cancellables)
+        titleLabel.attributedText = viewModel.title
 
         badgeIconView.image = viewModel.badgeIcon
         badgeIconView.isHidden = viewModel.badgeIcon == nil
         badgesLabel.text = viewModel.badges
 
-        imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: viewModel.page) { error in

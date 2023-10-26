@@ -1,8 +1,7 @@
 import Foundation
 import UIKit
-import Combine
 
-final class PostListCell: UITableViewCell, Reusable {
+final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
 
     // MARK: - Views
 
@@ -22,11 +21,17 @@ final class PostListCell: UITableViewCell, Reusable {
     private let contentLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
     private let statusLabel = UILabel()
-    private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+
+    // MARK: - PostSearchResultCell
+
+    var attributedText: NSAttributedString? {
+        get { contentLabel.attributedText }
+        set { contentLabel.attributedText = newValue }
+    }
 
     // MARK: - Initializers
 
@@ -44,17 +49,13 @@ final class PostListCell: UITableViewCell, Reusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        cancellables = []
+        imageLoader.prepareForReuse()
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
         headerView.configure(with: viewModel, delegate: delegate)
+        contentLabel.attributedText = viewModel.content
 
-        viewModel.$content.sink { [contentLabel] in
-            contentLabel.attributedText = $0
-        }.store(in: &cancellables)
-
-        imageLoader.prepareForReuse()
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: viewModel.post) { error in
