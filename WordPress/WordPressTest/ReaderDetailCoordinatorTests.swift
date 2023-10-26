@@ -36,7 +36,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Inform the view to render a post after it is fetched
     ///
     func testUpdateViewWithRetrievedPost() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         serviceMock.returnPost = post
         let viewMock = ReaderDetailViewMock()
@@ -98,7 +98,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// If a post is given, do not call the servce and render the content right away
     ///
     func testGivenAPostRenderItRightAway() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -113,7 +113,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Tell the view to show a loading indicator when start is called
     ///
     func testStartCallsTheViewToShowLoader() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -128,7 +128,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     ///
     func testShowShareSheet() {
         let button = UIView()
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
@@ -149,7 +149,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Present a site preview in the current view stack
     ///
     func testShowPresentSitePreview() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         post.siteID = 1
         post.isExternal = false
         let serviceMock = ReaderPostServiceMock()
@@ -168,7 +168,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Present a tag in the current view stack
     ///
     func testShowPresentTag() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         post.primaryTagSlug = "tag"
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
@@ -186,7 +186,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Present an image in the view controller
     ///
     func testShowPresentImage() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -200,7 +200,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Present an URL in a new Reader Detail screen
     ///
     func testShowPresentURL() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -216,7 +216,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Present an URL in a webview controller
     ///
     func testShowPresentURLInWebViewController() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -231,7 +231,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     /// Tell the view to scroll when URL is a hash link
     ///
     func testScrollWhenUrlIsHash() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post = makeReaderPost()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
@@ -250,6 +250,10 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         coordinator.postURL = postURL
 
         expect(coordinator.commentID).to(equal(10))
+    }
+
+    func makeReaderPost() -> ReaderPost {
+        ReaderPostBuilder().build()
     }
 }
 
