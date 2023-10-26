@@ -3,7 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-class ReaderDetailCoordinatorTests: XCTestCase {
+class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
     /// Given a post ID, site ID and isFeed fetches the post from the service
     ///
@@ -253,7 +253,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     }
 
     func makeReaderPost() -> ReaderPost {
-        ReaderPostBuilder().build()
+        ReaderPostBuilder(mainContext).build()
     }
 }
 
