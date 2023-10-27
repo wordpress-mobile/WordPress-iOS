@@ -112,6 +112,8 @@ class AbstractPostListViewController: UIViewController,
         tableView.reloadData()
 
         observeNetworkStatus()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -236,6 +238,23 @@ class AbstractPostListViewController: UIViewController,
         }
 
         return properties
+    }
+
+    // MARK: - Notifications
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return
+        }
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
+            guard let post = tableViewHandler.resultsController?.object(at: $0) as? NSManagedObject else { return false }
+            return updatedObjects.contains(post)
+        }
+        if !updatedIndexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
+            tableView.endUpdates()
+        }
     }
 
     // MARK: - Author Filter

@@ -479,7 +479,6 @@ final class PostCoordinator: NSObject {
 
     // MARK: - Trash/Delete
 
-    @MainActor
     func isDeleting(_ post: AbstractPost) -> Bool {
         pendingDeletionPostIDs.contains(post.objectID)
     }
@@ -491,10 +490,9 @@ final class PostCoordinator: NSObject {
 
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics(for: post))
 
-        pendingDeletionPostIDs.insert(post.objectID)
+        setPendingDeletion(true, post: post)
 
         let originalStatus = post.status
-
         let trashed = (post.status == .trash)
 
         let repository = PostRepository(coreDataStack: ContextManager.shared)
@@ -527,7 +525,7 @@ final class PostCoordinator: NSObject {
             ActionDispatcher.dispatch(NoticeAction.dismiss)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 
-            pendingDeletionPostIDs.remove(post.objectID)
+            setPendingDeletion(false, post: post)
         } catch {
             if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
                 delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
@@ -535,11 +533,9 @@ final class PostCoordinator: NSObject {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            pendingDeletionPostIDs.remove(post.objectID)
+            setPendingDeletion(false, post: post)
         }
     }
-
-    // MARK: - Restore
 
     @MainActor
     private func restore(_ post: AbstractPost, toStatus status: BasePost.Status) async {
@@ -561,6 +557,17 @@ final class PostCoordinator: NSObject {
         }
     }
 
+    private func setPendingDeletion(_ isDeleting: Bool, post: AbstractPost) {
+        if isDeleting {
+            pendingDeletionPostIDs.insert(post.objectID)
+        } else {
+            pendingDeletionPostIDs.remove(post.objectID)
+        }
+        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
+            NSUpdatedObjectsKey: Set([post])
+        ])
+    }
+
     private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {
         var properties = [String: AnyObject]()
         properties["type"] = ((post is Post) ? "post" : "page") as AnyObject
@@ -576,7 +583,8 @@ private struct Constants {
 }
 
 extension Foundation.Notification.Name {
-    static let didChangePostCordinatorStatus = "org.automattic.didChangePostCordinatorStatus"
+    /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key
+    static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
 }
 
 // MARK: - Automatic Uploads

@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
+    var isEnabled = true
 
     // MARK: - Views
 
@@ -67,6 +68,9 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         statusLabel.text = viewModel.status
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
+
+        contentView.isUserInteractionEnabled = viewModel.isEnabled
+        contentStackView.alpha = viewModel.isEnabled ? 1.0 : 0.33
     }
 
     // MARK: - Setup
