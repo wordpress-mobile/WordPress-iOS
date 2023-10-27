@@ -1,0 +1,5 @@
+We hebben een aantal visuele veranderingen aangebracht in de reader. Je zal aanpassingen zien in feed cards, headers, knoppen, aanbevelingen en meer. We ontvangen graag je feedback.
+
+In de blok-editor kan je nu een blok splitsen of verlaten door drie keer op de "enter"-toets te drukken. En in citaatblokken is de linkerrand nu altijd zichtbaar, zelfs in blokgebaseerde thema's in de donkere modus. En daar kan je ons op citeren.
+
+Tot slot hebben we een codeprobleem opgelost in de instellingen voor schrijfopdrachten, waardoor de app crashte.

@@ -1,0 +1,5 @@
+Fizemos algumas alterações visuais no leitor. Você vai notar atualizações em cards, cabeçalhos, botões, recomendações e mais. Fique à vontade para nos encher de elogios! :)
+
+No editor de blocos, agora você pode dividir ou sair de um bloco formatado apertando a tecla "enter" três vezes. A borda esquerda sempre fica visível em blocos de citação, até mesmo em temas de blocos no modo escuro. E pode nos citar sobre isso!
+
+Por fim, corrigimos um problema de código nas configurações de prompt de blog que fazia o aplicativo travar.
