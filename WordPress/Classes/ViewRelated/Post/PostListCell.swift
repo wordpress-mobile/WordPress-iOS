@@ -70,7 +70,6 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         statusLabel.isHidden = viewModel.status.isEmpty
 
         contentView.isUserInteractionEnabled = viewModel.isEnabled
-        contentStackView.alpha = viewModel.isEnabled ? 1.0 : 0.33
     }
 
     // MARK: - Setup
