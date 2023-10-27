@@ -3,25 +3,7 @@ import Gridicons
 
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
-class PostCardStatusViewModel: NSObject {
-
-    struct ButtonSection {
-        let buttons: [Button]
-    }
-
-    enum Button {
-        case retry
-        case view
-        case publish
-        case stats
-        case duplicate
-        case moveToDraft
-        case trash
-        case cancelAutoUpload
-        case share
-        case blaze
-        case comments
-    }
+class PostCardStatusViewModel: NSObject, AbstractPostMenu {
 
     let post: Post
     private var progressObserverUUID: UUID? = nil
@@ -141,7 +123,7 @@ class PostCardStatusViewModel: NSObject {
     }
 
     /// Returns what buttons are visible
-    var buttonSections: [ButtonSection] {
+    var buttonSections: [AbstractPostButtonSection] {
         return [
             createPrimarySection(),
             createSecondarySection(),
@@ -151,18 +133,18 @@ class PostCardStatusViewModel: NSObject {
         ]
     }
 
-    private func createPrimarySection() -> ButtonSection {
-        var buttons = [Button]()
+    private func createPrimarySection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
         if !post.isFailed {
             buttons.append(.view)
         }
 
-        return ButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
-    private func createSecondarySection() -> ButtonSection {
-        var buttons = [Button]()
+    private func createSecondarySection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
         if post.status != .draft {
             buttons.append(.moveToDraft)
@@ -190,33 +172,33 @@ class PostCardStatusViewModel: NSObject {
             buttons.append(.publish)
         }
 
-        return ButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
-    private func createBlazeSection() -> ButtonSection {
-        var buttons = [Button]()
+    private func createBlazeSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && post.canBlaze {
             buttons.append(.blaze)
         }
 
-        return ButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
 
-    private func createNavigationSection() -> ButtonSection {
-        var buttons = [Button]()
+    private func createNavigationSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
         if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
         }
 
-        return ButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
 
-    private func createTrashSection() -> ButtonSection {
-        return ButtonSection(buttons: [.trash])
+    private func createTrashSection() -> AbstractPostButtonSection {
+        return AbstractPostButtonSection(buttons: [.trash])
     }
 
     private var canCancelAutoUpload: Bool {

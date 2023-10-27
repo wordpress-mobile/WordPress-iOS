@@ -33,7 +33,7 @@ final class PostListHeaderView: UIView {
     }
 
     private func configureEllipsisButton(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate) {
-        let menuHelper = PostMenuHelper(statusViewModel: viewModel.statusViewModel)
+        let menuHelper = AbstractPostMenuHelper(post: viewModel.post, menu: viewModel.statusViewModel)
         ellipsisButton.showsMenuAsPrimaryAction = true
         ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
     }
