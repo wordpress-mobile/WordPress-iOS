@@ -3,8 +3,8 @@ import XCTest
 @testable import WordPress
 
 final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
-    private let service = MockBlazeService()
-    private let store = MockDashboardBlazeStore()
+    private var service: MockBlazeService!
+    private var store: MockDashboardBlazeStore!
     private var blog: Blog!
     private var sut: DashboardBlazeCardCellViewModel!
     private var isBlazeCampaignsFlagEnabled = true
@@ -12,6 +12,8 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        service = MockBlazeService()
+        store = MockDashboardBlazeStore()
         blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = 1
 
@@ -75,6 +77,7 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         }
     }
 
+    // FIXME: This test is testing the default state of the service and exercises async behavior synchronousely.
     func testThatNoRequestsAreMadeWhenFlagDisabled() {
         // Given
         isBlazeCampaignsFlagEnabled = false
