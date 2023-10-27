@@ -51,7 +51,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     private func bindViewModel() {
         viewModel.$snapshot.sink { [weak self] in
-            self?.dataSource.apply($0, animatingDifferences: false)
+            self?.dataSource.apply($0, animatingDifferences: $0.reloadedItemIdentifiers.count == 1)
             self?.updateSuggestedTokenCells()
         }.store(in: &cancellables)
 
