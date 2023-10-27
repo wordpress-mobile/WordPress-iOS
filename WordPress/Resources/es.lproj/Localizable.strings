@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-23 17:35:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -5280,6 +5280,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "O";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "O elige otra forma de identificación.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "O accede _introduciendo la dirección de tu sitio_.";
 
@@ -5565,7 +5568,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Por favor, introduce la contraseña de tu cuenta en WordPress.com para acceder con tu ID de Apple.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Por favor, introduce el código de verificación de tu aplicación de identificación o toca el siguiente enlace para recibir un código por SMS.";
+"Please enter the verification code from your authenticator app." = "Por favor, introduce el código de verificación de tu aplicación Authenticator.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Introduce tus credenciales";
@@ -7452,9 +7455,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Los controles de formato de texto están dentro de la barra de herramientas situada encima del teclado mientras editas un bloque de texto";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Envía un código por mensaje de texto";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Envíame un texto con un código mediante SMS";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Gracias por elegir %1$@ de %2$@";
@@ -7880,6 +7885,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "¡Hora de terminar de configurar tu sitio! Nuestra lista de tareas te guía por los siguientes pasos.";
+
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Se acabó el tiempo, pero no te preocupes, tu seguridad es nuestra prioridad. ¡Vuelve a intentarlo!";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Trucos para sacar el máximo provecho a WordPress.com";
@@ -8513,6 +8521,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Usar la tienda en un entorno de pruebas";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Usa una clave de seguridad";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar el editor de bloques";
 
@@ -8710,6 +8721,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Esperando a que Google termine…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Esperando a la clave de seguridad";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Esperando...";
@@ -9084,6 +9099,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Vaya, algo salió mal y no pudimos conectarte. ¡Por favor, inténtalo de nuevo!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Vaya, algo ha ido mal. ¡Por favor, inténtalo de nuevo!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Vaya, esa clave de seguridad parece que no es válida. Por favor, inténtalo de nuevo con otra";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Vaya, eso no es un código de verificación en dos pasos. ¡Vuelve a comprobar tu código e inténtalo de nuevo!";
@@ -9890,6 +9911,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Status of a domain in `Complete Setup` state */
 "domain.status.complete.setup" = "Completar instalación";
+
+/* Status of a domain in `Error` state */
+"domain.status.error" = "Error";
 
 /* Status of a domain in `Expired` state */
 "domain.status.expired" = "Caducado";
@@ -11000,6 +11024,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Elegir dominio";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "siteMedia.accessibilityLabelDocument" = "Documento, %@";
