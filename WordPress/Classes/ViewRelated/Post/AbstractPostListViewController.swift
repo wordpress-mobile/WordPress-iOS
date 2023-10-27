@@ -742,9 +742,6 @@ class AbstractPostListViewController: UIViewController,
     func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status) {
         WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
 
-        // if the post was recently deleted, update the status helper and reload the cell to display a spinner
-        let postObjectID = apost.objectID
-
         if filterSettings.currentPostListFilter().filterType != .draft {
             // Needed or else the post will remain in the published list.
             updateAndPerformFetchRequest()
