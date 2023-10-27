@@ -2,7 +2,11 @@ import Aztec
 import Foundation
 import WordPressFlux
 
-class PostCoordinator: NSObject {
+protocol PostCoordinatorDelegate: AnyObject {
+    func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
+}
+
+final class PostCoordinator: NSObject {
 
     enum SavingError: Error {
         case mediaFailure(AbstractPost)
@@ -17,8 +21,11 @@ class PostCoordinator: NSObject {
         coreDataStack.mainContext
     }
 
+    weak var delegate: PostCoordinatorDelegate?
+
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
     private let mediaCoordinator: MediaCoordinator
@@ -469,6 +476,107 @@ class PostCoordinator: NSObject {
             self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
         }
     }
+
+    // MARK: - Trash/Delete
+
+    @MainActor
+    func isDeleting(_ post: AbstractPost) -> Bool {
+        pendingDeletionPostIDs.contains(post.objectID)
+    }
+
+    /// Moves the post to trash or delets it permanently in case it's already in trash.
+    @MainActor
+    func delete(_ post: AbstractPost) async {
+        assert(post.managedObjectContext == mainContext)
+
+        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics(for: post))
+
+        pendingDeletionPostIDs.insert(post.objectID)
+
+        let originalStatus = post.status
+
+        let trashed = (post.status == .trash)
+
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        do {
+            try await repository.trash(TaggedManagedObjectID(post))
+
+            if trashed {
+                cancelAnyPendingSaveOf(post: post)
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            }
+
+            // Remove the trashed post from spotlight
+            SearchManager.shared.deleteSearchableItem(post)
+
+            let message: String
+            if post is Post {
+                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
+            } else {
+                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+            }
+            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", value: "Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder.")
+
+            let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
+                if accepted {
+                    Task {
+                        await self?.restore(post, toStatus: originalStatus ?? .draft)
+                    }
+                }
+            })
+            ActionDispatcher.dispatch(NoticeAction.dismiss)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            pendingDeletionPostIDs.remove(post.objectID)
+        } catch {
+            if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
+                delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
+            } else {
+                WPError.showXMLRPCErrorAlert(error)
+            }
+
+            pendingDeletionPostIDs.remove(post.objectID)
+        }
+    }
+
+    // MARK: - Restore
+
+    @MainActor
+    private func restore(_ post: AbstractPost, toStatus status: BasePost.Status) async {
+        WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics(for: post))
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        Task { @MainActor in
+            do {
+                try await repository.restore(.init(post), to: status)
+
+                // Reindex the restored post in spotlight
+                SearchManager.shared.indexItem(post)
+            } catch {
+                if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
+                    delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
+            }
+        }
+    }
+
+    private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
+        properties["type"] = ((post is Post) ? "post" : "page") as AnyObject
+        if let dotComID = post.blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+        return properties
+    }
+}
+
+private struct Constants {
+    static let httpCodeForbidden = 403
+}
+
+extension Foundation.Notification.Name {
+    static let didChangePostCordinatorStatus = "org.automattic.didChangePostCordinatorStatus"
 }
 
 // MARK: - Automatic Uploads
