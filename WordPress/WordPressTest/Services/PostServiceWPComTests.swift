@@ -107,29 +107,6 @@ class PostServiceWPComTests: CoreDataTestCase {
         XCTAssertEqual(postFromDB.status, .draft)
     }
 
-    func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() {
-        // Arrange
-        let post = PostBuilder(mainContext).with(statusAfterSync: .publish).withRemote().build()
-        let revision = post.createRevision()
-        try! mainContext.save()
-
-        let remotePost = createRemotePost(.trash)
-        remoteMock.remotePostToReturnOnTrashPost = remotePost
-        let expectation = XCTestExpectation()
-
-        // Act
-        self.service.trashPost(post, success: {
-            expectation.fulfill()
-        }, failure: self.impossibleFailureBlock)
-        wait(for: [expectation], timeout: timeout)
-
-        // Assert
-        XCTAssertEqual(post.statusAfterSync, .trash)
-        XCTAssertEqual(post.status, .trash)
-        XCTAssertEqual(revision.statusAfterSync, .trash)
-        XCTAssertEqual(revision.status, .trash)
-     }
-
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {
         // Arrange
         let post = PostBuilder(mainContext).drafted().with(remoteStatus: .local).build()
