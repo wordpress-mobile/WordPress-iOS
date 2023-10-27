@@ -1,6 +1,15 @@
 23.6
 -----
-
+* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
+* [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
+* [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
+* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
+* [*] Fix an issue that leads to an ambiguous error message when an incorrect SMS 2FA code is submitted. [#21863]
+* [*] Fix an issue where two 2FA controllers were being opened at the same time when logging in. [#21865]
+* [*] Block Editor Social Icons: Fix visibility of inactive icons when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55398]
+* [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
+* [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
 
 23.5
 -----
@@ -11,7 +20,6 @@
 * [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
 * [*] [WordPress-only] fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
 * [**] [Jetpack-only] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
-* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
 23.4
 -----

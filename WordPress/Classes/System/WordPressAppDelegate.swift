@@ -135,8 +135,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
-        disableAnimationsForUITests(application)
-        logoutAtLaunchForUITests(application)
+        UITestConfigurator.prepareApplicationForUITests(application)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -359,25 +358,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Helpers
-
-    /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
-    /// It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton:
-    ///
-    /// XCUIApplication().launchArguments = ["-no-animations"]
-    ///
-    private func disableAnimationsForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-no-animations") {
-            UIView.setAnimationsEnabled(false)
-            application.windows.first?.layer.speed = MAXFLOAT
-            application.mainWindow?.layer.speed = MAXFLOAT
-        }
-    }
-
-    private func logoutAtLaunchForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-logout-at-launch") {
-            AccountHelper.logOutDefaultWordPressComAccount()
-        }
-    }
 
     var runningInBackground: Bool {
         return UIApplication.shared.applicationState == .background

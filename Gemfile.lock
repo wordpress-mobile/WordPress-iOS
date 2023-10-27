@@ -381,7 +381,7 @@ DEPENDENCIES
   fastlane (~> 2.174)
   fastlane-plugin-appcenter (~> 2.1)
   fastlane-plugin-sentry
-  fastlane-plugin-wpmreleasetoolkit (~> 9.0)
+  fastlane-plugin-wpmreleasetoolkit (~> 9.1)
   rake
   rmagick (~> 3.2.0)
   rubocop (~> 1.30)

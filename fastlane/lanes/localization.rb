@@ -101,7 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: get_app_version,
+  app_version: release_version_current,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,
@@ -199,7 +199,7 @@ platform :ios do
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
-    version = options.fetch(:version, get_app_version)
+    version = options.fetch(:version, release_version_current)
 
     files = {
       whats_new: WORDPRESS_RELEASE_NOTES_PATH,
@@ -237,7 +237,7 @@ platform :ios do
     # See details below for why that was done and why we should keep the definition in the codebase for future use.
     # source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     # custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    version = options.fetch(:version, get_app_version)
+    version = options.fetch(:version, release_version_current)
 
     files = {
       whats_new: JETPACK_RELEASE_NOTES_PATH
@@ -354,7 +354,7 @@ platform :ios do
 
     locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
     target_files = {
-      "v#{get_app_version}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
+      "v#{release_version_current}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
       app_store_name: { desc: 'name.txt', max_size: 30 },
       app_store_subtitle: { desc: 'subtitle.txt', max_size: 30 },
       app_store_desc: { desc: 'description.txt', max_size: 4000 },

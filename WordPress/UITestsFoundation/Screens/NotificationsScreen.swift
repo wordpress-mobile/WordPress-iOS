@@ -84,7 +84,8 @@ public class NotificationsScreen: ScreenObject {
     }
 
     public func replyToComment(withText text: String) -> Self {
-        tap(element: replyCommentButton, untilAppears: replyTextView)
+        tapUntilCondition(element: replyCommentButton, condition: replyTextView.exists, description: "Reply Text View exists")
+
         replyTextView.typeText(text)
         replyButton.tap()
 
