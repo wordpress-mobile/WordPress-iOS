@@ -127,7 +127,7 @@ platform :ios do
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
+  # @option [Boolean] skip_prechecks (default: false) If true, don't run the prechecks and ios_build_preflight
   # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
   # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
@@ -135,10 +135,16 @@ platform :ios do
   #
   desc 'Builds and uploads for distribution to App Store Connect'
   lane :build_and_upload_app_store_connect do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
+    unless options[:skip_prechecks]
+      ensure_git_status_clean unless is_ci
+      ios_build_preflight
+    end
+
+    UI.important("Building version #{release_version_current} (#{build_code_current}) and uploading to TestFlight")
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
+
     appstore_code_signing
 
     gym(
@@ -165,7 +171,7 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? ios_get_build_version : get_app_version
+    version = options[:beta_release] ? build_code_current : release_version_current
     create_release(
       repository: GITHUB_REPO,
       version:,
@@ -216,8 +222,13 @@ platform :ios do
   #
   desc 'Builds and uploads for distribution to App Center'
   lane :build_and_upload_app_center do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
+    unless options[:skip_prechecks]
+      ensure_git_status_clean unless is_ci
+      ios_build_preflight
+    end
+
+    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
 

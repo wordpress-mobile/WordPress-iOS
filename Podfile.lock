@@ -26,7 +26,7 @@ PODS:
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
   - Gridicons (1.2.0)
-  - Gutenberg (1.106.0)
+  - Gutenberg (1.107.0)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
@@ -73,7 +73,7 @@ PODS:
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.7.0):
+  - WordPressKit (8.8.0):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -111,7 +111,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -126,7 +126,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (~> 7.2.1-beta.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/add-tag-parameter`)
+  - WordPressKit (~> 8.8)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -134,8 +134,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -165,6 +163,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -183,10 +183,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
-  WordPressKit:
-    :branch: task/add-tag-parameter
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -196,9 +193,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
-  WordPressKit:
-    :commit: b43fc731b10bb865f14517a600a24dc06e7c9e67
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -212,7 +206,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 46edef6239e4fa8c032aee57f67c9a258edf0cc1
+  Gutenberg: 5ce6edf551a16b0fc5a35734681f6bdd61dacaf2
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -231,8 +225,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: a30af2a65daf33744994fda93c914e00465fac57
-  WordPressKit: a5432c2e3c2247c2b83b3ebf0acec75ae00782ef
+  WordPressAuthenticator: 1d73abee8fdd87032e987c40f140423a6aa0e577
+  WordPressKit: df18103fb11fefcbccad6aa4df222dc7d408ade5
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
@@ -246,6 +240,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 6e9837e1367e746c72649b4ae3f01aa6f9047108
+PODFILE CHECKSUM: 9859c4a7e3c33bfba28627d1a7509f2f1182f08e
 
 COCOAPODS: 1.12.1

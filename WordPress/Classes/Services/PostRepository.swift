@@ -81,6 +81,9 @@ final class PostRepository {
             return
         }
 
+        let status = try await coreDataStack.performQuery { try $0.existingObject(with: postID).status }
+        assert(status == .trash, "This function can only be used to delete trashed posts/pages.")
+
         // First delete the post from local database.
         let (remote, remotePost) = try await coreDataStack.performAndSave { [remoteFactory] context in
             let post = try context.existingObject(with: postID)

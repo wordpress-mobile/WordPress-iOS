@@ -13,7 +13,7 @@
 @import WordPressKit;
 @import WordPressShared;
 
-NSUInteger const ReaderPostServiceNumberToSync = 40;
+NSUInteger const ReaderPostServiceNumberToSync = 7;
 // NOTE: The search endpoint is currently capped to max results of 20 and returns
 // a 500 error if more are requested.
 // For performance reasons, request fewer results. EJ 2016-05-13

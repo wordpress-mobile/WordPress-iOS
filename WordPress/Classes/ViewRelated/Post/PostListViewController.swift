@@ -6,8 +6,6 @@ import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    private let postCardRestoreCellNibName = "RestorePostTableViewCell"
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
@@ -149,9 +147,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         // Register the cells
         tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
 
-        let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
-        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
-
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
@@ -233,16 +228,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
-
-        // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
-        // or posts that were recently deleted.
-        if recentlyTrashedPostObjectIDs.count > 0 {
-            let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
-
-            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
-        } else {
-            predicates.append(filterPredicate)
-        }
+        predicates.append(filterPredicate)
 
         if filterSettings.shouldShowOnlyMyPosts() {
             let myAuthorID = blogUserID() ?? 0
@@ -272,19 +258,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
         let post = postAtIndexPath(indexPath)
-        let identifier = cellIdentifierForPost(post)
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-
-        configureCell(cell, at: indexPath)
-
-        return cell
-    }
-
-    override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         cell.accessoryType = .none
-
-        let post = postAtIndexPath(indexPath)
 
 //        TODO: Remove later
 //        guard let interactivePostView = cell as? InteractivePostView,
@@ -298,22 +274,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 //        configurablePostView.configure(with: post)
 
         // TODO: Hide author if only showing my posts?
-        guard let cell = cell as? PostListCell else {
-            return
-        }
         cell.configure(with: PostListItemViewModel(post: post), delegate: self)
-    }
-
-    fileprivate func cellIdentifierForPost(_ post: Post) -> String {
-        var identifier: String
-
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = postCardRestoreCellIdentifier
-        } else {
-            identifier = PostListCell.defaultReuseID
-        }
-
-        return identifier
+        return cell
     }
 
     // MARK: - Post Actions
@@ -453,15 +415,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
+            Task { await self?.deletePost(post) }
         }
         alertController.presentFromRootViewController()
-    }
-
-    func restore(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            restorePost(post)
-        }
     }
 
     func draft(_ post: AbstractPost) {
