@@ -4,25 +4,24 @@ final class PostListItemViewModel {
     let post: Post
     let content: NSAttributedString
     let imageURL: URL?
-    let date: String?
+    let badges: NSAttributedString
     let accessibilityIdentifier: String?
     let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
-    var author: String { statusViewModel.author }
 
     init(post: Post) {
         self.post = post
-        self.content = makeContentAttributedString(for: post)
+        self.content = makeContentString(for: post)
         self.imageURL = post.featuredImageURL
-        self.date = post.displayDate()?.capitalizeFirstWord
+        self.badges = makeBadgesString(for: post)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
 }
 
-private func makeContentAttributedString(for post: Post) -> NSAttributedString {
+private func makeContentString(for post: Post) -> NSAttributedString {
     let title = post.titleForDisplay()
     let snippet = post.contentPreviewForDisplay()
 
@@ -47,13 +46,21 @@ private func makeContentAttributedString(for post: Post) -> NSAttributedString {
         string.append(snippetAttributedString)
     }
 
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.paragraphSpacing = 4
+    string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
+
     return string
 }
 
-private extension String {
-    var capitalizeFirstWord: String {
-        let firstLetter = self.prefix(1).capitalized
-        let remainingLetters = self.dropFirst()
-        return firstLetter + remainingLetters
+private func makeBadgesString(for post: Post) -> NSAttributedString {
+    var badges: [(String, UIColor?)] = []
+    if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
+        let color: UIColor? = post.status == .trash ? .systemRed : nil
+        badges.append((date, color))
     }
+    if let author = post.authorForDisplay() {
+        badges.append((author, nil))
+    }
+    return AbstractPostHelper.makeBadgesString(with: badges)
 }
