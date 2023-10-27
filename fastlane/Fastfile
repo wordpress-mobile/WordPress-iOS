@@ -53,13 +53,8 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
-ENV['PROJECT_NAME'] = 'WordPress'
 PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
-ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-ENV['INTERNAL_CONFIG_FILE'] = INTERNAL_CONFIG_FILE
-ENV['PROJECT_ROOT_FOLDER'] = "#{PROJECT_ROOT_FOLDER}/"
-ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
 # Instanstiate versioning classes
