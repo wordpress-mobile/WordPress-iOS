@@ -141,7 +141,7 @@ platform :ios do
     end
 
     UI.important("Building version #{release_version_current} (#{build_code_current}) and uploading to TestFlight")
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
 
@@ -228,7 +228,7 @@ platform :ios do
     end
 
     UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
-    UI.user_error!('Aborted by user request') if !options[:skip_confirm] && !UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
 
