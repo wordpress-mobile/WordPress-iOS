@@ -39,8 +39,6 @@
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
 
-@synthesize restorableStatus;
-
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];

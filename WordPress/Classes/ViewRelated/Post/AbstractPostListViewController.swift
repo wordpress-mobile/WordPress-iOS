@@ -79,8 +79,6 @@ class AbstractPostListViewController: UIViewController,
 
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
-    private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
-
     private var emptyResults: Bool {
         return tableViewHandler.resultsController?.fetchedObjects?.count == 0
     }
@@ -504,10 +502,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
-        if recentlyTrashedPostObjectIDs.count > 0 {
-            refreshAndReload()
-        }
-
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
@@ -696,12 +690,11 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    @objc func deletePost(_ apost: AbstractPost) {
+    @MainActor
+    func deletePost(_ apost: AbstractPost) async {
+        assert(apost.managedObjectContext == ContextManager.shared.mainContext)
+
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
-
-        let postObjectID = apost.objectID
-
-        recentlyTrashedPostObjectIDs.append(postObjectID)
 
         // Remove the trashed post from spotlight
         SearchManager.shared.deleteSearchableItem(apost)
@@ -709,54 +702,54 @@ class AbstractPostListViewController: UIViewController,
         // Update the fetch request *before* making the service call.
         updateAndPerformFetchRequest()
 
-        let indexPath = tableViewHandler.resultsController?.indexPath(forObject: apost)
-
-        if let indexPath = indexPath {
-            tableView.reloadRows(at: [indexPath], with: .fade)
-        }
-
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let originalStatus = apost.status
 
         let trashed = (apost.status == .trash)
 
-        postService.trashPost(apost, success: {
-            // If we permanently deleted the post
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        do {
+            try await repository.trash(TaggedManagedObjectID(apost))
             if trashed {
                 PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
-        }, failure: { [weak self] error in
-            guard let self else {
-                return
-            }
 
-            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
-                self.promptForPassword()
+            var message = ""
+            switch postTypeToSync() {
+            case .post:
+                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
+            case .page:
+                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+            default:
+                break
+            }
+            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", value: "Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder.")
+
+            let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
+                if accepted {
+                    self?.restorePost(apost, toStatus: originalStatus ?? .draft)
+                }
+            })
+            ActionDispatcher.dispatch(NoticeAction.dismiss)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        } catch {
+            if let error = error as NSError?, error.code == AbstractPostListViewController.httpErrorCodeForbidden {
+                promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = self.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-                self.recentlyTrashedPostObjectIDs.remove(at: index)
-                // We don't really know what happened here, why did the request fail?
-                // Maybe we could not delete the post or maybe the post was already deleted
-                // It is safer to re fetch the results than to reload that specific row
-                DispatchQueue.main.async {
-                    self.updateAndPerformFetchRequestRefreshingResults()
-                }
+            // We don't really know what happened here, why did the request fail?
+            // Maybe we could not delete the post or maybe the post was already deleted
+            // It is safer to re fetch the results than to reload that specific row
+            DispatchQueue.main.async {
+                self.updateAndPerformFetchRequestRefreshingResults()
             }
-        })
+        }
     }
 
-    @objc func restorePost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
+    func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status) {
         WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
-
-        // if the post was recently deleted, update the status helper and reload the cell to display a spinner
-        let postObjectID = apost.objectID
-
-        if let index = recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-            recentlyTrashedPostObjectIDs.remove(at: index)
-        }
 
         if filterSettings.currentPostListFilter().filterType != .draft {
             // Needed or else the post will remain in the published list.
@@ -764,55 +757,32 @@ class AbstractPostListViewController: UIViewController,
             tableView.reloadData()
         }
 
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        postService.restore(apost, success: { [weak self] in
-
-            guard let self else {
-                return
-            }
-
-            var apost: AbstractPost
-
-            // Make sure the post still exists.
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        Task { @MainActor in
             do {
-                apost = try self.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
-            } catch {
-                DDLogError("\(error)")
-                return
-            }
+                try await repository.restore(.init(apost), to: status)
 
-            DispatchQueue.main.async {
-                completion?()
-            }
+                if let postStatus = apost.status {
+                    // If the post was restored, see if it appears in the current filter.
+                    // If not, prompt the user to let it know under which filter it appears.
+                    let filter = filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
 
-            if let postStatus = apost.status {
-                // If the post was restored, see if it appears in the current filter.
-                // If not, prompt the user to let it know under which filter it appears.
-                let filter = self.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
+                    if filter.filterType == filterSettings.currentPostListFilter().filterType {
+                        return
+                    }
 
-                if filter.filterType == self.filterSettings.currentPostListFilter().filterType {
-                    return
+                    promptThatPostRestoredToFilter(filter)
+
+                    // Reindex the restored post in spotlight
+                    SearchManager.shared.indexItem(apost)
                 }
-
-                self.promptThatPostRestoredToFilter(filter)
-
-                // Reindex the restored post in spotlight
-                SearchManager.shared.indexItem(apost)
+            } catch {
+                if let error = error as NSError?, error.code == AbstractPostListViewController.httpErrorCodeForbidden {
+                    promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
-        }) { [weak self] error in
-
-            guard let self else {
-                return
-            }
-
-            if let error = error as NSError?, error.code == type(of: self).httpErrorCodeForbidden {
-                self.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            self.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
     }
 
@@ -855,7 +825,6 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Filtering
 
     @objc func refreshAndReload() {
-        recentlyTrashedPostObjectIDs.removeAll()
         updateSelectedFilter()
         updateAndPerformFetchRequestRefreshingResults()
     }
