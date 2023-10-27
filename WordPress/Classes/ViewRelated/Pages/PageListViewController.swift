@@ -351,7 +351,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let page = pageAtIndexPath(indexPath)
         let indentation = getIndentationLevel(at: indexPath)
         let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-        cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory)
+        cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
         return cell
     }
 

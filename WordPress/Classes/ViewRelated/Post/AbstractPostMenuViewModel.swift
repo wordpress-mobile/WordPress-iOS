@@ -1,6 +1,6 @@
 import Foundation
 
-protocol AbstractPostMenu {
+protocol AbstractPostMenuViewModel {
     var buttonSections: [AbstractPostButtonSection] { get }
 }
 

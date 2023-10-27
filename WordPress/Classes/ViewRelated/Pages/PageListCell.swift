@@ -45,7 +45,11 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         imageLoader.prepareForReuse()
     }
 
-    func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false) {
+    func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false, delegate: InteractivePostViewDelegate? = nil) {
+        if let delegate {
+            configureEllipsisButton(with: viewModel.page, viewModel: viewModel.pageMenuViewModel, delegate: delegate)
+        }
+
         titleLabel.attributedText = viewModel.title
 
         badgeIconView.image = viewModel.badgeIcon
@@ -69,6 +73,12 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         )
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
+    }
+
+    private func configureEllipsisButton(with page: Page, viewModel: PageMenuViewModel, delegate: InteractivePostViewDelegate) {
+        let menuHelper = AbstractPostMenuHelper(page, viewModel: viewModel)
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
     }
 
     // MARK: - Setup

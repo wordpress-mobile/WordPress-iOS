@@ -3,7 +3,7 @@ import Gridicons
 
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
-class PostCardStatusViewModel: NSObject, AbstractPostMenu {
+class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     let post: Post
     private var progressObserverUUID: UUID? = nil

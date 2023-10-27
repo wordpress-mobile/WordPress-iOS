@@ -27,13 +27,13 @@ final class PostListHeaderView: UIView {
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
         if let delegate {
-            configureEllipsisButton(with: viewModel, delegate: delegate)
+            configureEllipsisButton(with: viewModel.post, viewModel: viewModel.statusViewModel, delegate: delegate)
         }
         textLabel.attributedText = viewModel.badges
     }
 
-    private func configureEllipsisButton(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate) {
-        let menuHelper = AbstractPostMenuHelper(post: viewModel.post, menu: viewModel.statusViewModel)
+    private func configureEllipsisButton(with post: Post, viewModel: PostCardStatusViewModel, delegate: InteractivePostViewDelegate) {
+        let menuHelper = AbstractPostMenuHelper(post, viewModel: viewModel)
         ellipsisButton.showsMenuAsPrimaryAction = true
         ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
     }

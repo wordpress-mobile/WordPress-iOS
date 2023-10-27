@@ -4,7 +4,12 @@ import UIKit
 struct AbstractPostMenuHelper {
 
     let post: AbstractPost
-    let menu: AbstractPostMenu
+    let viewModel: AbstractPostMenuViewModel
+
+    init(_ post: AbstractPost, viewModel: AbstractPostMenuViewModel) {
+        self.post = post
+        self.viewModel = viewModel
+    }
 
     /// Creates a menu for post actions
     ///
@@ -22,7 +27,7 @@ struct AbstractPostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     private func makeSections(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIMenu] {
-        return menu.buttonSections
+        return viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { section in
                 let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)
