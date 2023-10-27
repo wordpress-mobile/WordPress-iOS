@@ -1,0 +1,7 @@
+No editor de blocos, agora você pode dividir ou sair de um bloco formatado apertando "enter" três vezes. A borda esquerda também sempre fica visível em blocos de citação. E pode nos citar sobre isso! :)
+
+Também resolvemos alguns bugs.
+
+- Corrigimos um problema de código nas configurações de prompt de blog que fazia o aplicativo travar.
+- Durante o processo de cadastro, você não vai parar no leitor por acidente.
+- Criando um site no .com? Você não mais ver duas sobreposições após completar o processo de cadastro. Um e acabou.

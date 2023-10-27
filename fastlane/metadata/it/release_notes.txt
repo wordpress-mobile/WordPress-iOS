@@ -1,0 +1,7 @@
+Nell'editor a blocchi, ora puoi dividere o uscire da un blocco formattato premendo il tasto "invio" tre volte. Il bordo sinistro è sempre visibile anche per i blocchi di citazione. E puoi citarci su questo.
+
+Abbiamo anche eliminato una serie di bug.
+
+- Abbiamo risolto un problema nelle impostazioni del prompt di blogging che causava il crash dell'app.
+- Durante il processo di registrazione, non finirai accidentalmente nel reader.
+- Stai creando un sito .com? Non dovresti più vedere due sovrapposizioni dopo aver completato il processo di registrazione. Una e basta.

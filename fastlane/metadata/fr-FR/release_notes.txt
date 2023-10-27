@@ -1,0 +1,7 @@
+Dans l’éditeur de blocs, vous pouvez maintenant diviser ou sortir d’un bloc en appuyant sur « Entrée » trois fois. La bordure de gauche est maintenant toujours visible pour les blocs de citation, même pour les thèmes basés sur les blocs utilisant le mode sombre. Oui, vous pouvez nous citer là-dessus.
+
+Nous avons aussi réglé plusieurs autres bugs.
+
+- Nous avons corrigé un bug dans les réglages d’invites à bloguer, qui causait précédemment des plantages.
+- Lors de votre inscription, vous ne vous retrouverez plus dans le Lecteur sans le vouloir.
+- Si vous créez un site .com, vous ne verrez plus aucun élément en superposition apparaître après avoir complété la création de votre site.
