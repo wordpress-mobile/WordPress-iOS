@@ -17,7 +17,7 @@ gem 'fastlane-plugin-sentry'
 # waiting for the fix to be shipped.
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'mokagio/auto-retry-on-strings-glotpress-429'
 #
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.1'
 gem 'rake'
 gem 'rubocop', '~> 1.30'
 gem 'rubocop-rake', '~> 0.6'
