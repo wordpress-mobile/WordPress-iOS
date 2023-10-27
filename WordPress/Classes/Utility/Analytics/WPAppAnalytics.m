@@ -145,6 +145,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [self incrementSessionCount];
     [self trackApplicationOpened];
     [SearchAdsAttribution.instance requestDetails];
+    [WidgetAnalytics trackLoadedWidgetsOnApplicationOpened];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification*)notification

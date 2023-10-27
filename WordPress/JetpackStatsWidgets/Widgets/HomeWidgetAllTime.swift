@@ -22,12 +22,6 @@ struct HomeWidgetAllTime: Widget {
                                                               placeholderContent: placeholderContent,
                                                               widgetKind: .allTime)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
-
-            defer {
-                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeAllTime)
-            }
-
             return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)

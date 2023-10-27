@@ -88,7 +88,8 @@ struct ReaderSiteHeader: View {
             countsDisplay
             if !viewModel.isFollowHidden {
                 ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                                   isEnabled: viewModel.isFollowEnabled) {
+                                   isEnabled: viewModel.isFollowEnabled,
+                                   size: .regular) {
                     viewModel.updateFollowStatus()
                 }
             }

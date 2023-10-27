@@ -1,7 +1,0 @@
-Estamos eliminando os bugs! (Estava bem mais limpo do que parecia.)
-
-- Agora você pode incorporar URLs do X sem um link quebrado. Caso nos perguntem, é simplesmente X-traordinária.
-- Falando em links: quando você usa uma URL de mídia inválida, agora o aplicativo vai exibir uma mensagem de erro em vez de travar. Melhor, não?
-- Os colaboradores agora vão ver o pop-up certo quando enviarem posts para avaliação. Ufa!
-- Corrigimos um problema em que usuários não administradores podiam ver o menu de plugins de seus sites. O que os olhos não veem, o coração não sente.
-- No editor de blocos, o aplicativo não vai mais travar quando você aninhar muitos blocos dentro de blocos... dentro de blocos... a ideia é essa. Toma isso, Inception.

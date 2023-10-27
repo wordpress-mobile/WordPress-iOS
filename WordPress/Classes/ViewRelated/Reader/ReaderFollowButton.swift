@@ -4,7 +4,13 @@ struct ReaderFollowButton: View {
 
     let isFollowing: Bool
     let isEnabled: Bool
+    let size: ButtonSize
     let action: () -> Void
+
+    enum ButtonSize {
+        case compact
+        case regular
+    }
 
     var body: some View {
         if isFollowing {
@@ -29,7 +35,7 @@ struct ReaderFollowButton: View {
                 .font(.subheadline)
         }
         .disabled(!isEnabled)
-        .padding(.horizontal, 24.0)
+        .padding(.horizontal, size == .compact ? 16.0 : 24.0)
         .padding(.vertical, 8.0)
         .background(backgroundColor)
         .cornerRadius(5.0)
