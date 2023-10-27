@@ -104,6 +104,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.adjustsFontForContentSizeCategory = true
         contentLabel.numberOfLines = 3
+        contentLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func setupFeaturedImageView() {
@@ -111,6 +112,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.layer.masksToBounds = true
         featuredImageView.layer.cornerRadius = 5
+        featuredImageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
         NSLayoutConstraint.activate([
             featuredImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),

@@ -14,4 +14,5 @@ protocol InteractivePostViewDelegate: AnyObject {
     func share(_ post: AbstractPost, fromView view: UIView)
     func copyLink(_ post: AbstractPost)
     func blaze(_ post: AbstractPost)
+    func comments(_ post: AbstractPost)
 }
