@@ -52,7 +52,7 @@ class AllDomainsListViewModel {
             switch result {
             case .success(let domains):
                 self.domains = domains
-                self.state = .normal
+                self.state = domains.isEmpty ? .empty : .normal
             case .failure:
                 self.state = .error
             }
@@ -60,11 +60,12 @@ class AllDomainsListViewModel {
     }
 
     private func fetchAllDomains(completion: @escaping (DomainsService.AllDomainsEndpointResult) -> Void) {
-        guard let service = domainsService else {
-            completion(.failure(ViewModelError.internalError(reason: "The `domainsService` property is nil")))
-            return
-        }
-        service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
+        completion(.success([]))
+//        guard let service = domainsService else {
+//            completion(.failure(ViewModelError.internalError(reason: "The `domainsService` property is nil")))
+//            return
+//        }
+//        service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
     }
 
     // MARK: - Accessing Domains
