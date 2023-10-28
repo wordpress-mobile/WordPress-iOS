@@ -27,6 +27,8 @@ final class AllDomainsListViewController: UIViewController {
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
+    private let emptyView = AllDomainsListEmptyView()
+
     // MARK: - Properties
 
     private lazy var state: ViewModel.State = viewModel.state
@@ -93,6 +95,21 @@ final class AllDomainsListViewController: UIViewController {
         self.tableView.separatorStyle = .none
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
+        self.view.backgroundColor = tableView.backgroundColor
+
+        // Setup empty view
+        self.setupEmptyView()
+    }
+
+    private func setupEmptyView() {
+        self.emptyView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            self.emptyView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            self.emptyView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: Length.Padding.double),
+            self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -Length.Padding.double)
+        ])
     }
 
     // MARK: - UI Updates
@@ -105,12 +122,14 @@ final class AllDomainsListViewController: UIViewController {
             self.state = state
             switch state {
             case .normal, .loading:
+                self.tableView.isHidden = false
                 self.tableView.reloadData()
-            case .error:
-                break
-            case .empty:
-                break
+            case .error, .empty:
+                self.tableView.isHidden = true
+                let viewModel = AllDomainsListEmptyView.ViewModel(title: "You don't have domains", description: "Tap button below to add domain", buttonTitle: "Find a domain")
+                self.emptyView.update(with: viewModel)
             }
+            self.emptyView.isHidden = !tableView.isHidden
         }.store(in: &cancellable)
     }
 <<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/All Domains/Views/AllDomainsListViewController.swift
