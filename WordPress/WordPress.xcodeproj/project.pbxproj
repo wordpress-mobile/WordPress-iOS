@@ -3619,6 +3619,7 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
+		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
 		F465976E28E4669200D5F49A /* cool-green-icon-app-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */; };
 		F465976F28E4669200D5F49A /* cool-green-icon-app-76.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */; };
 		F465977028E4669200D5F49A /* cool-green-icon-app-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */; };
@@ -9008,6 +9009,7 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76@2x.png"; sourceTree = "<group>"; };
 		F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76.png"; sourceTree = "<group>"; };
 		F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60@3x.png"; sourceTree = "<group>"; };
@@ -17264,6 +17266,7 @@
 				F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */,
 				F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */,
 				F4141EE92AE74ADA000D2AAE /* AllDomainsListActivityIndicatorTableViewCell.swift */,
+				F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -23954,6 +23957,7 @@
 				FABB21602602FC2C00C8785C /* EmptyActionView.swift in Sources */,
 				FABB21612602FC2C00C8785C /* ReaderShowAttributionAction.swift in Sources */,
 				FABB21622602FC2C00C8785C /* LinkSettingsViewController.swift in Sources */,
+				F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */,
 				9856A39E261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				FABB21632602FC2C00C8785C /* FeatureItemCell.swift in Sources */,
 				C3FBF4E928AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */,
