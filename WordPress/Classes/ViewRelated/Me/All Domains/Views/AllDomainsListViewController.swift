@@ -124,9 +124,8 @@ final class AllDomainsListViewController: UIViewController {
             case .normal, .loading:
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
-            case .error, .empty:
+            case .empty(let viewModel):
                 self.tableView.isHidden = true
-                let viewModel = AllDomainsListEmptyView.ViewModel(title: "You don't have domains", description: "Tap button below to add domain", buttonTitle: "Find a domain")
                 self.emptyView.update(with: viewModel)
             }
             self.emptyView.isHidden = !tableView.isHidden

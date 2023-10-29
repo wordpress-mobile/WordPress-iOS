@@ -3620,6 +3620,7 @@
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
+		F465462B2AEF14AF0017E3D1 /* AllDomainsListEmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465462A2AEF14AF0017E3D1 /* AllDomainsListEmptyStateViewModel.swift */; };
 		F465976E28E4669200D5F49A /* cool-green-icon-app-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */; };
 		F465976F28E4669200D5F49A /* cool-green-icon-app-76.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */; };
 		F465977028E4669200D5F49A /* cool-green-icon-app-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */; };
@@ -9010,6 +9011,7 @@
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
+		F465462A2AEF14AF0017E3D1 /* AllDomainsListEmptyStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyStateViewModel.swift; sourceTree = "<group>"; };
 		F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76@2x.png"; sourceTree = "<group>"; };
 		F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76.png"; sourceTree = "<group>"; };
 		F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60@3x.png"; sourceTree = "<group>"; };
@@ -17276,6 +17278,7 @@
 			children = (
 				F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */,
 				F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */,
+				F465462A2AEF14AF0017E3D1 /* AllDomainsListEmptyStateViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -24713,6 +24716,7 @@
 				FABB237E2602FC2C00C8785C /* FormattableContentFormatter.swift in Sources */,
 				FABB237F2602FC2C00C8785C /* SearchAdsAttribution.swift in Sources */,
 				FABB23802602FC2C00C8785C /* ReaderCommentsViewController.m in Sources */,
+				F465462B2AEF14AF0017E3D1 /* AllDomainsListEmptyStateViewModel.swift in Sources */,
 				FABB23812602FC2C00C8785C /* MySiteViewController.swift in Sources */,
 				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
 				F4D829622930E9F300038726 /* MigrationDeleteWordPressViewController.swift in Sources */,

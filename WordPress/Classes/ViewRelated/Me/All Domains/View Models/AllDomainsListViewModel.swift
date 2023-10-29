@@ -2,7 +2,6 @@ import Foundation
 import Combine
 
 class AllDomainsListViewModel {
-<<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/All Domains/View Models/AllDomainsListViewModel.swift
 
     // MARK: - Types
 
@@ -18,8 +17,6 @@ class AllDomainsListViewModel {
     private enum ViewModelError: Error {
         case internalError(reason: String)
     }
-========
->>>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains):WordPress/Classes/ViewRelated/Me/All Domains/AllDomainsListViewModel.swift
 
     // MARK: - Dependencies
 
@@ -28,7 +25,7 @@ class AllDomainsListViewModel {
     // MARK: - Properties
 
     @Published
-    private(set) var state: State = .empty
+    private(set) var state: State = .normal
 
     private var domains = [Domain]()
 
@@ -48,13 +45,16 @@ class AllDomainsListViewModel {
 
     func loadData() {
         self.state = .loading
-        self.fetchAllDomains { result in
+        self.fetchAllDomains { [weak self] result in
+            guard let self else {
+                return
+            }
             switch result {
             case .success(let domains):
                 self.domains = domains
-                self.state = domains.isEmpty ? .empty : .normal
-            case .failure:
-                self.state = .error
+                self.state = domains.isEmpty ? .empty(self.emptyStateViewModel()) : .normal
+            case .failure(let error):
+                self.state = .empty(self.emptyStateViewModel(from: error))
             }
         }
     }
@@ -76,5 +76,49 @@ class AllDomainsListViewModel {
 
     func domain(atIndex index: Int) -> AllDomainsListItemViewModel {
         return .init(domain: domains[index])
+    }
+
+    // MARK: - Creating Empty State View Models
+
+    /// The empty state to display when the user doesn't have any domains.
+    private func emptyStateViewModel() -> AllDomainsListEmptyStateViewModel {
+        return .init(
+            title: Strings.emptyStateTitle,
+            description: Strings.emptyStateDescription,
+            button: .init(title: Strings.emptyStateButtonTitle, action: {})
+        )
+    }
+
+    /// The empty state to display when an error occurs.
+    private func emptyStateViewModel(from error: Error) -> AllDomainsListEmptyStateViewModel {
+        fatalError("Not implemented yet")
+    }
+
+    /// The empty state to display when there are no domains matching the search query.
+    private func emptyStateViewModel(searchQuery: String) -> AllDomainsListEmptyStateViewModel {
+        fatalError("Not implemented yet")
+    }
+}
+
+// MARK: - AllDomainsListViewModel + Strings
+
+extension AllDomainsListViewModel {
+
+    enum Strings {
+        static let emptyStateTitle = NSLocalizedString(
+            "domain.management.default.empty.state.title",
+            value: "You don't have any domains",
+            comment: "The empty state title in All Domains screen when the user doesn't have any domains"
+        )
+        static let emptyStateDescription = NSLocalizedString(
+            "domain.management.default.empty.state.description",
+            value: "Tap the button below to add a new domain",
+            comment: "The empty state description in All Domains screen when the user doesn't have any domains"
+        )
+        static let emptyStateButtonTitle = NSLocalizedString(
+            "domain.management.default.empty.state.button.title",
+            value: "Add a domain",
+            comment: "The empty state button title in All Domains screen when the user doesn't have any domains"
+        )
     }
 }

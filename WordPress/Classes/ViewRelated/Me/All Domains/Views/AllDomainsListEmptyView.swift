@@ -3,11 +3,7 @@ import WordPressUI
 
 final class AllDomainsListEmptyView: UIView {
 
-    struct ViewModel {
-        let title: String
-        let description: String
-        let buttonTitle: String
-    }
+    typealias ViewModel = AllDomainsListEmptyStateViewModel
 
     private enum Appearance {
         static let labelsSpacing: CGFloat = Length.Padding.single
@@ -39,8 +35,8 @@ final class AllDomainsListEmptyView: UIView {
 
     private let button: UIButton = {
         let button = FancyButton()
-        button.isPrimary = true
         button.titleLabel?.font = Appearance.buttonLabelFont
+        button.isPrimary = true
         return button
     }()
 
@@ -72,7 +68,7 @@ final class AllDomainsListEmptyView: UIView {
     func update(with viewModel: ViewModel?) {
         self.titleLabel.text = viewModel?.title
         self.descriptionLabel.text = viewModel?.description
-        self.button.setTitle(viewModel?.buttonTitle, for: .normal)
+        self.button.setTitle(viewModel?.button.title, for: .normal)
     }
 }
 
@@ -83,7 +79,7 @@ final class AllDomainsListEmptyView: UIView {
     let viewModel = AllDomainsListEmptyView.ViewModel(
         title: "You don't have any domains",
         description: "Tap the button below to add a new one",
-        buttonTitle: "Find a domain"
+        button: .init(title: "Add a domain", action: {})
     )
     return AllDomainsListEmptyView(viewModel: viewModel)
 }
