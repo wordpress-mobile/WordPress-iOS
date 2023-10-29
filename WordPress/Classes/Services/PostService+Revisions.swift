@@ -42,7 +42,7 @@ extension PostService {
 
         restApi.getPostLatestRevisionID(for: postID) { latestRemoteRevision in
             if let latestRemoteRevision, latestRemoteRevision != localRevision {
-                DDLogError("The latest revision (\(latestRemoteRevision)) of the post (id: \(postID) is about to be overwriten by an edit that's based on revision \(localRevision)")
+                DDLogError("The latest revision (\(latestRemoteRevision)) of the post (id: \(postID)) is about to be overwritten by an edit that's based on revision \(localRevision)")
                 WordPressAppDelegate.logError(NSError(domain: "PostEditor.OverwritePost", code: 1))
             }
         } failure: { _ in
