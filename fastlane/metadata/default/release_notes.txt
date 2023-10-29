@@ -1,6 +1,7 @@
-* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-* [*] Fixes an issue where users would land on the Reader after signup while it should not be accessible. [#21751]
-* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
-* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
-* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
-* [*] Fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
+In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too. And you can quote us on that.
+
+We also squashed a handful of bugs.
+
+- We fixed a code issue in blogging prompt settings that caused the app to crash.
+- During the signup process, you won’t end up in the reader by accident.
+- Creating a .com site? You should no longer see two overlays after completing the signup process. One and done.

@@ -5564,9 +5564,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID로 로그인하려면 워드프레스닷컴 계정의 비밀번호를 입력하세요.";
 
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "인증 앱의 확인 코드를 입력하시거나, 아래의 링크를 눌러 SMS를 통해 받으시기 바랍니다.";
-
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "자격을 입력하세요";
 
@@ -7452,8 +7449,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "텍스트 서식 지정 컨트롤은 텍스트 블록을 편집하는 동안 키보드 위에 배치되는 도구 모음 내에 있습니다.";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "코드를 문자로 대신 받기";
 
 /* Message of alert when theme activation succeeds */

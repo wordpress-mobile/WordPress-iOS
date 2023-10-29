@@ -1,0 +1,7 @@
+Di dalam editor blok, Anda dapat keluar dari blok yang diformat dengan menekan tombol “enter” tiga kali. Batas kiri juga akan selalu terlihat untuk blok kutipan. Silakan hubungi kami jika Anda memiliki pertanyaan.
+
+Beberapa bug juga telah kami perbaiki.
+
+- Kami telah mengatasi permasalahan kode dalam pengaturan prompt blogging yang menyebabkan aplikasi tidak bekerja.
+- Saat proses pendaftaran, Anda tidak akan masuk ke Reader secara tidak sengaja.
+- Anda ingin membuat situs .com? Anda tidak perlu lagi melihat dua overlay setelah menyelesaikan proses registrasi. Cukup satu saja, dan prosesnya selesai.

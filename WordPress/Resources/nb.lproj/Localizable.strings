@@ -5217,8 +5217,7 @@ translators: Block name. %s: The localized block name */
 /* Title of a button style */
 "Text Only" = "Kun tekst";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Send koden på tekstmelding i stedet";
 
 /* Message of alert when theme activation succeeds */

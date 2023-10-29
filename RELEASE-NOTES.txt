@@ -11,7 +11,6 @@
 * [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
 * [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
 
-
 23.5
 -----
 * [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
