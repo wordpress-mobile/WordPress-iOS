@@ -15,6 +15,10 @@ final class AllDomainsListEmptyView: UIView {
         static let descriptionLabelColor: UIColor? = UIColor.DS.Foreground.secondary
     }
 
+    // MARK: - Actions
+
+    private var buttonAction: (() -> Void)?
+
     // MARK: - Views
 
     private let titleLabel: UILabel = {
@@ -22,6 +26,8 @@ final class AllDomainsListEmptyView: UIView {
         label.textAlignment = .center
         label.font = Appearance.titleLabelFont
         label.textColor = Appearance.titleLabelColor
+        label.numberOfLines = 2
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -30,6 +36,8 @@ final class AllDomainsListEmptyView: UIView {
         label.textAlignment = .center
         label.font = Appearance.descriptionLabelFont
         label.textColor = Appearance.descriptionLabelColor
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -62,6 +70,7 @@ final class AllDomainsListEmptyView: UIView {
         stackView.setCustomSpacing(Appearance.labelsButtonSpacing, after: descriptionLabel)
         self.addSubview(stackView)
         self.pinSubviewToAllEdges(stackView)
+        self.button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         self.update(with: viewModel)
     }
 
@@ -69,6 +78,13 @@ final class AllDomainsListEmptyView: UIView {
         self.titleLabel.text = viewModel?.title
         self.descriptionLabel.text = viewModel?.description
         self.button.setTitle(viewModel?.button.title, for: .normal)
+        self.buttonAction = viewModel?.button.action
+    }
+
+    // MARK: - User Interaction
+
+    @objc private func didTapButton() {
+        self.buttonAction?()
     }
 }
 
