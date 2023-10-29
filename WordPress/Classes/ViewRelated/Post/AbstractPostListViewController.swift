@@ -1004,8 +1004,17 @@ class AbstractPostListViewController: UIViewController,
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
 
-            let message = NSLocalizedString("postsList.movePostToTrash.message", comment: "A short message explaining that a post was moved to the trash bin.")
-            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.")
+            var message = ""
+            switch postTypeToSync() {
+            case .post:
+                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
+            case .page:
+                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+            default:
+                break
+            }
+            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", value: "Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder.")
+
             let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
                 if accepted {
                     self?.restorePost(apost, toStatus: originalStatus ?? .draft)
