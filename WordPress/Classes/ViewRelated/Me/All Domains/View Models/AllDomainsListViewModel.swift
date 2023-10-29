@@ -2,21 +2,20 @@ import Foundation
 import Combine
 
 class AllDomainsListViewModel {
-
+    
     // MARK: - Types
 
     enum State {
         case normal
         case loading
-        case empty
-        case error
+        case empty(AllDomainsListEmptyStateViewModel)
     }
-
-    private typealias Domain = DomainsService.AllDomainsListItem
 
     private enum ViewModelError: Error {
         case internalError(reason: String)
     }
+
+    private typealias Domain = DomainsService.AllDomainsListItem
 
     // MARK: - Dependencies
 
@@ -60,12 +59,11 @@ class AllDomainsListViewModel {
     }
 
     private func fetchAllDomains(completion: @escaping (DomainsService.AllDomainsEndpointResult) -> Void) {
-        completion(.success([]))
-//        guard let service = domainsService else {
-//            completion(.failure(ViewModelError.internalError(reason: "The `domainsService` property is nil")))
-//            return
-//        }
-//        service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
+        guard let service = domainsService else {
+            completion(.failure(ViewModelError.internalError(reason: "The `domainsService` property is nil")))
+            return
+        }
+        service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
     }
 
     // MARK: - Accessing Domains
@@ -91,34 +89,26 @@ class AllDomainsListViewModel {
 
     /// The empty state to display when an error occurs.
     private func emptyStateViewModel(from error: Error) -> AllDomainsListEmptyStateViewModel {
-        fatalError("Not implemented yet")
+        let title: String
+        let description: String
+        let button: AllDomainsListEmptyStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
+            self?.loadData()
+        }
+
+        let nsError = error as NSError
+        if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorNotConnectedToInternet {
+            title = Strings.offlineEmptyStateTitle
+            description = Strings.offlineEmptyStateDescription
+        } else {
+            title = Strings.errorEmptyStateTitle
+            description = Strings.errorEmptyStateDescription
+        }
+
+        return .init(title: title, description: description, button: button)
     }
 
     /// The empty state to display when there are no domains matching the search query.
     private func emptyStateViewModel(searchQuery: String) -> AllDomainsListEmptyStateViewModel {
         fatalError("Not implemented yet")
-    }
-}
-
-// MARK: - AllDomainsListViewModel + Strings
-
-extension AllDomainsListViewModel {
-
-    enum Strings {
-        static let emptyStateTitle = NSLocalizedString(
-            "domain.management.default.empty.state.title",
-            value: "You don't have any domains",
-            comment: "The empty state title in All Domains screen when the user doesn't have any domains"
-        )
-        static let emptyStateDescription = NSLocalizedString(
-            "domain.management.default.empty.state.description",
-            value: "Tap the button below to add a new domain",
-            comment: "The empty state description in All Domains screen when the user doesn't have any domains"
-        )
-        static let emptyStateButtonTitle = NSLocalizedString(
-            "domain.management.default.empty.state.button.title",
-            value: "Add a domain",
-            comment: "The empty state button title in All Domains screen when the user doesn't have any domains"
-        )
     }
 }
