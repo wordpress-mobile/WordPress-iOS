@@ -15,6 +15,8 @@ final class AllDomainsListEmptyView: UIView {
         static let titleLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
         static let descriptionLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         static let buttonLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let titleLabelColor: UIColor? = UIColor.DS.Foreground.secondary
+        static let descriptionLabelColor: UIColor? = UIColor.DS.Foreground.secondary
     }
 
     // MARK: - Views
@@ -23,6 +25,7 @@ final class AllDomainsListEmptyView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = Appearance.titleLabelFont
+        label.textColor = Appearance.titleLabelColor
         return label
     }()
 
@@ -30,6 +33,7 @@ final class AllDomainsListEmptyView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = Appearance.descriptionLabelFont
+        label.textColor = Appearance.descriptionLabelColor
         return label
     }()
 
