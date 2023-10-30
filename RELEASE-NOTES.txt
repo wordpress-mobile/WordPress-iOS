@@ -1,6 +1,6 @@
 23.7
 -----
-
+* [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
 
 23.6
 -----
