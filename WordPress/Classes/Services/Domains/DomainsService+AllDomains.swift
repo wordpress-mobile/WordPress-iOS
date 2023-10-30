@@ -3,7 +3,7 @@ import WordPressKit
 
 extension DomainsService {
 
-    /// Makes a call request to `GET /v1.1/all-domains` and returns a list of domain objects.
+    /// Makes a GET request to `/v1.1/all-domains` endpoint and returns a list of domain objects.
     ///
     /// - Parameters:
     ///   - resolveStatus: Boolean indicating whether the backend should resolve domain status.
