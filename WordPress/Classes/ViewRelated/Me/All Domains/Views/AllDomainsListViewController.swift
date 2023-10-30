@@ -78,6 +78,7 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private func setupTableView() {
+        self.tableView.backgroundColor = UIColor.systemGroupedBackground
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -86,6 +87,7 @@ final class AllDomainsListViewController: UIViewController {
         self.tableView.contentInset.top = Layout.interRowSpacing
         self.tableView.register(AllDomainsListTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.myDomain)
         self.tableView.register(AllDomainsListActivityIndicatorTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.activityIndicator)
+        self.tableView.separatorStyle = .none
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }

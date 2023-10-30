@@ -5,7 +5,7 @@ extension AllDomainsListViewController {
     enum Strings {
         static let title = NSLocalizedString(
             "domain.management.title",
-            value: "My Domains",
+            value: "All Domains",
             comment: "Domain Management Screen Title"
         )
         static let searchBar = NSLocalizedString(
