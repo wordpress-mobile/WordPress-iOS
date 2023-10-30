@@ -6,7 +6,7 @@ class AllDomainsListViewModel {
     // MARK: - Types
 
     enum State {
-        case normal
+        case normal([AllDomainsListItemViewModel])
         case loading
         case empty(AllDomainsListEmptyStateViewModel)
     }
@@ -24,9 +24,17 @@ class AllDomainsListViewModel {
     // MARK: - Properties
 
     @Published
-    private(set) var state: State = .normal
+    private(set) var state: State = .normal([])
 
     private var domains = [Domain]()
+
+    private var lastSearchQuery: String?
+
+    private let searchQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     // MARK: - Init
 
@@ -40,6 +48,40 @@ class AllDomainsListViewModel {
         try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
     }
 
+    // MARK: - Resolving State
+
+    /// Determines the state of the view based on the domains and an optional search query.
+    ///
+    /// - Parameters:
+    ///   - domains: An array of domain objects to be filtered.
+    ///   - searchQuery: An optional search query to filter the domains. Pass `nil` or an empty string to skip filtering.
+    /// - Returns: The `.normal` or `.empty` state.
+    private func state(from domains: [Domain], searchQuery: String?) -> State {
+        if domains.isEmpty {
+            return .empty(emptyStateViewModel())
+        }
+
+        var domains = domains
+
+        if let searchQuery, !searchQuery.isEmpty {
+            domains = domains.filter { domain in
+                return domain.domain.lowercased().contains(searchQuery.lowercased())
+            }
+        }
+
+        let viewModels = domains.map { AllDomainsListItemViewModel(domain: $0) }
+
+        return viewModels.isEmpty ? .empty(emptyStateViewModel(searchQuery: searchQuery)) : .normal(viewModels)
+    }
+
+    /// Determines the state of the view based on an error.
+    ///
+    /// - Parameter error: An error that occurred during a data operation.
+    /// - Returns: Always returns the `.empty` state.
+    private func state(from error: Error) -> State {
+        return .empty(self.emptyStateViewModel(from: error))
+    }
+
     // MARK: - Load Domains
 
     func loadData() {
@@ -51,9 +93,9 @@ class AllDomainsListViewModel {
             switch result {
             case .success(let domains):
                 self.domains = domains
-                self.state = domains.isEmpty ? .empty(self.emptyStateViewModel()) : .normal
+                self.state = self.state(from: domains, searchQuery: lastSearchQuery)
             case .failure(let error):
-                self.state = .empty(self.emptyStateViewModel(from: error))
+                self.state = self.state(from: error)
             }
         }
     }
@@ -66,25 +108,44 @@ class AllDomainsListViewModel {
         service.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: completion)
     }
 
-    // MARK: - Accessing Domains
+    // MARK: - Search
 
-    var numberOfDomains: Int {
-        return domains.count
-    }
-
-    func domain(atIndex index: Int) -> AllDomainsListItemViewModel {
-        return .init(domain: domains[index])
+    func search(_ query: String) {
+        self.lastSearchQuery = query
+        switch state {
+        case .normal, .empty:
+            self.searchQueue.cancelAllOperations()
+            self.searchQueue.addOperation { [weak self] in
+                guard let self else {
+                    return
+                }
+                let state: State = self.state(from: domains, searchQuery: query)
+                DispatchQueue.main.async {
+                    self.state = state
+                }
+            }
+        default:
+            break
+        }
     }
 
     // MARK: - Creating Empty State View Models
 
-    /// The empty state to display when the user doesn't have any domains.
-    private func emptyStateViewModel() -> AllDomainsListEmptyStateViewModel {
-        return .init(
-            title: Strings.emptyStateTitle,
-            description: Strings.emptyStateDescription,
-            button: .init(title: Strings.emptyStateButtonTitle, action: {})
-        )
+    /// The empty state to display when the user doesn't have any domains or there are no domains matching the search queury.jjj
+    private func emptyStateViewModel(searchQuery: String? = nil) -> AllDomainsListEmptyStateViewModel {
+        if let searchQuery {
+            return .init(
+                title: "Empty",
+                description: "No domains matching \(searchQuery) query",
+                button: .init(title: "Understood", action: {})
+            )
+        } else {
+            return .init(
+                title: Strings.emptyStateTitle,
+                description: Strings.emptyStateDescription,
+                button: .init(title: Strings.emptyStateButtonTitle, action: {})
+            )
+        }
     }
 
     /// The empty state to display when an error occurs.
@@ -105,10 +166,5 @@ class AllDomainsListViewModel {
         }
 
         return .init(title: title, description: description, button: button)
-    }
-
-    /// The empty state to display when there are no domains matching the search query.
-    private func emptyStateViewModel(searchQuery: String) -> AllDomainsListEmptyStateViewModel {
-        fatalError("Not implemented yet")
     }
 }
