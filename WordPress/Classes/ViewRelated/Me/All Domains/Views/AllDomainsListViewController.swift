@@ -94,7 +94,6 @@ final class AllDomainsListViewController: UIViewController {
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
         self.view.backgroundColor = tableView.backgroundColor
-        
     }
 
     private func setupEmptyView() {
