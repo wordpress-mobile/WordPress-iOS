@@ -161,7 +161,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             case let page as Page:
                 guard page.status != .trash else { return }
                 (listViewController as! PageListViewController)
-                    .editPage(page)
+                    .edit(page)
             default:
                 fatalError("Unsupported post")
             }
