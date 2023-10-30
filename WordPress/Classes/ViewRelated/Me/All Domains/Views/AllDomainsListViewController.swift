@@ -62,6 +62,7 @@ final class AllDomainsListViewController: UIViewController {
         self.setupBarButtonItems()
         self.setupSearchBar()
         self.setupTableView()
+        self.setupEmptyView()
     }
 
     private func setupBarButtonItems() {
@@ -93,9 +94,7 @@ final class AllDomainsListViewController: UIViewController {
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
         self.view.backgroundColor = tableView.backgroundColor
-
-        // Setup empty view
-        self.setupEmptyView()
+        
     }
 
     private func setupEmptyView() {
