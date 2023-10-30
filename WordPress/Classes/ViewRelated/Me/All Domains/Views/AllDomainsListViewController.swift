@@ -47,24 +47,8 @@ final class AllDomainsListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Strings.title
-
+        self.title = Strings.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
-        navigationItem.rightBarButtonItem = .init(systemItem: .add)
-        let addToSiteAction = menuAction(withTitle: Action.addToSite.title) { action in
-            print("add to site")
-        }
-        let purchaseAction = menuAction(withTitle: Action.purchase.title) { action in
-            print("purchase")
-        }
-        let transferAction = menuAction(withTitle: Action.transfer.title) { action in
-            print("transfer")
-        }
-
-        let actions = [addToSiteAction, purchaseAction, transferAction]
-        let menu = UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: actions)
-        navigationItem.rightBarButtonItem?.menu = menu
-
         self.setupSubviews()
         self.observeState()
         self.viewModel.loadData()
