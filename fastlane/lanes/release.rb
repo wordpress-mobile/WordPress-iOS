@@ -100,6 +100,7 @@ platform :ios do
       push_to_git_remote(tags: false)
     else
       UI.message('Aborting code completion. See you later.')
+      next
     end
 
     setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
@@ -137,6 +138,7 @@ platform :ios do
       trigger_beta_build
     else
       UI.message('Aborting code freeze completion. See you later.')
+      next
     end
   end
 
@@ -190,6 +192,7 @@ platform :ios do
       trigger_beta_build
     else
       UI.message('Aborting beta deployment. See you later.')
+      next
     end
   end
 
@@ -333,6 +336,7 @@ platform :ios do
       trigger_release_build
     else
       UI.message('Aborting release finalization. See you later.')
+      next
     end
   end
 
