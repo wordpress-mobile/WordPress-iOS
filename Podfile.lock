@@ -73,7 +73,7 @@ PODS:
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.7.1):
+  - WordPressKit (8.9.1):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -134,8 +134,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -165,6 +163,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -184,9 +184,6 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
-  WordPressKit:
-    :branch: task/add-all-domains-endpoint
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
