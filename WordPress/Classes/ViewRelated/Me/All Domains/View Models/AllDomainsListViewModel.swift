@@ -114,7 +114,7 @@ class AllDomainsListViewModel {
 
     // MARK: - Search
 
-    func search(_ query: String) {
+    func search(_ query: String?) {
         self.lastSearchQuery = query
         switch state {
         case .normal, .empty:

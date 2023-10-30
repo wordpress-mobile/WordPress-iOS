@@ -181,4 +181,8 @@ extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarD
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.viewModel.search(searchText)
     }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.viewModel.search(nil)
+    }
 }
