@@ -53,7 +53,7 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
-PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
