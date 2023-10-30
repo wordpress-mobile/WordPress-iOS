@@ -19,11 +19,12 @@ extension AllDomainsListViewModel {
             comment: "The empty state title in All Domains screen when the are no domains matching the search criteria"
         )
         static func searchEmptyStateDescription(_ searchQuery: String) -> String {
-            NSLocalizedString(
-               "domain.management.search.empty.state.description",
-               value: "We couldn't find any domains that match your search for '\(searchQuery)'",
-               comment: "The empty state description in All Domains screen when the are no domains matching the search criteria"
-           )
+            let format = NSLocalizedString(
+                "domain.management.search.empty.state.description",
+                value: "We couldn't find any domains that match your search for '%@'",
+                comment: "The empty state description in All Domains screen when the are no domains matching the search criteria"
+            )
+            return String(format: format, searchQuery)
         }
         static let emptyStateButtonTitle = NSLocalizedString(
             "domain.management.default.empty.state.button.title",
