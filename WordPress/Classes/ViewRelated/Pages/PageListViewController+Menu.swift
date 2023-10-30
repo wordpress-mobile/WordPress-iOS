@@ -28,9 +28,9 @@ extension PageListViewController: InteractivePostViewDelegate {
         publishPost(apost)
     }
 
-    func trash(_ apost: AbstractPost) {
-        guard let page = apost as? Page else { return }
-        trashPage(page)
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        guard let page = post as? Page else { return }
+        trashPage(page, completion: completion)
     }
 
     func draft(_ apost: AbstractPost) {
@@ -90,7 +90,7 @@ extension PageListViewController: InteractivePostViewDelegate {
         present(editorViewController, animated: false)
     }
 
-    private func trashPage(_ page: Page) {
+    private func trashPage(_ page: Page, completion: @escaping () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             ReachabilityUtils.showNoInternetConnectionNotice(message: Strings.offlineMessage)
             return
@@ -102,9 +102,12 @@ extension PageListViewController: InteractivePostViewDelegate {
         let messageText = isPageTrashed ? Strings.DeletePermanently.messageText : Strings.Trash.messageText
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(Strings.cancelText)
-        alertController.addDestructiveActionWithTitle(actionText) { [weak self] action in
+        alertController.addCancelActionWithTitle(Strings.cancelText) { _ in
+            completion()
+        }
+        alertController.addDestructiveActionWithTitle(actionText) { [weak self] _ in
             self?.deletePost(page)
+            completion()
         }
         alertController.presentFromRootViewController()
     }

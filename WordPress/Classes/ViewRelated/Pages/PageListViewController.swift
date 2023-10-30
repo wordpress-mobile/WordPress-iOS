@@ -255,7 +255,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         refreshResults()
     }
 
-    // MARK: - TableView Handler Delegate Methods
+    // MARK: - Core Data
 
     override func entityName() -> String {
         return String(describing: Page.self)
@@ -331,6 +331,20 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             let cell = self.tableView.cellForRow(at: indexPath)
             return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
         }
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        indexPath.section == Section.pages.rawValue
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - UITableViewDataSource
