@@ -353,7 +353,6 @@
 		08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */; };
 		08D499671CDD20450004809A /* Menus.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08D499661CDD20450004809A /* Menus.storyboard */; };
 		08D553662821286300AA1E8D /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D553652821286300AA1E8D /* Tooltip.swift */; };
-		08D61F212AD0635100BF3D00 /* MyDomainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D61F202AD0635100BF3D00 /* MyDomainsViewController.swift */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
 		08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */; };
 		08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */; };
@@ -21532,7 +21531,6 @@
 				F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
-				08D61F212AD0635100BF3D00 /* MyDomainsViewController.swift in Sources */,
 				086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
 				4A1B4FE82A95A89F00EF6B1D /* MediaRepository.swift in Sources */,
