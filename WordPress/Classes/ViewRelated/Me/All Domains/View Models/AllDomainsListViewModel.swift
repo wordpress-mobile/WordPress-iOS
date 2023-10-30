@@ -63,7 +63,7 @@ class AllDomainsListViewModel {
 
         var domains = domains
 
-        if let searchQuery, !searchQuery.isEmpty {
+        if let searchQuery, !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
             domains = domains.filter { domain in
                 return domain.domain.localizedStandardContains(searchQuery)
                 || domain.siteSlug.localizedStandardContains(searchQuery)
