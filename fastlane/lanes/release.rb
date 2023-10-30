@@ -49,7 +49,7 @@ platform :ios do
       version_short: release_version_next,
       version_long: build_code_code_freeze
     )
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
     UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
 
     # Bump the internal release version and build code and write it to the `xcconfig` file
@@ -60,7 +60,7 @@ platform :ios do
       version_short: release_version_current,
       version_long: build_code_code_freeze_internal
     )
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
     new_version = release_version_current
@@ -180,7 +180,7 @@ platform :ios do
     PUBLIC_VERSION_FILE.write(version_long: build_code_next_internal)
     UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
@@ -254,7 +254,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
   end
 
   # Finalizes a hotfix, by triggering a release build on CI
@@ -315,7 +315,7 @@ platform :ios do
     # Bump the internal build code
     UI.message 'Bumping internal build code...'
     INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
     UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
     # Wrap up
@@ -458,4 +458,14 @@ end
 
 def release_branch_name
   "release/#{release_version_current}"
+end
+
+def commit_version_bump
+  version_files = [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE]
+  git_add(path: version_files, shell_escape: false)
+  git_commit(
+    path: version_files,
+    message: 'Bump version number',
+    allow_nothing_to_commit: false
+  )
 end
