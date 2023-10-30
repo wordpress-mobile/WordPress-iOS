@@ -6,7 +6,7 @@ gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
 gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic'
 gem 'dotenv'
-gem 'fastlane', '~> 2'
+gem 'fastlane', '~> 2.216'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
