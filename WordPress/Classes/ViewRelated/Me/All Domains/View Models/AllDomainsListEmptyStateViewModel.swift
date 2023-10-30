@@ -4,7 +4,7 @@ struct AllDomainsListEmptyStateViewModel {
 
     let title: String
     let description: String
-    let button: Button
+    let button: Button?
 
     struct Button {
         let title: String

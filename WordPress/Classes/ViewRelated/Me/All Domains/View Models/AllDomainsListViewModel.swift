@@ -137,7 +137,7 @@ class AllDomainsListViewModel {
             return .init(
                 title: "Empty",
                 description: "No domains matching \(searchQuery) query",
-                button: .init(title: "Understood", action: {})
+                button: nil
             )
         } else {
             return .init(
