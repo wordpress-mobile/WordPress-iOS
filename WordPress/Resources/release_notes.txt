@@ -1,7 +1,11 @@
-In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too. And you can quote us on that.
+* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
+* [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
+* [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
+* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
+* [*] Fix an issue that leads to an ambiguous error message when an incorrect SMS 2FA code is submitted. [#21863]
+* [*] Fix an issue where two 2FA controllers were being opened at the same time when logging in. [#21865]
+* [*] Block Editor Social Icons: Fix visibility of inactive icons when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55398]
+* [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
+* [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
 
-We also squashed a handful of bugs.
-
-- We fixed a code issue in blogging prompt settings that caused the app to crash.
-- During the signup process, you won’t end up in the reader by accident.
-- Creating a .com site? You should no longer see two overlays after completing the signup process. One and done.
