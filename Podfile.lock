@@ -134,6 +134,8 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -181,7 +183,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
   WordPressKit:
     :branch: task/add-all-domains-endpoint
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
