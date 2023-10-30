@@ -52,6 +52,12 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
         $searchTerm
             .dropFirst()
+            .first()
+            .sink { [weak self] _ in self?.syncTags() }
+            .store(in: &cancellables)
+
+        $searchTerm
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] in self?.updateSuggestedTokens(for: $0) }
             .store(in: &cancellables)
@@ -222,5 +228,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             self.suggestedTokens = tokens
             self.reload()
         }
+    }
+
+    private func syncTags() {
+        let tagsService = PostTagService(managedObjectContext: coreData.mainContext)
+        tagsService.syncTags(for: blog, success: { _ in }, failure: { _ in })
     }
 }
