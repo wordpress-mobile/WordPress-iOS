@@ -1,4 +1,4 @@
-* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [***] [internal] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 * [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
 * [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
 * [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
@@ -8,4 +8,3 @@
 * [*] Block Editor Social Icons: Fix visibility of inactive icons when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55398]
 * [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
 * [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
-
