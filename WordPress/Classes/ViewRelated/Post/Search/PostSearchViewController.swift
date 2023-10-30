@@ -128,7 +128,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             if let cell = tableView.cellForRow(at: indexPath) as? PostSearchTokenTableCell {
                 let isLast = indexPath.row == viewModel.suggestedTokens.count - 1
-                cell.separator.isHidden = !isLast
+                cell.configure(isLast: isLast)
             }
         }
     }

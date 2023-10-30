@@ -6,7 +6,7 @@ final class PostSearchTokenTableCell: UITableViewCell {
     private lazy var stackView = UIStackView(arrangedSubviews: [
         iconView, titleLabel, UIView()
     ])
-    let separator = UIView()
+    private let separator = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,7 +18,7 @@ final class PostSearchTokenTableCell: UITableViewCell {
         stackView.spacing = 8
         stackView.alignment = .center
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        stackView.layoutMargins = UIEdgeInsets(top: 4, left: 16, bottom: 14, right: 16)
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(stackView)
@@ -42,7 +42,10 @@ final class PostSearchTokenTableCell: UITableViewCell {
     func configure(with token: any PostSearchToken, isLast: Bool) {
         iconView.image = token.icon
         titleLabel.text = token.value
-        stackView.layoutMargins.bottom = isLast ? 14 : 8
+        configure(isLast: isLast)
+    }
+
+    func configure(isLast: Bool) {
         separator.isHidden = !isLast
     }
 }
