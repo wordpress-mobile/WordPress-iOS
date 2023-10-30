@@ -461,10 +461,8 @@ def release_branch_name
 end
 
 def commit_version_bump
-  version_files = [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE]
-  git_add(path: version_files, shell_escape: false)
   git_commit(
-    path: version_files,
+    path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
     message: 'Bump version number',
     allow_nothing_to_commit: false
   )
