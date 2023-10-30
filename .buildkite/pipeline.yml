@@ -64,7 +64,6 @@ steps:
   # Run Unit Tests
   #################
   - label: "🔬 :wordpress: Unit Tests"
-    key: "unit_tests_wordpress"
     command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build_wordpress"
     env: *common_env
