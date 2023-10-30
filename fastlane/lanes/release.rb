@@ -95,7 +95,7 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
     else
@@ -131,7 +131,7 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_beta_build
@@ -184,7 +184,7 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_beta_build
@@ -327,7 +327,7 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_release_build
