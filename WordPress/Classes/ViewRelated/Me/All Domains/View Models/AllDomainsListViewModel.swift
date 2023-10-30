@@ -64,8 +64,12 @@ class AllDomainsListViewModel {
         var domains = domains
 
         if let searchQuery, !searchQuery.isEmpty {
+            let searchQuery = searchQuery.lowercased()
             domains = domains.filter { domain in
-                return domain.domain.lowercased().contains(searchQuery.lowercased())
+                return domain.domain.localizedStandardContains(searchQuery)
+                || domain.siteSlug.localizedStandardContains(searchQuery)
+                || domain.blogName.localizedStandardContains(searchQuery)
+                || (domain.status?.value.localizedStandardContains(searchQuery) ?? false)
             }
         }
 
