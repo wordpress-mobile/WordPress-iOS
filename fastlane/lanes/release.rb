@@ -49,7 +49,6 @@ platform :ios do
       version_short: release_version_next,
       version_long: build_code_code_freeze
     )
-    commit_version_bump
     UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
 
     # Bump the internal release version and build code and write it to the `xcconfig` file
@@ -60,8 +59,9 @@ platform :ios do
       version_short: release_version_current,
       version_long: build_code_code_freeze_internal
     )
-    commit_version_bump
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
+
+    commit_version_bump
 
     new_version = release_version_current
 
