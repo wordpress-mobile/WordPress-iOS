@@ -7,7 +7,6 @@ import WordPressFlux
 
 class AbstractPostListViewController: UIViewController,
                                       WPContentSyncHelperDelegate,
-                                      UISearchControllerDelegate,
                                       WPTableViewHandlerDelegate,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
@@ -201,14 +200,10 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        searchController.delegate = self
-        searchController.searchResultsUpdater = searchResultsViewController
-        searchController.showsSearchResultsController = true
-        searchResultsViewController.searchController = searchController
+        searchResultsViewController.configure(searchController)
         searchResultsViewController.listViewController = self
 
         definesPresentationContext = true
-
         navigationItem.searchController = searchController
     }
 
@@ -849,12 +844,6 @@ class AbstractPostListViewController: UIViewController,
         syncItemsWithUserInteraction(false)
 
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
-    }
-
-    // MARK: - UISearchControllerDelegate
-
-    func willPresentSearchController(_ searchController: UISearchController) {
-        WPAnalytics.track(.postListSearchOpened, withProperties: propertiesForAnalytics())
     }
 
     // MARK: - NetworkAwareUI

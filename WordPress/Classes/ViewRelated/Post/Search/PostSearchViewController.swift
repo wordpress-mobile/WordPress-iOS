@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-final class PostSearchViewController: UIViewController, UITableViewDelegate, UISearchResultsUpdating {
+final class PostSearchViewController: UIViewController, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     weak var searchController: UISearchController?
     weak var listViewController: AbstractPostListViewController?
 
@@ -26,6 +26,14 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(_ searchController: UISearchController) {
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.showsSearchResultsController = true
+
+        self.searchController = searchController
     }
 
     override func viewDidLoad() {
@@ -173,6 +181,12 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             viewModel.didReachBottom()
         }
+    }
+
+    // MARK: - UISearchControllerDelegate
+
+    func willPresentSearchController(_ searchController: UISearchController) {
+        viewModel.willStartSearching()
     }
 
     // MARK: - UISearchResultsUpdating
