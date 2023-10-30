@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PurchaseDomainView: View {
+struct DomainPurchaseChoicesView: View {
     private enum Constants {
         static let imageLength: CGFloat = 36
     }
@@ -9,17 +9,19 @@ struct PurchaseDomainView: View {
     let chooseSiteAction: (() -> Void)
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Length.Padding.double) {
-            Text(Strings.header)
-                .font(.largeTitle.bold())
-            Text(Strings.subheader)
-                .font(.body)
-            getDomainCard
-            chooseSiteCard
-            Text(Strings.footnote)
-                .foregroundStyle(Color.DS.Foreground.secondary)
-                .font(.subheadline)
-            Spacer()
+        ScrollView {
+            VStack(alignment: .leading, spacing: Length.Padding.double) {
+                Text(Strings.header)
+                    .font(.largeTitle.bold())
+                Text(Strings.subheader)
+                    .font(.body)
+                getDomainCard
+                chooseSiteCard
+                Text(Strings.footnote)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .font(.subheadline)
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Length.Padding.double)
@@ -27,44 +29,52 @@ struct PurchaseDomainView: View {
     }
 
     private var getDomainCard: some View {
-        VStack(alignment: .leading, spacing: Length.Padding.single) {
-            Group {
-                Image("site-menu-domains")
-                    .renderingMode(.template)
-                    .resizable()
-                    .foregroundStyle(Color.DS.Background.brand)
-                    .frame(width: Constants.imageLength, height: Constants.imageLength)
-                    .padding(.top, Length.Padding.double)
-                Text(Strings.buyDomainTitle)
-                    .font(.title2.bold())
-                Text(Strings.buyDomainSubtitle)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
-                    .padding(.bottom, Length.Padding.single)
-                PrimaryButton(title: Strings.buyDomainButtonTitle) {
-                    buyDomainAction()
-                }
-                .padding(.bottom, Length.Padding.double)
-            }
-            .padding(.horizontal, Length.Padding.double)
-        }
-        .background(Color.DS.Background.primary)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        card(imageName: "site-menu-domains",
+             title: Strings.buyDomainTitle,
+             subtitle: Strings.buyDomainSubtitle,
+             buttonTitle: Strings.buyDomainButtonTitle,
+             action: buyDomainAction)
     }
 
     private var chooseSiteCard: some View {
+        card(imageName: "block-layout",
+             title: Strings.chooseSiteTitle,
+             subtitle: Strings.chooseSiteSubtitle,
+             buttonTitle: Strings.chooseSiteButtonTitle,
+             footer: Strings.chooseSiteFooter,
+             action: chooseSiteAction
+        )
+    }
+
+    private func card(
+        imageName: String,
+        title: String,
+        subtitle: String,
+        buttonTitle: String,
+        footer: String? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
         VStack(alignment: .leading, spacing: Length.Padding.single) {
             Group {
-                Image("block-layout")
+                Image(imageName)
                     .renderingMode(.template)
                     .resizable()
                     .foregroundStyle(Color.DS.Background.brand)
                     .frame(width: Constants.imageLength, height: Constants.imageLength)
                     .padding(.top, Length.Padding.double)
-
-                chooseSiteTexts
-                    .padding(.bottom, Length.Padding.single)
-                PrimaryButton(title: Strings.chooseSiteButtonTitle) {
-                    chooseSiteAction()
+                VStack(alignment: .leading, spacing: Length.Padding.single) {
+                    Text(title)
+                        .font(.title2.bold())
+                    Text(subtitle)
+                        .foregroundStyle(Color.DS.Foreground.secondary)
+                    if let footer {
+                        Text(footer)
+                            .foregroundStyle(Color.DS.Foreground.brand)
+                    }
+                }
+                .padding(.bottom, Length.Padding.single)
+                PrimaryButton(title: buttonTitle) {
+                    action()
                 }
                 .padding(.bottom, Length.Padding.double)
             }
@@ -86,7 +96,7 @@ struct PurchaseDomainView: View {
     }
 }
 
-private extension PurchaseDomainView {
+private extension DomainPurchaseChoicesView {
     enum Strings {
         static let header = NSLocalizedString(
             "domain.management.purchase.title",
@@ -150,9 +160,10 @@ private extension PurchaseDomainView {
 }
 
 #Preview {
-    PurchaseDomainView {
+    DomainPurchaseChoicesView {
         print("Buy domain tapped.")
     } chooseSiteAction: {
         print("Choose site tapped")
     }
+//    .environment(\.sizeCategory, .extraExtraExtraLarge)
 }

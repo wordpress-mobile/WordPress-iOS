@@ -311,7 +311,7 @@
 		088CC594282BEC41007B9421 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
 		088D58A529E724F300E6C0F4 /* ColorGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088D58A429E724F300E6C0F4 /* ColorGallery.swift */; };
 		088D58A629E724F300E6C0F4 /* ColorGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088D58A429E724F300E6C0F4 /* ColorGallery.swift */; };
-		088E6FB72AE7E52400559AD4 /* PurchaseDomainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088E6FB62AE7E52400559AD4 /* PurchaseDomainView.swift */; };
+		088E6FB72AE7E52400559AD4 /* DomainPurchaseChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088E6FB62AE7E52400559AD4 /* DomainPurchaseChoicesView.swift */; };
 		08A250F828D9E87600F50420 /* CommentDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */; };
 		08A250F928D9E87600F50420 /* CommentDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */; };
 		08A250FC28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */; };
@@ -5976,7 +5976,7 @@
 		088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardContentLabel.swift; sourceTree = "<group>"; };
 		088CC593282BEC41007B9421 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
 		088D58A429E724F300E6C0F4 /* ColorGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGallery.swift; sourceTree = "<group>"; };
-		088E6FB62AE7E52400559AD4 /* PurchaseDomainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDomainView.swift; sourceTree = "<group>"; };
+		088E6FB62AE7E52400559AD4 /* DomainPurchaseChoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainPurchaseChoicesView.swift; sourceTree = "<group>"; };
 		08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailInfoViewController.swift; sourceTree = "<group>"; };
 		08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailInfoViewModel.swift; sourceTree = "<group>"; };
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
@@ -10144,7 +10144,7 @@
 			isa = PBXGroup;
 			children = (
 				08D61F202AD0635100BF3D00 /* MyDomainsViewController.swift */,
-				088E6FB62AE7E52400559AD4 /* PurchaseDomainView.swift */,
+				088E6FB62AE7E52400559AD4 /* DomainPurchaseChoicesView.swift */,
 			);
 			path = MyDomains;
 			sourceTree = "<group>";
@@ -23817,7 +23817,7 @@
 				FABB21032602FC2C00C8785C /* JetpackActivityLogViewController.swift in Sources */,
 				17870A712816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */,
 				C33A5ADC2935848F00961E3A /* MigrationAppDetection.swift in Sources */,
-				088E6FB72AE7E52400559AD4 /* PurchaseDomainView.swift in Sources */,
+				088E6FB72AE7E52400559AD4 /* DomainPurchaseChoicesView.swift in Sources */,
 				0CAE8EF32A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift in Sources */,
 				80D9D00429EF4C7F00FE3400 /* DashboardPageCreationCell.swift in Sources */,
 				DC772AF6282009BA00664C02 /* StatsLineChartView.swift in Sources */,
