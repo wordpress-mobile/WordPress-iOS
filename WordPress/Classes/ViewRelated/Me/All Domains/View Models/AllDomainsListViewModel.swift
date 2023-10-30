@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 class AllDomainsListViewModel {
-    
+
     // MARK: - Types
 
     enum State {

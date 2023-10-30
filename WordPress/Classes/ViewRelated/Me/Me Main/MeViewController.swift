@@ -238,7 +238,7 @@ class MeViewController: UITableViewController {
 
         return ImmuTable(sections: sections)
     }
-    
+
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

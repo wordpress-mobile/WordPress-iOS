@@ -15,7 +15,7 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     typealias ViewModel = AllDomainsListViewModel
-    
+
     // MARK: - Dependencies
 
     private let viewModel: ViewModel
