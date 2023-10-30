@@ -50,13 +50,10 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 8.6.0-beta.1'
+  # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
+  pod 'WordPressKit', '~> 8.9', '>= 8.9.1'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-<<<<<<< HEAD
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
-=======
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'task/add-all-domains-endpoint'
->>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
