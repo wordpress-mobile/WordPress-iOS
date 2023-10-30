@@ -3,6 +3,19 @@ import Combine
 
 final class AllDomainsListViewController: UIViewController {
 
+    // MARK: - Types
+
+    private enum Layout {
+        static let interRowSpacing = Length.Padding.double
+    }
+
+    private enum CellIdentifiers {
+        static let myDomain = String(describing: AllDomainsListTableViewCell.self)
+        static let activityIndicator = String(describing: AllDomainsListActivityIndicatorTableViewCell.self)
+    }
+
+    typealias ViewModel = AllDomainsListViewModel
+
     // MARK: - Dependencies
 
     private let viewModel: ViewModel
@@ -97,32 +110,6 @@ final class AllDomainsListViewController: UIViewController {
             }
         }.store(in: &cancellable)
     }
-
-    private func menuAction(withTitle title: String, handler: UIActionHandler) -> UIAction {
-        .init(
-            title: title,
-            image: nil,
-            identifier: nil,
-            discoverabilityTitle: nil,
-            attributes: .init(),
-            state: .off,
-            handler: { (action) in
-            // Perform action
-        })
-    }
-
-    // MARK: - Types
-
-    private enum Layout {
-        static let interRowSpacing = Length.Padding.double
-    }
-
-    private enum CellIdentifiers {
-        static let myDomain = String(describing: AllDomainsListTableViewCell.self)
-        static let activityIndicator = String(describing: AllDomainsListActivityIndicatorTableViewCell.self)
-    }
-
-    typealias ViewModel = AllDomainsListViewModel
 }
 
 // MARK: - UITableViewDataSource
