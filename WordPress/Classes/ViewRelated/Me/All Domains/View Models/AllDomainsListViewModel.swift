@@ -3,6 +3,21 @@ import Combine
 
 class AllDomainsListViewModel {
 
+    // MARK: - Types
+
+    enum State {
+        case normal
+        case loading
+        case empty
+        case error
+    }
+
+    private typealias Domain = DomainsService.AllDomainsListItem
+
+    private enum ViewModelError: Error {
+        case internalError(reason: String)
+    }
+
     // MARK: - Dependencies
 
     private var domainsService: DomainsService?
@@ -57,20 +72,5 @@ class AllDomainsListViewModel {
 
     func domain(atIndex index: Int) -> AllDomainsListItemViewModel {
         return .init(domain: domains[index])
-    }
-
-    // MARK: - Types
-
-    enum State {
-        case normal
-        case loading
-        case empty
-        case error
-    }
-
-    private typealias Domain = DomainsService.AllDomainsListItem
-
-    private enum ViewModelError: Error {
-        case internalError(reason: String)
     }
 }
