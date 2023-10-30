@@ -410,7 +410,7 @@ DEPENDENCIES
   commonmarker
   danger-dangermattic!
   dotenv
-  fastlane (~> 2)
+  fastlane (~> 2.216)
   fastlane-plugin-appcenter (~> 2.1)
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit (~> 9.1)
