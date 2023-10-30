@@ -115,7 +115,15 @@ class AllDomainsListViewModel {
     // MARK: - Search
 
     func search(_ query: String?) {
+        // Keep track of the previous search query.
         self.lastSearchQuery = query
+
+        // Search shouldn't be performed if the user doesn't have any domains.
+        guard !domains.isEmpty else {
+            return
+        }
+
+        // Perform search asynchrounously.
         switch state {
         case .normal, .empty:
             self.searchQueue.cancelAllOperations()
