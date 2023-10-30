@@ -220,10 +220,8 @@ class MeViewController: UITableViewController {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
                 return [
                     ButtonRow(title: AllDomainsListViewController.Strings.title) { action in
-                        let controller = AllDomainsListViewController()
-                        let navigationController = UINavigationController(rootViewController: controller)
-                        self.present(navigationController, animated: true) {
-                            self.tableView.deselectSelectedRowWithAnimation(true)
+                        self.showOrPushController(AllDomainsListViewController()) { [weak self] in
+                            self?.tableView.deselectSelectedRowWithAnimation(true)
                         }
                     }
                 ]
