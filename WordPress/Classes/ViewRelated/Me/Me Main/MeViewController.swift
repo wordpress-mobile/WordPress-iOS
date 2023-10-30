@@ -220,14 +220,9 @@ class MeViewController: UITableViewController {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
                 return [
                     ButtonRow(title: AllDomainsListViewController.Strings.title) { action in
-<<<<<<< HEAD
                         self.showOrPushController(AllDomainsListViewController()) { [weak self] in
                             self?.tableView.deselectSelectedRowWithAnimation(true)
                         }
-=======
-                        self.showOrPushController(AllDomainsListViewController())
-                        self.tableView.deselectSelectedRowWithAnimation(true)
->>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains)
                     }
                 ]
             }()))
@@ -243,10 +238,7 @@ class MeViewController: UITableViewController {
 
         return ImmuTable(sections: sections)
     }
-    private func myDomainsRow() -> ImmuTableRow {
-        ButtonRow(title: "My Domains", action: presentMyDomains())
-    }
-
+    
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -341,16 +333,6 @@ class MeViewController: UITableViewController {
             }
 
             self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
-        }
-    }
-
-    private func presentMyDomains() -> ImmuTableAction {
-        return { [unowned self] _ in
-            let controller = MyDomainsViewController()
-            let navigationController = UINavigationController(rootViewController: controller)
-            self.present(navigationController, animated: true) {
-                self.tableView.deselectSelectedRowWithAnimation(true)
-            }
         }
     }
 

@@ -2,7 +2,6 @@ import UIKit
 import Combine
 
 final class AllDomainsListViewController: UIViewController {
-<<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/All Domains/Views/AllDomainsListViewController.swift
 
     // MARK: - Types
 
@@ -16,9 +15,7 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     typealias ViewModel = AllDomainsListViewModel
-========
->>>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains):WordPress/Classes/ViewRelated/Me/All Domains/AllDomainsListViewController.swift
-
+    
     // MARK: - Dependencies
 
     private let viewModel: ViewModel
@@ -131,22 +128,6 @@ final class AllDomainsListViewController: UIViewController {
             self.emptyView.isHidden = !tableView.isHidden
         }.store(in: &cancellable)
     }
-<<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/All Domains/Views/AllDomainsListViewController.swift
-========
-
-    // MARK: - Types
-
-    private enum Layout {
-        static let interRowSpacing = Length.Padding.double
-    }
-
-    private enum CellIdentifiers {
-        static let myDomain = String(describing: AllDomainsListTableViewCell.self)
-        static let activityIndicator = String(describing: AllDomainsListActivityIndicatorTableViewCell.self)
-    }
-
-    typealias ViewModel = AllDomainsListViewModel
->>>>>>>> 91edbe6f29 (Replace all occurences of My Domains to All Domains):WordPress/Classes/ViewRelated/Me/All Domains/AllDomainsListViewController.swift
 }
 
 // MARK: - UITableViewDataSource
