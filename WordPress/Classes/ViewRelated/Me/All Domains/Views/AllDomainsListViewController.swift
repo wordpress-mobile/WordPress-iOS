@@ -70,8 +70,19 @@ final class AllDomainsListViewController: UIViewController {
         self.viewModel.loadData()
     }
 
+    // MARK: - Setup Views
+
     private func setupSubviews() {
-        // Setup search bar
+        self.setupBarButtonItems()
+        self.setupSearchBar()
+        self.setupTableView()
+    }
+
+    private func setupBarButtonItems() {
+        self.navigationItem.rightBarButtonItem = .init(systemItem: .add)
+    }
+
+    private func setupSearchBar() {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.delegate = self
         searchController.searchBar.delegate = self
@@ -80,8 +91,9 @@ final class AllDomainsListViewController: UIViewController {
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.extendedLayoutIncludesOpaqueBars = true
         self.edgesForExtendedLayout = .top
+    }
 
-        // Setup tableView
+    private func setupTableView() {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -93,6 +105,8 @@ final class AllDomainsListViewController: UIViewController {
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }
+
+    // MARK: - UI Updates
 
     private func observeState() {
         self.viewModel.$state.sink { [weak self] state in
