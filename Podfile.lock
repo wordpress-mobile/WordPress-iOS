@@ -130,10 +130,14 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
 <<<<<<< HEAD
+<<<<<<< HEAD
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
   - WordPressKit (>= 8.9.1, ~> 8.9)
 =======
   - WordPressAuthenticator (~> 7.0)
+=======
+  - WordPressAuthenticator (~> 7.2.1-beta.2)
+>>>>>>> 5ae957e8a4 (Rebase with trunk and fix conflicts)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/add-all-domains-endpoint`)
 >>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
   - WordPressShared (~> 2.2)
@@ -143,6 +147,8 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -193,9 +199,13 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
 <<<<<<< HEAD
+<<<<<<< HEAD
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
 =======
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.106.0.podspec
+=======
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
+>>>>>>> 5ae957e8a4 (Rebase with trunk and fix conflicts)
   WordPressKit:
     :branch: task/add-all-domains-endpoint
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -245,10 +255,14 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
 <<<<<<< HEAD
+<<<<<<< HEAD
   WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
   WordPressKit: e774ca87068b8ea02bbb0bd0b75b98aa5d722cb9
 =======
   WordPressAuthenticator: c12572a8500f1eaf1e8b0d71c8655cc3455a0682
+=======
+  WordPressAuthenticator: a30af2a65daf33744994fda93c914e00465fac57
+>>>>>>> 5ae957e8a4 (Rebase with trunk and fix conflicts)
   WordPressKit: 33a0571389da6b40c765398a8c84da72f5514a6f
 >>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
@@ -265,9 +279,13 @@ SPEC CHECKSUMS:
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 PODFILE CHECKSUM: d1c39154c0208187cdbc28e2ef2b968f382fdf4f
 =======
 PODFILE CHECKSUM: 0e6aa34593e367cb871ca85f553ba70a429f3687
 >>>>>>> 5f7b72361e (Update fetchAllDomains to accept only 2 arguments)
+=======
+PODFILE CHECKSUM: 3fc69a05f32c41957a58f540828ada750960e6c5
+>>>>>>> 5ae957e8a4 (Rebase with trunk and fix conflicts)
 
 COCOAPODS: 1.14.2
