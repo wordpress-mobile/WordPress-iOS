@@ -33,6 +33,7 @@ class FilterTabBar: UIControl {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.scrollsToTop = false
 
         return scrollView
     }()
