@@ -135,8 +135,8 @@ class AllDomainsListViewModel {
     private func emptyStateViewModel(searchQuery: String? = nil) -> AllDomainsListEmptyStateViewModel {
         if let searchQuery {
             return .init(
-                title: "Empty",
-                description: "No domains matching \(searchQuery) query",
+                title: Strings.searchEmptyStateTitle,
+                description: Strings.searchEmptyStateDescription(searchQuery),
                 button: nil
             )
         } else {
