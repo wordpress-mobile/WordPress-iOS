@@ -397,6 +397,14 @@ class AbstractPostListViewController: UIViewController,
         nil
     }
 
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        nil
+    }
+
     func tableViewDidChangeContent(_ tableView: UITableView) {
         refreshResults()
     }
