@@ -141,6 +141,12 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         reload()
     }
 
+    func willStartSearching() {
+        WPAnalytics.track(.postListSearchOpened, withProperties: propertiesForAnalytics())
+
+        syncTags()
+    }
+
     // MARK: - Search (Remote)
 
     private func performRemoteSearch() {
@@ -222,5 +228,21 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             self.suggestedTokens = tokens
             self.reload()
         }
+    }
+
+    // MARK: - Misc
+
+    private func syncTags() {
+        let tagsService = PostTagService(managedObjectContext: coreData.mainContext)
+        tagsService.syncTags(for: blog, success: { _ in }, failure: { _ in })
+    }
+
+    private func propertiesForAnalytics() -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
+        properties["type"] = settings.postType.rawValue as AnyObject?
+        if let dotComID = blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+        return properties
     }
 }
