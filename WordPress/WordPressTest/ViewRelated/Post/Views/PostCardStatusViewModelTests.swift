@@ -2,7 +2,6 @@ import Nimble
 import XCTest
 @testable import WordPress
 
-
 class PostCardStatusViewModelTests: CoreDataTestCase {
 
     func testPublishedPostButtons() {
@@ -17,7 +16,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
@@ -39,7 +38,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.stats, .comments],
@@ -54,13 +53,13 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
             .withRemote()
             .published()
             .build()
-        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: false, isBlazeFlagEnabled: true)
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: false, isBlazeFlagEnabled: false)
 
         // When & Then
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.trash]
@@ -79,7 +78,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.duplicate, .publish],
             [.trash]
@@ -98,7 +97,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft],
             [.trash]
@@ -117,7 +116,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
-        let expectedButtons: [[PostCardStatusViewModel.Button]] = [
+        let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft],
             [.trash]
