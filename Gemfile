@@ -2,19 +2,11 @@
 
 source 'https://rubygems.org'
 
-# To address the following error when running `bundle exec pod install`:
-#
-#   undefined method `deprecator' for ActiveSupport:Module (NoMethodError)
-#
-# See: https://github.com/fastlane/fastlane/issues/21585
-gem 'activesupport', '~> 7.0.8'
-# 1.12.x and higher, starting from 1.12.1, because that hotfix fixes Xcode 14.3 compatibility
-gem 'cocoapods', '~> 1.12', '>= 1.12.1'
+gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
-gem 'danger', '~> 9.3'
-gem 'danger-rubocop', '~> 0.10'
+gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic'
 gem 'dotenv'
-gem 'fastlane', '~> 2.174'
+gem 'fastlane', '~> 2.216'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.

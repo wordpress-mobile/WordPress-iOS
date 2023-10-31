@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './Gutenberg/cocoapods_helpers'
+require_relative 'Gutenberg/cocoapods_helpers'
 require 'xcodeproj'
 
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.

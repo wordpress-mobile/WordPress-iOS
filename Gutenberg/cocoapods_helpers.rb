@@ -40,7 +40,7 @@ def gutenberg_pod
 
   raise "Could not find config YAML at path #{GUTENBERG_CONFIG_PATH}" unless File.exist?(GUTENBERG_CONFIG_PATH)
 
-  config = YAML.safe_load(File.read(GUTENBERG_CONFIG_PATH), symbolize_names: true)
+  config = YAML.safe_load_file(GUTENBERG_CONFIG_PATH, symbolize_names: true)
 
   raise 'Gutenberg config does not contain expected key :ref' if config[:ref].nil?
 
