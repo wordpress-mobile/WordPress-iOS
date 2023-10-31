@@ -35,7 +35,7 @@ class AbstractPostListViewController: UIViewController,
     /// to the subclass to define this property.
     ///
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
-    let tableViewController = UITableViewController(style: .grouped)
+    let tableViewController = UITableViewController(style: .plain)
     private var reloadTableViewBeforeAppearing = false
 
     @objc var tableView: UITableView {
