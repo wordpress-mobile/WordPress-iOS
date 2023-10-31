@@ -56,8 +56,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             let firstPrompt = prompts.first!
             XCTAssertEqual(firstPrompt.promptID, 248)
             XCTAssertEqual(firstPrompt.text, "Tell us about a time when you felt out of place.")
-            XCTAssertEqual(firstPrompt.title, "Prompt number 10")
-            XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertTrue(firstPrompt.attribution.isEmpty)
 
             let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
@@ -73,8 +71,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             let secondPrompt = prompts.last!
             XCTAssertEqual(secondPrompt.promptID, 239)
             XCTAssertEqual(secondPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
-            XCTAssertEqual(secondPrompt.title, "Prompt number 1")
-            XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertEqual(secondPrompt.attribution, "dayone")
 
             let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
@@ -98,6 +94,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     func test_fetchPrompts_shouldExcludePromptsOutsideGivenDate() {
         // this should exclude the second prompt dated 2021-09-12.
+        // the remote may return multiple prompts, but there should be a client-side filtering for the prompt dates.
         let dateParam = Self.dateFormatter.date(from: "2022-01-01")
 
         // use actual remote object so the request can be intercepted by HTTPStubs.
@@ -187,7 +184,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(mainContext).isHostedAtWPcom().build()
+        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: 100).build()
     }
 
     func stubFetchPromptsResponse() {
@@ -208,6 +205,8 @@ class BloggingPromptsServiceRemoteMock: BloggingPromptsServiceRemote {
     override func fetchPrompts(for siteID: NSNumber,
                                number: Int? = nil,
                                fromDate: Date? = nil,
+                               ignoresYear: Bool = false,
+                               forceYear: Int? = Calendar(identifier: .gregorian).component(.year, from: Date()),
                                completion: @escaping (Result<[RemoteBloggingPrompt], Error>) -> Void) {
         passedSiteID = siteID
         passedNumberParameter = number
