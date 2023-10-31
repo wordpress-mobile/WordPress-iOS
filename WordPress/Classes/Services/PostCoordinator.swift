@@ -513,15 +513,8 @@ final class PostCoordinator: NSObject {
             } else {
                 message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
             }
-            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", value: "Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder.")
 
-            let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
-                if accepted {
-                    Task {
-                        await self?.restore(post, toStatus: originalStatus ?? .draft)
-                    }
-                }
-            })
+            let notice = Notice(title: message)
             ActionDispatcher.dispatch(NoticeAction.dismiss)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 
@@ -534,26 +527,6 @@ final class PostCoordinator: NSObject {
             }
 
             setPendingDeletion(false, post: post)
-        }
-    }
-
-    @MainActor
-    private func restore(_ post: AbstractPost, toStatus status: BasePost.Status) async {
-        WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics(for: post))
-        let repository = PostRepository(coreDataStack: ContextManager.shared)
-        Task { @MainActor in
-            do {
-                try await repository.restore(.init(post), to: status)
-
-                // Reindex the restored post in spotlight
-                SearchManager.shared.indexItem(post)
-            } catch {
-                if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
-                    delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
-                } else {
-                    WPError.showXMLRPCErrorAlert(error)
-                }
-            }
         }
     }
 
