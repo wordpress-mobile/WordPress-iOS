@@ -52,10 +52,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
-    func copyLink(_ apost: AbstractPost) {
-        // TODO: Remove
-    }
-
     func blaze(_ apost: AbstractPost) {
         BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: apost)

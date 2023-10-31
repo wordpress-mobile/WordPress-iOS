@@ -142,8 +142,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.separatorStyle = .singleLine
         tableView.rowHeight = UITableView.automaticDimension
 
-        let bundle = Bundle.main
-
         // Register the cells
         tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
 
