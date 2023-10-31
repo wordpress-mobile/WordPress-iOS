@@ -64,7 +64,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     NSString *shouldBeOriginalInWebView = [self currentUserAgentFromWebView];
     NSLog(@"shouldBeOriginal (WebView): %@", shouldBeOriginalInWebView);
     
-    XCTAssertNotEqualObjects(originalUserAgentInWebView, shouldBeOriginalInWebView, "This agent should be the same");
+    XCTAssertNotEqualObjects(originalUserAgentInWebView, shouldBeOriginalInWebView);
 }
 
 - (void)testThatCallingFromAnotherThreadWorks {
