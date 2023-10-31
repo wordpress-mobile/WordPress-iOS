@@ -19,6 +19,34 @@ class WKCookieJarTests: XCTestCase {
         super.tearDown()
     }
 
+    @MainActor
+    func testSDKBehavior() async throws {
+
+        let store = WKWebsiteDataStore.nonPersistent().httpCookieStore
+
+        let initialCount = await store.allCookies().count
+        XCTAssertEqual(initialCount, 0)
+
+        // This initializer returns nil if the provided properties are invalid.
+        // To successfully create a cookie, you must provide values for (at least) the path, name, and value keys, and either the originURL key or the domain key.
+        // – https://developer.apple.com/documentation/foundation/httpcookie/1392975-init
+        let cookie = try XCTUnwrap(
+            HTTPCookie(
+                properties: [
+                    .path: "/",
+                    .name: "name",
+                    .value: "value",
+                    .domain: "wordpress.com"
+                ]
+            )
+        )
+
+        await store.setCookie(cookie)
+
+        let count = await store.allCookies().count
+        XCTAssertEqual(count, 1)
+    }
+
     func testGetCookies() {
         XCTExpectFailure(
             "WKHTTPCookieStore tests fail on Xcode 15+. The calling setCookie on the store does not seem to set the cookie...",
