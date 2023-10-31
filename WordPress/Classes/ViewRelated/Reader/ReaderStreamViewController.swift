@@ -1644,7 +1644,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return cell(for: post, at: indexPath)
     }
 
-    func cell(for post: ReaderPost, at indexPath: IndexPath) -> UITableViewCell {
+    func cell(for post: ReaderPost, at indexPath: IndexPath, showsSeparator: Bool = true) -> UITableViewCell {
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
             cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
@@ -1677,6 +1677,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             let cell = tableConfiguration.postCardCell(tableView)
             let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                         isLoggedIn: isLoggedIn,
+                                                        showsSeparator: showsSeparator,
                                                         parentViewController: self)
             cell.configure(with: viewModel)
             return cell
@@ -1704,6 +1705,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
+
+        if let cell = cell as? ReaderPostCardCell {
+            cell.prepareForDisplay()
+        }
 
         guard cell.isKind(of: OldReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
