@@ -11,12 +11,6 @@ extension BloggingPrompt {
     /// The prompt content to be displayed at entry points.
     @NSManaged public var text: String
 
-    /// Template title for the draft post.
-    @NSManaged public var title: String
-
-    /// Template content for the draft post.
-    @NSManaged public var content: String
-
     /// The attribution source for the prompt.
     @NSManaged public var attribution: String
 
