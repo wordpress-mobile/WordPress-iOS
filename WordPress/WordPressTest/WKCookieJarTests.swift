@@ -9,11 +9,10 @@ class WKCookieJarTests: XCTestCase {
     }
     let wordPressComLoginURL = URL(string: "https://wordpress.com/wp-login.php")!
 
-    @MainActor
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
         wkCookieStore = WKWebsiteDataStore.nonPersistent().httpCookieStore
-        await addCookies()
+        addCookies()
     }
 
     override func tearDown() {
@@ -109,8 +108,8 @@ class WKCookieJarTests: XCTestCase {
 }
 
 private extension WKCookieJarTests {
-    func addCookies() async {
-        await wkCookieStore.setWordPressComCookie(username: "testuser")
-        await wkCookieStore.setWordPressCookie(username: "testuser", domain: "example.com")
+    func addCookies() {
+        wkCookieStore.setWordPressComCookie(username: "testuser")
+        wkCookieStore.setWordPressCookie(username: "testuser", domain: "example.com")
     }
 }
