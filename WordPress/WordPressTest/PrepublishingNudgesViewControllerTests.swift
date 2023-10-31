@@ -3,7 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-class PrepublishingNudgesViewControllerTests: XCTestCase {
+class PrepublishingNudgesViewControllerTests: CoreDataTestCase {
 
     override class func setUp() {
         super.setUp()
@@ -21,7 +21,7 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
     /// Call the completion block when the "Publish" button is pressed
     ///
     func testCallCompletionBlockWhenButtonTapped() {
-        var post = PostBuilder().build()
+        var post = PostBuilder(mainContext).build()
         var returnedPost: AbstractPost?
         let prepublishingViewController = PrepublishingViewController(post: post, identifiers: [.schedule, .visibility, .tags, .categories]) { result in
             switch result {

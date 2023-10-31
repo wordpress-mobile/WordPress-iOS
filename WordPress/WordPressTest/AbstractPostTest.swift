@@ -2,7 +2,7 @@ import XCTest
 import WordPressKit
 @testable import WordPress
 
-class AbstractPostTest: XCTestCase {
+class AbstractPostTest: CoreDataTestCase {
 
     func testTitleForStatus() {
         var status = PostStatusDraft
@@ -31,7 +31,7 @@ class AbstractPostTest: XCTestCase {
     }
 
     func testFeaturedImageURLForDisplay() {
-        let post = PostBuilder().with(pathForDisplayImage: "https://wp.me/awesome.png").build()
+        let post = PostBuilder(mainContext).with(pathForDisplayImage: "https://wp.me/awesome.png").build()
 
         XCTAssertEqual(post.featuredImageURLForDisplay()?.absoluteString, "https://wp.me/awesome.png")
     }

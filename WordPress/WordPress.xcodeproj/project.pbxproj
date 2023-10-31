@@ -913,6 +913,7 @@
 		3F4EB39228AC561600B8DD86 /* JetpackWordPressLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4EB39128AC561600B8DD86 /* JetpackWordPressLogoAnimation_rtl.json */; };
 		3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */; };
 		3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */; };
+		3F56F55C2AEA2F67006BDCEA /* ReaderPostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */; };
 		3F593FDD2A81DC6D00B29E86 /* NSError+TestInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */; };
 		3F5AAC242877791900AEF5DD /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
 		3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */; };
@@ -6576,6 +6577,7 @@
 		3F5689FF25420DE80048A9E4 /* MultiStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStatsView.swift; sourceTree = "<group>"; };
 		3F568A1E254213B60048A9E4 /* VerticalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalCard.swift; sourceTree = "<group>"; };
 		3F568A2E254216550048A9E4 /* FlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleCard.swift; sourceTree = "<group>"; };
+		3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostBuilder.swift; sourceTree = "<group>"; };
 		3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+TestInstance.swift"; sourceTree = "<group>"; };
 		3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogPresenter.swift; sourceTree = "<group>"; };
 		3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogFormatter.swift; sourceTree = "<group>"; };
@@ -12254,6 +12256,7 @@
 				3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */,
 				57889AB723589DF100DAE56D /* PageBuilder.swift */,
 				570BFD8F2282418A007859A8 /* PostBuilder.swift */,
+				3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */,
 				3F759FBB2A2DB2CF0039A845 /* TestError.swift */,
 			);
 			name = TestUtilities;
@@ -23617,6 +23620,7 @@
 				0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */,
+				3F56F55C2AEA2F67006BDCEA /* ReaderPostBuilder.swift in Sources */,
 				D81C2F5C20F872C2002AE1F1 /* ReplyToCommentActionTests.swift in Sources */,
 				08C42C31281807880034720B /* ReaderSubscribeCommentsActionTests.swift in Sources */,
 				D848CC1720FF38EA00A9038F /* FormattableCommentRangeTests.swift in Sources */,
