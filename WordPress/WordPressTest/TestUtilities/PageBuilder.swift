@@ -6,11 +6,11 @@ import Foundation
 class PageBuilder {
     private let page: Page
 
-    init(_ context: NSManagedObjectContext) {
+    init(_ context: NSManagedObjectContext, canBlaze: Bool = false) {
         page = NSEntityDescription.insertNewObject(forEntityName: Page.entityName(), into: context) as! Page
 
         // Non-null Core Data properties
-        page.blog = BlogBuilder(context).build()
+        page.blog = canBlaze ? BlogBuilder(context).canBlaze().build() : BlogBuilder(context).build()
     }
 
     func with(status: BasePost.Status) -> Self {

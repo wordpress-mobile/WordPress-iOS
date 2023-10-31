@@ -3851,6 +3851,7 @@
 		FA141F282AEC1D9E00C9A653 /* PageMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141F262AEC1D9E00C9A653 /* PageMenuViewModel.swift */; };
 		FA141F2A2AEC23E300C9A653 /* PageListViewController+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141F292AEC23E300C9A653 /* PageListViewController+Menu.swift */; };
 		FA141F2B2AEC23E300C9A653 /* PageListViewController+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141F292AEC23E300C9A653 /* PageListViewController+Menu.swift */; };
+		FA141F322AF139A200C9A653 /* PageMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141F312AF139A200C9A653 /* PageMenuViewModelTests.swift */; };
 		FA1A543E25A6E2F60033967D /* RestoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */; };
 		FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A543F25A6E3080033967D /* RestoreWarningView.xib */; };
 		FA1A55EF25A6F0740033967D /* RestoreStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */; };
@@ -9215,6 +9216,7 @@
 		FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsViewController.swift; sourceTree = "<group>"; };
 		FA141F262AEC1D9E00C9A653 /* PageMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMenuViewModel.swift; sourceTree = "<group>"; };
 		FA141F292AEC23E300C9A653 /* PageListViewController+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageListViewController+Menu.swift"; sourceTree = "<group>"; };
+		FA141F312AF139A200C9A653 /* PageMenuViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageMenuViewModelTests.swift; path = Classes/ViewRelated/Pages/PageMenuViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWarningView.swift; sourceTree = "<group>"; };
 		FA1A543F25A6E3080033967D /* RestoreWarningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreWarningView.xib; sourceTree = "<group>"; };
 		FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusView.swift; sourceTree = "<group>"; };
@@ -13899,16 +13901,9 @@
 		8B7623352384372200AB3EE7 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				8B7623362384372F00AB3EE7 /* Controllers */,
+				FA141F312AF139A200C9A653 /* PageMenuViewModelTests.swift */,
 			);
 			path = Pages;
-			sourceTree = "<group>";
-		};
-		8B7623362384372F00AB3EE7 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		8B7F51C724EED488008CF5B5 /* Analytics */ = {
@@ -23499,6 +23494,7 @@
 				FF8032661EE9E22200861F28 /* MediaProgressCoordinatorTests.swift in Sources */,
 				173D82E7238EE2A7008432DA /* FeatureFlagTests.swift in Sources */,
 				3F4A4C212AD39CB100DE5DF8 /* TruthTable.swift in Sources */,
+				FA141F322AF139A200C9A653 /* PageMenuViewModelTests.swift in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
 				FF2EC3C22209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift in Sources */,
 				D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */,
