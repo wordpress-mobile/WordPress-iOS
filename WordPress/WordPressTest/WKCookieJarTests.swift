@@ -3,7 +3,7 @@ import WebKit
 @testable import WordPress
 
 class WKCookieJarTests: XCTestCase {
-    var wkCookieStore = WKWebsiteDataStore.nonPersistent().httpCookieStore
+    var wkCookieStore: WKHTTPCookieStore!
     var cookieJar: CookieJar {
         return wkCookieStore
     }
@@ -49,7 +49,7 @@ class WKCookieJarTests: XCTestCase {
     func testRemoveCookies() {
         let expectation = self.expectation(description: "removeCookies completion called")
         cookieJar.removeWordPressComCookies { [wkCookieStore] in
-            wkCookieStore.getAllCookies { cookies in
+            wkCookieStore!.getAllCookies { cookies in
                 XCTAssertEqual(cookies.count, 1)
                 expectation.fulfill()
             }
