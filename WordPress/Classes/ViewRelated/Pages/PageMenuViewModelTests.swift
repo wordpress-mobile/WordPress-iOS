@@ -4,13 +4,19 @@ import XCTest
 
 class PageMenuViewModelTests: CoreDataTestCase {
 
-    func testPublishedPageButtons() {
+    func testPublishedPageButtonsWithBlazeEnabled() {
         // Given
         let page = PageBuilder(mainContext, canBlaze: true)
             .withRemote()
             .with(status: .publish)
             .build()
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+        let viewModel = PageMenuViewModel(
+            page: page,
+            isSiteHomepage: false,
+            isSitePostsPage: false,
+            isJetpackFeaturesEnabled: true,
+            isBlazeFlagEnabled: true
+        )
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -20,6 +26,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
+            [.setParent, .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -31,7 +38,13 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .withRemote()
             .with(status: .publish)
             .build()
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: false)
+        let viewModel = PageMenuViewModel(
+            page: page,
+            isSiteHomepage: false,
+            isSitePostsPage: false,
+            isJetpackFeaturesEnabled: true,
+            isBlazeFlagEnabled: false
+        )
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -40,6 +53,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate],
+            [.setParent, .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -51,8 +65,13 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .withRemote()
             .with(status: .publish)
             .build()
-
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: false, isBlazeFlagEnabled: false)
+        let viewModel = PageMenuViewModel(
+            page: page,
+            isSiteHomepage: false,
+            isSitePostsPage: false,
+            isJetpackFeaturesEnabled: false,
+            isBlazeFlagEnabled: false
+        )
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -61,6 +80,63 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate],
+            [.setParent, .setHomepage, .setPostsPage],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testPublishedPageButtonsForHomepage() {
+        // Given
+        let page = PageBuilder(mainContext, canBlaze: true)
+            .withRemote()
+            .with(status: .publish)
+            .build()
+        let viewModel = PageMenuViewModel(
+            page: page,
+            isSiteHomepage: true,
+            isSitePostsPage: false,
+            isJetpackFeaturesEnabled: true,
+            isBlazeFlagEnabled: true
+        )
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft, .duplicate],
+            [.blaze],
+            [.setParent, .setPostsPage],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testPublishedPageButtonsForPostsPage() {
+        // Given
+        let page = PageBuilder(mainContext, canBlaze: true)
+            .withRemote()
+            .with(status: .publish)
+            .build()
+        let viewModel = PageMenuViewModel(
+            page: page,
+            isSiteHomepage: false,
+            isSitePostsPage: true,
+            isJetpackFeaturesEnabled: true,
+            isBlazeFlagEnabled: true
+        )
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft, .duplicate],
+            [.blaze],
+            [.setParent, .setHomepage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -71,7 +147,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .draft)
             .build()
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+        let viewModel = PageMenuViewModel(page: page)
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -80,6 +156,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.duplicate, .publish],
+            [.setParent, .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -90,7 +167,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .scheduled)
             .build()
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+        let viewModel = PageMenuViewModel(page: page)
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -99,6 +176,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .publish],
+            [.setParent, .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -109,7 +187,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .trash)
             .build()
-        let viewModel = PageMenuViewModel(page: page, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+        let viewModel = PageMenuViewModel(page: page)
         // When & Then
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }

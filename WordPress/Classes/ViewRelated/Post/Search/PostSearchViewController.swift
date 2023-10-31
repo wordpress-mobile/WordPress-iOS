@@ -14,13 +14,11 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         self?.tableView(tableView, cellForRowAt: indexPath)
     }
 
-    private let blog: Blog
     private let viewModel: PostSearchViewModel
 
     private var cancellables: [AnyCancellable] = []
 
-    init(blog: Blog, viewModel: PostSearchViewModel) {
-        self.blog = blog
+    init(viewModel: PostSearchViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
