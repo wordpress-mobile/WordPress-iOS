@@ -30,8 +30,8 @@ public class BloggingPrompt: NSManagedObject {
         self.promptID = Int32(remotePrompt.promptID)
         self.siteID = siteID
         self.text = remotePrompt.text
-        self.title = remotePrompt.title
-        self.content = remotePrompt.content
+        self.title = String()
+        self.content = String()
         self.attribution = remotePrompt.attribution
         self.date = remotePrompt.date
         self.answered = remotePrompt.answered

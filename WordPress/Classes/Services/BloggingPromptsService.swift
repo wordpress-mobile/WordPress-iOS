@@ -47,8 +47,12 @@ class BloggingPromptsService {
                       number: Int = 25,
                       success: (([BloggingPrompt]) -> Void)? = nil,
                       failure: ((Error?) -> Void)? = nil) {
+        // ignoresYear is set to `true` to signal that we're only requesting the prompts based on the day and month.
         let fromDate = startDate ?? defaultStartDate
-        remote.fetchPrompts(for: siteID, number: number, fromDate: fromDate) { result in
+        remote.fetchPrompts(for: siteID,
+                            number: number,
+                            fromDate: fromDate,
+                            ignoresYear: true) { result in
             switch result {
             case .success(let remotePrompts):
                 self.upsert(with: remotePrompts) { innerResult in
