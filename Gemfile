@@ -14,7 +14,9 @@ gem 'commonmarker'
 gem 'danger', '~> 9.3'
 gem 'danger-rubocop', '~> 0.10'
 gem 'dotenv'
-gem 'fastlane', '~> 2.174'
+# To address an issue with the test results parser trainer and Xcode 15
+# https://github.com/fastlane/fastlane/pull/21493
+gem 'fastlane', git: 'https://github.com/fastlane/fastlane', ref: '1732b60'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
