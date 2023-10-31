@@ -20,4 +20,9 @@ enum AbstractPostButton {
     case share
     case blaze
     case comments
+
+    /// Specific to pages
+    case setParent
+    case setHomepage
+    case setPostsPage
 }

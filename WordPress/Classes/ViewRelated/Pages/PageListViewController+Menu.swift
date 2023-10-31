@@ -61,6 +61,20 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
+    func setParent(for post: AbstractPost, at indexPath: IndexPath) {
+        // TODO
+    }
+
+    func setHomepage(for post: AbstractPost) {
+        // TODO
+    }
+
+    func setPostsPage(for post: AbstractPost) {
+        // TODO
+    }
+
+    // MARK: - Helpers
+
     private func copyPage(_ page: Page) {
         // Analytics
         WPAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics())

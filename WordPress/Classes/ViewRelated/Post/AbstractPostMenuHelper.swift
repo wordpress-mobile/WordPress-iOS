@@ -81,6 +81,9 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble")
+        case .setParent: return UIImage(systemName: "text.append")
+        case .setHomepage: return UIImage(systemName: "house")
+        case .setPostsPage: return UIImage(systemName: "text.word.spacing")
         }
     }
 
@@ -106,6 +109,9 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
+        case .setParent: return Strings.setParent
+        case .setHomepage: return Strings.setHomepage
+        case .setPostsPage: return Strings.setPostsPage
         }
     }
 
@@ -133,6 +139,12 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.blaze(post)
         case .comments:
             delegate.comments(post)
+        case .setParent:
+            break
+        case .setHomepage:
+            break
+        case .setPostsPage:
+            break
         }
     }
 
@@ -149,5 +161,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
+        static let setParent = NSLocalizedString("posts.setParent.actionTitle", value: "Set parent", comment: "Set the parent page for the selected page.")
+        static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
+        static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
     }
 }

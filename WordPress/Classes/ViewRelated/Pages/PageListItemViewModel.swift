@@ -9,14 +9,14 @@ final class PageListItemViewModel {
     let accessibilityIdentifier: String?
     let pageMenuViewModel: PageMenuViewModel
 
-    init(page: Page) {
+    init(page: Page, homepageType: HomepageType?) {
         self.page = page
         self.title = makeContentAttributedString(for: page)
         self.badgeIcon = makeBadgeIcon(for: page)
         self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
-        self.pageMenuViewModel = PageMenuViewModel(page: page)
+        self.pageMenuViewModel = PageMenuViewModel(page: page, homepageType: homepageType)
     }
 }
 
