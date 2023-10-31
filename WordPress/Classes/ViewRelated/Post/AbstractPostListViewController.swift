@@ -170,7 +170,6 @@ class AbstractPostListViewController: UIViewController,
 
     func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.isLayoutMarginsRelativeArrangement = false
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
