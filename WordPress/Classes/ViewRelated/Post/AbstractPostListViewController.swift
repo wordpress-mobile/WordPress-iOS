@@ -276,17 +276,13 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - GUI: No results view logic
 
     func hideNoResultsView() {
-        setFooterHidden(false)
         noResultsViewController.removeFromView()
     }
 
     func showNoResultsView() {
-
         guard refreshNoResultsViewController != nil, atLeastSyncedOnce else {
             return
         }
-
-        setFooterHidden(true)
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
