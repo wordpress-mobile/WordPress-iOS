@@ -165,7 +165,7 @@ abstract_target 'Apps' do
   ## =================
   ##
   target 'WordPress' do
-    target 'WordPressTest' do
+    target 'UnitTests' do
       inherit! :search_paths
 
       shared_test_pods

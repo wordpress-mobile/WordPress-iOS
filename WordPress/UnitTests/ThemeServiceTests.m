@@ -4,7 +4,7 @@
 #import "Theme.h"
 #import "ThemeService.h"
 #import "WPAccount.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 @import WordPressKit;
 
 #pragma mark - Support classes

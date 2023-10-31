@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "ReaderPost.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 @import WordPressShared;
 
 @interface ReaderPostTest : XCTestCase

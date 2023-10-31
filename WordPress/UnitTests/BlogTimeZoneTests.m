@@ -2,7 +2,7 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 
 @interface BlogTimeZoneTests : XCTestCase
 @property (nonatomic, strong) id<CoreDataStack> coreDataStack;

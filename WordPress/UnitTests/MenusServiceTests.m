@@ -5,7 +5,7 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 
 @interface WPAccount ()
 @property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;

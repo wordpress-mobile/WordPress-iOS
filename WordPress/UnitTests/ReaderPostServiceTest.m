@@ -6,7 +6,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 @import WordPressKit;
 
 @interface ReaderPostService()

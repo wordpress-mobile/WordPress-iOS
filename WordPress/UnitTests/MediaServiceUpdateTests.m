@@ -1,7 +1,7 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 @import WordPressKit;
 
 // Redefine `WPAccount` to make `wordPressComRestApi` writable.

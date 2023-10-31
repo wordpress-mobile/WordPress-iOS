@@ -3,7 +3,7 @@
 #import "Blog.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 @import WordPressKit;
 
 @interface WPAccount ()

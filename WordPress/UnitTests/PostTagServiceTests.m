@@ -4,7 +4,7 @@
 #import "PostTag.h"
 #import "PostTagService.h"
 @import WordPressKit;
-#import "WordPressTest-Swift.h"
+#import "UnitTests-Swift.h"
 
 @interface PostTagServiceForStubbing : PostTagService
 
