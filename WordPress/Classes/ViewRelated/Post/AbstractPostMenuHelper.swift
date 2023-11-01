@@ -1,9 +1,15 @@
 import Foundation
 import UIKit
 
-struct PostMenuHelper {
+struct AbstractPostMenuHelper {
 
-    let statusViewModel: PostCardStatusViewModel
+    let post: AbstractPost
+    let viewModel: AbstractPostMenuViewModel
+
+    init(_ post: AbstractPost, viewModel: AbstractPostMenuViewModel) {
+        self.post = post
+        self.viewModel = viewModel
+    }
 
     /// Creates a menu for post actions
     ///
@@ -21,7 +27,7 @@ struct PostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     private func makeSections(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIMenu] {
-        return statusViewModel.buttonSections
+        return viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }
             .map { section in
                 let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)
@@ -36,12 +42,10 @@ struct PostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     private func makeActions(
-        for buttons: [PostCardStatusViewModel.Button],
+        for buttons: [AbstractPostButton],
         presentingView: UIView,
         delegate: InteractivePostViewDelegate
     ) -> [UIAction] {
-        let post = statusViewModel.post
-
         return buttons.map { button in
             UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak delegate] _ in
                 guard let delegate else { return }
@@ -51,14 +55,14 @@ struct PostMenuHelper {
     }
 }
 
-protocol PostMenuAction {
+protocol AbstractPostMenuAction {
     var icon: UIImage? { get }
     var attributes: UIMenuElement.Attributes? { get }
-    func title(for post: Post) -> String
-    func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate)
+    func title(for post: AbstractPost) -> String
+    func performAction(for post: AbstractPost, view: UIView, delegate: InteractivePostViewDelegate)
 }
 
-extension PostCardStatusViewModel.Button: PostMenuAction {
+extension AbstractPostButton: AbstractPostMenuAction {
 
     var icon: UIImage? {
         switch self {
@@ -85,7 +89,7 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         }
     }
 
-    func title(for post: Post) -> String {
+    func title(for post: AbstractPost) -> String {
         switch self {
         case .retry: return Strings.retry
         case .view: return Strings.view
@@ -101,7 +105,7 @@ extension PostCardStatusViewModel.Button: PostMenuAction {
         }
     }
 
-    func performAction(for post: Post, view: UIView, delegate: InteractivePostViewDelegate) {
+    func performAction(for post: AbstractPost, view: UIView, delegate: InteractivePostViewDelegate) {
         switch self {
         case .retry:
             delegate.retry(post)

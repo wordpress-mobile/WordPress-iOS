@@ -336,7 +336,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             present(navigationController, animated: true)
         } else {
             let page = pageAtIndexPath(indexPath)
-            editPage(page)
+            edit(page)
         }
     }
 
@@ -351,7 +351,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let page = pageAtIndexPath(indexPath)
         let indentation = getIndentationLevel(at: indexPath)
         let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-        cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory)
+        cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
         return cell
     }
 
@@ -386,14 +386,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func blazePage(_ page: AbstractPost) {
         BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: page)
-    }
-
-    func editPage(_ page: Page) {
-        let didOpenEditor = PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
-
-        if didOpenEditor {
-            WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
-        }
     }
 
     fileprivate func copyPage(_ page: Page) {
@@ -608,7 +600,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let buttonTitle = NSLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(page.objectID) {
-                self?.editPage(page)
+                self?.edit(page)
             }
         })
     }
