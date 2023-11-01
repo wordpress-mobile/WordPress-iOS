@@ -6,30 +6,14 @@ import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    private let postCompactCellIdentifier = "PostCompactCellIdentifier"
-    private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    private let postCompactCellNibName = "PostCompactCell"
-    private let postCardTextCellNibName = "PostCardCell"
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
-    private var postCellIdentifier: String {
-        return isCompact || isSearching() ? postCompactCellIdentifier : postCardTextCellIdentifier
-    }
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
     private let statsCacheInterval = TimeInterval(300) // 5 minutes
 
     private let postCardEstimatedRowHeight = CGFloat(300.0)
-    private let postListHeightForFooterView = CGFloat(50.0)
-
-    @IBOutlet var searchWrapperView: UIView!
-    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-
-    private var database: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
     private lazy var _tableViewHandler: PostListTableViewHandler = {
         let tableViewHandler = PostListTableViewHandler(tableView: tableView)
@@ -47,27 +31,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private var postViewIcon: UIImage? {
-        return isCompact ? UIImage(named: "icon-post-view-card") : .gridicon(.listUnordered)
-    }
-
-    private lazy var postActionSheet: PostActionSheet = {
-        return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
-    }()
-
-    private lazy var postsViewButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(image: postViewIcon, style: .done, target: self, action: #selector(togglePostsView))
-    }()
-
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
-    }
-
-    private var isCompact: Bool = false {
-        didSet {
-            database.set(isCompact, forKey: Constants.exhibitionModeKey)
-            showCompactOrDefault()
-        }
     }
 
     /// If set, when the post list appear it will show the tab for this status
@@ -76,13 +41,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
-
-        let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
-        let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
-        controller.blog = blog
-        controller.restorationClass = self
-
-        return controller
+        let vc = PostListViewController()
+        vc.blog = blog
+        vc.restorationClass = self
+        return vc
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
@@ -125,31 +87,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewController
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        precondition(segue.destination is UITableViewController)
-
-        super.refreshNoResultsViewController = { [weak self] noResultsViewController in
-            self?.handleRefreshNoResultsViewController(noResultsViewController)
-        }
-
-        super.tableViewController = (segue.destination as! UITableViewController)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
-        configureFilterBarTopConstraint()
-        updateGhostableTableViewOptions()
-
-        configureNavigationButtons()
-
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        refreshNoResultsViewController = { [weak self] in
+            self?.handleRefreshNoResultsViewController($0)
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -159,15 +109,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.createPost()
             }, source: Constants.source)
         ]
-        if blog.supports(.stories) {
-            actions.insert(StoryAction(handler: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                let presenter = RootViewCoordinator.sharedPresenter
-                presenter.showStoryEditor(blog: self.blog, title: nil, content: nil)
-            }, source: Constants.source), at: 0)
-        }
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
 
@@ -177,12 +118,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        configureCompactOrDefault()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -200,141 +135,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    func configureNavigationButtons() {
-        navigationItem.rightBarButtonItems = [postsViewButtonItem]
-    }
-
-    @objc func togglePostsView() {
-        isCompact.toggle()
-
-        WPAppAnalytics.track(.postListToggleButtonPressed, withProperties: ["mode": isCompact ? Constants.compact: Constants.card])
-    }
-
     // MARK: - Configuration
-
-    override func heightForFooterView() -> CGFloat {
-        return postListHeightForFooterView
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard _tableViewHandler.isSearching else {
-            return 0.0
-        }
-        return Constants.searchHeaderHeight
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        guard _tableViewHandler.isSearching,
-            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
-            return UIView(frame: .zero)
-        }
-
-        let sectionInfo = _tableViewHandler.resultsController?.sections?[section]
-
-        if let sectionInfo = sectionInfo {
-            headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
-        }
-
-        return headerView
-    }
-
-    private func configureFilterBarTopConstraint() {
-        filterTabBariOS10TopConstraint.isActive = false
-    }
-
-
-    override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        updateGhostableTableViewOptions()
-        super.selectedFilterDidChange(filterBar)
-    }
-
-    override func refresh(_ sender: AnyObject) {
-        updateGhostableTableViewOptions()
-        super.refresh(sender)
-    }
-
-    /// Update the `GhostOptions` to correctly show compact or default cells
-    private func updateGhostableTableViewOptions() {
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [50])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        ghostableTableView.removeGhostContent()
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-    }
-
-    private func configureCompactOrDefault() {
-        isCompact = database.object(forKey: Constants.exhibitionModeKey) as? Bool ?? false
-    }
 
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PostsTable"
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = postCardEstimatedRowHeight
+        tableView.separatorStyle = .singleLine
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.separatorStyle = .none
-
-        let bundle = Bundle.main
 
         // Register the cells
-        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: bundle)
-        tableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
-
-        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: bundle)
-        tableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
+        tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
 
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-    }
-
-    override func configureGhostableTableView() {
-        super.configureGhostableTableView()
-
-        ghostingEnabled = true
-
-        // Register the cells
-        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
-        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
-
-        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
-    }
-
-    override func configureSearchController() {
-        super.configureSearchController()
-
-        searchWrapperView.addSubview(searchController.searchBar)
-
-        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
-
-        updateTableHeaderSize()
-    }
-
-    fileprivate func updateTableHeaderSize() {
-        if searchController.isActive {
-            // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = 0
-        } else {
-            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
-        }
-
-        // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = searchWrapperView
-    }
-
-    func showCompactOrDefault() {
-        updateGhostableTableViewOptions()
-
-        postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
-        postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
-        postsViewButtonItem.image = postViewIcon
-
-        if isViewOnScreen() {
-            tableView.reloadSections([0], with: .automatic)
-            ghostableTableView.reloadSections([0], with: .automatic)
-        }
     }
 
     private func configureInitialFilterIfNeeded() {
@@ -413,9 +225,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let searchText = currentSearchTerm() ?? ""
-        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
-
+        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
         predicates.append(filterPredicate)
 
         if filterSettings.shouldShowOnlyMyPosts() {
@@ -424,11 +234,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             // Brand new local drafts have an authorID of 0.
             let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
             predicates.append(authorPredicate)
-        }
-
-        if searchText.count > 0 {
-            let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
-            predicates.append(searchPredicate)
         }
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -451,41 +256,24 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
-            return windowlessCell
-        }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: postCellIdentifier, for: indexPath)
-
-        configureCell(cell, at: indexPath)
-
-        return cell
-    }
-
-    override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
+        let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
 
-        let post = postAtIndexPath(indexPath)
+//        TODO: Remove later
+//        guard let interactivePostView = cell as? InteractivePostView,
+//            let configurablePostView = cell as? ConfigurablePostView else {
+//                fatalError("Cell does not implement the required protocols")
+//        }
+//
+//        interactivePostView.setInteractionDelegate(self)
+//        interactivePostView.setActionSheetDelegate(self)
+//
+//        configurablePostView.configure(with: post)
 
-        guard let interactivePostView = cell as? InteractivePostView,
-            let configurablePostView = cell as? ConfigurablePostView else {
-                fatalError("Cell does not implement the required protocols")
-        }
-
-        interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate(self)
-
-        configurablePostView.configure(with: post)
-
-        configurePostCell(cell)
-    }
-
-    private func configurePostCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? PostCardCell else {
-            return
-        }
-
-        cell.shouldHideAuthor = showingJustMyPosts
+        // TODO: Hide author if only showing my posts?
+        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
+        return cell
     }
 
     // MARK: - Post Actions
@@ -513,27 +301,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         PostListEditorPresenter.handleCopy(post: post, in: self)
-    }
-
-    override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
-        var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
-
-        switch filter.filterType {
-        case .published:
-            message = NSLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
-            break
-        case .scheduled:
-            message = NSLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
-            break
-        default:
-            break
-        }
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
     }
 
     fileprivate func viewStatsForPost(_ apost: AbstractPost) {
@@ -625,7 +392,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            Task { await self?.deletePost(post) }
+            self?.deletePost(post)
         }
         alertController.presentFromRootViewController()
     }
@@ -660,57 +427,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
 
-    // MARK: - Searching
-
-    override func updateForLocalPostsMatchingSearchText() {
-        // If the user taps and starts to type right away, avoid doing the search
-        // while the tableViewHandler is not ready yet
-        if !_tableViewHandler.isSearching, let search = currentSearchTerm(), !search.isEmpty {
-            return
-        }
-
-        super.updateForLocalPostsMatchingSearchText()
-    }
-
-    override func willPresentSearchController(_ searchController: UISearchController) {
-        super.willPresentSearchController(searchController)
-
-        self.filterTabBar.alpha = WPAlphaZero
-    }
-
-    func didPresentSearchController(_ searchController: UISearchController) {
-        updateTableHeaderSize()
-        _tableViewHandler.isSearching = true
-
-        tableView.verticalScrollIndicatorInsets.top = searchWrapperView.bounds.height
-        tableView.contentInset.top = 0
-    }
-
-    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        if !isSearching() {
-            return super.sortDescriptorsForFetchRequest()
-        }
-
-        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
-        return [descriptor]
-    }
-
-    override func willDismissSearchController(_ searchController: UISearchController) {
-        _tableViewHandler.isSearching = false
-        _tableViewHandler.refreshTableView()
-        super.willDismissSearchController(searchController)
-    }
-
-    func didDismissSearchController(_ searchController: UISearchController) {
-        updateTableHeaderSize()
-
-        UIView.animate(withDuration: Animations.searchDismissDuration) {
-            self.filterTabBar.alpha = WPAlphaFull
-        }
-    }
-
-    enum Animations {
-        static let searchDismissDuration: TimeInterval = 0.3
+    func comments(_ post: AbstractPost) {
+        WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
+        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
     }
 
     // MARK: - NetworkAwareUI
@@ -722,7 +442,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private enum Constants {
         static let exhibitionModeKey = "showCompactPosts"
-        static let searchHeaderHeight: CGFloat = 40
         static let card = "card"
         static let compact = "compact"
         static let source = "post_list"
@@ -740,20 +459,12 @@ private extension PostListViewController {
             return
         }
 
-        if searchController.isActive {
-            if currentSearchTerm()?.count == 0 {
-                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPosts)
-            } else {
-                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
-            }
-        } else {
-            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-            noResultsViewController.configure(title: noResultsTitle(),
-                                              buttonTitle: noResultsButtonTitle(),
-                                              image: noResultsImageName,
-                                              accessoryView: accessoryView)
-        }
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          image: noResultsImageName,
+                                          accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
@@ -761,7 +472,7 @@ private extension PostListViewController {
     }
 
     func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true || isSearching() {
+        if syncHelper.isSyncing == true {
             return nil
         }
 
@@ -773,11 +484,6 @@ private extension PostListViewController {
         if syncHelper.isSyncing == true {
             return NoResultsText.fetchingTitle
         }
-
-        if isSearching() {
-            return NoResultsText.noMatchesTitle
-        }
-
         return noResultsFilteredTitle()
     }
 
@@ -800,20 +506,11 @@ private extension PostListViewController {
     struct NoResultsText {
         static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let noMatchesTitle = NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
-        static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
-    }
-}
-
-extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
-        let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompactOrSearching)
     }
 }

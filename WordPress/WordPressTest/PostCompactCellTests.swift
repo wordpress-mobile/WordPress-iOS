@@ -44,18 +44,6 @@ class PostCompactCellTests: CoreDataTestCase {
         XCTAssertEqual(postCell.timestampLabel.text, "now")
     }
 
-    func testMoreAction() {
-        let postActionSheetDelegateMock = PostActionSheetDelegateMock()
-        let post = PostBuilder(mainContext).published().build()
-        postCell.configure(with: post)
-        postCell.setActionSheetDelegate(postActionSheetDelegateMock)
-
-        postCell.menuButton.sendActions(for: .touchUpInside)
-
-        XCTAssertEqual(postActionSheetDelegateMock.calledWithPost, post)
-        XCTAssertEqual(postActionSheetDelegateMock.calledWithView, postCell.menuButton)
-    }
-
     func testStatusAndBadgeLabels() {
         let post = PostBuilder(mainContext).with(remoteStatus: .sync)
             .with(dateCreated: Date()).is(sticked: true).build()

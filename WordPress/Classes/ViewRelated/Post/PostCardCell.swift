@@ -39,7 +39,6 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     private var viewModel: PostCardStatusViewModel?
     private var currentLoadedFeaturedImage: String?
     private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
-    private weak var actionSheetDelegate: PostActionSheetDelegate?
     var shouldHideAuthor: Bool = false {
         didSet {
             let emptyAuthor = viewModel?.author.isEmpty ?? true
@@ -116,11 +115,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let button = sender as? UIButton, let viewModel = viewModel else {
-            return
-        }
-
-        actionSheetDelegate?.showActionSheet(viewModel, from: button)
+        // Class will be removed eventually.
     }
 
     @IBAction func retry() {
@@ -298,15 +293,15 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         // Convert to Set for O(1) complexity of contains()
-        let primaryButtons = Set(viewModel.buttonGroups.primary)
-
-        editButton.isHidden = !primaryButtons.contains(.edit)
-        retryButton.isHidden = !primaryButtons.contains(.retry)
-        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
-        publishButton.isHidden = !primaryButtons.contains(.publish)
-        viewButton.isHidden = !primaryButtons.contains(.view)
-        moreButton.isHidden = !primaryButtons.contains(.more)
-        trashButton.isHidden = !primaryButtons.contains(.trash)
+//        let primaryButtons = Set(viewModel.buttonGroups.primary)
+//
+//        editButton.isHidden = !primaryButtons.contains(.edit)
+//        retryButton.isHidden = !primaryButtons.contains(.retry)
+//        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
+//        publishButton.isHidden = !primaryButtons.contains(.publish)
+//        viewButton.isHidden = !primaryButtons.contains(.view)
+//        moreButton.isHidden = !primaryButtons.contains(.more)
+//        trashButton.isHidden = !primaryButtons.contains(.trash)
     }
 
     private func configureAccessibility() {
@@ -450,10 +445,6 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 extension PostCardCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
-    }
-
-    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
-        actionSheetDelegate = delegate
     }
 }
 

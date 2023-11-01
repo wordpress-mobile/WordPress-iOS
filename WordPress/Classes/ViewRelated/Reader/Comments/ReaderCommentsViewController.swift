@@ -305,6 +305,8 @@ private extension ReaderCommentsViewController {
             return "my_site_comment"
         case .activityLogDetail:
             return "activity_log_detail"
+        case .postsList:
+            return "posts_list"
         default:
             return "unknown"
         }

@@ -3,31 +3,7 @@ import Gridicons
 
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
-class PostCardStatusViewModel: NSObject {
-    private static let maximumPrimaryButtons = 3
-
-    enum Button {
-        case edit
-        case retry
-        case view
-        case more
-        case publish
-        case stats
-        case duplicate
-        case moveToDraft
-        case trash
-        case cancelAutoUpload
-        case share
-        case copyLink
-        case blaze
-    }
-
-    struct ButtonGroups: Equatable {
-        /// The main buttons shown in the Post List
-        let primary: [Button]
-        /// Shown under the _More_
-        let secondary: [Button]
-    }
+class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     let post: Post
     private var progressObserverUUID: UUID? = nil
@@ -35,7 +11,7 @@ class PostCardStatusViewModel: NSObject {
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
     private let isInternetReachable: Bool
-
+    private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
 
     var progressBlock: ((Float) -> Void)? = nil {
@@ -56,9 +32,11 @@ class PostCardStatusViewModel: NSObject {
 
     init(post: Post,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
+         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
+        self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
         super.init()
     }
@@ -67,6 +45,8 @@ class PostCardStatusViewModel: NSObject {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
+        } else if PostCoordinator.shared.isDeleting(post) {
+            return post.status == .trash ? Strings.deletingPostPermanently : Strings.movingPostToTrash
         } else if post.isFailed {
             return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
@@ -101,6 +81,10 @@ class PostCardStatusViewModel: NSObject {
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return .neutral(.shade30)
+        }
+
+        if PostCoordinator.shared.isDeleting(post) {
+            return .systemRed
         }
 
         if post.isFailed && isInternetReachable {
@@ -145,96 +129,82 @@ class PostCardStatusViewModel: NSObject {
     }
 
     /// Returns what buttons are visible
-    ///
-    /// The order matters here. For the primary buttons, we do not currently support dynamic
-    /// buttons in the UI. Technically, we may end up with situations where there are no buttons
-    /// visible. But we've carefully considered the possible situations so this does not happen.
-    ///
-    /// The order of the Buttons are important here, especially for the secondary buttons which
-    /// dictate what buttons are shown in the action sheet after pressing _More_.
-    var buttonGroups: ButtonGroups {
-        let maxPrimaryButtons = PostCardStatusViewModel.maximumPrimaryButtons
+    var buttonSections: [AbstractPostButtonSection] {
+        return [
+            createPrimarySection(),
+            createSecondarySection(),
+            createBlazeSection(),
+            createNavigationSection(),
+            createTrashSection()
+        ]
+    }
 
-        let allButtons: [Button] = {
-            var buttons = [Button]()
+    private func createPrimarySection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
-            buttons.append(.edit)
+        if !post.isFailed {
+            buttons.append(.view)
+        }
 
-            if !post.isFailed {
-                buttons.append(.view)
-            }
+        return AbstractPostButtonSection(buttons: buttons)
+    }
 
-            if autoUploadInteractor.canRetryUpload(of: post) {
-                buttons.append(.retry)
-            }
+    private func createSecondarySection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
-            if post.isFailed && isInternetReachable {
-                buttons.append(.retry)
-            }
+        if post.status != .draft {
+            buttons.append(.moveToDraft)
+        }
 
-            if canCancelAutoUpload && !isInternetReachable {
-                buttons.append(.cancelAutoUpload)
-            }
+        if post.status == .publish || post.status == .draft {
+            buttons.append(.duplicate)
+        }
 
-            if autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit {
-                buttons.append(.retry)
-            }
+        if post.status == .publish && post.hasRemote() {
+            buttons.append(.share)
+        }
 
-            if canPublish {
-                buttons.append(.publish)
-            }
+        if autoUploadInteractor.canRetryUpload(of: post) ||
+            autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
+            post.isFailed && isInternetReachable {
+            buttons.append(.retry)
+        }
 
-            if post.status == .publish && post.hasRemote() {
-                if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
-                    buttons.append(.stats)
-                }
-                buttons.append(.share)
-            }
+        if canCancelAutoUpload && !isInternetReachable {
+            buttons.append(.cancelAutoUpload)
+        }
 
-            if isBlazeFlagEnabled && post.canBlaze {
-                buttons.append(.blaze)
-            }
+        if canPublish {
+            buttons.append(.publish)
+        }
 
-            if post.status == .publish || post.status == .draft {
-                buttons.append(.duplicate)
-            }
+        return AbstractPostButtonSection(buttons: buttons)
+    }
 
-            if post.status != .draft {
-                buttons.append(.moveToDraft)
-            }
+    private func createBlazeSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
-            if post.status != .trash {
-                buttons.append(.copyLink)
-            }
+        if isBlazeFlagEnabled && post.canBlaze {
+            buttons.append(.blaze)
+        }
 
-            buttons.append(.trash)
+        return AbstractPostButtonSection(buttons: buttons)
+    }
 
-            return buttons
-        }()
 
-        // If allButtons is [one, two, three, four], set the primary to [one, two, “more”].
-        // If allButtons is [one, two, three], set the primary to the same.
-        let primaryButtons: [Button] = {
-            if allButtons.count <= maxPrimaryButtons {
-                return allButtons
-            }
+    private func createNavigationSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
 
-            var primary = allButtons.prefix(maxPrimaryButtons - 1)
-            primary.append(.more)
-            return Array(primary)
-        }()
+        if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
+            buttons.append(contentsOf: [.stats, .comments])
+        }
 
-        // If allButtons is [one, two, three, four], set the secondary to [three, four].
-        // If allButtons is [one, two, three], set the secondary to [].
-        let secondaryButtons: [Button] = {
-            if allButtons.count > maxPrimaryButtons {
-                return Array(allButtons.suffix(from: maxPrimaryButtons - 1))
-            } else {
-                return []
-            }
-        }()
+        return AbstractPostButtonSection(buttons: buttons)
+    }
 
-        return ButtonGroups(primary: primaryButtons, secondary: secondaryButtons)
+
+    private func createTrashSection() -> AbstractPostButtonSection {
+        return AbstractPostButtonSection(buttons: [.trash])
     }
 
     private var canCancelAutoUpload: Bool {
@@ -287,4 +257,9 @@ class PostCardStatusViewModel: NSObject {
         static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
                                                             comment: "Message displayed on a post's card when the post has unsaved changes")
     }
+}
+
+private enum Strings {
+    static let movingPostToTrash = NSLocalizedString("post.movingToTrashStatusMessage", value: "Moving post to trash...", comment: "Status mesasge for post cells")
+    static let deletingPostPermanently = NSLocalizedString("post.deletingPostPermanentlyStatusMessage", value: "Deleting post...", comment: "Status mesasge for post cells")
 }

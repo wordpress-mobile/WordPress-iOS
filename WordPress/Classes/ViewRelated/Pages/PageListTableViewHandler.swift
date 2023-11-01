@@ -1,16 +1,7 @@
 import Foundation
 
-
 final class PageListTableViewHandler: WPTableViewHandler {
-    var isSearching: Bool = false
     var status: PostListFilter.Status = .published
-    var groupResults: Bool {
-        if isSearching {
-            return true
-        }
-
-        return status == .scheduled
-    }
 
     var showEditorHomepage: Bool {
         guard RemoteFeatureFlag.siteEditorMVP.enabled() else {
@@ -18,7 +9,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
         }
 
         let isFSETheme = blog.blockEditorSettings?.isFSETheme ?? false
-        return isFSETheme && status == .published && !groupResults
+        return isFSETheme && status == .published
     }
 
     private var pages: [Page] = []
@@ -34,18 +25,9 @@ final class PageListTableViewHandler: WPTableViewHandler {
         return resultsController(with: fetchRequest, context: managedObjectContext(), performFetch: false)
     }()
 
-    private lazy var searchResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: BasePost.statusKeyPath, performFetch: false)
+    private lazy var _resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
+        resultsController(with: fetchRequest(), context: managedObjectContext())
     }()
-
-    private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: sectionNameKeyPath())
-    }()
-
-    private lazy var flatResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext())
-    }()
-
 
     init(tableView: UITableView, blog: Blog) {
         self.blog = blog
@@ -53,11 +35,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
-        if isSearching {
-            return searchResultsController
-        }
-
-        return groupResults ? groupedResultsController : flatResultsController
+        _resultsController
     }
 
     override func refreshTableView() {
@@ -84,21 +62,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     // MARK: - Public methods
 
     func page(at indexPath: IndexPath) -> Page {
-        guard groupResults else {
-            return pages[indexPath.row]
-        }
-
-        guard let page = resultsController.object(at: indexPath) as? Page else {
-            // Retrieveing anything other than a post object means we have an app with an invalid
-            // state.  Ignoring this error would be counter productive as we have no idea how this
-            // can affect the App.  This controlled interruption is intentional.
-            //
-            // - Diego Rey Mendez, May 18 2016
-            //
-            fatalError("Expected a Page object.")
-        }
-
-        return page
+        pages[indexPath.row]
     }
 
     func index(for page: Page) -> Int? {
@@ -126,12 +90,11 @@ final class PageListTableViewHandler: WPTableViewHandler {
     // MARK: - Override TableView Datasource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return groupResults ? super.numberOfSections(in: tableView) : 1
+        1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let additionalPage = showEditorHomepage ? 1 : 0
-        return groupResults ? super.tableView(tableView, numberOfRowsInSection: section) : pages.count + additionalPage
+        pages.count + (showEditorHomepage ? 1 : 0)
     }
 
 
@@ -165,15 +128,10 @@ final class PageListTableViewHandler: WPTableViewHandler {
         return delegate?.managedObjectContext()
     }
 
-    private func sectionNameKeyPath() -> String? {
-        return delegate?.sectionNameKeyPath!()
-    }
-
     private func setupPages() -> [Page] {
-        guard !groupResults, let pages = resultsController.fetchedObjects as? [Page] else {
+        guard let pages = _resultsController.fetchedObjects as? [Page] else {
             return []
         }
-
         return status == .published ? pages.setHomePageFirst().hierarchySort() : pages
     }
 }
