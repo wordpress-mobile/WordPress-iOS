@@ -1005,24 +1005,12 @@ private extension ReaderDetailViewController {
             safariButtonItem()
         ]
 
-        if !isModal() {
-            navigationItem.leftBarButtonItem = backButtonItem()
-        } else {
+        if isModal() {
             navigationItem.leftBarButtonItem = dismissButtonItem()
         }
+
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
-    }
-
-    func backButtonItem() -> UIBarButtonItem {
-        let button = barButtonItem(with: .gridicon(.chevronLeft), action: #selector(didTapBackButton(_:)))
-        button.accessibilityLabel = Strings.backButtonAccessibilityLabel
-
-        return button
-    }
-
-    @objc func didTapBackButton(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
     }
 
     func dismissButtonItem() -> UIBarButtonItem {
@@ -1113,11 +1101,6 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 // MARK: - Strings
 extension ReaderDetailViewController {
     private struct Strings {
-        static let backButtonAccessibilityLabel = NSLocalizedString(
-            "readerDetail.backButton.accessibilityLabel",
-            value: "Back",
-            comment: "Spoken accessibility label"
-        )
         static let dismissButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.dismissButton.accessibilityLabel",
             value: "Dismiss",
