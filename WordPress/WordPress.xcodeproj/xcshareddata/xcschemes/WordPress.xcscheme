@@ -38,7 +38,7 @@
       </MacroExpansion>
       <TestPlans>
          <TestPlanReference
-            reference = "container:UnitTests/WordPressUnitTests.xctestplan"
+            reference = "container:UnitTests/UnitTests.xctestplan"
             default = "YES">
          </TestPlanReference>
          <TestPlanReference
