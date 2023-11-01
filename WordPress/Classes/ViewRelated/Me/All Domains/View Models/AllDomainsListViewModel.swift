@@ -6,9 +6,14 @@ class AllDomainsListViewModel {
     // MARK: - Types
 
     enum State {
+        /// This state is set when domains data is loaded.
         case normal
+
+        /// This state is set when domains data is being fetched.
         case loading
-        case empty(AllDomainsListEmptyStateViewModel)
+
+        /// This state is set when the list is empty or an error occurs.
+        case message(AllDomainsListMessageStateViewModel)
     }
 
     private enum ViewModelError: Error {
@@ -55,9 +60,9 @@ class AllDomainsListViewModel {
             switch result {
             case .success(let domains):
                 self.domains = domains
-                self.state = domains.isEmpty ? .empty(self.emptyStateViewModel()) : .normal
+                self.state = domains.isEmpty ? .message(self.emptyMessageViewModel()) : .normal
             case .failure(let error):
-                self.state = .empty(self.emptyStateViewModel(from: error))
+                self.state = .message(self.emptyMessageViewModel(from: error))
             }
         }
     }
@@ -82,8 +87,8 @@ class AllDomainsListViewModel {
 
     // MARK: - Creating Empty State View Models
 
-    /// The empty state to display when the user doesn't have any domains.
-    private func emptyStateViewModel() -> AllDomainsListEmptyStateViewModel {
+    /// The  message to display when the user doesn't have any domains.
+    private func emptyMessageViewModel() -> AllDomainsListMessageStateViewModel {
         let action: () -> Void = { [weak self] in
             self?.addDomainAction?()
         }
@@ -94,11 +99,11 @@ class AllDomainsListViewModel {
         )
     }
 
-    /// The empty state to display when an error occurs.
-    private func emptyStateViewModel(from error: Error) -> AllDomainsListEmptyStateViewModel {
+    /// The  message to display when an error occurs.
+    private func emptyMessageViewModel(from error: Error) -> AllDomainsListMessageStateViewModel {
         let title: String
         let description: String
-        let button: AllDomainsListEmptyStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
+        let button: AllDomainsListMessageStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
             self?.loadData()
         }
 
@@ -114,8 +119,8 @@ class AllDomainsListViewModel {
         return .init(title: title, description: description, button: button)
     }
 
-    /// The empty state to display when there are no domains matching the search query.
-    private func emptyStateViewModel(searchQuery: String) -> AllDomainsListEmptyStateViewModel {
+    /// The message to display when there are no domains matching the search query.
+    private func emptyMessageViewModel(searchQuery: String) -> AllDomainsListMessageStateViewModel {
         fatalError("Not implemented yet")
     }
 }

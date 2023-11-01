@@ -1,6 +1,6 @@
 import Foundation
 
-struct AllDomainsListEmptyStateViewModel {
+struct AllDomainsListMessageStateViewModel {
 
     let title: String
     let description: String

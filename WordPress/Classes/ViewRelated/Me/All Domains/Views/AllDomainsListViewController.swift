@@ -126,7 +126,7 @@ final class AllDomainsListViewController: UIViewController {
             case .normal, .loading:
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
-            case .empty(let viewModel):
+            case .message(let viewModel):
                 self.tableView.isHidden = true
                 self.emptyView.update(with: viewModel)
             }

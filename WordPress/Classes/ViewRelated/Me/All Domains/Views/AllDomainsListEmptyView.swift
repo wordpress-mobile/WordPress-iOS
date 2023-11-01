@@ -3,7 +3,7 @@ import WordPressUI
 
 final class AllDomainsListEmptyView: UIView {
 
-    typealias ViewModel = AllDomainsListEmptyStateViewModel
+    typealias ViewModel = AllDomainsListMessageStateViewModel
 
     private enum Appearance {
         static let labelsSpacing: CGFloat = Length.Padding.single
