@@ -17,8 +17,12 @@ struct AbstractPostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu {
-        let sections = makeSections(presentingView: presentingView, delegate: delegate)
-        return UIMenu(title: "", options: .displayInline, children: sections)
+        return UIMenu(title: "", options: .displayInline, children: [
+            UIDeferredMenuElement.uncached { [weak presentingView, weak delegate] completion in
+                guard let presentingView, let delegate else { return }
+                completion(makeSections(presentingView: presentingView, delegate: delegate))
+            }
+        ])
     }
 
     /// Creates post actions grouped into sections
@@ -47,8 +51,8 @@ struct AbstractPostMenuHelper {
         delegate: InteractivePostViewDelegate
     ) -> [UIAction] {
         return buttons.map { button in
-            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak delegate] _ in
-                guard let delegate else { return }
+            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak presentingView, weak delegate] _ in
+                guard let presentingView, let delegate else { return }
                 button.performAction(for: post, view: presentingView, delegate: delegate)
             })
         }
