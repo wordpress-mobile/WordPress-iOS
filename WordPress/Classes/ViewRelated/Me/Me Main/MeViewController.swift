@@ -211,25 +211,32 @@ class MeViewController: UITableViewController {
                                               action: pushAbout(),
                                               accessibilityIdentifier: "About"))
 
+                #if JETPACK
+                if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
+                    let image = UIImage(named: "globe")
+                    let imageSize = CGSize(width: 28, height: 28)
+                    let renderer = UIGraphicsImageRenderer(size: imageSize)
+                    let globeImage = renderer.image { _ in
+                        image!.draw(in: CGRect(origin: .zero, size: imageSize))
+                    }
+                    rows.append(
+                        NavigationItemRow(
+                            title: MyDomainsViewController.Strings.title,
+                            icon: globeImage,
+                            accessoryType: accessoryType,
+                            action: { action in
+                                self.navigationController?.pushViewController(MyDomainsViewController(), animated: true)
+                            },
+                            accessibilityIdentifier: "myDomains"
+                        )
+                    )
+                }
+                #endif
+
                 return rows
             }())
         ]
 
-#if JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() {
-            sections.append(.init(headerText: HeaderTitles.products, rows: {
-                return [
-                    ButtonRow(title: MyDomainsViewController.Strings.title) { action in
-                        let controller = MyDomainsViewController()
-                        let navigationController = UINavigationController(rootViewController: controller)
-                        self.present(navigationController, animated: true) {
-                            self.tableView.deselectSelectedRowWithAnimation(true)
-                        }
-                    }
-                ]
-            }()))
-        }
-#endif
 
         // last section
         sections.append(
