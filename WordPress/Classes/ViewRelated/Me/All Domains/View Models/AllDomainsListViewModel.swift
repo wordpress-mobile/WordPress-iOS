@@ -17,6 +17,10 @@ class AllDomainsListViewModel {
 
     private typealias Domain = DomainsService.AllDomainsListItem
 
+    // MARK: - Configuration
+
+    var addDomainAction: (() -> Void)?
+
     // MARK: - Dependencies
 
     private var domainsService: DomainsService?
@@ -80,10 +84,13 @@ class AllDomainsListViewModel {
 
     /// The empty state to display when the user doesn't have any domains.
     private func emptyStateViewModel() -> AllDomainsListEmptyStateViewModel {
+        let action: () -> Void = { [weak self] in
+            self?.addDomainAction?()
+        }
         return .init(
             title: Strings.emptyStateTitle,
             description: Strings.emptyStateDescription,
-            button: .init(title: Strings.emptyStateButtonTitle, action: {})
+            button: .init(title: Strings.emptyStateButtonTitle, action: action)
         )
     }
 

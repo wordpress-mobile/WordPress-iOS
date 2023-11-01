@@ -49,6 +49,9 @@ final class AllDomainsListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel.addDomainAction = { [weak self] in
+            self?.navigateToAddDomain()
+        }
         self.title = Strings.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
         self.setupSubviews()
@@ -66,6 +69,10 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private func setupBarButtonItems() {
+        let addAction = UIAction { [weak self] _ in
+            self?.navigateToAddDomain()
+        }
+        let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
         self.navigationItem.rightBarButtonItem = .init(systemItem: .add)
     }
 
@@ -125,6 +132,12 @@ final class AllDomainsListViewController: UIViewController {
             }
             self.emptyView.isHidden = !tableView.isHidden
         }.store(in: &cancellable)
+    }
+
+    // MARK: - Navigation
+
+    private func navigateToAddDomain() {
+
     }
 }
 
