@@ -306,14 +306,8 @@ class AbstractPostListViewController: UIViewController,
         // Only add no results view if it isn't already in the table view
         if noResultsViewController.view.isDescendant(of: tableView) == false {
             tableViewController.addChild(noResultsViewController)
-            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-            noResultsViewController.view.frame = tableView.frame
-
-            // Adjust the NRV to accommodate for the search bar.
-            if let tableHeaderView = tableView.tableHeaderView {
-                noResultsViewController.view.frame.origin.y = tableHeaderView.frame.origin.y
-            }
-
+            tableView.addSubview(noResultsViewController.view)
+            noResultsViewController.view.frame = tableView.frame.offsetBy(dx: 0, dy: -view.safeAreaInsets.top + 40)
             noResultsViewController.didMove(toParent: tableViewController)
         }
 
