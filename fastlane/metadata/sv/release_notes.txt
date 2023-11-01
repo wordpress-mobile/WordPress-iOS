@@ -1,0 +1,7 @@
+I blockredigeraren kan du nu dela eller avsluta ett formaterat block genom att trycka på tangenten ”enter” tre gånger. Den vänstra kanten är alltid synlig för citatblock också. Och du kan citera oss på det.
+
+Vi har också åtgärdat några fel.
+
+- Vi åtgärdade vi ett kodproblem i inställningar för bloggprompt som orsakade att appen kraschade.
+- Under registreringsprocessen hamnar du inte i läsaren av misstag.
+- Skapar du en .com-webbplats? Du bör inte längre se två överlägg efter att du har slutfört registreringsprocessen. En gång och klart.

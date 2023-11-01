@@ -3,7 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-class ReaderDetailViewControllerTests: XCTestCase {
+class ReaderDetailViewControllerTests: CoreDataTestCase {
 
     /// Given a post URL. returns a ReaderDetailViewController
     ///
@@ -18,7 +18,7 @@ class ReaderDetailViewControllerTests: XCTestCase {
     /// Starts the coordinator with the ReaderPost and call start in viewDidLoad
     ///
     func testControllerWithPostRendersPostContent() {
-        let post: ReaderPost = ReaderPostBuilder().build()
+        let post: ReaderPost = ReaderPostBuilder(mainContext).build()
         let controller = ReaderDetailViewController.controllerWithPost(post)
         let coordinatorMock = ReaderDetailCoordinatorMock(view: controller)
         let originalCoordinator = controller.coordinator
@@ -47,20 +47,6 @@ class ReaderDetailViewControllerTests: XCTestCase {
 }
 
 /// Builds a ReaderPost
-///
-class ReaderPostBuilder: PostBuilder {
-    private let post: ReaderPost
-
-    override init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil, canBlaze: Bool = false) {
-        post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: context) as! ReaderPost
-    }
-
-    func build() -> ReaderPost {
-        post.blogURL = "https://wordpress.com"
-        post.permaLink = "https://wordpress.com"
-        return post
-    }
-}
 
 private class ReaderDetailCoordinatorMock: ReaderDetailCoordinator {
     var didCallStart = false

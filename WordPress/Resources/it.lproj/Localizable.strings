@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-10-26 19:20:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: it */
@@ -865,74 +865,74 @@ translators: Block name. %s: The localized block name */
 "Approves the Comment." = "Approva il commento.";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
-"Are you sure you want to cancel and discard changes?" = "Desideri annullare e scartare le modifiche?";
+"Are you sure you want to cancel and discard changes?" = "Vuoi davvero annullare e scartare le modifiche?";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Sei sicuro di voler continuare?\n Tutti i dati di %1$@ saranno rimossi da %2$@.";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Vuoi davvero continuare?\n Tutti i dati di %1$@ saranno rimossi da %2$@.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data will be removed from your %@." = "Sei sicuro di voler continuare? \nTutte le informazioni del sito verranno rimosse dal tuo %@.";
+"Are you sure you want to continue?\n All site data will be removed from your %@." = "Vuoi davvero continuare? \nTutte le informazioni del sito verranno rimosse dal tuo %@.";
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
-"Are you sure you want to delete the menu?" = "Sei sicuro di voler cancellare il menu?";
+"Are you sure you want to delete the menu?" = "Vuoi davvero cancellare il menu?";
 
 /* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Sei sicuro di voler cancellare questo tag?";
+"Are you sure you want to delete this tag?" = "Vuoi davvero cancellare questo tag?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
-"Are you sure you want to disconnect Jetpack from the site?" = "Sei sicuro di voler disconnettere Jetpack dal sito?";
+"Are you sure you want to disconnect Jetpack from the site?" = "Vuoi davvero disconnettere Jetpack dal sito?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Sei sicuro di volere eliminare per sempre questi elementi?";
+"Are you sure you want to permanently delete these items?" = "Vuoi davvero eliminare per sempre questi elementi?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Desideri eliminare in modo permanente questo elemento?";
+"Are you sure you want to permanently delete this item?" = "Vuoi davvero eliminare in modo permanente questo elemento?";
 
 /* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Desideri eliminare in modo permanente questa pagina?";
+"Are you sure you want to permanently delete this page?" = "Vuoi davvero eliminare in modo permanente questa pagina?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Sei sicuro di voler eliminare definitivamente questo articolo?";
+"Are you sure you want to permanently delete this post?" = "Vuoi davvero eliminare definitivamente questo articolo?";
 
 /* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Desideri pubblicare ora?";
+"Are you sure you want to publish now?" = "Vuoi davvero pubblicare ora?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Desideri pubblicare?";
+"Are you sure you want to publish?" = "Vuoi davvero pubblicare?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
-"Are you sure you want to remove %1$@ from %2$@?" = "Desideri rimuovere %1$@ da %2$@?";
+"Are you sure you want to remove %1$@ from %2$@?" = "Vuoi davvero rimuovere %1$@ da %2$@?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
-"Are you sure you want to remove %1$@?" = "Desideri rimuovere %1$@?";
+"Are you sure you want to remove %1$@?" = "Vuoi davvero rimuovere %1$@?";
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
-"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Desideri ripristinare il sito al giorno %1$@? In questo modo verranno rimossi i contenuti e le opzioni creati o modificati da allora.";
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Vuoi davvero ripristinare il sito al giorno %1$@? In questo modo verranno rimossi i contenuti e le opzioni creati o modificati da allora.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Desideri salvare come bozza?";
+"Are you sure you want to save as draft?" = "Vuoi davvero salvare come bozza?";
 
 /* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Desideri salvare?";
+"Are you sure you want to save?" = "Vuoi davvero salvare?";
 
 /* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Desideri pianificare?";
+"Are you sure you want to schedule?" = "Vuoi davvero programmarlo?";
 
 /* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Desideri inviare per la revisione?";
+"Are you sure you want to submit for review?" = "Vuoi davvero inviare per la revisione?";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Desideri spostare questa pagina nel cestino?";
+"Are you sure you want to trash this page?" = "Vuoi davvero spostare questa pagina nel cestino?";
 
 /* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Sei sicuro di voler eliminare questo articolo?";
+"Are you sure you want to trash this post?" = "Vuoi davvero eliminare questo articolo?";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Desideri aggiornare la homepage?";
+"Are you sure you want to update your homepage?" = "Vuoi davvero aggiornare la homepage?";
 
 /* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Desideri aggiornare?";
+"Are you sure you want to update?" = "Vuoi davvero aggiornare?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Stai tentando di accedere a %1$@ nei pressi di %2$@?";
@@ -2164,7 +2164,7 @@ translators: Block name. %s: The localized block name */
 "Creates new post, page, or story" = "Crea un nuovo articolo oppure una nuova pagina o storia";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
-"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creando un nuovo menu si perderanno tutte le modifiche fatte al menu corrente. Sei sicuro di voler proseguire?";
+"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creando un nuovo menu si perderanno tutte le modifiche fatte al menu corrente. Vuoi davvero proseguire?";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Creazione della bacheca";
@@ -5564,9 +5564,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Digita la password del tuo account WordPress.com per accedere con il tuo Apple ID.";
 
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Inserisci il codice di verifica dalla tua app Authenticator o tocca il link di seguito per ricevere un codice via SMS.";
-
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Si prega di inserire i dati di accesso";
 
@@ -6660,10 +6657,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: Default" = "Selezionato: impostazione predefinita";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
-"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selezionando una differente posizione di menu si perderanno le modifiche fatta al menu corrente. Desideri proseguire??";
+"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selezionando una differente posizione di menu si perderanno le modifiche fatta al menu corrente. Vuoi davvero proseguire?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
-"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Se selezioni un altro menù le modifiche effettuate all'interno del menù corrente verranno perse. Sei sicuro di voler continuare?";
+"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Se selezioni un altro menù le modifiche effettuate all'interno del menù corrente verranno perse. Vuoi davvero continuare?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Selection not allowed" = "Selezione non consentita";
@@ -7452,8 +7449,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "I controlli relativi alla formattazione del testo sono localizzati all'interno della barra degli strumenti posizionata sulla tastiera mentre modifichi un blocco di testo";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Inviami un codice invece";
 
 /* Message of alert when theme activation succeeds */
@@ -10389,10 +10385,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deleteConfirmationConfirm" = "Elimina";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"mediaLibrary.deleteConfirmationMessageMany" = "Desideri eliminare in modo permanente questi elementi?";
+"mediaLibrary.deleteConfirmationMessageMany" = "Vuoi davvero eliminare in modo permanente questi elementi?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"mediaLibrary.deleteConfirmationMessageOne" = "Desideri eliminare in modo permanente questo elemento?";
+"mediaLibrary.deleteConfirmationMessageOne" = "Vuoi davvero eliminare in modo permanente questo elemento?";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "mediaLibrary.deletionFailureMessage" = "Non è possibile eliminare tutti gli elementi multimediali.";

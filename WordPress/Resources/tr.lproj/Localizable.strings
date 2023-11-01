@@ -5564,9 +5564,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Lütfen Apple ID’nizle oturum açmak için WordPress.com hesabınızın parolasını girin.";
 
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Lütfen kimlik doğrulayıcı uygulamanızdaki doğrulama kodunu girin veya SMS ile bir kod almak için aşağıdaki bağlantıya dokunun.";
-
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Lütfen giriş bilgilerinizi girin";
 
@@ -7452,8 +7449,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Bir metin bloku düzenlenirken, metin biçimlendirme kontrolleri klavyenin üzerindeki araç çubuğunda bulunur";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Bunun yerine bana kodu mesaj olarak gönderin";
 
 /* Message of alert when theme activation succeeds */

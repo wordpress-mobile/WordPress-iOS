@@ -251,6 +251,9 @@
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s social icon";
 
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "'%s' block converted to blocks";
+
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' is not fully-supported";
 
@@ -759,6 +762,9 @@
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt Text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternatively, you can convert the content to blocks.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”.";
@@ -2811,6 +2817,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "My Domains";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
@@ -5262,6 +5271,9 @@ Please install the %3$@ to use the app with this site.";
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Products";
+
 /* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
@@ -6415,9 +6427,6 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Page failed to upload";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Page moved to trash.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Page pending review";
 
@@ -6791,9 +6800,6 @@ Please install the %3$@ to use the app with this site.";
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
 
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Post moved to trash.";
-
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Post pending review";
 
@@ -6912,6 +6918,15 @@ Please install the %3$@ to use the app with this site.";
 
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d social shares remaining";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Page moved to trash";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Post moved to trash";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Undo";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
@@ -7267,12 +7282,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Like";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Likes the post.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Liked";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Unlikes the post.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Opens a menu with more actions.";
@@ -10076,8 +10093,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Undo";
 

@@ -53,7 +53,7 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
-PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
@@ -81,7 +81,7 @@ def gutenberg_config!
   UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
 
   begin
-    YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+    YAML.safe_load_file(gutenberg_config_path, symbolize_names: true)
   rescue StandardError => e
     UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
   end
@@ -162,7 +162,7 @@ def build_code_code_freeze_internal
   # Read the current build code from the .xcconfig file and parse it into an AppVersion object
   # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
   # calculator can be used to calculate the next four-part version
-  release_version_current = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
+  release_version_current = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
   # Calculate the next release version, which will be used as the basis of the new build code
   release_version_next = VERSION_CALCULATOR.next_release_version(version: release_version_current)
   build_code_code_freeze = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: release_version_next)
@@ -197,7 +197,7 @@ def build_code_next_internal
   # Read the current build code from the .xcconfig file and parse it into an AppVersion object
   # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
   # calculator can be used to calculate the next four-part version
-  build_code_current = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
+  build_code_current = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
   # Calculate the next build code
   build_code_next = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: build_code_current)
   # Return the formatted build code

@@ -66,14 +66,14 @@ PODS:
   - WordPress-Aztec-iOS (1.19.9)
   - WordPress-Editor-iOS (1.19.9):
     - WordPress-Aztec-iOS (= 1.19.9)
-  - WordPressAuthenticator (7.2.1-beta.2):
+  - WordPressAuthenticator (7.2.1):
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
     - WordPressKit (~> 8.7-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.8.0):
+  - WordPressKit (8.9.1):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -125,8 +125,8 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (~> 7.2.1-beta.2)
-  - WordPressKit (~> 8.8)
+  - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
+  - WordPressKit (>= 8.9.1, ~> 8.9)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -189,10 +189,6 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gutenberg:
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
-    :submodules: true
-    :tag: v1.100.2
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -225,8 +221,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: 1d73abee8fdd87032e987c40f140423a6aa0e577
-  WordPressKit: df18103fb11fefcbccad6aa4df222dc7d408ade5
+  WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
+  WordPressKit: e774ca87068b8ea02bbb0bd0b75b98aa5d722cb9
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
@@ -240,6 +236,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 9859c4a7e3c33bfba28627d1a7509f2f1182f08e
+PODFILE CHECKSUM: d1c39154c0208187cdbc28e2ef2b968f382fdf4f
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.2

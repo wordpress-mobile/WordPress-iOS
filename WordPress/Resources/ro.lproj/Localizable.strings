@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-17 05:45:52+0000 */
+/* Translation-Revision-Date: 2023-10-23 08:00:21+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
@@ -3968,7 +3968,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack Scan will replace the affected file or directory." = "Scanarea Jetpack va înlocui fișierul sau directorul afectat.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will resolve the threat." = "Scanarea Jetpack va înlătura amenințarea.";
+"Jetpack Scan will resolve the threat." = "Scanare Jetpack va înlătura amenințarea.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va restaura fișierul afectat la o versiune mai veche (curată).";
@@ -5280,6 +5280,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "Sau";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Sau alege o alt tip de autentificare.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Sau autentifică-te prin _introducerea adresei site-ului tău_.";
 
@@ -5565,7 +5568,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Te rog introdu parola pentru contul tău WordPress.com pentru a te autentifica cu ID-ul Apple.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Te rog introdu codul de verificare din aplicația Authenticator sau atinge legătura de mai jos pentru a primi un cod prin SMS.";
+"Please enter the verification code from your authenticator app." = "Te rog să introduci codul de verificare din aplicația Authenticator.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Te rog să-ți introduci datele de conectare";
@@ -7452,9 +7455,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "În schimb, trimite-mi un mesaj text cu un cod";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Trimite-mi un cod prin SMS";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Mulțumim pentru că ai ales %1$@ de %2$@";
@@ -7880,6 +7885,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Este timpul să termini inițializarea site-ului! Lista noastră de verificări te ghidează prin pașii următori.";
+
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Timpul a expirat, dar nu îți face griji, securitatea ta este prioritatea noastră. Te rog să încerci din nou.";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Sfaturi pentru a folosi la maxim WordPress.com.";
@@ -8513,6 +8521,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Folosește Sandbox Store";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Folosește o cheie de securitate";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
 
@@ -8710,6 +8721,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Aștept să finalizeze Google...";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Aștept cheia de securitate";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Așteaptă...";
@@ -9084,6 +9099,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hopa, ceva a mers prost și nu te-am putut autentifica. Te rog reîncearcă!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Ceva nu a mers bine. Te rog să încerci din nou.";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Această cheie de securitate nu pare a fi validă. Te rog să încerci din nou cu alta";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hopa, acesta nu este un cod valid de verificare cu doi-factori. Verifică-ți din nou codul și reîncearcă!";

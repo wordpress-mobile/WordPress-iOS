@@ -6,7 +6,7 @@ protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
 }
 
-final class PostCoordinator: NSObject {
+class PostCoordinator: NSObject {
 
     enum SavingError: Error {
         case mediaFailure(AbstractPost)

@@ -1,7 +1,5 @@
-* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
-* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
-* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
-* [**] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
-* [***] [internal] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+We’ve made some visual changes to the reader. You’ll notice updates to feed cards, headers, buttons, recommendations, and more. Please feel free to give us lots of compliments.
 
+In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too, even in block-based themes on dark mode. And you can quote us on that.
+
+Finally, we fixed a code issue in blogging prompt settings that caused the app to crash.

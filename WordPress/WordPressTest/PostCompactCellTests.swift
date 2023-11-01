@@ -3,7 +3,7 @@ import XCTest
 
 @testable import WordPress
 
-class PostCompactCellTests: XCTestCase {
+class PostCompactCellTests: CoreDataTestCase {
 
     var postCell: PostCompactCell!
 
@@ -12,7 +12,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowImageWhenAvailable() {
-        let post = PostBuilder().withImage().build()
+        let post = PostBuilder(mainContext).withImage().build()
 
         postCell.configure(with: post)
 
@@ -20,7 +20,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testHideImageWhenNotAvailable() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -28,7 +28,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowPostTitle() {
-        let post = PostBuilder().with(title: "Foo bar").build()
+        let post = PostBuilder(mainContext).with(title: "Foo bar").build()
 
         postCell.configure(with: post)
 
@@ -36,7 +36,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowDate() {
-        let post = PostBuilder().with(remoteStatus: .sync)
+        let post = PostBuilder(mainContext).with(remoteStatus: .sync)
             .with(dateCreated: Date()).build()
 
         postCell.configure(with: post)
@@ -45,7 +45,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testStatusAndBadgeLabels() {
-        let post = PostBuilder().with(remoteStatus: .sync)
+        let post = PostBuilder(mainContext).with(remoteStatus: .sync)
             .with(dateCreated: Date()).is(sticked: true).build()
 
         postCell.configure(with: post)
@@ -54,7 +54,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testHideBadgesWhenEmpty() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -63,7 +63,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowBadgesWhenNotEmpty() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(remoteStatus: .sync)
             .build()
 
@@ -74,7 +74,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowProgressView() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(remoteStatus: .pushing)
             .published().build()
 
@@ -84,7 +84,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testHideProgressView() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(remoteStatus: .sync)
             .published().build()
 
@@ -95,7 +95,7 @@ class PostCompactCellTests: XCTestCase {
 
     func testShowsWarningMessageForFailedPublishedPosts() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
+        let post = PostBuilder(mainContext).published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)

@@ -3763,8 +3763,7 @@
 /* No comment provided by engineer. */
 "Text color" = "Farba textu";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Radšej mi pošlite kód";
 
 /* Message of alert when theme activation succeeds */

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
+/* Translation-Revision-Date: 2023-10-25 07:12:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: pl */
@@ -548,6 +548,9 @@
 
 /* Label for Publish date picker */
 "Choose a date" = "Wybierz datę";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Wybierz plik";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Wybierz nową ikonkę aplikacji";
@@ -2151,9 +2154,6 @@
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Proszę wprowadzić poprawny numer telefonu";
 
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Proszę wprowadzić kod weryfikacyjny ze swojej aplikacji autentykacyjnej lub nacisnąć poniższy odnośnik, aby otrzymać kod w SMSie.";
-
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Wprowadź swoje dane";
 
@@ -3290,6 +3290,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the Google auth process. */
 "Waiting..." = "Oczekuję…";
+
+/* No comment provided by engineer. */
+"Warning message" = "Wiadomość ostrzeżenia";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Mamy problem z ładowaniem danych";

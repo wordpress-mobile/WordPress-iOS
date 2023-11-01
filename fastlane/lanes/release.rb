@@ -49,7 +49,6 @@ platform :ios do
       version_short: release_version_next,
       version_long: build_code_code_freeze
     )
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
 
     # Bump the internal release version and build code and write it to the `xcconfig` file
@@ -60,8 +59,9 @@ platform :ios do
       version_short: release_version_current,
       version_long: build_code_code_freeze_internal
     )
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
+
+    commit_version_bump
 
     new_version = release_version_current
 
@@ -95,11 +95,12 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
     else
       UI.message('Aborting code completion. See you later.')
+      next
     end
 
     setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
@@ -131,12 +132,13 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_beta_build
     else
       UI.message('Aborting code freeze completion. See you later.')
+      next
     end
   end
 
@@ -180,16 +182,17 @@ platform :ios do
     PUBLIC_VERSION_FILE.write(version_long: build_code_next_internal)
     UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_beta_build
     else
       UI.message('Aborting beta deployment. See you later.')
+      next
     end
   end
 
@@ -254,7 +257,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
   end
 
   # Finalizes a hotfix, by triggering a release build on CI
@@ -315,7 +318,7 @@ platform :ios do
     # Bump the internal build code
     UI.message 'Bumping internal build code...'
     INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
-    Fastlane::Helper::Ios::GitHelper.commit_version_bump
+    commit_version_bump
     UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
     # Wrap up
@@ -327,12 +330,13 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
     )
       push_to_git_remote(tags: false)
       trigger_release_build
     else
       UI.message('Aborting release finalization. See you later.')
+      next
     end
   end
 
@@ -458,4 +462,12 @@ end
 
 def release_branch_name
   "release/#{release_version_current}"
+end
+
+def commit_version_bump
+  git_commit(
+    path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
+    message: 'Bump version number',
+    allow_nothing_to_commit: false
+  )
 end

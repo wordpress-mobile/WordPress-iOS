@@ -1,0 +1,5 @@
+Kami membuat beberapa penyesuaian visual pada Reader. Anda akan melihat pembaruan pada kartu feed, header, tombol, rekomendasi, dan lainnya. Silakan hubungi kami jika Anda memiliki pertanyaan.
+
+Di dalam editor blok, Anda dapat keluar dari blok yang diformat dengan menekan tombol “enter” tiga kali. Batas kiri juga akan selalu terlihat untuk blok kutipan, bahkan dalam tema berbasis blok dalam mode gelap.
+
+Kami juga telah mengatasi permasalahan kode dalam pengaturan prompt blogging yang menyebabkan aplikasi tidak bekerja.
