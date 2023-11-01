@@ -10,12 +10,12 @@ extension AllDomainsListViewModel {
         )
         static let emptyStateDescription = NSLocalizedString(
             "domain.management.default.empty.state.description",
-            value: "Tap the button below to add a new domain",
+            value: "Tap below to find your perfect domain.",
             comment: "The empty state description in All Domains screen when the user doesn't have any domains"
         )
         static let emptyStateButtonTitle = NSLocalizedString(
             "domain.management.default.empty.state.button.title",
-            value: "Add a domain",
+            value: "Find a domain",
             comment: "The empty state button title in All Domains screen when the user doesn't have any domains"
         )
         static let offlineEmptyStateTitle = NSLocalizedString(
