@@ -35,7 +35,7 @@ extension AllDomainsListViewModel {
         )
         static let errorEmptyStateDescription = NSLocalizedString(
             "domain.management.error.empty.state.description",
-            value: "Sorry, we encountered an error while loading your domains. Our team has been notified of the issue, and we're working to resolve it as soon as possible. Please try again later.",
+            value: "We encountered an error while loading your domains. Please contact support if the issue persists.",
             comment: "The empty state description in All Domains screen when an error occurs"
         )
         static let errorStateButtonTitle = NSLocalizedString(
