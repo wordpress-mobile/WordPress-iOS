@@ -69,6 +69,11 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             .sink { [weak self] in self?.reload(with: $0) }
             .store(in: &cancellables)
 
+        NotificationCenter.default
+            .publisher(for: .postCoordinatorDidUpdate, object: nil)
+            .sink { [weak self] in self?.reload(with: $0) }
+            .store(in: &cancellables)
+
         reload()
     }
 
@@ -81,27 +86,42 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private func reload(with notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo else { return }
 
-        let existingObjects = Set(posts)
-        var updated = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>) ?? []
-        var deleted = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? []
+        // The list displays the latest versions of a post when available,
+        // but it uses the original posts as identifiers (because they are stable).
+        // This method ensures that the list updates whenever either the
+        // original version or the latest version changes.
+        let existingOriginalPosts = Set(posts)
+        var existingLatestPosts: [NSManagedObject: NSManagedObject] = [:]
+        for object in posts {
+            existingLatestPosts[object] = object.latest()
+        }
 
-        updated.formIntersection(existingObjects)
-        deleted.formIntersection(existingObjects)
+        let updatedObjects = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>) ?? []
+        var updatedPosts = updatedObjects.intersection(existingOriginalPosts)
+        for (original, latest) in existingLatestPosts {
+            if updatedObjects.contains(latest) {
+                updatedPosts.insert(original)
+            }
+        }
 
-        guard !updated.isEmpty || !deleted.isEmpty else {
+        let deletedPosts = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+            .intersection(existingOriginalPosts)
+
+        guard !updatedPosts.isEmpty || !deletedPosts.isEmpty else {
             return
         }
 
         var snapshot = makeSnapshot()
-        snapshot.reloadItems(updated.map({ ItemID.post($0.objectID) }))
 
-        for object in deleted {
+        snapshot.reloadItems(updatedPosts.map({ ItemID.post($0.objectID) }))
+
+        for object in deletedPosts {
             if let post = object as? AbstractPost,
                let index = posts.firstIndex(of: post) {
                 posts.remove(at: index)
             }
-            snapshot.deleteItems(deleted.map({ ItemID.post($0.objectID) }))
         }
+        snapshot.deleteItems(deletedPosts.map({ ItemID.post($0.objectID) }))
 
         self.snapshot = snapshot
     }

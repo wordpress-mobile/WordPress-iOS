@@ -6,6 +6,7 @@ final class PostListItemViewModel {
     let imageURL: URL?
     let badges: NSAttributedString
     let accessibilityIdentifier: String?
+    let isEnabled: Bool
     let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
@@ -17,6 +18,7 @@ final class PostListItemViewModel {
         self.imageURL = post.featuredImageURL
         self.badges = makeBadgesString(for: post)
         self.statusViewModel = PostCardStatusViewModel(post: post)
+        self.isEnabled = !PostCoordinator.shared.isDeleting(post)
         self.accessibilityIdentifier = post.slugForDisplay()
     }
 }

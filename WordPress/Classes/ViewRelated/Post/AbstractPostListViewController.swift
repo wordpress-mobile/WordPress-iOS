@@ -111,6 +111,8 @@ class AbstractPostListViewController: UIViewController,
         tableView.reloadData()
 
         observeNetworkStatus()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -231,6 +233,23 @@ class AbstractPostListViewController: UIViewController,
         }
 
         return properties
+    }
+
+    // MARK: - Notifications
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return
+        }
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
+            guard let post = tableViewHandler.resultsController?.object(at: $0) as? NSManagedObject else { return false }
+            return updatedObjects.contains(post)
+        }
+        if !updatedIndexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
+            tableView.endUpdates()
+        }
     }
 
     // MARK: - Author Filter
@@ -606,7 +625,7 @@ class AbstractPostListViewController: UIViewController,
     @objc func handleSyncFailure(_ error: NSError) {
         if error.domain == WPXMLRPCFaultErrorDomain
             && error.code == type(of: self).httpErrorCodeForbidden {
-            promptForPassword()
+            WordPressAppDelegate.shared?.showPasswordInvalidPrompt(for: blog)
             return
         }
 
@@ -620,23 +639,6 @@ class AbstractPostListViewController: UIViewController,
         } else {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: error)
-        }
-    }
-
-    @objc func promptForPassword() {
-        let message = NSLocalizedString("The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", comment: "Error message informing a user about an invalid password.")
-
-        // bad login/pass combination
-        let editSiteViewController = SiteSettingsViewController(blog: blog)
-
-        let navController = UINavigationController(rootViewController: editSiteViewController!)
-        navController.navigationBar.isTranslucent = false
-
-        navController.modalTransitionStyle = .crossDissolve
-        navController.modalPresentationStyle = .formSheet
-
-        WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
-            self.present(navController, animated: true)
         }
     }
 
@@ -685,99 +687,9 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    @MainActor
-    func deletePost(_ apost: AbstractPost) async {
-        assert(apost.managedObjectContext == ContextManager.shared.mainContext)
-
-        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
-
-        // Remove the trashed post from spotlight
-        SearchManager.shared.deleteSearchableItem(apost)
-
-        // Update the fetch request *before* making the service call.
-        updateAndPerformFetchRequest()
-
-        let originalStatus = apost.status
-
-        let trashed = (apost.status == .trash)
-
-        let repository = PostRepository(coreDataStack: ContextManager.shared)
-        do {
-            try await repository.trash(TaggedManagedObjectID(apost))
-            if trashed {
-                PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
-                MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
-            }
-
-            var message = ""
-            switch postTypeToSync() {
-            case .post:
-                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
-            case .page:
-                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
-            default:
-                break
-            }
-            let undoAction = NSLocalizedString("postsList.movePostToTrash.undo", value: "Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder.")
-
-            let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
-                if accepted {
-                    self?.restorePost(apost, toStatus: originalStatus ?? .draft)
-                }
-            })
-            ActionDispatcher.dispatch(NoticeAction.dismiss)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-        } catch {
-            if let error = error as NSError?, error.code == AbstractPostListViewController.httpErrorCodeForbidden {
-                promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            // We don't really know what happened here, why did the request fail?
-            // Maybe we could not delete the post or maybe the post was already deleted
-            // It is safer to re fetch the results than to reload that specific row
-            DispatchQueue.main.async {
-                self.updateAndPerformFetchRequestRefreshingResults()
-            }
-        }
-    }
-
-    func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status) {
-        WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
-
-        if filterSettings.currentPostListFilter().filterType != .draft {
-            // Needed or else the post will remain in the published list.
-            updateAndPerformFetchRequest()
-            tableView.reloadData()
-        }
-
-        let repository = PostRepository(coreDataStack: ContextManager.shared)
-        Task { @MainActor in
-            do {
-                try await repository.restore(.init(apost), to: status)
-
-                if let postStatus = apost.status {
-                    // If the post was restored, see if it appears in the current filter.
-                    // If not, prompt the user to let it know under which filter it appears.
-                    let filter = filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
-
-                    if filter.filterType == filterSettings.currentPostListFilter().filterType {
-                        return
-                    }
-
-                    promptThatPostRestoredToFilter(filter)
-
-                    // Reindex the restored post in spotlight
-                    SearchManager.shared.indexItem(apost)
-                }
-            } catch {
-                if let error = error as NSError?, error.code == AbstractPostListViewController.httpErrorCodeForbidden {
-                    promptForPassword()
-                } else {
-                    WPError.showXMLRPCErrorAlert(error)
-                }
-            }
+    func deletePost(_ post: AbstractPost) {
+        Task {
+            await PostCoordinator.shared.delete(post)
         }
     }
 
@@ -789,10 +701,6 @@ class AbstractPostListViewController: UIViewController,
         let notice = Notice(title: noticeTitle, feedbackType: .success)
         ActionDispatcher.dispatch(NoticeAction.dismiss) // Dismiss any old notices
         ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
-        assert(false, "You should implement this method in the subclass")
     }
 
     private func dismissAllNetworkErrorNotices() {

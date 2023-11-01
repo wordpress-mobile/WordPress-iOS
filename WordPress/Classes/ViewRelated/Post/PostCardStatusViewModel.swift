@@ -63,6 +63,8 @@ class PostCardStatusViewModel: NSObject {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
+        } else if PostCoordinator.shared.isDeleting(post) {
+            return post.status == .trash ? Strings.deletingPostPermanently : Strings.movingPostToTrash
         } else if post.isFailed {
             return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
@@ -97,6 +99,10 @@ class PostCardStatusViewModel: NSObject {
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return .neutral(.shade30)
+        }
+
+        if PostCoordinator.shared.isDeleting(post) {
+            return .systemRed
         }
 
         if post.isFailed && isInternetReachable {
@@ -269,4 +275,9 @@ class PostCardStatusViewModel: NSObject {
         static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
                                                             comment: "Message displayed on a post's card when the post has unsaved changes")
     }
+}
+
+private enum Strings {
+    static let movingPostToTrash = NSLocalizedString("post.movingToTrashStatusMessage", value: "Moving post to trash...", comment: "Status mesasge for post cells")
+    static let deletingPostPermanently = NSLocalizedString("post.deletingPostPermanentlyStatusMessage", value: "Deleting post...", comment: "Status mesasge for post cells")
 }

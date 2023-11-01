@@ -59,7 +59,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     private func bindViewModel() {
         viewModel.$snapshot.sink { [weak self] in
-            self?.dataSource.apply($0, animatingDifferences: false)
+            self?.dataSource.apply($0, animatingDifferences: $0.reloadedItemIdentifiers.count == 1)
             self?.updateSuggestedTokenCells()
         }.store(in: &cancellables)
 
@@ -103,7 +103,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             cell.separatorInset = UIEdgeInsets(top: 0, left: view.bounds.size.width, bottom: 0, right: 0) // Hide the native separator
             return cell
         case .posts:
-            let post = viewModel.posts[indexPath.row]
+            let post = viewModel.posts[indexPath.row].latest()
             switch post {
             case let post as Post:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
@@ -161,7 +161,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             // TODO: Move to viewWillAppear (the way editor is displayed doesn't allow)
             tableView.deselectRow(at: indexPath, animated: true)
 
-            switch viewModel.posts[indexPath.row] {
+            switch viewModel.posts[indexPath.row].latest() {
             case let post as Post:
                 guard post.status != .trash else { return }
                 (listViewController as! PostListViewController)
