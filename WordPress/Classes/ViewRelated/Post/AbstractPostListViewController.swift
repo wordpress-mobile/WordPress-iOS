@@ -35,7 +35,7 @@ class AbstractPostListViewController: UIViewController,
     /// to the subclass to define this property.
     ///
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
-    let tableViewController = UITableViewController(style: .grouped)
+    let tableViewController = UITableViewController(style: .plain)
     private var reloadTableViewBeforeAppearing = false
 
     @objc var tableView: UITableView {
@@ -172,7 +172,6 @@ class AbstractPostListViewController: UIViewController,
 
     func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.isLayoutMarginsRelativeArrangement = false
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -295,17 +294,13 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - GUI: No results view logic
 
     func hideNoResultsView() {
-        setFooterHidden(false)
         noResultsViewController.removeFromView()
     }
 
     func showNoResultsView() {
-
         guard refreshNoResultsViewController != nil, atLeastSyncedOnce else {
             return
         }
-
-        setFooterHidden(true)
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -417,6 +412,14 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         nil
     }
 
