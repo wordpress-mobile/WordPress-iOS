@@ -3,6 +3,7 @@ import Foundation
 final class PageMenuViewModel: AbstractPostMenuViewModel {
 
     private let page: Page
+    private let indexPath: IndexPath
     private let isSiteHomepage: Bool
     private let isSitePostsPage: Bool
     private let isJetpackFeaturesEnabled: Bool
@@ -18,18 +19,20 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         ]
     }
 
-    convenience init(page: Page) {
-        self.init(page: page, isSiteHomepage: page.isSiteHomepage, isSitePostsPage: page.isSitePostsPage)
+    convenience init(page: Page, indexPath: IndexPath) {
+        self.init(page: page, indexPath: indexPath, isSiteHomepage: page.isSiteHomepage, isSitePostsPage: page.isSitePostsPage)
     }
 
     init(
         page: Page,
+        indexPath: IndexPath,
         isSiteHomepage: Bool,
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()
     ) {
         self.page = page
+        self.indexPath = indexPath
         self.isSiteHomepage = isSiteHomepage
         self.isSitePostsPage = isSitePostsPage
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
@@ -86,7 +89,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: buttons)
         }
 
-        buttons.append(.setParent)
+        buttons.append(.setParent(indexPath))
 
         if page.status == .publish, !isSiteHomepage {
             buttons.append(.setHomepage)

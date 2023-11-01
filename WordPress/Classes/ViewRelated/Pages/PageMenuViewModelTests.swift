@@ -2,7 +2,9 @@ import Nimble
 import XCTest
 @testable import WordPress
 
-class PageMenuViewModelTests: CoreDataTestCase {
+final class PageMenuViewModelTests: CoreDataTestCase {
+
+    private let indexPath = IndexPath()
 
     func testPublishedPageButtonsWithBlazeEnabled() {
         // Given
@@ -12,6 +14,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .build()
         let viewModel = PageMenuViewModel(
             page: page,
+            indexPath: indexPath,
             isSiteHomepage: false,
             isSitePostsPage: false,
             isJetpackFeaturesEnabled: true,
@@ -26,7 +29,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setParent(indexPath), .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -40,6 +43,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .build()
         let viewModel = PageMenuViewModel(
             page: page,
+            indexPath: indexPath,
             isSiteHomepage: false,
             isSitePostsPage: false,
             isJetpackFeaturesEnabled: true,
@@ -53,7 +57,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setParent(indexPath), .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -67,6 +71,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .build()
         let viewModel = PageMenuViewModel(
             page: page,
+            indexPath: indexPath,
             isSiteHomepage: false,
             isSitePostsPage: false,
             isJetpackFeaturesEnabled: false,
@@ -80,7 +85,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setParent(indexPath), .setHomepage, .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -94,6 +99,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .build()
         let viewModel = PageMenuViewModel(
             page: page,
+            indexPath: indexPath,
             isSiteHomepage: true,
             isSitePostsPage: false,
             isJetpackFeaturesEnabled: true,
@@ -108,7 +114,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
-            [.setParent, .setPostsPage],
+            [.setParent(indexPath), .setPostsPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -122,6 +128,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             .build()
         let viewModel = PageMenuViewModel(
             page: page,
+            indexPath: indexPath,
             isSiteHomepage: false,
             isSitePostsPage: true,
             isJetpackFeaturesEnabled: true,
@@ -136,7 +143,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
-            [.setParent, .setHomepage],
+            [.setParent(indexPath), .setHomepage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -147,7 +154,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .draft)
             .build()
-        let viewModel = PageMenuViewModel(page: page)
+        let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -156,7 +163,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.duplicate, .publish],
-            [.setParent],
+            [.setParent(indexPath)],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -167,7 +174,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .scheduled)
             .build()
-        let viewModel = PageMenuViewModel(page: page)
+        let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
 
         // When & Then
         let buttons = viewModel.buttonSections
@@ -176,7 +183,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .publish],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setParent(indexPath)],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -187,7 +194,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let page = PageBuilder(mainContext)
             .with(status: .trash)
             .build()
-        let viewModel = PageMenuViewModel(page: page)
+        let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
         // When & Then
         let buttons = viewModel.buttonSections
             .filter { !$0.buttons.isEmpty }

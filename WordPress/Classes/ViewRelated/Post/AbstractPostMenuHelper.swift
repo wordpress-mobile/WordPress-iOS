@@ -139,12 +139,12 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.blaze(post)
         case .comments:
             delegate.comments(post)
-        case .setParent:
-            break
+        case .setParent(let indexPath):
+            delegate.setParent(for: post, at: indexPath)
         case .setHomepage:
-            break
+            delegate.setHomepage(for: post)
         case .setPostsPage:
-            break
+            delegate.setPostsPage(for: post)
         }
     }
 

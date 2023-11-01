@@ -8,7 +8,7 @@ struct AbstractPostButtonSection {
     let buttons: [AbstractPostButton]
 }
 
-enum AbstractPostButton {
+enum AbstractPostButton: Equatable {
     case retry
     case view
     case publish
@@ -22,7 +22,7 @@ enum AbstractPostButton {
     case comments
 
     /// Specific to pages
-    case setParent
+    case setParent(IndexPath)
     case setHomepage
     case setPostsPage
 }
