@@ -185,6 +185,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && post.canBlaze {
+            BlazeEventsTracker.trackEntryPointDisplayed(for: .postsList)
             buttons.append(.blaze)
         }
 
