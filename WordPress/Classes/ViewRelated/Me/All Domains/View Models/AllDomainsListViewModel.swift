@@ -73,12 +73,7 @@ class AllDomainsListViewModel {
         var domains = domains
 
         if let searchQuery, !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
-            domains = domains.filter { domain in
-                return domain.domain.localizedStandardContains(searchQuery)
-                || domain.siteSlug.localizedStandardContains(searchQuery)
-                || domain.blogName.localizedStandardContains(searchQuery)
-                || (domain.status?.value.localizedStandardContains(searchQuery) ?? false)
-            }
+            domains = domains.filter { $0.matches(searchQuery: searchQuery) }
         }
 
         let viewModels = domains.map { AllDomainsListItemViewModel(domain: $0) }
