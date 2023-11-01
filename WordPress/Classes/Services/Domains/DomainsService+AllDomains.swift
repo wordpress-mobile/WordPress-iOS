@@ -19,4 +19,5 @@ extension DomainsService {
 
     typealias AllDomainsEndpointResult = DomainsServiceRemote.AllDomainsEndpointResult
     typealias AllDomainsEndpointParams = DomainsServiceRemote.AllDomainsEndpointParams
+    typealias AllDomainsListItem = DomainsServiceRemote.AllDomainsListItem
 }
