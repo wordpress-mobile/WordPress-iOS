@@ -61,16 +61,19 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
-    func setParent(for post: AbstractPost, at indexPath: IndexPath) {
-        // TODO
+    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
+        guard let page = apost as? Page else { return }
+        setParent(for: page, at: indexPath)
     }
 
-    func setHomepage(for post: AbstractPost) {
-        // TODO
+    func setHomepage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        setPageAsHomepage(page)
     }
 
-    func setPostsPage(for post: AbstractPost) {
-        // TODO
+    func setPostsPage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        setPageAsPostsPage(page)
     }
 
     // MARK: - Helpers
@@ -105,7 +108,7 @@ extension PageListViewController: InteractivePostViewDelegate {
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(Strings.cancelText)
         alertController.addDestructiveActionWithTitle(actionText) { [weak self] action in
-            Task { await self?.deletePost(page) }
+            self?.deletePost(page)
         }
         alertController.presentFromRootViewController()
     }

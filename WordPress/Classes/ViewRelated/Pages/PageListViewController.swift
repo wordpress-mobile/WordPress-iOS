@@ -489,9 +489,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
 
                 addBlazeAction(to: alertController, for: page)
-                addSetParentAction(to: alertController, for: page, at: indexPath)
-                addSetHomepageAction(to: alertController, for: page, at: indexPath)
-                addSetPostsPageAction(to: alertController, for: page, at: indexPath)
                 addDuplicateAction(to: alertController, for: page)
 
                 if !isHomepage {
@@ -540,7 +537,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
-                addSetParentAction(to: alertController, for: page, at: indexPath)
                 addDuplicateAction(to: alertController, for: page)
 
                 alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
@@ -627,23 +623,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        /// This button is disabled for trashed pages
-        //
-        if page.status == .trash {
-            return
-        }
-
-        let objectID = page.objectID
-        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
-        controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] _ in
-            if let page = self?.pageForObjectID(objectID) {
-                self?.setParent(for: page, at: index)
-            }
-        })
-    }
-
-    private func setParent(for page: Page, at index: IndexPath?) {
+    func setParent(for page: Page, at index: IndexPath?) {
         guard let index = index else {
             return
         }
@@ -684,69 +664,31 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return page
     }
 
-    private func addSetHomepageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        let objectID = page.objectID
+    func setPageAsHomepage(_ page: Page) {
+        guard let pageID = page.postID?.intValue else { return }
 
-        /// This button is enabled if
-        /// - Page is not trashed
-        /// - The site's homepage type is .page
-        /// - The page isn't currently the homepage
-        //
-        guard page.status != .trash,
-            let homepageType = blog.homepageType,
-            homepageType == .page,
-            let page = pageForObjectID(objectID),
-            page.isSiteHomepage == false else {
-            return
-        }
-
-        let setHomepageButtonTitle = NSLocalizedString("Set as Homepage", comment: "Label for a button that sets the selected page as the site's Homepage")
-        controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
-            if let pageID = page.postID?.intValue {
-                self?.beginRefreshingManually()
-                WPAnalytics.track(.postListSetHomePageAction)
-                self?.homepageSettingsService?.setHomepageType(.page,
-                                                               homePageID: pageID, success: {
-                                                                self?.refreshAndReload()
-                                                                self?.handleHomepageSettingsSuccess()
-                }, failure: { error in
-                    self?.refreshControl.endRefreshing()
-                    self?.handleHomepageSettingsFailure()
-                })
-            }
+        beginRefreshingManually()
+        WPAnalytics.track(.postListSetHomePageAction)
+        homepageSettingsService?.setHomepageType(.page, homePageID: pageID, success: { [weak self] in
+            self?.refreshAndReload()
+            self?.handleHomepageSettingsSuccess()
+        }, failure: { [weak self] error in
+            self?.refreshControl.endRefreshing()
+            self?.handleHomepageSettingsFailure()
         })
     }
 
-    private func addSetPostsPageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        let objectID = page.objectID
+    func setPageAsPostsPage(_ page: Page) {
+        guard let pageID = page.postID?.intValue else { return }
 
-        /// This button is enabled if
-        /// - Page is not trashed
-        /// - The site's homepage type is .page
-        /// - The page isn't currently the posts page
-        //
-        guard page.status != .trash,
-            let homepageType = blog.homepageType,
-            homepageType == .page,
-            let page = pageForObjectID(objectID),
-            page.isSitePostsPage == false else {
-            return
-        }
-
-        let setPostsPageButtonTitle = NSLocalizedString("Set as Posts Page", comment: "Label for a button that sets the selected page as the site's Posts page")
-        controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
-            if let pageID = page.postID?.intValue {
-                self?.beginRefreshingManually()
-                WPAnalytics.track(.postListSetAsPostsPageAction)
-                self?.homepageSettingsService?.setHomepageType(.page,
-                                                               withPostsPageID: pageID, success: {
-                                                                self?.refreshAndReload()
-                                                                self?.handleHomepagePostsPageSettingsSuccess()
-                }, failure: { error in
-                    self?.refreshControl.endRefreshing()
-                    self?.handleHomepageSettingsFailure()
-                })
-            }
+        beginRefreshingManually()
+        WPAnalytics.track(.postListSetAsPostsPageAction)
+        homepageSettingsService?.setHomepageType(.page, withPostsPageID: pageID, success: { [weak self] in
+            self?.refreshAndReload()
+            self?.handleHomepagePostsPageSettingsSuccess()
+        }, failure: { [weak self] error in
+            self?.refreshControl.endRefreshing()
+            self?.handleHomepageSettingsFailure()
         })
     }
 
