@@ -206,6 +206,9 @@ class AbstractPostListViewController: UIViewController,
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
+        if #available(iOS 16.0, *) {
+            navigationItem.preferredSearchBarPlacement = .stacked
+        }
     }
 
     private func configureNavigationBarAppearance() {
