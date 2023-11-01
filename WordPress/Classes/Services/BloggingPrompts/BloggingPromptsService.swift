@@ -2,9 +2,11 @@ import CoreData
 import WordPressKit
 
 class BloggingPromptsService {
-    private let contextManager: CoreDataStackSwift
     let siteID: NSNumber
-    private let remote: BloggingPromptsServiceRemote
+
+    private let contextManager: CoreDataStackSwift
+    private let remote: BloggingPromptsServiceRemote // TODO: replace with api.
+    private let api: WordPressComRestApi
     private let calendar: Calendar = .autoupdatingCurrent
     private let maxListPrompts = 11
 
@@ -48,10 +50,11 @@ class BloggingPromptsService {
                       success: (([BloggingPrompt]) -> Void)? = nil,
                       failure: ((Error?) -> Void)? = nil) {
         let fromDate = startDate ?? defaultStartDate
-        remote.fetchPrompts(for: siteID, number: number, fromDate: fromDate) { result in
+
+        fetchRemotePrompts(number: number, fromDate: fromDate, ignoresYear: true) { result in
             switch result {
-            case .success(let remotePrompts):
-                self.upsert(with: remotePrompts) { innerResult in
+            case .success(let response):
+                self.upsert(with: response.prompts) { innerResult in
                     if case .failure(let error) = innerResult {
                         failure?(error)
                         return
@@ -182,10 +185,10 @@ class BloggingPromptsService {
     ///   - blog: When supplied, the service will perform blogging prompts requests for this specified blog.
     ///     Otherwise, this falls back to the default account's primary blog.
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
-                   remote: BloggingPromptsServiceRemote? = nil,
+                   remote: BloggingPromptsServiceRemote? = nil, // TODO: remove
                    blog: Blog? = nil) {
         let blogObjectID = blog?.objectID
-        let (siteID, remoteInstance) = contextManager.performQuery { mainContext in
+        let (siteID, remoteInstance, api) = contextManager.performQuery { mainContext in
             // if a blog exists, then try to use the blog's ID.
             var blogInContext: Blog? = nil
             if let blogObjectID {
@@ -194,12 +197,18 @@ class BloggingPromptsService {
 
             // fetch the default account and fall back to default values as needed.
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext) else {
-                return (blogInContext?.dotComID, remote)
+                return (
+                    blogInContext?.dotComID,
+                    remote,
+                    WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(),
+                                                     localeKey: WordPressComRestApi.LocaleKeyV2)
+                )
             }
 
             return (
                 blogInContext?.dotComID ?? account.primaryBlogID,
-                remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+                remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api),
+                account.wordPressComRestV2Api
             )
         }
 
@@ -211,6 +220,7 @@ class BloggingPromptsService {
         self.contextManager = contextManager
         self.siteID = siteID
         self.remote = remoteInstance
+        self.api = api
     }
 }
 
@@ -260,6 +270,69 @@ private extension BloggingPromptsService {
         return Self.utcDateFormatter.date(from: dateString)
     }
 
+    // MARK: Prompts
+
+    /// Fetches a number of blogging prompts for the specified site from the v3 endpoint.
+    ///
+    /// - Parameters:
+    ///   - number: The number of prompts to query. When not specified, this will default to remote implementation.
+    ///   - fromDate: When specified, this will fetch prompts from the given date. When not specified, this will default to remote implementation.
+    ///   - ignoresYear: When set to true, this will convert the date to a custom format that ignores the year part. Defaults to false.
+    ///   - forceYear: Forces the year value on the prompt's date to the specified value. Defaults to the current year.
+    ///   - completion: A closure that will be called when the fetch request completes.
+    func fetchRemotePrompts(number: Int? = nil,
+                            fromDate: Date? = nil,
+                            ignoresYear: Bool = false,
+                            forceYear: Int? = Calendar(identifier: .gregorian).component(.year, from: Date()),
+                            completion: @escaping (Result<RemoteBloggingPromptsResponse, Error>) -> Void) {
+        let path = "wpcom/v3/sites/\(siteID)/blogging-prompts"
+        let requestParameter: [String: AnyHashable] = {
+            var params = [String: AnyHashable]()
+
+            if let number, number > 0 {
+                params["per_page"] = number
+            }
+
+            if let fromDate {
+                // convert to yyyy-MM-dd format, excluding the timezone information.
+                // the date parameter doesn't need to be timezone-accurate since prompts are grouped by date.
+                var dateString = Self.utcDateFormatter.string(from: fromDate)
+
+                // when the year needs to be ignored, we'll transform the dateString to match the "--mm-dd" format.
+                if ignoresYear, !dateString.isEmpty {
+                    dateString = "-" + dateString.dropFirst(4)
+                }
+
+                params["after"] = dateString
+            }
+
+            if let forceYear {
+                params["force_year"] = forceYear
+            }
+
+            return params
+        }()
+
+        api.GET(path, parameters: requestParameter as [String: AnyObject]) { result, _ in
+            switch result {
+            case .success(let responseObject):
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.supportMultipleDateFormats
+                    decoder.keyDecodingStrategy = .useDefaultKeys
+
+                    let response = try decoder.decode(RemoteBloggingPromptsResponse.self, from: data)
+                    completion(.success(response))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     /// Loads local prompts based on the given parameters.
     ///
     /// - Parameters:
@@ -292,14 +365,16 @@ private extension BloggingPromptsService {
     /// - Parameters:
     ///   - remotePrompts: An array containing prompts obtained from remote.
     ///   - completion: Closure to be called after the process completes. Returns an array of prompts when successful.
-    func upsert(with remotePrompts: [RemoteBloggingPrompt], completion: @escaping (Result<Void, Error>) -> Void) {
+    func upsert(with remotePrompts: [BloggingPromptRemoteObject], completion: @escaping (Result<Void, Error>) -> Void) {
         if remotePrompts.isEmpty {
             completion(.success(()))
             return
         }
 
+        // TODO: Upsert based on prompt date instead of promptID.
+
         let remoteIDs = Set(remotePrompts.map { Int32($0.promptID) })
-        let remotePromptsDictionary = remotePrompts.reduce(into: [Int32: RemoteBloggingPrompt]()) { partialResult, remotePrompt in
+        let remotePromptsDictionary = remotePrompts.reduce(into: [Int32: BloggingPromptRemoteObject]()) { partialResult, remotePrompt in
             partialResult[Int32(remotePrompt.promptID)] = remotePrompt
         }
 
@@ -330,6 +405,8 @@ private extension BloggingPromptsService {
             }
         }, completion: completion, on: .main)
     }
+
+    // MARK: Prompt Settings
 
     /// Updates existing settings or creates new settings from the remote prompt settings.
     ///
