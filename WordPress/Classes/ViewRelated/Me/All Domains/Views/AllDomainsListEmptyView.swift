@@ -87,15 +87,3 @@ final class AllDomainsListEmptyView: UIView {
         self.buttonAction?()
     }
 }
-
-// MARK: - Preview
-
-@available(iOS 17.0, *)
-#Preview {
-    let viewModel = AllDomainsListEmptyView.ViewModel(
-        title: "You don't have any domains",
-        description: "Tap the button below to add a new one",
-        button: .init(title: "Add a domain", action: {})
-    )
-    return AllDomainsListEmptyView(viewModel: viewModel)
-}
