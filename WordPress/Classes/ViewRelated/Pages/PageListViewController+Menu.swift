@@ -41,7 +41,7 @@ extension PageListViewController: InteractivePostViewDelegate {
 
     func retry(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        retryPage(page)
+        PostCoordinator.shared.save(page)
     }
 
     func cancelAutoUpload(_ apost: AbstractPost) {
@@ -88,10 +88,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Open Editor
         let editorViewController = EditPageViewController(page: newPage)
         present(editorViewController, animated: false)
-    }
-
-    private func retryPage(_ page: Page) {
-        PostCoordinator.shared.save(page)
     }
 
     private func trashPage(_ page: Page) {
