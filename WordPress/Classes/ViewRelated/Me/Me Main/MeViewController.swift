@@ -213,16 +213,10 @@ class MeViewController: UITableViewController {
 
                 #if JETPACK
                 if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
-                    let image = UIImage(named: "globe")
-                    let imageSize = CGSize(width: 28, height: 28)
-                    let renderer = UIGraphicsImageRenderer(size: imageSize)
-                    let globeImage = renderer.image { _ in
-                        image!.draw(in: CGRect(origin: .zero, size: imageSize))
-                    }
                     rows.append(
                         NavigationItemRow(
                             title: AllDomainsListViewController.Strings.title,
-                            icon: globeImage,
+                            icon: UIImage(systemName: "globe"),
                             accessoryType: accessoryType,
                             action: { action in
                                 self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
