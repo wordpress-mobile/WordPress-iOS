@@ -189,10 +189,6 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gutenberg:
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
-    :submodules: true
-    :tag: v1.100.2
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844

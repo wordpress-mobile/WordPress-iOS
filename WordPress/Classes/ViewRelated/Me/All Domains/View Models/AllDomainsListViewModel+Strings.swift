@@ -10,7 +10,7 @@ extension AllDomainsListViewModel {
         )
         static let emptyStateDescription = NSLocalizedString(
             "domain.management.default.empty.state.description",
-            value: "Tap the button below to add a new domain",
+            value: "Tap below to find your perfect domain.",
             comment: "The empty state description in All Domains screen when the user doesn't have any domains"
         )
         static let searchEmptyStateTitle = NSLocalizedString(
@@ -28,7 +28,7 @@ extension AllDomainsListViewModel {
         }
         static let emptyStateButtonTitle = NSLocalizedString(
             "domain.management.default.empty.state.button.title",
-            value: "Add a domain",
+            value: "Find a domain",
             comment: "The empty state button title in All Domains screen when the user doesn't have any domains"
         )
         static let offlineEmptyStateTitle = NSLocalizedString(
@@ -48,7 +48,7 @@ extension AllDomainsListViewModel {
         )
         static let errorEmptyStateDescription = NSLocalizedString(
             "domain.management.error.empty.state.description",
-            value: "Sorry, we encountered an error while loading your domains. Our team has been notified of the issue, and we're working to resolve it as soon as possible. Please try again later.",
+            value: "We encountered an error while loading your domains. Please contact support if the issue persists.",
             comment: "The empty state description in All Domains screen when an error occurs"
         )
         static let errorStateButtonTitle = NSLocalizedString(

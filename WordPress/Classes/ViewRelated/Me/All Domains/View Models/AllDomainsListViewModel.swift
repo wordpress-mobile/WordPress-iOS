@@ -6,9 +6,14 @@ class AllDomainsListViewModel {
     // MARK: - Types
 
     enum State {
+        /// This state is set when domains data is loaded.
         case normal([AllDomainsListItemViewModel])
+
+        /// This state is set when domains data is being fetched.
         case loading
-        case empty(AllDomainsListEmptyStateViewModel)
+
+        /// This state is set when the list is empty or an error occurs.
+        case message(AllDomainsListMessageStateViewModel)
     }
 
     private enum ViewModelError: Error {
@@ -16,6 +21,10 @@ class AllDomainsListViewModel {
     }
 
     private typealias Domain = DomainsService.AllDomainsListItem
+
+    // MARK: - Configuration
+
+    var addDomainAction: (() -> Void)?
 
     // MARK: - Dependencies
 
@@ -58,7 +67,7 @@ class AllDomainsListViewModel {
     /// - Returns: The `.normal` or `.empty` state.
     private func state(from domains: [Domain], searchQuery: String?) -> State {
         if domains.isEmpty {
-            return .empty(emptyStateViewModel())
+            return .message(emptyMessageViewModel())
         }
 
         var domains = domains
@@ -74,7 +83,7 @@ class AllDomainsListViewModel {
 
         let viewModels = domains.map { AllDomainsListItemViewModel(domain: $0) }
 
-        return viewModels.isEmpty ? .empty(emptyStateViewModel(searchQuery: searchQuery)) : .normal(viewModels)
+        return viewModels.isEmpty ? .message(emptyMessageViewModel(searchQuery: searchQuery)) : .normal(viewModels)
     }
 
     /// Determines the state of the view based on an error.
@@ -82,7 +91,7 @@ class AllDomainsListViewModel {
     /// - Parameter error: An error that occurred during a data operation.
     /// - Returns: Always returns the `.empty` state.
     private func state(from error: Error) -> State {
-        return .empty(self.emptyStateViewModel(from: error))
+        return .message(self.errorMessageViewModel(from: error))
     }
 
     // MARK: - Load Domains
@@ -124,7 +133,7 @@ class AllDomainsListViewModel {
 
         // Perform search asynchrounously.
         switch state {
-        case .normal, .empty:
+        case .normal, .message:
             self.searchQueue.cancelAllOperations()
             self.searchQueue.addOperation { [weak self] in
                 guard let self else {
@@ -142,8 +151,8 @@ class AllDomainsListViewModel {
 
     // MARK: - Creating Empty State View Models
 
-    /// The empty state to display when the user doesn't have any domains or there are no domains matching the search queury.jjj
-    private func emptyStateViewModel(searchQuery: String? = nil) -> AllDomainsListEmptyStateViewModel {
+    /// The message to display when the user doesn't have any domains or there are no domains matching the search query.
+    private func emptyMessageViewModel(searchQuery: String? = nil) -> AllDomainsListMessageStateViewModel {
         if let searchQuery {
             return .init(
                 title: Strings.searchEmptyStateTitle,
@@ -159,11 +168,11 @@ class AllDomainsListViewModel {
         }
     }
 
-    /// The empty state to display when an error occurs.
-    private func emptyStateViewModel(from error: Error) -> AllDomainsListEmptyStateViewModel {
+    /// The  message to display when an error occurs.
+    private func errorMessageViewModel(from error: Error) -> AllDomainsListMessageStateViewModel {
         let title: String
         let description: String
-        let button: AllDomainsListEmptyStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
+        let button: AllDomainsListMessageStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
             self?.loadData()
         }
 
