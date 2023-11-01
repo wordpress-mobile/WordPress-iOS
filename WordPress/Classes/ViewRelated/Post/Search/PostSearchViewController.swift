@@ -114,7 +114,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 return cell
             case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
-                cell.configure(with: PageListItemViewModel(page: page))
+                cell.configure(with: PageListItemViewModel(page: page), delegate: listViewController as? InteractivePostViewDelegate)
                 updateHighlights(for: [cell], searchTerm: viewModel.searchTerm)
                 return cell
             default:
