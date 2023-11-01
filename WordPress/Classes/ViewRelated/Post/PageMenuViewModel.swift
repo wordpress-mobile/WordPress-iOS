@@ -88,11 +88,11 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
         buttons.append(.setParent)
 
-        if !isSiteHomepage {
+        if page.status == .publish, !isSiteHomepage {
             buttons.append(.setHomepage)
         }
 
-        if !isSitePostsPage {
+        if page.status == .publish, !isSitePostsPage {
             buttons.append(.setPostsPage)
         }
 

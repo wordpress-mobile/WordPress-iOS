@@ -156,7 +156,7 @@ class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.duplicate, .publish],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setParent],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
