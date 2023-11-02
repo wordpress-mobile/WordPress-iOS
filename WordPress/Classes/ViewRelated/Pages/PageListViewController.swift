@@ -383,16 +383,28 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page, at index: IndexPath) {
-        let selectedPage = pageAtIndexPath(index)
-        let newIndex = _tableViewHandler.index(for: selectedPage)
-        let pages = _tableViewHandler.removePage(from: newIndex)
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: { [weak self] in
-            self?._tableViewHandler.refreshTableView(at: index)
-        }, onSuccess: { [weak self] in
-            self?.handleSetParentSuccess()
-        } )
-        present(parentPageNavigationController, animated: true)
+    func setParentPage(for page: Page, at index: IndexPath?) {
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        let filter = PostListFilter.publishedFilter()
+        request.predicate = filter.predicate(for: blog, author: .everyone)
+        request.sortDescriptors = filter.sortDescriptors
+        do {
+            var pages = try managedObjectContext()
+                .fetch(request)
+                .setHomePageFirst()
+                .hierarchySort()
+            if let index = pages.firstIndex(of: page) {
+                pages = pages.remove(from: index)
+            }
+            let viewController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: page, onClose: { [weak self] in
+                self?._tableViewHandler.refreshTableView(at: index)
+            }, onSuccess: { [weak self] in
+                self?.handleSetParentSuccess()
+            } )
+            present(viewController, animated: true)
+        } catch {
+            assertionFailure("Failed to fetch pages: \(error)") // This should never happen
+        }
     }
 
     private func handleSetParentSuccess() {

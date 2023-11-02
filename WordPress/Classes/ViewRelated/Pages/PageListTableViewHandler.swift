@@ -15,16 +15,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
     private var pages: [Page] = []
     private let blog: Blog
 
-    private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let publishedFilter = PostListFilter.publishedFilter()
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
-        let predicate = NSPredicate(format: "\(#keyPath(Page.blog)) = %@ && \(#keyPath(Page.revision)) = nil", blog)
-        let predicates = [predicate, publishedFilter.predicateForFetchRequest]
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
-        return resultsController(with: fetchRequest, context: managedObjectContext(), performFetch: false)
-    }()
-
     private lazy var _resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         resultsController(with: fetchRequest(), context: managedObjectContext())
     }()
@@ -68,24 +58,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
     func index(for page: Page) -> Int? {
         return pages.firstIndex(of: page)
     }
-
-    func removePage(from index: Int?) -> [Page] {
-        guard let index = index, status == .published else {
-            do {
-                try publishedResultController.performFetch()
-                if let pages = publishedResultController.fetchedObjects as? [Page] {
-                    return pages.setHomePageFirst().hierarchySort()
-                }
-            } catch {
-                DDLogError("Error fetching pages after refreshing the table: \(error)")
-            }
-
-            return []
-        }
-
-        return pages.remove(from: index)
-    }
-
 
     // MARK: - Override TableView Datasource
 
