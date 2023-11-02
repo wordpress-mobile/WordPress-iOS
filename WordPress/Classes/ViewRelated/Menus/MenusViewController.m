@@ -15,8 +15,6 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 
-
-
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 @interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>
@@ -32,9 +30,6 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 @property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
 @property (nonatomic, strong, readonly) UIBarButtonItem *saveButtonItem;
 
-@property (nonatomic, strong, readonly) Blog *blog;
-@property (nonatomic, strong, readonly) MenusService *menusService;
-
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) Menu *updatedMenuForSaving;
 @property (nonatomic, strong) Menu *initialMenuSelection;
@@ -44,6 +39,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 @property (nonatomic, assign) BOOL hasMadeSignificantMenuChanges;
 @property (nonatomic, assign) BOOL needsSave;
 @property (nonatomic, assign) BOOL isSaving;
+
+@property (nonatomic, strong) void (^fetchAllPagesCancellationHandler)(void);
 
 @end
 
@@ -174,6 +171,15 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [super viewWillDisappear:animated];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+
+    if (self.navigationController == nil && self.fetchAllPagesCancellationHandler != nil) {
+        self.fetchAllPagesCancellationHandler();
+    }
 }
 
 #pragma mark - Views setup
@@ -355,9 +361,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         void(^failureBlock)(NSError *) = ^(NSError * __unused error) {
             weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, please check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
         };
-        [self.menusService generateDefaultMenuItemsForBlog:self.blog
-                                                   success:successBlock
-                                                   failure:failureBlock];
+        self.fetchAllPagesCancellationHandler = [self fetchAllPagesWithSuccess:successBlock failure:failureBlock];
     }
 }
 
