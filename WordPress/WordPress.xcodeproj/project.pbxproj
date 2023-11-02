@@ -5580,8 +5580,8 @@
 		FEE48EFC2A4C8312008A48E0 /* Blog+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */; };
 		FEE48EFD2A4C8312008A48E0 /* Blog+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */; };
 		FEE48EFF2A4C9855008A48E0 /* Blog+PublicizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */; };
-		FEF207F42AF2903E0025CB2C /* RemoteBloggingPromptsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF207F22AF2882A0025CB2C /* RemoteBloggingPromptsResponse.swift */; };
-		FEF207F52AF2904D0025CB2C /* RemoteBloggingPromptsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF207F22AF2882A0025CB2C /* RemoteBloggingPromptsResponse.swift */; };
+		FEF207F42AF2903E0025CB2C /* BloggingPromptRemoteObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF207F22AF2882A0025CB2C /* BloggingPromptRemoteObject.swift */; };
+		FEF207F52AF2904D0025CB2C /* BloggingPromptRemoteObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF207F22AF2882A0025CB2C /* BloggingPromptRemoteObject.swift */; };
 		FEF28E822ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF28E812ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift */; };
 		FEF28E832ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF28E812ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift */; };
 		FEF4DC5528439357003806BE /* ReminderScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */; };
@@ -9405,7 +9405,7 @@
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+JetpackSocial.swift"; sourceTree = "<group>"; };
 		FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+PublicizeTests.swift"; sourceTree = "<group>"; };
-		FEF207F22AF2882A0025CB2C /* RemoteBloggingPromptsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteBloggingPromptsResponse.swift; sourceTree = "<group>"; };
+		FEF207F22AF2882A0025CB2C /* BloggingPromptRemoteObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptRemoteObject.swift; sourceTree = "<group>"; };
 		FEF28E812ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailNewHeaderView.swift; sourceTree = "<group>"; };
 		FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinator.swift; sourceTree = "<group>"; };
 		FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSourceTests.swift; sourceTree = "<group>"; };
@@ -18376,7 +18376,7 @@
 		FEF207F02AF287860025CB2C /* BloggingPrompts */ = {
 			isa = PBXGroup;
 			children = (
-				FEF207F22AF2882A0025CB2C /* RemoteBloggingPromptsResponse.swift */,
+				FEF207F22AF2882A0025CB2C /* BloggingPromptRemoteObject.swift */,
 				FEA6517A281C491C002EA086 /* BloggingPromptsService.swift */,
 			);
 			path = BloggingPrompts;
@@ -21188,7 +21188,7 @@
 				8B074A5027AC3A64003A2EB8 /* BlogDashboardViewModel.swift in Sources */,
 				F5A34A9925DEF47D00C9654B /* WPMediaPicker+MediaPicker.swift in Sources */,
 				9A8ECE132254A3260043C8DA /* JetpackInstallError+Blocking.swift in Sources */,
-				FEF207F52AF2904D0025CB2C /* RemoteBloggingPromptsResponse.swift in Sources */,
+				FEF207F52AF2904D0025CB2C /* BloggingPromptRemoteObject.swift in Sources */,
 				43AF2F972107D3810069C012 /* QuickStartTourState.swift in Sources */,
 				FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* OldReaderPostCardCell.swift in Sources */,
@@ -25101,7 +25101,7 @@
 				46F583AC2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
 				FABB24AA2602FC2C00C8785C /* ActivityListRow.swift in Sources */,
 				FABB24AB2602FC2C00C8785C /* UIColor+MurielColorsObjC.swift in Sources */,
-				FEF207F42AF2903E0025CB2C /* RemoteBloggingPromptsResponse.swift in Sources */,
+				FEF207F42AF2903E0025CB2C /* BloggingPromptRemoteObject.swift in Sources */,
 				FABB24AC2602FC2C00C8785C /* InteractiveNotificationsManager.swift in Sources */,
 				FABB24AD2602FC2C00C8785C /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
 				F195C42D26DFBE3A000EC884 /* WordPressBackgroundTaskEventHandler.swift in Sources */,
