@@ -11,6 +11,8 @@ final class PostSearchTokenTableCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        selectionStyle = .none
+
         iconView.tintColor = .secondaryLabel
 
         separator.backgroundColor = .separator
@@ -18,7 +20,7 @@ final class PostSearchTokenTableCell: UITableViewCell {
         stackView.spacing = 8
         stackView.alignment = .center
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 4, left: 16, bottom: 14, right: 16)
+        stackView.layoutMargins = UIEdgeInsets(top: 4, left: 16, bottom: 12, right: 16)
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(stackView)
