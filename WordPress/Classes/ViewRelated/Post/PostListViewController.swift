@@ -260,6 +260,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editPost(apost: post)
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            let post = self.postAtIndexPath(indexPath)
+            let viewModel = PostListItemViewModel(post: post).statusViewModel
+            let helper = AbstractPostMenuHelper(post, viewModel: viewModel)
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+        }
+    }
+
     // MARK: - Post Actions
 
     override func createPost() {
