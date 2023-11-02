@@ -3633,6 +3633,9 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
+		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
+		F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */; };
+		F46546312AF2F8D30017E3D1 /* AllDomainsListMessageStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546302AF2F8D20017E3D1 /* AllDomainsListMessageStateViewModel.swift */; };
 		F465976E28E4669200D5F49A /* cool-green-icon-app-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */; };
 		F465976F28E4669200D5F49A /* cool-green-icon-app-76.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */; };
 		F465977028E4669200D5F49A /* cool-green-icon-app-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */; };
@@ -9027,6 +9030,9 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
+		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
+		F46546302AF2F8D20017E3D1 /* AllDomainsListMessageStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllDomainsListMessageStateViewModel.swift; sourceTree = "<group>"; };
 		F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76@2x.png"; sourceTree = "<group>"; };
 		F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76.png"; sourceTree = "<group>"; };
 		F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60@3x.png"; sourceTree = "<group>"; };
@@ -17298,6 +17304,7 @@
 				F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */,
 				F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */,
 				F4141EE92AE74ADA000D2AAE /* AllDomainsListActivityIndicatorTableViewCell.swift */,
+				F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -17305,8 +17312,10 @@
 		F4141EF02AE99F14000D2AAE /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				F46546302AF2F8D20017E3D1 /* AllDomainsListMessageStateViewModel.swift */,
 				F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */,
 				F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */,
+				F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -23995,6 +24004,7 @@
 				FABB21602602FC2C00C8785C /* EmptyActionView.swift in Sources */,
 				FABB21612602FC2C00C8785C /* ReaderShowAttributionAction.swift in Sources */,
 				FABB21622602FC2C00C8785C /* LinkSettingsViewController.swift in Sources */,
+				F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */,
 				9856A39E261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				FABB21632602FC2C00C8785C /* FeatureItemCell.swift in Sources */,
 				C3FBF4E928AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */,
@@ -24765,6 +24775,7 @@
 				0A9610FA28B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */,
 				80C740FC2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */,
 				83914BD52A2EA03A0017A588 /* PostSettingsViewController+JetpackSocial.swift in Sources */,
+				F46546312AF2F8D30017E3D1 /* AllDomainsListMessageStateViewModel.swift in Sources */,
 				FABB23852602FC2C00C8785C /* WPError.m in Sources */,
 				FABB23862602FC2C00C8785C /* ContentRouter.swift in Sources */,
 				FABB23872602FC2C00C8785C /* BlogToBlog32to33.swift in Sources */,
@@ -24926,6 +24937,7 @@
 				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				FABB24072602FC2C00C8785C /* LayoutPickerAnalyticsEvent.swift in Sources */,
+				F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */,
 				FABB24082602FC2C00C8785C /* ActivityRange.swift in Sources */,
 				FABB24092602FC2C00C8785C /* DiffAbstractValue+Attributes.swift in Sources */,
 				FABB240A2602FC2C00C8785C /* Environment.swift in Sources */,
