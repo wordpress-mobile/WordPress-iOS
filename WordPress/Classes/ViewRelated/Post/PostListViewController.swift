@@ -15,22 +15,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private let postCardEstimatedRowHeight = CGFloat(300.0)
 
-    private lazy var _tableViewHandler: PostListTableViewHandler = {
-        let tableViewHandler = PostListTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = .none
-        return tableViewHandler
-    }()
-
-    override var tableViewHandler: WPTableViewHandler {
-        get {
-            return _tableViewHandler
-        } set {
-            super.tableViewHandler = newValue
-        }
-    }
-
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
     }
@@ -138,15 +122,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     override func configureTableView() {
+        super.configureTableView()
+
         tableView.accessibilityIdentifier = "PostsTable"
-        tableView.separatorStyle = .singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-
-        // Register the cells
         tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
-
-        let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
-        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
 
     private func configureInitialFilterIfNeeded() {
@@ -197,7 +176,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested post.
     ///
     fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController?.object(at: indexPath) as? Post else {
+        guard let post = fetchResultsController.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -240,9 +219,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
-    // MARK: - Table View Handling
+    // MARK: - UITableViewDataSource
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
+        let post = postAtIndexPath(indexPath)
+        cell.accessoryType = .none
+        // TODO: Hide author if only showing my posts?
+        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
+        return cell
+    }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let post = postAtIndexPath(indexPath)
@@ -253,27 +243,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         editPost(apost: post)
-    }
-
-    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
-        let post = postAtIndexPath(indexPath)
-        cell.accessoryType = .none
-
-//        TODO: Remove later
-//        guard let interactivePostView = cell as? InteractivePostView,
-//            let configurablePostView = cell as? ConfigurablePostView else {
-//                fatalError("Cell does not implement the required protocols")
-//        }
-//
-//        interactivePostView.setInteractionDelegate(self)
-//        interactivePostView.setActionSheetDelegate(self)
-//
-//        configurablePostView.configure(with: post)
-
-        // TODO: Hide author if only showing my posts?
-        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
-        return cell
     }
 
     // MARK: - Post Actions

@@ -29,19 +29,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private lazy var _tableViewHandler: PageListTableViewHandler = {
         let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
         tableViewHandler.cacheRowHeights = false
-        tableViewHandler.delegate = self
+//        tableViewHandler.delegate = self
         tableViewHandler.listensForContentChanges = false
         tableViewHandler.updateRowAnimation = .none
         return tableViewHandler
     }()
-
-    override var tableViewHandler: WPTableViewHandler {
-        get {
-            return _tableViewHandler
-        } set {
-            super.tableViewHandler = newValue
-        }
-    }
 
     private lazy var homepageSettingsService = {
         HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
@@ -159,11 +151,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     override func configureTableView() {
+        super.configureTableView()
+
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
-        tableView.rowHeight = UITableView.automaticDimension
 
-        // Register the cells
         tableView.register(PageListCell.self, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
@@ -315,9 +307,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
-    // MARK: - Table View Handling
+    // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
@@ -337,7 +329,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    // MARK: - UITableViewDataSource
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
             let identifier = Constant.Identifiers.templatePageCellIdentifier
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
