@@ -102,8 +102,6 @@ class AbstractPostListViewController: UIViewController,
         updateAndPerformFetchRequest()
 
         observeNetworkStatus()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -171,7 +169,7 @@ class AbstractPostListViewController: UIViewController,
         tableView.tableHeaderView = filterTabBar
     }
 
-    private func refreshResults() {
+    func refreshResults() {
         guard isViewLoaded == true else {
             return
         }
@@ -221,23 +219,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         return properties
-    }
-
-    // MARK: - Notifications
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post)
-        }
-        if !updatedIndexPaths.isEmpty {
-            tableView.beginUpdates()
-            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
-            tableView.endUpdates()
-        }
     }
 
     // MARK: - Author Filter
@@ -399,7 +380,13 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        do { // Some defensive code, just in case
+            try WPException.objcTry {
+                self.tableView.endUpdates()
+            }
+        } catch {
+            tableView.reloadData()
+        }
         refreshResults()
     }
 

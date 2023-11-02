@@ -11,10 +11,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
-    private let statsCacheInterval = TimeInterval(300) // 5 minutes
-
-    private let postCardEstimatedRowHeight = CGFloat(300.0)
-
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
     }
@@ -84,6 +80,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -116,6 +114,23 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
+        }
+    }
+
+    // MARK: - Notifications
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return
+        }
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
+            let post = fetchResultsController.object(at: $0)
+            return updatedObjects.contains(post)
+        }
+        if !updatedIndexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
+            tableView.endUpdates()
         }
     }
 
