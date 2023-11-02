@@ -108,7 +108,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             case let post as Post:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
                 assert(listViewController is InteractivePostViewDelegate)
-                let viewModel = PostListItemViewModel(post: post)
+                let viewModel = PostListItemViewModel(post: post, shouldHideAuthor: listViewController?.shouldHideAuthor ?? false)
                 cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
                 updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell

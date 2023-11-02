@@ -31,13 +31,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private var shouldHideAuthor: Bool {
-        guard filterSettings.canFilterByAuthor() else {
-            return true
-        }
-        return filterSettings.currentPostAuthorFilter() == .mine
-    }
-
     /// If set, when the post list appear it will show the tab for this status
     var initialFilterWithPostStatus: BasePost.Status?
 
