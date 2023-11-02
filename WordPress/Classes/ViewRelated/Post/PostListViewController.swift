@@ -31,7 +31,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private var showingJustMyPosts: Bool {
+    private var shouldHideAuthor: Bool {
+        guard filterSettings.canFilterByAuthor() else {
+            return true
+        }
         return filterSettings.currentPostAuthorFilter() == .mine
     }
 
@@ -260,8 +263,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
 
-        // TODO: Hide author if only showing my posts?
-        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
+        let viewModel = PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor)
+        cell.configure(with: viewModel, delegate: self)
         return cell
     }
 
