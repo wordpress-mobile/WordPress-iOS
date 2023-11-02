@@ -163,11 +163,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
-        let bundle = Bundle.main
-
         // Register the cells
         tableView.register(PageListCell.self, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
-
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
 
@@ -351,7 +348,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let page = pageAtIndexPath(indexPath)
         let indentation = getIndentationLevel(at: indexPath)
         let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-        cell.configure(with: PageListItemViewModel(page: page), indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
+        let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
+        cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
         return cell
     }
 
@@ -383,271 +381,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         QuickStartTourGuide.shared.visited(.newPage)
     }
 
-    private func blazePage(_ page: AbstractPost) {
-        BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: page)
-    }
-
-    fileprivate func copyPage(_ page: Page) {
-        // Analytics
-        WPAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics())
-        // Copy Page
-        let newPage = page.blog.createDraftPage()
-        newPage.postTitle = page.postTitle
-        newPage.content = page.content
-        // Open Editor
-        let editorViewController = EditPageViewController(page: newPage)
-        present(editorViewController, animated: false)
-    }
-
-    fileprivate func copyLink(_ page: Page) {
-        let pasteboard = UIPasteboard.general
-        guard let link = page.permaLink else { return }
-        pasteboard.string = link as String
-        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
-        let notice = Notice(title: noticeTitle, feedbackType: .success)
-        ActionDispatcher.dispatch(NoticeAction.dismiss) // Dismiss any old notices
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    fileprivate func retryPage(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(apost)
-    }
-
-    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
-        WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
-
-        let repository = PostRepository(coreDataStack: ContextManager.shared)
-        Task { @MainActor [weak self] in
-            do {
-                try await repository.restore(TaggedManagedObjectID(apost), to: .draft)
-                self?._tableViewHandler.refreshTableView(at: indexPath)
-            } catch {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-        }
-    }
-
     // MARK: - Cell Action Handling
 
-    fileprivate func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
-        let objectID = page.objectID
-
-        let retryButtonTitle = NSLocalizedString("Retry", comment: "Label for a button that attempts to re-upload a page that previously failed to upload.")
-        let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
-        let draftButtonTitle = NSLocalizedString("Move to Draft", comment: "Label for a button that moves a page to the draft folder")
-        let publishButtonTitle = NSLocalizedString("Publish Immediately", comment: "Label for a button that moves a page to the published folder, publishing with the current date/time.")
-        let trashButtonTitle = NSLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
-        let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
-
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
-
-        let indexPath = tableView.indexPath(for: cell)
-
-        let filter = filterSettings.currentPostListFilter().filterType
-        let isHomepage = ((page as? Page)?.isSiteHomepage ?? false)
-        if filter == .trashed {
-            alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
-
-                strongSelf.draftPage(page, at: indexPath)
-            })
-
-            alertController.addActionWithTitle(deleteButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
-
-                strongSelf.handleTrashPage(page)
-            })
-        } else if filter == .published {
-            if page.isFailed {
-                alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-
-                    strongSelf.retryPage(page)
-                })
-            } else {
-                addEditAction(to: alertController, for: page)
-
-                alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-
-                    strongSelf.viewPost(page)
-                })
-
-                addBlazeAction(to: alertController, for: page)
-                addSetParentAction(to: alertController, for: page, at: indexPath)
-                addSetHomepageAction(to: alertController, for: page, at: indexPath)
-                addSetPostsPageAction(to: alertController, for: page, at: indexPath)
-                addDuplicateAction(to: alertController, for: page)
-
-                if !isHomepage {
-                    alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                        guard let strongSelf = self,
-                              let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                        }
-
-                        strongSelf.draftPage(page, at: indexPath)
-                    })
-                }
-            }
-
-            addCopyLinkAction(to: alertController, for: page)
-
-            if !isHomepage {
-                alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                          let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                    }
-
-                    strongSelf.handleTrashPage(page)
-                })
-            }
-        } else {
-            if page.isFailed {
-                alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-
-                    strongSelf.retryPage(page)
-                })
-            } else {
-                addEditAction(to: alertController, for: page)
-
-                alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-
-                    strongSelf.viewPost(page)
-                })
-
-                addSetParentAction(to: alertController, for: page, at: indexPath)
-                addDuplicateAction(to: alertController, for: page)
-
-                alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
-                            return
-                    }
-
-                    strongSelf.publishPost(page)
-                })
-            }
-
-            addCopyLinkAction(to: alertController, for: page)
-
-            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
-
-                strongSelf.handleTrashPage(page)
-            })
-        }
-
-        WPAnalytics.track(.postListOpenedCellMenu, withProperties: propertiesForAnalytics())
-
-        alertController.modalPresentationStyle = .popover
-        present(alertController, animated: true)
-
-        if let presentationController = alertController.popoverPresentationController {
-            presentationController.permittedArrowDirections = .any
-            presentationController.sourceView = button
-            presentationController.sourceRect = button.bounds
-        }
-    }
-
-    private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
-        guard BlazeHelper.isBlazeFlagEnabled() && page.canBlaze else {
-            return
-        }
-
-        let buttonTitle = NSLocalizedString("pages.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the page with Blaze.")
-        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
-            self?.blazePage(page)
-        })
-
-        BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList)
-    }
-
-    private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
-        guard let page = page as? Page else { return }
-
-        if page.status == .trash || page.isSitePostsPage {
-            return
-        }
-
-        let buttonTitle = NSLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
-        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
-            if let page = self?.pageForObjectID(page.objectID) {
-                self?.edit(page)
-            }
-        })
-    }
-
-    private func addDuplicateAction(to controller: UIAlertController, for page: AbstractPost) {
-        if page.status != .publish && page.status != .draft {
-            return
-        }
-
-        let buttonTitle = NSLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
-        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
-            if let page = self?.pageForObjectID(page.objectID) {
-                self?.copyPage(page)
-            }
-        })
-    }
-
-    private func addCopyLinkAction(to controller: UIAlertController, for page: AbstractPost) {
-        let buttonTitle = NSLocalizedString("Copy Link", comment: "Label for page copy link. Tapping copy the url of page")
-        controller.addActionWithTitle(buttonTitle, style: .default) { [weak self] _ in
-            if let page = self?.pageForObjectID(page.objectID) {
-                self?.copyLink(page)
-            }
-        }
-    }
-
-    private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        /// This button is disabled for trashed pages
-        //
-        if page.status == .trash {
-            return
-        }
-
-        let objectID = page.objectID
-        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
-        controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] _ in
-            if let page = self?.pageForObjectID(objectID) {
-                self?.setParent(for: page, at: index)
-            }
-        })
-    }
-
-    private func setParent(for page: Page, at index: IndexPath?) {
-        guard let index = index else {
-            return
-        }
-
+    func setParentPage(for page: Page, at index: IndexPath) {
         let selectedPage = pageAtIndexPath(index)
         let newIndex = _tableViewHandler.index(for: selectedPage)
         let pages = _tableViewHandler.removePage(from: newIndex)
@@ -684,69 +420,31 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return page
     }
 
-    private func addSetHomepageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        let objectID = page.objectID
+    func setPageAsHomepage(_ page: Page) {
+        guard let pageID = page.postID?.intValue else { return }
 
-        /// This button is enabled if
-        /// - Page is not trashed
-        /// - The site's homepage type is .page
-        /// - The page isn't currently the homepage
-        //
-        guard page.status != .trash,
-            let homepageType = blog.homepageType,
-            homepageType == .page,
-            let page = pageForObjectID(objectID),
-            page.isSiteHomepage == false else {
-            return
-        }
-
-        let setHomepageButtonTitle = NSLocalizedString("Set as Homepage", comment: "Label for a button that sets the selected page as the site's Homepage")
-        controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
-            if let pageID = page.postID?.intValue {
-                self?.beginRefreshingManually()
-                WPAnalytics.track(.postListSetHomePageAction)
-                self?.homepageSettingsService?.setHomepageType(.page,
-                                                               homePageID: pageID, success: {
-                                                                self?.refreshAndReload()
-                                                                self?.handleHomepageSettingsSuccess()
-                }, failure: { error in
-                    self?.refreshControl.endRefreshing()
-                    self?.handleHomepageSettingsFailure()
-                })
-            }
+        beginRefreshingManually()
+        WPAnalytics.track(.postListSetHomePageAction)
+        homepageSettingsService?.setHomepageType(.page, homePageID: pageID, success: { [weak self] in
+            self?.refreshAndReload()
+            self?.handleHomepageSettingsSuccess()
+        }, failure: { [weak self] error in
+            self?.refreshControl.endRefreshing()
+            self?.handleHomepageSettingsFailure()
         })
     }
 
-    private func addSetPostsPageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        let objectID = page.objectID
+    func setPageAsPostsPage(_ page: Page) {
+        guard let pageID = page.postID?.intValue else { return }
 
-        /// This button is enabled if
-        /// - Page is not trashed
-        /// - The site's homepage type is .page
-        /// - The page isn't currently the posts page
-        //
-        guard page.status != .trash,
-            let homepageType = blog.homepageType,
-            homepageType == .page,
-            let page = pageForObjectID(objectID),
-            page.isSitePostsPage == false else {
-            return
-        }
-
-        let setPostsPageButtonTitle = NSLocalizedString("Set as Posts Page", comment: "Label for a button that sets the selected page as the site's Posts page")
-        controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
-            if let pageID = page.postID?.intValue {
-                self?.beginRefreshingManually()
-                WPAnalytics.track(.postListSetAsPostsPageAction)
-                self?.homepageSettingsService?.setHomepageType(.page,
-                                                               withPostsPageID: pageID, success: {
-                                                                self?.refreshAndReload()
-                                                                self?.handleHomepagePostsPageSettingsSuccess()
-                }, failure: { error in
-                    self?.refreshControl.endRefreshing()
-                    self?.handleHomepageSettingsFailure()
-                })
-            }
+        beginRefreshingManually()
+        WPAnalytics.track(.postListSetAsPostsPageAction)
+        homepageSettingsService?.setHomepageType(.page, withPostsPageID: pageID, success: { [weak self] in
+            self?.refreshAndReload()
+            self?.handleHomepagePostsPageSettingsSuccess()
+        }, failure: { [weak self] error in
+            self?.refreshControl.endRefreshing()
+            self?.handleHomepageSettingsFailure()
         })
     }
 
@@ -791,7 +489,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            Task { await self?.deletePost(post) }
+            self?.deletePost(post)
         }
         alertController.presentFromRootViewController()
     }

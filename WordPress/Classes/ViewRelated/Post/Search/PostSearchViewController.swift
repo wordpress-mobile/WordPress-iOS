@@ -114,8 +114,9 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 return cell
             case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
-                cell.configure(with: PageListItemViewModel(page: page), delegate: listViewController as? InteractivePostViewDelegate)
-                updateHighlights(for: [cell], searchTerm: viewModel.searchTerm)
+                let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
+                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             default:
                 fatalError("Unsupported item: \(type(of: post))")

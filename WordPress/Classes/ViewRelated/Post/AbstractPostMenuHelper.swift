@@ -17,8 +17,12 @@ struct AbstractPostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu {
-        let sections = makeSections(presentingView: presentingView, delegate: delegate)
-        return UIMenu(title: "", options: .displayInline, children: sections)
+        return UIMenu(title: "", options: .displayInline, children: [
+            UIDeferredMenuElement.uncached { [weak presentingView, weak delegate] completion in
+                guard let presentingView, let delegate else { return }
+                completion(makeSections(presentingView: presentingView, delegate: delegate))
+            }
+        ])
     }
 
     /// Creates post actions grouped into sections
@@ -47,8 +51,8 @@ struct AbstractPostMenuHelper {
         delegate: InteractivePostViewDelegate
     ) -> [UIAction] {
         return buttons.map { button in
-            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak delegate] _ in
-                guard let delegate else { return }
+            UIAction(title: button.title(for: post), image: button.icon, attributes: button.attributes ?? [], handler: { [weak presentingView, weak delegate] _ in
+                guard let presentingView, let delegate else { return }
                 button.performAction(for: post, view: presentingView, delegate: delegate)
             })
         }
@@ -77,6 +81,9 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble")
+        case .setParent: return UIImage(systemName: "text.append")
+        case .setHomepage: return UIImage(systemName: "house")
+        case .setPostsPage: return UIImage(systemName: "text.word.spacing")
         }
     }
 
@@ -102,6 +109,9 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
+        case .setParent: return Strings.setParent
+        case .setHomepage: return Strings.setHomepage
+        case .setPostsPage: return Strings.setPostsPage
         }
     }
 
@@ -129,6 +139,12 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.blaze(post)
         case .comments:
             delegate.comments(post)
+        case .setParent(let indexPath):
+            delegate.setParent(for: post, at: indexPath)
+        case .setHomepage:
+            delegate.setHomepage(for: post)
+        case .setPostsPage:
+            delegate.setPostsPage(for: post)
         }
     }
 
@@ -145,5 +161,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
+        static let setParent = NSLocalizedString("posts.setParent.actionTitle", value: "Set parent", comment: "Set the parent page for the selected page.")
+        static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
+        static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
     }
 }

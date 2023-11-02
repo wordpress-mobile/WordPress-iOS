@@ -41,7 +41,7 @@ extension PageListViewController: InteractivePostViewDelegate {
 
     func retry(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        retryPage(page)
+        PostCoordinator.shared.save(page)
     }
 
     func cancelAutoUpload(_ apost: AbstractPost) {
@@ -61,6 +61,23 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
+    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
+        guard let page = apost as? Page else { return }
+        setParentPage(for: page, at: indexPath)
+    }
+
+    func setHomepage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        setPageAsHomepage(page)
+    }
+
+    func setPostsPage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        setPageAsPostsPage(page)
+    }
+
+    // MARK: - Helpers
+
     private func copyPage(_ page: Page) {
         // Analytics
         WPAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics())
@@ -73,38 +90,40 @@ extension PageListViewController: InteractivePostViewDelegate {
         present(editorViewController, animated: false)
     }
 
-    private func retryPage(_ page: Page) {
-        PostCoordinator.shared.save(page)
-    }
-
     private func trashPage(_ page: Page) {
         guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("pagesList.trash.offline", value: "Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
+            ReachabilityUtils.showNoInternetConnectionNotice(message: Strings.offlineMessage)
             return
         }
 
-        let cancelText = NSLocalizedString("pagesList.trash.cancel", value: "Cancel", comment: "Cancels an Action")
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if page.status == .trash {
-            deleteText = NSLocalizedString("pagesList.deletePermanently.actionTitle", value: "Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("pagesList.deletePermanently.alertTitle", value: "Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("pagesList.deletePermanently.alertMessage", value: "Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-        } else {
-            deleteText = NSLocalizedString("pagesList.trash.actionTitle", value: "Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("pagesList.trash.alertTitle", value: "Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("pagesList.trash.alertMessage", value: "Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
-        }
+        let isPageTrashed = page.status == .trash
+        let actionText = isPageTrashed ? Strings.DeletePermanently.actionText : Strings.Trash.actionText
+        let titleText = isPageTrashed ? Strings.DeletePermanently.titleText : Strings.Trash.titleText
+        let messageText = isPageTrashed ? Strings.DeletePermanently.messageText : Strings.Trash.messageText
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            Task { await self?.deletePost(page) }
+        alertController.addCancelActionWithTitle(Strings.cancelText)
+        alertController.addDestructiveActionWithTitle(actionText) { [weak self] action in
+            self?.deletePost(page)
         }
         alertController.presentFromRootViewController()
+    }
+}
+
+private enum Strings {
+
+    static let offlineMessage = NSLocalizedString("pagesList.trash.offline", value: "Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
+    static let cancelText = NSLocalizedString("pagesList.trash.cancel", value: "Cancel", comment: "Cancels an Action")
+
+    enum DeletePermanently {
+        static let actionText = NSLocalizedString("pagesList.deletePermanently.actionTitle", value: "Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
+        static let titleText = NSLocalizedString("pagesList.deletePermanently.alertTitle", value: "Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
+        static let messageText = NSLocalizedString("pagesList.deletePermanently.alertMessage", value: "Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
+    }
+
+    enum Trash {
+        static let actionText = NSLocalizedString("pagesList.trash.actionTitle", value: "Move to Trash", comment: "Trash option in the trash page confirmation alert.")
+        static let titleText = NSLocalizedString("pagesList.trash.alertTitle", value: "Trash this page?", comment: "Title of the trash page confirmation alert.")
+        static let messageText = NSLocalizedString("pagesList.trash.alertMessage", value: "Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
     }
 }
