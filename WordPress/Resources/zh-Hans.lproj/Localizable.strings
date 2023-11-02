@@ -11018,9 +11018,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
 
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "您的站点对所有人均可见，但要求搜索引擎不要对您的站点进行索引。";
-
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "已隐藏";
 
