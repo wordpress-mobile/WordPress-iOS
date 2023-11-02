@@ -1,13 +1,3 @@
-/// A model representing the response object for blogging prompts v3 requests.
-struct RemoteBloggingPromptsResponse: Decodable {
-    let prompts: [BloggingPromptRemoteObject]
-
-    init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        self.prompts = try container.decode([BloggingPromptRemoteObject].self)
-    }
-}
-
 /// Encapsulates a single blogging prompt object from the v3 API.
 struct BloggingPromptRemoteObject {
     var promptID: Int
