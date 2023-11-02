@@ -159,11 +159,12 @@ private extension DomainPurchaseChoicesView {
     }
 }
 
-#Preview {
-    DomainPurchaseChoicesView {
-        print("Buy domain tapped.")
-    } chooseSiteAction: {
-        print("Choose site tapped")
+struct DomainPurchaseChoicesView_Previews: PreviewProvider {
+    static var previews: some View {
+        DomainPurchaseChoicesView {
+            print("Buy domain tapped.")
+        } chooseSiteAction: {
+            print("Choose site tapped")
+        }
     }
-//    .environment(\.sizeCategory, .extraExtraExtraLarge)
 }
