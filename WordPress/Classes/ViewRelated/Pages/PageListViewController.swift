@@ -322,6 +322,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            let page = self.pages[indexPath.row]
+            let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
+            let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+        }
+    }
+
     // MARK: - UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
