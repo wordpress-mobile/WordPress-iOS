@@ -373,6 +373,38 @@ extension PostRepository {
         )
     }
 
+    /// Fetch all pages of the given site.
+    ///
+    /// - Parameters:
+    ///   - statuses: Only fetch pages whose status is included in the given statues.
+    ///   - blogID: Object ID of the site.
+    /// - Returns: A `Task` instance representing the fetching. The fetch pages API requests will stop if the task is cancelled.
+    func fetchAllPages(statuses: [BasePost.Status], in blogID: TaggedManagedObjectID<Blog>) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
+        Task {
+            let pageSize = 100
+            var allPages = [TaggedManagedObjectID<Page>]()
+            while true {
+                try Task.checkCancellation()
+
+                let pageRange = allPages.count..<(allPages.count + pageSize)
+                let current = try await fetch(
+                    type: Page.self,
+                    statuses: statuses,
+                    authorUserID: nil,
+                    range: pageRange,
+                    deleteOtherLocalPosts: false,
+                    in: blogID
+                )
+                allPages.append(contentsOf: current)
+
+                if current.isEmpty || current.count < pageSize {
+                    break
+                }
+            }
+            return allPages
+        }
+    }
+
     private func fetch<P: AbstractPost>(
         type: P.Type,
         searchInput: String? = nil,
