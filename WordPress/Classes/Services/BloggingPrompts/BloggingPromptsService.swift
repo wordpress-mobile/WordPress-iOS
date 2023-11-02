@@ -385,7 +385,7 @@ private extension BloggingPromptsService {
         fetchRequest.predicate = predicate
 
         contextManager.performAndSave({ derivedContext in
-            /// try to overwrite prompts that have the same dates.
+            /// Try to overwrite prompts that have the same dates.
             ///
             /// Perf. notes: since we're at most updating 25 entries, it should be acceptable to update them one by one.
             /// However, if requirements change and we need to work through a larger data set, consider switching to

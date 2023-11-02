@@ -47,7 +47,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         super.tearDown()
     }
 
-    // MARK: - Tests
+    // MARK: - fetchPrompts Tests
 
     func test_fetchPrompts_givenSuccessfulResult_callsSuccessBlock() {
         // use actual remote object so the request can be intercepted by HTTPStubs.
@@ -183,6 +183,128 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         let numberParameter = try XCTUnwrap(passedNumber())
         XCTAssertEqual(numberParameter, expectedNumber)
     }
+
+    // MARK: - Upsert Tests
+
+    // new prompts should overwrite any
+    func test_fetchPrompt_shouldOverwritePromptsWithExistingDates() throws {
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
+
+        let expectedPromptIDs: Set<Int> = [239, 248]
+
+        // insert existing prompts.
+        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        contextManager.save(contextManager.mainContext)
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .distantPast) { prompts in
+            // the existing prompt should have been overwritten.
+            XCTAssertEqual(prompts.count, 2)
+
+            let promptIDs = Set(prompts.map { Int($0.promptID) })
+            XCTAssertTrue(expectedPromptIDs.elementsEqual(promptIDs))
+
+            expectation.fulfill()
+
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    // there should only be one prompt per date.
+    func test_fetchPrompt_shouldDeleteExcessPromptsWithTheSameDates() throws {
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
+
+        let expectedPromptIDs: Set<Int> = [239, 248]
+
+        // insert existing prompts.
+        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        contextManager.save(contextManager.mainContext)
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .distantPast) { prompts in
+            // the existing prompt should have been overwritten.
+            XCTAssertEqual(prompts.count, 2)
+
+            let promptIDs = prompts.map { Int($0.promptID) }
+            XCTAssertTrue(expectedPromptIDs.elementsEqual(promptIDs))
+
+            expectation.fulfill()
+
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    func test_fetchPrompt_shouldNotOverwritePromptsFromOtherSites() throws {
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
+
+        let otherSiteID: Int32 = 2
+
+        // insert existing prompts.
+        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
+        makeBloggingPrompt(siteID: otherSiteID, date: date)
+        contextManager.save(contextManager.mainContext)
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .distantPast) { _ in
+            // the prompt dated 2022-05-03 in siteID=2 shouldn't be overwritten.
+            let prompts = self.contextManager.mainContext.allObjects(ofType: BloggingPrompt.self)
+            XCTAssertEqual(prompts.count, 3)
+
+            expectation.fulfill()
+
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    // with the force_year parameter, it's possible for the same month and day to share the same `promptID`.
+    // however, the `promptID` property is not unique or marked as primary key so duplicate IDs should be OK.
+    func test_fetchPrompt_shouldNotOverwriteExistingPromptFromLastYear() throws {
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
+
+        let promptID: Int32 = 239 // same promptID as 2022-05-03 from mock data.
+
+        // insert existing prompts.
+        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2021-05-03")) // one year before 2022-05-03.
+        makeBloggingPrompt(siteID: Int32(siteID), promptID: promptID, date: date)
+        contextManager.save(contextManager.mainContext)
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .distantPast) { prompts in
+            XCTAssertEqual(prompts.count, 3)
+            expectation.fulfill()
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
 }
 
 
@@ -200,7 +322,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: 100).build()
+        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
     }
 
     func stubFetchPromptsResponse() {
@@ -208,6 +330,16 @@ private extension BloggingPromptsServiceTests {
             let stubPath = OHPathForFile("blogging-prompts-fetch-success.json", type(of: self))
             return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
         }
+    }
+
+    @discardableResult
+    func makeBloggingPrompt(siteID: Int32, promptID: Int32? = nil, date: Date) -> BloggingPrompt {
+        let prompt = BloggingPrompt.newObject(in: contextManager.mainContext)!
+        prompt.siteID = siteID
+        prompt.date = date
+        prompt.promptID = promptID ?? NSNumber(value: arc4random_uniform(UInt32.max)).int32Value
+
+        return prompt
     }
 
     // MARK: Mock WordPressComRestAPI Helper
