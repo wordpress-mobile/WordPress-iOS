@@ -411,25 +411,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
-    fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
-
-        var pageManagedOjbect: NSManagedObject
-
-        do {
-            pageManagedOjbect = try managedObjectContext().existingObject(with: objectID)
-
-        } catch let error as NSError {
-            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), \(error)")
-            return nil
-        } catch _ {
-            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), Could not find Page with ID \(objectID)")
-            return nil
-        }
-
-        let page = pageManagedOjbect as? Page
-        return page
-    }
-
     func setPageAsHomepage(_ page: Page) {
         guard let pageID = page.postID?.intValue else { return }
 
