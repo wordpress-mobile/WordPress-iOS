@@ -5,7 +5,7 @@ class BloggingPromptsService {
     let siteID: NSNumber
 
     private let contextManager: CoreDataStackSwift
-    private let remote: BloggingPromptsServiceRemote // TODO: replace with api.
+    private let remote: BloggingPromptsServiceRemote // TODO: Remove once the settings logic is ported.
     private let api: WordPressComRestApi
     private let calendar: Calendar = .autoupdatingCurrent
     private let maxListPrompts = 11
