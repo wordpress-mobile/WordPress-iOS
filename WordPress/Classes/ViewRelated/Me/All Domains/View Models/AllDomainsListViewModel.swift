@@ -60,9 +60,9 @@ class AllDomainsListViewModel {
             switch result {
             case .success(let domains):
                 self.domains = domains
-                self.state = domains.isEmpty ? .message(self.emptyMessageViewModel()) : .normal
+                self.state = domains.isEmpty ? .message(self.noDomainsMessageViewModel()) : .normal
             case .failure(let error):
-                self.state = .message(self.emptyMessageViewModel(from: error))
+                self.state = .message(self.errorMessageViewModel(from: error))
             }
         }
     }
@@ -85,10 +85,10 @@ class AllDomainsListViewModel {
         return .init(domain: domains[index])
     }
 
-    // MARK: - Creating Empty State View Models
+    // MARK: - Creating Message State View Models
 
     /// The  message to display when the user doesn't have any domains.
-    private func emptyMessageViewModel() -> AllDomainsListMessageStateViewModel {
+    private func noDomainsMessageViewModel() -> AllDomainsListMessageStateViewModel {
         let action: () -> Void = { [weak self] in
             self?.addDomainAction?()
         }
@@ -100,7 +100,7 @@ class AllDomainsListViewModel {
     }
 
     /// The  message to display when an error occurs.
-    private func emptyMessageViewModel(from error: Error) -> AllDomainsListMessageStateViewModel {
+    private func errorMessageViewModel(from error: Error) -> AllDomainsListMessageStateViewModel {
         let title: String
         let description: String
         let button: AllDomainsListMessageStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
@@ -120,7 +120,7 @@ class AllDomainsListViewModel {
     }
 
     /// The message to display when there are no domains matching the search query.
-    private func emptyMessageViewModel(searchQuery: String) -> AllDomainsListMessageStateViewModel {
+    private func noSearchResultsMessageViewModel(searchQuery: String) -> AllDomainsListMessageStateViewModel {
         fatalError("Not implemented yet")
     }
 }
