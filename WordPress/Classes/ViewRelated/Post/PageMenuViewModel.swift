@@ -42,7 +42,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !page.isFailed {
+        if !page.isFailed && page.status != .trash {
             buttons.append(.view)
         }
 

@@ -142,7 +142,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !post.isFailed {
+        if !post.isFailed && post.status != .trash {
             buttons.append(.view)
         }
 
