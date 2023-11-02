@@ -426,6 +426,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
     }
 
+    func showSettings(for post: AbstractPost) {
+        let viewController = PostSettingsViewController(post: post.latest())
+        viewController.hidesBottomBarWhenPushed = true
+        viewController.isStandalone = true
+        let navigation = UINavigationController(rootViewController: viewController)
+        navigation.navigationBar.isTranslucent = true // Reset to default
+        self.present(navigation, animated: true)
+    }
+
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
