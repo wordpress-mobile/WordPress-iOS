@@ -54,7 +54,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeletePost() async throws {
         let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             return TaggedManagedObjectID(post)
         }
 
@@ -69,7 +69,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeletePostWithRemoteFailure() async throws {
         let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             return TaggedManagedObjectID(post)
         }
 
@@ -89,7 +89,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeleteHistory() async throws {
         let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             let second = first.createRevision()
             second.postTitle = "Edited"
             return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
@@ -107,7 +107,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeleteLatest() async throws {
         let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             let second = first.createRevision()
             second.postTitle = "Edited"
             return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
@@ -173,6 +173,33 @@ class PostRepositoryTests: CoreDataTestCase {
         }
         XCTAssertTrue(isPostDeleted)
     }
+
+    func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() async throws {
+        // Arrange
+        let (postID, revisionID) = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).with(statusAfterSync: .publish).withRemote().build()
+            let revision = post.createRevision()
+            return (TaggedManagedObjectID(post), TaggedManagedObjectID(revision))
+        }
+
+        let remotePost = RemotePost(siteID: 1, status: "trash", title: "Post: Test", content: "New content")!
+        remotePost.type = "post"
+        remoteMock.trashPostResult = .success(remotePost)
+
+        // Act
+        try await repository.trash(postID)
+
+        // Assert
+        let postStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: postID).statusAfterSync }
+        let postStatus = try await contextManager.performQuery { try $0.existingObject(with: postID).status }
+        let revisionStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: revisionID).statusAfterSync }
+        let revisionStatus = try await contextManager.performQuery { try $0.existingObject(with: revisionID).status }
+
+        XCTAssertEqual(postStatusAfterSync, .trash)
+        XCTAssertEqual(postStatus, .trash)
+        XCTAssertEqual(revisionStatusAfterSync, .trash)
+        XCTAssertEqual(revisionStatus, .trash)
+     }
 
     func testRestorePost() async throws {
         let postID = try await contextManager.performAndSave { context in

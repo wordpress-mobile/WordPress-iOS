@@ -17,8 +17,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
             static let pageCellIdentifier = "PageCellIdentifier"
             static let pageCellNibName = "PageListTableViewCell"
-            static let restorePageCellIdentifier = "RestorePageCellIdentifier"
-            static let restorePageCellNibName = "RestorePageTableViewCell"
             static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
@@ -203,9 +201,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Register the cells
         let pageCellNib = UINib(nibName: Constant.Identifiers.pageCellNibName, bundle: bundle)
         tableView.register(pageCellNib, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
-
-        let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
-        tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
 
@@ -425,16 +420,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let searchText = currentSearchTerm() ?? ""
         let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
-        // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
-        // or posts that were recently deleted.
-        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
-
-            let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
-
-            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
-        } else {
-            predicates.append(filterPredicate)
-        }
+        predicates.append(filterPredicate)
 
         if searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
@@ -516,10 +502,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return cell
         }
 
-        let page = pageAtIndexPath(indexPath)
-
-        let identifier = cellIdentifierForPage(page)
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifiers.pageCellIdentifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
         return cell
@@ -541,28 +524,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
-        } else if cell.reuseIdentifier == Constant.Identifiers.restorePageCellIdentifier {
-            cell.selectionStyle = .none
-            cell.onAction = { [weak self] cell, _, page in
-                self?.handleRestoreAction(fromCell: cell, forPage: page)
-            }
+        } else {
+            assertionFailure("Unknown cell: \(cell)")
         }
 
         cell.contentView.backgroundColor = UIColor.listForeground
 
         cell.configureCell(page)
-    }
-
-    fileprivate func cellIdentifierForPage(_ page: Page) -> String {
-        var identifier: String
-
-        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = Constant.Identifiers.restorePageCellIdentifier
-        } else {
-            identifier = Constant.Identifiers.pageCellIdentifier
-        }
-
-        return identifier
     }
 
     // MARK: - Post Actions
@@ -624,24 +592,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        let previousStatus = apost.status
-        apost.status = .draft
-
-        let contextManager = ContextManager.sharedInstance()
-        let postService = PostService(managedObjectContext: contextManager.mainContext)
-
-        postService.uploadPost(apost, success: { [weak self] _ in
-            DispatchQueue.main.async {
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        Task { @MainActor [weak self] in
+            do {
+                try await repository.restore(TaggedManagedObjectID(apost), to: .draft)
                 self?._tableViewHandler.refreshTableView(at: indexPath)
+            } catch {
+                WPError.showXMLRPCErrorAlert(error)
             }
-        }) { [weak self] (error) in
-            apost.status = previousStatus
-
-            if let strongSelf = self {
-                contextManager.save(strongSelf.managedObjectContext())
-            }
-
-            WPError.showXMLRPCErrorAlert(error)
         }
     }
 
@@ -815,10 +773,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    override func deletePost(_ apost: AbstractPost) {
-        super.deletePost(apost)
-    }
-
     private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
         guard BlazeHelper.isBlazeFlagEnabled() && page.canBlaze else {
             return
@@ -925,12 +879,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageManagedOjbect as? Page
         return page
-    }
-
-    fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
-        restorePost(page) { [weak self] in
-            self?._tableViewHandler.refreshTableView(at: self?.tableView.indexPath(for: cell))
-        }
     }
 
     private func addSetHomepageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
@@ -1040,7 +988,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
+            Task { await self?.deletePost(post) }
         }
         alertController.presentFromRootViewController()
     }

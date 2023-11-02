@@ -2,6 +2,12 @@
 
 source 'https://rubygems.org'
 
+# To address the following error when running `bundle exec pod install`:
+#
+#   undefined method `deprecator' for ActiveSupport:Module (NoMethodError)
+#
+# See: https://github.com/fastlane/fastlane/issues/21585
+gem 'activesupport', '~> 7.0.8'
 # 1.12.x and higher, starting from 1.12.1, because that hotfix fixes Xcode 14.3 compatibility
 gem 'cocoapods', '~> 1.12', '>= 1.12.1'
 gem 'commonmarker'
@@ -17,7 +23,7 @@ gem 'fastlane-plugin-sentry'
 # waiting for the fix to be shipped.
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'mokagio/auto-retry-on-strings-glotpress-429'
 #
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.1'
 gem 'rake'
 gem 'rubocop', '~> 1.30'
 gem 'rubocop-rake', '~> 0.6'
