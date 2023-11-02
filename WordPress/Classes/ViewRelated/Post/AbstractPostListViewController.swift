@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import Gridicons
 import CocoaLumberjack
 import WordPressShared
@@ -7,10 +8,11 @@ import WordPressFlux
 
 class AbstractPostListViewController: UIViewController,
                                       WPContentSyncHelperDelegate,
-                                      WPTableViewHandlerDelegate,
+                                      NSFetchedResultsControllerDelegate,
+                                      UITableViewDelegate,
+                                      UITableViewDataSource,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
-
     private static let postsControllerRefreshInterval = TimeInterval(300)
     private static let httpErrorCodeForbidden = 403
     private static let postsFetchRequestBatchSize = 10
@@ -35,26 +37,15 @@ class AbstractPostListViewController: UIViewController,
     /// to the subclass to define this property.
     ///
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
-    let tableViewController = UITableViewController(style: .plain)
     private var reloadTableViewBeforeAppearing = false
 
-    @objc var tableView: UITableView {
-        get {
-            return self.tableViewController.tableView
-        }
-    }
+    let tableView = UITableView(frame: .zero, style: .plain)
 
     private let buttonAuthorFilter = AuthorFilterButton()
 
     let refreshControl = UIRefreshControl()
 
-    lazy var tableViewHandler: WPTableViewHandler = {
-        let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = .none
-        return tableViewHandler
-    }()
+    private(set) var fetchResultsController: NSFetchedResultsController<AbstractPost>!
 
     lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
@@ -79,7 +70,7 @@ class AbstractPostListViewController: UIViewController,
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
     private var emptyResults: Bool {
-        return tableViewHandler.resultsController?.fetchedObjects?.count == 0
+        fetchResultsController?.fetchedObjects?.count == 0
     }
 
     private var atLeastSyncedOnce = false
@@ -100,19 +91,17 @@ class AbstractPostListViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureTableViewController()
+        configureFetchResultsController()
+        configureTableView()
         configureFilterBar()
         configureTableView()
-        configureNavbar()
         configureSearchController()
         configureAuthorFilter()
         configureNavigationBarAppearance()
 
-        tableView.reloadData()
+        updateAndPerformFetchRequest()
 
         observeNetworkStatus()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -149,28 +138,27 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Configuration
 
-    private func configureTableViewController() {
-        addChild(tableViewController)
-        view.addSubview(tableViewController.view)
-        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(tableViewController.view)
-        tableViewController.didMove(toParent: self)
+    private func configureFetchResultsController() {
+        fetchResultsController = NSFetchedResultsController<AbstractPost>(fetchRequest: fetchRequest(), managedObjectContext: managedObjectContext(), sectionNameKeyPath: nil, cacheName: nil)
+        fetchResultsController.delegate = self
+    }
 
+    func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(tableView)
+
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.backgroundColor = .systemBackground
         tableView.sectionHeaderTopPadding = 0
+        tableView.estimatedRowHeight = 110
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
-    func configureNavbar() {
-        // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
-        // this VC's title.
-        //
-        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backButton
-    }
-
-    func configureFilterBar() {
+    private func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
@@ -181,11 +169,7 @@ class AbstractPostListViewController: UIViewController,
         tableView.tableHeaderView = filterTabBar
     }
 
-    func configureTableView() {
-        assert(false, "You should implement this method in the subclass")
-    }
-
-    private func refreshResults() {
+    func refreshResults() {
         guard isViewLoaded == true else {
             return
         }
@@ -224,7 +208,7 @@ class AbstractPostListViewController: UIViewController,
         navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
-    @objc func propertiesForAnalytics() -> [String: AnyObject] {
+    func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
         properties["type"] = postTypeToSync().rawValue as AnyObject?
@@ -235,23 +219,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         return properties
-    }
-
-    // MARK: - Notifications
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            guard let post = tableViewHandler.resultsController?.object(at: $0) as? NSManagedObject else { return false }
-            return updatedObjects.contains(post)
-        }
-        if !updatedIndexPaths.isEmpty {
-            tableView.beginUpdates()
-            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
-            tableView.endUpdates()
-        }
     }
 
     // MARK: - Author Filter
@@ -308,18 +275,18 @@ class AbstractPostListViewController: UIViewController,
 
         // Only add no results view if it isn't already in the table view
         if noResultsViewController.view.isDescendant(of: tableView) == false {
-            tableViewController.addChild(noResultsViewController)
+            self.addChild(noResultsViewController)
             tableView.addSubview(noResultsViewController.view)
             noResultsViewController.view.frame = tableView.frame.offsetBy(dx: 0, dy: -view.safeAreaInsets.top + 40)
-            noResultsViewController.didMove(toParent: tableViewController)
+            noResultsViewController.didMove(toParent: self)
         }
 
         tableView.sendSubviewToBack(noResultsViewController.view)
     }
 
-    // MARK: - TableViewHandler Delegate Methods
+    // MARK: - Core Data
 
-    @objc func entityName() -> String {
+    func entityName() -> String {
         fatalError("You should implement this method in the subclass")
     }
 
@@ -327,8 +294,8 @@ class AbstractPostListViewController: UIViewController,
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
+    func fetchRequest() -> NSFetchRequest<AbstractPost> {
+        let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         fetchRequest.fetchBatchSize = fetchBatchSize
@@ -336,19 +303,16 @@ class AbstractPostListViewController: UIViewController,
         return fetchRequest
     }
 
-    @objc func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+    func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return filterSettings.currentPostListFilter().sortDescriptors
     }
 
-    @objc func updateAndPerformFetchRequest() {
+    func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
 
         var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
-        guard let fetchRequest = tableViewHandler.resultsController?.fetchRequest else {
-            DDLogError("Error getting the fetch request")
-            return
-        }
+        let fetchRequest = fetchResultsController.fetchRequest
 
         let filter = filterSettings.currentPostListFilter()
 
@@ -374,55 +338,69 @@ class AbstractPostListViewController: UIViewController,
         fetchRequest.sortDescriptors = sortDescriptors
 
         do {
-            try tableViewHandler.resultsController?.performFetch()
+            try fetchResultsController.performFetch()
         } catch {
             DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
 
-    @objc func updateAndPerformFetchRequestRefreshingResults() {
+    func updateAndPerformFetchRequestRefreshingResults() {
         updateAndPerformFetchRequest()
         tableView.reloadData()
         refreshResults()
     }
 
-    @objc func predicateForFetchRequest() -> NSPredicate {
+    func predicateForFetchRequest() -> NSPredicate {
         fatalError("You should implement this method in the subclass")
     }
 
-    // MARK: - Table View Handling
+    // MARK: - NSFetchedResultsControllerDelegate
 
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        110
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
+            guard let indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .none)
+        case .move:
+            guard let indexPath, let newIndexPath else { return }
+            tableView.moveRow(at: indexPath, to: newIndexPath)
+        @unknown default:
+            break
+        }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        assert(false, "You should implement this method in the subclass")
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        0
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        nil
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        0
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        nil
-    }
-
-    func tableViewDidChangeContent(_ tableView: UITableView) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        do { // Some defensive code, just in case
+            try WPException.objcTry {
+                self.tableView.endUpdates()
+            }
+        } catch {
+            tableView.reloadData()
+        }
         refreshResults()
     }
+
+    // MARK: - UITableViewDataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        fetchResultsController.fetchedObjects?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fatalError("Not implemented")
+    }
+
+    // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard isViewOnScreen() else {
@@ -440,21 +418,17 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
-    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        assert(false, "You should implement this method in the subclass")
-    }
-
     // MARK: - Actions
 
-    @IBAction func refresh(_ sender: AnyObject) {
+    @objc private func refresh(_ sender: AnyObject) {
         syncItemsWithUserInteraction(true)
 
         WPAnalytics.track(.postListPullToRefresh, withProperties: propertiesForAnalytics())
     }
 
-    // MARK: - Synching
+    // MARK: - Syncing
 
-    @objc func automaticallySyncIfAppropriate() {
+    private func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen
         if !isViewLoaded || view.window == nil {
             DDLogVerbose("View is not visible and will not check for auto refresh.")
@@ -576,7 +550,7 @@ class AbstractPostListViewController: UIViewController,
         options.statuses = filter.statuses.strings
         options.authorID = author
         options.number = numberOfLoadedElement
-        options.offset = tableViewHandler.resultsController?.fetchedObjects?.count as NSNumber?
+        options.offset = fetchResultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
             ofType: postType,
@@ -757,7 +731,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - NetworkAwareUI
 
     func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController?.isEmpty() ?? true
+        fetchResultsController.isEmpty()
     }
 
     func noConnectionMessage() -> String {
