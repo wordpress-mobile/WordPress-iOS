@@ -178,10 +178,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return .post
     }
 
-    override func lastSyncDate() -> Date? {
-        return blog?.lastPostsSync
-    }
-
     // MARK: - Data Model Interaction
 
     /// Retrieves the post object at the specified index path.

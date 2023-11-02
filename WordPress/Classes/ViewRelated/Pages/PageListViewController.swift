@@ -212,10 +212,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
-    override internal func lastSyncDate() -> Date? {
-        return blog?.lastPagesSync
-    }
-
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
