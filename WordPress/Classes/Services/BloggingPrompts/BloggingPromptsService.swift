@@ -371,37 +371,52 @@ private extension BloggingPromptsService {
             return
         }
 
-        // TODO: Upsert based on prompt date instead of promptID.
-
-        let remoteIDs = Set(remotePrompts.map { Int32($0.promptID) })
-        let remotePromptsDictionary = remotePrompts.reduce(into: [Int32: BloggingPromptRemoteObject]()) { partialResult, remotePrompt in
-            partialResult[Int32(remotePrompt.promptID)] = remotePrompt
+        // incoming remote prompts should have unique dates.
+        // fetch requests require the date to be `NSDate` specifically, hence the cast.
+        let incomingDates = Set(remotePrompts.map(\.date))
+        let promptsByDate = remotePrompts.reduce(into: [Date: BloggingPromptRemoteObject]()) { partialResult, remotePrompt in
+            partialResult[remotePrompt.date] = remotePrompt
         }
 
-        let predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) IN %@", siteID, remoteIDs)
+        let predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) IN %@",
+                                    siteID,
+                                    incomingDates.map { $0 as NSDate })
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = predicate
 
         contextManager.performAndSave({ derivedContext in
-            var foundExistingIDs = [Int32]()
+            /// try to overwrite prompts that have the same dates.
+            ///
+            /// Perf. notes: since we're at most updating 25 entries, it should be acceptable to update them one by one.
+            /// However, if requirements change and we need to work through a larger data set, consider switching to
+            /// a drop-and-replace strategy with `NSBatchDeleteRequest` as it's more performant.
+            var updatedExistingDates = Set<Date>()
             let results = try derivedContext.fetch(fetchRequest)
             results.forEach { prompt in
-                guard let remotePrompt = remotePromptsDictionary[prompt.promptID] else {
+                guard let incoming = promptsByDate[prompt.date] else {
                     return
                 }
 
-                foundExistingIDs.append(prompt.promptID)
-                prompt.configure(with: remotePrompt, for: self.siteID.int32Value)
+                // ensure that there's only one prompt for each date.
+                // if the prompt with this date has been updated before, then it's a duplicate. Let's delete it.
+                if updatedExistingDates.contains(prompt.date) {
+                    derivedContext.deleteObject(prompt)
+                    return
+                }
+
+                // otherwise, we can update the prompt matching the date with the incoming prompt.
+                prompt.configure(with: incoming, for: self.siteID.int32Value)
+                updatedExistingDates.insert(incoming.date)
             }
 
-            // Insert new prompts
-            let newPromptIDs = remoteIDs.subtracting(foundExistingIDs)
-            newPromptIDs.forEach { newPromptID in
-                guard let remotePrompt = remotePromptsDictionary[newPromptID],
+            // process the remaining new prompts.
+            let datesToInsert = incomingDates.subtracting(updatedExistingDates)
+            datesToInsert.forEach { date in
+                guard let incoming = promptsByDate[date],
                       let newPrompt = BloggingPrompt.newObject(in: derivedContext) else {
                     return
                 }
-                newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
+                newPrompt.configure(with: incoming, for: self.siteID.int32Value)
             }
         }, completion: completion, on: .main)
     }
