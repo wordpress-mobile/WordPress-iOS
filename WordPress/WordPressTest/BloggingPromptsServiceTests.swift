@@ -17,6 +17,11 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         return formatter
     }()
 
+    private static var calendar: Calendar = {
+        .init(identifier: .gregorian)
+    }()
+
+    private var api: MockWordPressComRestApi!
     private var remote: BloggingPromptsServiceRemoteMock!
     private var service: BloggingPromptsService!
     private var blog: Blog!
@@ -25,10 +30,11 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        api = MockWordPressComRestApi()
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()
-        service = BloggingPromptsService(contextManager: contextManager, remote: remote, blog: blog)
+        service = BloggingPromptsService(contextManager: contextManager, api: api, remote: remote, blog: blog)
     }
 
     override func tearDown() {
@@ -56,8 +62,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             let firstPrompt = prompts.first!
             XCTAssertEqual(firstPrompt.promptID, 248)
             XCTAssertEqual(firstPrompt.text, "Tell us about a time when you felt out of place.")
-            XCTAssertEqual(firstPrompt.title, "Prompt number 10")
-            XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertTrue(firstPrompt.attribution.isEmpty)
 
             let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
@@ -73,8 +77,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             let secondPrompt = prompts.last!
             XCTAssertEqual(secondPrompt.promptID, 239)
             XCTAssertEqual(secondPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
-            XCTAssertEqual(secondPrompt.title, "Prompt number 1")
-            XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertEqual(secondPrompt.attribution, "dayone")
 
             let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
@@ -98,6 +100,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     func test_fetchPrompts_shouldExcludePromptsOutsideGivenDate() {
         // this should exclude the second prompt dated 2021-09-12.
+        // the remote may return multiple prompts, but there should be a client-side filtering for the prompt dates.
         let dateParam = Self.dateFormatter.date(from: "2022-01-01")
 
         // use actual remote object so the request can be intercepted by HTTPStubs.
@@ -127,7 +130,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     func test_fetchPrompts_givenFailureResult_callsFailureBlock() {
         let expectation = expectation(description: "Fetch prompts should fail")
-        remote.shouldReturnSuccess = false
 
         service.fetchPrompts { _ in
             XCTFail("This closure shouldn't be called.")
@@ -136,39 +138,50 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             expectation.fulfill()
         }
 
+        api.failureBlockPassedIn?(NSError(code: 0, domain: "", description: ""), nil)
+
         wait(for: [expectation], timeout: timeout)
     }
 
-    func test_fetchPrompts_givenNoParameters_assignsDefaultValue() {
-        let expectedDifferenceInHours = 10 * 24 // 10 days ago.
+    func test_fetchPrompts_givenNoParameters_assignsDefaultValue() throws {
+        let expectedDifferenceInDays = 10 // 10 days ago.
         let expectedNumber = 25
-        remote.shouldReturnSuccess = false
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
         service.fetchPrompts(success: { _ in }, failure: { _ in })
 
-        XCTAssertNotNil(remote.passedDateParameter)
-        let passedDate = remote.passedDateParameter!
-        let differenceInHours = Calendar.current.dateComponents([.hour], from: passedDate, to: Date()).hour!
-        XCTAssertEqual(differenceInHours, expectedDifferenceInHours)
+        // calculate the difference and ensure that the passed date is 10 days ago.
+        let date = try passedDate()
+        let differenceInDays = try XCTUnwrap(Self.calendar.dateComponents([.day], from: date, to: Date()).day)
+        XCTAssertEqual(differenceInDays, expectedDifferenceInDays)
 
-        XCTAssertNotNil(remote.passedNumberParameter)
-        XCTAssertEqual(remote.passedNumberParameter!, expectedNumber)
+        // ensure that the passed number parameter is correct.
+        let numberParameter = try XCTUnwrap(passedNumber())
+        XCTAssertEqual(numberParameter, expectedNumber)
     }
 
-    func test_fetchPrompts_givenValidParameters_passesThemToRemote() {
+    func test_fetchPrompts_passesTheDateCorrectly() throws {
+        // with the v3 implementation, we no longer have access to intercept at the method level.
+        // this means, we lose the time information of the passed date.
+        // In this case, we can only compare the year, month, and day components.
         let expectedDate = BloggingPromptsServiceRemoteMock.dateFormatter.date(from: "2022-01-02")!
+        let expectedDateComponents = Self.calendar.dateComponents(in: Self.utcTimeZone, from: expectedDate)
         let expectedNumber = 10
-        remote.shouldReturnSuccess = false
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
         service.fetchPrompts(from: expectedDate, number: expectedNumber, success: { _ in }, failure: { _ in })
 
-        XCTAssertNotNil(remote.passedDateParameter)
-        XCTAssertEqual(remote.passedDateParameter!, expectedDate)
+        // ensure that we compare the date components in UTC timezone to prevent possible day differences.
+        // e.g. edge cases such as `2023-01-02 22:00 -0500` or `2023-01-02 05:00 +0700`.
+        let date = try passedDate()
+        let dateComponents = Self.calendar.dateComponents(in: Self.utcTimeZone, from: date)
+        let year = try passedParameter("force_year") as? Int
+        XCTAssertEqual(year, expectedDateComponents.year)
+        XCTAssertEqual(dateComponents.month, expectedDateComponents.month)
+        XCTAssertEqual(dateComponents.day, expectedDateComponents.day)
 
-        XCTAssertNotNil(remote.passedNumberParameter)
-        XCTAssertEqual(remote.passedNumberParameter!, expectedNumber)
+        let numberParameter = try XCTUnwrap(passedNumber())
+        XCTAssertEqual(numberParameter, expectedNumber)
     }
 }
 
@@ -187,7 +200,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(mainContext).isHostedAtWPcom().build()
+        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: 100).build()
     }
 
     func stubFetchPromptsResponse() {
@@ -196,29 +209,45 @@ private extension BloggingPromptsServiceTests {
             return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
         }
     }
+
+    // MARK: Mock WordPressComRestAPI Helper
+
+    func passedParameter(_ key: String) throws -> AnyHashable {
+        let passedParameters = try XCTUnwrap(api.parametersPassedIn as? [String: AnyHashable])
+        return try XCTUnwrap(passedParameters[key], "Param not found for \(key)")
+    }
+
+    func passedNumber() throws -> Int? {
+        return try passedParameter("per_page") as? Int
+    }
+
+    func passedDate() throws -> Date {
+        // assumes that `ignoresYear` parameter is enabled.
+        // get the month and day components.
+        let dateString = try XCTUnwrap(passedParameter("after") as? String)
+        let components = dateString.split(separator: "-").compactMap { $0 }
+        XCTAssertEqual(components.count, 2)
+
+        // build a date based on the passed values.
+        let forcedYear = try passedParameter("force_year") as? Int
+        let month = try XCTUnwrap(Int(components.first ?? ""))
+        let day = try XCTUnwrap(Int(components.last ?? ""))
+
+        var dateComponents = Self.calendar.dateComponents(in: Self.utcTimeZone, from: Date())
+        dateComponents.year = forcedYear
+        dateComponents.month = month
+        dateComponents.day = day
+
+        return try XCTUnwrap(Self.calendar.date(from: dateComponents))
+    }
 }
 
+// Let's keep this mock class in case we want to add additional tests for Blogging Prompt Settings.
 class BloggingPromptsServiceRemoteMock: BloggingPromptsServiceRemote {
     var passedSiteID: NSNumber? = nil
     var passedNumberParameter: Int? = nil
     var passedDateParameter: Date? = nil
     var shouldReturnSuccess: Bool = true
-    var promptsToReturn = [RemoteBloggingPrompt]()
-
-    override func fetchPrompts(for siteID: NSNumber,
-                               number: Int? = nil,
-                               fromDate: Date? = nil,
-                               completion: @escaping (Result<[RemoteBloggingPrompt], Error>) -> Void) {
-        passedSiteID = siteID
-        passedNumberParameter = number
-        passedDateParameter = fromDate
-
-        if shouldReturnSuccess {
-            completion(.success(promptsToReturn))
-        } else {
-            completion(.failure(Errors.failed))
-        }
-    }
 
     enum Errors: Error {
         case failed
