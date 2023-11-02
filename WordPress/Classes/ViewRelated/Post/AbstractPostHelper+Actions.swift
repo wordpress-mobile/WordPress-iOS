@@ -1,8 +1,6 @@
 import UIKit
 
 extension AbstractPostHelper {
-    // MARK: - Posts
-
     static func makeLeadingContextualActions(for post: AbstractPost, delegate: InteractivePostViewDelegate) -> [UIContextualAction] {
         var actions: [UIContextualAction] = []
 
@@ -33,7 +31,7 @@ extension AbstractPostHelper {
         trashAction.image = UIImage(systemName: "trash")
         actions.append(trashAction)
 
-        if post.status == .publish && post.hasRemote() {
+        if post is Post, post.status == .publish && post.hasRemote() {
             let shareAction = UIContextualAction(style: .normal, title: Strings.swipeActionShare) { [weak delegate] _, view, completion in
                 delegate?.share(post, fromView: view)
                 completion(true)
@@ -50,5 +48,5 @@ private enum Strings {
     static let swipeActionView = NSLocalizedString("postList.swipeActionView", value: "View", comment: "Swipe action title")
     static let swipeActionShare = NSLocalizedString("postList.swipeActionShare", value: "Share", comment: "Swipe action title")
     static let swipeActionTrash = NSLocalizedString("postList.swipeActionDelete", value: "Trash", comment: "Swipe action title")
-    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDelete", value: "Delete Permanently", comment: "Swipe action title")
+    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDelete", value: "Delete", comment: "Swipe action title")
 }

@@ -18,6 +18,10 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     private var cancellables: [AnyCancellable] = []
 
+    private var postDelegate: InteractivePostViewDelegate {
+        listViewController as! InteractivePostViewDelegate
+    }
+
     init(viewModel: PostSearchViewModel) {
         self.viewModel = viewModel
 
@@ -109,13 +113,13 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
                 assert(listViewController is InteractivePostViewDelegate)
                 let viewModel = PostListItemViewModel(post: post)
-                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                cell.configure(with: viewModel, delegate: postDelegate)
                 updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
                 let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
-                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                cell.configure(with: viewModel, delegate: postDelegate)
                 updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             default:
@@ -165,12 +169,10 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             switch viewModel.posts[indexPath.row].latest() {
             case let post as Post:
                 guard post.status != .trash else { return }
-                (listViewController as! PostListViewController)
-                    .edit(post)
+                postDelegate.edit(post)
             case let page as Page:
                 guard page.status != .trash else { return }
-                (listViewController as! PageListViewController)
-                    .edit(page)
+                postDelegate.edit(page)
             default:
                 fatalError("Unsupported post")
             }
@@ -182,6 +184,20 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             viewModel.didReachBottom()
         }
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        indexPath.section == SectionID.posts.rawValue
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: viewModel.posts[indexPath.row], delegate: postDelegate)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: viewModel.posts[indexPath.row], delegate: postDelegate)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - UISearchControllerDelegate
