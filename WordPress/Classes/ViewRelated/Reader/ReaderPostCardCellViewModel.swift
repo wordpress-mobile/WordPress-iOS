@@ -123,11 +123,15 @@ struct ReaderPostCardCellViewModel {
 
     private var followCommentsService: FollowCommentsService?
 
+    private(set) var showsSeparator: Bool
+
     init(contentProvider: ReaderPostContentProvider,
          isLoggedIn: Bool,
+         showsSeparator: Bool = true,
          parentViewController: ReaderStreamViewController) {
         self.contentProvider = contentProvider
         self.actionVisibility = .visible(enabled: isLoggedIn)
+        self.showsSeparator = showsSeparator
         self.parentViewController = parentViewController
     }
 
