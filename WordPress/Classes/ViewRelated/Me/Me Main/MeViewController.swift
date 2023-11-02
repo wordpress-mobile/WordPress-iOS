@@ -211,25 +211,26 @@ class MeViewController: UITableViewController {
                                               action: pushAbout(),
                                               accessibilityIdentifier: "About"))
 
-                #if JETPACK
-                if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
-                    rows.append(
-                        NavigationItemRow(
-                            title: AllDomainsListViewController.Strings.title,
-                            icon: UIImage(systemName: "globe"),
-                            accessoryType: accessoryType,
-                            action: { action in
-                                self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
-                            },
-                            accessibilityIdentifier: "myDomains"
-                        )
-                    )
-                }
-                #endif
-
                 return rows
             }())
         ]
+
+        #if JETPACK
+        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
+            sections.append(.init(rows: [
+                NavigationItemRow(
+                    title: AllDomainsListViewController.Strings.title,
+                    icon: UIImage(systemName: "globe"),
+                    accessoryType: accessoryType,
+                    action: { action in
+                        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+                    },
+                    accessibilityIdentifier: "myDomains"
+                )
+            ])
+            )
+        }
+        #endif
 
         // last section
         sections.append(
