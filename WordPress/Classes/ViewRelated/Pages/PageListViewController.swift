@@ -322,7 +322,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let page = self.pages[indexPath.row]
-            let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
+            let viewModel = PageMenuViewModel(page: page)
             let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
             let cell = self.tableView.cellForRow(at: indexPath)
             return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
@@ -367,7 +367,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             let page = pages[indexPath.row]
             let indentation = getIndentationLevel(at: indexPath)
             let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-            let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
+            let viewModel = PageListItemViewModel(page: page)
             cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
             return cell
         }
@@ -400,7 +400,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page, at index: IndexPath?) {
+    func setParentPage(for page: Page) {
         let request = NSFetchRequest<Page>(entityName: Page.entityName())
         let filter = PostListFilter.publishedFilter()
         request.predicate = filter.predicate(for: blog, author: .everyone)
