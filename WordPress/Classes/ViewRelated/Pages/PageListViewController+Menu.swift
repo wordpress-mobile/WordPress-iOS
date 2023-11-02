@@ -34,9 +34,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func draft(_ apost: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(apost)
-        }
+        moveToDraft(apost)
     }
 
     func retry(_ apost: AbstractPost) {

@@ -342,9 +342,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            viewStatsForPost(post)
-        }
+        viewStatsForPost(post)
     }
 
     func duplicate(_ post: AbstractPost) {
@@ -402,9 +400,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func draft(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(post)
-        }
+        moveToDraft(post)
     }
 
     func retry(_ post: AbstractPost) {
