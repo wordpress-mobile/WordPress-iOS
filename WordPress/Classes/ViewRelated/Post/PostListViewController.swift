@@ -260,17 +260,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
 
-//        TODO: Remove later
-//        guard let interactivePostView = cell as? InteractivePostView,
-//            let configurablePostView = cell as? ConfigurablePostView else {
-//                fatalError("Cell does not implement the required protocols")
-//        }
-//
-//        interactivePostView.setInteractionDelegate(self)
-//        interactivePostView.setActionSheetDelegate(self)
-//
-//        configurablePostView.configure(with: post)
-
         // TODO: Hide author if only showing my posts?
         cell.configure(with: PostListItemViewModel(post: post), delegate: self)
         return cell
