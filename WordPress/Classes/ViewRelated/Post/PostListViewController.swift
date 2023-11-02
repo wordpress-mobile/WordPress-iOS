@@ -364,12 +364,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
         let cancelText: String
         let deleteText: String
         let messageText: String

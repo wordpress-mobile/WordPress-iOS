@@ -474,12 +474,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func handleTrashPage(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
         let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
         let deleteText: String
         let messageText: String

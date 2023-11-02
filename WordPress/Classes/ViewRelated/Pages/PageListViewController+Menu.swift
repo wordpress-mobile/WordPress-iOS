@@ -89,11 +89,6 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     private func trashPage(_ page: Page, completion: @escaping () -> Void) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showNoInternetConnectionNotice(message: Strings.offlineMessage)
-            return
-        }
-
         let isPageTrashed = page.status == .trash
         let actionText = isPageTrashed ? Strings.DeletePermanently.actionText : Strings.Trash.actionText
         let titleText = isPageTrashed ? Strings.DeletePermanently.titleText : Strings.Trash.titleText
