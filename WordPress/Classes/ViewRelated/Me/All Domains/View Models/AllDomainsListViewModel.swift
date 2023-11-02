@@ -67,7 +67,7 @@ class AllDomainsListViewModel {
     /// - Returns: The `.normal` or `.empty` state.
     private func state(from domains: [Domain], searchQuery: String?) -> State {
         if domains.isEmpty {
-            return .message(emptyMessageViewModel())
+            return .message(noDomainsMessageViewModel())
         }
 
         var domains = domains
@@ -78,7 +78,13 @@ class AllDomainsListViewModel {
 
         let viewModels = domains.map { AllDomainsListItemViewModel(domain: $0) }
 
-        return viewModels.isEmpty ? .message(emptyMessageViewModel(searchQuery: searchQuery)) : .normal(viewModels)
+        if let searchQuery, viewModels.isEmpty {
+            return .message(noSearchResultsMessageViewModel(searchQuery: searchQuery))
+        } else if viewModels.isEmpty {
+            return .message(noDomainsMessageViewModel())
+        } else {
+            return .normal(viewModels)
+        }
     }
 
     /// Determines the state of the view based on an error.
@@ -144,23 +150,18 @@ class AllDomainsListViewModel {
         }
     }
 
-    // MARK: - Creating Empty State View Models
+    // MARK: - Creating Message State View Models
 
-    /// The message to display when the user doesn't have any domains or there are no domains matching the search query.
-    private func emptyMessageViewModel(searchQuery: String? = nil) -> AllDomainsListMessageStateViewModel {
-        if let searchQuery {
-            return .init(
-                title: Strings.searchEmptyStateTitle,
-                description: Strings.searchEmptyStateDescription(searchQuery),
-                button: nil
-            )
-        } else {
-            return .init(
-                title: Strings.emptyStateTitle,
-                description: Strings.emptyStateDescription,
-                button: .init(title: Strings.emptyStateButtonTitle, action: {})
-            )
+    /// The message to display when the user doesn't have any domains.
+    private func noDomainsMessageViewModel() -> AllDomainsListMessageStateViewModel {
+        let action: () -> Void = { [weak self] in
+            self?.addDomainAction?()
         }
+        return .init(
+            title: Strings.emptyStateTitle,
+            description: Strings.emptyStateDescription,
+            button: .init(title: Strings.emptyStateButtonTitle, action: action)
+        )
     }
 
     /// The  message to display when an error occurs.
@@ -181,5 +182,14 @@ class AllDomainsListViewModel {
         }
 
         return .init(title: title, description: description, button: button)
+    }
+
+    /// The message to display when there are no domains matching the search query.
+    private func noSearchResultsMessageViewModel(searchQuery: String) -> AllDomainsListMessageStateViewModel {
+        return .init(
+            title: Strings.searchEmptyStateTitle,
+            description: Strings.searchEmptyStateDescription(searchQuery),
+            button: nil
+        )
     }
 }
