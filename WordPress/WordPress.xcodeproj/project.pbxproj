@@ -1015,6 +1015,9 @@
 		3FB1929326C6C57A000F5AA3 /* TimeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */; };
 		3FB1929526C79EC6000F5AA3 /* Date+Formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */; };
 		3FB1929626C79EC6000F5AA3 /* Date+Formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */; };
+		3FB1E14C2AF4B662008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; };
+		3FB1E1512AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */; };
+		3FB1E1522AF4B663008C6766 /* JetpackStatsWidgetsCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */; };
 		3FB6D13B2ACFF63800768C07 /* MySiteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */; };
@@ -5709,6 +5712,13 @@
 			remoteGlobalIDString = 3F47AC482A7206BE00208F0D;
 			remoteInfo = ConfigureSimulatorForUITesting;
 		};
+		3FB1E14D2AF4B662008C6766 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FB1E1432AF4B65F008C6766;
+			remoteInfo = JetpackStatsWidgetsCore;
+		};
 		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -6681,6 +6691,10 @@
 		3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainSuggestionViewControllerWrapper.swift; sourceTree = "<group>"; };
 		3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionView.swift; sourceTree = "<group>"; };
 		3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formats.swift"; sourceTree = "<group>"; };
+		3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JetpackStatsWidgetsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JetpackStatsWidgetsCore.h; sourceTree = "<group>"; };
+		3FB1E14B2AF4B661008C6766 /* JetpackStatsWidgetsCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackStatsWidgetsCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackStatsWidgetsCoreTests.swift; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Scroll.swift"; sourceTree = "<group>"; };
 		3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteViewModelTests.swift; sourceTree = "<group>"; };
@@ -9608,6 +9622,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FB1E1412AF4B65F008C6766 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FB1E1482AF4B660008C6766 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FB1E14C2AF4B662008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		733F36002126197800988727 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -10703,6 +10732,8 @@
 				0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */,
 				0107E15428FE9DB200DE87DB /* JetpackIntents.appex */,
 				EA14534229AD874C001F3143 /* JetpackUITests.xctest */,
+				3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */,
+				3FB1E14B2AF4B661008C6766 /* JetpackStatsWidgetsCoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -10760,6 +10791,8 @@
 				F1F163BF25658B4D003DC13B /* JetpackIntents */,
 				80F6D05628EE869900953C1A /* JetpackNotificationServiceExtension */,
 				0107E1822900043200DE87DB /* JetpackStatsWidgets */,
+				3FB1E1452AF4B660008C6766 /* JetpackStatsWidgetsCore */,
+				3FB1E14F2AF4B663008C6766 /* JetpackStatsWidgetsCoreTests */,
 				8096212828E5535E00940A5D /* JetpackShareExtension */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				733F36072126197800988727 /* WordPressNotificationContentExtension */,
@@ -11785,6 +11818,22 @@
 				3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */,
 			);
 			path = "Time Selector";
+			sourceTree = "<group>";
+		};
+		3FB1E1452AF4B660008C6766 /* JetpackStatsWidgetsCore */ = {
+			isa = PBXGroup;
+			children = (
+				3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */,
+			);
+			path = JetpackStatsWidgetsCore;
+			sourceTree = "<group>";
+		};
+		3FB1E14F2AF4B663008C6766 /* JetpackStatsWidgetsCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */,
+			);
+			path = JetpackStatsWidgetsCoreTests;
 			sourceTree = "<group>";
 		};
 		3FB34ABB25672A59001A74A6 /* Model */ = {
@@ -18541,6 +18590,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FB1E13F2AF4B65F008C6766 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FB1E1522AF4B663008C6766 /* JetpackStatsWidgetsCore.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -18640,6 +18697,42 @@
 			productName = UITestsFoundation;
 			productReference = 3FA640572670CCD40064401E /* UITestsFoundation.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		3FB1E1432AF4B65F008C6766 /* JetpackStatsWidgetsCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FB1E15B2AF4B664008C6766 /* Build configuration list for PBXNativeTarget "JetpackStatsWidgetsCore" */;
+			buildPhases = (
+				3FB1E13F2AF4B65F008C6766 /* Headers */,
+				3FB1E1402AF4B65F008C6766 /* Sources */,
+				3FB1E1412AF4B65F008C6766 /* Frameworks */,
+				3FB1E1422AF4B65F008C6766 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JetpackStatsWidgetsCore;
+			productName = JetpackStatsWidgetsCore;
+			productReference = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		3FB1E14A2AF4B660008C6766 /* JetpackStatsWidgetsCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FB1E15C2AF4B664008C6766 /* Build configuration list for PBXNativeTarget "JetpackStatsWidgetsCoreTests" */;
+			buildPhases = (
+				3FB1E1472AF4B660008C6766 /* Sources */,
+				3FB1E1482AF4B660008C6766 /* Frameworks */,
+				3FB1E1492AF4B660008C6766 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3FB1E14E2AF4B662008C6766 /* PBXTargetDependency */,
+			);
+			name = JetpackStatsWidgetsCoreTests;
+			productName = JetpackStatsWidgetsCoreTests;
+			productReference = 3FB1E14B2AF4B661008C6766 /* JetpackStatsWidgetsCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		733F36022126197800988727 /* WordPressNotificationContentExtension */ = {
 			isa = PBXNativeTarget;
@@ -18922,7 +19015,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
@@ -18956,6 +19049,12 @@
 					3FA640562670CCD40064401E = {
 						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
+					};
+					3FB1E1432AF4B65F008C6766 = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
+					3FB1E14A2AF4B660008C6766 = {
+						CreatedOnToolsVersion = 15.0.1;
 					};
 					733F36022126197800988727 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -19112,6 +19211,8 @@
 				8096213028E55C9400940A5D /* JetpackDraftActionExtension */,
 				80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */,
 				0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */,
+				3FB1E1432AF4B65F008C6766 /* JetpackStatsWidgetsCore */,
+				3FB1E14A2AF4B660008C6766 /* JetpackStatsWidgetsCoreTests */,
 				0107E13828FE9DB200DE87DB /* JetpackIntents */,
 				EA14532229AD874C001F3143 /* JetpackUITests */,
 				3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */,
@@ -19454,6 +19555,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3FA640552670CCD40064401E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FB1E1422AF4B65F008C6766 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FB1E1492AF4B660008C6766 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -22939,6 +23054,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FB1E1402AF4B65F008C6766 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FB1E1472AF4B660008C6766 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FB1E1512AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		733F35FF2126197800988727 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -25783,6 +25913,11 @@
 			target = 3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */;
 			targetProxy = 3F47AC512A72074800208F0D /* PBXContainerItemProxy */;
 		};
+		3FB1E14E2AF4B662008C6766 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FB1E1432AF4B65F008C6766 /* JetpackStatsWidgetsCore */;
+			targetProxy = 3FB1E14D2AF4B662008C6766 /* PBXContainerItemProxy */;
+		};
 		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
@@ -26840,6 +26975,374 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Alpha";
+		};
+		3FB1E1532AF4B664008C6766 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3FB1E1542AF4B664008C6766 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		3FB1E1552AF4B664008C6766 /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Internal";
+		};
+		3FB1E1562AF4B664008C6766 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Alpha";
+		};
+		3FB1E1572AF4B664008C6766 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3FB1E1582AF4B664008C6766 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3FB1E1592AF4B664008C6766 /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release-Internal";
+		};
+		3FB1E15A2AF4B664008C6766 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.JetpackStatsWidgetsCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Release-Alpha";
 		};
@@ -30075,6 +30578,28 @@
 				3FA6405D2670CCD40064401E /* Release */,
 				3FA6405E2670CCD40064401E /* Release-Internal */,
 				3FA6405F2670CCD40064401E /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FB1E15B2AF4B664008C6766 /* Build configuration list for PBXNativeTarget "JetpackStatsWidgetsCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FB1E1532AF4B664008C6766 /* Debug */,
+				3FB1E1542AF4B664008C6766 /* Release */,
+				3FB1E1552AF4B664008C6766 /* Release-Internal */,
+				3FB1E1562AF4B664008C6766 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FB1E15C2AF4B664008C6766 /* Build configuration list for PBXNativeTarget "JetpackStatsWidgetsCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FB1E1572AF4B664008C6766 /* Debug */,
+				3FB1E1582AF4B664008C6766 /* Release */,
+				3FB1E1592AF4B664008C6766 /* Release-Internal */,
+				3FB1E15A2AF4B664008C6766 /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
