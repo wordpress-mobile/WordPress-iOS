@@ -80,14 +80,14 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var icon: UIImage? {
         switch self {
-        case .retry: return UIImage() // TODO
+        case .retry: return UIImage(systemName: "arrow.clockwise")
         case .view: return UIImage(systemName: "safari")
         case .publish: return UIImage(systemName: "globe")
         case .stats: return UIImage(systemName: "chart.bar.xaxis")
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
-        case .cancelAutoUpload: return UIImage() // TODO
+        case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble")
