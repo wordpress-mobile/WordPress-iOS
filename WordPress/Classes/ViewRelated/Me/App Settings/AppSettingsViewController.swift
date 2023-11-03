@@ -255,6 +255,33 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func imageOptimizationChanged() -> (Bool) -> Void {
+        return { [weak self] value in
+            MediaSettings().imageOptimizationSetting = value
+
+            // Track setting changes
+            WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value as
+                                                                                     AnyObject])
+
+            // Show/hide image optimization settings
+            guard let self = self, let tableView = self.tableView else {
+                return
+            }
+            tableView.beginUpdates()
+            self.reloadViewModel()
+            let imageSizingIndex = IndexPath(row: 1, section: 0)
+            let imageQualityIndex = IndexPath(row: 2, section: 0)
+            let imageOptimizationSettingsIndexes = [imageSizingIndex, imageQualityIndex]
+            if value {
+                tableView.insertRows(at: imageOptimizationSettingsIndexes, with: .fade)
+            }
+            else {
+                tableView.deleteRows(at: imageOptimizationSettingsIndexes, with: .fade)
+            }
+            tableView.endUpdates()
+        }
+    }
+
     func pushAppearanceSettings() -> ImmuTableAction {
         return { [weak self] row in
             let values = UIUserInterfaceStyle.allStyles
@@ -430,6 +457,13 @@ private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
+        let imageOptimizationValue = Bool(MediaSettings().imageOptimizationSetting)
+        let imageOptimization = SwitchRow(
+            title: NSLocalizedString("Optimize Images", comment: "Option to enable the optimization of images when uploading."),
+            value: imageOptimizationValue,
+            onChange: imageOptimizationChanged()
+        )
+
         let imageSizingRow = ImageSizingRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
@@ -450,14 +484,21 @@ private extension AppSettingsViewController {
             detail: mediaCacheRowDescription,
             action: openMediaCacheSettings())
 
+        let rows: [ImmuTableRow] = imageOptimizationValue ? [
+            imageOptimization,
+            imageSizingRow,
+            imageQualityRow,
+            videoSizingRow,
+            mediaCacheRow
+        ] : [
+            imageOptimization,
+            videoSizingRow,
+            mediaCacheRow
+        ]
+
         return ImmuTableSection(
             headerText: mediaHeader,
-            rows: [
-                imageSizingRow,
-                imageQualityRow,
-                videoSizingRow,
-                mediaCacheRow
-            ],
+            rows: rows,
             footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
         )
