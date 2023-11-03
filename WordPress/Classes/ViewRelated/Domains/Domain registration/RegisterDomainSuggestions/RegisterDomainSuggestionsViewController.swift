@@ -8,6 +8,7 @@ enum DomainSelectionType {
     case registerWithPaidPlan
     case purchaseWithPaidPlan
     case purchaseSeparately
+    case purchaseFromDomainManagement
 }
 
 class RegisterDomainSuggestionsViewController: UIViewController {
@@ -262,6 +263,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 },
                 onFailure: onFailure
             )
+        case .purchaseFromDomainManagement:
+            print("Hello world")
         }
     }
 

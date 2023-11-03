@@ -378,7 +378,8 @@ extension DomainSuggestionsTableViewController {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
-        let freeForFirstYear = hasDomainCredit || domainSelectionType == .purchaseWithPaidPlan
+        let supportsPlans = domainSelectionType == .purchaseWithPaidPlan || domainSelectionType == .purchaseFromDomainManagement
+        let freeForFirstYear = hasDomainCredit || supportsPlans
 
         if freeForFirstYear {
             attributedString.append(attributedFreeForTheFirstYear())
