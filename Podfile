@@ -411,3 +411,7 @@ post_install do |installer|
   reset_marker = "\033[0m"
   puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
 end
+
+post_integrate do
+  workaround_broken_search_paths
+end

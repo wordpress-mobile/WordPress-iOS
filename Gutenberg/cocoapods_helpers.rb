@@ -124,7 +124,10 @@ def gutenberg_post_install(installer:)
   react_native_path = Pathname.new(react_native_path).relative_path_from(Dir.pwd)
 
   react_native_post_install(installer, react_native_path)
+end
 
+def gutenberg_post_integrate
+  # If the this workaround runs in the post_install step, the changes it makes get overridden somehow.
   workaround_broken_search_paths
 end
 
