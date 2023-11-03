@@ -25,12 +25,14 @@ public struct PrimaryButton: View {
     }
 }
 
-#Preview {
-    ZStack {
-        Color(.systemMint)
-        PrimaryButton(title: "Get Domain") {
-            ()
+struct PrimaryButton_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            Color(.systemMint)
+            PrimaryButton(title: "Get Domain") {
+                ()
+            }
+            .padding(.horizontal, Length.Padding.small)
         }
-        .padding(.horizontal, Length.Padding.small)
     }
 }

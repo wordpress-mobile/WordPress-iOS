@@ -112,49 +112,49 @@ private extension DomainPurchaseChoicesView {
         static let buyDomainTitle = NSLocalizedString(
             "domain.management.buy.card.title",
             value: "Just buy a domain",
-            comment: "Doman management buy domain card title"
+            comment: "Domain management buy domain card title"
         )
 
         static let buyDomainSubtitle = NSLocalizedString(
             "domain.management.buy.card.subtitle",
             value: "Add a site later",
-            comment: "Doman management buy domain card subtitle"
+            comment: "Domain management buy domain card subtitle"
         )
 
         static let buyDomainButtonTitle = NSLocalizedString(
             "domain.management.buy.card.button.title",
             value: "Get Domain",
-            comment: "Doman management buy domain card button title"
+            comment: "Domain management buy domain card button title"
         )
 
         static let chooseSiteTitle = NSLocalizedString(
             "domain.management.site.card.title",
             value: "Existing WordPress.com site",
-            comment: "Doman management choose site card title"
+            comment: "Domain management choose site card title"
         )
 
         static let chooseSiteSubtitle = NSLocalizedString(
             "domain.management.site.card.subtitle",
             value: "Use with a site you already started.",
-            comment: "Doman management choose site card subtitle"
+            comment: "Domain management choose site card subtitle"
         )
 
         static let chooseSiteFooter = NSLocalizedString(
             "domain.management.site.card.footer",
             value: "Free domain for the first year*",
-            comment: "Doman management choose site card subtitle"
+            comment: "Domain management choose site card subtitle"
         )
 
         static let chooseSiteButtonTitle = NSLocalizedString(
             "domain.management.site.card.button.title",
             value: "Choose Site",
-            comment: "Doman management choose site card button title"
+            comment: "Domain management choose site card button title"
         )
 
         static let footnote = NSLocalizedString(
             "domain.management.purchase.footer",
             value: "*A free domain for one year is included with all paid annual plans",
-            comment: "Doman management choose site card button title"
+            comment: "Domain management choose site card button title"
         )
     }
 }
