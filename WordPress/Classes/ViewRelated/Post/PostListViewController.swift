@@ -178,10 +178,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return .post
     }
 
-    override func lastSyncDate() -> Date? {
-        return blog?.lastPostsSync
-    }
-
     // MARK: - Data Model Interaction
 
     /// Retrieves the post object at the specified index path.
@@ -346,9 +342,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            viewStatsForPost(post)
-        }
+        viewStatsForPost(post)
     }
 
     func duplicate(_ post: AbstractPost) {
@@ -370,12 +364,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
         let cancelText: String
         let deleteText: String
         let messageText: String
@@ -406,9 +394,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func draft(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(post)
-        }
+        moveToDraft(post)
     }
 
     func retry(_ post: AbstractPost) {

@@ -212,10 +212,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
-    override internal func lastSyncDate() -> Date? {
-        return blog?.lastPagesSync
-    }
-
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
@@ -326,7 +322,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let page = self.pages[indexPath.row]
-            let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
+            let viewModel = PageMenuViewModel(page: page)
             let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
             let cell = self.tableView.cellForRow(at: indexPath)
             return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
@@ -371,7 +367,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             let page = pages[indexPath.row]
             let indentation = getIndentationLevel(at: indexPath)
             let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-            let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
+            let viewModel = PageListItemViewModel(page: page)
             cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
             return cell
         }
@@ -404,7 +400,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page, at index: IndexPath?) {
+    func setParentPage(for page: Page) {
         let request = NSFetchRequest<Page>(entityName: Page.entityName())
         let filter = PostListFilter.publishedFilter()
         request.predicate = filter.predicate(for: blog, author: .everyone)
@@ -475,37 +471,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func handleHomepageSettingsFailure() {
         let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
-
-    private func handleTrashPage(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-        } else {
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-        }
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - NetworkAwareUI

@@ -34,9 +34,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func draft(_ apost: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(apost)
-        }
+        moveToDraft(apost)
     }
 
     func retry(_ apost: AbstractPost) {
@@ -61,9 +59,9 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
-    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
+    func setParent(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        setParentPage(for: page, at: indexPath)
+        setParentPage(for: page)
     }
 
     func setHomepage(for apost: AbstractPost) {
@@ -91,11 +89,6 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     private func trashPage(_ page: Page, completion: @escaping () -> Void) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showNoInternetConnectionNotice(message: Strings.offlineMessage)
-            return
-        }
-
         let isPageTrashed = page.status == .trash
         let actionText = isPageTrashed ? Strings.DeletePermanently.actionText : Strings.Trash.actionText
         let titleText = isPageTrashed ? Strings.DeletePermanently.titleText : Strings.Trash.titleText
@@ -115,7 +108,6 @@ extension PageListViewController: InteractivePostViewDelegate {
 
 private enum Strings {
 
-    static let offlineMessage = NSLocalizedString("pagesList.trash.offline", value: "Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
     static let cancelText = NSLocalizedString("pagesList.trash.cancel", value: "Cancel", comment: "Cancels an Action")
 
     enum DeletePermanently {

@@ -2,7 +2,6 @@ import Foundation
 
 final class PageListItemViewModel {
     let page: Page
-    let indexPath: IndexPath
     let title: NSAttributedString
     let badgeIcon: UIImage?
     let badges: NSAttributedString
@@ -10,15 +9,14 @@ final class PageListItemViewModel {
     let accessibilityIdentifier: String?
     let pageMenuViewModel: PageMenuViewModel
 
-    init(page: Page, indexPath: IndexPath) {
+    init(page: Page) {
         self.page = page
-        self.indexPath = indexPath
         self.title = makeContentAttributedString(for: page)
         self.badgeIcon = makeBadgeIcon(for: page)
         self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
-        self.pageMenuViewModel = PageMenuViewModel(page: page, indexPath: indexPath)
+        self.pageMenuViewModel = PageMenuViewModel(page: page)
     }
 }
 

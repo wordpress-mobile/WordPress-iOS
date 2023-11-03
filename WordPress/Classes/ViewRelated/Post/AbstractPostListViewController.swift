@@ -446,13 +446,8 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        if let lastSynced = lastSyncDate(), abs(lastSynced.timeIntervalSinceNow) <= type(of: self).postsControllerRefreshInterval {
-
-            refreshResults()
-        } else {
-            // Update in the background
-            syncItemsWithUserInteraction(false)
-        }
+        // Update in the background
+        syncItemsWithUserInteraction(false)
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -484,10 +479,6 @@ class AbstractPostListViewController: UIViewController,
     @objc internal func postTypeToSync() -> PostServiceType {
         // Subclasses should override.
         return .any
-    }
-
-    @objc func lastSyncDate() -> Date? {
-        return blog.lastPostsSync
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
