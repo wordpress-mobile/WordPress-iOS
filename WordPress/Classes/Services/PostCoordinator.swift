@@ -492,7 +492,6 @@ class PostCoordinator: NSObject {
 
         setPendingDeletion(true, post: post)
 
-        let originalStatus = post.status
         let trashed = (post.status == .trash)
 
         let repository = PostRepository(coreDataStack: ContextManager.shared)
