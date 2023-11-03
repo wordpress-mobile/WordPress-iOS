@@ -126,7 +126,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
-  - WordPressKit (~> 8.10)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/api-transfer-domain-type`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -134,8 +134,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -185,11 +183,17 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
+  WordPressKit:
+    :branch: task/api-transfer-domain-type
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  WordPressKit:
+    :commit: c39c25920fa58cafcc4e022b56853d7e71c680be
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -223,7 +227,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
-  WordPressKit: 30510174ad90a997acef42a5880bdda45c5c66e9
+  WordPressKit: ef52a8d69434c0b81799999e8b19e68dc6a377b2
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
@@ -237,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 87283d92c99164bd6b27423cd2474decb698219e
+PODFILE CHECKSUM: 138548ec053d68765c917bd3fb4923a318f0c569
 
 COCOAPODS: 1.14.2
