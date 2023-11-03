@@ -184,6 +184,8 @@ class BloggingPromptsService {
     ///     Otherwise, a remote service with the default account's credentials will be used.
     ///   - blog: When supplied, the service will perform blogging prompts requests for this specified blog.
     ///     Otherwise, this falls back to the default account's primary blog.
+    ///   - api: When supplied, the WordPressComRestApi instance to use to fetch the prompts.
+    ///     Otherwise, an default or anonymous instance will be computed based on whether there is an account available.
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    api: WordPressComRestApi? = nil,
                    remote: BloggingPromptsServiceRemote? = nil,
