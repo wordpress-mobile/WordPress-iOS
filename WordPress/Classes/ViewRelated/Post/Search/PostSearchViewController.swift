@@ -2,8 +2,8 @@ import UIKit
 import Combine
 
 final class PostSearchViewController: UIViewController, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    weak var searchController: UISearchController?
-    weak var listViewController: AbstractPostListViewController?
+    private weak var searchController: UISearchController?
+    private weak var delegate: InteractivePostViewDelegate?
 
     private typealias SectionID = PostSearchViewModel.SectionID
     private typealias ItemID = PostSearchViewModel.ItemID
@@ -28,12 +28,13 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(_ searchController: UISearchController) {
+    func configure(_ searchController: UISearchController, _ delegate: InteractivePostViewDelegate?) {
         searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.showsSearchResultsController = true
 
         self.searchController = searchController
+        self.delegate = delegate
     }
 
     override func viewDidLoad() {
@@ -107,15 +108,14 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             switch post {
             case let post as Post:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellID, for: indexPath) as! PostListCell
-                assert(listViewController is InteractivePostViewDelegate)
                 let viewModel = PostListItemViewModel(post: post)
-                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                cell.configure(with: viewModel, delegate: delegate)
                 updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             case let page as Page:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pageCellID, for: indexPath) as! PageListCell
                 let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
-                cell.configure(with: viewModel, delegate: listViewController as? InteractivePostViewDelegate)
+                cell.configure(with: viewModel, delegate: delegate)
                 updateHighlights(for: [cell], searchTerm: self.viewModel.searchTerm)
                 return cell
             default:
@@ -165,12 +165,10 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             switch viewModel.posts[indexPath.row].latest() {
             case let post as Post:
                 guard post.status != .trash else { return }
-                (listViewController as! PostListViewController)
-                    .edit(post)
+                delegate?.edit(post)
             case let page as Page:
                 guard page.status != .trash else { return }
-                (listViewController as! PageListViewController)
-                    .edit(page)
+                delegate?.edit(page)
             default:
                 fatalError("Unsupported post")
             }
@@ -182,6 +180,18 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             viewModel.didReachBottom()
         }
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let delegate, indexPath.section == SectionID.posts.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: viewModel.posts[indexPath.row], delegate: delegate)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let delegate, indexPath.section == SectionID.posts.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: viewModel.posts[indexPath.row], delegate: delegate)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - UISearchControllerDelegate

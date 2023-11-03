@@ -6,7 +6,7 @@ protocol InteractivePostViewDelegate: AnyObject {
     func stats(for post: AbstractPost)
     func duplicate(_ post: AbstractPost)
     func publish(_ post: AbstractPost)
-    func trash(_ post: AbstractPost)
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void)
     func draft(_ post: AbstractPost)
     func retry(_ post: AbstractPost)
     func cancelAutoUpload(_ post: AbstractPost)
@@ -22,4 +22,8 @@ extension InteractivePostViewDelegate {
     func setParent(for post: AbstractPost, at indexPath: IndexPath) {}
     func setHomepage(for post: AbstractPost) {}
     func setPostsPage(for post: AbstractPost) {}
+
+    func trash(_ post: AbstractPost) {
+        self.trash(post, completion: {})
+    }
 }

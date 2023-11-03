@@ -271,6 +271,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
     // MARK: - Post Actions
 
     override func createPost() {
@@ -359,7 +369,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         copyPostLink(post)
     }
 
-    func trash(_ post: AbstractPost) {
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
@@ -385,9 +395,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addCancelActionWithTitle(cancelText) { _ in
+            completion()
+        }
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
             self?.deletePost(post)
+            completion()
         }
         alertController.presentFromRootViewController()
     }
