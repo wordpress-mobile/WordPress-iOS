@@ -6,15 +6,22 @@ import OHHTTPStubs
 final class BloggingPromptsServiceTests: CoreDataTestCase {
     private let siteID = 1
     private let timeout: TimeInterval = 2
+    private let fetchPromptsResponseFileName = "blogging-prompts-fetch-success"
 
     private static let utcTimeZone = TimeZone(secondsFromGMT: 0)!
+
     private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = .init(identifier: "en_US_POSIX")
         formatter.timeZone = utcTimeZone
-
         return formatter
+    }()
+
+    private static var jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.supportMultipleDateFormats
+        return decoder
     }()
 
     private static var calendar: Calendar = {
@@ -26,6 +33,17 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     private var service: BloggingPromptsService!
     private var blog: Blog!
     private var accountService: AccountService!
+
+    // Prompts data parsed from the stubbed response.
+    private lazy var testPrompts: [BloggingPromptRemoteObject] = {
+        let bundle = Bundle(for: BloggingPromptsServiceTests.self)
+        guard let url = bundle.url(forResource: fetchPromptsResponseFileName, withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data) else {
+            return []
+        }
+        return prompts
+    }()
 
     override func setUp() {
         super.setUp()
@@ -55,38 +73,23 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         stubFetchPromptsResponse()
 
         let expectation = expectation(description: "Fetch prompts should succeed")
-        service.fetchPrompts(from: .init(timeIntervalSince1970: 0)) { prompts in
-            XCTAssertEqual(prompts.count, 2)
+        service.fetchPrompts(from: .init(timeIntervalSince1970: 0)) { [testPrompts] prompts in
+            XCTAssertEqual(prompts.count, testPrompts.count)
 
-            // Verify mappings for the first prompt
-            let firstPrompt = prompts.first!
-            XCTAssertEqual(firstPrompt.promptID, 248)
-            XCTAssertEqual(firstPrompt.text, "Tell us about a time when you felt out of place.")
-            XCTAssertTrue(firstPrompt.attribution.isEmpty)
+            prompts.forEach { prompt in
+                guard let expected = testPrompts.first(where: { $0.promptID == prompt.promptID }) else {
+                    XCTFail("Prompt with ID: \(prompt.promptID) not found in the test data.")
+                    return
+                }
 
-            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
-            XCTAssertEqual(firstDateComponents.year!, 2021)
-            XCTAssertEqual(firstDateComponents.month!, 9)
-            XCTAssertEqual(firstDateComponents.day!, 12)
-
-            XCTAssertTrue(firstPrompt.answered)
-            XCTAssertEqual(firstPrompt.answerCount, 1)
-            XCTAssertEqual(firstPrompt.displayAvatarURLs.count, 1)
-
-            // Verify mappings for the second prompt
-            let secondPrompt = prompts.last!
-            XCTAssertEqual(secondPrompt.promptID, 239)
-            XCTAssertEqual(secondPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
-            XCTAssertEqual(secondPrompt.attribution, "dayone")
-
-            let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
-            XCTAssertEqual(secondDateComponents.year!, 2022)
-            XCTAssertEqual(secondDateComponents.month!, 5)
-            XCTAssertEqual(secondDateComponents.day!, 3)
-
-            XCTAssertFalse(secondPrompt.answered)
-            XCTAssertEqual(secondPrompt.answerCount, 0)
-            XCTAssertTrue(secondPrompt.displayAvatarURLs.isEmpty)
+                XCTAssertEqual(prompt.promptID, Int32(expected.promptID))
+                XCTAssertEqual(prompt.text, expected.text)
+                XCTAssertEqual(prompt.attribution, expected.attribution)
+                XCTAssertEqual(prompt.date, expected.date)
+                XCTAssertEqual(prompt.answered, expected.answered)
+                XCTAssertEqual(prompt.answerCount, Int32(expected.answeredUsersCount))
+                XCTAssertEqual(prompt.displayAvatarURLs.count, expected.answeredUserAvatarURLs.count)
+            }
 
             expectation.fulfill()
 
@@ -98,10 +101,10 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
-    func test_fetchPrompts_shouldExcludePromptsOutsideGivenDate() {
+    func test_fetchPrompts_shouldExcludePromptsOutsideGivenDate() throws {
         // this should exclude the second prompt dated 2021-09-12.
         // the remote may return multiple prompts, but there should be a client-side filtering for the prompt dates.
-        let dateParam = Self.dateFormatter.date(from: "2022-01-01")
+        let dateParam = try XCTUnwrap(Self.dateFormatter.date(from: "2022-01-01"))
 
         // use actual remote object so the request can be intercepted by HTTPStubs.
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
@@ -110,13 +113,10 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         let expectation = expectation(description: "Fetch prompts should succeed")
         service.fetchPrompts(from: dateParam) { prompts in
             XCTAssertEqual(prompts.count, 1)
+            let prompt = prompts.first!
 
-            // Ensure that the date returned is more recent than the supplied date parameter.
-            let firstPrompt = prompts.first!
-            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
-            XCTAssertEqual(firstDateComponents.year!, 2022)
-            XCTAssertEqual(firstDateComponents.month!, 5)
-            XCTAssertEqual(firstDateComponents.day!, 3)
+            // Ensure that the date returned is more recent than the date parameter.
+            XCTAssertTrue(dateParam.compare(prompt.date) == .orderedAscending)
 
             expectation.fulfill()
 
@@ -194,7 +194,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
         // the expected prompt IDs locally stored in the app after fetching the prompts.
         // these IDs are from blogging-prompts-fetch-success.json.
-        let expectedPromptIDs: Set<Int> = [239, 248]
+        let expectedPromptIDs = Set(testPrompts.map(\.promptID))
 
         // insert existing prompts.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
@@ -226,8 +226,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         stubFetchPromptsResponse()
 
         // the expected prompt IDs locally stored in the app after fetching the prompts.
-        // these IDs are from blogging-prompts-fetch-success.json.
-        let expectedPromptIDs: Set<Int> = [239, 248]
+        let expectedPromptIDs = Set(testPrompts.map(\.promptID))
 
         // add 5 existing prompts having the same dates before calling `fetchPrompts`.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
@@ -265,7 +264,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
         // the expected prompt IDs locally stored in the app after fetching the prompts.
         // the first two IDs are from blogging-prompts-fetch-success.json.
-        let expectedPromptIDs: Set<Int> = [239, 248, otherPromptID]
+        let expectedPromptIDs = Set(testPrompts.map(\.promptID) + [otherPromptID])
 
         // insert existing prompts.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
@@ -298,10 +297,10 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
         stubFetchPromptsResponse()
 
-        let promptID = 239 // same promptID as 2022-05-03 from blogging-prompts-fetch-success.json.
+        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2021-05-03")) // one year before 2022-05-03.
+        let promptID = try XCTUnwrap(testPrompts.first).promptID // same promptID as 2022-05-03 from the test data.
 
         // insert existing prompts.
-        let date = try XCTUnwrap(Self.dateFormatter.date(from: "2021-05-03")) // one year before 2022-05-03.
         makeBloggingPrompt(siteID: siteID, promptID: promptID, date: date)
         contextManager.save(contextManager.mainContext)
 
