@@ -1021,6 +1021,7 @@
 		3FB1E15E2AF4B874008C6766 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
 		3FB1E15F2AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; };
 		3FB1E1602AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3FB1E1652AF4BD5B008C6766 /* DeepLinkSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1E1642AF4BD5B008C6766 /* DeepLinkSourceTests.swift */; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */; };
 		3FB6D13B2ACFF63800768C07 /* MySiteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */; };
@@ -6710,6 +6711,7 @@
 		3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JetpackStatsWidgetsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JetpackStatsWidgetsCore.h; sourceTree = "<group>"; };
 		3FB1E14B2AF4B661008C6766 /* JetpackStatsWidgetsCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackStatsWidgetsCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FB1E1642AF4BD5B008C6766 /* DeepLinkSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkSourceTests.swift; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Scroll.swift"; sourceTree = "<group>"; };
 		3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteViewModelTests.swift; sourceTree = "<group>"; };
@@ -13656,6 +13658,7 @@
 				E180BD4B1FB462FF00D0D781 /* CookieJarTests.swift */,
 				4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */,
 				E1AB5A391E0C464700574B4E /* DelayTests.swift */,
+				3FB1E1642AF4BD5B008C6766 /* DeepLinkSourceTests.swift */,
 				173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */,
 				E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */,
 				4A266B8E282B05210089CF3D /* JSONObjectTests.swift */,
@@ -23857,6 +23860,7 @@
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				932645A41E7C206600134988 /* GutenbergSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
+				3FB1E1652AF4BD5B008C6766 /* DeepLinkSourceTests.swift in Sources */,
 				5789E5C822D7D40800333698 /* AztecPostViewControllerAttachmentTests.swift in Sources */,
 				0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */,
 				C8567498243F41CA001A995E /* MockTenorService.swift in Sources */,

@@ -14,17 +14,4 @@ final class WidgetUrlSourceTests: XCTestCase {
         let widgetUrl = url.appendingSource(.lockScreenWidget)
         XCTAssertEqual(widgetUrl.absoluteString, "https://test?source=lockscreen_widget")
     }
-
-    // FIXME: We might be able to do without this DeepLinkSource check
-//    func testHomeScreenWidgetSourceType() {
-//        let source = WidgetUrlSource.homeScreenWidget.rawValue
-//        let deepLinkSource = DeepLinkSource(sourceName: source)
-//        XCTAssertEqual(deepLinkSource, .widget)
-//    }
-//
-//    func testLockScreenWidgetSourceType() {
-//        let source = WidgetUrlSource.lockScreenWidget.rawValue
-//        let deepLinkSource = DeepLinkSource(sourceName: source)
-//        XCTAssertEqual(deepLinkSource, .lockScreenWidget)
-//    }
 }
