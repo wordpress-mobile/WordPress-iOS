@@ -193,7 +193,6 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
-            [.view],
             [.moveToDraft],
             [.trash]
         ]

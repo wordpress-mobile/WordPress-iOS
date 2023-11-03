@@ -473,31 +473,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
-    private func handleTrashPage(_ post: AbstractPost) {
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-        } else {
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-        }
-        alertController.presentFromRootViewController()
-    }
-
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {

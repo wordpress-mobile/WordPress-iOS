@@ -108,7 +108,6 @@ extension PageListViewController: InteractivePostViewDelegate {
 
 private enum Strings {
 
-    static let offlineMessage = NSLocalizedString("pagesList.trash.offline", value: "Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
     static let cancelText = NSLocalizedString("pagesList.trash.cancel", value: "Cancel", comment: "Cancels an Action")
 
     enum DeletePermanently {
