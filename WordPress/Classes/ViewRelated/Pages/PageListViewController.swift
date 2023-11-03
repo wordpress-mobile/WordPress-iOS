@@ -26,21 +26,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         static let editorUrl = "site-editor.php?canvas=edit"
     }
 
-    private lazy var _tableViewHandler: PageListTableViewHandler = {
-        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.delegate = self
-        tableViewHandler.listensForContentChanges = false
-        tableViewHandler.updateRowAnimation = .none
-        return tableViewHandler
-    }()
-
-    override var tableViewHandler: WPTableViewHandler {
-        get {
-            return _tableViewHandler
-        } set {
-            super.tableViewHandler = newValue
-        }
+    private enum Section: Int {
+        case templates = 0
+        case pages = 1
     }
 
     private lazy var homepageSettingsService = {
@@ -54,9 +42,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
+    var showEditorHomepage: Bool {
+        guard RemoteFeatureFlag.siteEditorMVP.enabled() else {
+            return false
+        }
+        let isFSETheme = blog.blockEditorSettings?.isFSETheme ?? false
+        return isFSETheme && filterSettings.currentPostListFilter().filterType == .published
+    }
+
     private lazy var editorSettingsService = {
         return BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
     }()
+
+    private var pages: [Page] = []
 
     // MARK: - Convenience constructors
 
@@ -127,13 +125,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
-        _tableViewHandler.refreshTableView()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -159,11 +150,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     override func configureTableView() {
+        super.configureTableView()
+
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
-        tableView.rowHeight = UITableView.automaticDimension
 
-        // Register the cells
         tableView.register(PageListCell.self, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
@@ -221,29 +212,20 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
-    override internal func lastSyncDate() -> Date? {
-        return blog?.lastPagesSync
-    }
-
-    override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
-        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
-        _tableViewHandler.refreshTableView()
-
-        super.selectedFilterDidChange(filterBar)
-    }
-
-    override func updateFilterWithPostStatus(_ status: BasePost.Status) {
-        filterSettings.setFilterWithPostStatus(status)
-        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
-        _tableViewHandler.refreshTableView()
-        super.updateFilterWithPostStatus(status)
-    }
-
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
-        _tableViewHandler.refreshTableView()
+        reloadPages()
+    }
+
+    private func reloadPages() {
+        let status = filterSettings.currentPostListFilter().filterType
+        let pages = (fetchResultsController.fetchedObjects ?? []) as! [Page]
+        if status == .published {
+            self.pages = pages.setHomePageFirst().hierarchySort()
+        } else {
+            self.pages = pages
+        }
     }
 
     override func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
@@ -253,24 +235,23 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    // MARK: - Model Interaction
+    // MARK: - NSFetchedResultsControllerDelegate
 
-    /// Retrieves the page object at the specified index path.
-    ///
-    /// - Parameter indexPath: the index path of the page object to retrieve.
-    ///
-    /// - Returns: the requested page.
-    ///
-    fileprivate func pageAtIndexPath(_ indexPath: IndexPath) -> Page {
-        if _tableViewHandler.showEditorHomepage {
-            // Since we're adding a fake homepage cell, we need to adjust the index path to match
-            let adjustedIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-            return _tableViewHandler.page(at: adjustedIndexPath)
-        }
-        return _tableViewHandler.page(at: indexPath)
+    override func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // Do nothing
     }
 
-    // MARK: - TableView Handler Delegate Methods
+    override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        // Do nothing, refresh all
+    }
+
+    override func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        reloadPages()
+        tableView.reloadData()
+        refreshResults()
+    }
+
+    // MARK: - Core Data
 
     override func entityName() -> String {
         return String(describing: Page.self)
@@ -315,12 +296,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
-    // MARK: - Table View Handling
+    // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+        switch Section(rawValue: indexPath.section)! {
+        case .templates:
             WPAnalytics.track(.pageListEditHomepageTapped)
             guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
                 return
@@ -331,37 +312,73 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                                                                         source: Constant.Events.editHomepageSource)
             let navigationController = UINavigationController(rootViewController: webViewController)
             present(navigationController, animated: true)
-        } else {
-            let page = pageAtIndexPath(indexPath)
+        case .pages:
+            let page = pages[indexPath.row]
             edit(page)
         }
     }
 
-    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            let page = self.pages[indexPath.row]
+            let viewModel = PageMenuViewModel(page: page)
+            let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    // MARK: - UITableViewDataSource
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch Section(rawValue: section)! {
+        case .templates:
+            return showEditorHomepage ? 1 : 0
+        case .pages:
+            return pages.count
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch Section(rawValue: indexPath.section)! {
+        case .templates:
             let identifier = Constant.Identifiers.templatePageCellIdentifier
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             return cell
+        case .pages:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifiers.pageCellIdentifier, for: indexPath) as! PageListCell
+            let page = pages[indexPath.row]
+            let indentation = getIndentationLevel(at: indexPath)
+            let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
+            let viewModel = PageListItemViewModel(page: page)
+            cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
+            return cell
         }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifiers.pageCellIdentifier, for: indexPath) as! PageListCell
-        let page = pageAtIndexPath(indexPath)
-        let indentation = getIndentationLevel(at: indexPath)
-        let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-        let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
-        cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
-        return cell
     }
 
     private func getIndentationLevel(at indexPath: IndexPath) -> Int {
-        guard filterSettings.currentPostListFilter().filterType == .published else {
+        guard filterSettings.currentPostListFilter().filterType == .published,
+              indexPath.row > 0 else {
             return 0
         }
-        let lowerBound = _tableViewHandler.showEditorHomepage ? 1 : 0
-        guard indexPath.row > lowerBound else {
-            return 0
-        }
-        return pageAtIndexPath(indexPath).hierarchyIndex
+        return pages[indexPath.row].hierarchyIndex
     }
 
     // MARK: - Post Actions
@@ -383,41 +400,34 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page, at index: IndexPath) {
-        let selectedPage = pageAtIndexPath(index)
-        let newIndex = _tableViewHandler.index(for: selectedPage)
-        let pages = _tableViewHandler.removePage(from: newIndex)
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: { [weak self] in
-            self?._tableViewHandler.refreshTableView(at: index)
-        }, onSuccess: { [weak self] in
-            self?.handleSetParentSuccess()
-        } )
-        present(parentPageNavigationController, animated: true)
+    func setParentPage(for page: Page) {
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        let filter = PostListFilter.publishedFilter()
+        request.predicate = filter.predicate(for: blog, author: .everyone)
+        request.sortDescriptors = filter.sortDescriptors
+        do {
+            var pages = try managedObjectContext()
+                .fetch(request)
+                .setHomePageFirst()
+                .hierarchySort()
+            if let index = pages.firstIndex(of: page) {
+                pages = pages.remove(from: index)
+            }
+            let viewController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: page, onClose: { [weak self] in
+                self?.updateAndPerformFetchRequestRefreshingResults()
+            }, onSuccess: { [weak self] in
+                self?.handleSetParentSuccess()
+            } )
+            present(viewController, animated: true)
+        } catch {
+            assertionFailure("Failed to fetch pages: \(error)") // This should never happen
+        }
     }
 
     private func handleSetParentSuccess() {
         let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
         let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
-
-    fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
-
-        var pageManagedOjbect: NSManagedObject
-
-        do {
-            pageManagedOjbect = try managedObjectContext().existingObject(with: objectID)
-
-        } catch let error as NSError {
-            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), \(error)")
-            return nil
-        } catch _ {
-            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), Could not find Page with ID \(objectID)")
-            return nil
-        }
-
-        let page = pageManagedOjbect as? Page
-        return page
     }
 
     func setPageAsHomepage(_ page: Page) {
@@ -461,37 +471,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func handleHomepageSettingsFailure() {
         let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
-
-    private func handleTrashPage(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-        } else {
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-        }
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - NetworkAwareUI

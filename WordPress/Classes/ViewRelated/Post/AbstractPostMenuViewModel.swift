@@ -29,7 +29,7 @@ enum AbstractPostButton: Equatable {
 
     /// Specific to pages
     case pageAttributes
-    case setParent(IndexPath)
+    case setParent
     case setHomepage
     case setPostsPage
 }

@@ -12,7 +12,7 @@ final class PostListItemViewModel {
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
 
-    init(post: Post, shouldHideAuthor: Bool) {
+    init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
         self.content = makeContentString(for: post)
         self.imageURL = post.featuredImageURL

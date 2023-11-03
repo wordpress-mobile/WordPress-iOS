@@ -71,7 +71,16 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             guard let post = card.post else {
                 return UITableViewCell()
             }
-            return cell(for: post, at: indexPath)
+
+            let shouldShowSeparator: Bool = {
+                guard let cards,
+                      let nextCard = cards[safe: indexPath.row + 1] else {
+                    return true
+                }
+                return !nextCard.isRecommendationCard
+            }()
+            return cell(for: post, at: indexPath, showsSeparator: shouldShowSeparator)
+
         case .topics:
             return cell(for: card.topicsArray)
         case .sites:

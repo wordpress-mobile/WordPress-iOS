@@ -11,24 +11,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
-    private let statsCacheInterval = TimeInterval(300) // 5 minutes
-
-    private let postCardEstimatedRowHeight = CGFloat(300.0)
-
-    private lazy var _tableViewHandler: PostListTableViewHandler = {
-        let tableViewHandler = PostListTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = .none
-        return tableViewHandler
-    }()
-
-    override var tableViewHandler: WPTableViewHandler {
-        get {
-            return _tableViewHandler
-        } set {
-            super.tableViewHandler = newValue
-        }
+    private var showingJustMyPosts: Bool {
+        return filterSettings.currentPostAuthorFilter() == .mine
     }
 
     /// If set, when the post list appear it will show the tab for this status
@@ -96,6 +80,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -131,18 +117,30 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    // MARK: - Notifications
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return
+        }
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
+            let post = fetchResultsController.object(at: $0)
+            return updatedObjects.contains(post)
+        }
+        if !updatedIndexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
+            tableView.endUpdates()
+        }
+    }
+
     // MARK: - Configuration
 
     override func configureTableView() {
+        super.configureTableView()
+
         tableView.accessibilityIdentifier = "PostsTable"
-        tableView.separatorStyle = .singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-
-        // Register the cells
         tableView.register(PostListCell.self, forCellReuseIdentifier: PostListCell.defaultReuseID)
-
-        let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
-        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
 
     private func configureInitialFilterIfNeeded() {
@@ -180,10 +178,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return .post
     }
 
-    override func lastSyncDate() -> Date? {
-        return blog?.lastPostsSync
-    }
-
     // MARK: - Data Model Interaction
 
     /// Retrieves the post object at the specified index path.
@@ -193,7 +187,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested post.
     ///
     fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController?.object(at: indexPath) as? Post else {
+        guard let post = fetchResultsController.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -236,9 +230,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
-    // MARK: - Table View Handling
+    // MARK: - UITableViewDataSource
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
+        let post = postAtIndexPath(indexPath)
+        cell.accessoryType = .none
+        cell.configure(with: PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor), delegate: self)
+        return cell
+    }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let post = postAtIndexPath(indexPath)
@@ -251,14 +255,25 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editPost(apost: post)
     }
 
-    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
-        let post = postAtIndexPath(indexPath)
-        cell.accessoryType = .none
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            let post = self.postAtIndexPath(indexPath)
+            let viewModel = PostListItemViewModel(post: post).statusViewModel
+            let helper = AbstractPostMenuHelper(post, viewModel: viewModel)
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+        }
+    }
 
-        let viewModel = PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor)
-        cell.configure(with: viewModel, delegate: self)
-        return cell
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - Post Actions
@@ -326,9 +341,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            viewStatsForPost(post)
-        }
+        viewStatsForPost(post)
     }
 
     func duplicate(_ post: AbstractPost) {
@@ -349,13 +362,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         copyPostLink(post)
     }
 
-    func trash(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let cancelText: String
         let deleteText: String
         let messageText: String
@@ -375,17 +382,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addCancelActionWithTitle(cancelText) { _ in
+            completion()
+        }
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
             self?.deletePost(post)
+            completion()
         }
         alertController.presentFromRootViewController()
     }
 
     func draft(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(post)
-        }
+        moveToDraft(post)
     }
 
     func retry(_ post: AbstractPost) {

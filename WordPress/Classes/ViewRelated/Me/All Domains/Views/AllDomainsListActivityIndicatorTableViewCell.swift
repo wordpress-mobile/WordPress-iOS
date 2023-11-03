@@ -24,9 +24,13 @@ final class AllDomainsListActivityIndicatorTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.activityIndicator.startAnimating()
+    }
+
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.activityIndicator.startAnimating()
     }
-
 }
