@@ -84,6 +84,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .setParent: return UIImage(systemName: "text.append")
         case .setHomepage: return UIImage(systemName: "house")
         case .setPostsPage: return UIImage(systemName: "text.word.spacing")
+        case .setRegularPage: return UIImage(systemName: "arrow.uturn.backward")
         }
     }
 
@@ -112,6 +113,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .setParent: return Strings.setParent
         case .setHomepage: return Strings.setHomepage
         case .setPostsPage: return Strings.setPostsPage
+        case .setRegularPage: return Strings.setRegularPage
         }
     }
 
@@ -145,6 +147,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.setHomepage(for: post)
         case .setPostsPage:
             delegate.setPostsPage(for: post)
+        case .setRegularPage:
+            delegate.setRegularPage(for: post)
         }
     }
 
@@ -164,5 +168,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let setParent = NSLocalizedString("posts.setParent.actionTitle", value: "Set parent", comment: "Set the parent page for the selected page.")
         static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
         static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
+        static let setRegularPage = NSLocalizedString("posts.setRegularPage.actionTitle", value: "Set as regular page", comment: "Set the selected page as a regular page.")
     }
 }

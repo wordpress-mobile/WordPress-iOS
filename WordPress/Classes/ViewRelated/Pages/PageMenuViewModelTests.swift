@@ -136,7 +136,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
-            [.setParent, .setHomepage],
+            [.setParent, .setHomepage, .setRegularPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
