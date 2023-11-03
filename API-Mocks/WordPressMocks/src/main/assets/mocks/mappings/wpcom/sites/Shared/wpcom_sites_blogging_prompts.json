@@ -3,10 +3,13 @@
     "method": "GET",
     "urlPathPattern": "/wpcom/v3/sites/([0-9]+)/blogging-prompts",
     "queryParameters": {
-      "number": {
+      "per_page": {
         "matches": "(.*)"
       },
-      "from": {
+      "after": {
+        "matches": "(.*)"
+      },
+      "force_year": {
         "matches": "(.*)"
       },
       "_locale": {
@@ -16,239 +19,237 @@
   },
   "response": {
     "status": 200,
-    "jsonBody": {
-      "prompts": [
-        {
-          "id": 2003,
-          "text": "What foods would you like to make?",
-          "attribution": "dayone",
-          "date": "2022-07-20",
-          "answered": false,
-          "answered_users_count": 3,
-          "answered_users_sample": [
-            {
-              "avatar": "https://2.gravatar.com/avatar/5dffa9e5d426449127114fe04f4820ba?s=96&d=identicon&r=G"
-            },
-            {
-              "avatar": "https://0.gravatar.com/avatar/9cd92ae622fc905b4908503cf9fbd489?s=96&d=identicon&r=G"
-            },
-            {
-              "avatar": "https://2.gravatar.com/avatar/e2526cb456f69198425ebeaff0a9225f?s=96&d=identicon&r=G"
-            }
-          ],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2003",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2004,
-          "text": "What&#039;s your favorite game (card, board, video, etc.)? Why?",
-          "attribution": "",
-          "date": "2022-07-21",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2004",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2005,
-          "text": "What’s your go-to comfort food?",
-          "attribution": "dayone",
-          "date": "2022-07-22",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2005",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2006,
-          "text": "What do you listen to while you work?",
-          "attribution": "dayone",
-          "date": "2022-07-23",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2006",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2007,
-          "text": "What would you change about modern society?",
-          "attribution": "dayone",
-          "date": "2022-07-24",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2007",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2008,
-          "text": "What are your future travel plans?",
-          "attribution": "dayone",
-          "date": "2022-07-25",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2008",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2009,
-          "text": "What&#039;s the sickest you&#039;ve ever been?",
-          "attribution": "dayone",
-          "date": "2022-07-26",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2009",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2010,
-          "text": "What&#039;s the story behind your nickname?",
-          "attribution": "dayone",
-          "date": "2022-07-27",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2010",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2011,
-          "text": "If you won two free plane tickets, where would you go?",
-          "attribution": "",
-          "date": "2022-07-28",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2011",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2012,
-          "text": "If you could bring back one dinosaur, which one would it be?",
-          "attribution": "dayone",
-          "date": "2022-07-29",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2012",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2013,
-          "text": "How would you describe yourself to someone?",
-          "attribution": "dayone",
-          "date": "2022-07-30",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2013",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2014,
-          "text": "Was today typical?",
-          "attribution": "dayone",
-          "date": "2022-07-31",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2014",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2015,
-          "text": "What traditions have you not kept that your parents had?",
-          "attribution": "dayone",
-          "date": "2022-08-01",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2015",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2016,
-          "text": "How would you describe yourself to someone who can&#039;t see you?",
-          "attribution": "dayone",
-          "date": "2022-08-02",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2016",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2017,
-          "text": "Write about a random act of kindness you&#039;ve done for someone.",
-          "attribution": "dayone",
-          "date": "2022-08-03",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2017",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2018,
-          "text": "What are you curious about?",
-          "attribution": "dayone",
-          "date": "2022-08-04",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2018",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2019,
-          "text": "Do you have any habits you&#039;re currently trying to break?",
-          "attribution": "dayone",
-          "date": "2022-08-05",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2019",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2020,
-          "text": "List 30 things that make you happy.",
-          "attribution": "dayone",
-          "date": "2022-08-06",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2020",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2021,
-          "text": "Scour the news for an entirely uninteresting story. Consider how it connects to your life. Write about that.",
-          "attribution": "",
-          "date": "2022-08-07",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2021",
-          "answered_link_text": "View all responses"
-        },
-        {
-          "id": 2022,
-          "text": "What&#039;s the most money you&#039;ve ever spent on a meal? Was it worth it?",
-          "attribution": "",
-          "date": "{{now format='yyyy-MM-dd'}}",
-          "answered": false,
-          "answered_users_count": 0,
-          "answered_users_sample": [],
-          "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-2022",
-          "answered_link_text": "View all responses"
-        }
-      ]
-    }
+    "jsonBody": [
+      {
+        "id": 2003,
+        "text": "What foods would you like to make?",
+        "attribution": "dayone",
+        "date": "2022-07-20",
+        "answered": false,
+        "answered_users_count": 3,
+        "answered_users_sample": [
+          {
+            "avatar": "https://2.gravatar.com/avatar/5dffa9e5d426449127114fe04f4820ba?s=96&d=identicon&r=G"
+          },
+          {
+            "avatar": "https://0.gravatar.com/avatar/9cd92ae622fc905b4908503cf9fbd489?s=96&d=identicon&r=G"
+          },
+          {
+            "avatar": "https://2.gravatar.com/avatar/e2526cb456f69198425ebeaff0a9225f?s=96&d=identicon&r=G"
+          }
+        ],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2003",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2004,
+        "text": "What&#039;s your favorite game (card, board, video, etc.)? Why?",
+        "attribution": "",
+        "date": "2022-07-21",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2004",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2005,
+        "text": "What’s your go-to comfort food?",
+        "attribution": "dayone",
+        "date": "2022-07-22",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2005",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2006,
+        "text": "What do you listen to while you work?",
+        "attribution": "dayone",
+        "date": "2022-07-23",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2006",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2007,
+        "text": "What would you change about modern society?",
+        "attribution": "dayone",
+        "date": "2022-07-24",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2007",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2008,
+        "text": "What are your future travel plans?",
+        "attribution": "dayone",
+        "date": "2022-07-25",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2008",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2009,
+        "text": "What&#039;s the sickest you&#039;ve ever been?",
+        "attribution": "dayone",
+        "date": "2022-07-26",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2009",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2010,
+        "text": "What&#039;s the story behind your nickname?",
+        "attribution": "dayone",
+        "date": "2022-07-27",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2010",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2011,
+        "text": "If you won two free plane tickets, where would you go?",
+        "attribution": "",
+        "date": "2022-07-28",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2011",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2012,
+        "text": "If you could bring back one dinosaur, which one would it be?",
+        "attribution": "dayone",
+        "date": "2022-07-29",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2012",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2013,
+        "text": "How would you describe yourself to someone?",
+        "attribution": "dayone",
+        "date": "2022-07-30",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2013",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2014,
+        "text": "Was today typical?",
+        "attribution": "dayone",
+        "date": "2022-07-31",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2014",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2015,
+        "text": "What traditions have you not kept that your parents had?",
+        "attribution": "dayone",
+        "date": "2022-08-01",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2015",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2016,
+        "text": "How would you describe yourself to someone who can&#039;t see you?",
+        "attribution": "dayone",
+        "date": "2022-08-02",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2016",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2017,
+        "text": "Write about a random act of kindness you&#039;ve done for someone.",
+        "attribution": "dayone",
+        "date": "2022-08-03",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2017",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2018,
+        "text": "What are you curious about?",
+        "attribution": "dayone",
+        "date": "2022-08-04",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2018",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2019,
+        "text": "Do you have any habits you&#039;re currently trying to break?",
+        "attribution": "dayone",
+        "date": "2022-08-05",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2019",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2020,
+        "text": "List 30 things that make you happy.",
+        "attribution": "dayone",
+        "date": "2022-08-06",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2020",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2021,
+        "text": "Scour the news for an entirely uninteresting story. Consider how it connects to your life. Write about that.",
+        "attribution": "",
+        "date": "2022-08-07",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2021",
+        "answered_link_text": "View all responses"
+      },
+      {
+        "id": 2022,
+        "text": "What&#039;s the most money you&#039;ve ever spent on a meal? Was it worth it?",
+        "attribution": "",
+        "date": "{{now format='yyyy-MM-dd'}}",
+        "answered": false,
+        "answered_users_count": 0,
+        "answered_users_sample": [],
+        "answered_link": "https://wordpress.com/tag/dailyprompt-2022",
+        "answered_link_text": "View all responses"
+      }
+    ]
   }
 }
