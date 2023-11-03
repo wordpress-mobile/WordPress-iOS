@@ -6,11 +6,14 @@ struct AllDomainsListItemViewModel {
     let description: String?
     let status: Status?
     let expiryDate: String?
+    let wpcomDetailsURL: URL?
 }
 
 // MARK: - Convenience Inits
 
 extension AllDomainsListItemViewModel {
+
+    private static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,7 +27,8 @@ extension AllDomainsListItemViewModel {
             name: domain.domain,
             description: Self.description(from: domain),
             status: domain.status,
-            expiryDate: Self.expiryDate(from: domain)
+            expiryDate: Self.expiryDate(from: domain),
+            wpcomDetailsURL: Self.wpcomDetailsURL(from: domain)
         )
     }
 
@@ -43,6 +47,17 @@ extension AllDomainsListItemViewModel {
         let notice = expired ? Strings.expired : Strings.renews
         let formatted = Self.dateFormatter.string(from: date)
         return "\(notice) \(formatted)"
+    }
+
+    private static func wpcomDetailsURL(from domain: Domain) -> URL? {
+        let viewSlug = {
+            switch domain.type {
+            case .siteRedirect: return "redirect"
+            case .transfer: return "/transfer/in"
+            default: return "edit"
+            }
+        }()
+        return URL(string: "\(Self.domainManagementBasePath)/\(viewSlug)/\(domain.siteSlug)")
     }
 }
 

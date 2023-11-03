@@ -138,7 +138,8 @@ struct AllDomainsListCardView_Previews: PreviewProvider {
                     name: "domain.cool.cool",
                     description: "A Cool Website",
                     status: .init(value: "Active", type: .success),
-                    expiryDate: "Expires Aug 15 2004"
+                    expiryDate: "Expires Aug 15 2004",
+                    wpcomDetailsURL: URL(string: "wordpress.com")!
                 )
             )
         }
