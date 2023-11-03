@@ -305,8 +305,8 @@ private extension BloggingPromptsService {
             }
 
             if let fromDate {
-                // convert to yyyy-MM-dd format in UTC timezone so users would get the same prompts everywhere.
-                var dateString = Self.utcDateFormatter.string(from: fromDate)
+                // convert to yyyy-MM-dd format in local timezone so users would see the same prompt throughout their day.
+                var dateString = Self.localDateFormatter.string(from: fromDate)
 
                 // when the year needs to be ignored, we'll transform the dateString to match the "--mm-dd" format.
                 if ignoresYear, !dateString.isEmpty {
