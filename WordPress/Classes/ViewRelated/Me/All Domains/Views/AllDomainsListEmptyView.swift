@@ -77,8 +77,13 @@ final class AllDomainsListEmptyView: UIView {
     func update(with viewModel: ViewModel?) {
         self.titleLabel.text = viewModel?.title
         self.descriptionLabel.text = viewModel?.description
-        self.button.setTitle(viewModel?.button.title, for: .normal)
-        self.buttonAction = viewModel?.button.action
+        if let button = viewModel?.button {
+            self.button.isHidden = false
+            self.button.setTitle(button.title, for: .normal)
+            self.buttonAction = button.action
+        } else {
+            self.button.isHidden = true
+        }
     }
 
     // MARK: - User Interaction
