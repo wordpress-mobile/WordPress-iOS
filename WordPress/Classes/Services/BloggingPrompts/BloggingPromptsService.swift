@@ -29,6 +29,14 @@ class BloggingPromptsService {
         return formatter
     }()
 
+    /// A JSON decoder that can parse date strings that matches `JSONDecoder.DateDecodingStrategy.DateFormat` into `Date`.
+    private static var jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.supportMultipleDateFormats
+
+        return decoder
+    }()
+
     /// Convenience computed variable that returns today's prompt from local store.
     ///
     var localTodaysPrompt: BloggingPrompt? {
@@ -320,11 +328,7 @@ private extension BloggingPromptsService {
             case .success(let responseObject):
                 do {
                     let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.supportMultipleDateFormats
-                    decoder.keyDecodingStrategy = .useDefaultKeys
-
-                    let remotePrompts = try decoder.decode([BloggingPromptRemoteObject].self, from: data)
+                    let remotePrompts = try Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
                     completion(.success(remotePrompts))
                 } catch {
                     completion(.failure(error))
