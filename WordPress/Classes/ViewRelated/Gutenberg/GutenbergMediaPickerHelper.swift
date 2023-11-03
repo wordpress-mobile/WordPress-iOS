@@ -110,8 +110,10 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
             switch mediaType {
             case UTType.image.identifier:
                 if let image = info[.originalImage] as? UIImage {
-                    self.didPickMediaCallback?([image])
-                    self.didPickMediaCallback = nil
+                    MediaHelper.advertiseImageOptimization() { [self] in
+                        self.didPickMediaCallback?([image])
+                        self.didPickMediaCallback = nil
+                    }
                 }
 
             case UTType.movie.identifier:

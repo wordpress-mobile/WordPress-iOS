@@ -51,7 +51,9 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         self.dismiss(animated: true) {
             if let image = info[.originalImage] as? UIImage {
-                self.setFeaturedImage(with: image)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    self.setFeaturedImage(with: image)
+                }
             }
         }
     }

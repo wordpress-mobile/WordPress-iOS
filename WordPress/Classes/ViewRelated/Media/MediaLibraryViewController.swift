@@ -509,7 +509,9 @@ extension MediaLibraryViewController: ImagePickerControllerDelegate {
         switch mediaType {
         case UTType.image.identifier:
             if let image = info[.originalImage] as? UIImage {
-                addAsset(from: image)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    addAsset(from: image)
+                }
             }
 
         case UTType.movie.identifier:
