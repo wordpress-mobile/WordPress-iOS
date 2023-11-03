@@ -31,6 +31,13 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "3FB1E14A2AF4B660008C6766",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:..\/WordPressFlux",
         "identifier" : "WordPressFluxTests",
         "name" : "WordPressFluxTests"
