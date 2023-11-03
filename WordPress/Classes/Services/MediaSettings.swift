@@ -3,9 +3,11 @@ import AVFoundation
 
 class MediaSettings: NSObject {
     // MARK: - Constants
+    fileprivate let imageOptimizationKey = "SavedImageOptimizationSetting"
     fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
     fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
     fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
+    fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
 
 
     fileprivate let minImageDimension = 150
@@ -166,6 +168,37 @@ class MediaSettings: NSObject {
         }
         set {
             database.set(newValue.rawValue, forKey: maxVideoSizeKey)
+        }
+    }
+
+    var imageOptimizationSetting: Bool {
+        get {
+            if let savedImageOptimization = database.object(forKey: imageOptimizationKey) as? Bool {
+                return savedImageOptimization
+            } else {
+                return true
+            }
+        }
+        set {
+            database.set(newValue, forKey: imageOptimizationKey)
+
+            // If the user changes this setting manually, we disable the image optimization popup.
+            if advertiseImageOptimization {
+                advertiseImageOptimization = false
+            }
+        }
+    }
+
+    var advertiseImageOptimization: Bool {
+        get {
+            if let savedAdvertiseImageOptimization = database.object(forKey: advertiseImageOptimizationKey) as? Bool {
+                return savedAdvertiseImageOptimization
+            } else {
+                return true
+            }
+        }
+        set {
+            database.set(newValue, forKey: advertiseImageOptimizationKey)
         }
     }
 }

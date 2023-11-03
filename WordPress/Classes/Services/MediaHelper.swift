@@ -67,6 +67,37 @@ class MediaHelper: NSObject {
         }
 
     }
+
+    static func advertiseImageOptimization(completion: @escaping (() -> Void)) {
+        guard MediaSettings().advertiseImageOptimization else {
+            completion()
+            return
+        }
+
+        let title = NSLocalizedString("Keep optimizing images?",
+                                        comment: "Title of an alert informing users to enable image optimization in uploads.")
+        let message = NSLocalizedString("Image optimization shrinks images for quicker uploading.\n\nBy default it's enabled but you can change this any time in app settings.",
+                                        comment: "Message of an alert informing users to enable image optimization in uploads.")
+        let turnOffTitle = NSLocalizedString("No, turn off", comment: "Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads.")
+        let leaveOnTitle = NSLocalizedString("Yes, leave on", comment: "Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads.")
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: turnOffTitle, style: .default) { _ in
+            MediaSettings().imageOptimizationSetting = false
+            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "off" as
+                                                                                     AnyObject])
+            completion()
+        })
+        alert.addAction(UIAlertAction(title: leaveOnTitle, style: .default) { _ in
+            MediaSettings().imageOptimizationSetting = true
+            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "on" as
+                                                                                     AnyObject])
+            completion()
+        })
+        alert.presentFromRootViewController()
+
+        MediaSettings().advertiseImageOptimization = false
+    }
 }
 
 extension Media {
