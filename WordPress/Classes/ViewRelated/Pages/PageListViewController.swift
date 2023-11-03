@@ -333,16 +333,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        indexPath.section == Section.pages.rawValue
-    }
-
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
         let actions = AbstractPostHelper.makeLeadingContextualActions(for: pages[indexPath.row], delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
         let actions = AbstractPostHelper.makeTrailingContextualActions(for: pages[indexPath.row], delegate: self)
         return UISwipeActionsConfiguration(actions: actions)
     }

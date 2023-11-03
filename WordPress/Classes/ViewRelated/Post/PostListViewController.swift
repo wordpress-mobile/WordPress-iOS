@@ -271,10 +271,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        true
-    }
-
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actions = AbstractPostHelper.makeLeadingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
         return UISwipeActionsConfiguration(actions: actions)

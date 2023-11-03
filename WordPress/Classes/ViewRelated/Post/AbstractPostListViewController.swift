@@ -185,8 +185,9 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        searchResultsViewController.configure(searchController)
-        searchResultsViewController.listViewController = self
+        assert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
+
+        searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
