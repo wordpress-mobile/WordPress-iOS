@@ -210,8 +210,6 @@ class MeViewController: UITableViewController {
                                               accessoryType: accessoryType,
                                               action: pushAbout(),
                                               accessibilityIdentifier: "About"))
-
-
                 return rows
             }())
         ]
