@@ -196,7 +196,7 @@ class MediaSettings: NSObject {
                 database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
-                return maxImageDimension
+                return 2000
             }
         }
         set {
