@@ -77,12 +77,12 @@ extension AllDomainsListItemViewModel {
         static let expired = NSLocalizedString(
             "domain.management.card.expired.label",
             value: "Expired",
-            comment: "The expired label of the domain card in My Domains screen."
+            comment: "The expired label of the domain card in All Domains screen."
         )
         static let renews = NSLocalizedString(
             "domain.management.card.renews.label",
             value: "Renews",
-            comment: "The renews label of the domain card in My Domains screen."
+            comment: "The renews label of the domain card in All Domains screen."
         )
     }
 
