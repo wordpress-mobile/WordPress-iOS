@@ -5,6 +5,7 @@ class MediaSettings: NSObject {
     // MARK: - Constants
     fileprivate let imageOptimizationKey = "SavedImageOptimizationSetting"
     fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
+    fileprivate let imageQualityKey = "SavedImageQualitySetting"
     fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
     fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
     fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
@@ -12,6 +13,61 @@ class MediaSettings: NSObject {
 
     fileprivate let minImageDimension = 150
     fileprivate let maxImageDimension = 3000
+
+    enum ImageQuality: String {
+        case maximum = "MaximumQuality100"
+        case veryHigh = "VeryHighQuality95"
+        case high = "HighQuality90"
+        case medium = "MediumQuality85"
+        case low = "LowQuality80"
+
+        var doubleValue: Double {
+            switch self {
+            case .maximum:
+                return 1.0
+            case .veryHigh:
+                return 0.95
+            case .high:
+                return 0.9
+            case .medium:
+                return 0.85
+            case .low:
+                return 0.8
+            }
+        }
+
+        var description: String {
+            switch self {
+            case .maximum:
+                return NSLocalizedString("Maximum", comment: "Indicates an image will use maximum quality when uploaded.")
+            case .veryHigh:
+                return NSLocalizedString("Very High", comment: "Indicates an image will use very high quality when uploaded.")
+            case .high:
+                return NSLocalizedString("High", comment: "Indicates an image will use high quality when uploaded.")
+            case .medium:
+                return NSLocalizedString("Medium", comment: "Indicates an image will use medium quality when uploaded.")
+            case(.low):
+                return NSLocalizedString("Low", comment: "Indicates an image will use low quality when uploaded.")
+            }
+        }
+
+        static func imageQuality(from value: Float) -> MediaSettings.ImageQuality {
+            switch value {
+            case 1.0:
+                return .maximum
+            case 0.95:
+                return .veryHigh
+            case 0.9:
+                return .high
+            case 0.85:
+                return .medium
+            case 0.8:
+                return .low
+            default:
+                return .medium
+            }
+        }
+    }
 
     enum VideoResolution: String {
         case size640x480 = "AVAssetExportPreset640x480"
@@ -119,6 +175,10 @@ class MediaSettings: NSObject {
         }
     }
 
+    var imageQualityForUpload: ImageQuality {
+        return imageOptimizationSetting ? imageQualitySetting : .high
+    }
+
     /// The stored value for the maximum size images can have before uploading.
     /// If you set this to `maxImageDimension` or higher, it means images won't
     /// be resized on upload.
@@ -186,6 +246,19 @@ class MediaSettings: NSObject {
             if advertiseImageOptimization {
                 advertiseImageOptimization = false
             }
+        }
+    }
+
+    var imageQualitySetting: ImageQuality {
+        get {
+            guard let savedQuality = database.object(forKey: imageQualityKey) as? String,
+                  let imageQuality = ImageQuality(rawValue: savedQuality) else {
+                    return .medium
+            }
+            return imageQuality
+        }
+        set {
+            database.set(newValue.rawValue, forKey: imageQualityKey)
         }
     }
 

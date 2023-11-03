@@ -206,6 +206,41 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushImageQualitySettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let values = [MediaSettings.ImageQuality.low,
+                          MediaSettings.ImageQuality.medium,
+                          MediaSettings.ImageQuality.high,
+                          MediaSettings.ImageQuality.veryHigh,
+                          MediaSettings.ImageQuality.maximum]
+
+            let titles = values.map({ (settings: MediaSettings.ImageQuality) -> String in
+                settings.description
+            })
+
+            let currentImageQuality = MediaSettings().imageQualitySetting
+
+            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
+                                                  SettingsSelectionTitleKey: NSLocalizedString("Quality", comment: "The quality of image used when uploading"),
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
+
+            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
+
+            viewController?.onItemSelected = { (quality: Any!) -> () in
+                let newQuality = quality as! MediaSettings.ImageQuality
+                MediaSettings().imageQualitySetting = newQuality
+
+                // Track setting changes
+                var properties = [String: AnyObject]()
+                properties["quality"] = newQuality.description as String as AnyObject
+                WPAnalytics.track(.appSettingsImageQualityChanged, properties: properties)
+            }
+
+            self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
+
     func openMediaCacheSettings() -> ImmuTableAction {
         return { [weak self] _ in
             let controller = MediaCacheSettingsViewController(style: .insetGrouped)
@@ -400,6 +435,11 @@ private extension AppSettingsViewController {
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: imageSizeChanged())
 
+        let imageQualityRow = NavigationItemRow(
+            title: NSLocalizedString("Image Quality", comment: "Title for the image quality settings option."),
+            detail: MediaSettings().imageQualitySetting.description,
+            action: pushImageQualitySettings())
+
         let videoSizingRow = NavigationItemRow(
             title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
             detail: MediaSettings().maxVideoSizeSetting.description,
@@ -414,6 +454,7 @@ private extension AppSettingsViewController {
             headerText: mediaHeader,
             rows: [
                 imageSizingRow,
+                imageQualityRow,
                 videoSizingRow,
                 mediaCacheRow
             ],
