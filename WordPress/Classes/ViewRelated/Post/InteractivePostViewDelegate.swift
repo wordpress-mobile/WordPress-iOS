@@ -14,7 +14,7 @@ protocol InteractivePostViewDelegate: AnyObject {
     func blaze(_ post: AbstractPost)
     func comments(_ post: AbstractPost)
     func showSettings(for post: AbstractPost)
-    func setParent(for post: AbstractPost, at indexPath: IndexPath)
+    func setParent(for post: AbstractPost)
     func setHomepage(for post: AbstractPost)
     func setPostsPage(for post: AbstractPost)
     func setRegularPage(for post: AbstractPost)

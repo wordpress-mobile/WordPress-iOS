@@ -5,7 +5,6 @@ import Gridicons
 import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
@@ -427,12 +426,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showSettings(for post: AbstractPost) {
-        let viewController = PostSettingsViewController(post: post.latest())
-        viewController.hidesBottomBarWhenPushed = true
-        viewController.isStandalone = true
-        let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.isTranslucent = true // Reset to default
-        self.present(navigation, animated: true)
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     // MARK: - NetworkAwareUI

@@ -3,6 +3,19 @@ import CoreData
 import Combine
 
 extension PostSettingsViewController {
+    static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
+        let viewController: PostSettingsViewController
+        if let post = post as? Post {
+            viewController = PostSettingsViewController(post: post.latest())
+        } else {
+            viewController = PageSettingsViewController(post: post)
+        }
+        viewController.isStandalone = true
+        let navigation = UINavigationController(rootViewController: viewController)
+        navigation.navigationBar.isTranslucent = true // Reset to default
+        presentingViewController.present(navigation, animated: true)
+    }
+
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
 
