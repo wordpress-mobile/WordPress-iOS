@@ -144,7 +144,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     }
 
     func test_fetchPrompts_givenNoParameters_assignsDefaultValue() throws {
-        let expectedDifferenceInDays = 10 // 10 days ago.
+        let expectedDifferenceInDays = 10
         let expectedNumber = 25
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
@@ -186,26 +186,28 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     // MARK: - Upsert Tests
 
-    // new prompts should overwrite any
+    // new prompts should overwrite any existing prompts.
     func test_fetchPrompt_shouldOverwritePromptsWithExistingDates() throws {
         // use actual remote object so the request can be intercepted by HTTPStubs.
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
         stubFetchPromptsResponse()
 
+        // the expected prompt IDs locally stored in the app after fetching the prompts.
+        // these IDs are from blogging-prompts-fetch-success.json.
         let expectedPromptIDs: Set<Int> = [239, 248]
 
         // insert existing prompts.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        makeBloggingPrompt(siteID: siteID, promptID: 1000, date: date)
         contextManager.save(contextManager.mainContext)
 
         let expectation = expectation(description: "Fetch prompts should succeed")
         service.fetchPrompts(from: .distantPast) { prompts in
             // the existing prompt should have been overwritten.
-            XCTAssertEqual(prompts.count, 2)
+            XCTAssertEqual(prompts.count, expectedPromptIDs.count)
 
             let promptIDs = Set(prompts.map { Int($0.promptID) })
-            XCTAssertTrue(expectedPromptIDs.elementsEqual(promptIDs))
+            XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
 
@@ -223,24 +225,25 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
         stubFetchPromptsResponse()
 
+        // the expected prompt IDs locally stored in the app after fetching the prompts.
+        // these IDs are from blogging-prompts-fetch-success.json.
         let expectedPromptIDs: Set<Int> = [239, 248]
 
-        // insert existing prompts.
+        // add 5 existing prompts having the same dates before calling `fetchPrompts`.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
-        makeBloggingPrompt(siteID: Int32(siteID), date: date)
+        for existingID in 1...5 {
+            makeBloggingPrompt(siteID: siteID, promptID: existingID, date: date)
+        }
         contextManager.save(contextManager.mainContext)
 
         let expectation = expectation(description: "Fetch prompts should succeed")
         service.fetchPrompts(from: .distantPast) { prompts in
-            // the existing prompt should have been overwritten.
-            XCTAssertEqual(prompts.count, 2)
+            // the existing prompts should be overwritten by the fetched prompts.
+            // additionally, any "excess" prompts should be deleted, leaving only one prompt per date.
+            XCTAssertEqual(prompts.count, expectedPromptIDs.count)
 
-            let promptIDs = prompts.map { Int($0.promptID) }
-            XCTAssertTrue(expectedPromptIDs.elementsEqual(promptIDs))
+            let promptIDs = Set(prompts.map { Int($0.promptID) })
+            XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
 
@@ -257,18 +260,26 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
         stubFetchPromptsResponse()
 
-        let otherSiteID: Int32 = 2
+        let otherPromptID = 1000
+        let otherSiteID = 2
+
+        // the expected prompt IDs locally stored in the app after fetching the prompts.
+        // the first two IDs are from blogging-prompts-fetch-success.json.
+        let expectedPromptIDs: Set<Int> = [239, 248, otherPromptID]
 
         // insert existing prompts.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2022-05-03"))
-        makeBloggingPrompt(siteID: otherSiteID, date: date)
+        makeBloggingPrompt(siteID: otherSiteID, promptID: otherPromptID, date: date)
         contextManager.save(contextManager.mainContext)
 
         let expectation = expectation(description: "Fetch prompts should succeed")
         service.fetchPrompts(from: .distantPast) { _ in
             // the prompt dated 2022-05-03 in siteID=2 shouldn't be overwritten.
             let prompts = self.contextManager.mainContext.allObjects(ofType: BloggingPrompt.self)
-            XCTAssertEqual(prompts.count, 3)
+            XCTAssertEqual(prompts.count, expectedPromptIDs.count)
+
+            let promptIDs = Set(prompts.map { Int($0.promptID) })
+            XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
 
@@ -287,11 +298,11 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         service = BloggingPromptsService(contextManager: contextManager, blog: blog)
         stubFetchPromptsResponse()
 
-        let promptID: Int32 = 239 // same promptID as 2022-05-03 from mock data.
+        let promptID = 239 // same promptID as 2022-05-03 from blogging-prompts-fetch-success.json.
 
         // insert existing prompts.
         let date = try XCTUnwrap(Self.dateFormatter.date(from: "2021-05-03")) // one year before 2022-05-03.
-        makeBloggingPrompt(siteID: Int32(siteID), promptID: promptID, date: date)
+        makeBloggingPrompt(siteID: siteID, promptID: promptID, date: date)
         contextManager.save(contextManager.mainContext)
 
         let expectation = expectation(description: "Fetch prompts should succeed")
@@ -333,11 +344,11 @@ private extension BloggingPromptsServiceTests {
     }
 
     @discardableResult
-    func makeBloggingPrompt(siteID: Int32, promptID: Int32? = nil, date: Date) -> BloggingPrompt {
+    func makeBloggingPrompt(siteID: Int, promptID: Int, date: Date) -> BloggingPrompt {
         let prompt = BloggingPrompt.newObject(in: contextManager.mainContext)!
-        prompt.siteID = siteID
+        prompt.siteID = Int32(siteID)
+        prompt.promptID = Int32(promptID)
         prompt.date = date
-        prompt.promptID = promptID ?? NSNumber(value: arc4random_uniform(UInt32.max)).int32Value
 
         return prompt
     }
