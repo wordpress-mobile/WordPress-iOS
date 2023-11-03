@@ -191,8 +191,21 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         context.dismiss(animated: true)
 
-        didPickMediaCallback?(results.map(\.itemProvider))
-        didPickMediaCallback = nil
+        guard results.count > 0 else {
+            return
+        }
+
+        let mediaFilter = picker.configuration.filter
+        if mediaFilter == PHPickerFilter(.all) || mediaFilter == PHPickerFilter(.image) {
+            MediaHelper.advertiseImageOptimization() { [self] in
+                didPickMediaCallback?(results.map(\.itemProvider))
+                didPickMediaCallback = nil
+            }
+        }
+        else {
+            didPickMediaCallback?(results.map(\.itemProvider))
+            didPickMediaCallback = nil
+        }
     }
 }
 

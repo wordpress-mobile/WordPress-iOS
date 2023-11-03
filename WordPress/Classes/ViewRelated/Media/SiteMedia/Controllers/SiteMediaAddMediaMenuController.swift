@@ -33,9 +33,15 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        for result in results {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        guard results.count > 0 else {
+            return
+        }
+
+        MediaHelper.advertiseImageOptimization() { [self] in
+            for result in results {
+                let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+                coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+            }
         }
     }
 

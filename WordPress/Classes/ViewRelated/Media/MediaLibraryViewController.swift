@@ -479,9 +479,15 @@ extension MediaLibraryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
 
-        for result in results {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            MediaCoordinator.shared.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        guard results.count > 0 else {
+            return
+        }
+
+        MediaHelper.advertiseImageOptimization() { [self] in
+            for result in results {
+                let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+                MediaCoordinator.shared.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+            }
         }
     }
 }
