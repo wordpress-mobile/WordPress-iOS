@@ -1,14 +1,14 @@
 /// Encapsulates a single blogging prompt object from the v3 API.
 struct BloggingPromptRemoteObject {
-    var promptID: Int
-    var text: String
-    var attribution: String
-    var date: Date
-    var answered: Bool
-    var answeredUsersCount: Int
-    var answeredUserAvatarURLs: [URL]
-    var answeredLink: URL?
-    var answeredLinkText: String
+    let promptID: Int
+    let text: String
+    let attribution: String
+    let date: Date
+    let answered: Bool
+    let answeredUsersCount: Int
+    let answeredUserAvatarURLs: [URL]
+    let answeredLink: URL?
+    let answeredLinkText: String
 }
 
 // MARK: - Decodable
@@ -57,6 +57,8 @@ extension BloggingPromptRemoteObject: Decodable {
         if let linkURLString = try? container.decode(String.self, forKey: .answeredLink),
            let answeredLinkURL = URL(string: linkURLString) {
             self.answeredLink = answeredLinkURL
+        } else {
+            self.answeredLink = nil
         }
 
         self.answeredLinkText = try container.decode(String.self, forKey: .answeredLinkText)
