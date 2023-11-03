@@ -191,7 +191,7 @@ def workaround_broken_search_paths
       original_search_paths = config.build_settings[library_search_paths_key]
 
       if original_search_paths == broken_search_paths
-        config.build_settings[library_search_paths_key] = '$(SDKROOT)/usr/lib/swift $(inherited)'
+        config.build_settings[library_search_paths_key] = ['$(SDKROOT)/usr/lib/swift', '$(inherited)']
         puts "[Gutenberg] Post-processed #{library_search_paths_key} for #{target.name} target to fix incorrect '#{broken_search_paths}' value."
       end
     end
