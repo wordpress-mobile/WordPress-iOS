@@ -101,6 +101,9 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         } else {
             buttons.append(.setRegularPage)
         }
+        if page.status != .trash {
+            buttons.append(.settings)
+        }
 
         return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
     }

@@ -60,7 +60,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func showSettings(for post: AbstractPost) {
-        // TODO:
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
