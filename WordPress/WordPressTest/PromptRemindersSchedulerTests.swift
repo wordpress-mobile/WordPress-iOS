@@ -119,6 +119,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         scheduler.schedule(schedule, for: blog, time: makeTime(hour: expectedHour, minute: expectedMinute)) { result in
             guard case .success = result else {
                 XCTFail("Expected a success result, but got error: \(result)")
+                expectation.fulfill()
                 return
             }
 
@@ -405,17 +406,17 @@ private extension PromptRemindersSchedulerTests {
             objects.append([
                 "id": 100 + i,
                 "text": "Prompt text \(i)",
-                "title": "Prompt title \(i)",
-                "content": "Prompt content \(i)",
                 "attribution": "",
                 "date": Self.dateFormatter.string(from: date),
                 "answered": false,
                 "answered_users_count": 0,
-                "answered_users_sample": [[String: Any]]()
+                "answered_users_sample": [[String: Any]](),
+                "answered_link": "",
+                "answered_link_text": "View all responses"
             ] as [String: Any])
         }
 
-        return ["prompts": objects]
+        return objects
     }
 
     func makeBlog() -> Blog {
