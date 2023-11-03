@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import AutomatticTracks
 
 final class AllDomainsListViewController: UIViewController {
 
@@ -15,9 +16,11 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     typealias ViewModel = AllDomainsListViewModel
+    typealias Domain = AllDomainsListItemViewModel
 
     // MARK: - Dependencies
 
+    private let crashLogger: CrashLogging
     private let viewModel: ViewModel
 
     // MARK: - Views
@@ -36,8 +39,9 @@ final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Init
 
-    init(viewModel: ViewModel = .init()) {
+    init(viewModel: ViewModel = .init(), crashLogger: CrashLogging = CrashLogging.main) {
         self.viewModel = viewModel
+        self.crashLogger = crashLogger
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -139,6 +143,18 @@ final class AllDomainsListViewController: UIViewController {
     private func navigateToAddDomain() {
 
     }
+
+    private func navigateToDomainDetails(with domain: Domain) {
+        guard let url = domain.wpcomDetailsURL, let navigationController = navigationController else {
+            self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
+            return
+        }
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
+            url: url,
+            source: "all-domains"
+        )
+        navigationController.pushViewController(webViewController, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -184,6 +200,13 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        switch state {
+        case .normal(let domains):
+            let domain = domains[indexPath.section]
+            self.navigateToDomainDetails(with: domain)
+        default:
+            break
+        }
     }
 }
 

@@ -57,7 +57,14 @@ extension AllDomainsListItemViewModel {
             default: return "edit"
             }
         }()
-        return URL(string: "\(Self.domainManagementBasePath)/\(viewSlug)/\(domain.siteSlug)")
+
+        let url = "\(Self.domainManagementBasePath)/\(domain.domain)/\(viewSlug)/\(domain.siteSlug)"
+
+        if let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            return URL(string: url)
+        } else {
+            return nil
+        }
     }
 }
 
