@@ -168,7 +168,7 @@ class MediaSettings: NSObject {
     /// - Note: if the image doesn't need to be resized, it returns `Int.max`
     ///
     @objc var imageSizeForUpload: Int {
-        if maxImageSizeSetting >= maxImageDimension {
+        if !imageOptimizationSetting || maxImageSizeSetting >= maxImageDimension {
             return Int.max
         } else {
             return maxImageSizeSetting
