@@ -1016,8 +1016,11 @@
 		3FB1929526C79EC6000F5AA3 /* Date+Formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */; };
 		3FB1929626C79EC6000F5AA3 /* Date+Formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */; };
 		3FB1E14C2AF4B662008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; };
-		3FB1E1512AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */; };
 		3FB1E1522AF4B663008C6766 /* JetpackStatsWidgetsCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FB1E15D2AF4B859008C6766 /* WidgetUrlSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */; };
+		3FB1E15E2AF4B874008C6766 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
+		3FB1E15F2AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; };
+		3FB1E1602AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */; };
 		3FB6D13B2ACFF63800768C07 /* MySiteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */; };
@@ -3020,9 +3023,6 @@
 		C8567498243F41CA001A995E /* MockTenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567497243F41CA001A995E /* MockTenorService.swift */; };
 		C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567499243F4292001A995E /* TenorMockDataHelper.swift */; };
 		C94C0B1B25DCFA0100F2F69B /* FilterableCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */; };
-		C995C22329D306E100ACEF43 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
-		C995C22429D30A9900ACEF43 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
-		C995C22629D30AB000ACEF43 /* WidgetUrlSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */; };
 		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
 		C9B4778729C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */; };
 		C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */; };
@@ -5719,6 +5719,13 @@
 			remoteGlobalIDString = 3FB1E1432AF4B65F008C6766;
 			remoteInfo = JetpackStatsWidgetsCore;
 		};
+		3FB1E1612AF4BA9C008C6766 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FB1E1432AF4B65F008C6766;
+			remoteInfo = JetpackStatsWidgetsCore;
+		};
 		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -5813,6 +5820,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3FB1E1632AF4BA9C008C6766 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3FB1E1602AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93E5284E19A7741A003A1A9C /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6694,7 +6712,6 @@
 		3FB1E1442AF4B65F008C6766 /* JetpackStatsWidgetsCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JetpackStatsWidgetsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JetpackStatsWidgetsCore.h; sourceTree = "<group>"; };
 		3FB1E14B2AF4B661008C6766 /* JetpackStatsWidgetsCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackStatsWidgetsCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackStatsWidgetsCoreTests.swift; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Scroll.swift"; sourceTree = "<group>"; };
 		3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteViewModelTests.swift; sourceTree = "<group>"; };
@@ -9556,6 +9573,7 @@
 			files = (
 				0107E0DE28F97D5000DE87DB /* SwiftUI.framework in Frameworks */,
 				0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */,
+				3FB1E15F2AF4BA9C008C6766 /* JetpackStatsWidgetsCore.framework in Frameworks */,
 				35BBACD2917117A95B6F3046 /* Pods_JetpackStatsWidgets.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9809,7 +9827,6 @@
 				3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */,
 				3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */,
 				C9C21D7529BECFAE009F68E5 /* LockScreenWidgets */,
-				C9FE382029C203EE00D39841 /* Extensions */,
 				C9B477AA29CC15C2008CBF49 /* Helpers */,
 				3FFDDCB925B8A65F008D5BDD /* Widgets */,
 				3FB34ABB25672A59001A74A6 /* Model */,
@@ -11824,6 +11841,7 @@
 			isa = PBXGroup;
 			children = (
 				3FB1E1462AF4B660008C6766 /* JetpackStatsWidgetsCore.h */,
+				C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */,
 			);
 			path = JetpackStatsWidgetsCore;
 			sourceTree = "<group>";
@@ -11831,7 +11849,7 @@
 		3FB1E14F2AF4B663008C6766 /* JetpackStatsWidgetsCoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				3FB1E1502AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift */,
+				C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */,
 			);
 			path = JetpackStatsWidgetsCoreTests;
 			sourceTree = "<group>";
@@ -16264,14 +16282,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C9FE382029C203EE00D39841 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		C9FE382529C204A500D39841 /* ViewProvider */ = {
 			isa = PBXGroup;
 			children = (
@@ -16296,7 +16306,6 @@
 			isa = PBXGroup;
 			children = (
 				C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */,
-				C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -18610,10 +18619,12 @@
 				0107E0DD28F97D5000DE87DB /* Frameworks */,
 				0107E0E128F97D5000DE87DB /* Resources */,
 				0107E0E428F97D5000DE87DB /* [CP] Copy Pods Resources */,
+				3FB1E1632AF4BA9C008C6766 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3FB1E1622AF4BA9C008C6766 /* PBXTargetDependency */,
 			);
 			name = JetpackStatsWidgets;
 			productName = WordPressHomeWidgetTodayExtension;
@@ -21021,7 +21032,6 @@
 			files = (
 				C9B4778729C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */,
 				0107E0B428F97D5000DE87DB /* Constants.m in Sources */,
-				C995C22329D306E100ACEF43 /* URL+WidgetSource.swift in Sources */,
 				01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
 				C9FE382F29C204E700D39841 /* LockScreenSingleStatViewModel.swift in Sources */,
@@ -22566,7 +22576,6 @@
 				010459E629153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FAC1B82729B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
-				C995C22429D30A9900ACEF43 /* URL+WidgetSource.swift in Sources */,
 				0189AF052ACAD89700F63393 /* ShoppingCartService.swift in Sources */,
 				F110239B2318479000C4E84A /* Media.swift in Sources */,
 				176CE91627FB44C100F1E32B /* StatsBaseCell.swift in Sources */,
@@ -23058,6 +23067,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB1E15E2AF4B874008C6766 /* URL+WidgetSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23065,7 +23075,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FB1E1512AF4B663008C6766 /* JetpackStatsWidgetsCoreTests.swift in Sources */,
+				3FB1E15D2AF4B859008C6766 /* WidgetUrlSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23746,7 +23756,6 @@
 				4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */,
 				0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
-				C995C22629D30AB000ACEF43 /* WidgetUrlSourceTests.swift in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				F543AF5723A84E4D0022F595 /* PublishSettingsControllerTests.swift in Sources */,
 				027AC5212278983F0033E56E /* DomainCreditEligibilityTests.swift in Sources */,
@@ -25918,6 +25927,11 @@
 			target = 3FB1E1432AF4B65F008C6766 /* JetpackStatsWidgetsCore */;
 			targetProxy = 3FB1E14D2AF4B662008C6766 /* PBXContainerItemProxy */;
 		};
+		3FB1E1622AF4BA9C008C6766 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FB1E1432AF4B65F008C6766 /* JetpackStatsWidgetsCore */;
+			targetProxy = 3FB1E1612AF4BA9C008C6766 /* PBXContainerItemProxy */;
+		};
 		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
@@ -27012,7 +27026,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27067,7 +27080,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27120,7 +27132,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27173,7 +27184,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 WordPress. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -27199,6 +27209,7 @@
 		3FB1E1572AF4B664008C6766 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -27223,7 +27234,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -27241,6 +27251,7 @@
 		3FB1E1582AF4B664008C6766 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -27261,7 +27272,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -27277,6 +27287,7 @@
 		3FB1E1592AF4B664008C6766 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -27297,7 +27308,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -27313,6 +27323,7 @@
 		3FB1E15A2AF4B664008C6766 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -27333,7 +27344,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
