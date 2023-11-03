@@ -19,7 +19,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var constraintsInitialized = false
 
-    private var site: Blog!
+    private var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback!
     var domainAddedToCartCallback: DomainAddedToCartCallback?
 
@@ -53,7 +53,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    static func instance(site: Blog,
+    static func instance(site: Blog?,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
@@ -68,7 +68,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return controller
     }
 
-    private static func siteNameForSuggestions(for site: Blog) -> String? {
+    private static func siteNameForSuggestions(for site: Blog?) -> String? {
+        guard let site else {
+            return nil
+        }
+
         if let siteTitle = site.settings?.name?.nonEmptyString() {
             return siteTitle
         }
@@ -175,9 +179,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.siteName = siteName
             vc.blog = site
             vc.domainSelectionType = domainSelectionType
-            vc.primaryDomainAddress = site.primaryDomainAddress
+            vc.primaryDomainAddress = site?.primaryDomainAddress
 
-            if site.hasBloggerPlan {
+            if site?.hasBloggerPlan == true {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
@@ -220,8 +224,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let domain = domain else {
             return
         }
-
-        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+        if let site {
+            WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+        } else {
+            WPAnalytics.track(.domainsSearchSelectDomainTapped)
+        }
 
         let onFailure: () -> () = { [weak self] in
             self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
@@ -268,7 +275,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
-        guard let siteID = site.dotComID?.intValue else {
+        guard let siteID = site?.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
         }
@@ -284,10 +291,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
+    // TODO: Create a counterpart that handles no site
     private func createCart(_ domain: FullyQuotedDomainSuggestion,
                             onSuccess: @escaping () -> (),
                             onFailure: @escaping () -> ()) {
-        guard let siteID = site.dotComID?.intValue else {
+        guard let siteID = site?.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
         }
@@ -341,7 +349,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
-        guard let homeURL = site.homeURL,
+        guard let site,
+              let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host),
               let siteID = site.dotComID?.intValue else {
