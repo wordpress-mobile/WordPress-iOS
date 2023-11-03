@@ -41,6 +41,13 @@ class AbstractPostListViewController: UIViewController,
 
     let tableView = UITableView(frame: .zero, style: .plain)
 
+    var shouldHideAuthor: Bool {
+        guard filterSettings.canFilterByAuthor() else {
+            return true
+        }
+        return filterSettings.currentPostAuthorFilter() == .mine
+    }
+
     private let buttonAuthorFilter = AuthorFilterButton()
 
     let refreshControl = UIRefreshControl()
