@@ -165,10 +165,9 @@ class AppSettingsViewController: UITableViewController {
         let value = MediaSettings().maxImageSizeSetting
 
         var properties = [String: AnyObject]()
-        properties["enabled"] = (value != Int.max) as AnyObject
-        properties["value"] = value as Int as AnyObject
+        properties["size"] = value as Int as AnyObject
 
-        WPAnalytics.track(.appSettingsImageOptimizationChanged, withProperties: properties)
+        WPAnalytics.track(.appSettingsMaxImageSizeChanged, properties: properties)
     }
 
     func pushVideoResolutionSettings() -> ImmuTableAction {

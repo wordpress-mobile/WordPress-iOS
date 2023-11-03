@@ -281,6 +281,7 @@ import Foundation
 
     // App Settings
     case appSettingsOptimizeImagesChanged
+    case appSettingsMaxImageSizeChanged
     case appSettingsImageQualityChanged
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
@@ -1003,6 +1004,8 @@ import Foundation
             return "app_settings_open_device_settings_tapped"
         case .appSettingsOptimizeImagesChanged:
             return "app_settings_optimize_images_changed"
+        case .appSettingsMaxImageSizeChanged:
+            return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
         case .appSettingsOptimizeImagesPopupTapped:
