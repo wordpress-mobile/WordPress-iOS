@@ -182,6 +182,16 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         }
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard indexPath.section == SectionID.posts.rawValue else { return nil }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self, let delegate = self.delegate else { return nil }
+            let post = self.viewModel.posts[indexPath.row]
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return AbstractPostHelper.makeContextMenu(for: post, presentingView: cell, delegate: delegate)
+        }
+    }
+
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let delegate, indexPath.section == SectionID.posts.rawValue else { return nil }
         let actions = AbstractPostHelper.makeLeadingContextualActions(for: viewModel.posts[indexPath.row], delegate: delegate)
