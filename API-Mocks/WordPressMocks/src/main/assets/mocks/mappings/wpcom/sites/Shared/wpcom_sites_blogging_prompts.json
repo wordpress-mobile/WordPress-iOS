@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/wpcom/v2/sites/([0-9]+)/blogging-prompts",
+    "urlPathPattern": "/wpcom/v3/sites/([0-9]+)/blogging-prompts",
     "queryParameters": {
       "number": {
         "matches": "(.*)"
