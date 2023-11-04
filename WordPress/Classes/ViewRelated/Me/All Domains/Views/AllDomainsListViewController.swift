@@ -26,7 +26,7 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Views
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+    private let refreshControl = UIRefreshControl()
     private let emptyView = AllDomainsListEmptyView()
 
     // MARK: - Properties
@@ -69,6 +69,7 @@ final class AllDomainsListViewController: UIViewController {
         self.setupBarButtonItems()
         self.setupSearchBar()
         self.setupTableView()
+        self.setupRefreshContro()
         self.setupEmptyView()
         self.setupNavigationBarAppearance()
     }
@@ -126,6 +127,18 @@ final class AllDomainsListViewController: UIViewController {
         self.navigationItem.compactScrollEdgeAppearance = appearance
     }
 
+    private func setupRefreshContro() {
+        let action = UIAction { [weak self] action in
+            guard let self, let refreshControl = action.sender as? UIRefreshControl else {
+                return
+            }
+            self.tableView.sendSubviewToBack(refreshControl)
+            self.viewModel.loadData()
+        }
+        self.refreshControl.addAction(action, for: .valueChanged)
+        self.tableView.addSubview(refreshControl)
+    }
+
     // MARK: - UI Updates
 
     private func observeState() {
@@ -136,6 +149,7 @@ final class AllDomainsListViewController: UIViewController {
             self.state = state
             switch state {
             case .normal, .loading:
+                self.refreshControl.endRefreshing()
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
             case .message(let viewModel):
