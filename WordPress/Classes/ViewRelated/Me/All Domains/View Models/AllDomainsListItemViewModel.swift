@@ -53,7 +53,7 @@ extension AllDomainsListItemViewModel {
         let viewSlug = {
             switch domain.type {
             case .siteRedirect: return "redirect"
-            case .transfer: return "/transfer/in"
+            case .transfer: return "transfer/in"
             default: return "edit"
             }
         }()
@@ -61,7 +61,7 @@ extension AllDomainsListItemViewModel {
         let url = "\(Self.domainManagementBasePath)/\(domain.domain)/\(viewSlug)/\(domain.siteSlug)"
 
         if let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            return URL(string: url)
+            return URL(string: encodedURL)
         } else {
             return nil
         }
