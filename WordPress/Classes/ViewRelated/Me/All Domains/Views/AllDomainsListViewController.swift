@@ -70,6 +70,7 @@ final class AllDomainsListViewController: UIViewController {
         self.setupSearchBar()
         self.setupTableView()
         self.setupEmptyView()
+        self.setupNavigationBarAppearance()
     }
 
     private func setupBarButtonItems() {
@@ -116,6 +117,13 @@ final class AllDomainsListViewController: UIViewController {
             self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: Length.Padding.double),
             self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -Length.Padding.double)
         ])
+    }
+
+    /// Force the navigation bar separator to be always visible.
+    private func setupNavigationBarAppearance() {
+        let appearance = self.navigationController?.navigationBar.standardAppearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+        self.navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     // MARK: - UI Updates
