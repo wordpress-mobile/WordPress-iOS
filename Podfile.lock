@@ -126,7 +126,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `trunk`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/21737-rest-comments-removes-force-wpcom-param`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -184,7 +184,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.108.0.podspec
   WordPressKit:
-    :branch: trunk
+    :branch: task/21737-rest-comments-removes-force-wpcom-param
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -192,7 +192,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: 1ed1cddc0d17d79be190a201ae645c525b874eb4
+    :commit: 763814a3bebbe73021cbdee07412891b0ef2404c
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 946b818d64b969f6bab98fbac41a475970efa079
+PODFILE CHECKSUM: e7a4c1d2321ba9ed759b0761000e9ef0f3d5ab5a
 
 COCOAPODS: 1.14.2
