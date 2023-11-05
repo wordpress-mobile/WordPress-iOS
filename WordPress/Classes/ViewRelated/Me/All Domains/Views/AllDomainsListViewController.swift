@@ -73,7 +73,7 @@ final class AllDomainsListViewController: UIViewController {
             self?.navigateToAddDomain()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
-        self.navigationItem.rightBarButtonItem = .init(systemItem: .add)
+        self.navigationItem.rightBarButtonItem = addBarButtonItem
     }
 
     private func setupSearchBar() {

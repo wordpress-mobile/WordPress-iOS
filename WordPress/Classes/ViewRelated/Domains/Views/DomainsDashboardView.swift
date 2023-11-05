@@ -34,6 +34,24 @@ struct DomainsDashboardView: View {
             }, failure: nil)
         }
         .navigationBarTitle(TextContent.navigationTitle)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: AllDomainsListViewRepresentable()) {
+                    Text("All Domains")
+                        .foregroundStyle(Color.DS.Foreground.primary)
+                }
+//                Button {
+//                    NavigationLink(destination: AllDomainsListViewRepresentable()) {
+//                        Image(systemName: "gear")
+//                            .font(.title)
+//                    }
+//                } label: {
+//                    Text("All Domains")
+//                        .foregroundStyle(Color.DS.Foreground.primary)
+//                }
+
+            }
+        }
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
                 isShowingDomainRegistrationFlow = false
@@ -195,5 +213,15 @@ private extension DomainsDashboardView {
     enum Metrics {
         static let sectionPaddingDefaultHeight: CGFloat = 16.0
         static let topPadding: CGFloat = -34.0
+    }
+}
+
+struct AllDomainsListViewRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> AllDomainsListViewController {
+        return AllDomainsListViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: AllDomainsListViewController, context: Context) {
+        // update code
     }
 }
