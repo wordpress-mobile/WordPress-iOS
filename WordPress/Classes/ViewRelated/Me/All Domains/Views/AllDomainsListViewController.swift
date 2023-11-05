@@ -69,7 +69,7 @@ final class AllDomainsListViewController: UIViewController {
         self.setupBarButtonItems()
         self.setupSearchBar()
         self.setupTableView()
-        self.setupRefreshContro()
+        self.setupRefreshControl()
         self.setupEmptyView()
         self.setupNavigationBarAppearance()
     }
@@ -127,7 +127,7 @@ final class AllDomainsListViewController: UIViewController {
         self.navigationItem.compactScrollEdgeAppearance = appearance
     }
 
-    private func setupRefreshContro() {
+    private func setupRefreshControl() {
         let action = UIAction { [weak self] action in
             guard let self, let refreshControl = action.sender as? UIRefreshControl else {
                 return
@@ -139,7 +139,7 @@ final class AllDomainsListViewController: UIViewController {
         self.tableView.addSubview(refreshControl)
     }
 
-    // MARK: - UI Updates
+    // MARK: - Reacting to State Changes
 
     private func observeState() {
         self.viewModel.$state.sink { [weak self] state in
