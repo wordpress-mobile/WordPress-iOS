@@ -25,7 +25,7 @@ extension UIColor {
     }
 
     static var filterBarSelected: UIColor {
-        return .primary
+        return .text
     }
 
     static var filterBarSelectedText: UIColor {

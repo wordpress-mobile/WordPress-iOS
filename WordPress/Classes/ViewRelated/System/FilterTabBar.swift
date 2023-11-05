@@ -149,21 +149,6 @@ class FilterTabBar: UIControl {
         }
     }
 
-    /// Accessory view displayed on the leading end of the tab bar.
-    ///
-    var accessoryView: UIView? = nil {
-        didSet {
-            if let oldValue = oldValue {
-                oldValue.removeFromSuperview()
-            }
-
-            if let accessoryView = accessoryView {
-                accessoryView.setContentCompressionResistancePriority(.required, for: .horizontal)
-                stackView.insertArrangedSubview(accessoryView, at: 0)
-            }
-        }
-    }
-
     // MARK: - Tab Sizing
 
     private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
@@ -503,8 +488,18 @@ private class TabBarButton: UIButton {
         setFont()
     }
 
+    override var isSelected: Bool {
+        didSet {
+            setFont()
+        }
+    }
+
     private func setFont() {
-        titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+        if isSelected {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+        } else {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, maximumPointSize: TabFont.maxSize)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

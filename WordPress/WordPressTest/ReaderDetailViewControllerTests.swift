@@ -46,6 +46,8 @@ class ReaderDetailViewControllerTests: CoreDataTestCase {
 
 }
 
+/// Builds a ReaderPost
+
 private class ReaderDetailCoordinatorMock: ReaderDetailCoordinator {
     var didCallStart = false
 

@@ -19,4 +19,15 @@ extension DomainsService {
 
     typealias AllDomainsEndpointResult = DomainsServiceRemote.AllDomainsEndpointResult
     typealias AllDomainsEndpointParams = DomainsServiceRemote.AllDomainsEndpointParams
+    typealias AllDomainsListItem = DomainsServiceRemote.AllDomainsListItem
+}
+
+extension DomainsService.AllDomainsListItem {
+
+    func matches(searchQuery: String) -> Bool {
+        return domain.localizedStandardContains(searchQuery)
+        || siteSlug.localizedStandardContains(searchQuery)
+        || blogName.localizedStandardContains(searchQuery)
+        || (status?.value.localizedStandardContains(searchQuery) ?? false)
+    }
 }

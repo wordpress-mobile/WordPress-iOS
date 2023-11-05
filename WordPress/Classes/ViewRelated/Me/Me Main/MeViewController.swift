@@ -214,7 +214,6 @@ class MeViewController: UITableViewController {
             }())
         ]
 
-
         #if JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
             sections.append(.init(rows: [
