@@ -68,23 +68,21 @@ import WordPressShared
         ImmuTable.registerRows([CheckmarkRow.self, NavigationItemRow.self, ActivityIndicatorRow.self], tableView: tableView)
         reloadViewModel()
 
-        fetchAllPages()
-    }
-
-    private func fetchAllPages() {
-        let options = PostServiceSyncOptions()
-        options.number = 20
-
-        postService.syncPosts(ofType: .page, with: options, for: blog, success: { [weak self] posts in
-            self?.reloadViewModel()
-        }, failure: { _ in
-
-        })
+        fetchAllPagesTask = postRepository.fetchAllPages(statuses: [], in: TaggedManagedObjectID(blog))
     }
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateDeselectionInteractively()
+    }
+
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if self.navigationController == nil {
+            fetchAllPagesTask?.cancel()
+            fetchAllPagesTask = nil
+        }
     }
 
     // MARK: - Model
