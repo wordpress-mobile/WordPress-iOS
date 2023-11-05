@@ -79,7 +79,6 @@ final class AllDomainsListViewController: UIViewController {
             self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
-
         self.navigationItem.rightBarButtonItem = addBarButtonItem
     }
 
