@@ -241,6 +241,29 @@ class PostRepositoryTests: CoreDataTestCase {
         }
     }
 
+    func testCancelFetchAllPages() async throws {
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...100).map {
+            let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+            post.type = "page"
+            return post
+        }
+
+        let cancelled = expectation(description: "Fetching task returns cancellation error")
+        let task = repository.fetchAllPages(statuses: [.publish], in: blogID)
+
+        DispatchQueue.global().asyncAfter(deadline: .now() + .microseconds(100)) {
+            task.cancel()
+        }
+
+        do {
+            let _ = try await task.value
+        } catch is CancellationError {
+            cancelled.fulfill()
+        }
+
+        await fulfillment(of: [cancelled], timeout: 0.3)
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
