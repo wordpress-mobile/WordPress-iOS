@@ -184,12 +184,12 @@ final class AllDomainsListViewController: UIViewController {
 extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Workaround to accurately control section height using `tableView.sectionHeaderHeight`.
+        // Workaround to change the section height using `tableView.sectionHeaderHeight`.
         return UIView()
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Workaround to accurately control footer height using `tableView.sectionFooterHeight`.
+        // Workaround to change the footer height using `tableView.sectionFooterHeight`.
         return UIView()
     }
 
