@@ -375,6 +375,12 @@ extension PostRepository {
 
     /// Fetch all pages of the given site.
     ///
+    /// It's higly recommended to cancel the returned task at an appropriate timing.
+    ///
+    /// - Warning: As the function name suggests, calling this function makes many API requests to fetch the site's
+    ///     _all pages_. Fetching all pages may be handy in some use cases, but also can be wasteful when user aborts
+    ///     in the middle of fetching all pages, if the fetching is not cancelled.
+    ///
     /// - Parameters:
     ///   - statuses: Only fetch pages whose status is included in the given statues.
     ///   - blogID: Object ID of the site.
