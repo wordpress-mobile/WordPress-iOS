@@ -255,6 +255,7 @@ import Foundation
 
     // Post List
     case postListShareAction
+    case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
 
@@ -960,6 +961,8 @@ import Foundation
         // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListCommentsAction:
+            return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
@@ -1415,6 +1418,8 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListCommentsAction:
+            return ["button": "comments"]
         case .postListSetAsPostsPageAction:
             return ["button": "set_posts_page"]
         case .postListSetHomePageAction:

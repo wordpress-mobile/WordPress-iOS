@@ -219,11 +219,9 @@ class MeViewController: UITableViewController {
         if RemoteFeatureFlag.domainManagement.enabled() {
             sections.append(.init(headerText: HeaderTitles.products, rows: {
                 return [
-                    ButtonRow(title: MyDomainsViewController.Strings.title) { action in
-                        let controller = MyDomainsViewController()
-                        let navigationController = UINavigationController(rootViewController: controller)
-                        self.present(navigationController, animated: true) {
-                            self.tableView.deselectSelectedRowWithAnimation(true)
+                    ButtonRow(title: AllDomainsListViewController.Strings.title) { action in
+                        self.showOrPushController(AllDomainsListViewController()) { [weak self] in
+                            self?.tableView.deselectSelectedRowWithAnimation(true)
                         }
                     }
                 ]

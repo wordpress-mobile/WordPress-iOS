@@ -33,6 +33,7 @@ class FilterTabBar: UIControl {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.scrollsToTop = false
 
         return scrollView
     }()
@@ -145,21 +146,6 @@ class FilterTabBar: UIControl {
     var dividerColor: UIColor = .lightGray {
         didSet {
             divider.backgroundColor = dividerColor
-        }
-    }
-
-    /// Accessory view displayed on the leading end of the tab bar.
-    ///
-    var accessoryView: UIView? = nil {
-        didSet {
-            if let oldValue = oldValue {
-                oldValue.removeFromSuperview()
-            }
-
-            if let accessoryView = accessoryView {
-                accessoryView.setContentCompressionResistancePriority(.required, for: .horizontal)
-                stackView.insertArrangedSubview(accessoryView, at: 0)
-            }
         }
     }
 
@@ -502,8 +488,18 @@ private class TabBarButton: UIButton {
         setFont()
     }
 
+    override var isSelected: Bool {
+        didSet {
+            setFont()
+        }
+    }
+
     private func setFont() {
-        titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+        if isSelected {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+        } else {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, maximumPointSize: TabFont.maxSize)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

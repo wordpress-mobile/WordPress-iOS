@@ -2,6 +2,10 @@ import Aztec
 import Foundation
 import WordPressFlux
 
+protocol PostCoordinatorDelegate: AnyObject {
+    func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
+}
+
 class PostCoordinator: NSObject {
 
     enum SavingError: Error {
@@ -17,8 +21,11 @@ class PostCoordinator: NSObject {
         coreDataStack.mainContext
     }
 
+    weak var delegate: PostCoordinatorDelegate?
+
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
     private let mediaCoordinator: MediaCoordinator
@@ -469,6 +476,88 @@ class PostCoordinator: NSObject {
             self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
         }
     }
+
+    // MARK: - Trash/Delete
+
+    func isDeleting(_ post: AbstractPost) -> Bool {
+        pendingDeletionPostIDs.contains(post.objectID)
+    }
+
+    /// Moves the post to trash or delets it permanently in case it's already in trash.
+    @MainActor
+    func delete(_ post: AbstractPost) async {
+        assert(post.managedObjectContext == mainContext)
+
+        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics(for: post))
+
+        setPendingDeletion(true, post: post)
+
+        let originalStatus = post.status
+        let trashed = (post.status == .trash)
+
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        do {
+            try await repository.trash(TaggedManagedObjectID(post))
+
+            if trashed {
+                cancelAnyPendingSaveOf(post: post)
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            }
+
+            // Remove the trashed post from spotlight
+            SearchManager.shared.deleteSearchableItem(post)
+
+            let message: String
+            if post is Post {
+                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
+            } else {
+                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+            }
+
+            let notice = Notice(title: message)
+            ActionDispatcher.dispatch(NoticeAction.dismiss)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            setPendingDeletion(false, post: post)
+        } catch {
+            if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
+                delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
+            } else {
+                WPError.showXMLRPCErrorAlert(error)
+            }
+
+            setPendingDeletion(false, post: post)
+        }
+    }
+
+    private func setPendingDeletion(_ isDeleting: Bool, post: AbstractPost) {
+        if isDeleting {
+            pendingDeletionPostIDs.insert(post.objectID)
+        } else {
+            pendingDeletionPostIDs.remove(post.objectID)
+        }
+        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
+            NSUpdatedObjectsKey: Set([post])
+        ])
+    }
+
+    private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
+        properties["type"] = ((post is Post) ? "post" : "page") as AnyObject
+        if let dotComID = post.blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+        return properties
+    }
+}
+
+private struct Constants {
+    static let httpCodeForbidden = 403
+}
+
+extension Foundation.Notification.Name {
+    /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key
+    static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
 }
 
 // MARK: - Automatic Uploads

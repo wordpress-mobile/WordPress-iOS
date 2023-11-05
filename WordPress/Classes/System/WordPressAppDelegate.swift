@@ -93,6 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
+        PostCoordinator.shared.delegate = self
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()

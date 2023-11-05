@@ -56,6 +56,10 @@ class ReaderPostCardCell: UITableViewCell {
         addViewConstraints()
     }
 
+    func prepareForDisplay() {
+        updateSeparatorState()
+    }
+
     func configure(with viewModel: ReaderPostCardCellViewModel) {
         self.viewModel = viewModel
     }
@@ -101,7 +105,7 @@ class ReaderPostCardCell: UITableViewCell {
             static let likeButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
                                                           value: "Likes the post.",
                                                           comment: "Accessibility hint for the like button on the reader post card cell")
-            static let likedButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+            static let likedButtonHint = NSLocalizedString("reader.post.button.liked.accessibility.hint",
                                                           value: "Unlikes the post.",
                                                           comment: "Accessibility hint for the liked button on the reader post card cell")
             static let menuButtonLabel = NSLocalizedString("reader.post.button.menu.accessibility.label",
@@ -150,6 +154,10 @@ private extension ReaderPostCardCell {
 
     var usesAccessibilitySize: Bool {
         traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    var showsSeparator: Bool {
+        viewModel?.showsSeparator ?? true
     }
 
     func commonInit() {
@@ -345,8 +353,12 @@ private extension ReaderPostCardCell {
 
     func setupSeparatorView() {
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
+        updateSeparatorState()
         contentView.addSubview(separatorView)
+    }
+
+    func updateSeparatorState() {
+        separatorView.backgroundColor = showsSeparator ? .separator : .clear
     }
 
     // MARK: - View constraints

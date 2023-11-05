@@ -25,5 +25,6 @@
 @property (nonatomic, strong) NSNumber *authorID;
 @property (nonatomic, copy) NSString *search;
 @property (nonatomic, copy) NSString *meta;
+@property (nonatomic, copy) NSString *tag;
 
 @end

@@ -174,7 +174,7 @@ class AccountServiceTests: CoreDataTestCase {
     func testMergeDuplicateAccountsKeepingNonDups() throws {
         let context = contextManager.mainContext
 
-        let account1 = AccountBuilder(contextManager)
+        let account1 = AccountBuilder(contextManager.mainContext)
             .with(id: 1)
             .with(username: "username")
             .with(authToken: "authToken")
@@ -182,14 +182,14 @@ class AccountServiceTests: CoreDataTestCase {
             .build()
 
         // account2 is a duplicate of account1
-        let account2 = AccountBuilder(contextManager)
+        let account2 = AccountBuilder(contextManager.mainContext)
             .with(id: 1)
             .with(username: "username")
             .with(authToken: "authToken")
             .with(uuid: UUID().uuidString)
             .build()
 
-        let account3 = AccountBuilder(contextManager)
+        let account3 = AccountBuilder(contextManager.mainContext)
             .with(id: 3)
             .with(username: "username3")
             .with(authToken: "authToken3")

@@ -1,6 +1,10 @@
+23.7
+-----
+* [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
+
 23.6
 -----
-* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [***] [Jetpack-only] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 * [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
 * [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
 * [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
