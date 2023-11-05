@@ -34,16 +34,8 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
 
     func testMappingWithValidDomain() throws {
         let futureDate = Date.init(timeIntervalSinceNow: 365 * 24 * 60 * 60)
-        let iso8601Date: String = {
-            let formatter = ISO8601DateFormatter()
-            return formatter.string(from: futureDate)
-        }()
-        let humanReadableDate = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            return formatter.string(from: futureDate)
-        }()
+        let iso8601Date = ViewModel.DateFormatters.iso8601.string(from: futureDate)
+        let humanReadableDate = ViewModel.DateFormatters.humanReadable.string(from: futureDate)
         self.testMapping(
             domain: try .make(expiryDate: iso8601Date),
             expectedViewModel: .make(expiryDate: "Renews \(humanReadableDate)")
@@ -73,15 +65,25 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
 
 // MARK: - ViewModel Helpers
 
-extension AllDomainsListItemViewModel: Equatable {
+fileprivate extension AllDomainsListItemViewModel {
+
+    enum DateFormatters {
+        static let iso8601 = ISO8601DateFormatter()
+        static let humanReadable: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter
+        }()
+    }
 
     static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
 
-    fileprivate static func make(
+    static func make(
         name: String = "example1.com",
         description: String? = "Example Blog 1",
         status: DomainStatus = .init(value: "Active", type: .success),
-        expiryDate: String? = "Expired 1 Jan 2023",
+        expiryDate: String? = Self.defaultExpiryDate(),
         wpcomDetailsURL: URL? = URL(string: "\(domainManagementBasePath)/example1.com/edit/exampleblog1.wordpress.com")
     ) -> Self {
         return .init(
@@ -92,6 +94,17 @@ extension AllDomainsListItemViewModel: Equatable {
             wpcomDetailsURL: wpcomDetailsURL
         )
     }
+
+    private static func defaultExpiryDate() -> String? {
+        guard let input = Domain.Defaults.expiryDate, let date = DateFormatters.iso8601.date(from: input) else {
+            return nil
+        }
+        let formatted = DateFormatters.humanReadable.string(from: date)
+        return "Expired \(formatted)"
+    }
+}
+
+extension AllDomainsListItemViewModel: Equatable {
 
     static public func ==(left: AllDomainsListItemViewModel, right: AllDomainsListItemViewModel) -> Bool {
         return left.name == right.name
