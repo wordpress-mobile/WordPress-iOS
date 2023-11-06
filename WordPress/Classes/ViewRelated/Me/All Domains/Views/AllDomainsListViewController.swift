@@ -164,8 +164,9 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
 
     func numberOfSections(in tableView: UITableView) -> Int {
         switch state {
+        case .normal(let domains): return domains.count
         case .loading: return 1
-        default: return viewModel.numberOfDomains
+        default: return 0
         }
     }
 
@@ -177,12 +178,14 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
         switch state {
         case .loading:
             return tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.activityIndicator, for: indexPath)
-        default:
-            let domain = viewModel.domain(atIndex: indexPath.section)
+        case .normal(let domains):
+            let domain = domains[indexPath.section]
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! AllDomainsListTableViewCell
             cell.accessoryType = .disclosureIndicator
             cell.update(with: domain, parent: self)
             return cell
+        default:
+            return UITableViewCell()
         }
     }
 
@@ -195,4 +198,11 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
 
 extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarDelegate {
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.viewModel.search(searchText)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.viewModel.search(nil)
+    }
 }

@@ -52,6 +52,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     private var customLoadingIndicator: ActivityIndicatorType?
 
+    private var isImageAnimated: Bool {
+        animatedGifData != nil
+    }
+
     private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
         let loadingIndicator = UIActivityIndicatorView(style: .medium)
         layoutViewCentered(loadingIndicator, size: nil)
@@ -143,7 +147,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     @objc public func prepForReuse() {
-        self.prepareForReuse()
+        if isImageAnimated {
+            self.prepareForReuse()
+        }
     }
 
     @objc public func startLoadingAnimation() {

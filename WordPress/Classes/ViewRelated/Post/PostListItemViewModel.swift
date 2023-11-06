@@ -12,11 +12,11 @@ final class PostListItemViewModel {
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
 
-    init(post: Post) {
+    init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
         self.content = makeContentString(for: post)
         self.imageURL = post.featuredImageURL
-        self.badges = makeBadgesString(for: post)
+        self.badges = makeBadgesString(for: post, shouldHideAuthor: shouldHideAuthor)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.isEnabled = !PostCoordinator.shared.isDeleting(post)
     }
@@ -90,13 +90,13 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     return string
 }
 
-private func makeBadgesString(for post: Post) -> NSAttributedString {
+private func makeBadgesString(for post: Post, shouldHideAuthor: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
     if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
         let color: UIColor? = post.status == .trash ? .systemRed : nil
         badges.append((date, color))
     }
-    if let author = post.authorForDisplay() {
+    if !shouldHideAuthor, let author = post.authorForDisplay() {
         badges.append((author, nil))
     }
     return AbstractPostHelper.makeBadgesString(with: badges)
