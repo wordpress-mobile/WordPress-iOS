@@ -26,10 +26,12 @@ enum AbstractPostButton: Equatable {
     case share
     case blaze
     case comments
+    case settings
 
     /// Specific to pages
     case pageAttributes
     case setParent
     case setHomepage
     case setPostsPage
+    case setRegularPage
 }

@@ -258,6 +258,8 @@ import Foundation
     case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
+    case postListSetAsRegularPageAction
+    case postListSettingsAction
 
     // Page List
     case pageListEditHomepageTapped
@@ -967,6 +969,10 @@ import Foundation
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
             return "post_list_button_pressed"
+        case .postListSetAsRegularPageAction:
+            return "post_list_button_pressed"
+        case .postListSettingsAction:
+            return "post_list_button_pressed"
 
         // Page List
         case .pageListEditHomepageTapped:
@@ -1424,6 +1430,10 @@ import Foundation
             return ["button": "set_posts_page"]
         case .postListSetHomePageAction:
             return ["button": "set_homepage"]
+        case .postListSetAsRegularPageAction:
+            return ["button": "set_regular_page"]
+        case .postListSettingsAction:
+            return ["button": "settings"]
         default:
             return nil
         }

@@ -13,15 +13,18 @@ protocol InteractivePostViewDelegate: AnyObject {
     func share(_ post: AbstractPost, fromView view: UIView)
     func blaze(_ post: AbstractPost)
     func comments(_ post: AbstractPost)
+    func showSettings(for post: AbstractPost)
     func setParent(for post: AbstractPost)
     func setHomepage(for post: AbstractPost)
     func setPostsPage(for post: AbstractPost)
+    func setRegularPage(for post: AbstractPost)
 }
 
 extension InteractivePostViewDelegate {
     func setParent(for post: AbstractPost) {}
     func setHomepage(for post: AbstractPost) {}
     func setPostsPage(for post: AbstractPost) {}
+    func setRegularPage(for post: AbstractPost) {}
 
     func trash(_ post: AbstractPost) {
         self.trash(post, completion: {})
