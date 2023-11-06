@@ -172,7 +172,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             default:
                 fatalError("Unsupported post")
             }
-            break // TODO: Show post
         }
     }
 
