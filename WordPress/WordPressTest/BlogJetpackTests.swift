@@ -1,6 +1,7 @@
 import XCTest
 import CoreData
 import OHHTTPStubs
+import Nimble
 @testable import WordPress
 
 class BlogJetpackTests: CoreDataTestCase {
@@ -178,15 +179,19 @@ class BlogJetpackTests: CoreDataTestCase {
             return HTTPStubsResponse(jsonObject: [String: Int](), statusCode: 200, headers: nil)
         }
 
-        let syncExpectation = expectation(description: "Blogs sync")
-        blogService.syncBlogs(for: wpComAccount) {
-            syncExpectation.fulfill()
-        } failure: { error in
-            XCTFail("Sync blogs shouldn't fail: \(error)")
+        // Using a Nimble assertion to see if it makes the test not-flaky.
+        // It's currently timing out every first time it runs in CI, then passes on retry.
+        // See
+        // https://buildkite.com/organizations/automattic/analytics/suites/wordpress-ios/tests/0188fb2d-cb96-765d-adc2-b7b76e7414fb?branch=trunk
+        waitUntil { done in
+            self.blogService.syncBlogs(
+                for: wpComAccount,
+                success: { done() },
+                failure: { fail("Sync blogs expected to succeed but failed with: \($0)") }
+            )
         }
 
-        // No blogs should be saved after the sync blogs operation finishes.
-        wait(for: [syncExpectation], timeout: 1.0)
+        // No blogs should have been saved after the sync blogs operation finished.
         XCTAssertEqual(Blog.count(in: mainContext), 0)
     }
 
