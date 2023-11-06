@@ -343,7 +343,9 @@ extension PostRepository {
     ///   - type: `Post.self` and `Page.self` are the only acceptable types.
     ///   - input: The text input from user. Or `nil` for searching all posts or pages.
     ///   - statuses: Filter posts or pages with given status.
+    ///   - tag: Filter posts or pages with given tag.
     ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
     ///   - limit: Number of posts or pages should be fetched.
     ///   - orderBy: The property by which to sort posts or pages.
     ///   - descending: Whether to sort the results in descending order.
@@ -354,7 +356,9 @@ extension PostRepository {
         type: P.Type = P.self,
         input: String?,
         statuses: [BasePost.Status],
+        tag: String?,
         authorUserID: NSNumber? = nil,
+        offset: Int,
         limit: Int,
         orderBy: PostServiceResultsOrdering,
         descending: Bool,
@@ -364,8 +368,9 @@ extension PostRepository {
             type: type,
             searchInput: input,
             statuses: statuses,
+            tag: tag,
             authorUserID: authorUserID,
-            range: 0..<max(limit, 0),
+            range: offset..<(offset + max(limit, 0)),
             orderBy: orderBy,
             descending: descending,
             deleteOtherLocalPosts: false,
@@ -377,6 +382,7 @@ extension PostRepository {
         type: P.Type,
         searchInput: String? = nil,
         statuses: [BasePost.Status]?,
+        tag: String? = nil,
         authorUserID: NSNumber?,
         range: Range<Int>,
         orderBy: PostServiceResultsOrdering = .byDate,
@@ -412,7 +418,8 @@ extension PostRepository {
             order: descending ? .descending : .ascending,
             orderBy: orderBy,
             authorID: authorUserID,
-            search: searchInput
+            search: searchInput,
+            tag: tag
         ))
         let remotePosts = try await remote.getPosts(ofType: postType, options: options)
 
