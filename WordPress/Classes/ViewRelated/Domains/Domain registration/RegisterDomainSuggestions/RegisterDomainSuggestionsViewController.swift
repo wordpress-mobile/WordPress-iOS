@@ -12,26 +12,29 @@ enum DomainSelectionType {
 }
 
 class RegisterDomainSuggestionsViewController: UIViewController {
-    typealias DomainPurchasedCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
-    typealias DomainAddedToCartCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
 
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var constraintsInitialized = false
 
-    private var site: Blog?
-    var domainPurchasedCallback: DomainPurchasedCallback?
-    var domainAddedToCartCallback: DomainAddedToCartCallback?
+    var domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? {
+        didSet {
+            coordinator?.domainPurchasedCallback = domainPurchasedCallback
+        }
+    }
+    var domainAddedToCartCallback: RegisterDomainCoordinator.DomainAddedToCartCallback? {
+        didSet {
+            coordinator?.domainAddedToCartCallback = domainAddedToCartCallback
+        }
+    }
 
-    private var domain: FullyQuotedDomainSuggestion?
+    private var coordinator: RegisterDomainCoordinator?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
     private var navBarTitle: String = TextContent.title
-
-    private var webViewURLChangeObservation: NSKeyValueObservation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,18 +58,18 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    static func instance(site: Blog?,
+    static func instance(coordinator: RegisterDomainCoordinator,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
                          title: String = TextContent.title,
-                         domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
+                         domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
-        controller.site = site
+        controller.coordinator = coordinator
         controller.domainSelectionType = domainSelectionType
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
-        controller.siteName = siteNameForSuggestions(for: site)
+        controller.siteName = siteNameForSuggestions(for: coordinator.site)
         controller.navBarTitle = title
 
         return controller
@@ -181,11 +184,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
-            vc.blog = site
+            vc.blog = coordinator?.site
             vc.domainSelectionType = domainSelectionType
-            vc.primaryDomainAddress = site?.primaryDomainAddress
+            vc.primaryDomainAddress = coordinator?.site?.primaryDomainAddress
 
-            if site?.hasBloggerPlan == true {
+            if coordinator?.site?.hasBloggerPlan == true {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
@@ -211,7 +214,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
-        self.domain = domain
+        coordinator?.domain = domain
         showButton(animated: true)
     }
 
@@ -225,10 +228,11 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
 
 extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        guard let domain = domain else {
+        guard let coordinator,
+              let domain = coordinator.domain else {
             return
         }
-        if let site {
+        if let site = coordinator.site {
             WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
         } else {
             WPAnalytics.track(.domainsSearchSelectDomainTapped)
@@ -244,17 +248,18 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             pushRegisterDomainDetailsViewController(domain)
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            createCart(
+            coordinator.createCart(
                 domain,
                 onSuccess: { [weak self] in
-                    self?.presentWebViewForCurrentSite(domainSuggestion: domain)
-                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    guard let self else { return }
+                    self.coordinator?.presentWebViewForCurrentSite(on: self, domainSuggestion: domain)
+                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
-            createCart(
+            coordinator.createCart(
                 domain,
                 onSuccess: { [weak self] in
                     guard let self = self else {
@@ -267,7 +272,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 onFailure: onFailure
             )
         case .purchaseFromDomainManagement:
-            print("Hello world")
+            pushPurchaseDomainChoiceScreen(domain: domain)
         }
     }
 
@@ -281,7 +286,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
-        guard let siteID = site?.dotComID?.intValue else {
+        guard let siteID = coordinator?.site?.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
         }
@@ -297,10 +302,74 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    // TODO: Create a counterpart that handles no site
-    private func createCart(_ domain: FullyQuotedDomainSuggestion,
-                            onSuccess: @escaping () -> (),
-                            onFailure: @escaping () -> ()) {
+    private func pushPurchaseDomainChoiceScreen(domain: FullyQuotedDomainSuggestion) {
+        let view = DomainPurchaseChoicesView { [weak self] in
+            guard let self else { return }
+            self.coordinator?.handleNoSiteChoice(on: self, domain: domain)
+        } chooseSiteAction: { [weak self] in
+            guard let self else { return }
+            self.coordinator?.handleExistingSiteChoice(on: self, domain: domain)
+        }
+        let hostingController = UIHostingController(rootView: view)
+        hostingController.title = TextContent.domainChoiceTitle
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
+}
+
+// MARK: - Constants
+extension RegisterDomainSuggestionsViewController {
+
+    enum TextContent {
+
+        static let title = NSLocalizedString("Search domains",
+                                             comment: "Search domain - Title for the Suggested domains screen")
+        static let primaryButtonTitle = NSLocalizedString("Select domain",
+                                                          comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
+        static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
+
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
+        static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
+                                                     value: "Purchase Domain",
+                                                     comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
+    }
+
+    enum Constants {
+        // storyboard identifiers
+        static let storyboardIdentifier = "RegisterDomain"
+        static let viewControllerIdentifier = "RegisterDomainSuggestionsViewController"
+    }
+}
+
+class RegisterDomainCoordinator {
+
+    // MARK: Type Aliases
+
+    typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
+    typealias DomainAddedToCartCallback = ((UIViewController, String) -> Void)
+
+    // MARK: Variables
+
+    var site: Blog?
+    var domainPurchasedCallback: DomainPurchasedCallback?
+    var domainAddedToCartCallback: DomainAddedToCartCallback?
+    var domain: FullyQuotedDomainSuggestion?
+
+    private var webViewURLChangeObservation: NSKeyValueObservation?
+
+    init(site: Blog?) {
+        self.site = site
+    }
+
+    // MARK: Public Functions
+
+    func createCart(_ domain: FullyQuotedDomainSuggestion,
+                    onSuccess: @escaping () -> (),
+                    onFailure: @escaping () -> ()) {
         let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
@@ -314,41 +383,50 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         })
     }
 
-    static private let checkoutURLPrefix = "https://wordpress.com/checkout"
-    static private let checkoutSuccessURLPrefix = "https://wordpress.com/checkout/thank-you/"
-
-    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
-    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
-    /// through said web view.
-    ///
-    /// - Parameters:
-    ///     - newURL: the newly set URL for the web view.
-    ///     - domain: the domain the user is purchasing.
-    ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
-    ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
-    ///
-    private func handleWebViewURLChange(
-        _ newURL: URL,
-        domain: String,
-        onCancel: () -> Void,
-        onSuccess: (String) -> Void) {
-
-        let canOpenNewURL = newURL.absoluteString.starts(with: Self.checkoutURLPrefix)
-
-        guard canOpenNewURL else {
-            onCancel()
+    func presentWebViewForNoSite(on viewController: UIViewController,
+                                 domainSuggestion: FullyQuotedDomainSuggestion) {
+        guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
             return
         }
 
-        let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url,
+                                                                                                          source: "domains_register", // TODO: Update source
+                                                                                                          title: TextContent.checkoutTitle)
 
-        if domainRegistrationSucceeded {
-            onSuccess(domain)
+        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
+        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
+        // call to WKWebViewDelegate methods.
+        //
+        // This was last checked by @diegoreymendez on 2021-09-22.
+        //
+        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
 
+            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
+                viewController.navigationController?.popViewController(animated: true)
+            }) { domain in
+                viewController.dismiss(animated: true, completion: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainPurchasedCallback?(viewController, domain)
+                })
+            }
+        }
+
+        // TODO: Track showing no site checkout
+
+        webViewController.configureSandboxStore {
+            viewController.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 
-    private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
+    func presentWebViewForCurrentSite(on viewController: UIViewController,
+                                              domainSuggestion: FullyQuotedDomainSuggestion) {
         guard let site,
               let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
@@ -374,76 +452,75 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
                 navController.dismiss(animated: true)
             }) { domain in
-                self.dismiss(animated: true, completion: { [weak self] in
+                viewController.dismiss(animated: true, completion: { [weak self] in
                     guard let self = self else {
                         return
                     }
 
-                    self.domainPurchasedCallback?(self, domain)
+                    self.domainPurchasedCallback?(viewController, domain)
                 })
             }
         }
 
         WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        webViewController.configureSandboxStore { [weak self] in
-            self?.present(navController, animated: true)
+        webViewController.configureSandboxStore {
+            viewController.present(navController, animated: true)
         }
     }
 
-    private func presentWebViewForNoSite(domainSuggestion: FullyQuotedDomainSuggestion) {
-        guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
+    func handleNoSiteChoice(on viewController: UIViewController, domain: FullyQuotedDomainSuggestion) {
+        createCart(
+            domain,
+            onSuccess: { [weak self] in
+                self?.presentWebViewForNoSite(on: viewController, domainSuggestion: domain)
+            }) {
+                viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+            }
+    }
+
+    func handleExistingSiteChoice(on viewController: UIViewController, domain: FullyQuotedDomainSuggestion) {
+        print("handleExistingSiteChoice")
+    }
+
+    // MARK: Helpers
+
+    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
+    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
+    /// through said web view.
+    ///
+    /// - Parameters:
+    ///     - newURL: the newly set URL for the web view.
+    ///     - domain: the domain the user is purchasing.
+    ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
+    ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
+    ///
+    private func handleWebViewURLChange(
+        _ newURL: URL,
+        domain: String,
+        onCancel: () -> Void,
+        onSuccess: (String) -> Void) {
+
+        let canOpenNewURL = newURL.absoluteString.starts(with: Constants.checkoutWebAddress)
+
+        guard canOpenNewURL else {
+            onCancel()
             return
         }
 
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url,
-                                                                                                          source: "domains_register", // TODO: Update source
-                                                                                                          title: TextContent.checkoutTitle)
+        let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Constants.checkoutSuccessURLPrefix)
 
-        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
-        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
-        // call to WKWebViewDelegate methods.
-        //
-        // This was last checked by @diegoreymendez on 2021-09-22.
-        //
-        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
-                  let newURL = change.newValue as? URL else {
-                return
-            }
+        if domainRegistrationSucceeded {
+            onSuccess(domain)
 
-            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
-                self.navigationController?.popViewController(animated: true)
-            }) { domain in
-                self.dismiss(animated: true, completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainPurchasedCallback?(self, domain)
-                })
-            }
-        }
-
-        // TODO: Track showing no site checkout
-
-        webViewController.configureSandboxStore { [weak self] in
-            self?.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 }
 
 // MARK: - Constants
-extension RegisterDomainSuggestionsViewController {
+extension RegisterDomainCoordinator {
 
     enum TextContent {
-
-        static let title = NSLocalizedString("Search domains",
-                                             comment: "Search domain - Title for the Suggested domains screen")
-        static let primaryButtonTitle = NSLocalizedString("Select domain",
-                                                          comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
-        static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
-
         static let errorTitle = NSLocalizedString("domains.failure.title",
                                                   value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
                                                   comment: "Content show when the domain selection action fails.")
@@ -456,14 +533,8 @@ extension RegisterDomainSuggestionsViewController {
     }
 
     enum Constants {
-        // storyboard identifiers
-        static let storyboardIdentifier = "RegisterDomain"
-        static let viewControllerIdentifier = "RegisterDomainSuggestionsViewController"
-
         static let checkoutWebAddress = "https://wordpress.com/checkout/"
         static let noSiteCheckoutWebAddress = "https://wordpress.com/checkout/no-site?isDomainOnly=1"
-        // store sandbox cookie
-        static let storeSandboxCookieName = "store_sandbox"
-        static let storeSandboxCookieDomain = ".wordpress.com"
+        static let checkoutSuccessURLPrefix = "https://wordpress.com/checkout/thank-you/"
     }
 }

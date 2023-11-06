@@ -3,14 +3,15 @@ import Foundation
 @objc final class AllDomainsAddDomainCoordinator: NSObject {
     static func presentAddDomainFlow(in allDomainsViewController: AllDomainsListViewController,
                                      source: String) {
+        let coordinator = RegisterDomainCoordinator(site: nil)
         let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
-            site: nil,
+            coordinator: coordinator,
             domainSelectionType: .purchaseFromDomainManagement,
             includeSupportButton: false,
-            title: Strings.searchTitle
-        )
+            title: Strings.searchTitle)
 
-        let domainPurchasedCallback = { (domainViewController: RegisterDomainSuggestionsViewController, domainName: String) in
+
+        let domainPurchasedCallback = { (domainViewController: UIViewController, domainName: String) in
             allDomainsViewController.reloadDomains()
         }
 

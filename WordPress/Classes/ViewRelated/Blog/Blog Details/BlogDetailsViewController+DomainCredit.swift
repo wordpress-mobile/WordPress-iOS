@@ -21,8 +21,11 @@ extension BlogDetailsViewController {
     }
 
     @objc func showDomainCreditRedemption() {
+        let coordinator = RegisterDomainCoordinator(site: blog)
         let controller = RegisterDomainSuggestionsViewController
-            .instance(site: blog, domainSelectionType: .registerWithPaidPlan, domainPurchasedCallback: { [weak self] _, domain in
+            .instance(coordinator: coordinator,
+                      domainSelectionType: .registerWithPaidPlan,
+                      domainPurchasedCallback: { [weak self] _, domain in
                 WPAnalytics.track(.domainCreditRedemptionSuccess)
                 self?.presentDomainCreditRedemptionSuccess(domain: domain)
             })

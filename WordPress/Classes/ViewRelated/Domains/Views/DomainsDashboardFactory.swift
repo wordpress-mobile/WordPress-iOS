@@ -9,8 +9,9 @@ struct DomainsDashboardFactory {
     }
 
     static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
+        let coordinator = RegisterDomainCoordinator(site: blog)
         let viewController = RegisterDomainSuggestionsViewController.instance(
-            site: blog,
+            coordinator: coordinator,
             domainSelectionType: domainSelectionType,
             includeSupportButton: false)
 
