@@ -1,4 +1,5 @@
 import Foundation
+import AutomatticTracks
 
 class RegisterDomainCoordinator {
 
@@ -9,6 +10,8 @@ class RegisterDomainCoordinator {
 
     // MARK: Variables
 
+    private let crashLogger: CrashLogging
+
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartCallback: DomainAddedToCartCallback?
@@ -16,9 +19,12 @@ class RegisterDomainCoordinator {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(site: Blog?, domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil) {
+    init(site: Blog?,
+         domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
+         crashLogger: CrashLogging = .main) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
+        self.crashLogger = crashLogger
     }
 
     // MARK: Public Functions
@@ -42,6 +48,8 @@ class RegisterDomainCoordinator {
     func presentWebViewForNoSite(on viewController: UIViewController) {
         guard let domain,
               let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
+            crashLogger.logMessage("Failed to present domain checkout webview for no-site.",
+                                   level: .error)
             return
         }
 
@@ -58,6 +66,8 @@ class RegisterDomainCoordinator {
               let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host) else {
+            crashLogger.logMessage("Failed to present domain checkout webview for current site.",
+                                   level: .error)
             return
         }
 
