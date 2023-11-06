@@ -13,7 +13,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             createPrimarySection(),
             createSecondarySection(),
             createBlazeSection(),
-            createSetPageSection(),
+            createSetPageAttributesSection(),
             createTrashSection()
         ]
     }
@@ -79,7 +79,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         return AbstractPostButtonSection(buttons: buttons)
     }
 
-    private func createSetPageSection() -> AbstractPostButtonSection {
+    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
         guard page.status != .trash else {
@@ -102,7 +102,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.setRegularPage)
         }
 
-        return AbstractPostButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {

@@ -236,8 +236,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
         let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
-        // TODO: Hide author if only showing my posts?
-        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
+        cell.configure(with: PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor), delegate: self)
         return cell
     }
 

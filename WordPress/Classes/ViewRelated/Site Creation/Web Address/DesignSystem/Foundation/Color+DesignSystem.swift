@@ -12,6 +12,10 @@ public extension Color {
             public static let success = Color(DesignSystemColorNames.Foreground.success)
             public static let warning = Color(DesignSystemColorNames.Foreground.warning)
             public static let error = Color(DesignSystemColorNames.Foreground.error)
+
+            public static var brand: Color {
+                DS.Background.brand
+            }
         }
 
         public enum Background {
