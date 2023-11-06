@@ -144,7 +144,7 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Navigation
 
     private func navigateToAddDomain() {
-
+        AllDomainsAddDomainCoordinator.presentAddDomainFlow(in: self)
     }
 }
 
