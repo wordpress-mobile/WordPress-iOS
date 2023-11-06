@@ -77,8 +77,8 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureNavigationBar
 {
-    // show 'Switch Site' for the next page's back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+    // Configure next page's back button title
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:self.configuration.backButtonTitle
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:nil
                                                                   action:nil];
@@ -95,7 +95,7 @@ static NSInteger HideSearchMinSites = 3;
     }
     
 
-    self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
+    self.navigationItem.title = self.configuration.navigationTitle;
 }
 
 - (void)cancelTapped
