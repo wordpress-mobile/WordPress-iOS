@@ -16,12 +16,14 @@ protocol InteractivePostViewDelegate: AnyObject {
     func setParent(for post: AbstractPost)
     func setHomepage(for post: AbstractPost)
     func setPostsPage(for post: AbstractPost)
+    func setRegularPage(for post: AbstractPost)
 }
 
 extension InteractivePostViewDelegate {
     func setParent(for post: AbstractPost) {}
     func setHomepage(for post: AbstractPost) {}
     func setPostsPage(for post: AbstractPost) {}
+    func setRegularPage(for post: AbstractPost) {}
 
     func trash(_ post: AbstractPost) {
         self.trash(post, completion: {})

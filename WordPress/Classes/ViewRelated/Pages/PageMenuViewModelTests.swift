@@ -106,10 +106,9 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.moveToDraft, .duplicate],
+            [.duplicate],
             [.blaze],
-            [.setParent, .setPostsPage],
-            [.trash]
+            [.setParent, .setPostsPage]
         ]
         expect(buttons).to(equal(expectedButtons))
     }
@@ -136,7 +135,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate],
             [.blaze],
-            [.setParent, .setHomepage],
+            [.setParent, .setHomepage, .setRegularPage],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
