@@ -1,12 +1,12 @@
 import Foundation
 
 @objc class BlogListConfiguration: NSObject {
-    var shouldShowCancelButton: Bool
+    @objc var shouldShowCancelButton: Bool
 
     init(shouldShowCancelButton: Bool) {
         self.shouldShowCancelButton = shouldShowCancelButton
         super.init()
     }
 
-    @objc static let defaultConfig: BlogListConfiguration = .init(shouldShowCancelButton: true)
+    static let defaultConfig: BlogListConfiguration = .init(shouldShowCancelButton: true)
 }
