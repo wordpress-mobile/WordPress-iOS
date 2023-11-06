@@ -34,6 +34,7 @@
 #import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
+#import "MenusService.h"
 #import "MenusViewController.h"
 
 #import "NSObject+Helpers.h"

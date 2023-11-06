@@ -32,4 +32,5 @@ enum AbstractPostButton: Equatable {
     case setParent
     case setHomepage
     case setPostsPage
+    case setRegularPage
 }

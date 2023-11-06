@@ -62,6 +62,17 @@ class PostRepositoryPostsListTests: CoreDataTestCase {
         XCTAssertEqual(total, 15)
     }
 
+    func testFetchingAllPages() async throws {
+        try await preparePostsList(type: "page", total: 1_120)
+
+        let pages = try await repository.fetchAllPages(statuses: [], in: blogID).value
+        XCTAssertEqual(pages.count, 1_120)
+
+        // There should still be 15 posts after the search: no local posts should be deleted
+        let total = await contextManager.performQuery { $0.countObjects(ofType: Page.self) }
+        XCTAssertEqual(total, 1_120)
+    }
+
 }
 
 // MARK: - Tests that ensure the `preparePostsList` works as expected
