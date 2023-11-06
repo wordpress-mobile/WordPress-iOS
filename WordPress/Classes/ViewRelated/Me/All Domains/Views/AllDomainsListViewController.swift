@@ -45,6 +45,12 @@ final class AllDomainsListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Public Functions
+
+    func reloadDomains() {
+        viewModel.loadData()
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
