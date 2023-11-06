@@ -45,7 +45,14 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        navigationItem.hidesSearchBarWhenScrolling = false
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     // MARK: - Configuration
