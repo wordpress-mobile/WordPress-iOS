@@ -10,6 +10,11 @@ class MediaSettings: NSObject {
     fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
     fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
 
+    fileprivate let defaultImageOptimization = true
+    fileprivate let defaultMaxImageSize = 2000
+    fileprivate let defaultImageQuality: ImageQuality = .medium
+    fileprivate let defaultMaxVideoSize: VideoResolution = .sizeOriginal
+    fileprivate let defaultRemoveLocation = true
 
     fileprivate let minImageDimension = 150
     fileprivate let maxImageDimension = 3000
@@ -198,7 +203,7 @@ class MediaSettings: NSObject {
                 database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
-                return 2000
+                return defaultMaxImageSize
             }
         }
         set {
@@ -212,7 +217,7 @@ class MediaSettings: NSObject {
             if let savedRemoveLocation = database.object(forKey: removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
-                return true
+                return defaultRemoveLocation
             }
         }
         set {
@@ -224,7 +229,7 @@ class MediaSettings: NSObject {
         get {
             guard let savedSize = database.object(forKey: maxVideoSizeKey) as? String,
                   let videoSize = VideoResolution(rawValue: savedSize) else {
-                    return .sizeOriginal
+                    return defaultMaxVideoSize
             }
             return videoSize
         }
@@ -238,7 +243,7 @@ class MediaSettings: NSObject {
             if let savedImageOptimization = database.object(forKey: imageOptimizationKey) as? Bool {
                 return savedImageOptimization
             } else {
-                return true
+                return defaultImageOptimization
             }
         }
         set {
@@ -255,7 +260,7 @@ class MediaSettings: NSObject {
         get {
             guard let savedQuality = database.object(forKey: imageQualityKey) as? String,
                   let imageQuality = ImageQuality(rawValue: savedQuality) else {
-                    return .medium
+                    return defaultImageQuality
             }
             return imageQuality
         }
