@@ -7,7 +7,7 @@ class MediaSettingsTests: XCTestCase {
     func testDefaultMaxImageSize() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let maxImageSize = settings.maxImageSizeSetting
-        expect(maxImageSize).to(equal(settings.allowedImageSizeRange.max))
+        expect(maxImageSize).to(equal(2000))
     }
 
     func testMaxImageSizeMigratesCGSizeToInt() {
