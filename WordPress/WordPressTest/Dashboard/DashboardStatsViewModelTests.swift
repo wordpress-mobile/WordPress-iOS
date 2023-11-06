@@ -24,9 +24,9 @@ class DashboardStatsViewModelTests: XCTestCase {
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
-        XCTAssertEqual(viewModel.todaysViews, "10,000")
-        XCTAssertEqual(viewModel.todaysVisitors, "200.0K")
-        XCTAssertEqual(viewModel.todaysLikes, "3.0M")
+        XCTAssertEqual(viewModel.todaysViews, 10_000.abbreviatedString(forHeroNumber: true))
+        XCTAssertEqual(viewModel.todaysVisitors, 200_000.abbreviatedString(forHeroNumber: true))
+        XCTAssertEqual(viewModel.todaysLikes, 3_000_000.abbreviatedString(forHeroNumber: true))
     }
 
     func testReturnZeroIfAPIResponseIsEmpty() {
