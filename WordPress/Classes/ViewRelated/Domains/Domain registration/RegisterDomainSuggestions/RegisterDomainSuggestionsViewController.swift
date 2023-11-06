@@ -29,6 +29,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
+    private var navBarTitle: String = TextContent.title
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
@@ -57,6 +58,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     static func instance(site: Blog?,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
+                         title: String = TextContent.title,
                          domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
@@ -65,6 +67,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: site)
+        controller.navBarTitle = title
 
         return controller
     }
@@ -89,7 +92,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }
 
     private func configure() {
-        title = TextContent.title
+        title = navBarTitle
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
         /// If this is the first view controller in the navigation controller - show the cancel button
