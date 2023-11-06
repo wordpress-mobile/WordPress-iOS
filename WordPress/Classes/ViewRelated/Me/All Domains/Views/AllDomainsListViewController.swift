@@ -153,7 +153,9 @@ final class AllDomainsListViewController: UIViewController {
             url: url,
             analyticsSource: "all-domains"
         )
-        navigationController.pushViewController(destination, animated: true)
+        destination.configureSandboxStore {
+            navigationController.pushViewController(destination, animated: true)
+        }
     }
 }
 
