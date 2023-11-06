@@ -390,6 +390,47 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             self?.present(navController, animated: true)
         }
     }
+
+    private func presentWebViewForNoSite(domainSuggestion: FullyQuotedDomainSuggestion) {
+        guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url,
+                                                                                                          source: "domains_register", // TODO: Update source
+                                                                                                          title: TextContent.checkoutTitle)
+
+        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
+        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
+        // call to WKWebViewDelegate methods.
+        //
+        // This was last checked by @diegoreymendez on 2021-09-22.
+        //
+        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
+
+            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
+                self.navigationController?.popViewController(animated: true)
+            }) { domain in
+                self.dismiss(animated: true, completion: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainPurchasedCallback?(self, domain)
+                })
+            }
+        }
+
+        // TODO: Track showing no site checkout
+
+        webViewController.configureSandboxStore { [weak self] in
+            self?.navigationController?.pushViewController(webViewController, animated: true)
+        }
+    }
 }
 
 // MARK: - Constants
@@ -409,6 +450,9 @@ extension RegisterDomainSuggestionsViewController {
         static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
                                                     value: "Dismiss",
                                                     comment: "Action shown in a bottom notice to dismiss it.")
+        static let checkoutTitle = NSLocalizedString("domains.checkout.title",
+                                                     value: "Checkout",
+                                                     comment: "Title for the checkout screen.")
     }
 
     enum Constants {
@@ -417,6 +461,7 @@ extension RegisterDomainSuggestionsViewController {
         static let viewControllerIdentifier = "RegisterDomainSuggestionsViewController"
 
         static let checkoutWebAddress = "https://wordpress.com/checkout/"
+        static let noSiteCheckoutWebAddress = "https://wordpress.com/checkout/no-site?isDomainOnly=1"
         // store sandbox cookie
         static let storeSandboxCookieName = "store_sandbox"
         static let storeSandboxCookieDomain = ".wordpress.com"
