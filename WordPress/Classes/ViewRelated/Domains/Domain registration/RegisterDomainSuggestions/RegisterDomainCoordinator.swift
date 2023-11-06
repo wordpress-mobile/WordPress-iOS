@@ -44,14 +44,14 @@ class RegisterDomainCoordinator {
         guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
             return
         }
-        
+
         presentCheckoutWebview(on: viewController,
                                domainSuggestion: domainSuggestion,
                                url: url,
                                title: TextContent.checkoutTitle,
                                shouldPush: true)
     }
-    
+
     func presentWebViewForCurrentSite(on viewController: UIViewController,
                                               domainSuggestion: FullyQuotedDomainSuggestion) {
         guard let site,
@@ -60,7 +60,7 @@ class RegisterDomainCoordinator {
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
-        
+
         presentCheckoutWebview(on: viewController,
                                domainSuggestion: domainSuggestion,
                                url: url,
@@ -83,13 +83,13 @@ class RegisterDomainCoordinator {
     }
 
     // MARK: Helpers
-    
+
     private func presentCheckoutWebview(on viewController: UIViewController,
                                         domainSuggestion: FullyQuotedDomainSuggestion,
                                         url: URL,
                                         title: String?,
                                         shouldPush: Bool) {
-        
+
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: url,
             source: "domains_register", // TODO: Update source
@@ -130,7 +130,7 @@ class RegisterDomainCoordinator {
         } else {
             // TODO: Track showing no site checkout
         }
-        
+
         webViewController.configureSandboxStore {
             if shouldPush {
                 viewController.navigationController?.pushViewController(webViewController, animated: true)
