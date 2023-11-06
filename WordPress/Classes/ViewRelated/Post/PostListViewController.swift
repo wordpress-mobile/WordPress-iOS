@@ -5,7 +5,6 @@ import Gridicons
 import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
@@ -424,6 +423,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
         let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
+    }
+
+    func showSettings(for post: AbstractPost) {
+        WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     // MARK: - NetworkAwareUI

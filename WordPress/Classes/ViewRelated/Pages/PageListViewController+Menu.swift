@@ -59,7 +59,12 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
-    func setParent(for apost: AbstractPost) {
+    func showSettings(for post: AbstractPost) {
+        WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
+    }
+
+    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
         guard let page = apost as? Page else { return }
         setParentPage(for: page)
     }

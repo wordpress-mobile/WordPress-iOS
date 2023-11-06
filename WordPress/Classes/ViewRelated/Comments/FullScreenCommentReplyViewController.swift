@@ -50,7 +50,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public override func viewDidLoad() {
         super.viewDidLoad()
         placeholderLabel.text = placeholder
-        setupNavigationItems()
+        setupStandaloneEditor()
         configureNavigationAppearance()
     }
 
@@ -174,7 +174,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     }
 
     /// Creates the `leftBarButtonItem` and the `rightBarButtonItem`
-    private func setupNavigationItems() {
+    private func setupStandaloneEditor() {
         navigationItem.leftBarButtonItem = ({
             let image = UIImage.gridicon(.chevronDown).imageWithTintColor(.primary)
             let leftItem = UIBarButtonItem(image: image,
