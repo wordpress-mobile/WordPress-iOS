@@ -241,6 +241,18 @@ class PostRepositoryTests: CoreDataTestCase {
         }
     }
 
+    func testFetchAllPagesAPIError() async throws {
+        // Use an empty array to simulate an HTTP API error
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = []
+
+        do {
+            let _ = try await repository.fetchAllPages(statuses: [], in: blogID).value
+            XCTFail("The above call should throw")
+        } catch {
+            // Do nothing.
+        }
+    }
+
     func testFetchAllPagesStopsOnEmptyAPIResponse() async throws {
         // Given two pages of API result: first page returns 100 page instances, and the second page returns an empty result.
         remoteMock.remotePostsToReturnOnSyncPostsOfType = [
