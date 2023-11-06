@@ -149,11 +149,11 @@ final class AllDomainsListViewController: UIViewController {
             self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
             return
         }
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
+        let destination = DomainDetailsWebViewController(
             url: url,
-            source: "all-domains"
+            analyticsSource: "all-domains"
         )
-        navigationController.pushViewController(webViewController, animated: true)
+        navigationController.pushViewController(destination, animated: true)
     }
 }
 

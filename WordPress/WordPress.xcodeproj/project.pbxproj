@@ -3765,6 +3765,7 @@
 		F4EDAA4D29A516EA00622D3D /* ReaderPostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */; };
 		F4EDAA5129A795C600622D3D /* BlockedAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42A1D9629928B360059CC70 /* BlockedAuthor.swift */; };
 		F4EF4BAB291D3D4700147B61 /* SiteIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EF4BAA291D3D4700147B61 /* SiteIconTests.swift */; };
+		F4F7B2512AF8EF2C00207282 /* DomainDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F7B2502AF8EBDB00207282 /* DomainDetailsWebViewController.swift */; };
 		F4F9D5EA2909622E00502576 /* MigrationWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5E92909622E00502576 /* MigrationWelcomeViewController.swift */; };
 		F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5EB29096CF500502576 /* MigrationHeaderView.swift */; };
 		F4F9D5F2290993D400502576 /* MigrationWelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5F1290993D400502576 /* MigrationWelcomeViewModel.swift */; };
@@ -9139,6 +9140,7 @@
 		F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostService.swift; sourceTree = "<group>"; };
 		F4EF4BAA291D3D4700147B61 /* SiteIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIconTests.swift; sourceTree = "<group>"; };
 		F4F09CCB2989BF5B00A5F420 /* ReaderSiteService_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderSiteService_Internal.h; sourceTree = "<group>"; };
+		F4F7B2502AF8EBDB00207282 /* DomainDetailsWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDetailsWebViewController.swift; sourceTree = "<group>"; };
 		F4F9D5E92909622E00502576 /* MigrationWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationWelcomeViewController.swift; sourceTree = "<group>"; };
 		F4F9D5EB29096CF500502576 /* MigrationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHeaderView.swift; sourceTree = "<group>"; };
 		F4F9D5F1290993D400502576 /* MigrationWelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationWelcomeViewModel.swift; sourceTree = "<group>"; };
@@ -11043,6 +11045,7 @@
 		31F4F6641A13858F00196A98 /* Me */ = {
 			isa = PBXGroup;
 			children = (
+				F4F7B24F2AF8EBCA00207282 /* Domain Details */,
 				F4FB0ACB2925878E00F651F9 /* Views */,
 				3F29EB70240421F6005313DE /* Account Settings */,
 				3F29EB6E240420C3005313DE /* App Settings */,
@@ -17755,6 +17758,14 @@
 			path = "Reader Post";
 			sourceTree = "<group>";
 		};
+		F4F7B24F2AF8EBCA00207282 /* Domain Details */ = {
+			isa = PBXGroup;
+			children = (
+				F4F7B2502AF8EBDB00207282 /* DomainDetailsWebViewController.swift */,
+			);
+			path = "Domain Details";
+			sourceTree = "<group>";
+		};
 		F4F9D5E82909615D00502576 /* WordPress-to-Jetpack Migration */ = {
 			isa = PBXGroup;
 			children = (
@@ -23931,6 +23942,7 @@
 				FE50965A2A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift in Sources */,
 				FABB212C2602FC2C00C8785C /* NotificationsViewController+AppRatings.swift in Sources */,
 				FABB212D2602FC2C00C8785C /* BlogService.m in Sources */,
+				F4F7B2512AF8EF2C00207282 /* DomainDetailsWebViewController.swift in Sources */,
 				DC9AF76A285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift in Sources */,
 				FABB212E2602FC2C00C8785C /* JetpackSettingsViewController.swift in Sources */,
 				982DDF95263238A6002B3904 /* LikeUserPreferredBlog+CoreDataClass.swift in Sources */,
