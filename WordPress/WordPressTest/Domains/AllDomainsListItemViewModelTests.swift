@@ -2,6 +2,10 @@ import XCTest
 
 @testable import WordPress
 
+fileprivate typealias Domain = DomainsService.AllDomainsListItem
+fileprivate typealias DomainStatus = Domain.Status
+fileprivate typealias ViewModel = AllDomainsListItemViewModel
+
 final class AllDomainsListItemViewModelTests: XCTestCase {
 
     func testMappingWithDefaultInput() throws {
@@ -115,7 +119,3 @@ extension AllDomainsListItemViewModel: Equatable {
         && left.wpcomDetailsURL == right.wpcomDetailsURL
     }
 }
-
-fileprivate typealias Domain = DomainsService.AllDomainsListItem
-fileprivate typealias DomainStatus = Domain.Status
-fileprivate typealias ViewModel = AllDomainsListItemViewModel
