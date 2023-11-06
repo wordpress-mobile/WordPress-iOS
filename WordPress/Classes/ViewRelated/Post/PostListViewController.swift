@@ -259,7 +259,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             guard let self else { return nil }
             let post = self.postAtIndexPath(indexPath)
             let cell = self.tableView.cellForRow(at: indexPath)
-            return AbstractPostHelper.makeContextMenu(for: post, presentingView: cell, delegate: self)
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
     }
 

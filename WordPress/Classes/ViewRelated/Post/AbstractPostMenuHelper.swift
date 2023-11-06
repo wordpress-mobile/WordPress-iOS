@@ -2,13 +2,10 @@ import Foundation
 import UIKit
 
 struct AbstractPostMenuHelper {
-
     let post: AbstractPost
-    let viewModel: AbstractPostMenuViewModel
 
-    init(_ post: AbstractPost, viewModel: AbstractPostMenuViewModel) {
+    init(_ post: AbstractPost) {
         self.post = post
-        self.viewModel = viewModel
     }
 
     /// Creates a menu for post actions
@@ -25,13 +22,25 @@ struct AbstractPostMenuHelper {
         ])
     }
 
+    private func makeSections() -> [AbstractPostButtonSection] {
+        switch post {
+        case let post as Post:
+            return PostCardStatusViewModel(post: post).buttonSections
+        case let page as Page:
+            return PageMenuViewModel(page: page).buttonSections
+        default:
+            assertionFailure("Unsupported entity: \(post)")
+            return []
+        }
+    }
+
     /// Creates post actions grouped into sections
     ///
     /// - parameters:
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     private func makeSections(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIMenu] {
-        return viewModel.buttonSections
+        return makeSections()
             .filter { !$0.buttons.isEmpty }
             .map { section in
                 let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)

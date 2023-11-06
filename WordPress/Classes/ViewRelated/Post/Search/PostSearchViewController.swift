@@ -188,7 +188,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             guard let self, let delegate = self.delegate else { return nil }
             let post = self.viewModel.posts[indexPath.row]
             let cell = self.tableView.cellForRow(at: indexPath)
-            return AbstractPostHelper.makeContextMenu(for: post, presentingView: cell, delegate: delegate)
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: delegate)
         }
     }
 

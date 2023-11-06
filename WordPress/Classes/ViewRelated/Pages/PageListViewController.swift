@@ -324,7 +324,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             guard let self else { return nil }
             let page = self.pages[indexPath.row]
             let cell = self.tableView.cellForRow(at: indexPath)
-            return AbstractPostHelper.makeContextMenu(for: page, presentingView: cell, delegate: self)
+            return AbstractPostMenuHelper(page).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
     }
 

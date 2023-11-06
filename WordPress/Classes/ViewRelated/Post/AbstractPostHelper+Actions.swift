@@ -44,23 +44,6 @@ extension AbstractPostHelper {
 
         return actions
     }
-
-    // MARK: - Context Menu
-
-    static func makeContextMenu(for post: AbstractPost, presentingView: UIView?, delegate: InteractivePostViewDelegate) -> UIMenu {
-        switch post {
-        case let post as Post:
-            let viewModel = PostListItemViewModel(post: post).statusViewModel
-            let helper = AbstractPostMenuHelper(post, viewModel: viewModel)
-            return helper.makeMenu(presentingView: presentingView ?? UIView(), delegate: delegate)
-        case let page as Page:
-            let viewModel = PageMenuViewModel(page: page)
-            let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
-            return helper.makeMenu(presentingView: presentingView ?? UIView(), delegate: delegate)
-        default:
-            fatalError("Unsupported post type: \(type(of: post))")
-        }
-    }
 }
 
 private enum Strings {
