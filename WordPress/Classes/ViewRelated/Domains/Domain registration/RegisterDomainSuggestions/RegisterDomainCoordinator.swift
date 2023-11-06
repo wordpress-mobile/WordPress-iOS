@@ -16,8 +16,9 @@ class RegisterDomainCoordinator {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(site: Blog?) {
+    init(site: Blog?, domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil) {
         self.site = site
+        self.domainPurchasedCallback = domainPurchasedCallback
     }
 
     // MARK: Public Functions

@@ -18,17 +18,6 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var constraintsInitialized = false
 
-    var domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? {
-        didSet {
-            coordinator?.domainPurchasedCallback = domainPurchasedCallback
-        }
-    }
-    var domainAddedToCartCallback: RegisterDomainCoordinator.DomainAddedToCartCallback? {
-        didSet {
-            coordinator?.domainAddedToCartCallback = domainAddedToCartCallback
-        }
-    }
-
     private var coordinator: RegisterDomainCoordinator?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
@@ -61,13 +50,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     static func instance(coordinator: RegisterDomainCoordinator,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
-                         title: String = TextContent.title,
-                         domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
+                         title: String = TextContent.title) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.coordinator = coordinator
         controller.domainSelectionType = domainSelectionType
-        controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: coordinator.site)
         controller.navBarTitle = title
@@ -266,7 +253,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                         return
                     }
 
-                    self.domainAddedToCartCallback?(self, domain.domainName)
+                    self.coordinator?.domainAddedToCartCallback?(self, domain.domainName)
                     self.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
@@ -297,7 +284,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 return
             }
 
-            self.domainPurchasedCallback?(self, name)
+            self.coordinator?.domainPurchasedCallback?(self, name)
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }

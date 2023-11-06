@@ -15,7 +15,7 @@ import Foundation
             allDomainsViewController.reloadDomains()
         }
 
-        domainSuggestionsViewController.domainPurchasedCallback = domainPurchasedCallback
+        coordinator.domainPurchasedCallback = domainPurchasedCallback
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true

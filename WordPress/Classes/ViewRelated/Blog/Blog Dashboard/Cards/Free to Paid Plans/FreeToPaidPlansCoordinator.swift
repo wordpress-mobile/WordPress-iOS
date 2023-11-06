@@ -48,7 +48,7 @@ import SwiftUI
             }
             domainViewController.navigationController?.pushViewController(planSelectionViewController, animated: true)
         }
-        domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
+        coordinator.domainAddedToCartCallback = domainAddedToCart
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         dashboardViewController.present(navigationController, animated: true)

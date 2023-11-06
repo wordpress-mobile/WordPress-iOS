@@ -540,9 +540,7 @@ class PluginViewModel: Observable {
             return
         }
 
-        let coordinator = RegisterDomainCoordinator(site: blog)
-        let controller = RegisterDomainSuggestionsViewController.instance(coordinator: coordinator,
-                                                                          domainPurchasedCallback: { [weak self] _, domain in
+        let coordinator = RegisterDomainCoordinator(site: blog, domainPurchasedCallback: { [weak self] _, domain in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
@@ -553,6 +551,7 @@ class PluginViewModel: Observable {
 
             atHelper.startAutomatedTransferProcess(retryingAfterFailure: true)
         })
+        let controller = RegisterDomainSuggestionsViewController.instance(coordinator: coordinator)
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

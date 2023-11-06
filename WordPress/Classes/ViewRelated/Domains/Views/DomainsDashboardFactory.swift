@@ -15,7 +15,7 @@ struct DomainsDashboardFactory {
             domainSelectionType: domainSelectionType,
             includeSupportButton: false)
 
-        viewController.domainPurchasedCallback = { viewController, domain in
+        coordinator.domainPurchasedCallback = { viewController, domain in
             let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.syncBlogAndAllMetadata(blog) { }
             WPAnalytics.track(.domainCreditRedemptionSuccess)
