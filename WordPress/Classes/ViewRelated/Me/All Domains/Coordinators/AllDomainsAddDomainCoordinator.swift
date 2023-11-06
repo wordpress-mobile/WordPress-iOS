@@ -24,7 +24,8 @@ import Foundation
 
 extension AllDomainsAddDomainCoordinator {
     private enum Strings {
-        static let searchTitle = NSLocalizedString("Search for a domain",
+        static let searchTitle = NSLocalizedString("domain.management.addDomain.search.title",
+                                                   value: "Search for a domain",
                                                    comment: "Search domain - Title for the Suggested domains screen")
     }
 }
