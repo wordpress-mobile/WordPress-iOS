@@ -1726,7 +1726,6 @@
 		8031F34A292FF46B00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34B292FF46E00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
-		80348F2E2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */; };
 		80348F312AF87FEA0045CCD3 /* AllDomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F302AF87FEA0045CCD3 /* AllDomainsListViewController.swift */; };
 		80348F332AF880820045CCD3 /* DomainPurchaseChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F322AF880820045CCD3 /* DomainPurchaseChoicesView.swift */; };
 		80348F342AF89BD00045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */; };
@@ -1984,6 +1983,7 @@
 		80D9D04B29FC118900FE3400 /* NSMutableArray+NullableObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D9D04929FC0D9000FE3400 /* NSMutableArray+NullableObjects.m */; };
 		80DB57922AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57912AF8B59B00C728FF /* RegisterDomainCoordinator.swift */; };
 		80DB57932AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57912AF8B59B00C728FF /* RegisterDomainCoordinator.swift */; };
+		80DB57942AF8D04600C728FF /* DomainPurchaseChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F322AF880820045CCD3 /* DomainPurchaseChoicesView.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -22383,7 +22383,6 @@
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
 				FECA442F28350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */,
-				80348F2E2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */,
 				0CB424EE2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				C81CCD65243AECA200A83E27 /* TenorGIF.swift in Sources */,
@@ -22663,6 +22662,7 @@
 				FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */,
 				324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
+				80DB57942AF8D04600C728FF /* DomainPurchaseChoicesView.swift in Sources */,
 				B07F133E2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */,
 				837A53D72AD8C3A400B941A2 /* ReaderFollowButton.swift in Sources */,
 				9822A8412624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */,
