@@ -1,6 +1,7 @@
 23.7
 -----
 * [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
+* [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 
 23.6
 -----
