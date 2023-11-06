@@ -66,12 +66,20 @@ extension PageListViewController: InteractivePostViewDelegate {
 
     func setHomepage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsPostsPageAction)
         setPageAsHomepage(page)
     }
 
     func setPostsPage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        setPageAsPostsPage(page)
+        WPAnalytics.track(.postListSetHomePageAction)
+        togglePageAsPostsPage(page)
+    }
+
+    func setRegularPage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsRegularPageAction)
+        togglePageAsPostsPage(page)
     }
 
     // MARK: - Helpers
