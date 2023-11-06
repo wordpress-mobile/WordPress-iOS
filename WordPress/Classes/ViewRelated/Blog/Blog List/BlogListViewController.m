@@ -49,6 +49,7 @@ static NSInteger HideSearchMinSites = 3;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _meScenePresenter = meScenePresenter;
+        _configuration = configuration;
         
         [self configureDataSource];
         [self configureNavigationBar];
