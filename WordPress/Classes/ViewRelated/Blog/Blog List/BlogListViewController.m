@@ -885,6 +885,10 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateBarButtons
 {
+    if (self.configuration.shouldShowNavBarButtons == false) {
+        return;
+    }
+
     BOOL showAddSiteButton = [self shouldShowAddSiteButton];
     BOOL showEditButton = [self shouldShowEditButton];
 
