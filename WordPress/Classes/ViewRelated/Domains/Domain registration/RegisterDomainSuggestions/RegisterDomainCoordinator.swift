@@ -44,43 +44,14 @@ class RegisterDomainCoordinator {
         guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
             return
         }
-
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url,
-                                                                                                          source: "domains_register", // TODO: Update source
-                                                                                                          title: TextContent.checkoutTitle)
-
-        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
-        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
-        // call to WKWebViewDelegate methods.
-        //
-        // This was last checked by @diegoreymendez on 2021-09-22.
-        //
-        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
-                  let newURL = change.newValue as? URL else {
-                return
-            }
-
-            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
-                viewController.navigationController?.popViewController(animated: true)
-            }) { domain in
-                viewController.dismiss(animated: true, completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainPurchasedCallback?(viewController, domain)
-                })
-            }
-        }
-
-        // TODO: Track showing no site checkout
-
-        webViewController.configureSandboxStore {
-            viewController.navigationController?.pushViewController(webViewController, animated: true)
-        }
+        
+        presentCheckoutWebview(on: viewController,
+                               domainSuggestion: domainSuggestion,
+                               url: url,
+                               title: TextContent.checkoutTitle,
+                               shouldPush: true)
     }
-
+    
     func presentWebViewForCurrentSite(on viewController: UIViewController,
                                               domainSuggestion: FullyQuotedDomainSuggestion) {
         guard let site,
@@ -89,40 +60,12 @@ class RegisterDomainCoordinator {
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
-
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url, source: "domains_register")
-        let navController = LightNavigationController(rootViewController: webViewController)
-
-        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
-        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
-        // call to WKWebViewDelegate methods.
-        //
-        // This was last checked by @diegoreymendez on 2021-09-22.
-        //
-        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
-                  let newURL = change.newValue as? URL else {
-                return
-            }
-
-            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
-                navController.dismiss(animated: true)
-            }) { domain in
-                viewController.dismiss(animated: true, completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainPurchasedCallback?(viewController, domain)
-                })
-            }
-        }
-
-        WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
-
-        webViewController.configureSandboxStore {
-            viewController.present(navController, animated: true)
-        }
+        
+        presentCheckoutWebview(on: viewController,
+                               domainSuggestion: domainSuggestion,
+                               url: url,
+                               title: nil,
+                               shouldPush: false)
     }
 
     func handleNoSiteChoice(on viewController: UIViewController, domain: FullyQuotedDomainSuggestion) {
@@ -140,6 +83,62 @@ class RegisterDomainCoordinator {
     }
 
     // MARK: Helpers
+    
+    private func presentCheckoutWebview(on viewController: UIViewController,
+                                        domainSuggestion: FullyQuotedDomainSuggestion,
+                                        url: URL,
+                                        title: String?,
+                                        shouldPush: Bool) {
+        
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
+            url: url,
+            source: "domains_register", // TODO: Update source
+            title: title)
+        let navController = LightNavigationController(rootViewController: webViewController)
+
+        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
+        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
+        // call to WKWebViewDelegate methods.
+        //
+        // This was last checked by @diegoreymendez on 2021-09-22.
+        //
+        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
+
+            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
+                if shouldPush {
+                    viewController.navigationController?.popViewController(animated: true)
+                } else {
+                    navController.dismiss(animated: true)
+                }
+            }) { domain in
+                viewController.dismiss(animated: true, completion: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainPurchasedCallback?(viewController, domain)
+                })
+            }
+        }
+
+        if let site {
+            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+        } else {
+            // TODO: Track showing no site checkout
+        }
+        
+        webViewController.configureSandboxStore {
+            if shouldPush {
+                viewController.navigationController?.pushViewController(webViewController, animated: true)
+            } else {
+                viewController.present(navController, animated: true)
+            }
+        }
+    }
 
     /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
     /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
