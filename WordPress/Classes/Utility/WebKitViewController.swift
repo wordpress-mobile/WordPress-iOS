@@ -514,7 +514,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
 
         if customTitle == nil {
-            // Set the title for the HUD which shows up on tap+hold w/ accessibile font sizes enabled
+            // Set the title for the HUD which shows up on tap+hold w/ accessible font sizes enabled
             navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
         }
 
