@@ -9,30 +9,30 @@ fileprivate typealias ViewModel = AllDomainsListItemViewModel
 final class AllDomainsListItemViewModelTests: XCTestCase {
 
     func testMappingWithDefaultInput() throws {
-        self.testMapping(
-            domain: try .make(),
-            expectedViewModel: .make()
+        self.assert(
+            viewModelFromDomain: try .make(),
+            equalTo: .make()
         )
     }
 
     func testMappingWithDomainOnlySite() throws {
-        self.testMapping(
-            domain: try .make(isDomainOnlySite: true),
-            expectedViewModel: .make(description: nil)
+        self.assert(
+            viewModelFromDomain: try .make(isDomainOnlySite: true),
+            equalTo: .make(description: nil)
         )
     }
 
     func testMappingWithEmptyBlogNameDomain() throws {
-        self.testMapping(
-            domain: try .make(blogName: ""),
-            expectedViewModel: .make(description: Domain.Defaults.siteSlug)
+        self.assert(
+            viewModelFromDomain: try .make(blogName: ""),
+            equalTo: .make(description: Domain.Defaults.siteSlug)
         )
     }
 
     func testMappingWithUnregisteredDomain() throws {
-        self.testMapping(
-            domain: try .make(hasRegistration: false),
-            expectedViewModel: .make(expiryDate: nil)
+        self.assert(
+            viewModelFromDomain: try .make(hasRegistration: false),
+            equalTo: .make(expiryDate: nil)
         )
     }
 
@@ -40,30 +40,30 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
         let futureDate = Date.init(timeIntervalSinceNow: 365 * 24 * 60 * 60)
         let iso8601Date = ViewModel.DateFormatters.iso8601.string(from: futureDate)
         let humanReadableDate = ViewModel.DateFormatters.humanReadable.string(from: futureDate)
-        self.testMapping(
-            domain: try .make(expiryDate: iso8601Date),
-            expectedViewModel: .make(expiryDate: "Renews \(humanReadableDate)")
+        self.assert(
+            viewModelFromDomain: try .make(expiryDate: iso8601Date),
+            equalTo: .make(expiryDate: "Renews \(humanReadableDate)")
         )
     }
 
     func testMappingWithSiteRedirectDomain() throws {
         let expectedURL = URL(string: "\(ViewModel.domainManagementBasePath)/example1.com/redirect/exampleblog1.wordpress.com")
-        self.testMapping(
-            domain: try .make(type: "redirect"),
-            expectedViewModel: .make(wpcomDetailsURL: expectedURL)
+        self.assert(
+            viewModelFromDomain: try .make(type: "redirect"),
+            equalTo: .make(wpcomDetailsURL: expectedURL)
         )
     }
 
     func testMappingWithTransferDomain() throws {
         let expectedURL = URL(string: "\(ViewModel.domainManagementBasePath)/example1.com/transfer/in/exampleblog1.wordpress.com")
-        self.testMapping(
-            domain: try .make(type: "transfer"),
-            expectedViewModel: .make(wpcomDetailsURL: expectedURL)
+        self.assert(
+            viewModelFromDomain: try .make(type: "transfer"),
+            equalTo: .make(wpcomDetailsURL: expectedURL)
         )
     }
 
-    private func testMapping(domain: Domain, expectedViewModel: ViewModel) {
-        XCTAssertEqual(ViewModel(domain: domain), expectedViewModel)
+    private func assert(viewModelFromDomain domain: Domain, equalTo viewModel: ViewModel) {
+        XCTAssertEqual(ViewModel(domain: domain), viewModel)
     }
 }
 
