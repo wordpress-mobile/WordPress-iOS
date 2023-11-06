@@ -218,11 +218,11 @@ class MeViewController: UITableViewController {
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
             sections.append(.init(rows: [
                 NavigationItemRow(
-                    title: MyDomainsViewController.Strings.title,
+                    title: AllDomainsListViewController.Strings.title,
                     icon: UIImage(systemName: "globe"),
                     accessoryType: accessoryType,
                     action: { action in
-                        self.navigationController?.pushViewController(MyDomainsViewController(), animated: true)
+                        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
                     },
                     accessibilityIdentifier: "myDomains"
                 )
