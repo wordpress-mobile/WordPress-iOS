@@ -17,6 +17,7 @@ final class PostSearchService {
     private let blog: Blog
     private let settings: PostListFilterSettings
     private let coreDataStack: CoreDataStack
+    private let repository: PostRepository
 
     private var postIDs: Set<NSManagedObjectID> = []
     private var offset = 0
@@ -25,12 +26,13 @@ final class PostSearchService {
     init(blog: Blog,
          settings: PostListFilterSettings,
          criteria: PostSearchCriteria,
-         coreDataStack: CoreDataStack = ContextManager.shared
+         coreDataStack: CoreDataStackSwift = ContextManager.shared
     ) {
         self.blog = blog
         self.settings = settings
         self.criteria = criteria
         self.coreDataStack = coreDataStack
+        self.repository = PostRepository(coreDataStack: coreDataStack)
     }
 
     func loadMore() {
@@ -45,26 +47,30 @@ final class PostSearchService {
     }
 
     private func _loadMore() {
-        let options = PostServiceSyncOptions()
-        options.number = 20
-        options.offset = NSNumber(value: offset)
-        options.purgesLocalSync = false
-        options.search = criteria.searchTerm
-        options.authorID = criteria.authorID
-        options.tag = criteria.tag
+        let postType = settings.postType == .post ? Post.self : Page.self
+        let blogID = TaggedManagedObjectID(blog)
 
-        let postService = PostService(managedObjectContext: coreDataStack.mainContext)
-        postService.syncPosts(
-            ofType: settings.postType,
-            with: options,
-            for: blog,
-            success: { [weak self] in
-                self?.didLoad(with: .success($0 ?? []))
-            },
-            failure: { [weak self] in
-                self?.didLoad(with: .failure($0 ?? URLError(.unknown)))
+        Task { @MainActor [weak self, offset, criteria, repository, coreDataStack] in
+            let result: Result<[AbstractPost], Error>
+            do {
+                let postIDs: [TaggedManagedObjectID<AbstractPost>] = try await repository.search(
+                    type: postType,
+                    input: criteria.searchTerm,
+                    statuses: [],
+                    tag: criteria.tag,
+                    authorUserID: criteria.authorID,
+                    offset: offset,
+                    limit: 20,
+                    orderBy: .byDate,
+                    descending: true,
+                    in: blogID
+                )
+                result = try .success(postIDs.map { try coreDataStack.mainContext.existingObject(with: $0) })
+            } catch {
+                result = .failure(error)
             }
-        )
+            self?.didLoad(with: result)
+        }
     }
 
     private func didLoad(with result: Result<[AbstractPost], Error>) {
