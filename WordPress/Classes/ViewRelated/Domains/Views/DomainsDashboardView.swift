@@ -33,25 +33,16 @@ struct DomainsDashboardView: View {
                 updateDomainsList()
             }, failure: nil)
         }
-        .navigationBarTitle(TextContent.navigationTitle)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink(destination: AllDomainsListViewRepresentable()) {
-                    Text("All Domains")
+                    Text(AllDomainsListViewController.Strings.title)
                         .foregroundStyle(Color.DS.Foreground.primary)
                 }
-//                Button {
-//                    NavigationLink(destination: AllDomainsListViewRepresentable()) {
-//                        Image(systemName: "gear")
-//                            .font(.title)
-//                    }
-//                } label: {
-//                    Text("All Domains")
-//                        .foregroundStyle(Color.DS.Foreground.primary)
-//                }
-
             }
         }
+        .navigationBarTitle(TextContent.navigationTitle)
+        .navigationViewStyle(.stack)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
                 isShowingDomainRegistrationFlow = false
@@ -218,10 +209,8 @@ private extension DomainsDashboardView {
 
 struct AllDomainsListViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AllDomainsListViewController {
-        return AllDomainsListViewController()
+        AllDomainsListViewController(isNavigatingFromUIKit: false)
     }
 
-    func updateUIViewController(_ uiViewController: AllDomainsListViewController, context: Context) {
-        // update code
-    }
+    func updateUIViewController(_ uiViewController: AllDomainsListViewController, context: Context) {}
 }

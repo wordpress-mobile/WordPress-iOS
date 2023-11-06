@@ -33,11 +33,13 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Observation
 
     private var cancellable = Set<AnyCancellable>()
+    private let isNavigatingFromUIKit: Bool
 
     // MARK: - Init
 
-    init(viewModel: ViewModel = .init()) {
+    init(viewModel: ViewModel = .init(), isNavigatingFromUIKit: Bool = true) {
         self.viewModel = viewModel
+        self.isNavigatingFromUIKit = isNavigatingFromUIKit
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -58,7 +60,13 @@ final class AllDomainsListViewController: UIViewController {
         self.viewModel.addDomainAction = { [weak self] in
             self?.navigateToAddDomain()
         }
-        self.title = Strings.title
+        if isNavigatingFromUIKit {
+            self.title = Strings.title
+        } else {
+            DispatchQueue.main.async {
+                self.parent?.navigationItem.title = Strings.title
+            }
+        }
         WPStyleGuide.configureColors(view: view, tableView: nil)
         self.setupSubviews()
         self.observeState()
@@ -79,7 +87,14 @@ final class AllDomainsListViewController: UIViewController {
             self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
-        self.navigationItem.rightBarButtonItem = addBarButtonItem
+
+        if isNavigatingFromUIKit {
+            self.navigationItem.rightBarButtonItem = addBarButtonItem
+        } else {
+            DispatchQueue.main.async {
+                self.parent?.navigationItem.rightBarButtonItem = addBarButtonItem
+            }
+        }
     }
 
     private func setupSearchBar() {
@@ -87,8 +102,16 @@ final class AllDomainsListViewController: UIViewController {
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = Strings.searchBar
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+
+        if isNavigatingFromUIKit {
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            DispatchQueue.main.async {
+                self.parent?.navigationItem.searchController = searchController
+                self.parent?.navigationItem.hidesSearchBarWhenScrolling = false
+            }
+        }
         self.extendedLayoutIncludesOpaqueBars = true
         self.edgesForExtendedLayout = .top
     }
