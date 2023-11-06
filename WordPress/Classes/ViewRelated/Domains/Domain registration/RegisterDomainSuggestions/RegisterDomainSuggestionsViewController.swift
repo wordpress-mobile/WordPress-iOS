@@ -21,7 +21,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var constraintsInitialized = false
 
     private var site: Blog?
-    var domainPurchasedCallback: DomainPurchasedCallback!
+    var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartCallback: DomainAddedToCartCallback?
 
     private var domain: FullyQuotedDomainSuggestion?
@@ -298,11 +298,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     private func createCart(_ domain: FullyQuotedDomainSuggestion,
                             onSuccess: @escaping () -> (),
                             onFailure: @escaping () -> ()) {
-        guard let siteID = site?.dotComID?.intValue else {
-            DDLogError("Cannot register domains for sites without a dotComID")
-            return
-        }
-
+        let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain.remoteSuggestion(),
@@ -324,14 +320,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     ///
     /// - Parameters:
     ///     - newURL: the newly set URL for the web view.
-    ///     - siteID: the ID of the site we're trying to register the domain against.
     ///     - domain: the domain the user is purchasing.
     ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
     ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
     ///
     private func handleWebViewURLChange(
         _ newURL: URL,
-        siteID: Int,
         domain: String,
         onCancel: () -> Void,
         onSuccess: (String) -> Void) {
@@ -355,8 +349,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let site,
               let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host),
-              let siteID = site.dotComID?.intValue else {
+              let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
 
@@ -375,7 +368,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 return
             }
 
-            self.handleWebViewURLChange(newURL, siteID: siteID, domain: domainSuggestion.domainName, onCancel: {
+            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
                 navController.dismiss(animated: true)
             }) { domain in
                 self.dismiss(animated: true, completion: { [weak self] in
@@ -383,7 +376,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                         return
                     }
 
-                    self.domainPurchasedCallback(self, domain)
+                    self.domainPurchasedCallback?(self, domain)
                 })
             }
         }
