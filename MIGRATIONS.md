@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 153
+
+@dvdchr 2023-11-07
+
+- `BloggingPrompt`: removed `title` and `content` attributes.
+
 ## WordPress 152
 
  @kean 2023-07-28
