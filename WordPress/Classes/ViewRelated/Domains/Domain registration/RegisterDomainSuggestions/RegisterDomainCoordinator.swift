@@ -1,4 +1,5 @@
 import Foundation
+import AutomatticTracks
 
 class RegisterDomainCoordinator {
 
@@ -9,6 +10,8 @@ class RegisterDomainCoordinator {
 
     // MARK: Variables
 
+    private let crashLogger: CrashLogging
+
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartCallback: DomainAddedToCartCallback?
@@ -16,16 +19,19 @@ class RegisterDomainCoordinator {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(site: Blog?, domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil) {
+    init(site: Blog?,
+         domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
+         crashLogger: CrashLogging = .main) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
+        self.crashLogger = crashLogger
     }
 
     // MARK: Public Functions
 
-    func createCart(_ domain: FullyQuotedDomainSuggestion,
-                    onSuccess: @escaping () -> (),
+    func createCart(onSuccess: @escaping () -> (),
                     onFailure: @escaping () -> ()) {
+        guard let domain else { return }
         let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
@@ -39,46 +45,49 @@ class RegisterDomainCoordinator {
         })
     }
 
-    func presentWebViewForNoSite(on viewController: UIViewController,
-                                 domainSuggestion: FullyQuotedDomainSuggestion) {
-        guard let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
+    func presentWebViewForNoSite(on viewController: UIViewController) {
+        guard let domain,
+              let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
+            crashLogger.logMessage("Failed to present domain checkout webview for no-site.",
+                                   level: .error)
             return
         }
 
         presentCheckoutWebview(on: viewController,
-                               domainSuggestion: domainSuggestion,
+                               domainSuggestion: domain,
                                url: url,
                                title: TextContent.checkoutTitle,
                                shouldPush: true)
     }
 
-    func presentWebViewForCurrentSite(on viewController: UIViewController,
-                                              domainSuggestion: FullyQuotedDomainSuggestion) {
-        guard let site,
+    func presentWebViewForCurrentSite(on viewController: UIViewController) {
+        guard let domain,
+              let site,
               let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host) else {
+            crashLogger.logMessage("Failed to present domain checkout webview for current site.",
+                                   level: .error)
             return
         }
 
         presentCheckoutWebview(on: viewController,
-                               domainSuggestion: domainSuggestion,
+                               domainSuggestion: domain,
                                url: url,
                                title: nil,
                                shouldPush: false)
     }
 
-    func handleNoSiteChoice(on viewController: UIViewController, domain: FullyQuotedDomainSuggestion) {
+    func handleNoSiteChoice(on viewController: UIViewController) {
         createCart(
-            domain,
             onSuccess: { [weak self] in
-                self?.presentWebViewForNoSite(on: viewController, domainSuggestion: domain)
+                self?.presentWebViewForNoSite(on: viewController)
             }) {
                 viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
             }
     }
 
-    func handleExistingSiteChoice(on viewController: UIViewController, domain: FullyQuotedDomainSuggestion) {
+    func handleExistingSiteChoice(on viewController: UIViewController) {
         print("handleExistingSiteChoice")
     }
 

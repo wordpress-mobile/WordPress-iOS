@@ -215,8 +215,7 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
 
 extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        guard let coordinator,
-              let domain = coordinator.domain else {
+        guard let coordinator else {
             return
         }
         if let site = coordinator.site {
@@ -232,14 +231,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         switch domainSelectionType {
         case .registerWithPaidPlan:
-            pushRegisterDomainDetailsViewController(domain)
+            pushRegisterDomainDetailsViewController()
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
             coordinator.createCart(
-                domain,
                 onSuccess: { [weak self] in
                     guard let self else { return }
-                    self.coordinator?.presentWebViewForCurrentSite(on: self, domainSuggestion: domain)
+                    self.coordinator?.presentWebViewForCurrentSite(on: self)
                     self.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
@@ -247,9 +245,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
             coordinator.createCart(
-                domain,
                 onSuccess: { [weak self] in
-                    guard let self = self else {
+                    guard let self = self,
+                          let domain = self.coordinator?.domain else {
                         return
                     }
 
@@ -259,7 +257,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 onFailure: onFailure
             )
         case .purchaseFromDomainManagement:
-            pushPurchaseDomainChoiceScreen(domain: domain)
+            pushPurchaseDomainChoiceScreen()
         }
     }
 
@@ -272,9 +270,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
+    private func pushRegisterDomainDetailsViewController() {
         guard let siteID = coordinator?.site?.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
+        guard let domain = coordinator?.domain else {
             return
         }
 
@@ -289,13 +291,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func pushPurchaseDomainChoiceScreen(domain: FullyQuotedDomainSuggestion) {
+    private func pushPurchaseDomainChoiceScreen() {
         let view = DomainPurchaseChoicesView { [weak self] in
             guard let self else { return }
-            self.coordinator?.handleNoSiteChoice(on: self, domain: domain)
+            self.coordinator?.handleNoSiteChoice(on: self)
         } chooseSiteAction: { [weak self] in
             guard let self else { return }
-            self.coordinator?.handleExistingSiteChoice(on: self, domain: domain)
+            self.coordinator?.handleExistingSiteChoice(on: self)
         }
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = TextContent.domainChoiceTitle
