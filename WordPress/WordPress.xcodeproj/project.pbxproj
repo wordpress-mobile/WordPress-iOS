@@ -1726,6 +1726,8 @@
 		8031F34A292FF46B00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34B292FF46E00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
+		80348F2E2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */; };
+		80348F2F2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */; };
 		80379C6E2A5C0D8F00D924AC /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80379C6D2A5C0D8F00D924AC /* PostTests.swift */; };
 		80379C6F2A5C0D8F00D924AC /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80379C6D2A5C0D8F00D924AC /* PostTests.swift */; };
 		803BB9792959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */; };
@@ -7327,6 +7329,7 @@
 		801D9519291AC0B00051993E /* OverlayFrequencyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayFrequencyTracker.swift; sourceTree = "<group>"; };
 		801D951C291ADB7E0051993E /* OverlayFrequencyTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayFrequencyTrackerTests.swift; sourceTree = "<group>"; };
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
+		80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsAddDomainCoordinator.swift; sourceTree = "<group>"; };
 		80379C6D2A5C0D8F00D924AC /* PostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTests.swift; sourceTree = "<group>"; };
 		803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinator.swift; sourceTree = "<group>"; };
 		803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewPresenter.swift; sourceTree = "<group>"; };
@@ -10156,6 +10159,7 @@
 		08D61F1F2AD0633600BF3D00 /* All Domains */ = {
 			isa = PBXGroup;
 			children = (
+				80348F2C2AF8708A0045CCD3 /* Coordinators */,
 				F4141EF02AE99F14000D2AAE /* View Models */,
 				F4141EEF2AE99EE2000D2AAE /* Views */,
 			);
@@ -13276,6 +13280,14 @@
 				80535DB9294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_rtl.json */,
 			);
 			name = "Lottie Animations";
+			sourceTree = "<group>";
+		};
+		80348F2C2AF8708A0045CCD3 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				80348F2D2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		803BB97E295957A200B3F6D6 /* Root View */ = {
@@ -22355,6 +22367,7 @@
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
 				FECA442F28350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */,
+				80348F2E2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */,
 				0CB424EE2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				C81CCD65243AECA200A83E27 /* TenorGIF.swift in Sources */,
@@ -24891,6 +24904,7 @@
 				FABB23DF2602FC2C00C8785C /* BlogSelectorViewController.m in Sources */,
 				FABB23E02602FC2C00C8785C /* HomepageSettingsViewController.swift in Sources */,
 				93E6336D272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */,
+				80348F2F2AF870A70045CCD3 /* AllDomainsAddDomainCoordinator.swift in Sources */,
 				FABB23E12602FC2C00C8785C /* TenorMediaGroup.swift in Sources */,
 				FABB23E22602FC2C00C8785C /* SiteSuggestionService.swift in Sources */,
 				FABB23E32602FC2C00C8785C /* NotificationsViewController+PushPrimer.swift in Sources */,
