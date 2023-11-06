@@ -72,6 +72,8 @@ private func makeContentString(for post: Post) -> NSAttributedString {
         string.append(titleAttributedString)
     }
     if !snippet.isEmpty {
+        // Normalize newlines for list items
+        let adjustedSnippet = snippet.replacingOccurrences(of: "\n\n\n\n", with: "\n")
         if string.length > 0 {
             string.append(NSAttributedString(string: "\n"))
         }
@@ -79,7 +81,7 @@ private func makeContentString(for post: Post) -> NSAttributedString {
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
             .foregroundColor: UIColor.textSubtle
         ]
-        let snippetAttributedString = NSAttributedString(string: snippet, attributes: attributes)
+        let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
     }
 
