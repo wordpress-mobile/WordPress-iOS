@@ -237,6 +237,17 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? {
         buttonAddMediaMenuController.makeMenu(for: self)
     }
+
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? {
+        UIMenu(children: [
+            UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+                self?.shareSelectedMedia([media])
+            },
+            UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
+                self?.deleteSelectedMedia([media])
+            }
+        ])
+    }
 }
 
 private enum Strings {
@@ -252,4 +263,6 @@ private enum Strings {
     static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
     static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
     static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
+    static let buttonShare = NSLocalizedString("mediaLibrary.buttonShare", value: "Share", comment: "Context menu button")
+    static let buttonDelete = NSLocalizedString("mediaLibrary.buttonDelete", value: "Delete", comment: "Context menu button")
 }

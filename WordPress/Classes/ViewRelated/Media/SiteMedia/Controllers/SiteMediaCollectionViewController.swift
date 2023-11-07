@@ -5,11 +5,13 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
     /// Return a non-nil value to allow adding media using the empty state.
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu?
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
@@ -416,6 +418,35 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             default: break
             }
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let indexPath = indexPaths.first else {
+            return nil
+        }
+        let media = fetchController.object(at: indexPath)
+        return UIContextMenuConfiguration(previewProvider: { [weak self] in
+            guard let self else { return nil }
+            return self.makePreviewViewController(for: media)
+        }, actionProvider: { [weak self] _ in
+            guard let self else { return nil }
+            return self.delegate?.siteMediaViewController(self, contextMenuFor: media)
+        })
+    }
+
+    private func makePreviewViewController(for media: Media) -> UIViewController? {
+        let viewModel = self.getViewModel(for: media)
+        guard let image = viewModel.getCachedThubmnail() else {
+            return nil
+        }
+        let imageView = UIImageView(image: image)
+        imageView.accessibilityIgnoresInvertColors = true
+
+        let viewController = UIViewController()
+        viewController.view.addSubview(imageView)
+        viewController.view.pinSubviewToAllEdges(imageView)
+        viewController.preferredContentSize = image.size
+        return viewController
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching
