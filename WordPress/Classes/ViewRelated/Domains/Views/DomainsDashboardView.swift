@@ -34,7 +34,7 @@ struct DomainsDashboardView: View {
             }, failure: nil)
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) { // FIXME: Update to `topBarTrailing` after CI Xcode is updated to 15.*
                 NavigationLink(destination: AllDomainsListViewRepresentable()) {
                     Text(AllDomainsListViewController.Strings.title)
                         .foregroundStyle(Color.DS.Foreground.primary)
