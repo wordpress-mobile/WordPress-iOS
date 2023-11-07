@@ -10,13 +10,16 @@ struct DomainPurchaseChoicesView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Length.Padding.double) {
+            VStack(alignment: .leading, spacing: Length.Padding.single) {
                 Text(Strings.header)
                     .font(.largeTitle.bold())
                 Text(Strings.subheader)
                     .foregroundStyle(Color.DS.Foreground.secondary)
+                    .padding(.bottom, Length.Padding.small)
                 getDomainCard
+                    .padding(.bottom, Length.Padding.small)
                 chooseSiteCard
+                    .padding(.bottom, Length.Padding.single)
                 Text(Strings.footnote)
                     .foregroundStyle(Color.DS.Foreground.secondary)
                     .font(.subheadline)
