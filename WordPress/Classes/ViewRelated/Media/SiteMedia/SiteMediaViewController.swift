@@ -239,14 +239,17 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     }
 
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? {
-        UIMenu(children: [
-            UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
-                self?.shareSelectedMedia([media])
-            },
-            UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
+        var actions: [UIAction] = []
+
+        actions.append(UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+            self?.shareSelectedMedia([media])
+        })
+        if blog.supports(.mediaDeletion) {
+            actions.append(UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
                 self?.deleteSelectedMedia([media])
-            }
-        ])
+            })
+        }
+        return UIMenu(children: actions)
     }
 }
 
