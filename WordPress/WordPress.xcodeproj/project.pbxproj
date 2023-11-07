@@ -3768,6 +3768,7 @@
 		F4F7B2512AF8EF2C00207282 /* DomainDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F7B2502AF8EBDB00207282 /* DomainDetailsWebViewController.swift */; };
 		F4F7B2532AFA585700207282 /* DomainDetailsWebViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F7B2522AFA585700207282 /* DomainDetailsWebViewControllerTests.swift */; };
 		F4F7B2542AFA5D8600207282 /* AllDomainsListCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08240C2D2AB8A2DD00E7AEA8 /* AllDomainsListCardView.swift */; };
+		F4F7B2552AFA60DA00207282 /* DomainDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F7B2502AF8EBDB00207282 /* DomainDetailsWebViewController.swift */; };
 		F4F9D5EA2909622E00502576 /* MigrationWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5E92909622E00502576 /* MigrationWelcomeViewController.swift */; };
 		F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5EB29096CF500502576 /* MigrationHeaderView.swift */; };
 		F4F9D5F2290993D400502576 /* MigrationWelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9D5F1290993D400502576 /* MigrationWelcomeViewModel.swift */; };
@@ -22512,6 +22513,7 @@
 				069A4AA62664448F00413FA9 /* GutenbergFeaturedImageHelper.swift in Sources */,
 				B54C02241F38F50100574572 /* String+RegEx.swift in Sources */,
 				FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */,
+				F4F7B2552AFA60DA00207282 /* DomainDetailsWebViewController.swift in Sources */,
 				F48D44BD2989AA8C0051EAA6 /* ReaderSiteService.m in Sources */,
 				98FCFC232231DF43006ECDD4 /* PostStatsTitleCell.swift in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
