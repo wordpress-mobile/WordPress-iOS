@@ -144,22 +144,22 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func setSelect(_ isSelected: Bool, for media: Media) {
+        guard collectionView.allowsMultipleSelection else {
+            delegate?.siteMediaViewController(self, didUpdateSelection: [media])
+            return
+        }
         if isSelected {
             selection.add(media)
         } else {
             selection.remove(media)
             getViewModel(for: media).badge = nil
         }
-        if collectionView.allowsMultipleSelection {
-            for (index, media) in selection.enumerated() {
-                if let media = media as? Media {
-                    getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
-                } else {
-                    assertionFailure("Invalid selection")
-                }
+        for (index, media) in selection.enumerated() {
+            if let media = media as? Media {
+                getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
+            } else {
+                assertionFailure("Invalid selection")
             }
-        } else {
-            // Don't display a badge
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
     }
