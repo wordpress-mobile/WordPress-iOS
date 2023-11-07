@@ -48,7 +48,13 @@ class GutenbergMediaPickerHelper: NSObject {
         case .device:
             presentNativePicker(filter: filter, allowMultipleSelection: allowMultipleSelection, completion: callback)
         case .mediaLibrary:
-            presentLegacyPicker(filter: filter, allowMultipleSelection: allowMultipleSelection, callback: callback)
+            if Feature.enabled(.mediaModernization) {
+                didPickMediaCallback = callback
+                MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection)
+                    .showSiteMediaPicker(blog: post.blog, delegate: self)
+            } else {
+                presentLegacySiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection, callback: callback)
+            }
         @unknown default:
             break
         }
@@ -70,7 +76,7 @@ class GutenbergMediaPickerHelper: NSObject {
         context.present(picker, animated: true)
     }
 
-    private func presentLegacyPicker(filter: WPMediaType,
+    private func presentLegacySiteMediaPicker(filter: WPMediaType,
                                      allowMultipleSelection: Bool,
                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
@@ -137,7 +143,7 @@ extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
 
 // MARK: - Picker Delegate
 //
-extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
+extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate, MediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         invokeMediaPickerCallback(asset: assets)
@@ -184,7 +190,14 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         noResultsView.removeFromView()
         noResultsView.configureForNoAssets(userCanUploadMedia: false)
     }
+}
 
+extension GutenbergMediaPickerHelper: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        context.dismiss(animated: true)
+        didPickMediaCallback?(selection)
+        didPickMediaCallback = nil
+    }
 }
 
 extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {

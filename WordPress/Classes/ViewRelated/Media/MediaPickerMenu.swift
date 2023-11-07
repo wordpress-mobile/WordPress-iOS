@@ -15,13 +15,6 @@ struct MediaPickerMenu {
     enum MediaFilter {
         case images
         case videos
-
-        var mediaType: MediaType {
-            switch self {
-            case .images: return .image
-            case .videos: return .video
-            }
-        }
     }
 
     /// Initializes the options.
@@ -326,6 +319,13 @@ extension MediaPickerMenu.MediaFilter {
         case .image: self = .images
         case .video: self = .videos
         default: return nil
+        }
+    }
+
+    var mediaType: MediaType {
+        switch self {
+        case .images: return .image
+        case .videos: return .video
         }
     }
 }
