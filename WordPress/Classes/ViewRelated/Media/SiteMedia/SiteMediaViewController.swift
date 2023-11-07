@@ -14,6 +14,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
+    private var isPreparingToShare = false
+
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -36,7 +38,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         collectionViewController.delegate = self
 
         configureAddMediaButton()
-        configureNavigationBarAppearance()
+        configureDefaultNavigationBarAppearance()
         refreshNavigationItems()
     }
 
@@ -63,14 +65,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         button.showsMenuAsPrimaryAction = true
         button.accessibilityLabel = Strings.addButtonAccessibilityLabel
         button.accessibilityHint = Strings.addButtonAccessibilityHint
-    }
-
-    private func configureNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func refreshNavigationItems() {
@@ -121,26 +115,32 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         collectionViewController.setEditing(isEditing, allowsMultipleSelection: true)
         refreshNavigationItems()
-
-        if isEditing && toolbarItems == nil {
-            var toolbarItems: [UIBarButtonItem] = []
-            if blog.supports(.mediaDeletion) {
-                toolbarItems.append(toolbarItemDelete)
-            }
-            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
-            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            toolbarItems.append(toolbarItemShare)
-            self.toolbarItems = toolbarItems
-        }
-
+        updateToolbarItems()
         navigationController?.setToolbarHidden(!isEditing, animated: true)
     }
 
-    private func updateToolbarItemsState(for selection: [Media]) {
-        for toolbarItem in toolbarItems ?? [] {
-            toolbarItem.isEnabled = selection.count > 0
+    private func updateToolbarItems() {
+        guard isEditing else { return }
+
+        var toolbarItems: [UIBarButtonItem] = []
+        if blog.supports(.mediaDeletion) {
+            toolbarItems.append(toolbarItemDelete)
         }
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        if isPreparingToShare {
+            toolbarItems.append(.activityIndicator)
+        } else {
+            toolbarItems.append(toolbarItemShare)
+        }
+        self.toolbarItems = toolbarItems
+    }
+
+    private func updateToolbarItemsState(for selection: [Media]) {
+        toolbarItemDelete.isEnabled = selection.count > 0
+        toolbarItemShare.isEnabled = selection.count > 0
+
         toolbarItemTitle.setSelection(selection)
     }
 
@@ -189,10 +189,20 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         guard !selection.isEmpty else {
             return
         }
-        // TODO: Add spinner (cancellable?)
+
+        func setPreparingToShare(_ isSharing: Bool) {
+            isPreparingToShare = isSharing
+            updateToolbarItems()
+        }
+
+        setPreparingToShare(true)
+
+        WPAnalytics.track(.siteMediaShareTapped, properties: [
+            "number_of_items": selection.count
+        ])
+
         Task {
             do {
-                // TODO: Add analytics
                 let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
 
                 let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
@@ -204,8 +214,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                 }
                 present(activityViewController, animated: true, completion: nil)
             } catch {
-                // TODO: Add error handling
+                SVProgressHUD.showError(withStatus: Strings.sharingFailureMessage)
             }
+
+            setPreparingToShare(false)
         }
     }
 
@@ -232,4 +244,5 @@ private enum Strings {
     static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
     static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
     static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
+    static let sharingFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
 }
