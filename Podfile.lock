@@ -126,7 +126,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/21780-no-site-cart`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `1ed1cddc0d17d79be190a201ae645c525b874eb4`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -184,7 +184,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
   WordPressKit:
-    :branch: task/21780-no-site-cart
+    :commit: 1ed1cddc0d17d79be190a201ae645c525b874eb4
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -192,7 +192,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: 70bb55e4b1e5eb9e38cdc3c1e013128b96ed83b9
+    :commit: 1ed1cddc0d17d79be190a201ae645c525b874eb4
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 6340036cfd212cbdbb1c467360c75afadd0c5b80
+PODFILE CHECKSUM: dcdd7629c48cbef17842719c35e37536bcf51e5b
 
 COCOAPODS: 1.14.2
