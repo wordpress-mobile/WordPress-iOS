@@ -2,13 +2,23 @@ import Foundation
 
 final class DomainDetailsWebViewController: WebKitViewController {
 
+    // MARK: - Types
+
+    private enum Constants {
+        static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
+    }
+
     // MARK: - Properties
+
+    private let domain: String
 
     private var observation: NSKeyValueObservation?
 
     // MARK: - Init
 
-    init(url: URL, analyticsSource: String? = nil) {
+    init(domain: String, siteSlug: String, type: DomainType, analyticsSource: String? = nil) {
+        self.domain = domain
+        let url = Self.wpcomDetailsURL(domain: domain, siteSlug: siteSlug, type: type)
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.analyticsSource = analyticsSource
         configuration.secureInteraction = true
@@ -57,10 +67,31 @@ final class DomainDetailsWebViewController: WebKitViewController {
     // MARK: - Helpers
 
     private func shouldAllowNavigation(for url: URL) -> Bool {
-        return self.url?.absoluteString == url.absoluteString
+        guard let path = "\(Constants.domainManagementBasePath)/\(domain)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return false
+        }
+        return url.absoluteString.contains(path)
     }
 
     private func open(_ url: URL) {
         UIApplication.shared.open(url)
+    }
+
+    private static func wpcomDetailsURL(domain: String, siteSlug: String, type: DomainType) -> URL? {
+        let viewSlug = {
+            switch type {
+            case .siteRedirect: return "redirect"
+            case .transfer: return "transfer/in"
+            default: return "edit"
+            }
+        }()
+
+        let url = "\(Constants.domainManagementBasePath)/\(domain)/\(viewSlug)/\(siteSlug)"
+
+        if let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            return URL(string: encodedURL)
+        } else {
+            return nil
+        }
     }
 }

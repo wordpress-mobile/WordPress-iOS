@@ -2,11 +2,30 @@ import SwiftUI
 
 struct AllDomainsListCardView: View {
 
+    // MARK: - Types
+
+    struct ViewModel {
+
+        let name: String
+        let description: String?
+        let status: Status?
+        let expiryDate: String?
+
+        typealias Status = DomainsService.AllDomainsListItem.Status
+        typealias StatusType = DomainsService.AllDomainsListItem.StatusType
+    }
+
+    // MARK: - Properties
+
     private let viewModel: ViewModel
+
+    // MARK: - Init
 
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
+
+    // MARK: - Views
 
     var body: some View {
         textContainerVStack
@@ -78,8 +97,6 @@ struct AllDomainsListCardView: View {
             }
         }
     }
-
-    typealias ViewModel = AllDomainsListItemViewModel
 }
 
 private extension AllDomainsListCardView.ViewModel.StatusType {
@@ -138,8 +155,7 @@ struct AllDomainsListCardView_Previews: PreviewProvider {
                     name: "domain.cool.cool",
                     description: "A Cool Website",
                     status: .init(value: "Active", type: .success),
-                    expiryDate: "Expires Aug 15 2004",
-                    wpcomDetailsURL: URL(string: "wordpress.com")!
+                    expiryDate: "Expires Aug 15 2004"
                 )
             )
         }
