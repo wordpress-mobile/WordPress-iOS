@@ -104,7 +104,7 @@ class AbstractPostListViewController: UIViewController,
         configureTableView()
         configureSearchController()
         configureAuthorFilter()
-        configureNavigationBarAppearance()
+        configureDefaultNavigationBarAppearance()
 
         updateAndPerformFetchRequest()
 
@@ -201,19 +201,6 @@ class AbstractPostListViewController: UIViewController,
         if #available(iOS 16.0, *) {
             navigationItem.preferredSearchBarPlacement = .stacked
         }
-    }
-
-    private func configureNavigationBarAppearance() {
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-
-        let scrollEdgeAppearance = UINavigationBarAppearance()
-        scrollEdgeAppearance.configureWithTransparentBackground()
-
-        navigationItem.standardAppearance = standardAppearance
-        navigationItem.compactAppearance = standardAppearance
-        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
-        navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {

@@ -199,6 +199,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
         }
+        if post.status != .trash {
+            buttons.append(.settings)
+        }
 
         return AbstractPostButtonSection(buttons: buttons)
     }

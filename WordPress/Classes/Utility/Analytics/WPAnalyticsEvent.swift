@@ -19,6 +19,9 @@ import Foundation
     case mediaLibraryAddedPhotoViaTenor
     case editorAddedPhotoViaTenor
 
+    // Media
+    case siteMediaShareTapped
+
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostPublishDismissed
@@ -259,6 +262,7 @@ import Foundation
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
     case postListSetAsRegularPageAction
+    case postListSettingsAction
 
     // Page List
     case pageListEditHomepageTapped
@@ -541,6 +545,9 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
+            // Media
+        case .siteMediaShareTapped:
+            return "site_media_shared_tapped"
         // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
@@ -969,6 +976,8 @@ import Foundation
         case .postListSetHomePageAction:
             return "post_list_button_pressed"
         case .postListSetAsRegularPageAction:
+            return "post_list_button_pressed"
+        case .postListSettingsAction:
             return "post_list_button_pressed"
 
         // Page List
@@ -1429,6 +1438,8 @@ import Foundation
             return ["button": "set_homepage"]
         case .postListSetAsRegularPageAction:
             return ["button": "set_regular_page"]
+        case .postListSettingsAction:
+            return ["button": "settings"]
         default:
             return nil
         }

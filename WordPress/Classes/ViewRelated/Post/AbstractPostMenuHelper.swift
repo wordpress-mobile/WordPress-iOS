@@ -91,6 +91,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble")
+        case .settings: return UIImage(systemName: "gearshape")
         case .setParent: return UIImage(systemName: "text.append")
         case .setHomepage: return UIImage(systemName: "house")
         case .setPostsPage: return UIImage(systemName: "text.word.spacing")
@@ -121,6 +122,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
+        case .settings: return Strings.settings
         case .setParent: return Strings.setParent
         case .setHomepage: return Strings.setHomepage
         case .setPostsPage: return Strings.setPostsPage
@@ -153,6 +155,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.blaze(post)
         case .comments:
             delegate.comments(post)
+        case .settings:
+            delegate.showSettings(for: post)
         case .setParent:
             delegate.setParent(for: post)
         case .setHomepage:
@@ -170,6 +174,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let cancelAutoUpload = NSLocalizedString("posts.cancelUpload.actionTitle", value: "Cancel upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let comments = NSLocalizedString("posts.comments.actionTitle", value: "Comments", comment: "Label for post comments option. Tapping displays comments for a post.")
+        static let settings = NSLocalizedString("posts.settings.actionTitle", value: "Settings", comment: "Label for post settings option. Tapping displays settings for a post.")
         static let duplicate = NSLocalizedString("posts.duplicate.actionTitle", value: "Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to draft", comment: "Label for an option that moves a post to the draft folder")
