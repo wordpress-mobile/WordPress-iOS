@@ -244,5 +244,5 @@ private enum Strings {
     static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
     static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
     static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
-    static let sharingFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
+    static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
 }
