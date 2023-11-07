@@ -53,8 +53,8 @@ def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
   # pod 'WordPressKit', '~> 8.10'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'task/21780-no-site-cart'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '1ed1cddc0d17d79be190a201ae645c525b874eb4'
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
 
