@@ -431,11 +431,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func setPageAsHomepage(_ page: Page) {
-        guard let pageID = page.postID?.intValue else { return }
-
+        guard let homePageID = page.postID?.intValue else { return }
         beginRefreshingManually()
-        WPAnalytics.track(.postListSetHomePageAction)
-        homepageSettingsService?.setHomepageType(.page, homePageID: pageID, success: { [weak self] in
+        homepageSettingsService?.setHomepageType(.page, homePageID: homePageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepageSettingsSuccess()
         }, failure: { [weak self] error in
@@ -444,14 +442,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         })
     }
 
-    func setPageAsPostsPage(_ page: Page) {
-        guard let pageID = page.postID?.intValue else { return }
-
+    func togglePageAsPostsPage(_ page: Page) {
+        let newValue = !page.isSitePostsPage
+        let postsPageID = page.isSitePostsPage ? 0 : (page.postID?.intValue ?? 0)
         beginRefreshingManually()
-        WPAnalytics.track(.postListSetAsPostsPageAction)
-        homepageSettingsService?.setHomepageType(.page, withPostsPageID: pageID, success: { [weak self] in
+        homepageSettingsService?.setHomepageType(.page, withPostsPageID: postsPageID, success: { [weak self] in
             self?.refreshAndReload()
-            self?.handleHomepagePostsPageSettingsSuccess()
+            self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
         }, failure: { [weak self] error in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
@@ -463,8 +460,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
-    private func handleHomepagePostsPageSettingsSuccess() {
-        let notice = Notice(title: HomepageSettingsText.updatePostsPageSuccessTitle, feedbackType: .success)
+    private func handleHomepagePostsPageSettingsSuccess(isPostsPage: Bool) {
+        let title = isPostsPage ? HomepageSettingsText.updatePostsPageSuccessTitle : HomepageSettingsText.updatePageSuccessTitle
+        let notice = Notice(title: title, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
@@ -483,6 +481,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     struct HomepageSettingsText {
         static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
         static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
+        static let updatePageSuccessTitle = NSLocalizedString("pages.updatePage.successTitle", value: "Page successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
         static let updateHomepageSuccessTitle = NSLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
         static let updatePostsPageSuccessTitle = NSLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
     }

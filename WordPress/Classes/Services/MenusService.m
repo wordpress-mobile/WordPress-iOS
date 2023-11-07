@@ -9,8 +9,6 @@
 #import "WordPress-Swift.h"
 @import WordPressKit;
 
-NS_ASSUME_NONNULL_BEGIN
-
 @implementation MenusService
 
 #pragma mark - Menus availability
@@ -161,47 +159,21 @@ NS_ASSUME_NONNULL_BEGIN
                     failure:failure];
 }
 
-- (void)generateDefaultMenuItemsForBlog:(Blog *)blog
-                                success:(nullable void(^)(NSArray <MenuItem *> * _Nullable defaultItems))success
-                                failure:(nullable MenusServiceFailureBlock)failure
-{
-    // Get the latest list of Pages available to the site.
-    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
-    options.statuses = @[PostStatusPublish];
-    options.order = PostServiceResultsOrderAscending;
-    options.orderBy = PostServiceResultsOrderingByTitle;
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [postService syncPostsOfType:PostServiceTypePage
-                     withOptions:options
-                         forBlog:blog
-                         success:^(NSArray *pages) {
-                             [self.managedObjectContext performBlock:^{
-                                 
-                                 if (!pages.count) {
-                                     success(nil);
-                                     return;
-                                 }
-                                 NSMutableArray *items = [NSMutableArray arrayWithCapacity:pages.count];
-                                 // Create menu items for the top parent pages.
-                                 for (Page *page in pages) {
-                                     if ([page.parentID integerValue] > 0) {
-                                         continue;
-                                     }
-                                     MenuItem *pageItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.managedObjectContext];
-                                     pageItem.contentID = page.postID;
-                                     pageItem.name = page.titleForDisplay;
-                                     pageItem.type = MenuItemTypePage;
-                                     [items addObject:pageItem];
-                                 }
-                                 
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                     if (success) {
-                                         success(items);
-                                     }
-                                 } onQueue:dispatch_get_main_queue()];
-                             }];
-                         }
-                         failure:failure];
+- (MenuItem *)createItemWithPageID:(NSManagedObjectID *)pageObjectID inContext:(NSManagedObjectContext *)context {
+    Page *page = [context existingObjectWithID:pageObjectID error:nil];
+    if (page == nil) {
+        return nil;
+    }
+
+    if ([page.parentID integerValue] > 0) {
+        return nil;
+    }
+
+    MenuItem *pageItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.managedObjectContext];
+    pageItem.contentID = page.postID;
+    pageItem.name = page.titleForDisplay;
+    pageItem.type = MenuItemTypePage;
+    return pageItem;
 }
 
 #pragma mark - private
@@ -435,5 +407,3 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-NS_ASSUME_NONNULL_END

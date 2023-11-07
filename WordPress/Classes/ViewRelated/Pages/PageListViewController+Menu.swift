@@ -59,19 +59,32 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
-    func setParent(for apost: AbstractPost) {
+    func showSettings(for post: AbstractPost) {
+        WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
+    }
+
+    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
         guard let page = apost as? Page else { return }
         setParentPage(for: page)
     }
 
     func setHomepage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsPostsPageAction)
         setPageAsHomepage(page)
     }
 
     func setPostsPage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        setPageAsPostsPage(page)
+        WPAnalytics.track(.postListSetHomePageAction)
+        togglePageAsPostsPage(page)
+    }
+
+    func setRegularPage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsRegularPageAction)
+        togglePageAsPostsPage(page)
     }
 
     // MARK: - Helpers
