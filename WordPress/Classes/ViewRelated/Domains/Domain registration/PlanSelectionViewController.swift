@@ -44,12 +44,13 @@ final class PlanSelectionViewController: WebKitViewController {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(viewModel: PlanSelectionViewModel) {
+    init(viewModel: PlanSelectionViewModel, customTitle: String?) {
         self.viewModel = viewModel
 
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
+        configuration.customTitle = customTitle
         super.init(configuration: configuration)
     }
 
