@@ -88,7 +88,35 @@ class RegisterDomainCoordinator {
     }
 
     func handleExistingSiteChoice(on viewController: UIViewController) {
-        print("handleExistingSiteChoice")
+        let config = BlogListConfiguration(shouldShowCancelButton: false,
+                                           shouldShowNavBarButtons: false,
+                                           navigationTitle: TextContent.sitePickerNavigationTitle,
+                                           backButtonTitle: TextContent.sitePickerNavigationTitle)
+        guard let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil) else {
+            return
+        }
+
+        blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
+            guard let self,
+                  let blog = selectedBlog else {
+                return
+            }
+            self.site = blog
+            // TODO: Show loading indicator
+            self.createCart {
+                if let controller,
+                   let domainName = self.domain?.domainName {
+                    self.domainAddedToCartCallback?(controller, domainName, blog)
+                }
+                // TODO: Hide loading indicator
+            } onFailure: {
+                controller?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                // TODO: Hide loading indicator
+            }
+
+        }
+
+        viewController.navigationController?.pushViewController(blogListViewController, animated: true)
     }
 
     // MARK: Helpers
@@ -194,6 +222,9 @@ extension RegisterDomainCoordinator {
         static let checkoutTitle = NSLocalizedString("domains.checkout.title",
                                                      value: "Checkout",
                                                      comment: "Title for the checkout screen.")
+        static let sitePickerNavigationTitle = NSLocalizedString("domains.sitePicker.title",
+                                                                 value: "Choose Site",
+                                                                 comment: "Title of screen where user chooses a site to connect to their selected domain")
     }
 
     enum Constants {

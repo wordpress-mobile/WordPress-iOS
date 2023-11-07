@@ -14,7 +14,12 @@ import Foundation
             allDomainsViewController.reloadDomains()
         }
 
-        coordinator.domainPurchasedCallback = domainPurchasedCallback
+        let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
+            customTitle: RegisterDomainCoordinator.TextContent.checkoutTitle,
+            purchaseCallback: domainPurchasedCallback)
+
+        coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
+        coordinator.domainAddedToCartCallback = domainAddedToCart // For existing site flow (plans)
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true
