@@ -511,6 +511,8 @@
 		0CD9FB7F2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB7D2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift */; };
 		0CD9FB8B2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
 		0CD9FB8C2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
+		0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD9FB862AFA71B9009D9C7A /* DGCharts */; };
+		0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD9FB882AFA71C2009D9C7A /* DGCharts */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
@@ -879,8 +881,6 @@
 		3F2ABE1A2770EF3E005D8916 /* Blog+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */; };
 		3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */; };
 		3F2ABE1C277118C9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */; };
-		3F2B62DC284F4E0B0008CD59 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 3F2B62DB284F4E0B0008CD59 /* Charts */; };
-		3F2B62DE284F4E310008CD59 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 3F2B62DD284F4E310008CD59 /* Charts */; };
 		3F2F854026FAE9DC000FCDA5 /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		3F2F854226FAEA50000FCDA5 /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
 		3F2F854326FAEA50000FCDA5 /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
@@ -9608,6 +9608,7 @@
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
 				E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */,
 				E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */,
+				0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */,
 				E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */,
 				E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */,
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
@@ -9623,7 +9624,6 @@
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
-				3F2B62DC284F4E0B0008CD59 /* Charts in Frameworks */,
 				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
@@ -9743,6 +9743,7 @@
 				FABB26292602FC2C00C8785C /* SystemConfiguration.framework in Frameworks */,
 				FABB262A2602FC2C00C8785C /* AudioToolbox.framework in Frameworks */,
 				FABB262B2602FC2C00C8785C /* CoreGraphics.framework in Frameworks */,
+				0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
@@ -9763,7 +9764,6 @@
 				FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */,
 				FABB263C2602FC2C00C8785C /* libiconv.dylib in Frameworks */,
 				FABB263D2602FC2C00C8785C /* libz.dylib in Frameworks */,
-				3F2B62DE284F4E310008CD59 /* Charts in Frameworks */,
 				FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */,
 				9C86CF3E1EAC13181A593D00 /* Pods_Apps_Jetpack.framework in Frameworks */,
 			);
@@ -18688,8 +18688,8 @@
 			packageProductDependencies = (
 				24CE2EB0258D687A0000C297 /* WordPressFlux */,
 				17A8858C2757B97F0071FCA3 /* AutomatticAbout */,
-				3F2B62DB284F4E0B0008CD59 /* Charts */,
 				3F411B6E28987E3F002513AE /* Lottie */,
+				0CD9FB882AFA71C2009D9C7A /* DGCharts */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -18945,8 +18945,8 @@
 			packageProductDependencies = (
 				FABB1FA62602FC2C00C8785C /* WordPressFlux */,
 				17A8858E2757BEC00071FCA3 /* AutomatticAbout */,
-				3F2B62DD284F4E310008CD59 /* Charts */,
 				3F44DD57289C379C006334CD /* Lottie */,
+				0CD9FB862AFA71B9009D9C7A /* DGCharts */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -19162,10 +19162,10 @@
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
-				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
 				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
+				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -30357,20 +30357,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/automattic/AutomatticAbout-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.1.2;
-			};
-		};
-		3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.3;
 			};
 		};
 		3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */ = {
@@ -30424,6 +30424,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0CD9FB862AFA71B9009D9C7A /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		0CD9FB882AFA71C2009D9C7A /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
 		17A8858C2757B97F0071FCA3 /* AutomatticAbout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */;
@@ -30437,16 +30447,6 @@
 		24CE2EB0258D687A0000C297 /* WordPressFlux */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WordPressFlux;
-		};
-		3F2B62DB284F4E0B0008CD59 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
-		};
-		3F2B62DD284F4E310008CD59 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
 		};
 		3F338B70289BD3040014ADC5 /* Nimble */ = {
 			isa = XCSwiftPackageProductDependency;
