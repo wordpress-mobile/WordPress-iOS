@@ -36,8 +36,3 @@ private extension DomainSetupNoticeView {
         static let iconToNoticeSpacing = 16.0
     }
 }
-
-
-#Preview {
-    DomainSetupNoticeView(noticeText: "Hello, world!")
-}

@@ -332,8 +332,6 @@ final class SiteAssemblyContentView: UIView {
             prevailingLayoutGuide.trailingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: Parameters.horizontalMargin),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noticeView.leadingAnchor.constraint(equalTo: completionLabelsStack.leadingAnchor),
-            completionLabelsStack.trailingAnchor.constraint(equalTo: noticeView.trailingAnchor)
         ])
     }
 
