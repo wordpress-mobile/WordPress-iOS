@@ -93,6 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
+        PostCoordinator.shared.delegate = self
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -136,6 +137,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
         UITestConfigurator.prepareApplicationForUITests(application)
+        DebugMenuViewController.configure(in: window)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)

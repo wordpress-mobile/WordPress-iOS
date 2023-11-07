@@ -1,8 +1,13 @@
-* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
-* [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
-* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
-* [*] Fix an issue that leads to an ambiguous error message when an incorrect SMS 2FA code is submitted. [#21863]
-* [*] Fix an issue where two 2FA controllers were being opened at the same time when logging in. [#21865]
-* [*] Block Editor Social Icons: Fix visibility of inactive icons when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55398]
-* [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
-* [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
+When you move a post to the trash, you’ll now see a confirmation message appear at the bottom of the screen.
+
+We made some changes to the block editor.
+
+- Inactive social icons and Synced Pattern titles are no longer invisible in block-based themes using dark mode. Good try, fellas, but you’re not as ninja as you think.
+- In the Classic editor, you can now convert your content into blocks with the click of a button.
+
+Finally, we squashed a mini-swarm of bugs.
+
+- You shouldn’t run into any login issues if you enter the wrong site address on the first try.
+- Incorrect HTML tags won’t show up in your post titles—you’ll only see plain text.
+- During two-factor authentication, you’ll get a much more descriptive error message if you enter the wrong code while logging in.
+- We removed extra controls in the two-factor authentication process that added unnecessary security measures. Logging in is still safe, but now it comes with fewer headaches.

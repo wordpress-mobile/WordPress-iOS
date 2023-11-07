@@ -56,24 +56,15 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     func setupTableView() {
-        let separatorView = UIView()
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
-
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToSafeArea(containerView, insets: readerImprovements ? Constants.newContainerInsets : Constants.containerInsets)
         containerView.addSubview(tableView)
-        containerView.addSubview(separatorView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         let tableViewMargin = readerImprovements ? 16.0 : 0.0
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: tableViewMargin),
-            tableView.bottomAnchor.constraint(equalTo: separatorView.topAnchor, constant: -tableViewMargin),
-            separatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: readerImprovements ? 0.5 : 0.0),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -tableViewMargin)
         ])
 
         // Constraints for regular horizontal size class
