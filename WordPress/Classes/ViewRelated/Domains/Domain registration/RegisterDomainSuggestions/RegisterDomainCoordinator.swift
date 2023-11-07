@@ -102,16 +102,16 @@ class RegisterDomainCoordinator {
                 return
             }
             self.site = blog
-            // TODO: Show loading indicator
+            controller?.showLoading()
             self.createCart {
                 if let controller,
                    let domainName = self.domain?.domainName {
                     self.domainAddedToCartCallback?(controller, domainName, blog)
                 }
-                // TODO: Hide loading indicator
+                controller?.hideLoading()
             } onFailure: {
                 controller?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                // TODO: Hide loading indicator
+                controller?.hideLoading()
             }
 
         }

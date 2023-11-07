@@ -1,5 +1,6 @@
 #import "BlogListViewController.h"
 #import "WordPress-Swift.h"
+#import "SVProgressHUD+Dismiss.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
@@ -188,6 +189,8 @@ static NSInteger HideSearchMinSites = 3;
         [self.searchBar resignFirstResponder];
     }
     self.visible = NO;
+    
+    [SVProgressHUD resetOffsetFromCenter];
 
     [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDismissed];
 }
@@ -473,6 +476,22 @@ static NSInteger HideSearchMinSites = 3;
             }
         }
     }
+}
+
+- (void)showLoading
+{
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setContainerView:self.view];
+    CGPoint containerCenter = self.view.frame.origin;
+    [SVProgressHUD setOffsetFromCenter: UIOffsetMake(0, -containerCenter.y)];
+    [SVProgressHUD show];
+    self.navigationItem.hidesBackButton = true;
+}
+
+- (void)hideLoading
+{
+    [SVProgressHUD dismiss];
+    self.navigationItem.hidesBackButton = false;
 }
 
 #pragma mark - Configuration
