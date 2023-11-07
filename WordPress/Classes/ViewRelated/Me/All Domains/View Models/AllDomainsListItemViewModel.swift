@@ -17,7 +17,7 @@ struct AllDomainsListItemViewModel {
         )
     }
 
-    typealias RowViewModel = AllDomainsListCardView.ViewModel
+    typealias Row = AllDomainsListCardView.ViewModel
     typealias Domain = DomainsService.AllDomainsListItem
     typealias Status = Domain.Status
     typealias StatusType = DomainsService.AllDomainsListItem.StatusType
@@ -32,7 +32,7 @@ struct AllDomainsListItemViewModel {
     }()
 
     let domain: Domain
-    let row: RowViewModel
+    let row: Row
 
     // MARK: - Init
 

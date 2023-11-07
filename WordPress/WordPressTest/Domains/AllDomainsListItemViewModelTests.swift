@@ -38,38 +38,23 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
 
     func testMappingWithValidDomain() throws {
         let futureDate = Date.init(timeIntervalSinceNow: 365 * 24 * 60 * 60)
-        let iso8601Date = ViewModel.DateFormatters.iso8601.string(from: futureDate)
-        let humanReadableDate = ViewModel.DateFormatters.humanReadable.string(from: futureDate)
+        let iso8601Date = ViewModel.Row.DateFormatters.iso8601.string(from: futureDate)
+        let humanReadableDate = ViewModel.Row.DateFormatters.humanReadable.string(from: futureDate)
         self.assert(
             viewModelFromDomain: try .make(expiryDate: iso8601Date),
             equalTo: .make(expiryDate: "Renews \(humanReadableDate)")
         )
     }
 
-    func testMappingWithSiteRedirectDomain() throws {
-        let expectedURL = URL(string: "\(ViewModel.domainManagementBasePath)/example1.com/redirect/exampleblog1.wordpress.com")
-        self.assert(
-            viewModelFromDomain: try .make(type: "redirect"),
-            equalTo: .make(wpcomDetailsURL: expectedURL)
-        )
-    }
-
-    func testMappingWithTransferDomain() throws {
-        let expectedURL = URL(string: "\(ViewModel.domainManagementBasePath)/example1.com/transfer/in/exampleblog1.wordpress.com")
-        self.assert(
-            viewModelFromDomain: try .make(type: "transfer"),
-            equalTo: .make(wpcomDetailsURL: expectedURL)
-        )
-    }
-
-    private func assert(viewModelFromDomain domain: Domain, equalTo viewModel: ViewModel) {
-        XCTAssertEqual(ViewModel(domain: domain), viewModel)
+    private func assert(viewModelFromDomain domain: Domain, equalTo row: ViewModel.Row) {
+        let viewModel = ViewModel(domain: domain)
+        XCTAssertEqual(viewModel.row, row)
     }
 }
 
 // MARK: - ViewModel Helpers
 
-fileprivate extension AllDomainsListItemViewModel {
+fileprivate extension AllDomainsListItemViewModel.Row {
 
     enum DateFormatters {
         static let iso8601 = ISO8601DateFormatter()
@@ -81,21 +66,17 @@ fileprivate extension AllDomainsListItemViewModel {
         }()
     }
 
-    static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
-
     static func make(
         name: String = "example1.com",
         description: String? = "Example Blog 1",
         status: DomainStatus = .init(value: "Active", type: .success),
-        expiryDate: String? = Self.defaultExpiryDate(),
-        wpcomDetailsURL: URL? = URL(string: "\(domainManagementBasePath)/example1.com/edit/exampleblog1.wordpress.com")
+        expiryDate: String? = Self.defaultExpiryDate()
     ) -> Self {
         return .init(
             name: name,
             description: description,
             status: status,
-            expiryDate: expiryDate,
-            wpcomDetailsURL: wpcomDetailsURL
+            expiryDate: expiryDate
         )
     }
 
@@ -108,14 +89,13 @@ fileprivate extension AllDomainsListItemViewModel {
     }
 }
 
-extension AllDomainsListItemViewModel: Equatable {
+extension AllDomainsListItemViewModel.Row: Equatable {
 
-    static public func ==(left: AllDomainsListItemViewModel, right: AllDomainsListItemViewModel) -> Bool {
+    static public func ==(left: Self, right: Self) -> Bool {
         return left.name == right.name
         && left.description == right.description
         && left.expiryDate == right.expiryDate
         && left.status?.value == right.status?.value
         && left.status?.type == right.status?.type
-        && left.wpcomDetailsURL == right.wpcomDetailsURL
     }
 }
