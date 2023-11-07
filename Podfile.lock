@@ -126,7 +126,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/api-transfer-domain-type`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `trunk`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - WPMediaPicker (>= 1.8.10, ~> 1.8)
@@ -184,7 +184,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
   WordPressKit:
-    :branch: task/api-transfer-domain-type
+    :branch: trunk
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -192,7 +192,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: c39c25920fa58cafcc4e022b56853d7e71c680be
+    :commit: 1ed1cddc0d17d79be190a201ae645c525b874eb4
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 138548ec053d68765c917bd3fb4923a318f0c569
+PODFILE CHECKSUM: 32668955e63d88fa5e19b00553baefae59c2a879
 
 COCOAPODS: 1.14.2
