@@ -14,7 +14,7 @@ struct DomainPurchaseChoicesView: View {
                 Text(Strings.header)
                     .font(.largeTitle.bold())
                 Text(Strings.subheader)
-                    .font(.body)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
                 getDomainCard
                 chooseSiteCard
                 Text(Strings.footnote)
@@ -22,6 +22,7 @@ struct DomainPurchaseChoicesView: View {
                     .font(.subheadline)
                 Spacer()
             }
+            .padding(.top, Length.Padding.double)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Length.Padding.double)
@@ -70,6 +71,7 @@ struct DomainPurchaseChoicesView: View {
                     if let footer {
                         Text(footer)
                             .foregroundStyle(Color.DS.Foreground.brand)
+                            .font(.body.bold())
                     }
                 }
                 .padding(.bottom, Length.Padding.single)
