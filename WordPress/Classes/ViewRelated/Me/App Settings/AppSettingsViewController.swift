@@ -210,7 +210,6 @@ class AppSettingsViewController: UITableViewController {
             let values = [MediaSettings.ImageQuality.low,
                           MediaSettings.ImageQuality.medium,
                           MediaSettings.ImageQuality.high,
-                          MediaSettings.ImageQuality.veryHigh,
                           MediaSettings.ImageQuality.maximum]
 
             let titles = values.map({ (settings: MediaSettings.ImageQuality) -> String in

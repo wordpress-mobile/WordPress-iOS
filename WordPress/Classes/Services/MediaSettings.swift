@@ -21,23 +21,20 @@ class MediaSettings: NSObject {
 
     enum ImageQuality: String {
         case maximum = "MaximumQuality100"
-        case veryHigh = "VeryHighQuality95"
         case high = "HighQuality90"
-        case medium = "MediumQuality85"
-        case low = "LowQuality80"
+        case medium = "MediumQuality80"
+        case low = "LowQuality70"
 
         var doubleValue: Double {
             switch self {
             case .maximum:
                 return 1.0
-            case .veryHigh:
-                return 0.95
             case .high:
                 return 0.9
             case .medium:
-                return 0.85
-            case .low:
                 return 0.8
+            case .low:
+                return 0.7
             }
         }
 
@@ -45,8 +42,6 @@ class MediaSettings: NSObject {
             switch self {
             case .maximum:
                 return NSLocalizedString("Maximum", comment: "Indicates an image will use maximum quality when uploaded.")
-            case .veryHigh:
-                return NSLocalizedString("Very High", comment: "Indicates an image will use very high quality when uploaded.")
             case .high:
                 return NSLocalizedString("High", comment: "Indicates an image will use high quality when uploaded.")
             case .medium:
@@ -60,13 +55,11 @@ class MediaSettings: NSObject {
             switch value {
             case 1.0:
                 return .maximum
-            case 0.95:
-                return .veryHigh
             case 0.9:
                 return .high
-            case 0.85:
-                return .medium
             case 0.8:
+                return .medium
+            case 0.7:
                 return .low
             default:
                 return .medium
