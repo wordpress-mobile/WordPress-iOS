@@ -247,11 +247,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             coordinator.createCart(
                 onSuccess: { [weak self] in
                     guard let self = self,
-                          let domain = self.coordinator?.domain else {
+                          let domain = self.coordinator?.domain,
+                          let blog = coordinator.site else {
                         return
                     }
 
-                    self.coordinator?.domainAddedToCartCallback?(self, domain.domainName)
+                    self.coordinator?.domainAddedToCartCallback?(self, domain.domainName, blog)
                     self.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure

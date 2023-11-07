@@ -6,7 +6,7 @@ class RegisterDomainCoordinator {
     // MARK: Type Aliases
 
     typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
-    typealias DomainAddedToCartCallback = ((UIViewController, String) -> Void)
+    typealias DomainAddedToCartCallback = ((UIViewController, String, Blog) -> Void)
 
     // MARK: Variables
 
