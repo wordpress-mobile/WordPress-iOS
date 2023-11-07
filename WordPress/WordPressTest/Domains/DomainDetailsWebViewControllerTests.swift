@@ -4,5 +4,5 @@ import XCTest
 
 final class DomainDetailsWebViewControllerTests {
 
-    
+
 }
