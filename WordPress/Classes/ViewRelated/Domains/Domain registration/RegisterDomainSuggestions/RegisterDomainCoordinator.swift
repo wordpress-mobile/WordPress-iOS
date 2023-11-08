@@ -29,6 +29,8 @@ class RegisterDomainCoordinator {
 
     // MARK: Public Functions
 
+    /// Adds the selected domain to the cart then launches the checkout webview.
+    /// This flow support purchasing domains only, without plans.
     func handlePurchaseDomainOnly(on viewController: UIViewController,
                                   onSuccess: @escaping () -> (),
                                   onFailure: @escaping () -> ()) {
@@ -42,6 +44,7 @@ class RegisterDomainCoordinator {
         )
     }
 
+    /// Adds the selected domain to the cart then executes `domainAddedToCartCallback` if set.
     func addDomainToCart(on viewController: UIViewController,
                          onSuccess: @escaping () -> (),
                          onFailure: @escaping () -> ()) {
@@ -60,6 +63,9 @@ class RegisterDomainCoordinator {
         )
     }
 
+    /// Related to the `purchaseFromDomainManagement` Domain selection type.
+    /// Adds the selected domain to the cart then launches the checkout webview
+    /// The checkout webview is configured for the domain management flow
     func handleNoSiteChoice(on viewController: UIViewController) {
         createCart(
             onSuccess: { [weak self] in
@@ -69,6 +75,8 @@ class RegisterDomainCoordinator {
             }
     }
 
+    /// Related to the `purchaseFromDomainManagement` Domain selection type.
+    /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
         let config = BlogListConfiguration(shouldShowCancelButton: false,
                                            shouldShowNavBarButtons: false,
