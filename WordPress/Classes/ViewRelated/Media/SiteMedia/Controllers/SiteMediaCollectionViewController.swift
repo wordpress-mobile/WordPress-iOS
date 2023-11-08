@@ -435,7 +435,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func makePreviewViewController(for media: Media) -> UIViewController? {
-        let viewModel = self.getViewModel(for: media)
+        let viewModel = getViewModel(for: media)
         guard let image = viewModel.getCachedThubmnail() else {
             return nil
         }
