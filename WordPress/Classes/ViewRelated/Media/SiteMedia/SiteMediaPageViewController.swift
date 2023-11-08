@@ -47,11 +47,11 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
             }
         }
         if let cell = viewController.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) {
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.4) {
                 cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 cell.alpha = 0.0
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(350)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 showAdjacentPage()
             }
         } else {
