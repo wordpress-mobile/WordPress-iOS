@@ -187,13 +187,13 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
 }
 
-class SyncManagerListenerMock: NSObject, DashboardPostsSyncManagerListener {
+private class SyncManagerListenerMock: NSObject, DashboardPostsSyncManagerListener {
 
-    @objc dynamic var postsSyncedCalled = false
-    var postsSyncSuccess: Bool?
-    var postsSyncBlog: Blog?
-    var postsSyncType: DashboardPostsSyncManager.PostType?
-    var statusesSynced: [BasePost.Status]?
+    @objc dynamic private(set) var postsSyncedCalled = false
+    private(set) var postsSyncSuccess: Bool?
+    private(set) var postsSyncBlog: Blog?
+    private(set) var postsSyncType: DashboardPostsSyncManager.PostType?
+    private(set) var statusesSynced: [BasePost.Status]?
 
     func postsSynced(success: Bool,
                      blog: Blog,
