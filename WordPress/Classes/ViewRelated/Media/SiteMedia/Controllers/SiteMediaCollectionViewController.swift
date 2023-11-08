@@ -15,7 +15,15 @@ extension SiteMediaCollectionViewControllerDelegate {
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+final class SiteMediaCollectionViewController:
+    UIViewController,
+    NSFetchedResultsControllerDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UICollectionViewDataSourcePrefetching,
+    UISearchResultsUpdating,
+    UIGestureRecognizerDelegate,
+    SiteMediaPageViewControllerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -412,9 +420,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             case .failed, .pushing, .processing:
                 showRetryOptions(for: media)
             case .sync:
-                let viewController = MediaItemViewController(media: media)
                 WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-                navigationController?.pushViewController(viewController, animated: true)
+
+                let viewController = SiteMediaPageViewController(media: media, delegate: self)
+                let navigationController = UINavigationController(rootViewController: viewController)
+                present(navigationController, animated: true)
             default: break
             }
         }
@@ -477,6 +487,27 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         } catch {
             WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
+    }
+
+
+    // MARK: - SiteMediaPageViewControllerDelegate
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaBeforeMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index > 0 else {
+            return nil
+        }
+        return fetchedObjects[index - 1]
+    }
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaAfterMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index < (fetchedObjects.count - 1) else {
+            return nil
+        }
+        return fetchedObjects[index + 1]
     }
 
     // MARK: - Menus
