@@ -412,6 +412,32 @@ extension PostRepository {
                     break
                 }
             }
+
+            // Once all pages are fetched and saved, we need to purge local database
+            // to ensure when a database query with the same conditions that are passed
+            // to this function returns the same result as the `allPages` value.
+            // Of course, we can't delete locally modified pages if there are any.
+            try await coreDataStack.performAndSave { context in
+                let request = Page.fetchRequest()
+                // Delete posts that match _all of the following conditions_:
+                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    // belongs to the given blog
+                    NSPredicate(format: "blog = %@", blogID.objectID),
+                    // was fetched from the site
+                    NSPredicate(format: "postID != NULL AND postID > 0"),
+                    // doesn't have local edits
+                    NSPredicate(format: "original = NULL AND revision = NULL"),
+                    // doesn't have local status changes
+                    NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
+                    // is not included in the fetched page lists (i.e. it has been deleted from the site)
+                    NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
+                    // we only need to deal with pages that match the filters passed to this function.
+                    statuses.isEmpty ? nil : NSPredicate(format: "status IN %@", statuses),
+                ].compactMap { $0 })
+
+                try context.execute(NSBatchDeleteRequest(fetchRequest: request))
+            }
+
             return allPages
         }
     }
