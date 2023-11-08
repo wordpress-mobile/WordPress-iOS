@@ -64,6 +64,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.dataSource = [BlogListDataSource new];
     self.dataSource.shouldShowDisclosureIndicator = NO;
+    self.dataSource.shouldHideSelfHostedSites = self.configuration.shouldHideSelfHostedSites;
     
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
