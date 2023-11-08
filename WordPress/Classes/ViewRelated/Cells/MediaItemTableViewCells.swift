@@ -43,11 +43,11 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     private func setupImageView() {
         contentView.addSubview(customImageView)
         customImageView.translatesAutoresizingMaskIntoConstraints = false
-        customImageView.contentMode = .scaleAspectFit
+        customImageView.contentMode = .scaleAspectFill
 
         NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
-            customImageView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
+            customImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            customImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])

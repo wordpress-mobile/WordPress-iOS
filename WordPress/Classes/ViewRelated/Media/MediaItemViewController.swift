@@ -30,7 +30,7 @@ class MediaItemViewController: UITableViewController {
 
         self.mediaMetadata = MediaMetadata(media: media)
 
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,9 +40,9 @@ class MediaItemViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self],
-                               tableView: tableView)
+        tableView.showsVerticalScrollIndicator = false
+
+        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self], tableView: tableView)
 
         updateViewModel()
         updateNavigationItem()
@@ -436,7 +436,6 @@ extension MediaItemViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = viewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
-
         row.configureCell(cell)
 
         return cell

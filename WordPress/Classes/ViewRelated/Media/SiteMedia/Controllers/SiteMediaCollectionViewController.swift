@@ -423,8 +423,7 @@ final class SiteMediaCollectionViewController:
                 WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
 
                 let viewController = SiteMediaPageViewController(media: media, delegate: self)
-                let navigationController = UINavigationController(rootViewController: viewController)
-                present(navigationController, animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             default: break
             }
         }
