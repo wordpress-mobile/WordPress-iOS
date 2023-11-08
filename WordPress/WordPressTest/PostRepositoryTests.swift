@@ -313,7 +313,7 @@ class PostRepositoryTests: CoreDataTestCase {
     }
 
     func testFetchTwoFullPages() async throws {
-        // 300 pages of API result
+        // `fetchAllPages` fetchs 100 page instances at at time. Here we simulate two full pages result.
         remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...2).map { pageNo in
             try (1...100).map {
                 let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 1000 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
@@ -323,11 +323,11 @@ class PostRepositoryTests: CoreDataTestCase {
         } + [[]]
 
         let allPages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
-        XCTAssertEqual(allPages.count, 15_000)
+        XCTAssertEqual(allPages.count, 200)
     }
 
     func testFetchManyManyPages() async throws {
-        // 90 pages of API result
+        // Here we simulate a site that has a super large number of pages.
         remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...99).map { pageNo in
             try (1...100).map {
                 let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 1000 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
