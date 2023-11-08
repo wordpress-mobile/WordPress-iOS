@@ -326,7 +326,9 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertEqual(allPages.count, 200)
     }
 
-    func testFetchManyManyPages() async throws {
+    // This test takes one minute to complete on CI. We'll disable it for now and potentially re-enable
+    // it after CI is migrated to Apple Silicon agents.
+    func _testFetchManyManyPages() async throws {
         // Here we simulate a site that has a super large number of pages.
         remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...99).map { pageNo in
             try (1...100).map {
