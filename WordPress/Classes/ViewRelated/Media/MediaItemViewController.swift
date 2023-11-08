@@ -160,13 +160,13 @@ class MediaItemViewController: UITableViewController {
     private func updateNavigationItem() {
         if mediaMetadata.matches(media) {
             navigationItem.leftBarButtonItem = nil
-            let shareItem = UIBarButtonItem(image: .gridicon(.shareiOS),
+            let shareItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
                                             style: .plain,
                                             target: self,
                                             action: #selector(shareTapped(_:)))
             shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
 
-            let trashItem = UIBarButtonItem(image: .gridicon(.trash),
+            let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
                                             style: .plain,
                                             target: self,
                                             action: #selector(trashTapped(_:)))

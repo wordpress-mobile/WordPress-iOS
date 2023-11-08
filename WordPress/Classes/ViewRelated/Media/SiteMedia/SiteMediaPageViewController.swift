@@ -26,7 +26,37 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
         updateNavigationForCurrentViewController()
+    }
+
+    func didDeleteItem(_ media: Media, before: Media?, after: Media?) {
+        guard let viewController = viewControllers?.first as? MediaItemViewController,
+              viewController.media == media else {
+            return
+        }
+        func showAdjacentPage() {
+            if let before {
+                setViewControllers([makePageViewController(with: before)], direction: .reverse, animated: true, completion: nil)
+                updateNavigationForCurrentViewController()
+            } else if let after {
+                setViewControllers([makePageViewController(with: after)], direction: .forward, animated: true, completion: nil)
+                updateNavigationForCurrentViewController()
+            } else {
+                navigationController?.popViewController(animated: true)
+            }
+        }
+        if let cell = viewController.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) {
+            UIView.animate(withDuration: 0.5) {
+                cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                cell.alpha = 0.0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+                showAdjacentPage()
+            }
+        } else {
+            showAdjacentPage()
+        }
     }
 
     private func makePageViewController(with media: Media) -> MediaItemViewController {

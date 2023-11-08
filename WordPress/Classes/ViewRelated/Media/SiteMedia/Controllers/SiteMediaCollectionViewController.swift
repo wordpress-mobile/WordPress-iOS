@@ -352,13 +352,7 @@ final class SiteMediaCollectionViewController:
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
                 setSelected(false, for: media)
-
-                if let viewController = navigationController?.topViewController,
-                   viewController !== self,
-                    let detailsViewController = viewController as? MediaItemViewController,
-                   detailsViewController.media.objectID == media.objectID {
-                    navigationController?.popViewController(animated: true)
-                }
+                didDeleteMedia(media, at: indexPath)
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
@@ -371,6 +365,16 @@ final class SiteMediaCollectionViewController:
             pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })
         @unknown default:
             break
+        }
+    }
+
+    private func didDeleteMedia(_ media: Media, at indexPath: IndexPath) {
+        if let viewController = navigationController?.topViewController,
+           let detailsViewController = viewController as? SiteMediaPageViewController {
+            let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+
+            detailsViewController.didDeleteItem(media, before: before, after: after)
         }
     }
 
