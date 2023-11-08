@@ -69,7 +69,7 @@ extension BlogDetailsViewController {
 extension BlogDetailsViewController {
 
     @objc func makeDomainsDashboardViewController() -> UIViewController {
-        let viewController = UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        let viewController = SiteDomainsViewController(blog: self.blog)
         viewController.extendedLayoutIncludesOpaqueBars = true
         return viewController
     }

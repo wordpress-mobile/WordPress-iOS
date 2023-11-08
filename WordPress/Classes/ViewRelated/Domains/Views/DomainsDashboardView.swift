@@ -33,16 +33,6 @@ struct DomainsDashboardView: View {
                 updateDomainsList()
             }, failure: nil)
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { // FIXME: Update to `topBarTrailing` after CI Xcode is updated to 15.*
-                NavigationLink(destination: AllDomainsListViewRepresentable()) {
-                    Text(AllDomainsListViewController.Strings.title)
-                        .foregroundStyle(Color.DS.Foreground.primary)
-                }
-            }
-        }
-        .navigationBarTitle(TextContent.navigationTitle)
-        .navigationViewStyle(.stack)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
                 isShowingDomainRegistrationFlow = false
@@ -152,6 +142,7 @@ struct DomainsDashboardView: View {
 }
 
 // MARK: - Constants
+
 private extension DomainsDashboardView {
 
     enum TextContent {
@@ -207,10 +198,34 @@ private extension DomainsDashboardView {
     }
 }
 
-struct AllDomainsListViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> AllDomainsListViewController {
-        AllDomainsListViewController(isNavigatingFromUIKit: false)
+final class SiteDomainsViewController: UIHostingController<DomainsDashboardView> {
+
+    // MARK: - Init
+
+    init(blog: Blog) {
+        super.init(rootView: .init(blog: blog))
     }
 
-    func updateUIViewController(_ uiViewController: AllDomainsListViewController, context: Context) {}
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = DomainsDashboardView.TextContent.navigationTitle
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: AllDomainsListViewController.Strings.title,
+            style: .plain,
+            target: self,
+            action: #selector(didTapAllDomainsBarButtonItem)
+        )
+    }
+
+    // MARK: - User Interaction
+
+    @objc private func didTapAllDomainsBarButtonItem() {
+        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+    }
 }
