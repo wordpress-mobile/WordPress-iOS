@@ -55,10 +55,10 @@ final class AllDomainsListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = Strings.title
         self.viewModel.addDomainAction = { [weak self] in
             self?.navigateToAddDomain()
         }
+        self.title = Strings.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
         self.setupSubviews()
         self.observeState()
@@ -79,6 +79,7 @@ final class AllDomainsListViewController: UIViewController {
             self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
+
         self.navigationItem.rightBarButtonItem = addBarButtonItem
     }
 
