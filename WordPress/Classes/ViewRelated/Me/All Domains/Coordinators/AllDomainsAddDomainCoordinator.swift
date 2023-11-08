@@ -11,7 +11,9 @@ import Foundation
 
 
         let domainPurchasedCallback = { (domainViewController: UIViewController, domainName: String) in
-            allDomainsViewController.reloadDomains()
+            domainViewController.dismiss(animated: true) {
+                allDomainsViewController.reloadDomains()
+            }
         }
 
         let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(

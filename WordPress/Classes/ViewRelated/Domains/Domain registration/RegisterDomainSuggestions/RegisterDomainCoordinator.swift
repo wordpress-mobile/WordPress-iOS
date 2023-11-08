@@ -154,13 +154,7 @@ class RegisterDomainCoordinator {
                     navController.dismiss(animated: true)
                 }
             }) { domain in
-                viewController.dismiss(animated: true, completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainPurchasedCallback?(viewController, domain)
-                })
+                self.domainPurchasedCallback?(viewController, domain)
             }
         }
 
