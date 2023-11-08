@@ -21,7 +21,9 @@ class MediaItemViewController: UITableViewController {
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
         didSet {
-            updateNavigationItem()
+            if !mediaMetadata.matches(media) {
+                saveChanges()
+            }
         }
     }
 
@@ -75,10 +77,8 @@ class MediaItemViewController: UITableViewController {
         viewModel = ImmuTable(sections: [
             ImmuTableSection(rows: [ headerRow ]),
             ImmuTableSection(headerText: nil, rows: mediaInfoRows, footerText: nil),
-            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"),
-                             rows: metadataRows,
-                             footerText: nil)
-            ])
+            ImmuTableSection(headerText: nil, rows: metadataRows, footerText: nil)
+        ])
     }
 
     private var headerRow: ImmuTableRow {
@@ -158,28 +158,22 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func updateNavigationItem() {
-        if mediaMetadata.matches(media) {
-            navigationItem.leftBarButtonItem = nil
-            let shareItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(shareTapped(_:)))
-            shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
+        let shareItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(shareTapped(_:)))
+        shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
 
-            let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(trashTapped(_:)))
-            trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
+        let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(trashTapped(_:)))
+        trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
 
-            if media.blog.supports(.mediaDeletion) {
-                navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
-            } else {
-                navigationItem.rightBarButtonItems = [ shareItem ]
-            }
+        if media.blog.supports(.mediaDeletion) {
+            navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
         } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
-            navigationItem.rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped)) ]
+            navigationItem.rightBarButtonItems = [ shareItem ]
         }
     }
 
@@ -222,6 +216,7 @@ class MediaItemViewController: UITableViewController {
     }
 
     private var documentInteractionController: UIDocumentInteractionController?
+
     private func presentDocumentViewControllerForMedia() {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
@@ -314,27 +309,14 @@ class MediaItemViewController: UITableViewController {
         })
     }
 
-    @objc private func cancelTapped() {
-        mediaMetadata = MediaMetadata(media: media)
-        reloadViewModel()
-        updateTitle()
-    }
-
-    @objc private func saveTapped() {
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Saving...", comment: "Text displayed in HUD while a media item's metadata (title, etc) is being saved."))
-
+    private func saveChanges() {
         mediaMetadata.update(media)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.update(media, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
-            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Saved!", comment: "Text displayed in HUD when a media item's metadata (title, etc) is saved successfully."))
-            self?.updateNavigationItem()
-        }, failure: { error in
+        }, failure: { _ in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to save media item.", comment: "Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved."))
-            self.updateNavigationItem()
         })
     }
 
@@ -344,6 +326,7 @@ class MediaItemViewController: UITableViewController {
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
                                         onValueChanged: { value in
                 self?.title = value
+                (self?.parent as? SiteMediaPageViewController)?.title = value
                 self?.mediaMetadata.title = value
                 self?.reloadViewModel()
             })
