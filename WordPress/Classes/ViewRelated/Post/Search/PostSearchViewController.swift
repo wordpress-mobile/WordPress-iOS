@@ -172,13 +172,22 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
             default:
                 fatalError("Unsupported post")
             }
-            break // TODO: Show post
         }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             viewModel.didReachBottom()
+        }
+    }
+
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard indexPath.section == SectionID.posts.rawValue else { return nil }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self, let delegate = self.delegate else { return nil }
+            let post = self.viewModel.posts[indexPath.row]
+            let cell = self.tableView.cellForRow(at: indexPath)
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: delegate)
         }
     }
 
