@@ -391,8 +391,8 @@
 		0A9610F928B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9610FA28B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
-		0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */; };
-		0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */; };
+		0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
+		0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
 		0C0453282AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
 		0C0453292AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
 		0C04532B2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */; };
@@ -6128,7 +6128,7 @@
 		0A69300A28B5AA5E00E98DE1 /* FullScreenCommentReplyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelTests.swift; sourceTree = "<group>"; };
 		0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+Comparable.swift"; sourceTree = "<group>"; };
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
-		0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCellBadgeView.swift; sourceTree = "<group>"; };
+		0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCellSelectionOverlayView.swift; sourceTree = "<group>"; };
 		0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaVideoDurationView.swift; sourceTree = "<group>"; };
 		0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaDocumentInfoView.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
@@ -10262,7 +10262,7 @@
 			isa = PBXGroup;
 			children = (
 				0CAE8EF12A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift */,
-				0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift */,
+				0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */,
 				0CAE8EF52A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift */,
 				0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */,
 				0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */,
@@ -21644,7 +21644,7 @@
 				8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */,
 				FAA4013427B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */,
-				0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */,
+				0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */,
 				FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */,
 				081E4B4C281C019A0085E89C /* TooltipAnchor.swift in Sources */,
 				3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */,
@@ -24972,7 +24972,7 @@
 				FABB24032602FC2C00C8785C /* ReaderCSS.swift in Sources */,
 				FABB24042602FC2C00C8785C /* SafariActivity.m in Sources */,
 				FABB24052602FC2C00C8785C /* WordPress-37-38.xcmappingmodel in Sources */,
-				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellBadgeView.swift in Sources */,
+				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				FABB24072602FC2C00C8785C /* LayoutPickerAnalyticsEvent.swift in Sources */,
 				F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */,

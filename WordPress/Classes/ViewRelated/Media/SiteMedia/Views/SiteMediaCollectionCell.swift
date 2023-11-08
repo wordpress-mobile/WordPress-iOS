@@ -8,7 +8,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
     private let placeholderView = UIView()
     private var durationView: SiteMediaVideoDurationView?
     private var documentInfoView: SiteMediaDocumentInfoView?
-    private var badgeView: SiteMediaCollectionCellBadgeView?
+    private var selectionView: SiteMediaCollectionCellSelectionOverlayView?
 
     private var viewModel: SiteMediaCollectionCellViewModel?
     private var cancellables: [AnyCancellable] = []
@@ -52,7 +52,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         imageView.image = nil
         imageView.alpha = 0
         placeholderView.alpha = 1
-        badgeView?.isHidden = true
+        selectionView?.isHidden = true
         durationView?.isHidden = true
         documentInfoView?.isHidden = true
     }
@@ -74,12 +74,8 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             .sink { [weak self] in self?.didUpdateOverlayState($0) }
             .store(in: &cancellables)
 
-        viewModel.$badge
-            .sink { [weak self] in self?.didUpdateBadge($0) }
-            .store(in: &cancellables)
-
-        viewModel.$durationText
-            .sink { [weak self] in self?.didUpdateDurationText($0) }
+        viewModel.$badge.combineLatest(viewModel.$durationText)
+            .sink { [weak self] in self?.didUpdate(badge: $0, durationText: $1) }
             .store(in: &cancellables)
 
         viewModel.$documentInfo
@@ -93,32 +89,30 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
 
     // MARK: - Refresh
 
+    private func didUpdate(badge: SiteMediaCollectionCellViewModel.BadgeType?, durationText: String?) {
+        if let badge {
+            let selectionView = getSelectionView()
+            selectionView.isHidden = false
+            selectionView.setBadge(badge)
+        } else {
+            selectionView?.isHidden = true
+        }
+
+        if let durationText, badge == nil {
+            let durationView = getDurationView()
+            durationView.isHidden = false
+            durationView.textLabel.text = durationText
+        } else {
+            durationView?.isHidden = true
+        }
+    }
+
     private func didUpdateOverlayState(_ state: CircularProgressView.State?) {
         if let state {
             overlayView.state = state
             overlayView.isHidden = false
         } else {
             overlayView.isHidden = true
-        }
-    }
-
-    private func didUpdateBadge(_ badge: SiteMediaCollectionCellViewModel.BadgeType?) {
-        if let badge {
-            let badgeView = getBadgeView()
-            badgeView.isHidden = false
-            badgeView.setBadge(badge)
-        } else {
-            badgeView?.isHidden = true
-        }
-    }
-
-    private func didUpdateDurationText(_ text: String?) {
-        if let text {
-            let durationView = getDurationView()
-            durationView.isHidden = false
-            durationView.textLabel.text = text
-        } else {
-            durationView?.isHidden = true
         }
     }
 
@@ -193,18 +187,15 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         return durationView
     }
 
-    private func getBadgeView() -> SiteMediaCollectionCellBadgeView {
-        if let badgeView {
-            return badgeView
+    private func getSelectionView() -> SiteMediaCollectionCellSelectionOverlayView {
+        if let selectionView {
+            return selectionView
         }
-        let badgeView = SiteMediaCollectionCellBadgeView()
-        contentView.addSubview(badgeView)
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            badgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
-            badgeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
-        ])
-        self.badgeView = badgeView
-        return badgeView
+        let selectionView = SiteMediaCollectionCellSelectionOverlayView()
+        contentView.addSubview(selectionView)
+        selectionView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewToAllEdges(selectionView)
+        self.selectionView = selectionView
+        return selectionView
     }
 }
