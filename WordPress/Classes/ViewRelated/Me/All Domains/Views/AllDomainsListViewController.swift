@@ -166,16 +166,21 @@ final class AllDomainsListViewController: UIViewController {
 
     }
 
-    private func navigateToDomainDetails(with domain: Domain) {
-        guard let url = domain.wpcomDetailsURL, let navigationController = navigationController else {
+    private func navigateToDomainDetails(with viewModel: Domain) {
+        guard let navigationController = navigationController else {
             self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
             return
         }
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
-            url: url,
-            source: "all-domains"
+        let domain = viewModel.domain
+        let destination = DomainDetailsWebViewController(
+            domain: domain.domain,
+            siteSlug: domain.siteSlug,
+            type: domain.type,
+            analyticsSource: "all-domains"
         )
-        navigationController.pushViewController(webViewController, animated: true)
+        destination.configureSandboxStore {
+            navigationController.pushViewController(destination, animated: true)
+        }
     }
 }
 
@@ -213,7 +218,7 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
             let domain = domains[indexPath.section]
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! AllDomainsListTableViewCell
             cell.accessoryType = .disclosureIndicator
-            cell.update(with: domain, parent: self)
+            cell.update(with: domain.row, parent: self)
             return cell
         default:
             return UITableViewCell()

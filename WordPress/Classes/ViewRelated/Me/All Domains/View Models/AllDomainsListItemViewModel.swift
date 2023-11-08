@@ -2,18 +2,27 @@ import Foundation
 
 struct AllDomainsListItemViewModel {
 
-    let name: String
-    let description: String?
-    let status: Status?
-    let expiryDate: String?
-    let wpcomDetailsURL: URL?
-}
+    // MARK: - Types
 
-// MARK: - Convenience Inits
+    private enum Strings {
+        static let expired = NSLocalizedString(
+            "domain.management.card.expired.label",
+            value: "Expired",
+            comment: "The expired label of the domain card in All Domains screen."
+        )
+        static let renews = NSLocalizedString(
+            "domain.management.card.renews.label",
+            value: "Renews",
+            comment: "The renews label of the domain card in All Domains screen."
+        )
+    }
 
-extension AllDomainsListItemViewModel {
+    typealias Row = AllDomainsListCardView.ViewModel
+    typealias Domain = DomainsService.AllDomainsListItem
+    typealias Status = Domain.Status
+    typealias StatusType = DomainsService.AllDomainsListItem.StatusType
 
-    private static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
+    // MARK: - Properties
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -22,15 +31,22 @@ extension AllDomainsListItemViewModel {
         return formatter
     }()
 
+    let domain: Domain
+    let row: Row
+
+    // MARK: - Init
+
     init(domain: Domain) {
-        self.init(
+        self.domain = domain
+        self.row = .init(
             name: domain.domain,
             description: Self.description(from: domain),
             status: domain.status,
-            expiryDate: Self.expiryDate(from: domain),
-            wpcomDetailsURL: Self.wpcomDetailsURL(from: domain)
+            expiryDate: Self.expiryDate(from: domain)
         )
     }
+
+    // MARK: - Helpers
 
     private static func description(from domain: Domain) -> String? {
         guard !domain.isDomainOnlySite else {
@@ -48,45 +64,4 @@ extension AllDomainsListItemViewModel {
         let formatted = Self.dateFormatter.string(from: date)
         return "\(notice) \(formatted)"
     }
-
-    private static func wpcomDetailsURL(from domain: Domain) -> URL? {
-        let viewSlug = {
-            switch domain.type {
-            case .siteRedirect: return "redirect"
-            case .transfer: return "transfer/in"
-            default: return "edit"
-            }
-        }()
-
-        let url = "\(Self.domainManagementBasePath)/\(domain.domain)/\(viewSlug)/\(domain.siteSlug)"
-
-        if let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            return URL(string: encodedURL)
-        } else {
-            return nil
-        }
-    }
-}
-
-// MARK: - Types
-
-extension AllDomainsListItemViewModel {
-
-    private enum Strings {
-
-        static let expired = NSLocalizedString(
-            "domain.management.card.expired.label",
-            value: "Expired",
-            comment: "The expired label of the domain card in All Domains screen."
-        )
-        static let renews = NSLocalizedString(
-            "domain.management.card.renews.label",
-            value: "Renews",
-            comment: "The renews label of the domain card in All Domains screen."
-        )
-    }
-
-    typealias Domain = DomainsService.AllDomainsListItem
-    typealias Status = Domain.Status
-    typealias StatusType = DomainsService.AllDomainsListItem.StatusType
 }
