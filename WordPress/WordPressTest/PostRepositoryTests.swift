@@ -361,7 +361,7 @@ class PostRepositoryTests: CoreDataTestCase {
             XCTAssertEqual(second.postID, 200)
         }
 
-        // The second fetch only returns one of them, to simulate an situation where the other page has been deleted from the site.
+        // The second fetch only returns one of them, to simulate a situation where the other page has been deleted from the site.
         remoteMock.remotePostsToReturnOnSyncPostsOfType = [
             [postToBeKept],
         ]
