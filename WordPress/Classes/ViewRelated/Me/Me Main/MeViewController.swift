@@ -210,24 +210,26 @@ class MeViewController: UITableViewController {
                                               accessoryType: accessoryType,
                                               action: pushAbout(),
                                               accessibilityIdentifier: "About"))
-
                 return rows
             }())
         ]
 
-#if JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() {
-            sections.append(.init(headerText: HeaderTitles.products, rows: {
-                return [
-                    ButtonRow(title: AllDomainsListViewController.Strings.title) { action in
-                        self.showOrPushController(AllDomainsListViewController()) { [weak self] in
-                            self?.tableView.deselectSelectedRowWithAnimation(true)
-                        }
-                    }
-                ]
-            }()))
+        #if JETPACK
+        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
+            sections.append(.init(rows: [
+                NavigationItemRow(
+                    title: AllDomainsListViewController.Strings.title,
+                    icon: UIImage(systemName: "globe"),
+                    accessoryType: accessoryType,
+                    action: { action in
+                        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+                    },
+                    accessibilityIdentifier: "myDomains"
+                )
+            ])
+            )
         }
-#endif
+        #endif
 
         // last section
         sections.append(

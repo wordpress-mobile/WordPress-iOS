@@ -54,12 +54,23 @@ class PostRepositoryPostsListTests: CoreDataTestCase {
         XCTAssertEqual(total, 15)
 
         // Perform search
-        let postIDs: [TaggedManagedObjectID<Post>] = try await repository.search(input: "1", statuses: [.publish], limit: 1, orderBy: .byDate, descending: true, in: blogID)
+        let postIDs: [TaggedManagedObjectID<Post>] = try await repository.search(input: "1", statuses: [.publish], tag: nil, offset: 0, limit: 1, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(postIDs.count, 1)
 
         // There should still be 15 posts after the search: no local posts should be deleted
         total = await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
         XCTAssertEqual(total, 15)
+    }
+
+    func testFetchingAllPages() async throws {
+        try await preparePostsList(type: "page", total: 1_120)
+
+        let pages = try await repository.fetchAllPages(statuses: [], in: blogID).value
+        XCTAssertEqual(pages.count, 1_120)
+
+        // There should still be 15 posts after the search: no local posts should be deleted
+        let total = await contextManager.performQuery { $0.countObjects(ofType: Page.self) }
+        XCTAssertEqual(total, 1_120)
     }
 
 }
@@ -71,20 +82,20 @@ extension PostRepositoryPostsListTests {
     func testPostsListStubReturnPostsAsRequested() async throws {
         try await preparePostsList(type: "post", total: 20)
 
-        var result = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 10, orderBy: .byDate, descending: true, in: blogID)
+        var result = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 10, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result.count, 10)
 
-        result = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 20, orderBy: .byDate, descending: true, in: blogID)
+        result = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 20, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result.count, 20)
 
-        result = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 30, orderBy: .byDate, descending: true, in: blogID)
+        result = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 30, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result.count, 20)
     }
 
     func testPostsListStubReturnPostsAtCorrectPosition() async throws {
         try await preparePostsList(type: "post", total: 20)
 
-        let all = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 30, orderBy: .byDate, descending: true, in: blogID)
+        let all = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 30, orderBy: .byDate, descending: true, in: blogID)
 
         var result = try await repository.paginate(type: Post.self, statuses: [], offset: 0, number: 5, in: blogID)
         XCTAssertEqual(result, Array(all[0..<5]))
@@ -96,19 +107,19 @@ extension PostRepositoryPostsListTests {
     func testPostsListStubReturnPostsSearch() async throws {
         try await preparePostsList(type: "post", total: 10)
 
-        let all = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 30, orderBy: .byDate, descending: true, in: blogID)
+        let all = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 30, orderBy: .byDate, descending: true, in: blogID)
 
-        var result = try await repository.search(type: Post.self, input: "1", statuses: [], limit: 1, orderBy: .byDate, descending: true, in: blogID)
+        var result = try await repository.search(type: Post.self, input: "1", statuses: [], tag: nil, offset: 0, limit: 1, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result, [all[0]])
 
-        result = try await repository.search(type: Post.self, input: "2", statuses: [], limit: 1, orderBy: .byDate, descending: true, in: blogID)
+        result = try await repository.search(type: Post.self, input: "2", statuses: [], tag: nil, offset: 0, limit: 1, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result, [all[1]])
     }
 
     func testPostsListStubReturnDefaultNumberOfPosts() async throws {
         try await preparePostsList(type: "post", total: 100)
 
-        let result = try await repository.search(type: Post.self, input: nil, statuses: [], limit: 0, orderBy: .byDate, descending: true, in: blogID)
+        let result = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 0, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result.count, 20)
     }
 
