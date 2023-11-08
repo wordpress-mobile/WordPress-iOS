@@ -216,7 +216,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
                   let panGestureInitialIndexPath,
                   let panGesturePeviousSelection else { return }
 
-            var isDeselecting = panGesturePeviousSelection.contains(fetchController.object(at: panGestureInitialIndexPath))
+            let isDeselecting = panGesturePeviousSelection.contains(fetchController.object(at: panGestureInitialIndexPath))
 
             updateSelection {
                 selection = NSMutableOrderedSet(orderedSet: panGesturePeviousSelection)
