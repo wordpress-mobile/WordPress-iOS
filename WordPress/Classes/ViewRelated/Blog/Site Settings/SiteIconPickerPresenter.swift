@@ -169,3 +169,24 @@ extension SiteIconPickerPresenter: MediaPickerViewControllerDelegate {
         })
     }
 }
+
+extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        guard let media = selection.first else {
+            onCompletion?(nil, nil)
+            return
+        }
+
+        WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
+
+        showLoadingMessage()
+        originalMedia = media
+        MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image, error) in
+            guard let image = image else {
+                self?.showErrorLoadingImageMessage()
+                return
+            }
+            self?.showImageCropViewController(image, presentingViewController: viewController)
+        })
+    }
+}

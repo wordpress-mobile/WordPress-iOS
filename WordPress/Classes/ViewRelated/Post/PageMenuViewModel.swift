@@ -49,7 +49,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if page.status != .draft {
+        if page.status != .draft && !isSiteHomepage {
             buttons.append(.moveToDraft)
         }
 
@@ -88,18 +88,31 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
         buttons.append(.setParent)
 
-        if page.status == .publish, !isSiteHomepage {
+        guard page.status == .publish else {
+            return AbstractPostButtonSection(buttons: buttons)
+        }
+
+        if !isSiteHomepage {
             buttons.append(.setHomepage)
         }
 
-        if page.status == .publish, !isSitePostsPage {
+        if !isSitePostsPage {
             buttons.append(.setPostsPage)
+        } else {
+            buttons.append(.setRegularPage)
+        }
+        if page.status != .trash {
+            buttons.append(.settings)
         }
 
         return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
+        guard !isSiteHomepage else {
+            return AbstractPostButtonSection(buttons: [])
+        }
+
         return AbstractPostButtonSection(buttons: [.trash])
     }
 }
