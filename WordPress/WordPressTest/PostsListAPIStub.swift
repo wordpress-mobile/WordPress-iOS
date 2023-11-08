@@ -78,7 +78,7 @@ extension XCTestCase {
 
 // MARK: - Tests that ensure the `preparePostsList` works as expected
 
-class PostsListAPIStubTests:  CoreDataTestCase {
+class PostsListAPIStubTests: CoreDataTestCase {
 
     var repository: PostRepository!
     var blogID: TaggedManagedObjectID<Blog>!
