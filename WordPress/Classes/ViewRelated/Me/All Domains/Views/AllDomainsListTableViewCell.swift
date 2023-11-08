@@ -10,6 +10,7 @@ final class AllDomainsListTableViewCell: UITableViewCell {
 
         if let hostingController {
             hostingController.rootView = content
+            hostingController.view.invalidateIntrinsicContentSize()
         } else {
             let hostingController = UIHostingController(rootView: content)
             hostingController.view.backgroundColor = .clear
@@ -21,8 +22,6 @@ final class AllDomainsListTableViewCell: UITableViewCell {
             hostingController.didMove(toParent: parent)
             self.hostingController = hostingController
         }
-
-        self.hostingController?.view.layoutIfNeeded()
     }
 
     typealias ViewModel = AllDomainsListCardView.ViewModel
