@@ -29,59 +29,41 @@ class RegisterDomainCoordinator {
 
     // MARK: Public Functions
 
-    func createCart(onSuccess: @escaping () -> (),
-                    onFailure: @escaping () -> ()) {
-        guard let domain else { return }
-        let siteID = site?.dotComID?.intValue
-        let proxy = RegisterDomainDetailsServiceProxy()
-        proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain.remoteSuggestion(),
-                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { _ in
-            onSuccess()
-        },
-                                                 failure: { _ in
-            onFailure()
-        })
+    func handlePurchaseDomainOnly(on viewController: UIViewController,
+                                  onSuccess: @escaping () -> (),
+                                  onFailure: @escaping () -> ()) {
+        createCart(
+            onSuccess: { [weak self] in
+                guard let self else { return }
+                self.presentCheckoutWebview(on: viewController, title: nil, shouldPush: false)
+                onSuccess()
+            },
+            onFailure: onFailure
+        )
     }
 
-    func presentWebViewForNoSite(on viewController: UIViewController) {
-        guard let domain,
-              let url = URL(string: Constants.noSiteCheckoutWebAddress) else {
-            crashLogger.logMessage("Failed to present domain checkout webview for no-site.",
-                                   level: .error)
-            return
-        }
+    func addDomainToCart(on viewController: UIViewController,
+                         onSuccess: @escaping () -> (),
+                         onFailure: @escaping () -> ()) {
+        createCart(
+            onSuccess: { [weak self] in
+                guard let self = self,
+                      let domain = self.domain,
+                      let blog = site else {
+                    return
+                }
 
-        presentCheckoutWebview(on: viewController,
-                               domainSuggestion: domain,
-                               url: url,
-                               title: TextContent.checkoutTitle,
-                               shouldPush: true)
-    }
-
-    func presentWebViewForCurrentSite(on viewController: UIViewController) {
-        guard let domain,
-              let site,
-              let homeURL = site.homeURL,
-              let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host) else {
-            crashLogger.logMessage("Failed to present domain checkout webview for current site.",
-                                   level: .error)
-            return
-        }
-
-        presentCheckoutWebview(on: viewController,
-                               domainSuggestion: domain,
-                               url: url,
-                               title: nil,
-                               shouldPush: false)
+                self.domainAddedToCartCallback?(viewController, domain.domainName, blog)
+                onSuccess()
+            },
+            onFailure: onFailure
+        )
     }
 
     func handleNoSiteChoice(on viewController: UIViewController) {
         createCart(
             onSuccess: { [weak self] in
-                self?.presentWebViewForNoSite(on: viewController)
+                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle, shouldPush: true)
             }) {
                 viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
             }
@@ -121,11 +103,31 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
+    private func createCart(onSuccess: @escaping () -> (),
+                    onFailure: @escaping () -> ()) {
+        guard let domain else { return }
+        let siteID = site?.dotComID?.intValue
+        let proxy = RegisterDomainDetailsServiceProxy()
+        proxy.createPersistentDomainShoppingCart(siteID: siteID,
+                                                 domainSuggestion: domain.remoteSuggestion(),
+                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
+                                                 success: { _ in
+            onSuccess()
+        },
+                                                 failure: { _ in
+            onFailure()
+        })
+    }
+
     private func presentCheckoutWebview(on viewController: UIViewController,
-                                        domainSuggestion: FullyQuotedDomainSuggestion,
-                                        url: URL,
                                         title: String?,
                                         shouldPush: Bool) {
+        guard let domain,
+              let url = checkoutURL() else {
+            crashLogger.logMessage("Failed to present domain checkout webview.",
+                                   level: .error)
+            return
+        }
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: url,
@@ -145,7 +147,7 @@ class RegisterDomainCoordinator {
                 return
             }
 
-            self.handleWebViewURLChange(newURL, domain: domainSuggestion.domainName, onCancel: {
+            self.handleWebViewURLChange(newURL, domain: domain.domainName, onCancel: {
                 if shouldPush {
                     viewController.navigationController?.popViewController(animated: true)
                 } else {
@@ -174,6 +176,19 @@ class RegisterDomainCoordinator {
             } else {
                 viewController.present(navController, animated: true)
             }
+        }
+    }
+
+    private func checkoutURL() -> URL? {
+        if let site {
+            guard let homeURL = site.homeURL,
+                  let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
+                  let url = URL(string: Constants.checkoutWebAddress + host) else {
+                return nil
+            }
+            return url
+        } else {
+            return URL(string: Constants.noSiteCheckoutWebAddress)
         }
     }
 

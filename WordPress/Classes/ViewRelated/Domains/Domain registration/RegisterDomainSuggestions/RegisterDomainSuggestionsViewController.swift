@@ -236,26 +236,18 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             pushRegisterDomainDetailsViewController()
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            coordinator.createCart(
+            coordinator.handlePurchaseDomainOnly(
+                on: self,
                 onSuccess: { [weak self] in
-                    guard let self else { return }
-                    self.coordinator?.presentWebViewForCurrentSite(on: self)
-                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
-                onFailure: onFailure
-            )
+                onFailure: onFailure)
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
-            coordinator.createCart(
+            coordinator.addDomainToCart(
+                on: self,
                 onSuccess: { [weak self] in
-                    guard let self = self,
-                          let domain = self.coordinator?.domain,
-                          let blog = coordinator.site else {
-                        return
-                    }
-
-                    self.coordinator?.domainAddedToCartCallback?(self, domain.domainName, blog)
-                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
