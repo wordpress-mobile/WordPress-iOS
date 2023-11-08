@@ -212,10 +212,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
-    override internal func lastSyncDate() -> Date? {
-        return blog?.lastPagesSync
-    }
-
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
@@ -255,7 +251,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         refreshResults()
     }
 
-    // MARK: - TableView Handler Delegate Methods
+    // MARK: - Core Data
 
     override func entityName() -> String {
         return String(describing: Page.self)
@@ -323,14 +319,25 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+        guard indexPath.section == Section.pages.rawValue else { return nil }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let page = self.pages[indexPath.row]
-            let viewModel = PageMenuViewModel(page: page, indexPath: indexPath)
-            let helper = AbstractPostMenuHelper(page, viewModel: viewModel)
             let cell = self.tableView.cellForRow(at: indexPath)
-            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+            return AbstractPostMenuHelper(page).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == Section.pages.rawValue else { return nil }
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: pages[indexPath.row], delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - UITableViewDataSource
@@ -359,7 +366,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             let page = pages[indexPath.row]
             let indentation = getIndentationLevel(at: indexPath)
             let isFirstSubdirectory = getIndentationLevel(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) == (indentation - 1)
-            let viewModel = PageListItemViewModel(page: page, indexPath: indexPath)
+            let viewModel = PageListItemViewModel(page: page)
             cell.configure(with: viewModel, indentation: indentation, isFirstSubdirectory: isFirstSubdirectory, delegate: self)
             return cell
         }
@@ -392,7 +399,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page, at index: IndexPath?) {
+    func setParentPage(for page: Page) {
         let request = NSFetchRequest<Page>(entityName: Page.entityName())
         let filter = PostListFilter.publishedFilter()
         request.predicate = filter.predicate(for: blog, author: .everyone)
@@ -423,11 +430,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func setPageAsHomepage(_ page: Page) {
-        guard let pageID = page.postID?.intValue else { return }
-
+        guard let homePageID = page.postID?.intValue else { return }
         beginRefreshingManually()
-        WPAnalytics.track(.postListSetHomePageAction)
-        homepageSettingsService?.setHomepageType(.page, homePageID: pageID, success: { [weak self] in
+        homepageSettingsService?.setHomepageType(.page, homePageID: homePageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepageSettingsSuccess()
         }, failure: { [weak self] error in
@@ -436,14 +441,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         })
     }
 
-    func setPageAsPostsPage(_ page: Page) {
-        guard let pageID = page.postID?.intValue else { return }
-
+    func togglePageAsPostsPage(_ page: Page) {
+        let newValue = !page.isSitePostsPage
+        let postsPageID = page.isSitePostsPage ? 0 : (page.postID?.intValue ?? 0)
         beginRefreshingManually()
-        WPAnalytics.track(.postListSetAsPostsPageAction)
-        homepageSettingsService?.setHomepageType(.page, withPostsPageID: pageID, success: { [weak self] in
+        homepageSettingsService?.setHomepageType(.page, withPostsPageID: postsPageID, success: { [weak self] in
             self?.refreshAndReload()
-            self?.handleHomepagePostsPageSettingsSuccess()
+            self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
         }, failure: { [weak self] error in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
@@ -455,45 +459,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
-    private func handleHomepagePostsPageSettingsSuccess() {
-        let notice = Notice(title: HomepageSettingsText.updatePostsPageSuccessTitle, feedbackType: .success)
+    private func handleHomepagePostsPageSettingsSuccess(isPostsPage: Bool) {
+        let title = isPostsPage ? HomepageSettingsText.updatePostsPageSuccessTitle : HomepageSettingsText.updatePageSuccessTitle
+        let notice = Notice(title: title, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     private func handleHomepageSettingsFailure() {
         let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
-
-    private func handleTrashPage(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-        } else {
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-        }
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - NetworkAwareUI
@@ -506,6 +480,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     struct HomepageSettingsText {
         static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
         static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
+        static let updatePageSuccessTitle = NSLocalizedString("pages.updatePage.successTitle", value: "Page successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
         static let updateHomepageSuccessTitle = NSLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
         static let updatePostsPageSuccessTitle = NSLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
     }

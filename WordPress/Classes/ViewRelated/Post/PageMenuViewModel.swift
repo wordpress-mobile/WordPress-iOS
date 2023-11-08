@@ -3,7 +3,6 @@ import Foundation
 final class PageMenuViewModel: AbstractPostMenuViewModel {
 
     private let page: Page
-    private let indexPath: IndexPath
     private let isSiteHomepage: Bool
     private let isSitePostsPage: Bool
     private let isJetpackFeaturesEnabled: Bool
@@ -14,25 +13,23 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             createPrimarySection(),
             createSecondarySection(),
             createBlazeSection(),
-            createSetPageSection(),
+            createSetPageAttributesSection(),
             createTrashSection()
         ]
     }
 
-    convenience init(page: Page, indexPath: IndexPath) {
-        self.init(page: page, indexPath: indexPath, isSiteHomepage: page.isSiteHomepage, isSitePostsPage: page.isSitePostsPage)
+    convenience init(page: Page) {
+        self.init(page: page, isSiteHomepage: page.isSiteHomepage, isSitePostsPage: page.isSitePostsPage)
     }
 
     init(
         page: Page,
-        indexPath: IndexPath,
         isSiteHomepage: Bool,
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()
     ) {
         self.page = page
-        self.indexPath = indexPath
         self.isSiteHomepage = isSiteHomepage
         self.isSitePostsPage = isSitePostsPage
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
@@ -42,7 +39,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !page.isFailed {
+        if !page.isFailed && page.status != .trash {
             buttons.append(.view)
         }
 
@@ -52,7 +49,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if page.status != .draft {
+        if page.status != .draft && !isSiteHomepage {
             buttons.append(.moveToDraft)
         }
 
@@ -82,27 +79,40 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         return AbstractPostButtonSection(buttons: buttons)
     }
 
-    private func createSetPageSection() -> AbstractPostButtonSection {
+    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
         guard page.status != .trash else {
             return AbstractPostButtonSection(buttons: buttons)
         }
 
-        buttons.append(.setParent(indexPath))
+        buttons.append(.setParent)
 
-        if page.status == .publish, !isSiteHomepage {
+        guard page.status == .publish else {
+            return AbstractPostButtonSection(buttons: buttons)
+        }
+
+        if !isSiteHomepage {
             buttons.append(.setHomepage)
         }
 
-        if page.status == .publish, !isSitePostsPage {
+        if !isSitePostsPage {
             buttons.append(.setPostsPage)
+        } else {
+            buttons.append(.setRegularPage)
+        }
+        if page.status != .trash {
+            buttons.append(.settings)
         }
 
-        return AbstractPostButtonSection(buttons: buttons)
+        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
+        guard !isSiteHomepage else {
+            return AbstractPostButtonSection(buttons: [])
+        }
+
         return AbstractPostButtonSection(buttons: [.trash])
     }
 }

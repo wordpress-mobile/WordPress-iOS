@@ -142,7 +142,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !post.isFailed {
+        if !post.isFailed && post.status != .trash {
             buttons.append(.view)
         }
 
@@ -198,6 +198,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
         if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
+        }
+        if post.status != .trash {
+            buttons.append(.settings)
         }
 
         return AbstractPostButtonSection(buttons: buttons)

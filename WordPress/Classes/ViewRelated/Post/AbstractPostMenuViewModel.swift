@@ -6,6 +6,12 @@ protocol AbstractPostMenuViewModel {
 
 struct AbstractPostButtonSection {
     let buttons: [AbstractPostButton]
+    let submenuButton: AbstractPostButton?
+
+    init(buttons: [AbstractPostButton], submenuButton: AbstractPostButton? = nil) {
+        self.buttons = buttons
+        self.submenuButton = submenuButton
+    }
 }
 
 enum AbstractPostButton: Equatable {
@@ -20,9 +26,12 @@ enum AbstractPostButton: Equatable {
     case share
     case blaze
     case comments
+    case settings
 
     /// Specific to pages
-    case setParent(IndexPath)
+    case pageAttributes
+    case setParent
     case setHomepage
     case setPostsPage
+    case setRegularPage
 }

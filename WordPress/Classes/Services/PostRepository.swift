@@ -343,7 +343,9 @@ extension PostRepository {
     ///   - type: `Post.self` and `Page.self` are the only acceptable types.
     ///   - input: The text input from user. Or `nil` for searching all posts or pages.
     ///   - statuses: Filter posts or pages with given status.
+    ///   - tag: Filter posts or pages with given tag.
     ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
     ///   - limit: Number of posts or pages should be fetched.
     ///   - orderBy: The property by which to sort posts or pages.
     ///   - descending: Whether to sort the results in descending order.
@@ -354,7 +356,9 @@ extension PostRepository {
         type: P.Type = P.self,
         input: String?,
         statuses: [BasePost.Status],
+        tag: String?,
         authorUserID: NSNumber? = nil,
+        offset: Int,
         limit: Int,
         orderBy: PostServiceResultsOrdering,
         descending: Bool,
@@ -364,8 +368,9 @@ extension PostRepository {
             type: type,
             searchInput: input,
             statuses: statuses,
+            tag: tag,
             authorUserID: authorUserID,
-            range: 0..<max(limit, 0),
+            range: offset..<(offset + max(limit, 0)),
             orderBy: orderBy,
             descending: descending,
             deleteOtherLocalPosts: false,
@@ -373,10 +378,49 @@ extension PostRepository {
         )
     }
 
+    /// Fetch all pages of the given site.
+    ///
+    /// It's higly recommended to cancel the returned task at an appropriate timing.
+    ///
+    /// - Warning: As the function name suggests, calling this function makes many API requests to fetch the site's
+    ///     _all pages_. Fetching all pages may be handy in some use cases, but also can be wasteful when user aborts
+    ///     in the middle of fetching all pages, if the fetching is not cancelled.
+    ///
+    /// - Parameters:
+    ///   - statuses: Only fetch pages whose status is included in the given statues.
+    ///   - blogID: Object ID of the site.
+    /// - Returns: A `Task` instance representing the fetching. The fetch pages API requests will stop if the task is cancelled.
+    func fetchAllPages(statuses: [BasePost.Status], in blogID: TaggedManagedObjectID<Blog>) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
+        Task {
+            let pageSize = 100
+            var allPages = [TaggedManagedObjectID<Page>]()
+            while true {
+                try Task.checkCancellation()
+
+                let pageRange = allPages.count..<(allPages.count + pageSize)
+                let current = try await fetch(
+                    type: Page.self,
+                    statuses: statuses,
+                    authorUserID: nil,
+                    range: pageRange,
+                    deleteOtherLocalPosts: false,
+                    in: blogID
+                )
+                allPages.append(contentsOf: current)
+
+                if current.isEmpty || current.count < pageSize {
+                    break
+                }
+            }
+            return allPages
+        }
+    }
+
     private func fetch<P: AbstractPost>(
         type: P.Type,
         searchInput: String? = nil,
         statuses: [BasePost.Status]?,
+        tag: String? = nil,
         authorUserID: NSNumber?,
         range: Range<Int>,
         orderBy: PostServiceResultsOrdering = .byDate,
@@ -412,7 +456,8 @@ extension PostRepository {
             order: descending ? .descending : .ascending,
             orderBy: orderBy,
             authorID: authorUserID,
-            search: searchInput
+            search: searchInput,
+            tag: tag
         ))
         let remotePosts = try await remote.getPosts(ofType: postType, options: options)
 

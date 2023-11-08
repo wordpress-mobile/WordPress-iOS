@@ -41,6 +41,13 @@ class AbstractPostListViewController: UIViewController,
 
     let tableView = UITableView(frame: .zero, style: .plain)
 
+    var shouldHideAuthor: Bool {
+        guard filterSettings.canFilterByAuthor() else {
+            return true
+        }
+        return filterSettings.currentPostAuthorFilter() == .mine
+    }
+
     private let buttonAuthorFilter = AuthorFilterButton()
 
     let refreshControl = UIRefreshControl()
@@ -97,7 +104,7 @@ class AbstractPostListViewController: UIViewController,
         configureTableView()
         configureSearchController()
         configureAuthorFilter()
-        configureNavigationBarAppearance()
+        configureDefaultNavigationBarAppearance()
 
         updateAndPerformFetchRequest()
 
@@ -185,27 +192,15 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        searchResultsViewController.configure(searchController)
-        searchResultsViewController.listViewController = self
+        assert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
+
+        searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
         if #available(iOS 16.0, *) {
             navigationItem.preferredSearchBarPlacement = .stacked
         }
-    }
-
-    private func configureNavigationBarAppearance() {
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-
-        let scrollEdgeAppearance = UINavigationBarAppearance()
-        scrollEdgeAppearance.configureWithTransparentBackground()
-
-        navigationItem.standardAppearance = standardAppearance
-        navigationItem.compactAppearance = standardAppearance
-        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
-        navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {
@@ -445,13 +440,8 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        if let lastSynced = lastSyncDate(), abs(lastSynced.timeIntervalSinceNow) <= type(of: self).postsControllerRefreshInterval {
-
-            refreshResults()
-        } else {
-            // Update in the background
-            syncItemsWithUserInteraction(false)
-        }
+        // Update in the background
+        syncItemsWithUserInteraction(false)
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -483,10 +473,6 @@ class AbstractPostListViewController: UIViewController,
     @objc internal func postTypeToSync() -> PostServiceType {
         // Subclasses should override.
         return .any
-    }
-
-    @objc func lastSyncDate() -> Date? {
-        return blog.lastPostsSync
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {

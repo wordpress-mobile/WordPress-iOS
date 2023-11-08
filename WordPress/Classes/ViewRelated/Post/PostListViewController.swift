@@ -5,7 +5,6 @@ import Gridicons
 import UIKit
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
@@ -178,10 +177,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return .post
     }
 
-    override func lastSyncDate() -> Date? {
-        return blog?.lastPostsSync
-    }
-
     // MARK: - Data Model Interaction
 
     /// Retrieves the post object at the specified index path.
@@ -240,8 +235,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: PostListCell.defaultReuseID, for: indexPath) as! PostListCell
         let post = postAtIndexPath(indexPath)
         cell.accessoryType = .none
-        // TODO: Hide author if only showing my posts?
-        cell.configure(with: PostListItemViewModel(post: post), delegate: self)
+        cell.configure(with: PostListItemViewModel(post: post, shouldHideAuthor: shouldHideAuthor), delegate: self)
         return cell
     }
 
@@ -264,11 +258,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let post = self.postAtIndexPath(indexPath)
-            let viewModel = PostListItemViewModel(post: post).statusViewModel
-            let helper = AbstractPostMenuHelper(post, viewModel: viewModel)
             let cell = self.tableView.cellForRow(at: indexPath)
-            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeLeadingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actions = AbstractPostHelper.makeTrailingContextualActions(for: postAtIndexPath(indexPath), delegate: self)
+        return UISwipeActionsConfiguration(actions: actions)
     }
 
     // MARK: - Post Actions
@@ -336,9 +338,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            viewStatsForPost(post)
-        }
+        viewStatsForPost(post)
     }
 
     func duplicate(_ post: AbstractPost) {
@@ -359,13 +359,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         copyPostLink(post)
     }
 
-    func trash(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let cancelText: String
         let deleteText: String
         let messageText: String
@@ -385,17 +379,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addCancelActionWithTitle(cancelText) { _ in
+            completion()
+        }
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
             self?.deletePost(post)
+            completion()
         }
         alertController.presentFromRootViewController()
     }
 
     func draft(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(post)
-        }
+        moveToDraft(post)
     }
 
     func retry(_ post: AbstractPost) {
@@ -426,6 +421,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
         let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
+    }
+
+    func showSettings(for post: AbstractPost) {
+        WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     // MARK: - NetworkAwareUI

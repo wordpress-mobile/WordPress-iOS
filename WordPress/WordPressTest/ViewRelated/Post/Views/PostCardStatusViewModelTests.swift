@@ -20,7 +20,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
-            [.stats, .comments],
+            [.stats, .comments, .settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -41,7 +41,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
-            [.stats, .comments],
+            [.stats, .comments, .settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -62,6 +62,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -81,6 +82,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.duplicate, .publish],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -100,6 +102,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -117,7 +120,6 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
             .filter { !$0.buttons.isEmpty }
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
-            [.view],
             [.moveToDraft],
             [.trash]
         ]

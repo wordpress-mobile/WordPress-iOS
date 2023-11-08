@@ -2,13 +2,10 @@ import Foundation
 import UIKit
 
 struct AbstractPostMenuHelper {
-
     let post: AbstractPost
-    let viewModel: AbstractPostMenuViewModel
 
-    init(_ post: AbstractPost, viewModel: AbstractPostMenuViewModel) {
+    init(_ post: AbstractPost) {
         self.post = post
-        self.viewModel = viewModel
     }
 
     /// Creates a menu for post actions
@@ -25,17 +22,39 @@ struct AbstractPostMenuHelper {
         ])
     }
 
+    private func makeSections() -> [AbstractPostButtonSection] {
+        switch post {
+        case let post as Post:
+            return PostCardStatusViewModel(post: post).buttonSections
+        case let page as Page:
+            return PageMenuViewModel(page: page).buttonSections
+        default:
+            assertionFailure("Unsupported entity: \(post)")
+            return []
+        }
+    }
+
     /// Creates post actions grouped into sections
     ///
     /// - parameters:
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     private func makeSections(presentingView: UIView, delegate: InteractivePostViewDelegate) -> [UIMenu] {
-        return viewModel.buttonSections
+        return makeSections()
             .filter { !$0.buttons.isEmpty }
             .map { section in
                 let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)
-                return UIMenu(title: "", options: .displayInline, children: actions)
+                let menu = UIMenu(title: "", options: .displayInline, children: actions)
+
+                if let submenuButton = section.submenuButton {
+                    return UIMenu(
+                        title: submenuButton.title(for: post),
+                        image: submenuButton.icon,
+                        children: [menu]
+                    )
+                } else {
+                    return menu
+                }
             }
     }
 
@@ -70,20 +89,23 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var icon: UIImage? {
         switch self {
-        case .retry: return UIImage() // TODO
+        case .retry: return UIImage(systemName: "arrow.clockwise")
         case .view: return UIImage(systemName: "safari")
         case .publish: return UIImage(systemName: "globe")
         case .stats: return UIImage(systemName: "chart.bar.xaxis")
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
-        case .cancelAutoUpload: return UIImage() // TODO
+        case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble")
+        case .settings: return UIImage(systemName: "gearshape")
         case .setParent: return UIImage(systemName: "text.append")
         case .setHomepage: return UIImage(systemName: "house")
         case .setPostsPage: return UIImage(systemName: "text.word.spacing")
+        case .setRegularPage: return UIImage(systemName: "arrow.uturn.backward")
+        case .pageAttributes: return UIImage(systemName: "doc")
         }
     }
 
@@ -109,9 +131,12 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
+        case .settings: return Strings.settings
         case .setParent: return Strings.setParent
         case .setHomepage: return Strings.setHomepage
         case .setPostsPage: return Strings.setPostsPage
+        case .setRegularPage: return Strings.setRegularPage
+        case .pageAttributes: return Strings.pageAttributes
         }
     }
 
@@ -139,12 +164,18 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.blaze(post)
         case .comments:
             delegate.comments(post)
-        case .setParent(let indexPath):
-            delegate.setParent(for: post, at: indexPath)
+        case .settings:
+            delegate.showSettings(for: post)
+        case .setParent:
+            delegate.setParent(for: post)
         case .setHomepage:
             delegate.setHomepage(for: post)
         case .setPostsPage:
             delegate.setPostsPage(for: post)
+        case .setRegularPage:
+            delegate.setRegularPage(for: post)
+        case .pageAttributes:
+            break
         }
     }
 
@@ -152,6 +183,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let cancelAutoUpload = NSLocalizedString("posts.cancelUpload.actionTitle", value: "Cancel upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let comments = NSLocalizedString("posts.comments.actionTitle", value: "Comments", comment: "Label for post comments option. Tapping displays comments for a post.")
+        static let settings = NSLocalizedString("posts.settings.actionTitle", value: "Settings", comment: "Label for post settings option. Tapping displays settings for a post.")
         static let duplicate = NSLocalizedString("posts.duplicate.actionTitle", value: "Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to draft", comment: "Label for an option that moves a post to the draft folder")
@@ -164,5 +196,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let setParent = NSLocalizedString("posts.setParent.actionTitle", value: "Set parent", comment: "Set the parent page for the selected page.")
         static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
         static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
+        static let setRegularPage = NSLocalizedString("posts.setRegularPage.actionTitle", value: "Set as regular page", comment: "Set the selected page as a regular page.")
+        static let pageAttributes = NSLocalizedString("posts.pageAttributes.actionTitle", value: "Page attributes", comment: "Opens a submenu for page attributes.")
     }
 }

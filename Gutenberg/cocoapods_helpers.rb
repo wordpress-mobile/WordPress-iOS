@@ -126,6 +126,11 @@ def gutenberg_post_install(installer:)
   react_native_post_install(installer, react_native_path)
 end
 
+def gutenberg_post_integrate
+  # If the this workaround runs in the post_install step, the changes it makes get overridden somehow.
+  workaround_broken_search_paths
+end
+
 private
 
 def should_use_local_gutenberg
@@ -171,4 +176,28 @@ def react_native_version!(gutenberg_path:)
   raise "[Gutenberg] Could not find React native version at #{react_native_path}" unless package_json_version
 
   package_json_version.split('.').map(&:to_i)
+end
+
+# A workaround for the issue described at
+# https://github.com/wordpress-mobile/WordPress-iOS/pull/21504#issuecomment-1789466523
+#
+# For some yet-to-discover reason, something in the process installing the pods
+# using local sources messes up the LIBRARY_SEARCH_PATHS.
+def workaround_broken_search_paths
+  project = Xcodeproj::Project.open('WordPress/WordPress.xcodeproj')
+
+  library_search_paths_key = 'LIBRARY_SEARCH_PATHS'
+  broken_search_paths = '$(SDKROOT)/usr/lib/swift$(inherited)'
+
+  project.targets.each do |target|
+    target.build_configurations.each do |config|
+      original_search_paths = config.build_settings[library_search_paths_key]
+
+      if original_search_paths == broken_search_paths
+        config.build_settings[library_search_paths_key] = ['$(SDKROOT)/usr/lib/swift', '$(inherited)']
+        puts "[Gutenberg] Post-processed #{library_search_paths_key} for #{target.name} target to fix incorrect '#{broken_search_paths}' value."
+      end
+    end
+  end
+  project.save
 end

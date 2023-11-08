@@ -28,15 +28,13 @@ extension PageListViewController: InteractivePostViewDelegate {
         publishPost(apost)
     }
 
-    func trash(_ apost: AbstractPost) {
-        guard let page = apost as? Page else { return }
-        trashPage(page)
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        guard let page = post as? Page else { return }
+        trashPage(page, completion: completion)
     }
 
     func draft(_ apost: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            moveToDraft(apost)
-        }
+        moveToDraft(apost)
     }
 
     func retry(_ apost: AbstractPost) {
@@ -61,19 +59,32 @@ extension PageListViewController: InteractivePostViewDelegate {
         // Not available for pages
     }
 
+    func showSettings(for post: AbstractPost) {
+        WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
+    }
+
     func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
         guard let page = apost as? Page else { return }
-        setParentPage(for: page, at: indexPath)
+        setParentPage(for: page)
     }
 
     func setHomepage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsPostsPageAction)
         setPageAsHomepage(page)
     }
 
     func setPostsPage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        setPageAsPostsPage(page)
+        WPAnalytics.track(.postListSetHomePageAction)
+        togglePageAsPostsPage(page)
+    }
+
+    func setRegularPage(for apost: AbstractPost) {
+        guard let page = apost as? Page else { return }
+        WPAnalytics.track(.postListSetAsRegularPageAction)
+        togglePageAsPostsPage(page)
     }
 
     // MARK: - Helpers
@@ -90,21 +101,19 @@ extension PageListViewController: InteractivePostViewDelegate {
         present(editorViewController, animated: false)
     }
 
-    private func trashPage(_ page: Page) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showNoInternetConnectionNotice(message: Strings.offlineMessage)
-            return
-        }
-
+    private func trashPage(_ page: Page, completion: @escaping () -> Void) {
         let isPageTrashed = page.status == .trash
         let actionText = isPageTrashed ? Strings.DeletePermanently.actionText : Strings.Trash.actionText
         let titleText = isPageTrashed ? Strings.DeletePermanently.titleText : Strings.Trash.titleText
         let messageText = isPageTrashed ? Strings.DeletePermanently.messageText : Strings.Trash.messageText
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(Strings.cancelText)
-        alertController.addDestructiveActionWithTitle(actionText) { [weak self] action in
+        alertController.addCancelActionWithTitle(Strings.cancelText) { _ in
+            completion()
+        }
+        alertController.addDestructiveActionWithTitle(actionText) { [weak self] _ in
             self?.deletePost(page)
+            completion()
         }
         alertController.presentFromRootViewController()
     }
@@ -112,7 +121,6 @@ extension PageListViewController: InteractivePostViewDelegate {
 
 private enum Strings {
 
-    static let offlineMessage = NSLocalizedString("pagesList.trash.offline", value: "Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
     static let cancelText = NSLocalizedString("pagesList.trash.cancel", value: "Cancel", comment: "Cancels an Action")
 
     enum DeletePermanently {

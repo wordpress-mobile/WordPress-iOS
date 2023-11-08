@@ -205,12 +205,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 }
 
-extension PostCompactCell: InteractivePostView {
-    func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
-        // Do nothing, since this cell doesn't support actions in `InteractivePostViewDelegate`.
-    }
-}
-
 extension PostCompactCell: GhostableView {
     func ghostAnimationWillStart() {
         toggleGhost(visible: true)

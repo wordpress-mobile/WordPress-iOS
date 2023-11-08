@@ -1,6 +1,9 @@
 23.7
 -----
 * [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
+* [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
+* [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
+* [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
 
 23.6
 -----
