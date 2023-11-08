@@ -1010,8 +1010,8 @@
 		3FA640672670D1290064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		3FAE0652287C8FC500F46508 /* JPScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE0651287C8FC500F46508 /* JPScrollViewDelegate.swift */; };
 		3FAE0653287C8FC500F46508 /* JPScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAE0651287C8FC500F46508 /* JPScrollViewDelegate.swift */; };
-		3FAF9CC226D01CFE00268EA2 /* DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */; };
-		3FAF9CC326D02FC500268EA2 /* DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */; };
+		3FAF9CC226D01CFE00268EA2 /* SiteDomainsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* SiteDomainsView.swift */; };
+		3FAF9CC326D02FC500268EA2 /* SiteDomainsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* SiteDomainsView.swift */; };
 		3FAF9CC526D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
 		3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */; };
 		3FB1929126C6C56E000F5AA3 /* TimeSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */; };
@@ -6689,7 +6689,7 @@
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
 		3FAE0651287C8FC500F46508 /* JPScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPScrollViewDelegate.swift; sourceTree = "<group>"; };
-		3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardView.swift; sourceTree = "<group>"; };
+		3FAF9CC126D01CFE00268EA2 /* SiteDomainsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDomainsView.swift; sourceTree = "<group>"; };
 		3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainSuggestionViewControllerWrapper.swift; sourceTree = "<group>"; };
 		3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionView.swift; sourceTree = "<group>"; };
 		3FB1929426C79EC6000F5AA3 /* Date+Formats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formats.swift"; sourceTree = "<group>"; };
@@ -11634,7 +11634,7 @@
 			isa = PBXGroup;
 			children = (
 				B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */,
-				3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */,
+				3FAF9CC126D01CFE00268EA2 /* SiteDomainsView.swift */,
 				3F3DD0B126FD176800F5F121 /* PresentationCard.swift */,
 				3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */,
 				3FA62FD226FE2E4B0020793A /* ShapeWithTextView.swift */,
@@ -22265,7 +22265,7 @@
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
-				3FAF9CC226D01CFE00268EA2 /* DomainsDashboardView.swift in Sources */,
+				3FAF9CC226D01CFE00268EA2 /* SiteDomainsView.swift in Sources */,
 				0CFE9AC92AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
 				178DDD30266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
@@ -25618,7 +25618,7 @@
 				3FFDEF812917882800B625CE /* MigrationNavigationController.swift in Sources */,
 				FABB25BC2602FC2C00C8785C /* SharingDetailViewController.m in Sources */,
 				837B49DE283C2AE80061A657 /* BloggingPromptSettingsReminderDays+CoreDataProperties.swift in Sources */,
-				3FAF9CC326D02FC500268EA2 /* DomainsDashboardView.swift in Sources */,
+				3FAF9CC326D02FC500268EA2 /* SiteDomainsView.swift in Sources */,
 				FA70024D29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */,
 				F48D44BB2989A9070051EAA6 /* ReaderSiteService.swift in Sources */,
 				FABB25BE2602FC2C00C8785C /* SettingsPickerViewController.swift in Sources */,

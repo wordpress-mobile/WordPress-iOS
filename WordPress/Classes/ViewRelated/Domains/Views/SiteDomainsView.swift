@@ -2,7 +2,8 @@ import SwiftUI
 import WordPressKit
 
 /// The Domains dashboard screen, accessible from My Site
-struct DomainsDashboardView: View {
+struct SiteDomainsView: View {
+
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
     @State var blogService = BlogService(coreDataStack: ContextManager.shared)
@@ -143,7 +144,7 @@ struct DomainsDashboardView: View {
 
 // MARK: - Constants
 
-private extension DomainsDashboardView {
+private extension SiteDomainsView {
 
     enum TextContent {
         // Navigation bar
@@ -198,7 +199,7 @@ private extension DomainsDashboardView {
     }
 }
 
-final class SiteDomainsViewController: UIHostingController<DomainsDashboardView> {
+final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
 
     // MARK: - Init
 
@@ -214,7 +215,7 @@ final class SiteDomainsViewController: UIHostingController<DomainsDashboardView>
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = DomainsDashboardView.TextContent.navigationTitle
+        self.title = SiteDomainsView.TextContent.navigationTitle
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: AllDomainsListViewController.Strings.title,
             style: .plain,
