@@ -191,6 +191,7 @@ static NSInteger HideSearchMinSites = 3;
     self.visible = NO;
     
     [SVProgressHUD resetOffsetFromCenter];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
 
     [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDismissed];
 }
