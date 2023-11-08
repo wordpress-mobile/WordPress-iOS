@@ -1,7 +1,7 @@
 import SwiftUI
 import WordPressKit
 
-/// The Domains dashboard screen, accessible from My Site
+/// The Site Domains  screen, accessible from My Site
 struct SiteDomainsView: View {
 
     @ObservedObject var blog: Blog
@@ -201,6 +201,10 @@ private extension SiteDomainsView {
 
 final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
 
+    // MARK: - Properties
+
+    private let domainManagementFeatureFlag = RemoteFeatureFlag.domainManagement
+
     // MARK: - Init
 
     init(blog: Blog) {
@@ -216,12 +220,14 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = SiteDomainsView.TextContent.navigationTitle
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: AllDomainsListViewController.Strings.title,
-            style: .plain,
-            target: self,
-            action: #selector(didTapAllDomainsBarButtonItem)
-        )
+        if domainManagementFeatureFlag.enabled() {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: AllDomainsListViewController.Strings.title,
+                style: .plain,
+                target: self,
+                action: #selector(didTapAllDomainsBarButtonItem)
+            )
+        }
     }
 
     // MARK: - User Interaction
