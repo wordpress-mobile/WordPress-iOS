@@ -51,7 +51,7 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
                 cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 cell.alpha = 0.0
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(350)) {
                 showAdjacentPage()
             }
         } else {

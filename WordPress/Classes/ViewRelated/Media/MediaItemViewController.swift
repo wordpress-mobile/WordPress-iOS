@@ -479,7 +479,7 @@ private struct MediaMetadataPresenter {
         let width = media.width ?? 0
         let height = media.height ?? 0
 
-        return "\(width) ✕ \(height)"
+        return "\(width) × \(height)"
     }
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
