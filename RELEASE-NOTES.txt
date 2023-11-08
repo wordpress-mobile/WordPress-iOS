@@ -4,6 +4,7 @@
 
 23.6
 -----
+* [***] Added support for logging in with security keys [#22001]
 * [***] [Jetpack-only] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 * [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
 * [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
