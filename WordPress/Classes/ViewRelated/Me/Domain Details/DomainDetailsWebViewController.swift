@@ -20,6 +20,7 @@ final class DomainDetailsWebViewController: WebKitViewController {
         self.domain = domain
         let url = Self.wpcomDetailsURL(domain: domain, siteSlug: siteSlug, type: type)
         let configuration = WebViewControllerConfiguration(url: url)
+        configuration.customTitle = domain
         configuration.analyticsSource = analyticsSource
         configuration.secureInteraction = true
         configuration.authenticateWithDefaultAccount()
