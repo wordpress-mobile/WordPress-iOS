@@ -15,15 +15,7 @@ extension SiteMediaCollectionViewControllerDelegate {
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController:
-    UIViewController,
-    NSFetchedResultsControllerDelegate,
-    UICollectionViewDataSource,
-    UICollectionViewDelegate,
-    UICollectionViewDataSourcePrefetching,
-    UISearchResultsUpdating,
-    UIGestureRecognizerDelegate,
-    SiteMediaPageViewControllerDelegate {
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate, SiteMediaPageViewControllerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
