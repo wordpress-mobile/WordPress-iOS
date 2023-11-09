@@ -167,6 +167,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
         NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)
 
+        if !hidden {
+            self.transferFooterView.isHidden = false
+        }
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         } completion: { _ in
