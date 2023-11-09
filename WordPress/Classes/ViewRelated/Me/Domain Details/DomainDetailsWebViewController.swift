@@ -5,7 +5,9 @@ final class DomainDetailsWebViewController: WebKitViewController {
     // MARK: - Types
 
     private enum Constants {
-        static let domainManagementBasePath = "https://wordpress.com/domains/manage/all"
+        static let basePath = "https://wordpress.com"
+        static let domainsPath = "\(basePath)/domains"
+        static let manageAllDomainsPath = "\(domainsPath)/manage/all"
     }
 
     // MARK: - Properties
@@ -68,10 +70,7 @@ final class DomainDetailsWebViewController: WebKitViewController {
     // MARK: - Helpers
 
     private func shouldAllowNavigation(for url: URL) -> Bool {
-        guard let path = "\(Constants.domainManagementBasePath)/\(domain)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            return false
-        }
-        return url.absoluteString.contains(path)
+        return url.absoluteString.starts(with: Constants.domainsPath)
     }
 
     private func open(_ url: URL) {
@@ -87,7 +86,7 @@ final class DomainDetailsWebViewController: WebKitViewController {
             }
         }()
 
-        let url = "\(Constants.domainManagementBasePath)/\(domain)/\(viewSlug)/\(siteSlug)"
+        let url = "\(Constants.manageAllDomainsPath)/\(domain)/\(viewSlug)/\(siteSlug)"
 
         if let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             return URL(string: encodedURL)
