@@ -517,12 +517,7 @@ class AbstractPostListViewController: UIViewController,
         })
     }
 
-    let loadMoreCounter = LoadMoreCounter()
-
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-
-        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
-        loadMoreCounter.increment(properties: propertiesForAnalytics())
 
         setFooterHidden(false)
 
