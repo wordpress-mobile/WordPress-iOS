@@ -77,8 +77,8 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 
     private func presentLegacySiteMediaPicker(filter: WPMediaType,
-                                     allowMultipleSelection: Bool,
-                                     callback: @escaping GutenbergMediaPickerHelperCallback) {
+                                              allowMultipleSelection: Bool,
+                                              callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
 
         let mediaPickerOptions = WPMediaPickerOptions.withDefaults(filter: filter, allowMultipleSelection: allowMultipleSelection)
