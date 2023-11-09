@@ -18,6 +18,7 @@ struct DomainSetupNoticeView: View {
             Text(noticeText)
                 .font(.footnote)
                 .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(Metrics.noticeBoxPadding)
         .frame(maxWidth: .infinity)
