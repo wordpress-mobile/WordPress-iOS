@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 
-class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+final class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
