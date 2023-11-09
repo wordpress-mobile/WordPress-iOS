@@ -1,7 +1,7 @@
 import Foundation
 
 final class TransferDomainsWebViewController: WebKitViewController {
-    
+
     private enum Constants {
         static let url = URL(string: "https://wordpress.com/transfer-google-domains/")!
     }
@@ -12,7 +12,7 @@ final class TransferDomainsWebViewController: WebKitViewController {
         configuration.authenticateWithDefaultAccount()
         super.init(configuration: configuration)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
