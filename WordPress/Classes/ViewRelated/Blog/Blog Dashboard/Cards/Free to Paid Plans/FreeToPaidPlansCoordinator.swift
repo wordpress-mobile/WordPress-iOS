@@ -3,7 +3,7 @@ import SwiftUI
 
 @objc final class FreeToPaidPlansCoordinator: NSObject {
 
-    typealias PurchaseCallBack = ((UIViewController, String) -> Void)
+    typealias PurchaseCallback = ((UIViewController, String) -> Void)
 
     static func presentFreeDomainWithAnnualPlanFlow(
         in dashboardViewController: BlogDashboardViewController,
@@ -46,7 +46,7 @@ import SwiftUI
     ///   - customTitle: Title of of the presented view. If nil the title displays the title of the webview..
     ///   - purchaseCallback: closure to be called when user completes a plan purchase.
     static func plansFlowAfterDomainAddedToCartBlock(customTitle: String?,
-                                                     purchaseCallback: @escaping PurchaseCallBack) -> RegisterDomainCoordinator.DomainAddedToCartCallback {
+                                                     purchaseCallback: @escaping PurchaseCallback) -> RegisterDomainCoordinator.DomainAddedToCartCallback {
         let planSelected = { (planSelectionViewController: PlanSelectionViewController, domainName: String, checkoutURL: URL) in
             let viewModel = CheckoutViewModel(url: checkoutURL)
             let checkoutViewController = CheckoutViewController(viewModel: viewModel, customTitle: customTitle, purchaseCallback: { checkoutViewController in
