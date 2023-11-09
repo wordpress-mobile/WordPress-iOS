@@ -26,7 +26,7 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Views
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+    private let refreshControl = UIRefreshControl()
     private let emptyView = AllDomainsListEmptyView()
 
     // MARK: - Properties
@@ -75,7 +75,9 @@ final class AllDomainsListViewController: UIViewController {
         self.setupBarButtonItems()
         self.setupSearchBar()
         self.setupTableView()
+        self.setupRefreshControl()
         self.setupEmptyView()
+        self.setupNavigationBarAppearance()
     }
 
     private func setupBarButtonItems() {
@@ -124,7 +126,26 @@ final class AllDomainsListViewController: UIViewController {
         ])
     }
 
-    // MARK: - UI Updates
+    /// Force the navigation bar separator to be always visible.
+    private func setupNavigationBarAppearance() {
+        let appearance = self.navigationController?.navigationBar.standardAppearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+        self.navigationItem.compactScrollEdgeAppearance = appearance
+    }
+
+    private func setupRefreshControl() {
+        let action = UIAction { [weak self] action in
+            guard let self, let refreshControl = action.sender as? UIRefreshControl else {
+                return
+            }
+            self.tableView.sendSubviewToBack(refreshControl)
+            self.viewModel.loadData()
+        }
+        self.refreshControl.addAction(action, for: .valueChanged)
+        self.tableView.addSubview(refreshControl)
+    }
+
+    // MARK: - Reacting to State Changes
 
     private func observeState() {
         self.viewModel.$state.sink { [weak self] state in
@@ -134,6 +155,7 @@ final class AllDomainsListViewController: UIViewController {
             self.state = state
             switch state {
             case .normal, .loading:
+                self.refreshControl.endRefreshing()
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
             case .message(let viewModel):
@@ -173,12 +195,12 @@ final class AllDomainsListViewController: UIViewController {
 extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Workaround to accurately control section height using `tableView.sectionHeaderHeight`.
+        // Workaround to change the section height using `tableView.sectionHeaderHeight`.
         return UIView()
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Workaround to accurately control footer height using `tableView.sectionFooterHeight`.
+        // Workaround to change the footer height using `tableView.sectionFooterHeight`.
         return UIView()
     }
 
