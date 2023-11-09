@@ -15,6 +15,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
     private var isPreparingToShare = false
+    private var isFirstAppearance = true
 
     @objc init(blog: Blog) {
         self.blog = blog
@@ -45,14 +46,19 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.hidesSearchBarWhenScrolling = false
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        navigationItem.hidesSearchBarWhenScrolling = true
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = true
+            isFirstAppearance = false
+        }
     }
 
     // MARK: - Configuration

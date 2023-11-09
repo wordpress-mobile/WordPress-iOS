@@ -15,7 +15,7 @@ extension SiteMediaCollectionViewControllerDelegate {
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate, SiteMediaPageViewControllerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -344,13 +344,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
                 setSelected(false, for: media)
-
-                if let viewController = navigationController?.topViewController,
-                   viewController !== self,
-                    let detailsViewController = viewController as? MediaItemViewController,
-                   detailsViewController.media.objectID == media.objectID {
-                    navigationController?.popViewController(animated: true)
-                }
+                didDeleteMedia(media, at: indexPath)
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
@@ -363,6 +357,16 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })
         @unknown default:
             break
+        }
+    }
+
+    private func didDeleteMedia(_ media: Media, at indexPath: IndexPath) {
+        if let viewController = navigationController?.topViewController,
+           let detailsViewController = viewController as? SiteMediaPageViewController {
+            let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+
+            detailsViewController.didDeleteItem(media, before: before, after: after)
         }
     }
 
@@ -412,9 +416,10 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             case .failed, .pushing, .processing:
                 showRetryOptions(for: media)
             case .sync:
-                let viewController = MediaItemViewController(media: media)
                 WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-                navigationController?.pushViewController(viewController, animated: true)
+
+                let viewController = SiteMediaPageViewController(media: media, delegate: self)
+                self.navigationController?.pushViewController(viewController, animated: true)
             default: break
             }
         }
@@ -477,6 +482,27 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         } catch {
             WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
+    }
+
+
+    // MARK: - SiteMediaPageViewControllerDelegate
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaBeforeMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index > 0 else {
+            return nil
+        }
+        return fetchedObjects[index - 1]
+    }
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaAfterMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index < (fetchedObjects.count - 1) else {
+            return nil
+        }
+        return fetchedObjects[index + 1]
     }
 
     // MARK: - Menus
