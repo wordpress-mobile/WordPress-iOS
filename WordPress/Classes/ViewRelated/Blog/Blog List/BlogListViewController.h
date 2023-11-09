@@ -13,7 +13,7 @@
 @property (nonatomic, copy) void (^blogSelected)(BlogListViewController* blogListViewController, Blog* blog);
 
 - (id)initWithConfiguration:(BlogListConfiguration *)configuration
-           meScenePresenter:(nullable id<ScenePresenter>)meScenePresenter;
+           meScenePresenter:(id<ScenePresenter>)meScenePresenter;
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
 - (void)showLoading;

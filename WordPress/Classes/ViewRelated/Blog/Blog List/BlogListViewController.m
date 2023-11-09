@@ -42,7 +42,7 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 - (id)initWithConfiguration:(BlogListConfiguration *)configuration
-           meScenePresenter:(nullable id<ScenePresenter>)meScenePresenter
+           meScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
     
