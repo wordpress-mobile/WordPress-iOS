@@ -1,6 +1,7 @@
 import AutomatticTracks
 import UIKit
 import Gridicons
+import WordPressShared
 
 class PostCompactCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
