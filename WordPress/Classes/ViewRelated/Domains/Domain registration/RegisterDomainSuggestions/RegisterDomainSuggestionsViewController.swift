@@ -119,8 +119,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         guard domainSelectionType == .purchaseFromDomainManagement else {
             return
         }
-        let configuration = RegisterDomainTransferFooterView.Configuration {
-
+        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
+            let destination = TransferDomainsWebViewController()
+            self?.present(UINavigationController(rootViewController: destination), animated: true)
         }
         self.view.addSubview(transferFooterView)
         self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,15 +160,16 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         guard transferFooterView.superview != nil else {
             return
         }
-        let constraintsToDeactivate = hidden ? transferFooterViewConstraints.visible : transferFooterViewConstraints.hidden
-        let constraintsToActivate = hidden ? transferFooterViewConstraints.hidden : transferFooterViewConstraints.visible
-        let animations: () -> Void = {
-            NSLayoutConstraint.deactivate(constraintsToDeactivate)
-            NSLayoutConstraint.activate(constraintsToActivate)
-            self.view.layoutIfNeeded()
-        }
+
+        let constraints = transferFooterViewConstraints
         let duration = animated ? WPAnimationDurationDefault : 0
-        UIView.animate(withDuration: duration, animations: animations) { _ in
+
+        NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
+        NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)
+
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
             self.transferFooterView.isHidden = hidden
             self.view.setNeedsLayout()
         }

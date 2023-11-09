@@ -86,7 +86,7 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
 
 extension DashboardGoogleDomainsCardCell: DashboardGoogleDomainsCardCellProtocol {
     func presentGoogleDomainsWebView(with url: URL) {
-
+        // TODO: Use `TransferDomainsWebViewController` instead.
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(
             url: url,
             source: "domain_focus_card"
