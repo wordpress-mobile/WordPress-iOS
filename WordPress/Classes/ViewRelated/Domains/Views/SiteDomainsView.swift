@@ -220,19 +220,21 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = SiteDomainsView.TextContent.navigationTitle
-        if domainManagementFeatureFlag.enabled() {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: AllDomainsListViewController.Strings.title,
-                style: .plain,
-                target: self,
-                action: #selector(didTapAllDomainsBarButtonItem)
-            )
-        }
+        self.setupAllDomainsBarButtonItem()
     }
 
-    // MARK: - User Interaction
+    // MARK: - Setup
 
-    @objc private func didTapAllDomainsBarButtonItem() {
-        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+    private func setupAllDomainsBarButtonItem() {
+#if JETPACK
+        guard domainManagementFeatureFlag.enabled() else {
+            return
+        }
+        let title = AllDomainsListViewController.Strings.title
+        let action = UIAction { [weak self] _ in
+            self?.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+        }
+        self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
+#endif
     }
 }
