@@ -41,12 +41,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    private let transferFooterView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private lazy var transferFooterView = RegisterDomainTransferFooterView()
 
     static func instance(coordinator: RegisterDomainCoordinator,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
@@ -113,33 +108,17 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         guard domainSelectionType == .purchaseFromDomainManagement else {
             return
         }
-
         let configuration = RegisterDomainTransferFooterView.Configuration {
 
         }
-
-        let hostingController = UIHostingController(rootView: RegisterDomainTransferFooterView(configuration: configuration))
-        hostingController.willMove(toParent: self)
-        hostingController.view.backgroundColor = .clear
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
-        self.transferFooterView.addTopBorder(withColor: .divider)
-        self.transferFooterView.addSubview(hostingController.view)
         self.view.addSubview(transferFooterView)
-
-        self.addChild(hostingController)
-
+        self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
+        self.transferFooterView.setup(with: configuration, parent: self)
         NSLayoutConstraint.activate([
-            hostingController.view.leadingAnchor.constraint(equalTo: transferFooterView.readableContentGuide.leadingAnchor, constant: Length.Padding.double),
-            hostingController.view.trailingAnchor.constraint(equalTo: transferFooterView.readableContentGuide.trailingAnchor, constant: -Length.Padding.double),
-            hostingController.view.topAnchor.constraint(equalTo: transferFooterView.topAnchor, constant: Length.Padding.double),
-            hostingController.view.bottomAnchor.constraint(equalTo: transferFooterView.safeAreaLayoutGuide.bottomAnchor, constant: -Length.Padding.double),
             transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-        hostingController.didMove(toParent: self)
 #endif
     }
 
