@@ -8,13 +8,24 @@ final class DomainDetailsWebViewController: WebKitViewController {
         static let basePath = "https://wordpress.com"
         static let domainsPath = "\(basePath)/domains"
         static let manageAllDomainsPath = "\(domainsPath)/manage/all"
+        static let manageDomainsPaths: Set<String> = [
+            "\(domainsPath)/manage",
+            Constants.manageAllDomainsPath
+        ]
     }
+
+    typealias DomainSettingsUpdatedCallBack = ((DomainDetailsWebViewController, String) -> Void)
 
     // MARK: - Properties
 
     private let domain: String
 
     private var observation: NSKeyValueObservation?
+
+    // MARK: - Callbacks
+
+    /// Called when when web view is redirected to `/domains/manage/all`. This can happen when a domain is attached to an existing site.
+    var redirectedToManageAllDomains: DomainSettingsUpdatedCallBack?
 
     // MARK: - Init
 
@@ -51,6 +62,9 @@ final class DomainDetailsWebViewController: WebKitViewController {
                 // Open URL in device browser then go back to Domain Management page.
                 self.open(url)
                 self.goBack()
+            } else if Constants.manageDomainsPaths.contains(url.absoluteString) {
+                self.redirectedToManageAllDomains?(self, domain)
+                self.popOrDismiss()
             }
         }
     }

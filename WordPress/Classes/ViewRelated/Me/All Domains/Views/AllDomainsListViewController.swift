@@ -162,6 +162,9 @@ final class AllDomainsListViewController: UIViewController {
             type: domain.type,
             analyticsSource: "all-domains"
         )
+        destination.domainSettingsUpdated = { [weak self] _, _, _ in
+            self?.reloadDomains()
+        }
         destination.configureSandboxStore {
             navigationController.pushViewController(destination, animated: true)
         }
