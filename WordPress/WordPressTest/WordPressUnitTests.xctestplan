@@ -38,6 +38,13 @@
     },
     {
       "target" : {
+        "containerPath" : "container:..\/JetpackStatsWidgetsCore",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "E16AB92914D978240047A2E5",
         "name" : "WordPressTest"
