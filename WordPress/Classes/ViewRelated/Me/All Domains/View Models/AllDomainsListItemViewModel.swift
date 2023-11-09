@@ -2,15 +2,27 @@ import Foundation
 
 struct AllDomainsListItemViewModel {
 
-    let name: String
-    let description: String?
-    let status: Status?
-    let expiryDate: String?
-}
+    // MARK: - Types
 
-// MARK: - Convenience Inits
+    private enum Strings {
+        static let expired = NSLocalizedString(
+            "domain.management.card.expired.label",
+            value: "Expired",
+            comment: "The expired label of the domain card in All Domains screen."
+        )
+        static let renews = NSLocalizedString(
+            "domain.management.card.renews.label",
+            value: "Renews",
+            comment: "The renews label of the domain card in All Domains screen."
+        )
+    }
 
-extension AllDomainsListItemViewModel {
+    typealias Row = AllDomainsListCardView.ViewModel
+    typealias Domain = DomainsService.AllDomainsListItem
+    typealias Status = Domain.Status
+    typealias StatusType = DomainsService.AllDomainsListItem.StatusType
+
+    // MARK: - Properties
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -19,14 +31,22 @@ extension AllDomainsListItemViewModel {
         return formatter
     }()
 
+    let domain: Domain
+    let row: Row
+
+    // MARK: - Init
+
     init(domain: Domain) {
-        self.init(
+        self.domain = domain
+        self.row = .init(
             name: domain.domain,
             description: Self.description(from: domain),
             status: domain.status,
             expiryDate: Self.expiryDate(from: domain)
         )
     }
+
+    // MARK: - Helpers
 
     private static func description(from domain: Domain) -> String? {
         guard !domain.isDomainOnlySite else {
@@ -44,27 +64,4 @@ extension AllDomainsListItemViewModel {
         let formatted = Self.dateFormatter.string(from: date)
         return "\(notice) \(formatted)"
     }
-}
-
-// MARK: - Types
-
-extension AllDomainsListItemViewModel {
-
-    private enum Strings {
-
-        static let expired = NSLocalizedString(
-            "domain.management.card.expired.label",
-            value: "Expired",
-            comment: "The expired label of the domain card in My Domains screen."
-        )
-        static let renews = NSLocalizedString(
-            "domain.management.card.renews.label",
-            value: "Renews",
-            comment: "The renews label of the domain card in My Domains screen."
-        )
-    }
-
-    typealias Domain = DomainsService.AllDomainsListItem
-    typealias Status = Domain.Status
-    typealias StatusType = DomainsService.AllDomainsListItem.StatusType
 }

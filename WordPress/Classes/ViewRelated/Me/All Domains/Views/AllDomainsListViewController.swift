@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import AutomatticTracks
 
 final class AllDomainsListViewController: UIViewController {
 
@@ -15,9 +16,11 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     typealias ViewModel = AllDomainsListViewModel
+    typealias Domain = AllDomainsListItemViewModel
 
     // MARK: - Dependencies
 
+    private let crashLogger: CrashLogging
     private let viewModel: ViewModel
 
     // MARK: - Views
@@ -36,8 +39,9 @@ final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Init
 
-    init(viewModel: ViewModel = .init()) {
+    init(viewModel: ViewModel = .init(), crashLogger: CrashLogging = CrashLogging.main) {
         self.viewModel = viewModel
+        self.crashLogger = crashLogger
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,7 +83,6 @@ final class AllDomainsListViewController: UIViewController {
             self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
-
         self.navigationItem.rightBarButtonItem = addBarButtonItem
     }
 
@@ -146,6 +149,23 @@ final class AllDomainsListViewController: UIViewController {
     private func navigateToAddDomain() {
         AllDomainsAddDomainCoordinator.presentAddDomainFlow(in: self)
     }
+
+    private func navigateToDomainDetails(with viewModel: Domain) {
+        guard let navigationController = navigationController else {
+            self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
+            return
+        }
+        let domain = viewModel.domain
+        let destination = DomainDetailsWebViewController(
+            domain: domain.domain,
+            siteSlug: domain.siteSlug,
+            type: domain.type,
+            analyticsSource: "all-domains"
+        )
+        destination.configureSandboxStore {
+            navigationController.pushViewController(destination, animated: true)
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -182,7 +202,7 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
             let domain = domains[indexPath.section]
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! AllDomainsListTableViewCell
             cell.accessoryType = .disclosureIndicator
-            cell.update(with: domain, parent: self)
+            cell.update(with: domain.row, parent: self)
             return cell
         default:
             return UITableViewCell()
@@ -191,6 +211,13 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        switch state {
+        case .normal(let domains):
+            let domain = domains[indexPath.section]
+            self.navigateToDomainDetails(with: domain)
+        default:
+            break
+        }
     }
 }
 
