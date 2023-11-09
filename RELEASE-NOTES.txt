@@ -12,6 +12,8 @@
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
+* [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
+* [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]
 
 23.6
 -----
