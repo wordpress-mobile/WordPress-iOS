@@ -111,6 +111,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.pinSubviewToAllEdges(view)
+        collectionView.accessibilityIdentifier = "MediaCollection"
 
         collectionView.dataSource = self
         collectionView.delegate = self
