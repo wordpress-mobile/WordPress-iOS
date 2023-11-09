@@ -89,6 +89,9 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                 let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
                 rightBarButtonItems.append(doneButton)
             } else {
+                if let menu = collectionViewController.makeMoreMenu() {
+                    rightBarButtonItems.append(UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu))
+                }
                 let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
                 rightBarButtonItems.append(selectButton)
             }

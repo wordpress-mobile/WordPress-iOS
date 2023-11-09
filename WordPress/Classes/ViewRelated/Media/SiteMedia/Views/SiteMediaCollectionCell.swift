@@ -13,7 +13,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
 
     private var viewModel: SiteMediaCollectionCellViewModel?
     private var cancellables: [AnyCancellable] = []
-    private lazy var aspectRatioConstraint = imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor, multiplier: 1)
+    private var aspectRatioConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,12 +30,16 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         NSLayoutConstraint.activate([
             imageContainerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             imageContainerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            imageContainerView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor),
-            imageContainerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor),
-            imageContainerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor),
-            imageContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor),
-            aspectRatioConstraint
         ])
+        NSLayoutConstraint.activate([
+            imageContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+        ].map {
+            $0.priority = .init(rawValue: 900)
+            return $0
+        })
 
         overlayView.backgroundColor = .neutral(.shade70).withAlphaComponent(0.5)
 
@@ -73,8 +77,17 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         documentInfoView?.isHidden = true
     }
 
-    func configure(viewModel: SiteMediaCollectionCellViewModel) {
+    func configure(viewModel: SiteMediaCollectionCellViewModel, isAspectRatioModeEnabled: Bool) {
         self.viewModel = viewModel
+
+        aspectRatioConstraint?.isActive = false
+        aspectRatioConstraint = nil
+
+        if isAspectRatioModeEnabled, let aspectRatio = viewModel.aspectRatio {
+            let aspectRatioConstraint = imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor, multiplier: aspectRatio)
+            aspectRatioConstraint.isActive = true
+            self.aspectRatioConstraint = aspectRatioConstraint
+        }
 
         if let image = viewModel.getCachedThubmnail() {
             // Display with no animations. It should happen often thanks to prefetching.

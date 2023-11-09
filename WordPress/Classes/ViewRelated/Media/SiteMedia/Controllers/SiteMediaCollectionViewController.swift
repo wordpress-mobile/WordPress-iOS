@@ -51,6 +51,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     static let spacing: CGFloat = 2
+    static let spacingAspectRatio: CGFloat = 8
 
     var selectedMedia: [Media] {
         guard let selection = selection.array as? [Media] else {
@@ -129,7 +130,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = SiteMediaCollectionViewController.spacing
+        let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
         let itemsPerRow = availableWidth < 450 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
@@ -138,6 +139,30 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+
+    func makeMoreMenu() -> UIMenu? {
+        guard !makeMoreMenuActions().isEmpty else {
+            return nil
+        }
+        return UIMenu(children: [UIDeferredMenuElement.uncached { [weak self] in
+            $0(self?.makeMoreMenuActions() ?? [])
+        }])
+    }
+
+    private func makeMoreMenuActions() -> [UIAction] {
+        var actions: [UIAction] = []
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+            actions.append(UIAction(
+                title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                    UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
+                    self?.updateFlowLayoutItemSize()
+                    self?.collectionView.reloadData()
+                })
+        }
+        return actions
     }
 
     // MARK: - Editing (Selection)
@@ -397,7 +422,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
-        cell.configure(viewModel: viewModel)
+        cell.configure(viewModel: viewModel, isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
         return cell
     }
 
@@ -571,4 +596,6 @@ private enum Strings {
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
     static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
+    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
+    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }
