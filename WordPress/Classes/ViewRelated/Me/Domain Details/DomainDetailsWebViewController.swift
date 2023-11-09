@@ -59,11 +59,17 @@ final class DomainDetailsWebViewController: WebKitViewController {
 
     override func goBack() {
         if webView.canGoBack {
-            webView.goBack()
-        } else if let navigationController {
-            navigationController.popViewController(animated: true)
+            self.webView.goBack()
         } else {
-            dismiss(animated: true)
+            self.popOrDismiss()
+        }
+    }
+
+    private func popOrDismiss(animated: Bool = true) {
+        if let navigationController {
+            navigationController.popViewController(animated: animated)
+        } else {
+            dismiss(animated: animated)
         }
     }
 
