@@ -3,6 +3,7 @@ import Combine
 import Gifu
 
 final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
+    private let imageContainerView = UIView()
     private let imageView = GIFImageView()
     private let overlayView = CircularProgressView()
     private let placeholderView = UIView()
@@ -12,6 +13,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
 
     private var viewModel: SiteMediaCollectionCellViewModel?
     private var cancellables: [AnyCancellable] = []
+    private var aspectRatioConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,19 +24,36 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         imageView.contentMode = .scaleAspectFill
         imageView.accessibilityIgnoresInvertColors = true
 
+        contentView.addSubview(imageContainerView)
+        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            imageContainerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            imageContainerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        ])
+        NSLayoutConstraint.activate([
+            imageContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+        ].map {
+            $0.priority = .init(rawValue: 900)
+            return $0
+        })
+
         overlayView.backgroundColor = .neutral(.shade70).withAlphaComponent(0.5)
 
-        contentView.addSubview(placeholderView)
+        imageContainerView.addSubview(placeholderView)
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(placeholderView)
+        imageContainerView.pinSubviewToAllEdges(placeholderView)
 
-        contentView.addSubview(imageView)
+        imageContainerView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(imageView)
+        imageContainerView.pinSubviewToAllEdges(imageView)
 
-        contentView.addSubview(overlayView)
+        imageContainerView.addSubview(overlayView)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(overlayView)
+        imageContainerView.pinSubviewToAllEdges(overlayView)
     }
 
     required init?(coder: NSCoder) {
@@ -51,6 +70,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         imageView.prepareForReuse()
         imageView.image = nil
         imageView.alpha = 0
+
         placeholderView.alpha = 1
         selectionView?.isHidden = true
         durationView?.isHidden = true
@@ -85,6 +105,17 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         configureAccessibility(viewModel)
 
         viewModel.onAppear()
+    }
+
+    func configure(isAspectRatioModeEnabled: Bool) {
+        aspectRatioConstraint?.isActive = false
+        aspectRatioConstraint = nil
+
+        if isAspectRatioModeEnabled, let aspectRatio = viewModel?.aspectRatio {
+            let aspectRatioConstraint = imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor, multiplier: aspectRatio)
+            aspectRatioConstraint.isActive = true
+            self.aspectRatioConstraint = aspectRatioConstraint
+        }
     }
 
     // MARK: - Refresh
@@ -160,13 +191,13 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             return documentInfoView
         }
         let documentInfoView = SiteMediaDocumentInfoView()
-        contentView.addSubview(documentInfoView)
+        imageContainerView.addSubview(documentInfoView)
         documentInfoView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            documentInfoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
-            documentInfoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
-            documentInfoView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 4),
-            documentInfoView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -4)
+            documentInfoView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor, constant: 0),
+            documentInfoView.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor, constant: 0),
+            documentInfoView.leadingAnchor.constraint(greaterThanOrEqualTo: imageContainerView.leadingAnchor, constant: 4),
+            documentInfoView.trailingAnchor.constraint(lessThanOrEqualTo: imageContainerView.trailingAnchor, constant: -4)
         ])
         self.documentInfoView = documentInfoView
         return documentInfoView
@@ -177,11 +208,11 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             return durationView
         }
         let durationView = SiteMediaVideoDurationView()
-        contentView.addSubview(durationView)
+        imageContainerView.addSubview(durationView)
         durationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            durationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-            durationView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
+            durationView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor, constant: 0),
+            durationView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 0)
         ])
         self.durationView = durationView
         return durationView
@@ -192,9 +223,9 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             return selectionView
         }
         let selectionView = SiteMediaCollectionCellSelectionOverlayView()
-        contentView.addSubview(selectionView)
+        imageContainerView.addSubview(selectionView)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(selectionView)
+        imageContainerView.pinSubviewToAllEdges(selectionView)
         self.selectionView = selectionView
         return selectionView
     }
