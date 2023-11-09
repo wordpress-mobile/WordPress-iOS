@@ -3,6 +3,10 @@ import AutomatticTracks
 
 class RegisterDomainCoordinator {
 
+    enum Error: Swift.Error {
+        case noDomainWhenCreatingCart
+    }
+
     // MARK: Type Aliases
 
     typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
@@ -34,45 +38,49 @@ class RegisterDomainCoordinator {
     func handlePurchaseDomainOnly(on viewController: UIViewController,
                                   onSuccess: @escaping () -> (),
                                   onFailure: @escaping () -> ()) {
-        createCart(
-            onSuccess: { [weak self] in
+        createCart { [weak self] result in
+            switch result {
+            case .success:
                 guard let self else { return }
                 self.presentCheckoutWebview(on: viewController, title: nil, shouldPush: false)
                 onSuccess()
-            },
-            onFailure: onFailure
-        )
+            case .failure:
+                onFailure()
+            }
+        }
     }
 
     /// Adds the selected domain to the cart then executes `domainAddedToCartCallback` if set.
     func addDomainToCart(on viewController: UIViewController,
                          onSuccess: @escaping () -> (),
                          onFailure: @escaping () -> ()) {
-        createCart(
-            onSuccess: { [weak self] in
+        createCart { [weak self] result in
+            switch result {
+            case .success(let domain):
                 guard let self = self,
-                      let domain = self.domain,
                       let blog = site else {
                     return
                 }
 
                 self.domainAddedToCartCallback?(viewController, domain.domainName, blog)
-                onSuccess()
-            },
-            onFailure: onFailure
-        )
+            case .failure:
+                onFailure()
+            }
+        }
     }
 
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then launches the checkout webview
     /// The checkout webview is configured for the domain management flow
     func handleNoSiteChoice(on viewController: UIViewController) {
-        createCart(
-            onSuccess: { [weak self] in
+        createCart { [weak self] result in
+            switch result {
+            case .success:
                 self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle, shouldPush: true)
-            }) {
+            case .failure:
                 viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
             }
+        }
     }
 
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
@@ -89,22 +97,22 @@ class RegisterDomainCoordinator {
 
         blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
             guard let self,
-                  let blog = selectedBlog else {
+                  let controller,
+                  let selectedBlog else {
                 return
             }
-            self.site = blog
-            controller?.showLoading()
-            self.createCart {
-                if let controller,
-                   let domainName = self.domain?.domainName {
-                    self.domainAddedToCartCallback?(controller, domainName, blog)
+            self.site = selectedBlog
+            controller.showLoading()
+            self.createCart { [weak self] result in
+                switch result {
+                case .success(let domain):
+                    self?.domainAddedToCartCallback?(controller, domain.domainName, selectedBlog)
+                    controller.hideLoading()
+                case .failure:
+                    controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                    controller.hideLoading()
                 }
-                controller?.hideLoading()
-            } onFailure: {
-                controller?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                controller?.hideLoading()
             }
-
         }
 
         viewController.navigationController?.pushViewController(blogListViewController, animated: true)
@@ -112,19 +120,21 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
-    private func createCart(onSuccess: @escaping () -> (),
-                    onFailure: @escaping () -> ()) {
-        guard let domain else { return }
+    private func createCart(completion: @escaping (Result<FullyQuotedDomainSuggestion, Swift.Error>) -> Void) {
+        guard let domain else {
+            completion(.failure(Error.noDomainWhenCreatingCart))
+            return
+        }
         let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { _ in
-            onSuccess()
+            completion(.success(domain))
         },
-                                                 failure: { _ in
-            onFailure()
+                                                 failure: { error in
+            completion(.failure(error))
         })
     }
 
