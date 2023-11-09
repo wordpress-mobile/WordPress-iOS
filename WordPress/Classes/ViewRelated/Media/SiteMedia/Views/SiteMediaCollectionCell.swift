@@ -225,7 +225,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         let selectionView = SiteMediaCollectionCellSelectionOverlayView()
         imageContainerView.addSubview(selectionView)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(selectionView)
+        imageContainerView.pinSubviewToAllEdges(selectionView)
         self.selectionView = selectionView
         return selectionView
     }
