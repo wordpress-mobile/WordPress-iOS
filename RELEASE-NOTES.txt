@@ -1,5 +1,13 @@
 23.7
 -----
+* [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
+* [*] Posts & Pages: Moved actions to a context menu and added new actions such as “Comments”, “Settings”, and “Set as regular page”. Made the context menu available via long-press (#21886, #21965, #21963, #21967)
+* [*] Posts & Pages: Added swipe actions - left to view, right to share and/or delete (#21917)
+* [***] Posts & Pages: Added paging, full-text search, and searching via “author” / “tag” filters (#21789)
+* [*] Posts & Pages: Search now works across all authors unless you explicitly add the author filter (#21966)
+* [*] Posts & Pages: Fix an issue with the Pages list not refreshing when the pages are added or modified
+* [*] Posts & Pages: Fix an issue where “View” action was available for Trashed posts (#21958)
+* [*] Posts & Pages: Fix rare crashes in Posts & Pages (#21298)
 * [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
