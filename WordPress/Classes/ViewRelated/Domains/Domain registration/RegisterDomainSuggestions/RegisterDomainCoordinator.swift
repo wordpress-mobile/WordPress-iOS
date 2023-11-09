@@ -18,7 +18,7 @@ class RegisterDomainCoordinator {
 
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
-    var domainAddedToCartCallback: DomainAddedToCartCallback?
+    var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
     var domain: FullyQuotedDomainSuggestion?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
@@ -50,19 +50,17 @@ class RegisterDomainCoordinator {
         }
     }
 
-    /// Adds the selected domain to the cart then executes `domainAddedToCartCallback` if set.
-    func addDomainToCart(on viewController: UIViewController,
+    /// Adds the selected domain to the cart then executes `domainAddedToCartAndLinkedToSiteCallback` if set.
+    func addDomainToCartLinkedToCurrentSite(on viewController: UIViewController,
                          onSuccess: @escaping () -> (),
                          onFailure: @escaping () -> ()) {
+        guard let blog = site else {
+            return
+        }
         createCart { [weak self] result in
             switch result {
             case .success(let domain):
-                guard let self = self,
-                      let blog = site else {
-                    return
-                }
-
-                self.domainAddedToCartCallback?(viewController, domain.domainName, blog)
+                self?.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, blog)
             case .failure:
                 onFailure()
             }
@@ -106,7 +104,7 @@ class RegisterDomainCoordinator {
             self.createCart { [weak self] result in
                 switch result {
                 case .success(let domain):
-                    self?.domainAddedToCartCallback?(controller, domain.domainName, selectedBlog)
+                    self?.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
                     controller.hideLoading()
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)

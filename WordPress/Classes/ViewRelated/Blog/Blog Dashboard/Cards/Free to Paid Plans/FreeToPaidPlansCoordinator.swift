@@ -35,7 +35,7 @@ import SwiftUI
 
         let domainAddedToCart = plansFlowAfterDomainAddedToCartBlock(customTitle: nil, purchaseCallback: purchaseCallback)
 
-        coordinator.domainAddedToCartCallback = domainAddedToCart
+        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         dashboardViewController.present(navigationController, animated: true)

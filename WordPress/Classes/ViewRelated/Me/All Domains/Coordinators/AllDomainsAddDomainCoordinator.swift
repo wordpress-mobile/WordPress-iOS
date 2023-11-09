@@ -21,7 +21,7 @@ import Foundation
             purchaseCallback: domainPurchasedCallback)
 
         coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
-        coordinator.domainAddedToCartCallback = domainAddedToCart // For existing site flow (plans)
+        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart // For existing site flow (plans)
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true

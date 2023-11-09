@@ -244,7 +244,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 onFailure: onFailure)
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
-            coordinator.addDomainToCart(
+            coordinator.addDomainToCartLinkedToCurrentSite(
                 on: self,
                 onSuccess: { [weak self] in
                     self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
