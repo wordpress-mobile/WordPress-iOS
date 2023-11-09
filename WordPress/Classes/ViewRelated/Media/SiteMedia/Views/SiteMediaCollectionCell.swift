@@ -77,17 +77,8 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         documentInfoView?.isHidden = true
     }
 
-    func configure(viewModel: SiteMediaCollectionCellViewModel, isAspectRatioModeEnabled: Bool) {
+    func configure(viewModel: SiteMediaCollectionCellViewModel) {
         self.viewModel = viewModel
-
-        aspectRatioConstraint?.isActive = false
-        aspectRatioConstraint = nil
-
-        if isAspectRatioModeEnabled, let aspectRatio = viewModel.aspectRatio {
-            let aspectRatioConstraint = imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor, multiplier: aspectRatio)
-            aspectRatioConstraint.isActive = true
-            self.aspectRatioConstraint = aspectRatioConstraint
-        }
 
         if let image = viewModel.getCachedThubmnail() {
             // Display with no animations. It should happen often thanks to prefetching.
@@ -114,6 +105,17 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         configureAccessibility(viewModel)
 
         viewModel.onAppear()
+    }
+
+    func configure(isAspectRatioModeEnabled: Bool) {
+        aspectRatioConstraint?.isActive = false
+        aspectRatioConstraint = nil
+
+        if isAspectRatioModeEnabled, let aspectRatio = viewModel?.aspectRatio {
+            let aspectRatioConstraint = imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor, multiplier: aspectRatio)
+            aspectRatioConstraint.isActive = true
+            self.aspectRatioConstraint = aspectRatioConstraint
+        }
     }
 
     // MARK: - Refresh

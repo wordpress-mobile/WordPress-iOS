@@ -157,12 +157,21 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             actions.append(UIAction(
                 title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
                 image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
-                    UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
-                    self?.updateFlowLayoutItemSize()
-                    self?.collectionView.reloadData()
+                    self?.toggleAspectRatioMode()
                 })
         }
         return actions
+    }
+
+    private func toggleAspectRatioMode() {
+        UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
+        UIView.animate(withDuration: 0.33) {
+            self.updateFlowLayoutItemSize()
+            for cell in self.collectionView.visibleCells {
+                guard let cell = cell as? SiteMediaCollectionCell else { continue }
+                cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
+            }
+        }
     }
 
     // MARK: - Editing (Selection)
@@ -422,7 +431,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
-        cell.configure(viewModel: viewModel, isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
+        cell.configure(viewModel: viewModel)
+        cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
         return cell
     }
 
