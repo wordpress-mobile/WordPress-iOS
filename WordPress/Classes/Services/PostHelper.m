@@ -6,96 +6,9 @@
 
 @implementation PostHelper
 
-+ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
-    NSNumber *previousPostID = post.postID;
-    post.postID = remotePost.postID;
-    // Used to populate author information for self-hosted sites.
-    BlogAuthor *author = [post.blog getAuthorWithId:remotePost.authorID];
-
-    post.author = remotePost.authorDisplayName ?: author.displayName;
-    post.authorID = remotePost.authorID;
-    post.date_created_gmt = remotePost.date;
-    post.dateModified = remotePost.dateModified;
-    post.postTitle = remotePost.title;
-    post.permaLink = [remotePost.URL absoluteString];
-    post.content = remotePost.content;
-    post.status = remotePost.status;
-    post.password = remotePost.password;
-
-    if (remotePost.postThumbnailID != nil) {
-        post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
-    } else {
-        post.featuredImage = nil;
-    }
-
-    post.pathForDisplayImage = remotePost.pathForDisplayImage;
-    if (post.pathForDisplayImage.length == 0) {
-        [post updatePathForDisplayImageBasedOnContent];
-    }
-    post.authorAvatarURL = remotePost.authorAvatarURL ?: author.avatarURL;
-    post.mt_excerpt = remotePost.excerpt;
-    post.wp_slug = remotePost.slug;
-    post.suggested_slug = remotePost.suggestedSlug;
-
-    if ([remotePost.revisions wp_isValidObject]) {
-        post.revisions = [remotePost.revisions copy];
-    }
-
-    if (remotePost.postID != previousPostID) {
-        [self updateCommentsForPost:post];
-    }
-
-    post.autosaveTitle = remotePost.autosave.title;
-    post.autosaveExcerpt = remotePost.autosave.excerpt;
-    post.autosaveContent = remotePost.autosave.content;
-    post.autosaveModifiedDate = remotePost.autosave.modifiedDate;
-    post.autosaveIdentifier = remotePost.autosave.identifier;
-
-    if ([post isKindOfClass:[Page class]]) {
-        Page *pagePost = (Page *)post;
-        pagePost.parentID = remotePost.parentID;
-    } else if ([post isKindOfClass:[Post class]]) {
-        Post *postPost = (Post *)post;
-        postPost.commentCount = remotePost.commentCount;
-        postPost.likeCount = remotePost.likeCount;
-        postPost.postFormat = remotePost.format;
-        postPost.tags = [remotePost.tags componentsJoinedByString:@","];
-        postPost.postType = remotePost.type;
-        postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
-        [self updatePost:postPost withRemoteCategories:remotePost.categories inContext:managedObjectContext];
-
-        NSString *publicID = nil;
-        NSString *publicizeMessage = nil;
-        NSString *publicizeMessageID = nil;
-        if (remotePost.metadata) {
-            NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
-            NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
-            NSDictionary *geoPublicDictionary = [self dictionaryWithKey:@"geo_public" inMetadata:remotePost.metadata];
-            if (latitudeDictionary && longitudeDictionary) {
-                NSNumber *latitude = [latitudeDictionary numberForKey:@"value"];
-                NSNumber *longitude = [longitudeDictionary numberForKey:@"value"];
-                CLLocationCoordinate2D coord;
-                coord.latitude = [latitude doubleValue];
-                coord.longitude = [longitude doubleValue];
-                publicID = [geoPublicDictionary stringForKey:@"id"];
-            }
-            NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];
-            publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
-            publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
-        }
-        postPost.publicID = publicID;
-        postPost.publicizeMessage = publicizeMessage;
-        postPost.publicizeMessageID = publicizeMessageID;
-        postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
-    }
-
-    post.statusAfterSync = post.status;
-}
-
 + (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
-    NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
-    [categories removeAllObjects];
+    NSMutableSet *categories = [NSMutableSet new];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
         PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:managedObjectContext];
         if (!category) {
@@ -106,6 +19,31 @@
         }
         [categories addObject:category];
     }
+    if (![post.categories isEqualToSet:categories]) {
+        post.categories = categories;
+    }
+}
+
++ (PostPublicizeInfo *)makePublicizeInfoWithPost:(AbstractPost *)post remotePost:(RemotePost *)remotePost {
+    PostPublicizeInfo *info = [[PostPublicizeInfo alloc] init];
+    if (remotePost.metadata) {
+        NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
+        NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
+        NSDictionary *geoPublicDictionary = [self dictionaryWithKey:@"geo_public" inMetadata:remotePost.metadata];
+        if (latitudeDictionary && longitudeDictionary) {
+            NSNumber *latitude = [latitudeDictionary numberForKey:@"value"];
+            NSNumber *longitude = [longitudeDictionary numberForKey:@"value"];
+            CLLocationCoordinate2D coord;
+            coord.latitude = [latitude doubleValue];
+            coord.longitude = [longitude doubleValue];
+            info.publicID = [geoPublicDictionary stringForKey:@"id"];
+        }
+        NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];
+        info.publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
+        info.publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
+        info.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
+    }
+    return info;
 }
 
 + (void)updateCommentsForPost:(AbstractPost *)post
@@ -289,5 +227,9 @@
 
     return posts;
 }
+
+@end
+
+@implementation PostPublicizeInfo
 
 @end

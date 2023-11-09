@@ -6,9 +6,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PostHelper: NSObject
+@interface PostPublicizeInfo: NSObject
+@property (nonatomic, nullable) NSString *publicID;
+@property (nonatomic, nullable) NSString *publicizeMessage;
+@property (nonatomic, nullable) NSString *publicizeMessageID;
+@property (nonatomic, nullable) NSDictionary<NSNumber *, NSDictionary<NSString *, NSString *> *> *disabledPublicizeConnections;
+@end
 
-+ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext;
+@interface PostHelper: NSObject
 
 /**
  Creates a RemotePost from an AbstractPost to be used for API calls.
@@ -25,6 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
           purgeExisting:(BOOL)purge
               inContext:(NSManagedObjectContext *)context;
 
+// For internal use (needs rewrite to Swift)
++ (void)updateCommentsForPost:(AbstractPost *)post;
++ (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext;
++ (PostPublicizeInfo *)makePublicizeInfoWithPost:(AbstractPost *)post remotePost:(RemotePost *)remotePost;
+
 @end
+
+
 
 NS_ASSUME_NONNULL_END

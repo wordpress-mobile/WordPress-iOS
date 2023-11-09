@@ -515,6 +515,8 @@
 		0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */; };
 		0CF0C4242AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */; };
+		0CF691232AF597BB003DF075 /* PostHelper+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF691222AF597BB003DF075 /* PostHelper+Swift.swift */; };
+		0CF691242AF597BB003DF075 /* PostHelper+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF691222AF597BB003DF075 /* PostHelper+Swift.swift */; };
 		0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */; };
 		0CFE9AC62AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */; };
 		0CFE9AC72AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */; };
@@ -6203,6 +6205,7 @@
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFeatureFlagsView.swift; sourceTree = "<group>"; };
 		0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostHelper.swift; sourceTree = "<group>"; };
+		0CF691222AF597BB003DF075 /* PostHelper+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostHelper+Swift.swift"; sourceTree = "<group>"; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
 		0CFD6C792A73E703003DD0A0 /* WordPress 152.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 152.xcdatamodel"; sourceTree = "<group>"; };
 		0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPostHelper+Actions.swift"; sourceTree = "<group>"; };
@@ -14271,6 +14274,7 @@
 				2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */,
 				4A2C73ED2A9577C000ACE79E /* PostHelper.h */,
 				4A2C73EC2A9577C000ACE79E /* PostHelper.m */,
+				0CF691222AF597BB003DF075 /* PostHelper+Swift.swift */,
 				FEFA6AC22A83F4BE004EE5E6 /* PostHelper+JetpackSocial.swift */,
 				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
 				08472A1F1C727E020040769D /* PostServiceOptions.m */,
@@ -22626,6 +22630,7 @@
 				98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				F5E1577F25DE04E200EEEDFB /* GutenbergMediaFilesUploadProcessor.swift in Sources */,
 				80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
+				0CF691232AF597BB003DF075 /* PostHelper+Swift.swift in Sources */,
 				805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */,
 				4A2C73EE2A9577C000ACE79E /* PostHelper.m in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
@@ -24278,6 +24283,7 @@
 				C72A4F68264088E4009CA633 /* JetpackNotFoundErrorViewModel.swift in Sources */,
 				FE1E201B2A473E0800CE7C90 /* JetpackSocialService.swift in Sources */,
 				FABB21F82602FC2C00C8785C /* AdaptiveNavigationController.swift in Sources */,
+				0CF691242AF597BB003DF075 /* PostHelper+Swift.swift in Sources */,
 				FABB21F92602FC2C00C8785C /* RemotePostCategory+Extensions.swift in Sources */,
 				FABB21FA2602FC2C00C8785C /* PostAutoUploadMessages.swift in Sources */,
 				FABB21FB2602FC2C00C8785C /* WPError+Swift.swift in Sources */,
