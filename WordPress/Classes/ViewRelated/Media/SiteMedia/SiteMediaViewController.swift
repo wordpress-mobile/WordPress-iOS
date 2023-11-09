@@ -21,7 +21,9 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        title = Strings.title
+        if !UIDevice.isPad() {
+            title = Strings.title
+        }
         extendedLayoutIncludesOpaqueBars = true
     }
 
@@ -80,21 +82,39 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         navigationItem.rightBarButtonItems = {
             var rightBarButtonItems: [UIBarButtonItem] = []
 
-            if !isEditing, blog.userCanUploadMedia {
-                configureAddMediaButton()
-                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+            func addEditingButtons() {
+                if isEditing {
+                    let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                    rightBarButtonItems.append(doneButton)
+                } else {
+                    let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+                    rightBarButtonItems.append(selectButton)
+                }
             }
 
-            if isEditing {
-                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
-                rightBarButtonItems.append(doneButton)
-            } else {
+            func addMoreButton() {
                 if let menu = collectionViewController.makeMoreMenu() {
                     rightBarButtonItems.append(UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu))
                 }
-                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-                rightBarButtonItems.append(selectButton)
             }
+
+            func addUploadButton() {
+                if !isEditing, blog.userCanUploadMedia {
+                    configureAddMediaButton()
+                    rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+                }
+            }
+
+            if UIDevice.isPad() {
+                addEditingButtons()
+                addMoreButton()
+                addUploadButton()
+
+            } else {
+                addUploadButton()
+                addEditingButtons()
+            }
+
             return rightBarButtonItems
         }()
     }
