@@ -282,6 +282,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     }
 }
 
+extension SiteMediaViewController {
+    static var sharingFailureMessage: String { Strings.sharingFailureMessage }
+}
+
 private enum Strings {
     static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")

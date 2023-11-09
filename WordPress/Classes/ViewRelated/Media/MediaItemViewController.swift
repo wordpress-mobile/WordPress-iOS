@@ -242,35 +242,32 @@ class MediaItemViewController: UITableViewController {
 
     // MARK: - Actions
 
-    private var shareVideoCancellable: AnyCancellable? = nil
-
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        switch media.mediaType {
-        case .image:
-            media.image(with: .zero) { [weak self] image, error in
-                guard let image = image else {
-                    if let error = error {
-                        DDLogError("Error when attempting to share image: \(error)")
-                    }
-                    return
-                }
-
-                self?.share(media: image, sender: sender)
+        func setPreparingToShare(_ isSharing: Bool) {
+            if isSharing {
+                let indicator = UIActivityIndicatorView()
+                indicator.startAnimating()
+                indicator.frame = CGRect(origin: .zero, size: CGSize(width: 44, height: 44))
+                sender.customView = indicator
+            } else {
+                sender.customView = nil
             }
-        case .audio, .video:
-            shareVideoCancellable = media.videoURLPublisher(skipTransformCheck: true).sink { [weak self] completion in
-                if case .failure(let error) = completion {
-                    DDLogError("Error when attempting to share video: \(error)")
-                }
+            sender.isEnabled = !isSharing
+        }
 
-                self?.shareVideoCancellable = nil
-            } receiveValue: { [weak self] url in
-                DispatchQueue.main.async { [weak self] in
-                    self?.share(media: url, sender: sender)
-                }
+        setPreparingToShare(true)
+
+        WPAnalytics.track(.siteMediaShareTapped, properties: ["number_of_items": 1])
+
+        Task {
+            do {
+                let fileURLs = try await Media.downloadRemoteData(for: [media], blog: media.blog)
+                self.share(fileURLs, sender: sender)
+            } catch {
+                SVProgressHUD.showError(withStatus: SiteMediaViewController.sharingFailureMessage)
             }
-        default:
-            break
+
+            setPreparingToShare(false)
         }
     }
 
@@ -401,7 +398,6 @@ class MediaItemViewController: UITableViewController {
                 WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
             }
         }
-
         present(activityController, animated: true)
     }
 }
