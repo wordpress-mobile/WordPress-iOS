@@ -1,6 +1,8 @@
 import UIKit
 
 extension AbstractPostHelper {
+    // MARK: - Swipe Actions
+
     static func makeLeadingContextualActions(for post: AbstractPost, delegate: InteractivePostViewDelegate) -> [UIContextualAction] {
         var actions: [UIContextualAction] = []
 

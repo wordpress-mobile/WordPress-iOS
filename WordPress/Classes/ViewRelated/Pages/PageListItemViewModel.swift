@@ -7,7 +7,6 @@ final class PageListItemViewModel {
     let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
-    let pageMenuViewModel: PageMenuViewModel
 
     init(page: Page) {
         self.page = page
@@ -16,7 +15,6 @@ final class PageListItemViewModel {
         self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
-        self.pageMenuViewModel = PageMenuViewModel(page: page)
     }
 }
 

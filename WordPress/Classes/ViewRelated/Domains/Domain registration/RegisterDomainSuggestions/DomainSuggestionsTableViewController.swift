@@ -33,7 +33,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     weak var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
     var domainSelectionType: DomainSelectionType?
-    var primaryDomainAddress: String = ""
+    var primaryDomainAddress: String?
 
     var useFadedColorForParentDomains: Bool {
         return false
@@ -287,7 +287,8 @@ extension DomainSuggestionsTableViewController {
 
     private func topBannerCell() -> UITableViewCell {
         let cell = UITableViewCell()
-        guard let textLabel = cell.textLabel else {
+        guard let textLabel = cell.textLabel,
+              let primaryDomainAddress else {
             return cell
         }
 
@@ -377,7 +378,8 @@ extension DomainSuggestionsTableViewController {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
-        let freeForFirstYear = hasDomainCredit || domainSelectionType == .purchaseWithPaidPlan
+        let supportsPlans = domainSelectionType == .purchaseWithPaidPlan || domainSelectionType == .purchaseFromDomainManagement
+        let freeForFirstYear = hasDomainCredit || supportsPlans
 
         if freeForFirstYear {
             attributedString.append(attributedFreeForTheFirstYear())
