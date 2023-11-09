@@ -6991,7 +6991,6 @@
 		5960967E1CF7959300848496 /* PostTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTests.swift; sourceTree = "<group>"; };
 		596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserViewController.swift; sourceTree = "<group>"; };
 		596C035F1B84F24000899EEB /* ThemeBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ThemeBrowser.storyboard; sourceTree = "<group>"; };
-		597421B01CEB6874005D5F38 /* ConfigurablePostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurablePostView.h; sourceTree = "<group>"; };
 		5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgentTests.m; sourceTree = "<group>"; };
 		598DD1701B97985700146967 /* ThemeBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserCell.swift; sourceTree = "<group>"; };
 		59A9AB331B4C33A500A433DC /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
@@ -12614,7 +12613,6 @@
 		5DF3DD6A1A93772D0051A229 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				597421B01CEB6874005D5F38 /* ConfigurablePostView.h */,
 				5D732F951AE84E3C00CD89E7 /* PostListFooterView.h */,
 				5D732F961AE84E3C00CD89E7 /* PostListFooterView.m */,
 				5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */,
