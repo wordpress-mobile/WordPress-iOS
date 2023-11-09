@@ -43,6 +43,17 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private lazy var transferFooterView = RegisterDomainTransferFooterView()
 
+    /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
+    private lazy var transferFooterViewConstraints: (visible: [NSLayoutConstraint], hidden: [NSLayoutConstraint]) = {
+        let base = [
+            transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        let visible = base + [transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+        let hidden = base + [transferFooterView.topAnchor.constraint(equalTo: view.bottomAnchor)]
+        return (visible: visible, hidden: hidden)
+    }()
+
     static func instance(coordinator: RegisterDomainCoordinator,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
@@ -92,7 +103,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             let insets = UIEdgeInsets(
                 top: 0,
                 left: 0,
-                bottom: transferFooterView.bounds.height,
+                bottom: transferFooterView.isHidden ? 0 : transferFooterView.bounds.height,
                 right: 0
             )
             if insets != domainsTableViewController.additionalSafeAreaInsets {
@@ -114,11 +125,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         self.view.addSubview(transferFooterView)
         self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
         self.transferFooterView.setup(with: configuration, parent: self)
-        NSLayoutConstraint.activate([
-            transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
 #endif
     }
 
@@ -143,6 +150,35 @@ class RegisterDomainSuggestionsViewController: UIViewController {
                                             target: self,
                                             action: #selector(handleSupportButtonTapped))
         navigationItem.rightBarButtonItem = supportButton
+    }
+
+    // MARK: - Show / Hide Transfer Footer
+
+    /// Updates transfer footer view constraints to either hide or show the view.
+    private func updateTransferFooterViewConstraints(hidden: Bool, animated: Bool = true) {
+        guard transferFooterView.superview != nil else {
+            return
+        }
+        let constraintsToDeactivate = hidden ? transferFooterViewConstraints.visible : transferFooterViewConstraints.hidden
+        let constraintsToActivate = hidden ? transferFooterViewConstraints.hidden : transferFooterViewConstraints.visible
+        let animations: () -> Void = {
+            NSLayoutConstraint.deactivate(constraintsToDeactivate)
+            NSLayoutConstraint.activate(constraintsToActivate)
+            self.view.layoutIfNeeded()
+        }
+        let duration = animated ? WPAnimationDurationDefault : 0
+        UIView.animate(withDuration: duration, animations: animations) { _ in
+            self.transferFooterView.isHidden = hidden
+            self.view.setNeedsLayout()
+        }
+    }
+
+    private func showTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: false, animated: animated)
+    }
+
+    private func hideTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: true, animated: animated)
     }
 
     // MARK: - Bottom Hideable Button
@@ -244,11 +280,13 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         coordinator?.domain = domain
         showButton(animated: true)
+        hideTransferFooterView(animated: true)
     }
 
     func newSearchStarted() {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
         hideButton(animated: true)
+        showTransferFooterView(animated: true)
     }
 }
 
