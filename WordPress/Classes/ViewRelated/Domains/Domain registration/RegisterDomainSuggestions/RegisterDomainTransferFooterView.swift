@@ -50,6 +50,7 @@ struct RegisterDomainTransferFooterView: View {
             .buttonStyle(PrimaryButtonStyle())
         }
         .frame(maxWidth: .infinity)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
