@@ -85,7 +85,7 @@ struct DomainPurchaseChoicesView: View {
             }
             .padding(.horizontal, Length.Padding.double)
         }
-        .background(Color.DS.Background.primary)
+        .background(Color.DS.Background.tertiary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
@@ -122,7 +122,7 @@ private extension DomainPurchaseChoicesView {
 
         static let buyDomainSubtitle = NSLocalizedString(
             "domain.management.buy.card.subtitle",
-            value: "Add a site later",
+            value: "Add a site later.",
             comment: "Domain management buy domain card subtitle"
         )
 
@@ -171,5 +171,6 @@ struct DomainPurchaseChoicesView_Previews: PreviewProvider {
         } chooseSiteAction: {
             print("Choose site tapped")
         }
+        .environment(\.colorScheme, .dark)
     }
 }

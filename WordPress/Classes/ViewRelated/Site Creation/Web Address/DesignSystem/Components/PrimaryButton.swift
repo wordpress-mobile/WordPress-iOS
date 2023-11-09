@@ -17,7 +17,7 @@ public struct PrimaryButton: View {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color.DS.Background.brand)
                 Text(title)
-                    .foregroundStyle(Color.DS.Background.primary)
+                    .foregroundStyle(Color.white)
             }
             .frame(height: 50)
         }
