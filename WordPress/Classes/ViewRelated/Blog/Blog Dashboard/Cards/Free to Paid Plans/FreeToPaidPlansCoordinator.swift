@@ -7,8 +7,9 @@ import SwiftUI
         source: String,
         blog: Blog
     ) {
+        let coordinator = RegisterDomainCoordinator(site: blog)
         let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
-            site: blog,
+            coordinator: coordinator,
             domainSelectionType: .purchaseWithPaidPlan,
             includeSupportButton: false
         )
@@ -39,7 +40,7 @@ import SwiftUI
             }
         }
 
-        let domainAddedToCart = { (domainViewController: RegisterDomainSuggestionsViewController, domainName: String) in
+        let domainAddedToCart = { (domainViewController: UIViewController, domainName: String) in
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
             let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
             planSelectionViewController.planSelectedCallback = { planSelectionViewController, checkoutURL in
@@ -47,7 +48,7 @@ import SwiftUI
             }
             domainViewController.navigationController?.pushViewController(planSelectionViewController, animated: true)
         }
-        domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
+        coordinator.domainAddedToCartCallback = domainAddedToCart
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         dashboardViewController.present(navigationController, animated: true)

@@ -49,6 +49,12 @@ final class AllDomainsListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Public Functions
+
+    func reloadDomains() {
+        viewModel.loadData()
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -74,7 +80,7 @@ final class AllDomainsListViewController: UIViewController {
 
     private func setupBarButtonItems() {
         let addAction = UIAction { [weak self] _ in
-            self?.navigateToAddDomain()
+            self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
         self.navigationItem.rightBarButtonItem = addBarButtonItem
@@ -141,7 +147,7 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Navigation
 
     private func navigateToAddDomain() {
-
+        AllDomainsAddDomainCoordinator.presentAddDomainFlow(in: self)
     }
 
     private func navigateToDomainDetails(with viewModel: Domain) {

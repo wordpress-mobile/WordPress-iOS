@@ -9,12 +9,13 @@ struct DomainsDashboardFactory {
     }
 
     static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
+        let coordinator = RegisterDomainCoordinator(site: blog)
         let viewController = RegisterDomainSuggestionsViewController.instance(
-            site: blog,
+            coordinator: coordinator,
             domainSelectionType: domainSelectionType,
             includeSupportButton: false)
 
-        viewController.domainPurchasedCallback = { viewController, domain in
+        coordinator.domainPurchasedCallback = { viewController, domain in
             let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.syncBlogAndAllMetadata(blog) { }
             WPAnalytics.track(.domainCreditRedemptionSuccess)
