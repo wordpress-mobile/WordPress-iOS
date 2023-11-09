@@ -66,7 +66,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.9)
   - WordPress-Editor-iOS (1.19.9):
     - WordPress-Aztec-iOS (= 1.19.9)
-  - WordPressAuthenticator (7.2.1):
+  - WordPressAuthenticator (7.3.1-beta.1):
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
@@ -125,7 +125,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (>= 7.2.1, ~> 7.2)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `task/cancel-security-key-auth`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/support-multiple-auth`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
@@ -163,7 +163,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -183,6 +182,9 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.107.0.podspec
+  WordPressAuthenticator:
+    :branch: task/cancel-security-key-auth
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :branch: task/support-multiple-auth
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -195,6 +197,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
+  WordPressAuthenticator:
+    :commit: e215dc1ffe5a5390518aaa442e1c839ad4fcc59b
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: afbb34a011b44d4fb845a2c572a6677faeeb1a34
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -230,7 +235,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: eb60491871a2b8819017deed2970b054d2678547
+  WordPressAuthenticator: e8f06f2162972d652770247ed79572f5c276b383
   WordPressKit: 3a1cdf43267606d4004b084c66abf26428efc070
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
@@ -245,6 +250,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 5e4020dc556361250c1ac735b48ce0f76e30a2ac
+PODFILE CHECKSUM: 9f9792ecb585f6c65d25097730c977b3dc357a91
 
 COCOAPODS: 1.12.1
