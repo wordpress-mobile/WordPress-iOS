@@ -23,6 +23,14 @@ final class SiteMediaCollectionCellViewModel {
     private var progressObserver: NSKeyValueObservation?
     private var observations: [NSKeyValueObservation] = []
 
+    var aspectRatio: CGFloat? {
+        guard let width = media.width?.floatValue, width > 0,
+              let height = media.height?.floatValue, height > 0 else {
+            return nil
+        }
+        return CGFloat(width / height)
+    }
+
     enum BadgeType {
         case unordered
         case ordered(index: Int)

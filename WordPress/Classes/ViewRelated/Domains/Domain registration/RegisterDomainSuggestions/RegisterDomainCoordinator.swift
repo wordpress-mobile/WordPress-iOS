@@ -70,13 +70,17 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then launches the checkout webview
     /// The checkout webview is configured for the domain management flow
-    func handleNoSiteChoice(on viewController: UIViewController) {
+    func handleNoSiteChoice(on viewController: UIViewController,
+                            choicesViewModel: DomainPurchaseChoicesViewModel?) {
         createCart { [weak self] result in
             switch result {
             case .success:
                 self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle, shouldPush: true)
+                choicesViewModel?.isGetDomainLoading = false
+
             case .failure:
                 viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                choicesViewModel?.isGetDomainLoading = false
             }
         }
     }

@@ -5,23 +5,28 @@ struct DomainPurchaseChoicesView: View {
         static let imageLength: CGFloat = 36
     }
 
+    @StateObject var viewModel = DomainPurchaseChoicesViewModel()
     let buyDomainAction: (() -> Void)
     let chooseSiteAction: (() -> Void)
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Length.Padding.double) {
+            VStack(alignment: .leading, spacing: Length.Padding.single) {
                 Text(Strings.header)
                     .font(.largeTitle.bold())
                 Text(Strings.subheader)
-                    .font(.body)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .padding(.bottom, Length.Padding.small)
                 getDomainCard
+                    .padding(.bottom, Length.Padding.small)
                 chooseSiteCard
+                    .padding(.bottom, Length.Padding.single)
                 Text(Strings.footnote)
                     .foregroundStyle(Color.DS.Foreground.secondary)
                     .font(.subheadline)
                 Spacer()
             }
+            .padding(.top, Length.Padding.double)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Length.Padding.double)
@@ -33,6 +38,7 @@ struct DomainPurchaseChoicesView: View {
              title: Strings.buyDomainTitle,
              subtitle: Strings.buyDomainSubtitle,
              buttonTitle: Strings.buyDomainButtonTitle,
+             isProgressViewActive: true,
              action: buyDomainAction)
     }
 
@@ -42,6 +48,7 @@ struct DomainPurchaseChoicesView: View {
              subtitle: Strings.chooseSiteSubtitle,
              buttonTitle: Strings.chooseSiteButtonTitle,
              footer: Strings.chooseSiteFooter,
+             isProgressViewActive: false,
              action: chooseSiteAction
         )
     }
@@ -52,6 +59,7 @@ struct DomainPurchaseChoicesView: View {
         subtitle: String,
         buttonTitle: String,
         footer: String? = nil,
+        isProgressViewActive: Bool,
         action: @escaping () -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: Length.Padding.single) {
@@ -70,17 +78,22 @@ struct DomainPurchaseChoicesView: View {
                     if let footer {
                         Text(footer)
                             .foregroundStyle(Color.DS.Foreground.brand)
+                            .font(.body.bold())
                     }
                 }
                 .padding(.bottom, Length.Padding.single)
-                PrimaryButton(title: buttonTitle) {
+                PrimaryButton(
+                    isLoading: isProgressViewActive ? $viewModel.isGetDomainLoading : .constant(false),
+                    title: buttonTitle
+                ) {
                     action()
                 }
                 .padding(.bottom, Length.Padding.double)
+                .disabled(viewModel.isGetDomainLoading)
             }
             .padding(.horizontal, Length.Padding.double)
         }
-        .background(Color.DS.Background.primary)
+        .background(Color.DS.Background.tertiary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
@@ -117,7 +130,7 @@ private extension DomainPurchaseChoicesView {
 
         static let buyDomainSubtitle = NSLocalizedString(
             "domain.management.buy.card.subtitle",
-            value: "Add a site later",
+            value: "Add a site later.",
             comment: "Domain management buy domain card subtitle"
         )
 
@@ -161,10 +174,11 @@ private extension DomainPurchaseChoicesView {
 
 struct DomainPurchaseChoicesView_Previews: PreviewProvider {
     static var previews: some View {
-        DomainPurchaseChoicesView {
+        DomainPurchaseChoicesView(viewModel: DomainPurchaseChoicesViewModel()) {
             print("Buy domain tapped.")
         } chooseSiteAction: {
             print("Choose site tapped")
         }
+        .environment(\.colorScheme, .dark)
     }
 }

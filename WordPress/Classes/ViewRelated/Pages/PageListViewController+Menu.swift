@@ -64,7 +64,7 @@ extension PageListViewController: InteractivePostViewDelegate {
         PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
-    func setParent(for apost: AbstractPost, at indexPath: IndexPath) {
+    func setParent(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
         setParentPage(for: page)
     }

@@ -11,7 +11,7 @@ extension AllDomainsListViewController {
         static let searchBar = NSLocalizedString(
             "domain.management.search-bar.title",
             value: "Search domains",
-            comment: "The search bar title in My Domains screen."
+            comment: "The search bar title in All Domains screen."
         )
     }
 }

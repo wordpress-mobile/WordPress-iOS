@@ -220,6 +220,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
 
         loadWebViewRequest()
 

@@ -6,7 +6,7 @@ final class PostListItemViewModel {
     let imageURL: URL?
     let badges: NSAttributedString
     let isEnabled: Bool
-    let statusViewModel: PostCardStatusViewModel
+    private let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
@@ -72,6 +72,8 @@ private func makeContentString(for post: Post) -> NSAttributedString {
         string.append(titleAttributedString)
     }
     if !snippet.isEmpty {
+        // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
+        let adjustedSnippet = snippet.replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
         if string.length > 0 {
             string.append(NSAttributedString(string: "\n"))
         }
@@ -79,7 +81,7 @@ private func makeContentString(for post: Post) -> NSAttributedString {
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
             .foregroundColor: UIColor.textSubtle
         ]
-        let snippetAttributedString = NSAttributedString(string: snippet, attributes: attributes)
+        let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
     }
 

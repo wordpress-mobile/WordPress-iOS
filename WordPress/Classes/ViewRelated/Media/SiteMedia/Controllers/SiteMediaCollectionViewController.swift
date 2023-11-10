@@ -5,15 +5,17 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
     /// Return a non-nil value to allow adding media using the empty state.
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu?
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating {
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate, SiteMediaPageViewControllerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -26,13 +28,20 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var isSyncing = false
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
-    private var selection = NSMutableOrderedSet() // `Media`
     private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
-    private var isSelectionOrdered = false
     private let coordinator = MediaCoordinator.shared
+
+    // Selection management
+    private var selection = NSMutableOrderedSet() // `Media`
+    private var allowsMultipleSelection = false
+    private var isSelectionOrdered = false
+    private var isBatchSelectionUpdate = false
+    private var panGestureInitialIndexPath: IndexPath?
+    private var panGesturePeviousSelection: NSOrderedSet?
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didRecognizePanGesture))
 
     private var emptyViewState: EmptyViewState = .hidden {
         didSet {
@@ -42,6 +51,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     static let spacing: CGFloat = 2
+    static let spacingAspectRatio: CGFloat = 8
 
     var selectedMedia: [Media] {
         guard let selection = selection.array as? [Media] else {
@@ -101,6 +111,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.pinSubviewToAllEdges(view)
+        collectionView.accessibilityIdentifier = "MediaCollection"
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -108,6 +119,9 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         collectionView.refreshControl = refreshControl
 
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
+
+        collectionView.addGestureRecognizer(panGestureRecognizer)
+        panGestureRecognizer.delegate = self
     }
 
     private func configureSearchController() {
@@ -117,7 +131,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = SiteMediaCollectionViewController.spacing
+        let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
         let itemsPerRow = availableWidth < 450 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
@@ -128,7 +142,40 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
     }
 
-    // MARK: - Editing
+    func makeMoreMenu() -> UIMenu? {
+        guard !makeMoreMenuActions().isEmpty else {
+            return nil
+        }
+        return UIMenu(children: [UIDeferredMenuElement.uncached { [weak self] in
+            $0(self?.makeMoreMenuActions() ?? [])
+        }])
+    }
+
+    private func makeMoreMenuActions() -> [UIAction] {
+        var actions: [UIAction] = []
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+            actions.append(UIAction(
+                title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                    self?.toggleAspectRatioMode()
+                })
+        }
+        return actions
+    }
+
+    private func toggleAspectRatioMode() {
+        UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
+        UIView.animate(withDuration: 0.33) {
+            self.updateFlowLayoutItemSize()
+            for cell in self.collectionView.visibleCells {
+                guard let cell = cell as? SiteMediaCollectionCell else { continue }
+                cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
+            }
+        }
+    }
+
+    // MARK: - Editing (Selection)
 
     func setEditing(
         _ isEditing: Bool,
@@ -137,43 +184,111 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
+        self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
-        self.collectionView.allowsMultipleSelection = isEditing && allowsMultipleSelection
 
         deselectAll()
     }
 
-    private func setSelect(_ isSelected: Bool, for media: Media) {
-        guard collectionView.allowsMultipleSelection else {
-            delegate?.siteMediaViewController(self, didUpdateSelection: [media])
-            return
+    private func updateSelection(_ perform: () -> Void) {
+        guard !isBatchSelectionUpdate else {
+            return perform()
         }
-        if isSelected {
-            selection.add(media)
-        } else {
-            selection.remove(media)
+
+        let previousSelection = selectedMedia
+
+        isBatchSelectionUpdate = true
+        perform()
+        isBatchSelectionUpdate = false
+
+        for media in previousSelection where !selection.contains(media) {
             getViewModel(for: media).badge = nil
         }
-        for (index, media) in selection.enumerated() {
-            if let media = media as? Media {
-                getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
-            } else {
-                assertionFailure("Invalid selection")
+        if allowsMultipleSelection {
+            for (index, media) in selection.enumerated() {
+                if let media = media as? Media {
+                    getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: index) : .unordered
+                } else {
+                    assertionFailure("Invalid selection")
+                }
             }
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
+        if !allowsMultipleSelection {
+            selection = []
+        }
+    }
+
+    private func toggleSelection(for media: Media) {
+        setSelected(!selection.contains(media), for: media)
+    }
+
+    private func setSelected(_ isSelected: Bool, for media: Media) {
+        updateSelection {
+            if isSelected {
+                selection.add(media)
+            } else {
+                selection.remove(media)
+            }
+        }
     }
 
     private func deselectAll() {
-        for media in selection {
-            if let media = media as? Media {
-                getViewModel(for: media).badge = nil
-            } else {
-                assertionFailure("Invalid selection")
-            }
+        updateSelection {
+            selection.removeAllObjects()
         }
-        selection.removeAllObjects()
-        delegate?.siteMediaViewController(self, didUpdateSelection: [])
+    }
+
+    @objc private func didRecognizePanGesture(_ gesture: UIPanGestureRecognizer) {
+        guard isEditing else { return }
+
+        switch gesture.state {
+        case .began:
+            panGestureInitialIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView))
+            panGesturePeviousSelection = selection.copy() as? NSOrderedSet
+        case .changed:
+            guard let currentIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)),
+                  let panGestureInitialIndexPath,
+                  let panGesturePeviousSelection else { return }
+
+            let isDeselecting = panGesturePeviousSelection.contains(fetchController.object(at: panGestureInitialIndexPath))
+
+            updateSelection {
+                selection = NSMutableOrderedSet(orderedSet: panGesturePeviousSelection)
+                for index in stride(from: panGestureInitialIndexPath.item, through: currentIndexPath.item, by: currentIndexPath.item > panGestureInitialIndexPath.item ? 1 : -1) {
+                    let media = fetchController.object(at: IndexPath(item: index, section: 0))
+                    isDeselecting ? selection.remove(media) : selection.add(media)
+                }
+            }
+        case .ended:
+            break
+        default:
+            break
+        }
+    }
+
+    // MARK: - UIGestureRecognizerDelegate (Selection)
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            return otherGestureRecognizer === collectionView.panGestureRecognizer
+        }
+        return true
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            return isEditing
+        }
+        return true
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer === panGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: panGestureRecognizer.view)
+            return abs(translation.x) > abs(translation.y)
+        }
+        return true
     }
 
     // MARK: - Refresh
@@ -263,14 +378,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
-                setSelect(false, for: media)
-
-                if let viewController = navigationController?.topViewController,
-                   viewController !== self,
-                    let detailsViewController = viewController as? MediaItemViewController,
-                   detailsViewController.media.objectID == media.objectID {
-                    navigationController?.popViewController(animated: true)
-                }
+                setSelected(false, for: media)
+                didDeleteMedia(media, at: indexPath)
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
@@ -283,6 +392,16 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })
         @unknown default:
             break
+        }
+    }
+
+    private func didDeleteMedia(_ media: Media, at indexPath: IndexPath) {
+        if let viewController = navigationController?.topViewController,
+           let detailsViewController = viewController as? SiteMediaPageViewController {
+            let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+
+            detailsViewController.didDeleteItem(media, before: before, after: after)
         }
     }
 
@@ -318,6 +437,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
+        cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
         return cell
     }
 
@@ -326,25 +446,48 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let media = fetchController.object(at: indexPath)
         if isEditing {
-            setSelect(true, for: media)
+            toggleSelection(for: media)
         } else {
             switch media.remoteStatus {
             case .failed, .pushing, .processing:
                 showRetryOptions(for: media)
             case .sync:
-                let viewController = MediaItemViewController(media: media)
                 WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-                navigationController?.pushViewController(viewController, animated: true)
+
+                let viewController = SiteMediaPageViewController(media: media, delegate: self)
+                self.navigationController?.pushViewController(viewController, animated: true)
             default: break
             }
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if isEditing {
-            let media = fetchController.object(at: indexPath)
-            setSelect(false, for: media)
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let indexPath = indexPaths.first else {
+            return nil
         }
+        let media = fetchController.object(at: indexPath)
+        return UIContextMenuConfiguration(previewProvider: { [weak self] in
+            guard let self else { return nil }
+            return self.makePreviewViewController(for: media)
+        }, actionProvider: { [weak self] _ in
+            guard let self else { return nil }
+            return self.delegate?.siteMediaViewController(self, contextMenuFor: media)
+        })
+    }
+
+    private func makePreviewViewController(for media: Media) -> UIViewController? {
+        let viewModel = getViewModel(for: media)
+        guard let image = viewModel.getCachedThubmnail() else {
+            return nil
+        }
+        let imageView = UIImageView(image: image)
+        imageView.accessibilityIgnoresInvertColors = true
+
+        let viewController = UIViewController()
+        viewController.view.addSubview(imageView)
+        viewController.view.pinSubviewToAllEdges(imageView)
+        viewController.preferredContentSize = image.size
+        return viewController
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching
@@ -375,6 +518,27 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         } catch {
             WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
+    }
+
+
+    // MARK: - SiteMediaPageViewControllerDelegate
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaBeforeMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index > 0 else {
+            return nil
+        }
+        return fetchedObjects[index - 1]
+    }
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaAfterMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index < (fetchedObjects.count - 1) else {
+            return nil
+        }
+        return fetchedObjects[index + 1]
     }
 
     // MARK: - Menus
@@ -469,4 +633,6 @@ private enum Strings {
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
     static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
+    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
+    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }

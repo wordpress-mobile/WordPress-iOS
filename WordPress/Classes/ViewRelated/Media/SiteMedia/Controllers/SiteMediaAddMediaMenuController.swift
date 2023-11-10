@@ -13,7 +13,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
 
     func makeMenu(for viewController: UIViewController) -> UIMenu {
         let menu = MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
-        return UIMenu(options: [.displayInline], children: [
+        var children: [UIMenuElement] = [
             UIMenu(options: [.displayInline], children: [
                 menu.makePhotosAction(delegate: self),
             ]),
@@ -25,7 +25,13 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
                 menu.makeStockPhotos(blog: blog, delegate: self),
                 menu.makeFreeGIFAction(blog: blog, delegate: self)
             ])
-        ])
+        ]
+        if let quotaUsageDescription = blog.quotaUsageDescription {
+            children += [
+                UIAction(subtitle: quotaUsageDescription, handler: { _ in })
+            ]
+        }
+        return UIMenu(options: [.displayInline], children: children)
     }
 
     // MARK: - PHPickerViewControllerDelegate

@@ -42,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .domainFocus:
             return true
         case .mediaModernization:
-            return false
+            return true
         }
     }
 
