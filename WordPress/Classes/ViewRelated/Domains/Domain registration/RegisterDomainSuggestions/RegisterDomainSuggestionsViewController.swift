@@ -3,6 +3,7 @@ import UIKit
 import WebKit
 import WordPressAuthenticator
 import WordPressFlux
+import Combine
 
 enum DomainSelectionType {
     case registerWithPaidPlan
@@ -11,8 +12,11 @@ enum DomainSelectionType {
     case purchaseFromDomainManagement
 }
 
-class RegisterDomainSuggestionsViewController: UIViewController {
+class DomainPurchaseChoicesViewModel: ObservableObject {
+    @Published var isGetDomainLoading: Bool = false
+}
 
+class RegisterDomainSuggestionsViewController: UIViewController {
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
@@ -24,6 +28,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
     private var navBarTitle: String = TextContent.title
+    @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -292,8 +297,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func pushPurchaseDomainChoiceScreen() {
-        let view = DomainPurchaseChoicesView { [weak self] in
+        let view = DomainPurchaseChoicesView(viewModel: self.choicesViewModel) { [weak self] in
             guard let self else { return }
+            self.choicesViewModel.isGetDomainLoading = true
             self.coordinator?.handleNoSiteChoice(on: self)
         } chooseSiteAction: { [weak self] in
             guard let self else { return }
