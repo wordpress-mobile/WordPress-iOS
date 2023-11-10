@@ -1,18 +1,22 @@
 @import UIKit;
 
 @class Blog;
+@class BlogListConfiguration;
 
 @protocol ScenePresenter;
 
 @interface BlogListViewController : UIViewController
 
 @property (nonatomic, strong) Blog *selectedBlog;
-@property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
+@property (nonatomic, strong) BlogListConfiguration *configuration;
+@property (nonatomic, strong, nullable) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, copy) void (^blogSelected)(BlogListViewController* blogListViewController, Blog* blog);
 
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter;
+- (id)initWithConfiguration:(BlogListConfiguration *)configuration
+           meScenePresenter:(id<ScenePresenter>)meScenePresenter;
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
-
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
+- (void)showLoading;
+- (void)hideLoading;
 
 @end

@@ -94,7 +94,8 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteSwitcherTapped() {
-        guard let blogListController = BlogListViewController(meScenePresenter: meScenePresenter) else {
+        guard let blogListController = BlogListViewController(configuration: .defaultConfig,
+                                                              meScenePresenter: meScenePresenter) else {
             return
         }
 

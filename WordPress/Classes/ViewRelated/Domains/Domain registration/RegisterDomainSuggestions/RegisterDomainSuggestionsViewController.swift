@@ -97,6 +97,8 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             navigationItem.leftBarButtonItem = cancelButton
         }
 
+        navigationItem.backButtonTitle = TextContent.searchBackButtonTitle
+
         guard includeSupportButton else {
             return
         }
@@ -238,25 +240,18 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             pushRegisterDomainDetailsViewController()
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            coordinator.createCart(
+            coordinator.handlePurchaseDomainOnly(
+                on: self,
                 onSuccess: { [weak self] in
-                    guard let self else { return }
-                    self.coordinator?.presentWebViewForCurrentSite(on: self)
-                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
-                onFailure: onFailure
-            )
+                onFailure: onFailure)
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
-            coordinator.createCart(
+            coordinator.addDomainToCartLinkedToCurrentSite(
+                on: self,
                 onSuccess: { [weak self] in
-                    guard let self = self,
-                          let domain = self.coordinator?.domain else {
-                        return
-                    }
-
-                    self.coordinator?.domainAddedToCartCallback?(self, domain.domainName)
-                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
@@ -331,6 +326,9 @@ extension RegisterDomainSuggestionsViewController {
         static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
                                                      value: "Purchase Domain",
                                                      comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
+        static let searchBackButtonTitle = NSLocalizedString("domains.search.backButton.title",
+                                                       value: "Search",
+                                                       comment: "Back button title that navigates back to the search domains screen.")
     }
 
     enum Constants {

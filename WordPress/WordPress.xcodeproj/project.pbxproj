@@ -1992,6 +1992,8 @@
 		80DB57922AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57912AF8B59B00C728FF /* RegisterDomainCoordinator.swift */; };
 		80DB57932AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57912AF8B59B00C728FF /* RegisterDomainCoordinator.swift */; };
 		80DB57942AF8D04600C728FF /* DomainPurchaseChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80348F322AF880820045CCD3 /* DomainPurchaseChoicesView.swift */; };
+		80DB57982AF99E0900C728FF /* BlogListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57972AF99E0900C728FF /* BlogListConfiguration.swift */; };
+		80DB57992AF99E0900C728FF /* BlogListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DB57972AF99E0900C728FF /* BlogListConfiguration.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -7420,6 +7422,7 @@
 		80D9D04829FC0D9000FE3400 /* NSMutableArray+NullableObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+NullableObjects.h"; sourceTree = "<group>"; };
 		80D9D04929FC0D9000FE3400 /* NSMutableArray+NullableObjects.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+NullableObjects.m"; sourceTree = "<group>"; };
 		80DB57912AF8B59B00C728FF /* RegisterDomainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainCoordinator.swift; sourceTree = "<group>"; };
+		80DB57972AF99E0900C728FF /* BlogListConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogListConfiguration.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -11529,6 +11532,7 @@
 				74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */,
 				D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */,
 				E11E77591E72932F0072AD40 /* BlogListDataSource.swift */,
+				80DB57972AF99E0900C728FF /* BlogListConfiguration.swift */,
 			);
 			path = "Blog List";
 			sourceTree = "<group>";
@@ -21087,6 +21091,7 @@
 				175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */,
 				9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */,
 				F4FB0ACD292587D500F651F9 /* MeHeaderViewConfiguration.swift in Sources */,
+				80DB57982AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
 				80D9CFFA29E5E6FE00FE3400 /* DashboardCardTableView.swift in Sources */,
 				984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */,
 				F580C3CB23D8F9B40038E243 /* AbstractPost+Dates.swift in Sources */,
@@ -23915,6 +23920,7 @@
 				FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */,
 				FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */,
 				FE4DC5A8293A84E6008F322F /* MigrationDeepLinkRouter.swift in Sources */,
+				80DB57992AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
 				FA4B203629A786460089FE68 /* BlazeEventsTracker.swift in Sources */,
 				FABB20EA2602FC2C00C8785C /* ActivityTypeSelectorViewController.swift in Sources */,
 				FABB20EB2602FC2C00C8785C /* ActivityActionsParser.swift in Sources */,
