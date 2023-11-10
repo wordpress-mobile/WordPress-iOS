@@ -78,7 +78,7 @@ final class RegisterDomainTransferFooterView: UIView {
         stackView.distribution = .fill
 
         self.addSubview(stackView)
-        
+
         self.directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: Length.Padding.double,
             leading: Length.Padding.double,
