@@ -213,6 +213,7 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="authors" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="BloggingPrompt" representedClassName=".BloggingPrompt" syncable="YES">
+        <attribute name="additionalPostTags" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]" syncable="YES"/>
         <attribute name="answerCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="answered" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="attribution" attributeType="String" defaultValueString="" syncable="YES"/>

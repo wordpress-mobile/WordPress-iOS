@@ -7,7 +7,9 @@ data model as well as any custom migrations.
 
 @dvdchr 2023-11-07
 
-- `BloggingPrompt`: removed `title` and `content` attributes.
+- `BloggingPrompt`: 
+    - Removed `title` and `content` attributes.
+    - Added `additionalPostTags` (optional, no default, `Transformable` with type `[String]`)
 
 ## WordPress 152
 
