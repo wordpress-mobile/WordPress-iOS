@@ -78,8 +78,8 @@ final class RegisterDomainTransferFooterView: UIView {
         stackView.distribution = .fill
 
         self.addSubview(stackView)
-
-        let insets = NSDirectionalEdgeInsets(
+        
+        self.directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: Length.Padding.double,
             leading: Length.Padding.double,
             bottom: Length.Padding.double,
@@ -87,10 +87,10 @@ final class RegisterDomainTransferFooterView: UIView {
         )
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: insets.top),
-            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: insets.leading),
-            readableContentGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: insets.trailing),
-            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: insets.bottom)
+            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            readableContentGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
 
         let action = UIAction { _ in
