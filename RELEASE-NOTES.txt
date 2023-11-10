@@ -18,6 +18,7 @@
 * [*] Site Media: Fix an issue with 'you have no media' appears just before the media does [#9922] [#21457]
 * [*] Site Media: Fix an issue with media occasionally flashing white on the Site Media screen
 * [*] Site Media: Fix rare crashes in the Site Media screen and media picker [#21572]
+* [*] Site Media: Fix an issue with sharing PDF and other documents [#22021]
 * [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
