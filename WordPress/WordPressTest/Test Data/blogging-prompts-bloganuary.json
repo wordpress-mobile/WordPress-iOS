@@ -1,0 +1,32 @@
+[
+    {
+      "id": 239,
+      "date": "2023-12-31",
+      "label": "Daily writing prompt",
+      "text": "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.",
+      "attribution": "dayone",
+      "answered": false,
+      "answered_users_count": 0,
+      "answered_users_sample": [],
+      "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-239",
+      "answered_link_text": "View all responses",
+      "bloganuary_id": ""
+    },
+    {
+      "id": 248,
+      "date": "2024-01-01",
+      "label": "Daily writing prompt",
+      "text": "Tell us about a time when you felt out of place.",
+      "attribution": "",
+      "answered": true,
+      "answered_users_count": 1,
+      "answered_users_sample": [
+        {
+          "avatar": "https://0.gravatar.com/avatar/example?s=96&d=identicon&r=G"
+        }
+      ],
+      "answered_link": "https:\/\/wordpress.com\/tag\/dailyprompt-248",
+      "answered_link_text": "View all responses",
+      "bloganuary_id": "bloganuary-2024-01"
+    }
+]
