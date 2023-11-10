@@ -77,7 +77,7 @@ final class RegisterDomainTransferFooterView: UIView {
         stackView.spacing = Length.Padding.double
         stackView.distribution = .fill
 
-        addSubview(stackView)
+        self.addSubview(stackView)
 
         let insets = NSDirectionalEdgeInsets(
             top: Length.Padding.double,
