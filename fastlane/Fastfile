@@ -54,6 +54,9 @@ Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
 PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
+# Unfortunately, ios_current_branch_is_hotfix relies on this ENV var under the hood.
+# We can't get rid of it just yet.
+ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
