@@ -3,7 +3,7 @@ import Foundation
 final class TransferDomainsWebViewController: WebKitViewController {
 
     private enum Constants {
-        static let url = URL(string: "https://wordpress.com/transfer-google-domains/")!
+        static let url = URL(string: "https://wordpress.com/setup/domain-transfer/intro")!
     }
 
     init(source: String? = nil) {
