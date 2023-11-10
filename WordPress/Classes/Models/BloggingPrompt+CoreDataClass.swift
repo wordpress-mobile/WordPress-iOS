@@ -35,6 +35,7 @@ public class BloggingPrompt: NSManagedObject {
         self.answered = remotePrompt.answered
         self.answerCount = Int32(remotePrompt.answeredUsersCount)
         self.displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+        self.additionalPostTags = [String]() // reset previously additional tags.
 
         if let brandContext = BrandContext(with: remotePrompt) {
             brandContext.configure(self)
