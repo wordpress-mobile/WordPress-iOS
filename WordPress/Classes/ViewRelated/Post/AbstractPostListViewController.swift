@@ -517,12 +517,7 @@ class AbstractPostListViewController: UIViewController,
         })
     }
 
-    let loadMoreCounter = LoadMoreCounter()
-
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-
-        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
-        loadMoreCounter.increment(properties: propertiesForAnalytics())
 
         setFooterHidden(false)
 
@@ -604,7 +599,7 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Actions
 
-    @objc func publishPost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
+    @objc func publishPost(_ post: AbstractPost, completion: (() -> Void)? = nil) {
         let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
@@ -617,23 +612,23 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            PostCoordinator.shared.publish(apost)
+            PostCoordinator.shared.publish(post)
             completion?()
         }
 
         present(alertController, animated: true)
     }
 
-    @objc func moveToDraft(_ apost: AbstractPost) {
+    @objc func moveToDraft(_ post: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        PostCoordinator.shared.moveToDraft(apost)
+        PostCoordinator.shared.moveToDraft(post)
     }
 
-    @objc func viewPost(_ apost: AbstractPost) {
+    @objc func viewPost(_ post: AbstractPost) {
         WPAnalytics.track(.postListViewAction, withProperties: propertiesForAnalytics())
 
-        let post = apost.hasRevision() ? apost.revision! : apost
+        let post = post.hasRevision() ? post.revision! : post
 
         let controller = PreviewWebKitViewController(post: post, source: "posts_pages_view_post")
         controller.trackOpenEvent()
@@ -653,9 +648,9 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
-    @objc func copyPostLink(_ apost: AbstractPost) {
+    @objc func copyPostLink(_ post: AbstractPost) {
         let pasteboard = UIPasteboard.general
-        guard let link = apost.permaLink else { return }
+        guard let link = post.permaLink else { return }
         pasteboard.string = link as String
         let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
         let notice = Notice(title: noticeTitle, feedbackType: .success)
@@ -698,7 +693,7 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    func updateSelectedFilter() {
+    private func updateSelectedFilter() {
         if filterTabBar.selectedIndex != filterSettings.currentFilterIndex() {
             filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
         }
