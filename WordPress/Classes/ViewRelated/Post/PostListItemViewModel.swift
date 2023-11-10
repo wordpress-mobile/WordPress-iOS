@@ -72,8 +72,8 @@ private func makeContentString(for post: Post) -> NSAttributedString {
         string.append(titleAttributedString)
     }
     if !snippet.isEmpty {
-        // Normalize newlines for list items
-        let adjustedSnippet = snippet.replacingOccurrences(of: "\n\n\n\n", with: "\n")
+        // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
+        let adjustedSnippet = snippet.replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
         if string.length > 0 {
             string.append(NSAttributedString(string: "\n"))
         }
