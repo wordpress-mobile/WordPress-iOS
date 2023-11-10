@@ -27,7 +27,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     @IBOutlet private var buttonViewContainer: UIView! {
         didSet {
-            buttonViewController.move(to: self, into: buttonViewContainer)
+            guard let view = buttonViewContainer else {
+                return
+            }
+            view.addTopBorder(withColor: .divider)
+            view.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
+            buttonViewController.move(to: self, into: view)
         }
     }
 
