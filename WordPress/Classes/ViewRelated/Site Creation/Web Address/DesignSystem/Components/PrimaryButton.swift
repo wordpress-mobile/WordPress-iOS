@@ -1,10 +1,16 @@
 import SwiftUI
 
 public struct PrimaryButton: View {
-    private let action: (() -> Void)
+    @Binding private var isLoading: Bool
     private let title: String
+    private let action: (() -> Void)
 
-    public init(title: String, action: @escaping () -> Void) {
+    public init(
+        isLoading: Binding<Bool> = .constant(false),
+        title: String,
+        action: @escaping () -> Void
+    ) {
+        self._isLoading = isLoading
         self.action = action
         self.title = title
     }
@@ -16,12 +22,18 @@ public struct PrimaryButton: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color.DS.Background.brand)
-                Text(title)
-                    .foregroundStyle(Color.DS.Background.primary)
+                if isLoading {
+                    ProgressView()
+                        .tint(Color.white)
+                } else {
+                    Text(title)
+                        .foregroundStyle(Color.white)
+                        .font(.body.weight(.semibold))
+                }
             }
             .frame(height: 50)
         }
-
+        .disabled(isLoading)
     }
 }
 
@@ -29,7 +41,7 @@ struct PrimaryButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color(.systemMint)
-            PrimaryButton(title: "Get Domain") {
+            PrimaryButton(isLoading: .constant(true), title: "Get Domain") {
                 ()
             }
             .padding(.horizontal, Length.Padding.small)
