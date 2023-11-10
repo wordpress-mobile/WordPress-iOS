@@ -28,6 +28,7 @@ public struct PrimaryButton: View {
                 } else {
                     Text(title)
                         .foregroundStyle(Color.white)
+                        .font(.body.weight(.semibold))
                 }
             }
             .frame(height: 50)
