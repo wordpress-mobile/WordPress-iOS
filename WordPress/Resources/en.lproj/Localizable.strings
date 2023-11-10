@@ -2819,7 +2819,7 @@ Example: Reply to Pamela Nguyen */
 "domain.dashboard.card.menu.hide" = "Hide this";
 
 /* Domain Management Screen Title */
-"domain.management.title" = "My Domains";
+"domain.management.title" = "All Domains";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";

@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import AutomatticTracks
 
 final class AllDomainsListViewController: UIViewController {
 
@@ -15,15 +16,17 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     typealias ViewModel = AllDomainsListViewModel
+    typealias Domain = AllDomainsListItemViewModel
 
     // MARK: - Dependencies
 
+    private let crashLogger: CrashLogging
     private let viewModel: ViewModel
 
     // MARK: - Views
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+    private let refreshControl = UIRefreshControl()
     private let emptyView = AllDomainsListEmptyView()
 
     // MARK: - Properties
@@ -36,13 +39,20 @@ final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Init
 
-    init(viewModel: ViewModel = .init()) {
+    init(viewModel: ViewModel = .init(), crashLogger: CrashLogging = CrashLogging.main) {
         self.viewModel = viewModel
+        self.crashLogger = crashLogger
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: Public Functions
+
+    func reloadDomains() {
+        viewModel.loadData()
     }
 
     // MARK: - View Lifecycle
@@ -65,15 +75,17 @@ final class AllDomainsListViewController: UIViewController {
         self.setupBarButtonItems()
         self.setupSearchBar()
         self.setupTableView()
+        self.setupRefreshControl()
         self.setupEmptyView()
+        self.setupNavigationBarAppearance()
     }
 
     private func setupBarButtonItems() {
         let addAction = UIAction { [weak self] _ in
-            self?.navigateToAddDomain()
+            self?.viewModel.addDomainAction?()
         }
         let addBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: addAction)
-        self.navigationItem.rightBarButtonItem = .init(systemItem: .add)
+        self.navigationItem.rightBarButtonItem = addBarButtonItem
     }
 
     private func setupSearchBar() {
@@ -114,7 +126,26 @@ final class AllDomainsListViewController: UIViewController {
         ])
     }
 
-    // MARK: - UI Updates
+    /// Force the navigation bar separator to be always visible.
+    private func setupNavigationBarAppearance() {
+        let appearance = self.navigationController?.navigationBar.standardAppearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+        self.navigationItem.compactScrollEdgeAppearance = appearance
+    }
+
+    private func setupRefreshControl() {
+        let action = UIAction { [weak self] action in
+            guard let self, let refreshControl = action.sender as? UIRefreshControl else {
+                return
+            }
+            self.tableView.sendSubviewToBack(refreshControl)
+            self.viewModel.loadData()
+        }
+        self.refreshControl.addAction(action, for: .valueChanged)
+        self.tableView.addSubview(refreshControl)
+    }
+
+    // MARK: - Reacting to State Changes
 
     private func observeState() {
         self.viewModel.$state.sink { [weak self] state in
@@ -124,6 +155,7 @@ final class AllDomainsListViewController: UIViewController {
             self.state = state
             switch state {
             case .normal, .loading:
+                self.refreshControl.endRefreshing()
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
             case .message(let viewModel):
@@ -137,7 +169,24 @@ final class AllDomainsListViewController: UIViewController {
     // MARK: - Navigation
 
     private func navigateToAddDomain() {
+        AllDomainsAddDomainCoordinator.presentAddDomainFlow(in: self)
+    }
 
+    private func navigateToDomainDetails(with viewModel: Domain) {
+        guard let navigationController = navigationController else {
+            self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
+            return
+        }
+        let domain = viewModel.domain
+        let destination = DomainDetailsWebViewController(
+            domain: domain.domain,
+            siteSlug: domain.siteSlug,
+            type: domain.type,
+            analyticsSource: "all-domains"
+        )
+        destination.configureSandboxStore {
+            navigationController.pushViewController(destination, animated: true)
+        }
     }
 }
 
@@ -146,12 +195,12 @@ final class AllDomainsListViewController: UIViewController {
 extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Workaround to accurately control section height using `tableView.sectionHeaderHeight`.
+        // Workaround to change the section height using `tableView.sectionHeaderHeight`.
         return UIView()
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Workaround to accurately control footer height using `tableView.sectionFooterHeight`.
+        // Workaround to change the footer height using `tableView.sectionFooterHeight`.
         return UIView()
     }
 
@@ -175,7 +224,7 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
             let domain = domains[indexPath.section]
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.myDomain, for: indexPath) as! AllDomainsListTableViewCell
             cell.accessoryType = .disclosureIndicator
-            cell.update(with: domain, parent: self)
+            cell.update(with: domain.row, parent: self)
             return cell
         default:
             return UITableViewCell()
@@ -184,6 +233,13 @@ extension AllDomainsListViewController: UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        switch state {
+        case .normal(let domains):
+            let domain = domains[indexPath.section]
+            self.navigateToDomainDetails(with: domain)
+        default:
+            break
+        }
     }
 }
 

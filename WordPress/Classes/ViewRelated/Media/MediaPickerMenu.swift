@@ -170,19 +170,40 @@ extension MediaPickerMenu {
     private static var strongDelegateKey: UInt8 = 0
 }
 
-// MARK: - MediaPickerMenu (WordPress Media)
+// MARK: - MediaPickerMenu (Site Media)
 
 extension MediaPickerMenu {
-    func makeMediaAction(blog: Blog, delegate: MediaPickerViewControllerDelegate) -> UIAction {
+    /// Returns an action for selecting media from the media uploaded by the user
+    /// to their site.
+    func makeSiteMediaAction(blog: Blog, delegate: MediaPickerViewControllerDelegate & SiteMediaPickerViewControllerDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromMedia,
             image: UIImage(systemName: "photo.stack"),
             attributes: [],
-            handler: { _ in showMediaPicker(blog: blog, delegate: delegate) }
+            handler: { _ in showSiteMediaPicker(blog: blog, delegate: delegate) }
         )
     }
 
-    func showMediaPicker(blog: Blog, delegate: MediaPickerViewControllerDelegate) {
+    func showSiteMediaPicker(blog: Blog, delegate: MediaPickerViewControllerDelegate & SiteMediaPickerViewControllerDelegate) {
+        if Feature.enabled(.mediaModernization) {
+            showModernSiteMediaPicker(blog: blog, delegate: delegate)
+        } else {
+            showLegacySiteMediaPicker(blog: blog, delegate: delegate)
+        }
+    }
+
+    private func showModernSiteMediaPicker(blog: Blog, delegate: SiteMediaPickerViewControllerDelegate) {
+        let viewController = SiteMediaPickerViewController(
+            blog: blog,
+            filter: filter.map { [$0.mediaType] },
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        viewController.delegate = delegate
+        let navigation = UINavigationController(rootViewController: viewController)
+        presentingViewController?.present(navigation, animated: true)
+    }
+
+    private func showLegacySiteMediaPicker(blog: Blog, delegate: MediaPickerViewControllerDelegate) {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         if let filter {
@@ -298,6 +319,13 @@ extension MediaPickerMenu.MediaFilter {
         case .image: self = .images
         case .video: self = .videos
         default: return nil
+        }
+    }
+
+    var mediaType: MediaType {
+        switch self {
+        case .images: return .image
+        case .videos: return .video
         }
     }
 }

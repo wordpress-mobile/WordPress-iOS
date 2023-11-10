@@ -6,7 +6,7 @@ final class PostListItemViewModel {
     let imageURL: URL?
     let badges: NSAttributedString
     let isEnabled: Bool
-    let statusViewModel: PostCardStatusViewModel
+    private let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }

@@ -1,8 +1,9 @@
 import AutomatticTracks
 import UIKit
 import Gridicons
+import WordPressShared
 
-class PostCompactCell: UITableViewCell, ConfigurablePostView {
+class PostCompactCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var badgesLabel: UILabel!
