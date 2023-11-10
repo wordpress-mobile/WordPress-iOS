@@ -41,7 +41,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    private lazy var transferFooterView = RegisterDomainTransferFooterView()
+    private lazy var transferFooterView: RegisterDomainTransferFooterView = {
+        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
+            let destination = TransferDomainsWebViewController(source: "register_domain")
+            self?.present(UINavigationController(rootViewController: destination), animated: true)
+        }
+        return .init(configuration: configuration)
+    }()
 
     /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
     private lazy var transferFooterViewConstraints: (visible: [NSLayoutConstraint], hidden: [NSLayoutConstraint]) = {
@@ -119,13 +125,8 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         guard domainSelectionType == .purchaseFromDomainManagement else {
             return
         }
-        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
-            let destination = TransferDomainsWebViewController(source: "register_domain")
-            self?.present(UINavigationController(rootViewController: destination), animated: true)
-        }
         self.view.addSubview(transferFooterView)
         self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
-        self.transferFooterView.setup(with: configuration, parent: self)
         NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
 #endif
     }

@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressUI
 
 final class RegisterDomainTransferFooterView: UIView {
 
@@ -38,14 +39,29 @@ final class RegisterDomainTransferFooterView: UIView {
 
     // MARK: - Views
 
-    private var hostingController: UIHostingController<Content>?
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        label.textColor = UIColor.DS.Foreground.primary
+        label.numberOfLines = 2
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+
+    private let primaryButton: UIButton = {
+        let button = FancyButton()
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
+        button.isPrimary = true
+        return button
+    }()
 
     // MARK: - Init
 
-    init() {
+    init(configuration: Configuration) {
         super.init(frame: .zero)
         self.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
         self.addTopBorder(withColor: .divider)
+        self.setup(with: configuration)
     }
 
     required init?(coder: NSCoder) {
@@ -54,75 +70,35 @@ final class RegisterDomainTransferFooterView: UIView {
 
     // MARK: - Setup
 
-    func setup(with configuration: Configuration, parent: UIViewController) {
-        self.setup(with: Content(configuration: configuration), parent: parent)
-    }
+    private func setup(with configuration: Configuration) {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, primaryButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = Length.Padding.double
+        stackView.distribution = .fill
 
-    private func setup(with content: Content, parent: UIViewController) {
-        if let hostingController {
-            hostingController.rootView = content
-            hostingController.view.invalidateIntrinsicContentSize()
-        } else {
-            let hostingController = UIHostingController<Content>(rootView: content)
-            self.add(hostingController: hostingController, parent: parent)
-            self.constraint(hostingController: hostingController)
-            self.hostingController = hostingController
-        }
-    }
+        addSubview(stackView)
 
-    private func add(hostingController: UIHostingController<Content>, parent: UIViewController) {
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostingController.view.backgroundColor = .clear
-        hostingController.willMove(toParent: parent)
-        self.addSubview(hostingController.view)
-        parent.add(hostingController)
-        hostingController.didMove(toParent: parent)
-    }
+        let insets = NSDirectionalEdgeInsets(
+            top: Length.Padding.double,
+            leading: Length.Padding.double,
+            bottom: Length.Padding.double,
+            trailing: Length.Padding.double
+        )
 
-    private func constraint(hostingController: UIHostingController<Content>) {
         NSLayoutConstraint.activate([
-            hostingController.view.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: Length.Padding.double),
-            hostingController.view.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -Length.Padding.double),
-            hostingController.view.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
-            hostingController.view.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Length.Padding.double),
+            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: insets.top),
+            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: insets.leading),
+            readableContentGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: insets.trailing),
+            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: insets.bottom)
         ])
-    }
 
-    // MARK: - Trait Collection
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        self.hostingController?.view.invalidateIntrinsicContentSize()
-    }
-
-}
-
-// MARK: - SwiftUI
-
-fileprivate struct Content: View {
-
-    let configuration: Configuration
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Length.Padding.double) {
-            Text(configuration.title)
-                .font(.body)
-            Button(action: configuration.buttonAction) {
-                Text(configuration.buttonTitle)
-            }
-            .buttonStyle(PrimaryButtonStyle())
+        let action = UIAction { _ in
+            configuration.buttonAction()
         }
-        .frame(maxWidth: .infinity)
-        .fixedSize(horizontal: false, vertical: true)
+        self.titleLabel.text = configuration.title
+        self.primaryButton.setTitle(configuration.buttonTitle, for: .normal)
+        self.primaryButton.addAction(action, for: .touchUpInside)
     }
 
-    typealias Configuration = RegisterDomainTransferFooterView.Configuration
-
-}
-
-struct RegisterDomainTransferFooterView_Reviews: PreviewProvider {
-    static var previews: some View {
-        Content(configuration: .init(buttonAction: {}))
-            .padding(Length.Padding.double)
-    }
 }
