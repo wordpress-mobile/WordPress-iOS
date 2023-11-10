@@ -507,10 +507,13 @@ class PostCoordinator: NSObject {
             SearchManager.shared.deleteSearchableItem(post)
 
             let message: String
-            if post is Post {
-                message = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
-            } else {
-                message = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+            switch post {
+            case _ as Post:
+                message = trashed ? Strings.deletePost : Strings.movePostToTrash
+            case _ as Page:
+                message = trashed ? Strings.deletePage : Strings.movePageToTrash
+            default:
+                fatalError("Unsupported item: \(type(of: post))")
             }
 
             let notice = Notice(title: message)
@@ -618,4 +621,11 @@ extension PostCoordinator {
             }
         }
     }
+}
+
+private enum Strings {
+    static let movePostToTrash = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
+    static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
+    static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
+    static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
 }
