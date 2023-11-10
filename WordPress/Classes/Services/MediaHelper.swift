@@ -76,24 +76,25 @@ class MediaHelper: NSObject {
 
         let title = NSLocalizedString("Keep optimizing images?",
                                         comment: "Title of an alert informing users to enable image optimization in uploads.")
-        let message = NSLocalizedString("Image optimization shrinks images for quicker uploading.\n\nBy default it's enabled but you can change this any time in app settings.",
+        let message = NSLocalizedString("Image optimization shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.",
                                         comment: "Message of an alert informing users to enable image optimization in uploads.")
         let turnOffTitle = NSLocalizedString("No, turn off", comment: "Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads.")
         let leaveOnTitle = NSLocalizedString("Yes, leave on", comment: "Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads.")
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: turnOffTitle, style: .default) { _ in
+        let turnOffAction = UIAlertAction(title: turnOffTitle, style: .default) { _ in
             MediaSettings().imageOptimizationSetting = false
-            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "off" as
-                                                                                     AnyObject])
+            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "off"])
             completion()
-        })
-        alert.addAction(UIAlertAction(title: leaveOnTitle, style: .default) { _ in
+        }
+        let leaveOnAction = UIAlertAction(title: leaveOnTitle, style: .default) { _ in
             MediaSettings().imageOptimizationSetting = true
-            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "on" as
-                                                                                     AnyObject])
+            WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "on"])
             completion()
-        })
+        }
+        alert.addAction(turnOffAction)
+        alert.addAction(leaveOnAction)
+        alert.preferredAction = leaveOnAction
         alert.presentFromRootViewController()
 
         MediaSettings().advertiseImageOptimization = false
