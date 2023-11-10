@@ -35,6 +35,10 @@ public class BloggingPrompt: NSManagedObject {
         self.answered = remotePrompt.answered
         self.answerCount = Int32(remotePrompt.answeredUsersCount)
         self.displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+
+        if let brandContext = BrandContext(with: remotePrompt) {
+            brandContext.configure(self)
+        }
     }
 
     func textForDisplay() -> String {
@@ -68,6 +72,36 @@ extension BloggingPrompt {
 // MARK: - Private Helpers
 
 private extension BloggingPrompt {
+
+    enum Constants {
+        static let bloganuaryTag = "bloganuary"
+    }
+
+    enum BrandContext {
+        case bloganuary(String)
+
+        init?(with remotePrompt: BloggingPromptRemoteObject) {
+            // Bloganuary context
+            if let bloganuaryId = remotePrompt.bloganuaryId,
+               bloganuaryId.contains(Constants.bloganuaryTag) {
+                self = .bloganuary(bloganuaryId)
+                return
+            }
+
+            return nil
+        }
+
+        /// Configures the given prompt with additional data based on the brand context.
+        ///
+        /// - Parameter prompt: The `BloggingPrompt` instance to configure.
+        func configure(_ prompt: BloggingPrompt) {
+            switch self {
+            case .bloganuary(let id):
+                prompt.additionalPostTags = [Constants.bloganuaryTag, id]
+                prompt.attribution = BloggingPromptsAttribution.bloganuary.rawValue
+            }
+        }
+    }
 
     struct DateFormatters {
         static let local: DateFormatter = {

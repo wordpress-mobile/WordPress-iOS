@@ -1,5 +1,6 @@
 enum BloggingPromptsAttribution: String {
     case dayone
+    case bloganuary
 
     var attributedText: NSAttributedString {
         let baseText = String(format: Strings.fromTextFormat, source)
@@ -15,18 +16,21 @@ enum BloggingPromptsAttribution: String {
     var source: String {
         switch self {
         case .dayone: return Strings.dayOne
+        case .bloganuary: return Strings.bloganuary
         }
     }
 
     var iconImage: UIImage? {
         switch self {
         case .dayone: return Constants.dayOneIcon
+        case .bloganuary: return nil
         }
     }
 
     private struct Strings {
         static let fromTextFormat = NSLocalizedString("From %1$@", comment: "Format for blogging prompts attribution. %1$@ is the attribution source.")
         static let dayOne = "Day One"
+        static let bloganuary = "Bloganuary"
     }
 
     private struct Constants {
