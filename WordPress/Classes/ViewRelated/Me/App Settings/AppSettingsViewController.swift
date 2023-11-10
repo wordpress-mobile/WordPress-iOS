@@ -163,11 +163,7 @@ class AppSettingsViewController: UITableViewController {
 
     @objc func trackImageSizeChanged() {
         let value = MediaSettings().maxImageSizeSetting
-
-        var properties = [String: AnyObject]()
-        properties["size"] = value as Int as AnyObject
-
-        WPAnalytics.track(.appSettingsMaxImageSizeChanged, properties: properties)
+        WPAnalytics.track(.appSettingsMaxImageSizeChanged, properties: ["size": value])
     }
 
     func pushVideoResolutionSettings() -> ImmuTableAction {
@@ -230,9 +226,7 @@ class AppSettingsViewController: UITableViewController {
                 MediaSettings().imageQualitySetting = newQuality
 
                 // Track setting changes
-                var properties = [String: AnyObject]()
-                properties["quality"] = newQuality.description as String as AnyObject
-                WPAnalytics.track(.appSettingsImageQualityChanged, properties: properties)
+                WPAnalytics.track(.appSettingsImageQualityChanged, properties: ["quality": newQuality.description])
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)
@@ -258,8 +252,7 @@ class AppSettingsViewController: UITableViewController {
             MediaSettings().imageOptimizationSetting = value
 
             // Track setting changes
-            WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value as
-                                                                                     AnyObject])
+            WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value])
 
             // Show/hide image optimization settings
             guard let self = self, let tableView = self.tableView else {
