@@ -67,7 +67,7 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
     }
 
     private func account() -> WPAccount {
-        return AccountBuilder(contextManager)
+        return AccountBuilder(contextManager.mainContext)
             .with(id: 1229)
             .with(username: "foobar")
             .with(email: "foo@automattic.com")

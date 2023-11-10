@@ -11,13 +11,40 @@ class DebugMenuViewController: UITableViewController {
         title = NSLocalizedString("Debug Settings", comment: "Debug settings title")
     }
 
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     required convenience init() {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
+    }
+
+    static func configure(in window: UIWindow?) {
+        guard FeatureFlag.debugMenu.enabled else {
+            return
+        }
+        assert(window != nil)
+
+        let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
+        gesture.edges = .right
+        window?.addGestureRecognizer(gesture)
+    }
+
+    @objc private static func showDebugMenu() {
+        guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
+              let topViewController = window.topmostPresentedViewController,
+              !((topViewController as? UINavigationController)?.viewControllers.first is DebugMenuViewController) else {
+            return
+        }
+        let viewController = DebugMenuViewController()
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak topViewController] _ in
+            topViewController?.dismiss(animated: true)
+        })
+        viewController.configureDefaultNavigationBarAppearance()
+
+        let navigation = UINavigationController(rootViewController: viewController)
+        navigation.navigationBar.isTranslucent = true // Reset to default
+        topViewController.present(navigation, animated: true)
     }
 
     override func viewDidLoad() {
@@ -51,6 +78,7 @@ class DebugMenuViewController: UITableViewController {
         [
             NavigationItemRow(title: Strings.featureFlags) { [weak self] _ in
                 let vc = UIHostingController(rootView: DebugFeatureFlagsView())
+                vc.title = "Feature Flags"
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
         ]

@@ -3,7 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-class BasePostTests: XCTestCase {
+class BasePostTests: CoreDataTestCase {
 
     private var localUser: String = {
         let splitedApplicationDirectory = FileManager.default.urls(for: .applicationDirectory, in: .allDomainsMask).first!.absoluteString.split(separator: "/")
@@ -19,7 +19,7 @@ class BasePostTests: XCTestCase {
     }
 
     func testCorrectlyRefreshUUIDForCachedFeaturedImage() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(pathForDisplayImage: "file:///Users/\(localUser)/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Library/Caches/Media/thumbnail-p16-1792x1792.jpeg")
             .build()
 
@@ -28,7 +28,7 @@ class BasePostTests: XCTestCase {
     }
 
     func testCorrectlyRefreshUUIDForFeaturedImageInDocumentsFolder() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(pathForDisplayImage: "file:///Users/\(localUser)/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Documents/Media/p16-1792x1792.jpeg")
             .build()
 
@@ -37,7 +37,7 @@ class BasePostTests: XCTestCase {
     }
 
     func testDoesntChangeRemoteURLs() {
-        let post = PostBuilder()
+        let post = PostBuilder(mainContext)
             .with(pathForDisplayImage: "https://wordpress.com/image.gif")
             .build()
 

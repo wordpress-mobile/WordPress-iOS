@@ -32,7 +32,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
         return UIMenu(children: [
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
-            menu.makeMediaAction(blog: self.apost.blog, delegate: self)
+            menu.makeSiteMediaAction(blog: self.apost.blog, delegate: self)
         ])
     }
 
@@ -71,6 +71,18 @@ extension PostSettingsViewController: MediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         dismiss(animated: true)
+    }
+}
+
+extension PostSettingsViewController: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        dismiss(animated: true)
+
+        guard let media = selection.first else { return }
+
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added"])
+        setFeaturedImage(media: media)
+        reloadFeaturedImageCell()
     }
 }
 

@@ -97,7 +97,7 @@ class MySiteViewModelTests: CoreDataTestCase {
 
     func makeBlogAccessibleThroughWPCom(file: StaticString = #file, line: UInt = #line) -> Blog {
         let blog = BlogBuilder(contextManager.mainContext).build()
-        let account = AccountBuilder(contextManager)
+        let account = AccountBuilder(contextManager.mainContext)
             // username needs to be set for the token to be registered
             .with(username: "username")
             .with(authToken: "token")

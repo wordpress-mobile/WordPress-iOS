@@ -12,7 +12,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
         currentDateProvider = MockCurrentDateProvider()
-        let account = AccountBuilder(contextManager).build()
+        let account = AccountBuilder(contextManager.mainContext).build()
         UserSettings.defaultDotComUUID = account.uuid
     }
 

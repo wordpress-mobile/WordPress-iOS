@@ -72,16 +72,12 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
            failure:(nullable MenusServiceFailureBlock)failure;
 
 /**
- *  @brief      Generate a list MenuItems from the blog's top-level pages.
+ *  @brief      Create a list MenuItems from the given page.
  *
- *  @param      blog      The blog to use for pages.  Cannot be nil.
- *  @param      success   The success handler.  Can be nil.
- *  @param      failure   The failure handler.  Can be nil.
+ *  @return     A MenuItem instance for the page if it's a top-level page. Otherwise, nil.
  *
  */
-- (void)generateDefaultMenuItemsForBlog:(Blog *)blog
-                                success:(nullable void(^)(NSArray <MenuItem *> * _Nullable defaultItems))success
-                                failure:(nullable MenusServiceFailureBlock)failure;
+- (nullable MenuItem *)createItemWithPageID:(NSManagedObjectID *)pageObjectID inContext:(NSManagedObjectContext *)context;
 
 @end
 

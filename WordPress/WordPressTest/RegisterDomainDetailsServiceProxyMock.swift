@@ -130,7 +130,7 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         }, failure: failure)
     }
 
-    func createTemporaryDomainShoppingCart(siteID: Int,
+    func createTemporaryDomainShoppingCart(siteID: Int?,
                                            domainSuggestion: DomainSuggestion,
                                            privacyProtectionEnabled: Bool,
                                            success: @escaping (CartResponseProtocol) -> Void,
@@ -143,7 +143,7 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success(response)
     }
 
-    func createPersistentDomainShoppingCart(siteID: Int,
+    func createPersistentDomainShoppingCart(siteID: Int?,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
                                             success: @escaping (CartResponseProtocol) -> Void,

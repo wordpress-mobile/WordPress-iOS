@@ -77,19 +77,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
         backgroundColor = .systemBackground
         contentView.backgroundColor = .systemBackground
-
-        // add manual separator view
-        let separatorView = UIView()
-        separatorView.backgroundColor = .separator
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(separatorView)
-
-        NSLayoutConstraint.activate([
-            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
-            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
     }
 
     private func refreshData() {

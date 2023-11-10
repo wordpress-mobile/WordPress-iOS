@@ -56,6 +56,10 @@ class ReaderPostCardCell: UITableViewCell {
         addViewConstraints()
     }
 
+    func prepareForDisplay() {
+        updateSeparatorState()
+    }
+
     func configure(with viewModel: ReaderPostCardCellViewModel) {
         self.viewModel = viewModel
     }
@@ -150,6 +154,10 @@ private extension ReaderPostCardCell {
 
     var usesAccessibilitySize: Bool {
         traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    var showsSeparator: Bool {
+        viewModel?.showsSeparator ?? true
     }
 
     func commonInit() {
@@ -345,8 +353,12 @@ private extension ReaderPostCardCell {
 
     func setupSeparatorView() {
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
+        updateSeparatorState()
         contentView.addSubview(separatorView)
+    }
+
+    func updateSeparatorState() {
+        separatorView.backgroundColor = showsSeparator ? .separator : .clear
     }
 
     // MARK: - View constraints

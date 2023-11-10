@@ -1,101 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Pages-->
-        <scene sceneID="7fg-lR-xvd">
-            <objects>
-                <viewController storyboardIdentifier="PageListViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RgW-to-XfM" customClass="PageListViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="zEU-W1-HEN"/>
-                        <viewControllerLayoutGuide type="bottom" id="njG-x9-YTM"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="MiP-YM-poS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-dj-tFF">
-                                <rect key="frame" x="0.0" y="110" width="375" height="557"/>
-                                <connections>
-                                    <segue destination="54R-UA-mAH" kind="embed" id="f4C-M8-QGj"/>
-                                </connections>
-                            </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kb7-5Y-cyY" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="46"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" placeholder="YES" id="k7G-Mg-MRE"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="LM5-dj-tFF" firstAttribute="leading" secondItem="MiP-YM-poS" secondAttribute="leading" id="5cl-1d-1tg"/>
-                            <constraint firstAttribute="trailing" secondItem="LM5-dj-tFF" secondAttribute="trailing" id="AVm-wb-6M1"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="LM5-dj-tFF" secondAttribute="bottom" id="Icj-Cf-hTM"/>
-                            <constraint firstItem="kb7-5Y-cyY" firstAttribute="top" secondItem="MiP-YM-poS" secondAttribute="topMargin" id="Iu4-wT-NJl"/>
-                            <constraint firstItem="kb7-5Y-cyY" firstAttribute="top" secondItem="zEU-W1-HEN" secondAttribute="bottom" priority="999" id="N3R-GK-VXe"/>
-                            <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="kb7-5Y-cyY" secondAttribute="bottom" id="VTs-hm-pCI"/>
-                            <constraint firstAttribute="trailing" secondItem="kb7-5Y-cyY" secondAttribute="trailing" id="bVD-D5-qun"/>
-                            <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="MiP-YM-poS" secondAttribute="topMargin" id="hqa-P7-bPN"/>
-                            <constraint firstItem="kb7-5Y-cyY" firstAttribute="leading" secondItem="MiP-YM-poS" secondAttribute="leading" id="vh1-Zx-orQ"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="hqa-P7-bPN"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Pages" id="pX7-HW-iFF"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="filterTabBar" destination="kb7-5Y-cyY" id="yfM-1V-Kgn"/>
-                        <outlet property="filterTabBarBottomConstraint" destination="VTs-hm-pCI" id="8xw-da-7bY"/>
-                        <outlet property="filterTabBarTopConstraint" destination="Iu4-wT-NJl" id="ncb-1g-VsV"/>
-                        <outlet property="filterTabBariOS10TopConstraint" destination="N3R-GK-VXe" id="qgA-sx-Yrb"/>
-                        <outlet property="tableViewTopConstraint" destination="hqa-P7-bPN" id="Mas-aT-2OZ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qQg-Lr-ANj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="517.60000000000002" y="317.99100449775113"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="nof-o6-aRy">
-            <objects>
-                <tableViewController id="54R-UA-mAH" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="47" sectionHeaderHeight="24" sectionFooterHeight="1" id="y3a-Ok-AN1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="54R-UA-mAH" id="mDP-Tv-HsW"/>
-                            <outlet property="delegate" destination="54R-UA-mAH" id="aOd-Bh-W9d"/>
-                        </connections>
-                    </tableView>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="GUI-3V-x2m">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </refreshControl>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SeM-Uk-MdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1202" y="318"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="sxx-aJ-IGT">
             <objects>
@@ -126,7 +37,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="rFc-KI-K05">
                                 <rect key="frame" x="0.0" y="120" width="375" height="547"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="DaX-Id-Nby">
                                 <rect key="frame" x="0.0" y="64" width="375" height="56"/>
@@ -168,4 +79,9 @@
             <point key="canvasLocation" x="1240.8" y="1047.5262368815593"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

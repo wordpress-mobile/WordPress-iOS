@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './Gutenberg/cocoapods_helpers'
+require_relative 'Gutenberg/cocoapods_helpers'
 require 'xcodeproj'
 
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
@@ -51,9 +51,9 @@ end
 
 def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
-  pod 'WordPressKit', '~> 8.9', '>= 8.9.1'
+  # pod 'WordPressKit', '~> 8.10'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -410,4 +410,8 @@ post_install do |installer|
   yellow_marker = "\033[33m"
   reset_marker = "\033[0m"
   puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
+end
+
+post_integrate do
+  workaround_broken_search_paths
 end

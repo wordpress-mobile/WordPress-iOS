@@ -253,7 +253,7 @@ struct ReaderDetailNewHeaderView: View {
                let avatarURL = viewModel.authorAvatarURL {
                 avatarView(with: siteIconURL, avatarURL: avatarURL)
             }
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4.0) {
                 Text(viewModel.siteName)
                     .font(.callout)
                     .fontWeight(.semibold)

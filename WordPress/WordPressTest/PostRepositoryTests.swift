@@ -241,6 +241,77 @@ class PostRepositoryTests: CoreDataTestCase {
         }
     }
 
+    func testFetchAllPagesAPIError() async throws {
+        // Use an empty array to simulate an HTTP API error
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = []
+
+        do {
+            let _ = try await repository.fetchAllPages(statuses: [], in: blogID).value
+            XCTFail("The above call should throw")
+        } catch {
+            // Do nothing.
+        }
+    }
+
+    func testFetchAllPagesStopsOnEmptyAPIResponse() async throws {
+        // Given two pages of API result: first page returns 100 page instances, and the second page returns an empty result.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+            []
+        ]
+
+        let pages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(pages.count, 100)
+    }
+
+    func testFetchAllPagesStopsOnNonFullPageAPIResponse() async throws {
+        // Given two pages of API result: first page returns 100 page instances, and the second page returns 10 (any amount that's less than 100) page instances.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+            try (1...10).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+        ]
+
+        let pages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(pages.count, 110)
+    }
+
+    func testCancelFetchAllPages() async throws {
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...10).map { pageNo in
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 100 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            }
+        }
+
+        let cancelled = expectation(description: "Fetching task returns cancellation error")
+        let task = repository.fetchAllPages(statuses: [.publish], in: blogID)
+
+        DispatchQueue.global().asyncAfter(deadline: .now() + .microseconds(100)) {
+            task.cancel()
+        }
+
+        do {
+            let _ = try await task.value
+        } catch is CancellationError {
+            cancelled.fulfill()
+        }
+
+        await fulfillment(of: [cancelled], timeout: 0.3)
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
@@ -265,7 +336,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     }
 
     var remotePostToReturnOnGetPostWithID: RemotePost?
-    var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
+    var remotePostsToReturnOnSyncPostsOfType = [[RemotePost]]() // Each element contains an array of RemotePost for one API request.
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
 
@@ -289,7 +360,15 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostsToReturnOnSyncPostsOfType)
+        guard !remotePostsToReturnOnSyncPostsOfType.isEmpty else {
+            failure(testError())
+            return
+        }
+
+        let result = remotePostsToReturnOnSyncPostsOfType.removeFirst()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(50)) {
+            success(result)
+        }
     }
 
     override func update(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {

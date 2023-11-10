@@ -34,11 +34,11 @@
 #import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
+#import "MenusService.h"
 #import "MenusViewController.h"
 
 #import "NSObject+Helpers.h"
 
-#import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"
 #import "PostCategory.h"

@@ -21,11 +21,15 @@ extension BlogDetailsViewController {
     }
 
     @objc func showDomainCreditRedemption() {
+        let coordinator = RegisterDomainCoordinator(site: blog,
+                                                    domainPurchasedCallback: { [weak self] _, domain in
+            WPAnalytics.track(.domainCreditRedemptionSuccess)
+            self?.presentDomainCreditRedemptionSuccess(domain: domain)
+        })
         let controller = RegisterDomainSuggestionsViewController
-            .instance(site: blog, domainSelectionType: .registerWithPaidPlan, domainPurchasedCallback: { [weak self] _, domain in
-                WPAnalytics.track(.domainCreditRedemptionSuccess)
-                self?.presentDomainCreditRedemptionSuccess(domain: domain)
-            })
+            .instance(coordinator: coordinator,
+                      domainSelectionType: .registerWithPaidPlan)
+
         let navigationController = UINavigationController(rootViewController: controller)
         present(navigationController, animated: true)
     }
@@ -65,7 +69,7 @@ extension BlogDetailsViewController {
 extension BlogDetailsViewController {
 
     @objc func makeDomainsDashboardViewController() -> UIViewController {
-        let viewController = UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        let viewController = SiteDomainsViewController(blog: self.blog)
         viewController.extendedLayoutIncludesOpaqueBars = true
         return viewController
     }

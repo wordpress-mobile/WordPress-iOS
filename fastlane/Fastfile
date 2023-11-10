@@ -84,7 +84,7 @@ def gutenberg_config!
   UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
 
   begin
-    YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+    YAML.safe_load_file(gutenberg_config_path, symbolize_names: true)
   rescue StandardError => e
     UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
   end
