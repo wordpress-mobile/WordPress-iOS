@@ -7,6 +7,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     private let siteID = 1
     private let timeout: TimeInterval = 2
     private let fetchPromptsResponseFileName = "blogging-prompts-fetch-success"
+    private let bloganuaryPromptsResponseFileName = "blogging-prompts-bloganuary"
 
     private static let utcTimeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -33,17 +34,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     private var service: BloggingPromptsService!
     private var blog: Blog!
     private var accountService: AccountService!
-
-    // Prompts data parsed from the stubbed response.
-    private lazy var testPrompts: [BloggingPromptRemoteObject] = {
-        let bundle = Bundle(for: BloggingPromptsServiceTests.self)
-        guard let url = bundle.url(forResource: fetchPromptsResponseFileName, withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data) else {
-            return []
-        }
-        return prompts
-    }()
+    private var testPrompts = [BloggingPromptRemoteObject]()
 
     override func setUp() {
         super.setUp()
@@ -53,6 +44,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         blog = makeBlog()
         accountService = makeAccountService()
         service = BloggingPromptsService(contextManager: contextManager, api: api, remote: remote, blog: blog)
+        testPrompts = loadTestPrompts(from: fetchPromptsResponseFileName)
     }
 
     override func tearDown() {
@@ -62,6 +54,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         blog = nil
         accountService = nil
         service = nil
+        testPrompts = []
         super.tearDown()
     }
 
@@ -315,6 +308,52 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
         wait(for: [expectation], timeout: timeout)
     }
+
+    // MARK: Bloganuary Tests
+
+    func test_fetchPrompt_shouldParseBloganuaryPromptsCorrectly() {
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        testPrompts = loadTestPrompts(from: bloganuaryPromptsResponseFileName)
+        stubFetchPromptsResponse(with: bloganuaryPromptsResponseFileName)
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .distantPast) { [testPrompts] prompts in
+            XCTAssertEqual(prompts.count, testPrompts.count)
+
+            prompts.forEach { prompt in
+                guard let expected = testPrompts.first(where: { $0.promptID == prompt.promptID }) else {
+                    XCTFail("Prompt with ID: \(prompt.promptID) not found in the test data.")
+                    return
+                }
+
+                // check for Bloganuary prompts.
+                if let bloganuaryId = expected.bloganuaryId, !bloganuaryId.isEmpty {
+                    // the attribution should be added client-side.
+                    XCTAssertEqual(prompt.attribution, "bloganuary")
+                    XCTAssertNotNil(prompt.additionalPostTags)
+
+                    let tags = prompt.additionalPostTags!
+                    XCTAssertTrue(tags.contains("bloganuary"))
+                    XCTAssertTrue(tags.contains(bloganuaryId))
+
+                } else {
+                    // otherwise, normal cards shouldn't have the bloganuary attributions.
+                    // no additional tags should be added here.
+                    XCTAssertNotEqual(prompt.attribution, "bloganuary")
+                    XCTAssertTrue(prompt.additionalPostTags!.isEmpty)
+                }
+            }
+
+            expectation.fulfill()
+
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
 }
 
 
@@ -335,9 +374,9 @@ private extension BloggingPromptsServiceTests {
         return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
     }
 
-    func stubFetchPromptsResponse() {
+    func stubFetchPromptsResponse(with fileName: String? = nil) {
         stub(condition: isMethodGET()) { _ in
-            let stubPath = OHPathForFile("blogging-prompts-fetch-success.json", type(of: self))
+            let stubPath = OHPathForFile("\(fileName ?? self.fetchPromptsResponseFileName).json", type(of: self))
             return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
         }
     }
@@ -381,6 +420,18 @@ private extension BloggingPromptsServiceTests {
         dateComponents.day = day
 
         return try XCTUnwrap(Self.calendar.date(from: dateComponents))
+    }
+
+    // MARK: Test Prompts
+
+    private func loadTestPrompts(from fileName: String) -> [BloggingPromptRemoteObject] {
+        let bundle = Bundle(for: BloggingPromptsServiceTests.self)
+        guard let url = bundle.url(forResource: fileName, withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data) else {
+            return []
+        }
+        return prompts
     }
 }
 

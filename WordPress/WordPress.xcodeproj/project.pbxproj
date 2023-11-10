@@ -5627,6 +5627,7 @@
 		FEF28E832ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF28E812ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift */; };
 		FEF4DC5528439357003806BE /* ReminderScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */; };
 		FEF4DC5628439357003806BE /* ReminderScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */; };
+		FEF7F3402AFEA0C200F793FC /* blogging-prompts-bloganuary.json in Resources */ = {isa = PBXBuildFile; fileRef = FEF7F33F2AFEA0C200F793FC /* blogging-prompts-bloganuary.json */; };
 		FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */; };
 		FEFA263F26C5AE9A009CCB7E /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
@@ -9471,6 +9472,7 @@
 		FEF207F22AF2882A0025CB2C /* BloggingPromptRemoteObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptRemoteObject.swift; sourceTree = "<group>"; };
 		FEF28E812ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailNewHeaderView.swift; sourceTree = "<group>"; };
 		FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinator.swift; sourceTree = "<group>"; };
+		FEF7F33F2AFEA0C200F793FC /* blogging-prompts-bloganuary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-bloganuary.json"; sourceTree = "<group>"; };
 		FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSourceTests.swift; sourceTree = "<group>"; };
 		FEFA6AC22A83F4BE004EE5E6 /* PostHelper+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostHelper+JetpackSocial.swift"; sourceTree = "<group>"; };
 		FEFA6AC52A86824A004EE5E6 /* PostHelperJetpackSocialTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHelperJetpackSocialTests.swift; sourceTree = "<group>"; };
@@ -16882,6 +16884,7 @@
 				F127FFD724213B5600B9D41A /* atomic-get-authentication-cookie-success.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
 				FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */,
+				FEF7F33F2AFEA0C200F793FC /* blogging-prompts-bloganuary.json */,
 				FEFC0F8D27313DCF001F7F1D /* comments-v2-success.json */,
 				4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */,
 				FEFC0F8F27315634001F7F1D /* empty-array.json */,
@@ -19686,6 +19689,7 @@
 				46B30B872582CA2200A25E66 /* domain-suggestions.json in Resources */,
 				FE3D058026C3E0F2002A51B0 /* share-app-link-success.json in Resources */,
 				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
+				FEF7F3402AFEA0C200F793FC /* blogging-prompts-bloganuary.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				17C3F8BF25E4438200EFFE12 /* notifications-button-text-content.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
