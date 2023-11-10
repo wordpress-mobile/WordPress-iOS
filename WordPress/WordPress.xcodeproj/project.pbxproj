@@ -3756,6 +3756,7 @@
 		F4CBE3DA29265BC8004FFBB6 /* LogOutActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */; };
 		F4D140202AFD9B9700961797 /* TransferDomainsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D1401F2AFD9B9700961797 /* TransferDomainsWebViewController.swift */; };
 		F4D140212AFD9D5300961797 /* TransferDomainsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D1401F2AFD9B9700961797 /* TransferDomainsWebViewController.swift */; };
+		F4D140222AFE794300961797 /* RegisterDomainTransferFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F479995D2AFD241E0023F4FB /* RegisterDomainTransferFooterView.swift */; };
 		F4D36AD5298498E600E6B84C /* ReaderPostBlockingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D36AD4298498E600E6B84C /* ReaderPostBlockingController.swift */; };
 		F4D36AD6298498E600E6B84C /* ReaderPostBlockingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D36AD4298498E600E6B84C /* ReaderPostBlockingController.swift */; };
 		F4D7FD6C2A57030E00642E06 /* CompliancePopoverViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D7FD6B2A57030E00642E06 /* CompliancePopoverViewControllerTests.swift */; };
@@ -22626,6 +22627,7 @@
 				FEA1123C29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift in Sources */,
 				FAD7625B29ED780B00C09583 /* JSONDecoderExtension.swift in Sources */,
 				C81CCD83243BF7A600A83E27 /* TenorDataLoader.swift in Sources */,
+				F4D140222AFE794300961797 /* RegisterDomainTransferFooterView.swift in Sources */,
 				98797DBC222F434500128C21 /* OverviewCell.swift in Sources */,
 				F484D4ED2A32C4520050BE15 /* CATransaction+Extension.swift in Sources */,
 				C3BC86F629528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */,
