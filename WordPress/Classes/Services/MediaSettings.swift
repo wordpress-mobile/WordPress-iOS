@@ -50,21 +50,6 @@ class MediaSettings: NSObject {
                 return NSLocalizedString("Low", comment: "Indicates an image will use low quality when uploaded.")
             }
         }
-
-        static func imageQuality(from value: Float) -> MediaSettings.ImageQuality {
-            switch value {
-            case 1.0:
-                return .maximum
-            case 0.9:
-                return .high
-            case 0.8:
-                return .medium
-            case 0.7:
-                return .low
-            default:
-                return .medium
-            }
-        }
     }
 
     enum VideoResolution: String {
