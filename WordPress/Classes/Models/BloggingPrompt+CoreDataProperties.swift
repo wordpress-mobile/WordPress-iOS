@@ -25,4 +25,7 @@ extension BloggingPrompt {
 
     /// Contains avatar URLs of some users that have answered the prompt.
     @NSManaged public var displayAvatarURLs: [URL]
+
+    /// Contains additional tags that should be appended to the post for this prompt's answer.
+    @NSManaged public var additionalPostTags: [String]?
 }
