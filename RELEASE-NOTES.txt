@@ -20,6 +20,7 @@
 * [*] Site Media: Fix rare crashes in the Site Media screen and media picker [#21572]
 * [*] Site Media: Fix an issue with sharing PDF and other documents [#22021]
 * [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
+* [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
