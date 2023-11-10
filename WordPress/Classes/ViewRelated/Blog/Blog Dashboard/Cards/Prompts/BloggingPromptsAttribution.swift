@@ -23,7 +23,7 @@ enum BloggingPromptsAttribution: String {
     var iconImage: UIImage? {
         switch self {
         case .dayone: return Constants.dayOneIcon
-        case .bloganuary: return nil
+        case .bloganuary: return Constants.bloganuaryIcon
         }
     }
 
@@ -44,5 +44,12 @@ enum BloggingPromptsAttribution: String {
         ]
         static let iconSize = CGSize(width: 18, height: 18)
         static let dayOneIcon = UIImage(named: "logo-dayone")?.resizedImage(Constants.iconSize, interpolationQuality: .default)
+
+        /// This is computed so it can react accordingly on color scheme changes.
+        static var bloganuaryIcon: UIImage? {
+            UIImage(named: "logo-bloganuary")?
+                .withTintColor(.systemBackground, renderingMode: .alwaysTemplate)
+                .resizedImage(Constants.iconSize, interpolationQuality: .default)
+        }
     }
 }
