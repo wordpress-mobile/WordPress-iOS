@@ -89,12 +89,12 @@ struct DomainPurchaseChoicesView: View {
                     action()
                 }
                 .padding(.bottom, Length.Padding.double)
+                .disabled(viewModel.isGetDomainLoading)
             }
             .padding(.horizontal, Length.Padding.double)
         }
         .background(Color.DS.Background.tertiary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .disabled(viewModel.isGetDomainLoading)
     }
 
     private var chooseSiteTexts: some View {
