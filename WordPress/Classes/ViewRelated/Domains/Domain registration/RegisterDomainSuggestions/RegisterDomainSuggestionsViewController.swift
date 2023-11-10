@@ -282,11 +282,17 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
-        WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
-        coordinator?.domain = domain
-        showButton(animated: true)
-        hideTransferFooterView(animated: true)
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion?) {
+        self.coordinator?.domain = domain
+
+        if domain != nil {
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
+            showButton(animated: true)
+            hideTransferFooterView(animated: true)
+        } else {
+            hideButton(animated: true)
+            showTransferFooterView(animated: true)
+        }
     }
 
     func newSearchStarted() {
