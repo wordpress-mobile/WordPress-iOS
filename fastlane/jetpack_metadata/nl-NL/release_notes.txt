@@ -1,5 +1,14 @@
-We hebben een aantal visuele veranderingen aangebracht in de reader. Je zal aanpassingen zien in feed cards, headers, knoppen, aanbevelingen en meer. We ontvangen graag je feedback.
+Wanneer je een bericht naar de prullenbak verplaatst, zie je nu een bevestigingsbericht onderaan het scherm.
 
-In de blok-editor kan je nu een blok splitsen of verlaten door drie keer op de "enter"-toets te drukken. En in citaatblokken is de linkerrand nu altijd zichtbaar, zelfs in blokgebaseerde thema's in de donkere modus. En daar kan je ons op citeren.
+We hebben enkele wijzigingen aangebracht aan de blokeditor.
 
-Tot slot hebben we een codeprobleem opgelost in de instellingen voor schrijfopdrachten, waardoor de app crashte.
+- Inactieve social media-pictogrammen en gesynchroniseerde patroontitels zijn niet langer zichtbaar in thema's die gebruikmaken van de donkere modus. Goed geprobeerd, jongens, maar jullie zijn niet zo onzichtbaar als jullie denken.
+- In de klassieke editor kan je nu je content omzetten naar blokken met één druk op de knop.
+
+Tot slot hebben we een zwerm mini-bugs geplet.
+
+- Je zou geen inlogproblemen meer moeten hebben wanneer je de eerste keer het verkeerde site-adres invoert.
+- Incorrecte HTML-tags worden niet weergegeven in je berichttitels – je ziet alleen platte tekst.
+- Tijdens tweevoudige verificatie krijg je een foutmelding met meer uitleg wanneer je de verkeerde code invoert tijdens het inloggen.
+- Wanneer je een nieuw domein toevoegt, zie je een nauwkeuriger bericht waarin staat hoe het nieuwe domein werkt.
+- We hebben extra onnodige controles tijdens de tweevoudige verificatie verwijderd. Inloggen is nog steeds veilig, maar levert minder hoofdpijn op.

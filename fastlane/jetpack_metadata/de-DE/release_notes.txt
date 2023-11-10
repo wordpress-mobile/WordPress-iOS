@@ -1,5 +1,14 @@
-Wir haben ein paar visuelle Änderungen am Reader vorgenommen. Diese betreffen Feed-Karten, Header, Buttons, Empfehlungen und mehr. Wir freuen uns schon auf eure zahlreichen Komplimente!
+Wenn du einen Beitrag in den Papierkorb verschiebst, wird dir ab sofort am Ende des Bildschirms eine Bestätigungsnachricht angezeigt.
 
-Im Block-Editor kann man jetzt einen formatierten Block durch dreimaliges Drücken der „Enter“-Taste aufteilen oder verlassen. Außerdem ist der linke Rand bei Zitat-Blöcken immer sichtbar, selbst in blockbasierten Themes im dunklen Modus. Das dürft ihr gerne zitieren!
+Wir haben ein paar Änderungen am Block-Editor vorgenommen.
 
-Schließlich haben wir noch einen Code-Fehler bei den Einstellungen für die Blog-Schreibanregungen behoben, der die App zum Absturz gebracht hat.
+- Inaktive Social-Icons und Titel der synchronisierten Vorlagen sind in blockbasierten Themes nicht länger unsichtbar, wenn der dunkle Modus verwendet wird. Super, oder?
+- Im klassischen Editor kannst du deine Inhalte per Button-Klick in Blöcke umwandeln.
+
+Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
+
+- Wenn du beim ersten Versuch die falsche Website-Adresse eingibst, sollte es keine Anmeldeprobleme geben.
+- In deinen Beitragstiteln werden keine inkorrekten HTML-Schlagwörter angezeigt, sondern ausschließlich reiner Text.
+- Wenn du bei der Anmeldung den falschen Code eingibst, wird dir während der zweistufigen Authentifizierung eine eindeutigere Fehlermeldung angezeigt.
+- Beim Hinzufügen einer neuen Domain wird dir eine genauere Nachricht zum Verhalten der neuen Domain angezeigt.
+- Es wurden zusätzliche Kontrollen bei der zweistufigen Authentifizierung entfernt, durch die unnötige Sicherheitsmaßnahmen hinzugefügt wurden. Die Anmeldung ist weiterhin sicher, aber mit weniger Kopfschmerzen verbunden.

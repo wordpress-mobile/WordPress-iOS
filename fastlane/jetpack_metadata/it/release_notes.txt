@@ -1,5 +1,14 @@
-Abbiamo apportato alcune modifiche visive al reader. Noterai aggiornamenti alle schede del feed, intestazioni, pulsanti, raccomandazioni e altro ancora. Sentiti libero di farci molti complimenti.
+Quando sposti un articolo nel cestino, ora visualizzerai un messaggio di conferma nella parte inferiore dello schermo.
 
-Nell'editor a blocchi, ora puoi dividere o uscire da un blocco formattato premendo il tasto "invio" tre volte. Il bordo sinistro è sempre visibile anche per i blocchi di citazione, anche nei temi basati su blocchi in modalità scura. E puoi citarci su questo.
+Abbiamo apportato alcune modifiche all'editor a blocchi.
 
-Infine, abbiamo risolto un problema nelle impostazioni del prompt di blogging che causava il crash dell'app.
+- Le icone social non attive e i titoli di pattern sincronizzati non sono più invisibili nei temi basati su blocchi che utilizzano la dark mode. Bel tentativo, ma non sei così abile come pensi.
+- Nell'editor classico, ora puoi convertire i contenuti in blocchi con un semplice clic.
+
+Infine, abbiamo rimosso un gruppo di bug.
+
+- Non dovrebbero verificarsi problemi di accesso se viene inserito l'indirizzo del sito errato al primo tentativo.
+- I tag HTML errati non verranno visualizzati nei titoli degli articoli: vedrai solo testo semplice.
+- Durante l'autenticazione a due fattori, riceverai un messaggio di errore molto più dettagliato se viene inserito il codice errato durante l'accesso.
+- Quando viene aggiunto un nuovo dominio, verrà visualizzato un messaggio più preciso che descrive come si comporterà il nuovo dominio.
+- Abbiamo rimosso dei controlli aggiuntivi durante il processo di autenticazione a due fattori che aggiungevano misure di sicurezza non necessarie. L'accesso è ancora sicuro e con meno grattacapi.
