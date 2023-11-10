@@ -120,7 +120,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             return
         }
         let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
-            let destination = TransferDomainsWebViewController()
+            let destination = TransferDomainsWebViewController(source: "register_domain")
             self?.present(UINavigationController(rootViewController: destination), animated: true)
         }
         self.view.addSubview(transferFooterView)
