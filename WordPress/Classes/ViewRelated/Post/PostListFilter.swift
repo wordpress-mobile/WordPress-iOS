@@ -64,8 +64,12 @@ import Foundation
         return [dateDescriptor]
     }
 
-    @objc class func postListFilters() -> [PostListFilter] {
-        return [publishedFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
+    @objc class func postListFilters(for blog: Blog) -> [PostListFilter] {
+        if blog.isAutomatticP2 {
+            return [publishedFilter(isP2: true), repostFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
+        } else {
+            return [publishedFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
+        }
     }
 
     /// The filter for the Published tab in the Post List
@@ -76,11 +80,11 @@ import Foundation
     /// - existing published/private posts transitioned to another status (e.g. draft)
     ///   but not uploaded yet
     ///
-    @objc class func publishedFilter() -> PostListFilter {
+    @objc class func publishedFilter(isP2: Bool = false) -> PostListFilter {
         let filterType: Status = .published
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
 
-        let query =
+        var query =
             // existing published/private posts
             "(statusAfterSync = status AND status IN (%@))"
             // existing published/private posts transitioned to another status but not uploaded yet
@@ -88,6 +92,9 @@ import Foundation
             // Include other existing published/private posts with `nil` `statusAfterSync`. This is
             // unlikely but this ensures that those posts will show up somewhere.
             + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
+        if isP2 {
+            query = "!(postTitle BEGINSWITH 'X-post') AND (\(query)"
+        }
         let predicate = NSPredicate(format: query,
                                     statuses.strings,
                                     statuses.strings,
@@ -185,6 +192,25 @@ import Foundation
 
         let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
         filter.accessibilityIdentifier = "trashed"
+
+        return filter
+    }
+
+    @objc class func repostFilter() -> PostListFilter {
+        let filterType: Status = .published
+        let statuses: [BasePost.Status] = [.publish, .publishPrivate]
+
+        let query = "(postTitle BEGINSWITH 'X-post') AND (status IN (%@)"
+        let predicate = NSPredicate(format: query,
+                                    statuses.strings,
+                                    statuses.strings,
+                                    BasePost.defaultPostIDValue,
+                                    statuses.strings)
+
+        let title = NSLocalizedString("Repost", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
+
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "repost"
 
         return filter
     }

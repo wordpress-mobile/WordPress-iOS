@@ -27,7 +27,7 @@ class PostListFilterSettings: NSObject {
     @objc func availablePostListFilters() -> [PostListFilter] {
 
         if allPostListFilters == nil {
-            allPostListFilters = PostListFilter.postListFilters()
+            allPostListFilters = PostListFilter.postListFilters(for: blog)
         }
 
         return allPostListFilters!
