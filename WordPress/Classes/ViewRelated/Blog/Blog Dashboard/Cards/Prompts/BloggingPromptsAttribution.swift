@@ -1,3 +1,5 @@
+import WordPressUI
+
 enum BloggingPromptsAttribution: String {
     case dayone
     case bloganuary
@@ -48,8 +50,13 @@ enum BloggingPromptsAttribution: String {
         /// This is computed so it can react accordingly on color scheme changes.
         static var bloganuaryIcon: UIImage? {
             UIImage(named: "logo-bloganuary")?
-                .withTintColor(.systemBackground, renderingMode: .alwaysTemplate)
-                .resizedImage(Constants.iconSize, interpolationQuality: .default)
+                .withRenderingMode(.alwaysTemplate)
+                .resizedImage(Constants.bloganuaryIconSize, interpolationQuality: .default)
+                .withAlignmentRectInsets(.init(allEdges: -6.0))
+                .withTintColor(.label)
         }
+
+        /// Unlike the dayOne icon, the bloganuary icon has no implicit 6px padding surrounding the icon.
+        static let bloganuaryIconSize = CGSize(width: 12, height: 12)
     }
 }
