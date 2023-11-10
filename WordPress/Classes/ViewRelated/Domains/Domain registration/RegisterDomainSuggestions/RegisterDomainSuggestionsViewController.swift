@@ -28,7 +28,6 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
     private var navBarTitle: String = TextContent.title
-    @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -297,10 +296,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func pushPurchaseDomainChoiceScreen() {
-        let view = DomainPurchaseChoicesView(viewModel: self.choicesViewModel) { [weak self] in
+        @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
+        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
             guard let self else { return }
-            self.choicesViewModel.isGetDomainLoading = true
-            self.coordinator?.handleNoSiteChoice(on: self)
+            choicesViewModel.isGetDomainLoading = true
+            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
         } chooseSiteAction: { [weak self] in
             guard let self else { return }
             self.coordinator?.handleExistingSiteChoice(on: self)

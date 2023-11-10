@@ -78,14 +78,15 @@ class RegisterDomainCoordinator {
                                shouldPush: false)
     }
 
-    func handleNoSiteChoice(on viewController: RegisterDomainSuggestionsViewController) {
+    func handleNoSiteChoice(on viewController: UIViewController,
+                            choicesViewModel: DomainPurchaseChoicesViewModel?) {
         createCart(
             onSuccess: { [weak self] in
                 self?.presentWebViewForNoSite(on: viewController)
-                viewController.choicesViewModel.isGetDomainLoading = false
+                choicesViewModel?.isGetDomainLoading = false
             }) {
                 viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                viewController.choicesViewModel.isGetDomainLoading = false
+                choicesViewModel?.isGetDomainLoading = false
             }
     }
 
