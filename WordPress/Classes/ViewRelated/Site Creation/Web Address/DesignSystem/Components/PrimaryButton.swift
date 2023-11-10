@@ -33,7 +33,7 @@ public struct PrimaryButton: View {
             }
             .frame(height: 50)
         }
-
+        .disabled(isLoading)
     }
 }
 

@@ -94,6 +94,7 @@ struct DomainPurchaseChoicesView: View {
         }
         .background(Color.DS.Background.tertiary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
+        .disabled(viewModel.isGetDomainLoading)
     }
 
     private var chooseSiteTexts: some View {
