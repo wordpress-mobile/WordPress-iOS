@@ -359,7 +359,7 @@ class AbstractPostListViewController: UIViewController,
         switch type {
         case .insert:
             guard let newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .none)
         case .delete:
             guard let indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .fade)
