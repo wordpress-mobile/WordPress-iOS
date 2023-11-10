@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 13:54:30+0000 */
+/* Translation-Revision-Date: 2023-11-07 15:54:32+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 社交圖示";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "'%s' 區塊已轉換成區塊";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "系統不完全支援「%s」";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文字";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "此外，您也可以將內容轉換成區塊。";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "你可以改為點選「中斷連結版面配置」，然後中斷連結並單獨編輯這些區塊。";
@@ -5277,6 +5283,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "或者";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "或選擇其他驗證方式。";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或輸入網站位址登入。";
 
@@ -5359,9 +5368,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "頁面上傳失敗";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "頁面已移至垃圾桶。";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "頁面待審中";
@@ -5561,6 +5567,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "請輸入 WordPress.com 帳戶的密碼，以便使用 Apple ID 登入。";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "請輸入驗證器應用程式上的驗證碼。";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "請輸入你的密碼";
 
@@ -5681,9 +5690,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上傳失敗";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "文章已移至垃圾桶。";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "文章待審中";
@@ -7449,6 +7455,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "請改用簡訊傳送驗證碼給我";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "透過簡訊向我傳送驗證碼";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "感謝你選擇 %2$@ 設計的 %1$@";
 
@@ -7874,6 +7883,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "完成你的網站設定的時候到了！我們的檢查清單會引導你完成後續步驟。";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "優惠已到期，但別擔心，你的安全是我們的第一要務。 請再試一次！";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "讓 WordPress.com 發揮最大功效的秘訣。";
 
@@ -8294,8 +8306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "復原";
 
@@ -8506,6 +8516,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "使用沙盒商店";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "使用安全性金鑰";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用區塊編輯器";
 
@@ -8703,6 +8716,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "正在等候安全性金鑰";
 
 /* View title during the Google auth process. */
 "Waiting..." = "等待中…";
@@ -9074,6 +9091,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，發生了點錯誤，我們無法將你登入。請再試一次！";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "糟糕，出狀況了。 請再試一次！";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "糟糕，安全性金鑰似乎不是有效的。 請使用另一組金鑰再試一次";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，此雙重驗證碼無效。請再次檢查你的驗證碼，然後再試一次！";
@@ -10348,6 +10371,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "產品";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "無法同步媒體";
 
@@ -10696,6 +10722,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "使用 Blaze 進行宣傳";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "頁面已移至垃圾桶。";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "文章已移至垃圾桶。";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "復原。";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "立即訂購以提高分享次數";
 
@@ -10722,6 +10757,12 @@ This string is displayed when some of the social accounts are turned off for aut
 %2$d is a placeholder for the total number of social media accounts connected to the user's blog.
 Example: Sharing to 2 of 3 accounts */
 "prepublishing.social.label.partialConnections" = "分享至 %1$d 個帳號 (總額度為 %2$d 個帳號)";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "分享至 %1$@";
 
 /* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
 Informs the remaining limit for post auto-sharing.
@@ -10834,12 +10875,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "讚";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "對文章按讚。";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "已按讚";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "取消按讚此文章。";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "開啟選單，查看更多動作。";

@@ -1097,9 +1097,6 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "เว็บอื่น";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "ย้ายหน้าไปถังขยะ";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1195,9 +1192,6 @@
 
 /* Prompts the user that a restored post was moved to the scheduled list. */
 "Post Restored to Scheduled" = "กู้คืนเรื่องไปยังสถานะรอการเผยแพร่ตามตารางเวลา";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "ย้ายเรื่องไปถังขยะ";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -1830,8 +1824,6 @@
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "ย้อนกลับ";
 

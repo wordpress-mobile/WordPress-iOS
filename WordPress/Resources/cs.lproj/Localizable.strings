@@ -5276,9 +5276,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Stránku se nepodařilo nahrát";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Stránka přesunuta do koše.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Stránka čekající na schválení";
 
@@ -5591,9 +5588,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Nahrávání příspěvku se nezdařilo";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Příspěvek byl přesunut do koše.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Příspěvek čeká na schválení";
@@ -8183,8 +8177,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Zpět";
 
