@@ -96,6 +96,16 @@ class BlogListDataSource: NSObject {
         }
     }
 
+    /// If this is set to `true`, blogs that do not support domains management will be hidden
+    ///
+    @objc var shouldHideBlogsNotSupportingDomains = false {
+        didSet {
+            if shouldHideBlogsNotSupportingDomains != oldValue {
+                dataChanged?()
+            }
+        }
+    }
+
     // MARK: - Inputs
 
     // Pass to the LoggedInDataSource to match a specifc blog.
@@ -299,6 +309,9 @@ private extension BlogListDataSource {
         }
         if shouldHideSelfHostedSites {
             blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
+        }
+        if shouldHideBlogsNotSupportingDomains {
+            blogs = blogs.filter { $0.supports(.domains) }
         }
         guard let account = account else {
             return blogs
