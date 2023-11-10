@@ -90,7 +90,7 @@ final class RegisterDomainTransferFooterView: UIView {
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             readableContentGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
+            layoutMarginsGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
 
         let action = UIAction { _ in
