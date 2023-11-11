@@ -126,14 +126,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     // MARK: - Setup subviews
 
     private func setupTransferFooterView() {
-#if JETPACK
         guard domainSelectionType == .purchaseFromDomainManagement else {
             return
         }
         self.view.addSubview(transferFooterView)
         self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
-#endif
     }
 
     private func configure() {
