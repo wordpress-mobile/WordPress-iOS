@@ -2,7 +2,7 @@ import Foundation
 
 @objc final class AllDomainsAddDomainCoordinator: NSObject {
     static func presentAddDomainFlow(in allDomainsViewController: AllDomainsListViewController) {
-        let coordinator = RegisterDomainCoordinator(site: nil)
+        let coordinator = RegisterDomainCoordinator(site: nil, analyticsSource: "all_domains")
         let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
             coordinator: coordinator,
             domainSelectionType: .purchaseFromDomainManagement,
