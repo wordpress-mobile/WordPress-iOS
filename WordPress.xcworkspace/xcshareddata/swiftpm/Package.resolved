@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "Pulse",
+        "repositoryURL": "https://github.com/kean/Pulse",
+        "state": {
+          "branch": "main",
+          "revision": "f9e6accf59b1ee2231b18d26eed696b8b61c78bb",
+          "version": null
+        }
+      },
+      {
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
