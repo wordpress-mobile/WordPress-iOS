@@ -155,6 +155,7 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
         assert(window != nil)
 
         Pulse.URLSessionProxyDelegate.enableAutomaticRegistration()
+        UserDefaults.standard.set(true, forKey: "pulse-disable-support-prompts")
 
         let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
         gesture.edges = .right
