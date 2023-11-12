@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-23 08:00:21+0000 */
+/* Translation-Revision-Date: 2023-11-09 15:29:20+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icon social %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Am convertit blocul „%s” în blocuri";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "„%s” nu este acceptat în totalitate";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Text alternativ";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Ca alternativă, poți să convertești conținutul în blocuri.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ca alternativă, poți să detașezi și să editezi separat aceste blocuri atingând „Detașează modulele”.";
@@ -5366,9 +5372,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Pagina a eșuat la încărcare";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Pagină mutată la gunoi.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Pagină în așteptarea revizuirii";
 
@@ -5690,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Articolul a eșuat la încărcare";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Articol mutat la gunoi.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Articol în așteptarea revizuirii";
@@ -8309,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Anulează";
 
@@ -9891,6 +9889,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ascunde asta";
 
+/* Domain Management Screen Title */
+"domain.management.title" = "Toate domeniile";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Poate să dureze până la 30 de minute până când domeniul tău personalizat va începe să funcționeze.";
 
@@ -10382,6 +10383,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcat ca spam";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Produse";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Nu pot să sincronizez elementele media";
 
@@ -10730,6 +10734,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovează cu Blaze";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Am aruncat pagina la gunoi";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Am aruncat articolul la gunoi";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Anulează";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Abonează-te acum ca să partajezi mai mult";
 
@@ -10874,12 +10887,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Apreciază";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Apreciază articolul.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Apreciat";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Anulează aprecierea articolului.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Deschide un meniu cu mai multe acțiuni.";

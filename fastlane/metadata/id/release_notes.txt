@@ -1,7 +1,13 @@
-Di dalam editor blok, Anda dapat keluar dari blok yang diformat dengan menekan tombol “enter” tiga kali. Batas kiri juga akan selalu terlihat untuk blok kutipan. Silakan hubungi kami jika Anda memiliki pertanyaan.
+Saat memindahkan pos ke tempat sampah, pesan konfirmasi akan muncul di bagian bawah layar.
 
-Beberapa bug juga telah kami perbaiki.
+Kami menerapkan sejumlah perubahan di editor blok.
 
-- Kami telah mengatasi permasalahan kode dalam pengaturan prompt blogging yang menyebabkan aplikasi tidak bekerja.
-- Saat proses pendaftaran, Anda tidak akan masuk ke Reader secara tidak sengaja.
-- Anda ingin membuat situs .com? Anda tidak perlu lagi melihat dua overlay setelah menyelesaikan proses registrasi. Cukup satu saja, dan prosesnya selesai.
+- Ikon media sosial dan judul Pola Tersinkron yang nonaktif kini tetap terlihat di tema berbasis blok yang menggunakan mode gelap. Usahamu boleh juga, kawan, tetapi kamuflasemu tak sehebat itu.
+- Di editor Klasik, Anda kini dapat mengonversi konten menjadi blok hanya dengan sekali mengeklik tombol.
+
+Terakhir, kami berhasil mengatasi sejumlah bug.
+
+- Anda tidak akan mengalami masalah login apa pun meski memasukkan alamat email yang salah pada percobaan pertama.
+- Tag HTML yang salah tidak akan muncul pada judul pos Anda—yang akan terlihat hanya teks biasa.
+- Anda akan mendapatkan pesan error yang jauh lebih deskriptif selama autentikasi dua faktor jika Anda memasukkan kode yang salah saat login.
+- Kami menghapus kontrol ekstra dalam proses autentikasi dua faktor yang memperbanyak langkah keamanan yang tak perlu. Anda pun tetap bisa login dengan aman tanpa banyak keribetan.

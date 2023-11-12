@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Automattic/dangermattic
-  revision: 8406e79e3b20e71421462a525c50a0525da697aa
+  revision: 06a54db4f546d20c0465e4d144049d061a2a1e20
   specs:
     danger-dangermattic (0.0.1)
       danger (~> 9.3)
@@ -16,15 +16,10 @@ GEM
   specs:
     CFPropertyList (3.0.6)
       rexml
-    activesupport (7.1.1)
-      base64
-      bigdecimal
+    activesupport (7.0.8)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      connection_pool (>= 2.2.5)
-      drb
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
-      mutex_m
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
@@ -51,8 +46,6 @@ GEM
     aws-sigv4 (1.6.1)
       aws-eventstream (~> 1, >= 1.0.2)
     babosa (1.0.4)
-    base64 (0.1.1)
-    bigdecimal (3.1.4)
     buildkit (1.5.0)
       sawyer (>= 0.6)
     chroma (0.2.0)
@@ -102,9 +95,8 @@ GEM
     colored2 (3.1.2)
     commander (4.6.0)
       highline (~> 2.0.0)
-    commonmarker (0.23.10)
+    commonmarker (0.23.7)
     concurrent-ruby (1.2.2)
-    connection_pool (2.4.1)
     cork (0.3.0)
       colored2 (~> 3.1)
     danger (9.3.2)
@@ -142,8 +134,6 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
-    drb (2.1.1)
-      ruby2_keywords
     emoji_regex (3.2.3)
     escape (0.0.4)
     ethon (0.16.0)
@@ -221,7 +211,7 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-appcenter (2.1.1)
-    fastlane-plugin-sentry (1.16.0)
+    fastlane-plugin-sentry (1.15.0)
       os (~> 1.1, >= 1.1.4)
     fastlane-plugin-wpmreleasetoolkit (9.2.0)
       activesupport (>= 6.1.7.1)
@@ -306,7 +296,6 @@ GEM
     molinillo (0.8.0)
     multi_json (1.15.0)
     multipart-post (2.3.0)
-    mutex_m (0.1.2)
     nanaimo (0.3.0)
     nap (1.1.0)
     naturally (2.2.1)
@@ -338,7 +327,7 @@ GEM
     rake-compiler (1.2.5)
       rake
     rchardet (1.8.0)
-    regexp_parser (2.8.2)
+    regexp_parser (2.8.0)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -358,7 +347,7 @@ GEM
       rubocop-ast (>= 1.28.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.30.0)
+    rubocop-ast (1.28.1)
       parser (>= 3.2.1.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
@@ -430,4 +419,4 @@ DEPENDENCIES
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.4.13
+   2.4.22

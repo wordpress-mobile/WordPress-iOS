@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-23 17:35:02+0000 */
+/* Translation-Revision-Date: 2023-11-09 18:23:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icono social %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Bloque '%s' convertido en bloques";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "«%s» no es totalmente compatible";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Texto Alt";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternativamente, puedes convertir el contenido en bloques.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Separar patrones».";
@@ -5366,9 +5372,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Página que falló al subirse";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Se ha enviado la página a la papelera.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Página pendiente de revisión";
 
@@ -5690,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Entrada que falló al subirse";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Se ha enviado la entrada a la papelera.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Entrada pendiente de revisión";
@@ -8309,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Deshacer";
 
@@ -9891,6 +9889,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar esto";
 
+/* Domain Management Screen Title */
+"domain.management.title" = "Todos los dominios";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Puede tardar hasta 30 minutos en que tu dominio personalizado empiece a funcionar.";
 
@@ -10382,6 +10383,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcado como spam";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Productos";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "No se pueden sincronizar los medios";
 
@@ -10730,6 +10734,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Página movida a la papelera.";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Entrada movida a la papelera.";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Deshacer";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Suscríbete ahora para compartir más";
 
@@ -10874,12 +10887,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Me gusta";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Da me gusta a la entrada.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Me gustó";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "No le gusta la entrada.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Abre un menú con más acciones.";

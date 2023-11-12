@@ -1,5 +1,14 @@
-Nous avons amélioré l’affichage du Lecteur. Vous remarquerez sûrement un nouveau look pour les différents éléments tels que l’en-tête, les boutons, les recommandations, et bien d’autres. N’hésitez pas à nous envoyer tous vos compliments.
+Lorsque vous déplacez une publication vers la corbeille, vous verrez désormais un message de confirmation apparaître en bas de l’écran.
 
-Dans l’éditeur de blocs, vous pouvez maintenant diviser ou sortir d’un bloc en appuyant sur « Entrée » trois fois. La bordure de gauche est maintenant toujours visible pour les blocs de citation, même pour les thèmes basés sur les blocs utilisant le mode sombre. Oui, vous pouvez nous citer là-dessus.
+Nous avons apporté quelques changements à l’éditeur de blocs.
 
-Enfin, nous avons réglé un bug dans les réglages d’invites à bloguer, qui causait précédemment des plantages.
+- Les icônes de réseaux sociaux inactives et les URL de compositions synchronisées ne sont plus invisibles dans les thèmes reposant sur les blocs qui utilisent le mode sombre. Bien essayé les gars, mais contrairement à ce que vous pensez, vous n’êtes pas des ninjas.
+- Dans l’éditeur classique, vous pouvez désormais convertir votre contenu en blocs d’un simple clic sur un bouton.
+
+Enfin, nous avons corrigé un mini-essaim de bugs.
+
+- Vous ne devriez pas rencontrer de problèmes de connexion si vous saisissez une mauvaise adresse de site la première fois.
+- Les balises HTML incorrectes n’apparaîtront pas dans les titres de vos publications : vous ne verrez que du texte.
+- Au moment de l’authentification à deux facteurs, un message d’erreur bien plus descriptif apparaîtra si vous saisissez le mauvais code lors de la connexion.
+- Lorsque vous ajoutez un nouveau domaine, un message plus précis décrira son futur comportement.
+- Nous avons supprimé des contrôles supplémentaires lors du processus d’authentification à deux facteurs qui ajoutaient des mesures de sécurité inutiles. La connexion est toujours sécurisée, mais elle se fait avec moins de prises de tête.

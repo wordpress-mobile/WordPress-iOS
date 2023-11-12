@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-02 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s ソーシャルアイコン";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "「%s」ブロックがブロックに変換されました";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "「%s」は完全にはサポートされていません";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "代替テキスト";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "またはコンテンツをブロックに変換することもできます。";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "または、「パターンを切り離す」をタップして、これらのブロックを個別に切り離して編集できます。";
@@ -5280,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "OR";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "または別の認証形式を選択してください。";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "または、サイトアドレスを入力してログインしてください。";
 
@@ -5362,9 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "ページはアップロードに失敗しました";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "ページをゴミ箱へ移動しました。";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "ページはレビュー待ちです";
@@ -5564,6 +5570,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID でログインするには、WordPress.com のアカウントのパスワードを入力してください。";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "認証アプリから認証コードを入力してください。";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "ログイン情報を入力してください";
 
@@ -5684,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "投稿はアップロードに失敗しました";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "投稿をゴミ箱へ移動しました。";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "投稿はレビュー待ちです";
@@ -7452,6 +7458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "代わりに SMS でコードを送信する";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "SMS 経由でコードを送信";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "%1$@ (%2$@) のご利用ありがとうございます";
 
@@ -7877,6 +7886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "サイトの設定の最終段階です。チェックリストで次のステップの詳細をご覧ください。";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "時間切れですがご心配は要りません。皆さまの安全が当社の最優先事項です。 もう一度お試しください。";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "WordPress.com を最大限に活用するためのヒント。";
 
@@ -8297,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "元に戻す";
 
@@ -8509,6 +8519,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "サンドボックスストアを使用";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "セキュリティキーを使用";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "ブロックエディターを使用";
 
@@ -8706,6 +8719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google が完了するのを待機しています…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "セキュリティキーの待機中";
 
 /* View title during the Google auth process. */
 "Waiting..." = "待機中…";
@@ -9077,6 +9094,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "エラーが発生し、ログインできませんでした。もう一度お試しください。";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "エラーが発生しました。 もう一度お試しください。";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "そのセキュリティキーは有効ではないようです。 今度は別のキーでお試しください。";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "正しい二段階認証コードではありません。コードを再確認してもう一度お試しください。";
@@ -10351,6 +10374,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "スパムとしてマーク";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "商品";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "メディアを同期できません";
 
@@ -10699,6 +10725,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "ページをゴミ箱へ移動しました";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "投稿をゴミ箱へ移動しました";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "取り消す";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
 
@@ -10843,12 +10878,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "いいね";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "投稿に「いいね」を付けます。";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "いいね済み";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "投稿の「いいね」を外します。";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "その他のアクションのあるメニューを開きます。";

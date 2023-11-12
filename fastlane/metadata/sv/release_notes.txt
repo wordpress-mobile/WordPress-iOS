@@ -1,7 +1,13 @@
-I blockredigeraren kan du nu dela eller avsluta ett formaterat block genom att trycka på tangenten ”enter” tre gånger. Den vänstra kanten är alltid synlig för citatblock också. Och du kan citera oss på det.
+När du flyttar ett inlägg till papperskorgen visas nu ett bekräftelsemeddelande längst ner på skärmen.
 
-Vi har också åtgärdat några fel.
+Vi har gjort några ändringar i blockredigeraren.
 
-- Vi åtgärdade vi ett kodproblem i inställningar för bloggprompt som orsakade att appen kraschade.
-- Under registreringsprocessen hamnar du inte i läsaren av misstag.
-- Skapar du en .com-webbplats? Du bör inte längre se två överlägg efter att du har slutfört registreringsprocessen. En gång och klart.
+- Inaktiva sociala ikoner och rubriker för synkroniserade mönster är inte längre osynliga i blockbaserade teman som använder mörkt läge. Bra försök, hörrni, men ni är inte så skickliga som ni tror.
+- Du kan nu konvertera ditt innehåll till block med en knapptryckning i den klassiska redigeraren.
+
+Slutligen har vi även åtgärdat en mindre anhopning av buggar.
+
+- Du bör inte stöta på några inloggningsproblem om du anger fel webbplatsadress vid första försöket.
+- Felaktiga HTML-taggar visas inte i dina inläggsrubriker - du ser bara oformaterad text.
+- Vid tvåfaktors-autentisering får du ett mycket mer beskrivande felmeddelande om du anger fel kod när du loggar in.
+- Vi tog bort extra kontroller som lade till onödiga säkerhetsåtgärder i processen för tvåfaktors-autentisering. Det är fortfarande säkert att logga in, men det medför nu färre problem.

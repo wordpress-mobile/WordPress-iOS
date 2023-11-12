@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-24 16:54:07+0000 */
+/* Translation-Revision-Date: 2023-11-01 13:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "أيقونة %s الاجتماعية";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "تم تحويل مكوّن \"%s\" إلى المكوّنات";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "لم يتم دعم \"%s\" بالكامل";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "النص البديل";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "بدلاً من ذلك، يمكنك تحويل المحتوى إلى مكوّنات.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"فصل الأنماط\".";
@@ -5280,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "أو";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "أو اختر نموذج مصادقة آخر.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "أو تسجيل الدخول عن طريق _إدخال عنوان رابط موقعك_.";
 
@@ -5362,9 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "فشل رفع الصفحة";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "تم نقل الصفحة إلى سلة المهملات.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "الصفحة في انتظار المراجعة";
@@ -5564,6 +5570,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "يرجى إدخال كلمة المرور لحساب WordPress.com الخاص بك لتسجيل الدخول باستخدام مُعرّف Apple الخاص بك.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "يرجى إدخال رمز التحقق من تطبيق الموثق الخاص بك.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "يُرجى إدخال بيانات اعتمادك";
 
@@ -5684,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "فشل رفع المقالة";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "تم نقل المقالة إلى سلة المهملات.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "المقالة في انتظار المراجعة";
@@ -7452,6 +7458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "اكتب رمزًا لي بدلاً من ذلك";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "إرسال الكود إليَّ عبر رسالة نصية قصيرة";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "شكرًا لاختيارك %1$@ من %2$@";
 
@@ -7877,6 +7886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "حان الوقت لإنهاء إعداد موقعك! توضِّح لك قائمة الاختيار الخاصة بنا الخطوات التالية.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "انتهى الوقت، لكن لا داعي للقلق، فأمانك هو أولويتنا. يرجى المحاولة مرة أخرى!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "نصائح للحصول على أكبر استفادة من WordPress.com.";
 
@@ -8297,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "تراجع";
 
@@ -8509,6 +8519,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "استخدام مخزن Sandbox";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "استخدام مفتاح الأمان";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "استخدام مُحرر المكوّنات";
 
@@ -8706,6 +8719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "بانتظار اكتمال Google…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "انتظار مفتاح الأمان";
 
 /* View title during the Google auth process. */
 "Waiting..." = "جاري الانتظار...";
@@ -9077,6 +9094,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "عذرًا، حدث خطأ ما وتعذر عليك تسجيل الدخول. يرجى المحاولة مرة أخرى!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "عذرًا، حدث خطأ ما. يرجى المحاولة مرة أخرى!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "عذرًا، لا يبدو مفتاح الأمان ذلك صالحًا. يرجى المحاولة مجددًا باستخدام واحد آخر";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "عذرًا، هذا رمز تحقق من عاملين غير صالح. تحقق مجددًا من رمزك وحاول مجددًا!";
@@ -10333,6 +10356,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "تم وضع علامة على أنه بريد مزعج";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "المنتجات";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "تتعذر مزامنة الوسائط";
 
@@ -10681,6 +10707,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "تم نقل الصفحة إلى سلة المهملات";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "تم نقل التدوينة إلى سلة المهملات";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "تراجع";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "الاشتراك الآن لمشاركة المزيد";
 
@@ -10796,9 +10831,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "لفتح التعليقات الخاصة بالتدوينة.";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "للإعجاب بالتدوينة.";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "لإلغاء الإعجاب بالتدوينة.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "لفتح قائمة تتضمن مزيدًا من الإجراءات.";

@@ -1,7 +1,13 @@
-Im Block-Editor kann man jetzt einen formatierten Block durch dreimaliges Drücken der „Enter“-Taste aufteilen oder verlassen. Außerdem ist der linke Rand bei Zitat-Blöcken immer sichtbar. Das dürft ihr gerne zitieren!
+Wenn du einen Beitrag in den Papierkorb verschiebst, siehst du jetzt eine Bestätigungsmeldung am unteren Rand des Bildschirms.
 
-Wir haben außerdem ein paar Fehler behoben.
+Wir haben einige Änderungen am Block-Editor vorgenommen.
 
-- Wir haben einen Code-Fehler bei den Einstellungen für die Blog-Schreibanregungen behoben, der die App zum Absturz gebracht hat.
-- Beim Registrierungsprozess landet man jetzt nicht mehr unabsichtlich im Reader.
-- Du erstellst eine .com-Website? Dann sollte das Dialogfenster nach dem Registrierungsprozess jetzt nicht mehr doppelt eingeblendet werden. Einmal genügt!
+- Inaktive Social Icons und synchronisierte Vorlagentitel sind in blockbasierten Themen im dunklen Modus nicht mehr unsichtbar. Guter Versuch, Freunde, aber ihr seid nicht so ninja, wie ihr denkt.
+- Im klassischen Editor kannst du deine Inhalte jetzt mit einem Klick auf einen Button in Blöcke umwandeln.
+
+Schließlich haben wir einen kleinen Schwarm von Bugs beseitigt.
+
+- Wenn du beim ersten Versuch die falsche Website-Adresse eingibst, sollte es keine Probleme beim Anmelden geben.
+- Falsche HTML-Tags werden in deinen Beitragstiteln nicht mehr angezeigt – du siehst nur noch einfachen Text.
+- Bei der Zwei-Faktor-Authentifizierung erhältst du eine viel aussagekräftigere Fehlermeldung, wenn du beim Anmelden einen falschen Code eingibst.
+- Wir haben zusätzliche Kontrollen bei der Zwei-Faktor-Authentifizierung entfernt, die unnötige Sicherheitsmaßnahmen mit sich brachten. Das Anmelden ist immer noch sicher, aber es bereitet jetzt weniger Kopfschmerzen.

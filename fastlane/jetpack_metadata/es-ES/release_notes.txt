@@ -1,5 +1,14 @@
-Hemos realizado algunos cambios en el Lector y también actualizaciones en el feed, cabeceras, botones y recomendaciones, entre otras cosas. No dudes en dejarnos un montón de comentarios positivos.
+Al enviar un artículo a la papelera, aparecerá un mensaje de confirmación en la parte inferior de la pantalla.
 
-En el editor de bloques, ahora podrás separar o salir de un bloque con formato pulsando la tecla «intro» tres veces. Además, el borde de la izquierda estará siempre visible en el bloque Cita, incluso en los temas de bloques en modo oscuro. ¡Y puedes citarnos en esto!
+Hemos realizado algunos cambios en el editor de bloques.
 
-Y para terminar, hemos arreglado un problema de código en los ajustes de las sugerencias de escritura que causaba que la aplicación se bloquease.
+- Los iconos sociales inactivos y los títulos de patrones sincronizados ya no son invisibles en los temas basados en bloques que utilizan el modo oscuro. Buen intento, pero no eres tan ninja como crees.
+- En el editor clásico, ya puedes convertir el contenido en bloques con tan solo un clic.
+
+Por último, hemos eliminado un pequeño grupo de errores.
+
+- No deberías encontrarte con ningún problema de acceso si introduces la dirección del sitio equivocada en el primer intento.
+- Las etiquetas HTML incorrectas no aparecerán en los títulos de las entradas; solo verás texto sin formato.
+- Durante la autenticación de dos factores, recibirás un mensaje de error mucho más descriptivo si introduces un código incorrecto al iniciar sesión.
+- Cuando añadas un nuevo dominio, verás un mensaje más preciso que describe cómo se comportará el nuevo dominio.
+- Hemos eliminado controles adicionales en el proceso de autenticación de dos factores que añadían medidas de seguridad innecesarias. El inicio de sesión sigue siendo seguro, pero ahora supone menos problemas.

@@ -1,7 +1,13 @@
-In de blok-editor kan je nu een opgemaakt blok splitsen of verlaten door drie keer op de "enter"-toets te drukken. De linkerrand is ook altijd zichtbaar voor citaatblokken. En je kan daarop rekenen.
+Wanneer je een bericht naar de prullenbak verplaatst, zie je nu een bevestigingsbericht onderaan het scherm.
 
-We hebben ook een paar bugs verholpen.
+We hebben enkele wijzigingen aangebracht aan de blokeditor.
 
-- We hebben een codeprobleem opgelost in de instellingen voor blogprompts dat ervoor zorgde dat de app crashte.
-- Tijdens het aanmeldingsproces beland je niet per ongeluk in de lezer.
-- Maak je een .com site? Na het voltooien van het aanmeldingsproces zou je niet langer twee overlays moeten zien.
+- Inactieve social media-pictogrammen en gesynchroniseerde patroontitels zijn niet langer zichtbaar in thema's die gebruikmaken van de donkere modus. Goed geprobeerd, jongens, maar jullie zijn niet zo onzichtbaar als jullie denken.
+- In de klassieke editor kan je nu je content omzetten naar blokken met één druk op de knop.
+
+Tot slot hebben we een zwerm mini-bugs geplet.
+
+- Je zou geen inlogproblemen meer moeten hebben wanneer je de eerste keer het verkeerde site-adres invoert.
+- Incorrecte HTML-tags worden niet weergegeven in je berichttitels – je ziet alleen platte tekst.
+- Tijdens tweevoudige verificatie krijg je een foutmelding met meer uitleg wanneer je de verkeerde code invoert tijdens het inloggen.
+- We hebben extra onnodige controles tijdens de tweevoudige verificatie verwijderd. Inloggen is nog steeds veilig, maar levert minder hoofdpijn op.
