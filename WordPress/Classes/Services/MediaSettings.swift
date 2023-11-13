@@ -11,7 +11,7 @@ class MediaSettings: NSObject {
     fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
 
     fileprivate let defaultImageOptimization = true
-    fileprivate let defaultMaxImageSize = 2000
+    fileprivate let defaultMaxImageDimension = 2000
     fileprivate let defaultImageQuality: ImageQuality = .medium
     fileprivate let defaultMaxVideoSize: VideoResolution = .sizeOriginal
     fileprivate let defaultRemoveLocation = true
@@ -181,7 +181,7 @@ class MediaSettings: NSObject {
                 database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
-                return defaultMaxImageSize
+                return defaultMaxImageDimension
             }
         }
         set {
