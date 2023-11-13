@@ -10,7 +10,7 @@ struct RemoteConfigDebugView: View {
         .listStyle(.plain)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button(Strings.reset, action: viewModel.resetAll)
             }
         }
