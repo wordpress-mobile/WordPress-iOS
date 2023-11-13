@@ -11064,9 +11064,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
 
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Din webbplats är synlig för alla, men begär av sökmotorer att inte indexera den.";
-
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Dold";
 
