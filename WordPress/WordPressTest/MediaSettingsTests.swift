@@ -13,7 +13,7 @@ class MediaSettingsTests: XCTestCase {
 
     func testDefaultImageOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
-        let imageOptimization = settings.imageOptimizationSetting
+        let imageOptimization = settings.imageOptimizationEnabled
         expect(imageOptimization).to(beTrue())
     }
 
@@ -64,21 +64,21 @@ class MediaSettingsTests: XCTestCase {
     func testImageSizeForUploadValueBasedOnOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         expect(settings.imageSizeForUpload).to(equal(2000))
-        settings.imageOptimizationSetting = false
+        settings.imageOptimizationEnabled = false
         expect(settings.imageSizeForUpload).to(equal(Int.max))
     }
 
     func testImageQualityForUploadValueBasedOnOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         expect(settings.imageQualityForUpload).to(equal(.medium))
-        settings.imageOptimizationSetting = false
+        settings.imageOptimizationEnabled = false
         expect(settings.imageQualityForUpload).to(equal(.high))
     }
 
     func testAdvertiseImageOptimizationValueBasedOnOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         expect(settings.advertiseImageOptimization).to(beTrue())
-        settings.imageOptimizationSetting = false
+        settings.imageOptimizationEnabled = false
         expect(settings.advertiseImageOptimization).to(beFalse())
     }
 }

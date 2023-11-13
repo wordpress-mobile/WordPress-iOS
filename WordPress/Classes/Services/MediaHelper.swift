@@ -83,12 +83,12 @@ class MediaHelper: NSObject {
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let turnOffAction = UIAlertAction(title: turnOffTitle, style: .default) { _ in
-            MediaSettings().imageOptimizationSetting = false
+            MediaSettings().imageOptimizationEnabled = false
             WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "off"])
             completion()
         }
         let leaveOnAction = UIAlertAction(title: leaveOnTitle, style: .default) { _ in
-            MediaSettings().imageOptimizationSetting = true
+            MediaSettings().imageOptimizationEnabled = true
             WPAnalytics.track(.appSettingsOptimizeImagesPopupTapped, properties: ["option": "on"])
             completion()
         }

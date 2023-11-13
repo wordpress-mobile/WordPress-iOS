@@ -250,7 +250,7 @@ class AppSettingsViewController: UITableViewController {
 
     func imageOptimizationChanged() -> (Bool) -> Void {
         return { [weak self] value in
-            MediaSettings().imageOptimizationSetting = value
+            MediaSettings().imageOptimizationEnabled = value
 
             // Track setting changes
             WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value])
@@ -449,7 +449,7 @@ private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
-        let imageOptimizationValue = Bool(MediaSettings().imageOptimizationSetting)
+        let imageOptimizationValue = Bool(MediaSettings().imageOptimizationEnabled)
         let imageOptimization = SwitchRow(
             title: NSLocalizedString("appSettings.media.imageOptimizationRow", value: "Optimize Images", comment: "Option to enable the optimization of images when uploading."),
             value: imageOptimizationValue,

@@ -153,7 +153,7 @@ class MediaSettings: NSObject {
     @objc var imageSizeForUpload: Int {
         // When image optimization is enabled, setting the max image size setting to
         // the maximum value will be considered as to using the original size.
-        if !imageOptimizationSetting || maxImageSizeSetting >= maxImageDimension {
+        if !imageOptimizationEnabled || maxImageSizeSetting >= maxImageDimension {
             return Int.max
         } else {
             return maxImageSizeSetting
@@ -161,7 +161,7 @@ class MediaSettings: NSObject {
     }
 
     var imageQualityForUpload: ImageQuality {
-        return imageOptimizationSetting ? imageQualitySetting : .high
+        return imageOptimizationEnabled ? imageQualitySetting : .high
     }
 
     /// The stored value for the maximum size images can have before uploading.
@@ -216,7 +216,7 @@ class MediaSettings: NSObject {
         }
     }
 
-    var imageOptimizationSetting: Bool {
+    var imageOptimizationEnabled: Bool {
         get {
             if let savedImageOptimization = database.object(forKey: imageOptimizationKey) as? Bool {
                 return savedImageOptimization
