@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 12:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-02 14:16:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Ikon media sosial %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Blok '%s' dikonversi menjadi blok";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' tidak sepenuhnya didukung";
@@ -722,6 +725,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Teks Alt";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Anda dapat mengonversi konten menjadi blok.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Atau, blok-blok ini bisa dipisahkan lalu disunting secara tersendiri dengan mengetuk \"Pisahkan pola\".";
@@ -1251,7 +1257,7 @@ translators: Block name. %s: The localized block name */
 "Button position" = "Posisi tombol";
 
 /* Label for the post author in the post detail. */
-"By " = "Oleh";
+"By " = "Oleh ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Oleh %@.";
@@ -5274,6 +5280,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "Atau";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Atau pilih bentuk autentikasi lainnya.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Atau login dengan _memasukkan alamat situs Anda_.";
 
@@ -5356,9 +5365,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Halaman gagal diunggah";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Halaman dipindahkan ke sampah.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Halaman menunggu peninjauan";
@@ -5558,6 +5564,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Masukkan kata sandi akun WordPress.com Anda untuk login dengan ID Apple.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Masukkan kode verifikasi dari aplikasi pengautentikasi.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Masukkan kredensial Anda";
 
@@ -5678,9 +5687,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Pos gagal diunggah";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Pos dipindahkan ke sampah.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Pos menunggu peninjauan";
@@ -7446,6 +7452,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "Kirimi saya kode saja";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Kirimkan kode melalui SMS";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Terima kasih telah memilih %1$@ dari %2$@";
 
@@ -7871,6 +7880,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Waktunya menyelesaikan penyiapan situs Anda! Daftar periksa kami memberikan panduan bagi Anda untuk langkah selanjutnya.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Waktu habis, tetapi jangan khawatir, keamanan Anda menjadi prioritas kami. Coba lagi!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Kiat untuk mendapat maksimal dari WordPress.com.";
 
@@ -8291,8 +8303,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Urungkan";
 
@@ -8503,6 +8513,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Gunakan Toko Sandbox";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Gunakan kunci keamanan";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gunakan penyunting blok";
 
@@ -8700,6 +8713,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Menunggu Google untuk menyelesaikan…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Menunggu kunci keamanan";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Menunggu...";
@@ -9074,6 +9091,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ups, terjadi kesalahan dan Anda tidak dapat login. Coba lagi!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Ups, sepertinya ada yang salah. Coba lagi!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Ups, tampaknya kunci keamanan tidak valid. Silakan coba lagi dengan kunci lain";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ups, kode verifikasi dua faktor tersebut tidak valid. Periksa kembali kode Anda kemudian coba lagi!";
@@ -10348,6 +10371,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "ditandai sebagai spam";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Produk";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Tidak dapat menyinkronkan media";
 
@@ -10696,6 +10722,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Halaman dipindahkan ke tempat sampah";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Pos dipindahkan ke tempat sampah";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Batal";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Langganan sekarang untuk kesempatan berbagi lebih banyak";
 
@@ -10840,12 +10875,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Suka";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Menyukai pos.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Disukai";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Tidak menyukai pos.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Membuka menu dengan tindakan lain.";
@@ -10921,6 +10958,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview2.details" = "dalam \"Aplikasi\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "Aplikasi WordPress for Android Kini Tampil Beda";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview3.details" = "dalam \"Upgrade\"";
@@ -11011,9 +11051,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Situs Anda dapat dilihat oleh semua orang, tetapi Anda meminta mesin pencari untuk tidak mengindeks situs Anda.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Tersembunyi";

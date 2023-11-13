@@ -12,13 +12,14 @@ final class CheckoutViewController: WebKitViewController {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(viewModel: CheckoutViewModel, purchaseCallback: PurchaseCallback?) {
+    init(viewModel: CheckoutViewModel, customTitle: String?, purchaseCallback: PurchaseCallback?) {
         self.viewModel = viewModel
         self.purchaseCallback = purchaseCallback
 
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
+        configuration.customTitle = customTitle
         super.init(configuration: configuration)
     }
 

@@ -1,7 +1,13 @@
-Artık blok düzenleyicisinde biçimlendirilmiş bloku ikiye bölmek ya da bloktan çıkış yapmak için "giriş" tuşuna üç kere basabilirsiniz. Alıntı blokunun sol kenarı sürekli görünür olacak, koyu modundaki blok bazlı temalarda bile. Bizim sözümüz sözdür.
+Bir gönderiyi çöp kutusuna taşıdığınızda, artık ekranın altında bir onay mesajı göreceksiniz.
 
-Birkaç tane de hata ayıkladık. 
+Blok düzenleyicide bazı değişiklikler yaptık.
 
-- Blog yazma hatırlatıcısı ayarlarında, uygulamanın çökmesine sebep olan yazılımsal problemi çözdük.
-- Üye olurken, yanlışlıkla okuyucuya yönlendirilmeyeceksiniz.
-- Bir .com sitesi mi yaratıyorsunuz? Üye olma sürecini tamamladıktan sonra üst üste binen iki katman görmeyeceksiniz. Bir kerede tamam.
+- Etkin olmayan sosyal simgeler ve senkronize model başlıkları artık karanlık mod kullanan blok tabanlı temalarda görünmez değil. İyi denemeydi dostlar ama sandığınız kadar ninja değilsiniz.
+- Klasik düzenleyicide artık tek bir düğmeye tıklayarak içeriğinizi bloklara dönüştürebilirsiniz.
+
+Sonunda, mini bir böcek sürüsünü ezdik.
+
+- İlk denemede yanlış site adresi girerseniz herhangi bir giriş sorunuyla karşılaşmayacaksınız.
+- Hatalı HTML etiketleri gönderi başlıklarınızda görünmez; yalnızca düz metin göreceksiniz.
+- İki faktörlü kimlik doğrulama sırasında, oturum açarken yanlış kod girerseniz çok daha açıklayıcı bir hata mesajı alacaksınız.
+- İki faktörlü kimlik doğrulama sürecinde gereksiz güvenlik önlemleri ekleyen ekstra kontrolleri kaldırdık. Oturum açmak hala güvenli, ancak artık daha az baş ağrısı ile birlikte geliyor.

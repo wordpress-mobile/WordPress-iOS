@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 14:54:09+0000 */
+/* Translation-Revision-Date: 2023-11-02 14:16:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: de */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Social-Media-Symbol für %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Block „%s“ in Blöcke umgewandelt";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "„%s“ wird nicht vollständig unterstützt";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-Text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternativ kannst du den Inhalt in Blöcke umwandeln.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativ kannst du diese Blöcke loslösen und separat bearbeiten, indem du auf „Vorlagen loslösen“ tippst.";
@@ -1257,7 +1263,7 @@ translators: Block name. %s: The localized block name */
 "Button position" = "Button-Position";
 
 /* Label for the post author in the post detail. */
-"By " = "Von";
+"By " = "Von ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Von %@.";
@@ -5280,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "Oder";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Oder wähle eine andere Authentifizierungsmethode aus.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Oder melde dich an, indem du _deine Website-Adresse eingibst_.";
 
@@ -5362,9 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Seite konnte nicht hochgeladen werden";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Seite in den Papierkorb verschoben.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Überprüfung der Seite steht aus";
@@ -5564,6 +5570,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Bitte gib das Passwort für dein WordPress.com-Konto ein, um dich mit deiner Apple-ID anzumelden.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Gib bitte den Verifizierungscode aus deiner Authenticator-App ein.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Bitte Zugangsdaten eingeben";
 
@@ -5684,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Beitrag konnte nicht hochgeladen werden";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Beitrag in den Papierkorb verschoben.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Überprüfung des Beitrags steht aus";
@@ -7452,6 +7458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "Code per SMS senden";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Code per SMS zusenden";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Danke, dass du dich für %1$@ von %2$@ entschieden hast.";
 
@@ -7877,6 +7886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Schließe nun die Einrichtung deiner Website ab! Unsere Checkliste leitet dich durch die nächsten Schritte.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Die Zeit ist abgelaufen, aber mach dir keine Sorgen, deine Sicherheit steht bei uns an erster Stelle. Versuche es bitte noch einmal!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tipps, um das Meiste aus WordPress.com herauszukriegen.";
 
@@ -8297,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Rückgängig";
 
@@ -8509,6 +8519,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Sandbox Store verwenden";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Sicherheitsschlüssel verwenden";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Block-Editor benutzen";
 
@@ -8706,6 +8719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Registrierung wird von Google abgeschlossen …";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Warten auf Sicherheitsschlüssel";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Warten …";
@@ -9080,6 +9097,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ups, aufgrund eines Fehlers konnten wir dich nicht anmelden. Versuche es bitte noch einmal!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Ups, etwas ist schiefgelaufen. Versuche es bitte noch einmal!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Ups, dieser Sicherheitsschlüssel ist anscheinend nicht gültig. Versuche es bitte noch einmal mit einem anderen";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ups, das ist kein gültiger zweistufiger Verifizierungscode. Überprüfe deinen Code und versuche es noch einmal!";
@@ -10357,6 +10380,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "als Spam markiert";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Produkte";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Medien konnten nicht synchronisiert werden";
 
@@ -10705,6 +10731,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Mit Blaze bewerben";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Seite in den Papierkorb verschoben";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Beitrag in den Papierkorb verschoben";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Rückgängig";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Jetzt registrieren, um mehr zu teilen";
 
@@ -10836,9 +10871,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "Öffnet die Kommentare für den Beitrag.";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Markiert den Beitrag mit einem „Like“.";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Entfernt das „Like“ für den Beitrag.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Öffnet ein Menü mit weiteren Aktionen.";
@@ -11007,9 +11044,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Datenschutz";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Deine Website ist für alle sichtbar. Suchmaschinen werden aufgefordert, sie nicht zu indexieren.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Verborgen";

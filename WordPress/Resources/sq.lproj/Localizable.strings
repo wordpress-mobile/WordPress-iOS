@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 12:01:40+0000 */
+/* Translation-Revision-Date: 2023-11-05 17:25:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sq_AL */
@@ -271,6 +271,9 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Ikonë shoqërorësh %s";
 
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Blloku “%s ” u shndërrua në blloqe";
+
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' s’mbulohet plotësisht";
 
@@ -420,6 +423,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Faqe Për Celular të Përshpejtuara (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Për rregullime të mëtejshme, hapeni këtë bllok Paywall në shfletuesin tuaj.";
 
 /* Title for the account section in site settings screen */
 "Account" = "Llogari";
@@ -725,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Tekst Alternativ";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Ndryshe, mund ta shndërroni lëndën në blloqe.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shkëputi modelet”.";
@@ -1116,6 +1125,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Bllok Citimi";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "Blloku s’vizatohet dot, ngaqë është i futur thellë të tjerësh. Për më tepër hollësi, prekni këtu.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blloku u kopjua";
 
@@ -1167,6 +1179,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Menu blloqesh";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blloqe brenda të tjerësh më thellë se %d shkallë mund të mos vizatohen si duhet në përpunuesin për celular. Për këtë arsye, rekomandojmë sheshimin e lëndë duke hequr grupin e bllokut, ose përpunimin e bllokut duke përdorur përpunuesin web.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blloqe brenda të tjerësh më thellë se %d shkallë mund të mos vizatohen si duhet në përpunuesin për celular. Për këtë arsye, rekomandojmë sheshimin e lëndë duke hequr grupin e bllokut, ose përpunimin e bllokut duke përdorur shfletuesin tuaj.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -5256,6 +5274,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "Ose";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Ose zgjidhni një tjetër metodë mirëfilltësimi.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Ose hyni _duke dhënë adresën e sajtit tuaj_.";
 
@@ -5338,9 +5359,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Ngarkimi i faqes dështoi";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Faqja u shpu te hedhurinat.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Faqe në pritje të shqyrtimit";
@@ -5537,6 +5555,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Ju lutemi, jepni fjalëkalimin për llogarinë tuaj te WordPress.com që të bëhet hyrja me ID-në tuaj Apple.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Ju lutemi, jepni kodin e verifikimit prej aplikacionit tuaj të mirëfilltësimeve.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Ju lutemi, jepni kredencialet tuaja";
 
@@ -5657,9 +5678,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Ngarkimi i postimit dështoi";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Postimi u shpu te hedhurinat.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Postim në pritje të shqyrtimit";
@@ -7422,6 +7440,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "Më mirë më dërgoni kod me tekst";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Dërgomëni një kod përmes SMS-je";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Faleminderit që zgjodhët %1$@ nga %2$@";
 
@@ -7847,6 +7868,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Erdhi koha të përfundohet rregullimi i sajtit tuaj! Lista jonë e hapave ju udhëheq nëpër ata vijuesit.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Po mbaron koha, por mos u bëni merak, siguria juaj është përparësia jonë. Ju lutemi, riprovoni!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Këshilla për të përfituar maksimumin nga WordPress.com.";
 
@@ -8267,8 +8291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Zhbëje";
 
@@ -8479,6 +8501,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Përdor Shitore Bankëprovë";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Përdorni një kyç sigurie";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Përdorni përpunuesin me blloqe";
 
@@ -8676,6 +8701,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Po pritet që të mbarojë punë Google…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Po pritet për kyç sigurie";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Po pritet…";
@@ -9050,6 +9079,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hëm, diç shkoi ters dhe s’bëmë dot futjen tuaj. Ju lutemi, riprovoni!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Hëm, diç shkoi ters. Ju lutemi, riprovoni!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Oh, ai kyç sigurie nuk duket i vlefshëm. Ju lutemi, riprovoni me një tjetër";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hëm, ky s’është kod i vlefshëm mirëfilltësimi dyfaktorësh. Kontrolloni sërish kodin tuaj dhe riprovoni!";
@@ -9866,6 +9901,15 @@ Example: Reply to Pamela Nguyen */
 /* Status of a domain in `In Progress` state */
 "domain.status.in.progress" = "Në Ecuri e Sipër";
 
+/* Status of a domain in `Renew` state */
+"domain.status.renew" = "Rinovojeni";
+
+/* Status of a domain in `Verify Email` state */
+"domain.status.verify.email" = "Verifikoni Email-in";
+
+/* Status of a domain in `Verifying` state */
+"domain.status.verifying" = "Po verifikohet";
+
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Alternativa Më e Mirë";
 
@@ -9874,6 +9918,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Falas";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Falas për vitin e parë, me plane vjetore të paguar";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "E rekomanduar";
@@ -10306,6 +10353,12 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Produkte";
+
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "S’arrihet të njëkohësohet media";
+
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "Objekti s’u shtua dot te Mediateka";
 
@@ -10362,6 +10415,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d Figura të Përzgjedhura";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 Figurë e Përzgjedhur";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d Objekte të Përzgjedhur";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 Objekt i Përzgjedhur";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Përzgjidhni Objekte";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
@@ -10603,6 +10671,9 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Statistika për sot";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Shfaqni ose fshihni shkurtore";
+
 /* Page title */
 "personalizeHome.title" = "Personalizoni Skedën Krye";
 
@@ -10629,6 +10700,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Faqja u shpu te hedhurinat";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Postimi u shpu te hedhurinat";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Zhbëje";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
@@ -10715,15 +10795,39 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Më tepër";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Shihni postime nga sajti";
+
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
 "reader.detail.toolbar.comment.button" = "Komentoni";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Pëlqejeni";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "E pëlqen këtë postim.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "U pëlqye";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Heq pëlqimin për këtë postim.";
 
 /* Accessibility hint for the 'Save Post' button. */
 "reader.detail.toolbar.save.button.a11y.hint" = "E ruan këtë postim për më vonë.";
 
 /* Accessibility label for the 'Save Post' button. */
 "reader.detail.toolbar.save.button.a11y.label" = "Ruaje postimin";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Heq ruajtjen e këtij postimi.";
 
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Postimi u Ruajt";
@@ -10741,20 +10845,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Comment' button on the reader post card cell. */
 "reader.post.button.comment" = "Komentoni";
 
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Hap komentet për postimin.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Pëlqejeni";
+
+/* Accessibility hint for the like button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "E pëlqen postimin.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "U pëlqye";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Heq pëlqimin për këtë postim.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Hap një menu me më tepër veprime.";
+
 /* Accessibility label for the more menu button on the reader post card cell */
 "reader.post.button.menu.accessibility.label" = "Më tepër";
 
 /* Text for the 'Reblog' button on the reader post card cell. */
 "reader.post.button.reblog" = "Riblogojeni";
 
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Riblogon postimin.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Hap hollësi sajti për postimin.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bllokoje këtë përdorues";
+
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Heq Postimin e Ruajtur";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportojeni këtë përdorues";
 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Ruaje";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ postime • %2$@ ndjekës";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Mbrapsht";
@@ -10893,9 +11027,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Sajti juaj është i dukshëm për këdo, por u kërkon motorëve të kërkimeve të mos e indeksojnë.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "I fshehur";
@@ -11089,6 +11220,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button for users to contact the support team directly. */
 "support.chatBot.contactSupport" = "Lidhuni me asistencën";
 
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Njatjeta, jam Asistenti IA Jetpack.\\n\\nMe se mund t’ju ndihmoj?\\n\\nNëse s’i përgjigjem dot pyetjes tuaj, do t’ju ndihmoj të hapni një çështje asistence nga ekipi ynë!";
+
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Dërgoni një mesazh…";
 
@@ -11136,6 +11270,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript of user's question in a support chat */
 "support.chatBot.zendesk.question" = "Pyetje";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Transkriptim Nga Roboti Jetpack Mobile";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Bëni një pyetje te forumi i bashkësisë dhe merrni ndihmë nga grupi ynë i vullnetarëve.";
@@ -11221,8 +11358,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Hidhe tej";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Postime & Më të Parët e Krejt Kohës";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Parje Gjatë Krejt Kohës";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Parje & Vizitorë Gjatë Gjithë Kohës";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Parjet më të mira ndonjëherë";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Shumica e Parjeve";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "S’arrihet të ngarkohen statistika të krejt kohës.";
@@ -11307,6 +11456,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Vizitorë";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Pëlqime & Komente Sot";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Parje Sot";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Parje & Vizitorë Sot";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "s’do të jetë më i passhëm në të ardhmen.";

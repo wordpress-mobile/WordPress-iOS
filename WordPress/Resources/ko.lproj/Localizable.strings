@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-02 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 소셜 아이콘";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "블록으로 '%s' 블록 변환됨";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "‘%s’을(를) 완전히 지원하지 않습니다";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "대체 텍스트";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "콘텐츠를 블록으로 변환할 수도 있습니다.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
@@ -5280,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "또는";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "또는 다른 인증 양식을 선택해 주세요.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "또는 사이트 주소를 입력하여 로그인하세요.";
 
@@ -5362,9 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "페이지 업로드 실패";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "페이지를 휴지통으로 이동했습니다.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "페이지 검토 대기 중";
@@ -5564,6 +5570,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID로 로그인하려면 워드프레스닷컴 계정의 비밀번호를 입력하세요.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "OTP 앱의 확인 코드를 입력해 주세요.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "자격을 입력하세요";
 
@@ -5684,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "글 업로드 실패";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "글을 휴지통으로 이동했습니다.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "글 검토 대기 중";
@@ -7452,6 +7458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "코드를 문자로 대신 받기";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "나에게 SMS 문자 메시지로 코드 보내기";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "%1$@(%2$@ 제공)을(를) 선택해 주셔서 감사합니다.";
 
@@ -7877,6 +7886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "사이트 설정을 완료할 시간입니다! 체크리스트가 다음 단계를 안내합니다.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "시간이 다 되었지만, 걱정하지 마세요. 보안이 무엇보다 중요합니다. 다시 시도해 보세요!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
 
@@ -8297,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "실행 취소";
 
@@ -8509,6 +8519,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "샌드박스 스토어 사용";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "보안 키 사용";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "블록 편집기 사용";
 
@@ -8706,6 +8719,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google에서 완료하기를 기다리는 중…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "보안 키 기다리는 중";
 
 /* View title during the Google auth process. */
 "Waiting..." = "기다리는 중...";
@@ -9077,6 +9094,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "문제가 발생하여 로그인할 수 없습니다. 다시 시도하세요.";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "오류가 발생했습니다. 다시 시도해 보세요!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "죄송합니다. 보안 키가 유효하지 않은 것 같습니다. 다른 것으로 시도해 보세요.";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "2단계 인증코드가 맞지 않습니다. 코드를 다시 확인하시고 입력하여 주시기 바랍니다.";
@@ -10354,6 +10377,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "상품";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "미디어 동기화 불가";
 
@@ -10702,6 +10728,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze로 홍보";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "휴지통으로 페이지 이동됨";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "휴지통으로 글 이동됨";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "실행 취소";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "더 많은 정보를 공유하려면 지금 구독하세요";
 
@@ -10846,12 +10881,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "좋아요";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "게시글을 좋아합니다.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "좋아함";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "글에 대한 좋아요를 취소합니다.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "추가 작업이 포함된 메뉴가 열립니다.";
@@ -11020,9 +11057,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "사이트가 모든 사람에게 공개되지만 검색 엔진에서 사이트가 검색되지 않도록 지정하세요.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "숨김";

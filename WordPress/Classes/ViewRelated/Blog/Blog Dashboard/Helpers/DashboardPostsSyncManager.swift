@@ -21,7 +21,7 @@ class DashboardPostsSyncManager {
 
     // MARK: Private Variables
 
-    private let postService: PostService
+    private let postRepository: PostRepository
     private let blogService: BlogService
     @Atomic private var listeners: [DashboardPostsSyncManagerListener] = []
 
@@ -31,9 +31,9 @@ class DashboardPostsSyncManager {
 
     // MARK: Initializer
 
-    init(postService: PostService = PostService(managedObjectContext: ContextManager.shared.mainContext),
+    init(postRepository: PostRepository = PostRepository(coreDataStack: ContextManager.shared),
          blogService: BlogService = BlogService(coreDataStack: ContextManager.shared)) {
-        self.postService = postService
+        self.postRepository = postRepository
         self.blogService = blogService
     }
 
@@ -57,14 +57,6 @@ class DashboardPostsSyncManager {
 
         postType.markStatusesAsBeingSynced(toBeSynced, for: blog)
 
-        let options = PostServiceSyncOptions()
-        options.statuses = toBeSynced.strings
-        options.authorID = blog.userID
-        options.number = Constants.numberOfPostsToSync
-        options.order = .descending
-        options.orderBy = .byModified
-        options.purgesLocalSync = true
-
         // If the userID is nil we need to sync authors
         // But only if the user is an admin
         if blog.userID == nil && blog.isAdmin {
@@ -78,12 +70,28 @@ class DashboardPostsSyncManager {
             return
         }
 
-        postService.syncPosts(ofType: postType.postServiceType, with: options, for: blog) { [weak self] posts in
+        Task { @MainActor [weak self, postRepository, authorID = blog.userID, blogID = TaggedManagedObjectID(blog)] in
+            let success: Bool
+            do {
+                _ = try await postRepository.search(
+                    type: postType == .post ? Post.self : Page.self,
+                    input: nil,
+                    statuses: toBeSynced,
+                    tag: nil,
+                    authorUserID: authorID,
+                    offset: 0,
+                    limit: Constants.numberOfPostsToSync,
+                    orderBy: .byModified,
+                    descending: true,
+                    in: blogID
+                )
+                success = true
+            } catch {
+                success = false
+            }
+
             postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: true, blog: blog, postType: postType, for: toBeSynced)
-        } failure: { [weak self] error in
-            postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, for: toBeSynced)
+            self?.notifyListenersOfPostsSync(success: success, blog: blog, postType: postType, for: toBeSynced)
         }
     }
 
@@ -103,7 +111,7 @@ class DashboardPostsSyncManager {
     }
 
     enum Constants {
-        static let numberOfPostsToSync: NSNumber = 3
+        static let numberOfPostsToSync: Int = 3
     }
 }
 

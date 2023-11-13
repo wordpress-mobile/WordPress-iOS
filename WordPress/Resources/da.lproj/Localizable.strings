@@ -932,9 +932,6 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andre websteder";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Side flyttet til papirkurv.";
-
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Side opdateret";
 
@@ -1017,9 +1014,6 @@
 
 /* Prompts the user that a restored post was moved to the published list. */
 "Post Restored to Published" = "Indlæg genskab under Udgivet";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Indlæg flyttet til papirkurv.";
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Udgiv på WordPress";

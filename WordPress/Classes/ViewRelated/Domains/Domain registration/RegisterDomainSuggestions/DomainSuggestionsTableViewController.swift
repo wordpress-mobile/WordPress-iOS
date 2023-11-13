@@ -4,7 +4,7 @@ import WordPressAuthenticator
 
 
 protocol DomainSuggestionsTableViewControllerDelegate: AnyObject {
-    func domainSelected(_ domain: FullyQuotedDomainSuggestion)
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion?)
     func newSearchStarted()
 }
 
@@ -33,7 +33,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     weak var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
     var domainSelectionType: DomainSelectionType?
-    var primaryDomainAddress: String = ""
+    var primaryDomainAddress: String?
 
     var useFadedColorForParentDomains: Bool {
         return false
@@ -52,8 +52,10 @@ class DomainSuggestionsTableViewController: UITableViewController {
             tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
+
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
+    private var selectedDomain: FullyQuotedDomainSuggestion?
 
     // API returned no domain suggestions.
     private var noSuggestions: Bool = false
@@ -287,7 +289,8 @@ extension DomainSuggestionsTableViewController {
 
     private func topBannerCell() -> UITableViewCell {
         let cell = UITableViewCell()
-        guard let textLabel = cell.textLabel else {
+        guard let textLabel = cell.textLabel,
+              let primaryDomainAddress else {
             return cell
         }
 
@@ -377,7 +380,8 @@ extension DomainSuggestionsTableViewController {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
-        let freeForFirstYear = hasDomainCredit || domainSelectionType == .purchaseWithPaidPlan
+        let supportsPlans = domainSelectionType == .purchaseWithPaidPlan || domainSelectionType == .purchaseFromDomainManagement
+        let freeForFirstYear = hasDomainCredit || supportsPlans
 
         if freeForFirstYear {
             attributedString.append(attributedFreeForTheFirstYear())
@@ -484,29 +488,34 @@ private extension DomainSuggestionsTableViewController {
 
 extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedDomain: FullyQuotedDomainSuggestion
-
-        switch indexPath.section {
-        case Sections.suggestions.rawValue:
-            selectedDomain = searchSuggestions[indexPath.row]
-        default:
+        guard indexPath.section == Sections.suggestions.rawValue else {
             return
         }
 
-        delegate?.domainSelected(selectedDomain)
-
         tableView.deselectSelectedRowWithAnimation(true)
+
+        let domain = searchSuggestions[indexPath.row]
+
+        let selectedDomain: FullyQuotedDomainSuggestion? = {
+            let isSameDomain = self.selectedDomain?.domainName == domain.domainName
+            return isSameDomain ? nil : domain
+        }()
+
+        self.delegate?.domainSelected(selectedDomain)
 
         // Uncheck the previously selected cell.
         if let selectedCell = selectedCell {
             selectedCell.accessoryType = .none
+            self.selectedCell = nil
         }
 
         // Check the currently selected cell.
-        if let cell = self.tableView.cellForRow(at: indexPath) {
+        if selectedDomain != nil, let cell = self.tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .checkmark
             selectedCell = cell
         }
+
+        self.selectedDomain = selectedDomain
     }
 }
 

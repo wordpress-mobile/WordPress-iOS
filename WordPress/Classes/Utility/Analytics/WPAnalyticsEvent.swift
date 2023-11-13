@@ -19,6 +19,9 @@ import Foundation
     case mediaLibraryAddedPhotoViaTenor
     case editorAddedPhotoViaTenor
 
+    // Media
+    case siteMediaShareTapped
+
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostPublishDismissed
@@ -546,6 +549,9 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
+            // Media
+        case .siteMediaShareTapped:
+            return "site_media_shared_tapped"
         // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"

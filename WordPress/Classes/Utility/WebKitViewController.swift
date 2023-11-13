@@ -220,6 +220,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
 
         loadWebViewRequest()
 
@@ -513,8 +516,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             assertionFailure("Observed change to web view that we are not handling")
         }
 
-        // Set the title for the HUD which shows up on tap+hold w/ accessibile font sizes enabled
-        navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+        if customTitle == nil {
+            // Set the title for the HUD which shows up on tap+hold w/ accessible font sizes enabled
+            navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+        }
 
         // Accessibility values which emulate those found in Safari
         navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")

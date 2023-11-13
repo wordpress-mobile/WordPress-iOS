@@ -1755,9 +1755,6 @@
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Страницата бе възстановена като насрочена.";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Страницата е преместестена във кошчето.";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1873,9 +1870,6 @@
 
 /* Prompts the user that a restored post was moved to the scheduled list. */
 "Post Restored to Scheduled" = "Публикацията е върната в чернова";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Публикацията е изтрита.";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -2742,8 +2736,6 @@
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Връщане";
 

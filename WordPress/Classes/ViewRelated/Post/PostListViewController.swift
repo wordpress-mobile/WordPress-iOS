@@ -4,18 +4,15 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-    private let statsStoryboardName = "SiteStats"
-    private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
-
+final class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
     private var showingJustMyPosts: Bool {
-        return filterSettings.currentPostAuthorFilter() == .mine
+        filterSettings.currentPostAuthorFilter() == .mine
     }
 
     /// If set, when the post list appear it will show the tab for this status
-    var initialFilterWithPostStatus: BasePost.Status?
+    private var initialFilterWithPostStatus: BasePost.Status?
 
     // MARK: - Convenience constructors
 
@@ -37,15 +34,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
 
         guard let blogID = coder.decodeObject(forKey: postsViewControllerRestorationKey) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = (try? context.existingObject(with: objectID)) as? Blog else {
+              let objectURL = URL(string: blogID),
+              let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+              let restoredBlog = (try? context.existingObject(with: objectID)) as? Blog else {
 
             return nil
         }
@@ -86,8 +81,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
         var actions: [ActionSheetItem] = [
             PostAction(handler: { [weak self] in
-                    self?.dismiss(animated: false, completion: nil)
-                    self?.createPost()
+                self?.dismiss(animated: false, completion: nil)
+                self?.createPost()
             }, source: Constants.source)
         ]
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
@@ -107,8 +102,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     /// Shows/hides the create button based on the trait collection horizontal size class
-    @objc
-    private func toggleCreateButton() {
+    @objc private func toggleCreateButton() {
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
@@ -157,19 +151,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
-    // Mark - Layout Methods
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        // Need to reload the table alongside a traitCollection change.
-        // This is mainly because we target Reg W and Any H vs all other size classes.
-        // If we transition between the two, the tableView may not update the cell heights accordingly.
-        // Brent C. Aug 3/2016
-        coordinator.animate(alongsideTransition: { context in
-            if self.isViewLoaded {
-                self.tableView.reloadData()
-            }
-            })
-    }
 
     // MARK: - Sync Methods
 
@@ -179,23 +160,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Data Model Interaction
 
-    /// Retrieves the post object at the specified index path.
-    ///
-    /// - Parameter indexPath: the index path of the post object to retrieve.
-    ///
-    /// - Returns: the requested post.
-    ///
-    fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
+    private func postAtIndexPath(_ indexPath: IndexPath) -> Post {
         guard let post = fetchResultsController.object(at: indexPath) as? Post else {
-            // Retrieving anything other than a post object means we have an App with an invalid
-            // state.  Ignoring this error would be counter productive as we have no idea how this
-            // can affect the App.  This controlled interruption is intentional.
-            //
-            // - Diego Rey Mendez, May 18 2016
-            //
             fatalError("Expected a post object.")
         }
-
         return post
     }
 
@@ -251,17 +219,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        editPost(apost: post)
+        editPost(post)
     }
 
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
             let post = self.postAtIndexPath(indexPath)
-            let viewModel = PostListItemViewModel(post: post).statusViewModel
-            let helper = AbstractPostMenuHelper(post, viewModel: viewModel)
             let cell = self.tableView.cellForRow(at: indexPath)
-            return helper.makeMenu(presentingView: cell?.contentView ?? UIView(), delegate: self)
+            return AbstractPostMenuHelper(post).makeMenu(presentingView: cell ?? UIView(), delegate: self)
         }
     }
 
@@ -285,26 +251,24 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
-    private func editPost(apost: AbstractPost) {
-        guard let post = apost as? Post else {
+    private func editPost(_ post: AbstractPost) {
+        guard let post = post as? Post else {
             return
         }
-
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
     }
 
-    private func editDuplicatePost(apost: AbstractPost) {
-        guard let post = apost as? Post else {
+    private func editDuplicatePost(_ post: AbstractPost) {
+        guard let post = post as? Post else {
             return
         }
-
         PostListEditorPresenter.handleCopy(post: post, in: self)
     }
 
-    fileprivate func viewStatsForPost(_ apost: AbstractPost) {
+    fileprivate func viewStatsForPost(_ post: AbstractPost) {
         // Check the blog
-        let blog = apost.blog
+        let blog = post.blog
 
         guard blog.supports(.stats) else {
             // Needs Jetpack.
@@ -314,7 +278,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
 
         // Push the Post Stats ViewController
-        guard let postID = apost.postID as? Int else {
+        guard let postID = post.postID as? Int else {
             return
         }
 
@@ -322,9 +286,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
-        let postURL = URL(string: apost.permaLink! as String)
+        let postURL = URL(string: post.permaLink! as String)
         let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
-                                                                                            postTitle: apost.titleForDisplay(),
+                                                                                            postTitle: post.titleForDisplay(),
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
@@ -332,7 +296,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
-        editPost(apost: post)
+        editPost(post)
     }
 
     func view(_ post: AbstractPost) {
@@ -344,12 +308,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func duplicate(_ post: AbstractPost) {
-        editDuplicatePost(apost: post)
+        editDuplicatePost(post)
     }
 
     func publish(_ post: AbstractPost) {
         publishPost(post) {
-
             BloggingRemindersFlow.present(from: self,
                                           for: post.blog,
                                           source: .publishFlow,
@@ -403,8 +366,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
-    func share(_ apost: AbstractPost, fromView view: UIView) {
-        guard let post = apost as? Post else {
+    func share(_ post: AbstractPost, fromView view: UIView) {
+        guard let post = post as? Post else {
             return
         }
 
@@ -438,9 +401,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private enum Constants {
-        static let exhibitionModeKey = "showCompactPosts"
-        static let card = "card"
-        static let compact = "compact"
         static let source = "post_list"
     }
 }

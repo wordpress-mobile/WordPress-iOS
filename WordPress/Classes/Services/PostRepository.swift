@@ -343,7 +343,9 @@ extension PostRepository {
     ///   - type: `Post.self` and `Page.self` are the only acceptable types.
     ///   - input: The text input from user. Or `nil` for searching all posts or pages.
     ///   - statuses: Filter posts or pages with given status.
+    ///   - tag: Filter posts or pages with given tag.
     ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
     ///   - limit: Number of posts or pages should be fetched.
     ///   - orderBy: The property by which to sort posts or pages.
     ///   - descending: Whether to sort the results in descending order.
@@ -354,7 +356,9 @@ extension PostRepository {
         type: P.Type = P.self,
         input: String?,
         statuses: [BasePost.Status],
+        tag: String?,
         authorUserID: NSNumber? = nil,
+        offset: Int,
         limit: Int,
         orderBy: PostServiceResultsOrdering,
         descending: Bool,
@@ -364,8 +368,9 @@ extension PostRepository {
             type: type,
             searchInput: input,
             statuses: statuses,
+            tag: tag,
             authorUserID: authorUserID,
-            range: 0..<max(limit, 0),
+            range: offset..<(offset + max(limit, 0)),
             orderBy: orderBy,
             descending: descending,
             deleteOtherLocalPosts: false,
@@ -407,6 +412,32 @@ extension PostRepository {
                     break
                 }
             }
+
+            // Once all pages are fetched and saved, we need to purge local database
+            // to ensure when a database query with the same conditions that are passed
+            // to this function returns the same result as the `allPages` value.
+            // Of course, we can't delete locally modified pages if there are any.
+            try await coreDataStack.performAndSave { context in
+                let request = Page.fetchRequest()
+                // Delete posts that match _all of the following conditions_:
+                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    // belongs to the given blog
+                    NSPredicate(format: "blog = %@", blogID.objectID),
+                    // was fetched from the site
+                    NSPredicate(format: "postID != NULL AND postID > 0"),
+                    // doesn't have local edits
+                    NSPredicate(format: "original = NULL AND revision = NULL"),
+                    // doesn't have local status changes
+                    NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
+                    // is not included in the fetched page lists (i.e. it has been deleted from the site)
+                    NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
+                    // we only need to deal with pages that match the filters passed to this function.
+                    statuses.isEmpty ? nil : NSPredicate(format: "status IN %@", statuses),
+                ].compactMap { $0 })
+
+                try context.execute(NSBatchDeleteRequest(fetchRequest: request))
+            }
+
             return allPages
         }
     }
@@ -415,6 +446,7 @@ extension PostRepository {
         type: P.Type,
         searchInput: String? = nil,
         statuses: [BasePost.Status]?,
+        tag: String? = nil,
         authorUserID: NSNumber?,
         range: Range<Int>,
         orderBy: PostServiceResultsOrdering = .byDate,
@@ -450,7 +482,8 @@ extension PostRepository {
             order: descending ? .descending : .ascending,
             orderBy: orderBy,
             authorID: authorUserID,
-            search: searchInput
+            search: searchInput,
+            tag: tag
         ))
         let remotePosts = try await remote.getPosts(ofType: postType, options: options)
 

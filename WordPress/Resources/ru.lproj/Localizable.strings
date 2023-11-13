@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-23 18:59:03+0000 */
+/* Translation-Revision-Date: 2023-10-31 16:32:49+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ru */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Значок соцсети %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Блок '%s' сконвертирован в блоки";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' полностью не поддерживается";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Атрибут alt";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Альтернативно вы можете конвертировать содержимое в блоки.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Кроме того, вы можете отсоединить и отредактировать эти блоки отдельно, нажав «Отсоединить паттерны».";
@@ -5366,9 +5372,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Загрузка страницы не удалась";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Страница перемещена в корзину.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Страница ожидает одобрения";
 
@@ -5690,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Загрузка записи не удалась";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Запись перемещена в корзину.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Запись ожидает одобрения";
@@ -8309,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Назад";
 
@@ -10382,6 +10380,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Товары";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Невозможно синхронизировать медиа";
 
@@ -10730,6 +10731,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Продвигайте содержимое с помощью Blaze";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Страница перемещена в корзину";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Запись перемещена в корзину";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Вернуть";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Подпишитесь, чтобы делиться больше";
 
@@ -10874,12 +10884,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Нравится";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Отмечает запись как понравившуюся.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Понравилось";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Снимает отметку \"понравилось\" с записи.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Открывает меню с другими действиями.";
@@ -11048,9 +11060,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Конфиденциальность";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Ваш сайт доступен всем посетителям, но для него настроен запрет на индексацию поисковыми системами.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Скрытый";

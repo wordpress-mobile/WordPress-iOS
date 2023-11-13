@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-02 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -725,6 +725,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-tekst";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Je kan ook de inhoud naar blokken omzetten.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Als alternatief, kan je deze blokken ook losmaken en afzonderlijk bewerken door op 'Patronen losmaken' te tikken.";
@@ -5360,9 +5363,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Uploaden van pagina mislukt";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Pagina verplaatst naar prullenbak.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Pagina wacht op beoordeling";
 
@@ -5561,6 +5561,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Vul het wachtwoord voor je WordPress.com account in om met je Apple ID in te loggen.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Voer de verificatiecode uit je Authenticator-app in.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Voer alsjeblieft je gegevens in";
 
@@ -5681,9 +5684,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Uploaden van bericht mislukt";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Bericht verplaatst naar prullenbak.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Bericht wacht op beoordeling";
@@ -7446,6 +7446,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "SMS een code naar me toe";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Stuur me een code via sms";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Bedankt voor het kiezen van %1$@ door %2$@";
 
@@ -7871,6 +7874,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Tijd om je site af te ronden! Onze checklist leidt je door de volgende stappen.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "De tijd is om, maar maak je geen zorgen, jouw beveiliging is van het hoogste belang. Probeer het nog eens!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips om WordPress.com optimaal te benutten.";
 
@@ -8291,8 +8297,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Ongedaan maken";
 
@@ -8502,6 +8506,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Gebruik Sandbox Store";
+
+/* The button's title text to use a security key. */
+"Use a security key" = "Beveiligingssleutel";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gebruik blok-editor";
@@ -9072,6 +9079,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Er ging iets mis en we konden je niet inloggen. Probeer nogmaals!";
 
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Oeps, er is iets fout gegaan. Probeer het nog eens!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Oeps, het lijkt erop dat die beveiligingssleutel niet geldig is. Probeer het opnieuw met een andere";
+
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Dat is geen geldige twee-factor verificatiecode. Controleer de code en probeer nogmaals!";
 
@@ -9589,6 +9602,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Je hebt geen campagnes";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "Er is een fout opgetreden bij het laden van campagnes.";
 
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Campagnes aan het inladen ...";
@@ -10677,12 +10693,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "Opent de reacties op het bericht.";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Vindt het bericht leuk.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Geliked";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Vindt het bericht niet meer leuk.";
 
 /* Text for the 'Reblog' button on the reader post card cell. */
 "reader.post.button.reblog" = "Rebloggen";
@@ -10803,9 +10821,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Je site is zichtbaar voor iedereen, maar vraagt de zoekmachines om je site niet te indexeren.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Verborgen";

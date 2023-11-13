@@ -2819,7 +2819,7 @@ Example: Reply to Pamela Nguyen */
 "domain.dashboard.card.menu.hide" = "Hide this";
 
 /* Domain Management Screen Title */
-"domain.management.title" = "My Domains";
+"domain.management.title" = "All Domains";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
@@ -8459,9 +8459,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Your site is visible to everyone, but asks search engines not to index your site.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Hidden";

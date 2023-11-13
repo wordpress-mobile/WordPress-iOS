@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-02 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_CN */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 社交图标";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "‘%s’区块已转换为多个区块";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "不完全支持 '%s'";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文本";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "或者，您可以将内容转换为多个区块。";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "或者，您可以轻点“分离样板”来单独分离和编辑这些区块。";
@@ -5277,6 +5283,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "或";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "或者选择另一种身份验证形式。";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或通过 _输入您的站点地址_ 登录。";
 
@@ -5359,9 +5368,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "页面上传失败";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "已将页面移动到回收站。";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "页面待审核";
@@ -5561,6 +5567,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "请输入您的 WordPress.com 账户密码，以使用 Apple ID 登录。";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "请输入验证器应用程序中的验证码。";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "请输入你的验证信息";
 
@@ -5681,9 +5690,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上传失败";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "已将文章移动到回收站。";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "文章待审核";
@@ -7449,6 +7455,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "通过短信向我发送代码";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "通过短信将代码发送给我";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "感谢选择 %2$@ 提供的 %1$@";
 
@@ -7874,6 +7883,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "是时候完成站点设置了！我们的清单将指引您进入下一步。";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "时间到了，请别担心，我们会优先保证您的安全。 请重试！";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "有关畅享 WordPress.com 的提示。";
 
@@ -8294,8 +8306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "撤消";
 
@@ -8506,6 +8516,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "使用沙盒商店";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "使用安全密钥";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用区块编辑器";
 
@@ -8703,6 +8716,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "正在等待安全密钥插入";
 
 /* View title during the Google auth process. */
 "Waiting..." = "正在等待…";
@@ -9077,6 +9094,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，出问题了，您无法登录。请重试！";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "糟糕，出错了。 请重试！";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "糟糕，安全密钥似乎无效。 请换个密钥再试一次";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，双因素验证码无效。请仔细检查代码，然后重试！";
@@ -10351,6 +10374,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "产品";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "无法同步媒体";
 
@@ -10699,6 +10725,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "大力宣传并推广";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "页面已移至回收站";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "文章已移至回收站";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "撤销";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "立即订阅以共享更多";
 
@@ -10843,12 +10878,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "点赞";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "点赞此文章。";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "已点赞";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "取消点赞该文章。";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "打开可进行更多操作的菜单。";
@@ -11017,9 +11054,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "您的站点对所有人均可见，但要求搜索引擎不要对您的站点进行索引。";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "已隐藏";

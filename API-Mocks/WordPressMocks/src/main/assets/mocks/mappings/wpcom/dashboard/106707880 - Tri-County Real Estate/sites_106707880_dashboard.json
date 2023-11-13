@@ -22,7 +22,16 @@
       },
       "posts": {
           "has_published": true,
-          "draft": [],
+          "draft": [
+            {
+              "id": 52,
+              "title": "Draft",
+              "content": "A draft post • • • • • •",
+              "status": "draft",
+              "modified": "2023-06-18 10:33:38",
+              "date": "2023-06-18 10:33:38"
+            }
+          ],
           "scheduled": []
       },
       "pages": [

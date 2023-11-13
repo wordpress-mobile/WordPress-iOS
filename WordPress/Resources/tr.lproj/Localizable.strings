@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-18 17:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-04 21:44:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -270,6 +270,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s sosyal simge";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "\"%s\" blok, bloklara dönüştürüldü";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "\"%s\" tamamen desteklenmiyor";
@@ -728,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternatif metin";
+
+/* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternatif olarak, içeriği bloklara dönüştürebilirsiniz.";
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatif olarak, \"Desenleri ayır\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
@@ -5280,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "Veya";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Farklı bir doğrulama biçimi de seçebilirsiniz.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Veya _site adresinizi girerek_ oturum açın.";
 
@@ -5362,9 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Sayfa karşıya yüklenemedi";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Sayfa çöpe taşındı.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Sayfa incelenmeyi bekliyor";
@@ -5564,6 +5570,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Lütfen Apple ID’nizle oturum açmak için WordPress.com hesabınızın parolasını girin.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Lütfen kimlik doğrulayıcı uygulamanızdaki doğrulama kodunu girin.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Lütfen giriş bilgilerinizi girin";
 
@@ -5684,9 +5693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Yazı karşıya yüklenemedi";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Yazı çöpe taşındı.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Yazı incelenmeyi bekliyor";
@@ -7452,6 +7458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "Bunun yerine bana kodu mesaj olarak gönderin";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Bana SMS ile kod gönder";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "%2$@ tarafından hazırlanan %1$@ temasını seçtiğiniz için teşekkürler";
 
@@ -7877,6 +7886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Site kurulumunuzu tamamlamanın zamanı geldi! Listemiz bir sonraki adımları size açıklar.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Süre doldu, ancak endişelenmenize gerek yok. Güvenliğiniz önceliğimizdir. Lütfen yeniden deneyin!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "WordPress.com#&8217;dan en fazlasını almak için ipuçları.";
 
@@ -8297,8 +8309,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Geri al";
 
@@ -8509,6 +8519,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Sandbox Store'u kullanın";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Bir güvenlik anahtarı kullanın";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Blok düzenleyici kullan";
 
@@ -8707,6 +8720,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Tamamlanması için Google bekleniyor…";
 
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Güvenlik anahtarı bekleniyor";
+
 /* View title during the Google auth process. */
 "Waiting..." = "Bekliyor...";
 
@@ -8717,6 +8734,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Uyarı";
+
+/* No comment provided by engineer. */
+"Warning message" = "Uyarı mesajı";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Kapsamlı analizlerle kitlenizin nasıl büyüdüğünü izleyin.";
@@ -9077,6 +9097,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Amanın, bir şeyler yanlış gitti ve giriş yapmanızı sağlayamadık. Lütfen tekrar deneyin!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Hay aksi, bir yanlışlık oldu. Lütfen yeniden deneyin!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Hay aksi, görünüşe göre bu güvenlik anahtarı geçerli değil. Lütfen farklı bir anahtarla yeniden deneyin";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "I-ıh, bu geçerli bir iki adımlı doğrulama kodu değil. Kodunuzu iki kere kontrol edin ve tekrar deneyin!";
@@ -10354,6 +10380,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "spam olarak işaretlendi";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Ürünler";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Ortam senkronize edilemiyor";
 
@@ -10702,6 +10731,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Sayfa çöpe taşındı";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Gönderi çöpe taşındı";
+
+/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
+"postsList.movePostToTrash.undo" = "Geri al";
+
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Daha fazla paylaşım için şimdi abone olun";
 
@@ -10846,12 +10884,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "Beğen";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Gönderiyi beğenir.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "Beğenildi";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Gönderinin beğenisini kaldırır.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "Daha fazla işlem içeren bir menü açar.";
@@ -11006,6 +11046,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "siteMedia.accessibilityLabelImage" = "Görsel, %@";
 
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
 /* Accessibility label to use when creation date from media asset is not know. */
 "siteMedia.accessibilityUnknownCreationDate" = "Bilinmeyen oluşturma tarihi";
 
@@ -11017,9 +11060,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Siteniz herkes tarafından görüntülenebilir, ancak arama motorlarından kendisini indekslememelerini ister.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Gizli";

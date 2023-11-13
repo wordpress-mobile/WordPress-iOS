@@ -5261,9 +5261,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Page failed to upload";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Page moved to trash.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Page pending review";
 
@@ -5576,9 +5573,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Post failed to upload";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Post moved to trash.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Post pending review";
@@ -8168,8 +8162,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Undo";
 

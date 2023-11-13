@@ -42,10 +42,7 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonDoneTapped() {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.startAnimating()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicator)
+        navigationItem.rightBarButtonItem = .activityIndicator
 
         setEnabled(false)
 

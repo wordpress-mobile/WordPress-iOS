@@ -12,7 +12,6 @@
 		<string>applinks:wordpress.com</string>
 		<string>applinks:public-api.wordpress.com</string>
 		<string>applinks:links.wp.a8cmail.com</string>
-		<string>applinks:*.wordpress.com</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>

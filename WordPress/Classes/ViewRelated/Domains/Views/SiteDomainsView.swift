@@ -1,8 +1,9 @@
 import SwiftUI
 import WordPressKit
 
-/// The Domains dashboard screen, accessible from My Site
-struct DomainsDashboardView: View {
+/// The Site Domains  screen, accessible from My Site
+struct SiteDomainsView: View {
+
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
     @State var blogService = BlogService(coreDataStack: ContextManager.shared)
@@ -33,7 +34,6 @@ struct DomainsDashboardView: View {
                 updateDomainsList()
             }, failure: nil)
         }
-        .navigationBarTitle(TextContent.navigationTitle)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
                 isShowingDomainRegistrationFlow = false
@@ -143,7 +143,8 @@ struct DomainsDashboardView: View {
 }
 
 // MARK: - Constants
-private extension DomainsDashboardView {
+
+private extension SiteDomainsView {
 
     enum TextContent {
         // Navigation bar
@@ -195,5 +196,45 @@ private extension DomainsDashboardView {
     enum Metrics {
         static let sectionPaddingDefaultHeight: CGFloat = 16.0
         static let topPadding: CGFloat = -34.0
+    }
+}
+
+final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
+
+    // MARK: - Properties
+
+    private let domainManagementFeatureFlag = RemoteFeatureFlag.domainManagement
+
+    // MARK: - Init
+
+    init(blog: Blog) {
+        super.init(rootView: .init(blog: blog))
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = SiteDomainsView.TextContent.navigationTitle
+        self.setupAllDomainsBarButtonItem()
+    }
+
+    // MARK: - Setup
+
+    private func setupAllDomainsBarButtonItem() {
+#if JETPACK
+        guard domainManagementFeatureFlag.enabled() else {
+            return
+        }
+        let title = AllDomainsListViewController.Strings.title
+        let action = UIAction { [weak self] _ in
+            self?.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+        }
+        self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
+#endif
     }
 }
