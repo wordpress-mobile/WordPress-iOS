@@ -1,3 +1,7 @@
+23.8
+-----
+
+
 23.7
 -----
 * [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
