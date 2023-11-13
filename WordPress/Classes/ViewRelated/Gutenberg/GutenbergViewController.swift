@@ -255,12 +255,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return UInt(currentMetrics.wordCount)
     }
 
-    /// Media Library Data Source
-    ///
-    lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
-    }()
-
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
