@@ -192,9 +192,11 @@ class RegisterDomainCoordinator {
         }
 
         if let site {
-            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+            let properties = WPAnalytics.domainsProperties(for: site)
+            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties, blog: site)
         } else {
-            // TODO: Track showing no site checkout
+            let properties = WPAnalytics.domainsProperties(usingCredit: false, domainOnly: true)
+            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties)
         }
 
         webViewController.configureSandboxStore {
