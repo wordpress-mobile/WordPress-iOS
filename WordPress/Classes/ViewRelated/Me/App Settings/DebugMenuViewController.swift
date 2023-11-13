@@ -36,6 +36,12 @@ struct DebugMenuView: View {
         } label: {
             DebugMenuRow(systemImage: "flag.fill", color: .pink, title: Strings.featureFlags)
         }
+        NavigationLink {
+            DebugAnalyticsView()
+                .environment(\.managedObjectContext, LoggerStore.shared.viewContext)
+        } label: {
+            DebugMenuRow(systemImage: "play.fill", color: .indigo, title: Strings.analyics)
+        }
     }
 
     @ViewBuilder private var settings: some View {
@@ -213,7 +219,7 @@ private enum Strings {
     static let readerURLPlaceholder = NSLocalizedString("debugMenu.readerDefaultURL", value: "Default URL", comment: "Placeholder for the reader CSS URL")
     static let readerURLHint = NSLocalizedString("debugMenu.readerHit", value: "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
     static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
-    static let general = NSLocalizedString("debugMenu.generalSectionTitle", value: "General", comment: "General section title")
+    static let analyics = NSLocalizedString("debugMenu.analytics", value: "Analytics", comment: "Debug menu item title")
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let console = NSLocalizedString("debugMenu.console", value: "Console", comment: "Networking debug menu item")
     static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")

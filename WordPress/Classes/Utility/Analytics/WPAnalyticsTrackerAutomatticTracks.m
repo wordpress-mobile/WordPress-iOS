@@ -7,11 +7,6 @@
 #import "WordPress-Swift.h"
 @import AutomatticTracks;
 
-@interface  TracksEventPair : NSObject
-@property (nonatomic, copy) NSString *eventName;
-@property (nonatomic, strong) NSDictionary *properties;
-@end
-
 @implementation TracksEventPair
 @end
 

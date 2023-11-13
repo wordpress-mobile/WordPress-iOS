@@ -103,6 +103,9 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 {
     [WPAnalytics registerTracker:[WPAnalyticsTrackerWPCom new]];
     [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
+    if ([Feature enabled:FeatureFlagDebugMenu]) {
+        [WPAnalytics registerTracker:[WPAnalyticsLogger new]];
+    }
 }
 
 - (void)clearTrackers

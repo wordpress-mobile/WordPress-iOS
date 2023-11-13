@@ -1,8 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <WordPressShared/WPAnalytics.h>
 
-@interface WPAnalyticsTrackerAutomatticTracks : NSObject<WPAnalyticsTracker>
+@interface TracksEventPair: NSObject
+@property (nonnull, nonatomic, copy) NSString *eventName;
+@property (nullable, nonatomic, strong) NSDictionary *properties;
+@end
 
-+ (NSString *)eventNameForStat:(WPAnalyticsStat)stat;
+@interface WPAnalyticsTrackerAutomatticTracks: NSObject<WPAnalyticsTracker>
+
++ (nonnull NSString *)eventNameForStat:(WPAnalyticsStat)stat;
++ (nonnull TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat;
 
 @end
