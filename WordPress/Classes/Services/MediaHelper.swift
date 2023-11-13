@@ -74,12 +74,12 @@ class MediaHelper: NSObject {
             return
         }
 
-        let title = NSLocalizedString("Keep optimizing images?",
+        let title = NSLocalizedString("appSettings.optimizeImagesPopup.title", value: "Keep optimizing images?",
                                         comment: "Title of an alert informing users to enable image optimization in uploads.")
-        let message = NSLocalizedString("Image optimization shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.",
+        let message = NSLocalizedString("appSettings.optimizeImagesPopup.message", value: "Image optimization shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.",
                                         comment: "Message of an alert informing users to enable image optimization in uploads.")
-        let turnOffTitle = NSLocalizedString("No, turn off", comment: "Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads.")
-        let leaveOnTitle = NSLocalizedString("Yes, leave on", comment: "Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads.")
+        let turnOffTitle = NSLocalizedString("appSettings.optimizeImagesPopup.turnOff", value: "No, turn off", comment: "Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads.")
+        let leaveOnTitle = NSLocalizedString("appSettings.optimizeImagesPopup.turnOn", value: "Yes, leave on", comment: "Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads.")
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let turnOffAction = UIAlertAction(title: turnOffTitle, style: .default) { _ in

@@ -41,13 +41,13 @@ class MediaSettings: NSObject {
         var description: String {
             switch self {
             case .maximum:
-                return NSLocalizedString("Maximum", comment: "Indicates an image will use maximum quality when uploaded.")
+                return NSLocalizedString("appSettings.media.imageQuality.maximum", value: "Maximum", comment: "Indicates an image will use maximum quality when uploaded.")
             case .high:
-                return NSLocalizedString("High", comment: "Indicates an image will use high quality when uploaded.")
+                return NSLocalizedString("appSettings.media.imageQuality.high", value: "High", comment: "Indicates an image will use high quality when uploaded.")
             case .medium:
-                return NSLocalizedString("Medium", comment: "Indicates an image will use medium quality when uploaded.")
+                return NSLocalizedString("appSettings.media.imageQuality.medium", value: "Medium", comment: "Indicates an image will use medium quality when uploaded.")
             case(.low):
-                return NSLocalizedString("Low", comment: "Indicates an image will use low quality when uploaded.")
+                return NSLocalizedString("appSettings.media.imageQuality.low", value: "Low", comment: "Indicates an image will use low quality when uploaded.")
             }
         }
     }

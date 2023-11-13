@@ -213,11 +213,12 @@ class AppSettingsViewController: UITableViewController {
             })
 
             let currentImageQuality = MediaSettings().imageQualitySetting
+            let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
-                                                  SettingsSelectionTitleKey: NSLocalizedString("Quality", comment: "The quality of image used when uploading"),
-                                                  SettingsSelectionTitlesKey: titles,
-                                                  SettingsSelectionValuesKey: values] as [String: Any]
+                                                         SettingsSelectionTitleKey: title,
+                                                        SettingsSelectionTitlesKey: titles,
+                                                        SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
@@ -450,7 +451,7 @@ private extension AppSettingsViewController {
 
         let imageOptimizationValue = Bool(MediaSettings().imageOptimizationSetting)
         let imageOptimization = SwitchRow(
-            title: NSLocalizedString("Optimize Images", comment: "Option to enable the optimization of images when uploading."),
+            title: NSLocalizedString("appSettings.media.imageOptimizationRow", value: "Optimize Images", comment: "Option to enable the optimization of images when uploading."),
             value: imageOptimizationValue,
             onChange: imageOptimizationChanged()
         )
@@ -461,7 +462,7 @@ private extension AppSettingsViewController {
             onChange: imageSizeChanged())
 
         let imageQualityRow = NavigationItemRow(
-            title: NSLocalizedString("Image Quality", comment: "Title for the image quality settings option."),
+            title: NSLocalizedString("appSettings.media.imageQualityRow", value: "Image Quality", comment: "Title for the image quality settings option."),
             detail: MediaSettings().imageQualitySetting.description,
             action: pushImageQualitySettings())
 
