@@ -1,3 +1,7 @@
+23.8
+-----
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
+
 23.7
 -----
 * [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
@@ -23,7 +27,6 @@
 * [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
-* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
 * [*] Fix an issue with GIF uploads [#22025]
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
 * [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
