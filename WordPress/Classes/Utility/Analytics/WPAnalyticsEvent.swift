@@ -239,6 +239,15 @@ import Foundation
     case domainTransferMoreTapped
     case domainTransferButtonTapped
 
+    // Domain Management
+    case domainsDashboardAllDomainsTapped
+    case domainsListShown
+    case allDomainsFindDomainTapped
+    case addDomainTapped
+    case domainsSearchTransferDomainTapped
+    case domainsSearchRowSelected
+
+
     // My Site
     case mySitePullToRefresh
 
@@ -937,6 +946,20 @@ import Foundation
             return "dashboard_card_domain_transfer_more_menu_tapped"
         case .domainTransferButtonTapped:
             return "dashboard_card_domain_transfer_button_tapped"
+
+        // Domain Management
+        case .domainsDashboardAllDomainsTapped:
+            return "domains_dashboard_all_domains_tapped"
+        case .domainsListShown:
+            return "domains_list_shown"
+        case .allDomainsFindDomainTapped:
+            return "all_domains_find_domain_tapped"
+        case .addDomainTapped:
+            return "add_domain_tapped"
+        case .domainsSearchTransferDomainTapped:
+            return "domains_search_transfer_domain_tapped"
+        case .domainsSearchRowSelected:
+            "domains_search_row_selected"
 
         // My Site
         case .mySitePullToRefresh:

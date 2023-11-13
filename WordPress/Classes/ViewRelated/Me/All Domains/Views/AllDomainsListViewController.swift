@@ -61,12 +61,18 @@ final class AllDomainsListViewController: UIViewController {
         super.viewDidLoad()
         self.viewModel.addDomainAction = { [weak self] in
             self?.navigateToAddDomain()
+            WPAnalytics.track(.addDomainTapped)
         }
         self.title = Strings.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
         self.setupSubviews()
         self.observeState()
         self.viewModel.loadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAnalytics.track(.domainsListShown)
     }
 
     // MARK: - Setup Views

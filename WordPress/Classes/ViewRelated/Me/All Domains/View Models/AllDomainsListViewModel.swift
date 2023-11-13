@@ -158,6 +158,7 @@ class AllDomainsListViewModel {
     private func noDomainsMessageViewModel() -> AllDomainsListMessageStateViewModel {
         let action: () -> Void = { [weak self] in
             self?.addDomainAction?()
+            WPAnalytics.track(.allDomainsFindDomainTapped)
         }
         return .init(
             title: Strings.emptyStateTitle,
