@@ -246,6 +246,8 @@ import Foundation
     case addDomainTapped
     case domainsSearchTransferDomainTapped
     case domainsSearchRowSelected
+    case purchaseDomainGetDomainTapped
+    case purchaseDomainChooseSiteTapped
 
 
     // My Site
@@ -959,7 +961,11 @@ import Foundation
         case .domainsSearchTransferDomainTapped:
             return "domains_search_transfer_domain_tapped"
         case .domainsSearchRowSelected:
-            "domains_search_row_selected"
+            return "domains_search_row_selected"
+        case .purchaseDomainGetDomainTapped:
+            return "purchase_domain_get_domain_tapped"
+        case .purchaseDomainChooseSiteTapped:
+            return "purchase_domain_choose_site_tapped"
 
         // My Site
         case .mySitePullToRefresh:
