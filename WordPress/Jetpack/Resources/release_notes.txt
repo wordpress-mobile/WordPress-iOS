@@ -25,5 +25,5 @@
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
 * [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
 * [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]
-* [***] [Jetpack-only] Added the All Domains screen enabling the users to manage their domains from within the app [#22033]
+* [***] Added the All Domains screen enabling the users to manage their domains from within the app [#22033]
 
