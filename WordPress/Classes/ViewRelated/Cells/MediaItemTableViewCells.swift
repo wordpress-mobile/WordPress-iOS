@@ -3,14 +3,16 @@ import Gridicons
 import WordPressShared
 
 #warning("TODO: remove unused imports")
+#warning("TODO: add suppport for other formats")
 
 final class MediaItemHeaderView: UIView {
+    #warning("TODO: what about loaded image?")
     var loadedImage: UIImage? { imageView.image }
 
-    private let imageView = CachedAnimatedImageView()
+    let imageView = CachedAnimatedImageView()
     private let errorView = UIImageView()
     private let videoIconView = PlayIconView()
-    private let loadingIndicator = UIActivityIndicatorView(style: .large)
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
 
     private var isVideo: Bool {
         set {
@@ -50,6 +52,8 @@ final class MediaItemHeaderView: UIView {
         fatalError("Not implemented")
     }
 
+#warning("TODO: resize to fit readable content width")
+#warning("TODO: fix portraint mode on iPad (dynamic size? max height 320 or smth?)")
     private func setupImageView() {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +135,8 @@ final class MediaItemHeaderView: UIView {
 
             errorView.isHidden = image != nil
 
+#warning("TODO: is the image size OK?")
+#warning("TODO: improve error handling")
             print("did-load-image", image?.size)
 
             #warning("TODO: check image size; are we loading images that are too large?")

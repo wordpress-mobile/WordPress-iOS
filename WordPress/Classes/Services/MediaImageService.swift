@@ -35,6 +35,26 @@ final class MediaImageService: NSObject {
 
     enum Error: Swift.Error {
         case unsupportedMediaType
+        case unacceptableStatusCode(_ statusCode: Int)
+        case missingImageURL
+    }
+
+    // MARK: - Original Image
+
+    /// Returns original image data for the given media asset.
+    @MainActor
+    func imageData(for media: Media) async throws -> Data {
+        guard media.mediaType == .image || media.mediaType == .video else {
+            throw Error.unsupportedMediaType
+        }
+        if let localURL = media.absoluteLocalURL,
+           let data = try? Data(contentsOf: localURL) {
+            return data
+        }
+        if let remoteURL = media.remoteURL.flatMap(URL.init) {
+            return try await imageData(for: remoteURL, blogID: TaggedManagedObjectID(media.blog))
+        }
+        throw Error.missingImageURL
     }
 
     // MARK: - Thumbnails
@@ -151,6 +171,17 @@ final class MediaImageService: NSObject {
         }
 
         let blogID = TaggedManagedObjectID(media.blog)
+        let data = try await imageData(for: imageURL, blogID: blogID)
+        let image = try await Task.detached {
+            try makeImage(from: data)
+        }.value
+        saveThumbnail(for: media.objectID, size: size) { targetURL in
+            try data.write(to: targetURL)
+        }
+        return image
+    }
+
+    private func imageData(for imageURL: URL, blogID: TaggedManagedObjectID<Blog>) async throws -> Data {
         let host = try await coreDataStack.performQuery { context in
             MediaHost(with: try context.existingObject(with: blogID))
         }
@@ -160,17 +191,13 @@ final class MediaImageService: NSObject {
             throw CancellationError()
         }
         let (data, response) = try await session.data(for: request)
-        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
-              (200..<400).contains(statusCode) else {
-            throw URLError(.unknown)
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+            throw URLError(.unknown) // This should hever happen
         }
-        let image = try await Task.detached {
-            try makeImage(from: data)
-        }.value
-        saveThumbnail(for: media.objectID, size: size) { targetURL in
-            try data.write(to: targetURL)
+        guard (200..<400).contains(statusCode) else {
+            throw Error.unacceptableStatusCode(statusCode)
         }
-        return image
+        return data
     }
 
     // MARK: - Thubmnail for Video
