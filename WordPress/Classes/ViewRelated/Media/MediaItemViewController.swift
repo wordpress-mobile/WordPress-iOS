@@ -7,19 +7,11 @@ import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.
 ///
-class MediaItemViewController: UITableViewController {
+final class MediaItemViewController: UITableViewController {
+    let media: Media
 
-    class DownloadDelegate: NSObject, AVAssetDownloadDelegate {
-
-    }
-
-    // swiftlint:disable:next weak_delegate
-    let delegate = DownloadDelegate()
-
-    @objc let media: Media
-
-    fileprivate var viewModel: ImmuTable!
-    fileprivate var mediaMetadata: MediaMetadata {
+    private var viewModel: ImmuTable!
+    private var mediaMetadata: MediaMetadata {
         didSet {
             if !mediaMetadata.matches(media) {
                 saveChanges()
@@ -27,7 +19,10 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    @objc init(media: Media) {
+    private let headerView = MediaItemHeaderView()
+    private lazy var headerHeightConstraint = headerView.heightAnchor.constraint(equalToConstant: 320)
+
+    init(media: Media) {
         self.media = media
 
         self.mediaMetadata = MediaMetadata(media: media)
@@ -43,8 +38,9 @@ class MediaItemViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.showsVerticalScrollIndicator = false
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self], tableView: tableView)
+        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaDocumentRow.self], tableView: tableView)
 
         updateViewModel()
         updateNavigationItem()
@@ -75,40 +71,54 @@ class MediaItemViewController: UITableViewController {
         }
 
         viewModel = ImmuTable(sections: [
-            ImmuTableSection(rows: [ headerRow ]),
             ImmuTableSection(headerText: nil, rows: mediaInfoRows, footerText: nil),
             ImmuTableSection(headerText: nil, rows: metadataRows, footerText: nil)
         ])
+
+        headerView.configure(with: media)
+        headerHeightConstraint.isActive = true
+        tableView.tableHeaderView = headerView
+
+        headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapHeaderView)))
     }
 
-    private var headerRow: ImmuTableRow {
-        switch media.mediaType {
-        case .image, .video:
-            return MediaImageRow(media: media, action: { [weak self] row in
-                guard let media = self?.media else { return }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-                switch media.mediaType {
-                case .image:
-                    if self?.isMediaLoaded() == true {
-                        self?.presentImageViewControllerForMedia()
-                    }
-                case .video:
-                    self?.presentVideoViewControllerForMedia()
-                default: break
-                }
-            })
-        default:
-            return MediaDocumentRow(media: media, action: { [weak self] _ in
-                guard let media = self?.media else { return }
-
-                // We're currently not presenting previews for audio until
-                // we can resolve an auth issue. @frosty 2017-05-02
-                if media.mediaType != .audio {
-                    self?.presentDocumentViewControllerForMedia()
-                }
-            })
-        }
+        headerHeightConstraint.constant = view.bounds.height * 0.6
+        tableView.sizeToFitHeaderView()
     }
+
+    #warning("TODO: remove")
+
+//    private var headerRow: ImmuTableRow {
+//        switch media.mediaType {
+//        case .image, .video:
+//            return MediaImageTableHeaderViewModel(media: media, action: { [weak self] row in
+//                guard let media = self?.media else { return }
+//
+//                switch media.mediaType {
+//                case .image:
+//                    if self?.isMediaLoaded() == true {
+//                        self?.presentImageViewControllerForMedia()
+//                    }
+//                case .video:
+//                    self?.presentVideoViewControllerForMedia()
+//                default: break
+//                }
+//            })
+//        default:
+//            return MediaDocumentRow(media: media, action: { [weak self] _ in
+//                guard let media = self?.media else { return }
+//
+//                // We're currently not presenting previews for audio until
+//                // we can resolve an auth issue. @frosty 2017-05-02
+//                if media.mediaType != .audio {
+//                    self?.presentDocumentViewControllerForMedia()
+//                }
+//            })
+//        }
+//    }
 
     private var metadataRows: [ImmuTableRow] {
         let presenter = MediaMetadataPresenter(media: media)
@@ -161,13 +171,13 @@ class MediaItemViewController: UITableViewController {
         let shareItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
                                         style: .plain,
                                         target: self,
-                                        action: #selector(shareTapped(_:)))
+                                        action: #selector(shareTapped))
         shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
 
         let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
                                         style: .plain,
                                         target: self,
-                                        action: #selector(trashTapped(_:)))
+                                        action: #selector(trashTapped))
         trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
 
         if media.blog.supports(.mediaDeletion) {
@@ -177,28 +187,15 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    private func isMediaLoaded() -> Bool {
-        let headerIndexPath = IndexPath(row: 0, section: 0)
-        // Check in case of future changes.
-        assert(viewModel.sections[headerIndexPath.section].rows[headerIndexPath.row].cellClass == headerRow.cellClass, "Wrong index path for headerRow")
-
-        guard
-            let cell = tableView.cellForRow(at: headerIndexPath) as? MediaItemImageTableViewCell,
-            cell.customImageView.image != nil else {
-
-            return false
-        }
-        return true
-    }
-
-    private func presentImageViewControllerForMedia() {
-        let controller = WPImageViewController(media: self.media)
+#warning("TODO: reimplemnet / add support for video")
+    @objc private func didTapHeaderView() {
+        let controller = WPImageViewController(image: headerView.loadedImage, andMedia: media)
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
-
-        self.present(controller, animated: true)
+        present(controller, animated: true)
     }
 
+#warning("TODO: remove or update")
     private func presentVideoViewControllerForMedia() {
         media.videoAsset { [weak self] asset, error in
             if let asset = asset,
@@ -440,7 +437,7 @@ extension MediaItemViewController {
         let row = viewModel.rowAtIndexPath(indexPath)
         if let customHeight = type(of: row).customHeight {
             return CGFloat(customHeight)
-        } else if row is MediaImageRow {
+        } else if row is MediaImageTableHeaderViewModel {
             return UITableView.automaticDimension
         }
 
@@ -451,7 +448,7 @@ extension MediaItemViewController {
         let row = viewModel.rowAtIndexPath(indexPath)
         if let customHeight = type(of: row).customHeight {
             return CGFloat(customHeight)
-        } else if row is MediaImageRow {
+        } else if row is MediaImageTableHeaderViewModel {
             return view.readableContentGuide.layoutFrame.width
         }
 

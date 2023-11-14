@@ -33,12 +33,19 @@ final class MediaImageService: NSObject {
         }
     }
 
+    enum Error: Swift.Error {
+        case unsupportedMediaType
+    }
+
     // MARK: - Thumbnails
 
     /// Returns a thumbnail for the given media asset. The images are decompressed
     /// (or bitmapped) and are ready to be displayed.
     @MainActor
     func thumbnail(for media: Media, size: ThumbnailSize = .small) async throws -> UIImage {
+        guard media.mediaType == .image || media.mediaType == .video else {
+            throw Error.unsupportedMediaType
+        }
         guard media.remoteStatus != .stub else {
             let media = try await fetchStubMedia(for: media)
             return try await _thumbnail(for: media, size: size)
@@ -205,6 +212,10 @@ extension MediaImageService {
         /// The small thumbnail that can be used in collection view cells and
         /// similar situations.
         case small
+
+        /// A medium thumbnail thumbnail that can typically be used to fit
+        /// the entire screen on iPhone or a large portion of the sreen on iPad.
+        case medium
     }
 
     /// Returns an optimal target size in pixels for a thumbnail of the given
@@ -215,7 +226,7 @@ extension MediaImageService {
             height: CGFloat(media.height?.floatValue ?? 0)
         )
         let targetSize = MediaImageService.getPreferredThumbnailSize(for: size)
-        return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
+        return MediaImageService.aspectFillTargetSize(forMediaSize: mediaSize, targetSize: targetSize)
     }
 
     /// Returns a preferred thumbnail size (in pixels) optimized for the device.
@@ -224,6 +235,7 @@ extension MediaImageService {
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
     private static func getPreferredThumbnailSize(for thumbnail: ThumbnailSize) -> CGSize {
+        let minScreenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
         switch thumbnail {
         case .small:
             /// The size is calculated to fill a collection view cell, assuming the app
@@ -231,12 +243,14 @@ extension MediaImageService {
             /// on whether the device is in landscape or portrait mode, but the thumbnail size is
             /// guaranteed to always be the same across app launches and optimized for
             /// a portraint (dominant) mode.
-            let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
             let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-            let availableWidth = screenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
+            let availableWidth = minScreenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
             let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
             let targetSize = CGSize(width: targetSide, height: targetSide)
             return targetSize.scaled(by: UIScreen.main.scale)
+        case .medium:
+            let side = min(1024, minScreenSide * UIScreen.main.scale)
+            return CGSize(width: side, height: side)
         }
     }
 
@@ -245,7 +259,7 @@ extension MediaImageService {
     ///
     /// Example: if media size is 2000x3000 px and targetSize is 200x200 px, the
     /// returned value will be 200x300 px. For more examples, see `MediaImageServiceTests`.
-    static func targetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
+    static func aspectFillTargetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
         guard mediaSize.width > 0 && mediaSize.height > 0 else {
             return originalTargetSize
         }

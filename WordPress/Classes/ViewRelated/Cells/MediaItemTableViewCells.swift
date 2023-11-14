@@ -2,16 +2,17 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-class MediaItemImageTableViewCell: WPTableViewCell {
+#warning("TODO: remove unused imports")
 
-    @objc let customImageView = CachedAnimatedImageView()
-    @objc let videoIconView = PlayIconView()
+final class MediaItemHeaderView: UIView {
+    var loadedImage: UIImage? { imageView.image }
 
-    @objc lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: customImageView, gifStrategy: .largeGIFs)
-    }()
+    private let imageView = CachedAnimatedImageView()
+    private let errorView = UIImageView()
+    private let videoIconView = PlayIconView()
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
 
-    @objc var isVideo: Bool {
+    private var isVideo: Bool {
         set {
             videoIconView.isHidden = !newValue
         }
@@ -20,56 +21,14 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         }
     }
 
-    // MARK: - Initializers
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-
-    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        commonInit()
-    }
-
-    public convenience init() {
-        self.init(style: .default, reuseIdentifier: nil)
-    }
-
-    @objc func commonInit() {
-        setupImageView()
-        setupVideoIconView()
-    }
-
-    private func setupImageView() {
-        contentView.addSubview(customImageView)
-        customImageView.translatesAutoresizingMaskIntoConstraints = false
-        customImageView.contentMode = .scaleAspectFill
-
-        NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            customImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-            ])
-
-        customImageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    }
-
-    private func setupVideoIconView() {
-        contentView.addSubview(videoIconView)
-        videoIconView.isHidden = true
-    }
-
     private var aspectRatioConstraint: NSLayoutConstraint? = nil
 
-    @objc var targetAspectRatio: CGFloat {
+    private var targetAspectRatio: CGFloat {
         set {
             if let aspectRatioConstraint = aspectRatioConstraint {
-                customImageView.removeConstraint(aspectRatioConstraint)
+                imageView.removeConstraint(aspectRatioConstraint)
             }
-
-            aspectRatioConstraint = customImageView.heightAnchor.constraint(equalTo: customImageView.widthAnchor, multiplier: newValue, constant: 1.0)
-            aspectRatioConstraint?.priority = .defaultHigh
+            aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: newValue, constant: 1.0)
             aspectRatioConstraint?.isActive = true
         }
         get {
@@ -77,46 +36,138 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         }
     }
 
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-        resetBackgroundColors()
-
-        if animated {
-            UIView.animate(withDuration: 0.2) {
-                self.videoIconView.isHighlighted = highlighted
-            }
-        } else {
-            videoIconView.isHighlighted = highlighted
-        }
+        setupImageView()
+        setupVideoIconView()
+        setupLoadingIndicator()
+        setupErrorView()
+        setupAccessibility()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        resetBackgroundColors()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Not implemented")
     }
 
-    private func resetBackgroundColors() {
-        contentView.backgroundColor = .listForeground
+    private func setupImageView() {
+        addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let inset: CGFloat = 16
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: inset),
+            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -inset),
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: inset),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -inset)
+        ])
+
+        imageView.layer.cornerRadius = 12
+        imageView.layer.masksToBounds = true
+
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    }
+
+    private func setupVideoIconView() {
+        addSubview(videoIconView)
+        videoIconView.isHidden = true
+    }
+
+    private func setupLoadingIndicator() {
+        addSubview(loadingIndicator)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    private func setupErrorView() {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 42)
+        errorView.image = UIImage(systemName: "exclamationmark.triangle", withConfiguration: configuration)
+        errorView.tintColor = .secondaryLabel
+        errorView.isHidden = true
+
+        addSubview(errorView)
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            errorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            errorView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    private func setupAccessibility() {
+        accessibilityTraits = .button
+        accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
+        accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        videoIconView.center = contentView.center
+        videoIconView.center = center
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageLoader.prepareForReuse()
+    // MARK: - Media
+
+    func configure(with media: Media) {
+        setAspectRatio(with: media)
+
+        loadingIndicator.startAnimating()
+        errorView.isHidden = true
+
+        Task {
+            let image = try? await MediaImageService.shared.thumbnail(for: media, size: .medium)
+            loadingIndicator.stopAnimating()
+
+            if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+                imageView.animate(withGIFData: data)
+            } else {
+                imageView.image = image
+            }
+
+            errorView.isHidden = image != nil
+
+            print("did-load-image", image?.size)
+
+            #warning("TODO: check image size; are we loading images that are too large?")
+            #warning("TODO: verify that fullscreen image gets loaded")
+        }
+
+        isVideo = media.mediaType == .video
+    }
+
+    private func setAspectRatio(with media: Media) {
+        guard let width = media.width, let height = media.height, width.floatValue > 0 else {
+            return
+        }
+
+        let mediaAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
+
+        // Set a maximum aspect ratio for videos
+        if media.mediaType == .video {
+            targetAspectRatio = min(mediaAspectRatio, 0.75)
+        } else {
+            targetAspectRatio = mediaAspectRatio
+        }
+    }
+
+    private func placeholder(for media: Media) -> UIImage? {
+        if let url = media.absoluteLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        } else if let url = media.absoluteThumbnailLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        }
+        return nil
     }
 }
 
 class MediaItemDocumentTableViewCell: WPTableViewCell {
     @objc let customImageView = UIImageView()
 
-    // MARK: - Initializers
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
@@ -138,15 +189,15 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
     private func setupImageView() {
         customImageView.backgroundColor = .clear
 
-        contentView.addSubview(customImageView)
+        addSubview(customImageView)
         customImageView.translatesAutoresizingMaskIntoConstraints = false
         customImageView.contentMode = .center
 
         NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
-            customImageView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
-            customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            customImageView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            customImageView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
+            customImageView.topAnchor.constraint(equalTo: topAnchor),
+            customImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
     }
 
@@ -162,76 +213,9 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
     }
 }
 
-struct MediaImageRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(MediaItemImageTableViewCell.self)
-
+struct MediaImageTableHeaderViewModel {
     let media: Media
     let action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        WPStyleGuide.configureTableViewCell(cell)
-
-        if let cell = cell as? MediaItemImageTableViewCell {
-            setAspectRatioFor(cell)
-            loadImageFor(cell)
-            cell.isVideo = media.mediaType == .video
-            cell.accessibilityTraits = .button
-            cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
-            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
-        }
-    }
-
-    private func setAspectRatioFor(_ cell: MediaItemImageTableViewCell) {
-        guard let width = media.width, let height = media.height, width.floatValue > 0 else {
-            return
-        }
-
-        let mediaAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
-
-        // Set a maximum aspect ratio for videos
-        if media.mediaType == .video {
-            cell.targetAspectRatio = min(mediaAspectRatio, 0.75)
-        } else {
-            cell.targetAspectRatio = mediaAspectRatio
-        }
-    }
-
-    private func addPlaceholderImageFor(_ cell: MediaItemImageTableViewCell) {
-        if let url = media.absoluteLocalURL,
-            let image = UIImage(contentsOfFile: url.path) {
-            cell.customImageView.image = image
-        } else if let url = media.absoluteThumbnailLocalURL,
-            let image = UIImage(contentsOfFile: url.path) {
-            cell.customImageView.image = image
-        }
-    }
-
-    private var placeholderImage: UIImage? {
-        if let url = media.absoluteLocalURL {
-            return UIImage(contentsOfFile: url.path)
-        } else if let url = media.absoluteThumbnailLocalURL {
-            return UIImage(contentsOfFile: url.path)
-        }
-        return nil
-    }
-
-    private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        let isBlogAtomic = media.blog.isAtomic()
-        cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, isBlogAtomic: isBlogAtomic, success: nil) { (error) in
-            self.show(error)
-        }
-    }
-
-    private func show(_ error: Error?) {
-        let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
-                                                                                       comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString(
-            "mediaItemTable.errorAlert.dismissButton",
-            value: "Dismiss",
-            comment: "Verb. User action to dismiss error alert when failing to load media item."
-        ))
-        alertController.presentFromRootViewController()
-    }
 }
 
 struct MediaDocumentRow: ImmuTableRow {
