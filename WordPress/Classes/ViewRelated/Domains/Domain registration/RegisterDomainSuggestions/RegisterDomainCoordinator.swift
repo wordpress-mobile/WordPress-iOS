@@ -15,6 +15,7 @@ class RegisterDomainCoordinator {
     // MARK: Variables
 
     private let crashLogger: CrashLogging
+    private let analyticsSource: String?
 
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
@@ -23,12 +24,21 @@ class RegisterDomainCoordinator {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
+    /// Initializes a `RegisterDomainCoordinator` with the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - site: An optional `Blog` object representing the blog associated with the domain registration.
+    ///   - domainPurchasedCallback: An optional closure to be called when a domain is successfully purchased.
+    ///   - analyticsSource: A string representing the source for analytics tracking. Defaults to `domains_register` if not provided.
+    ///   - crashLogger: An instance of `CrashLogging` to handle crash logging. Defaults to `.main` if not provided.
     init(site: Blog?,
          domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
+         analyticsSource: String? = "domains_register",
          crashLogger: CrashLogging = .main) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
         self.crashLogger = crashLogger
+        self.analyticsSource = analyticsSource
     }
 
     // MARK: Public Functions
@@ -153,8 +163,9 @@ class RegisterDomainCoordinator {
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: url,
-            source: "domains_register", // TODO: Update source
-            title: title)
+            source: analyticsSource ?? "",
+            title: title
+        )
         let navController = LightNavigationController(rootViewController: webViewController)
 
         // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
@@ -181,9 +192,11 @@ class RegisterDomainCoordinator {
         }
 
         if let site {
-            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+            let properties = WPAnalytics.domainsProperties(for: site)
+            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties, blog: site)
         } else {
-            // TODO: Track showing no site checkout
+            let properties = WPAnalytics.domainsProperties(usingCredit: false, domainOnly: true)
+            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties)
         }
 
         webViewController.configureSandboxStore {
