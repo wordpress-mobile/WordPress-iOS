@@ -2,13 +2,12 @@ import UIKit
 import CoreData
 
 /// A service for retrieval and caching of thumbnails for Media objects.
-final class MediaImageService: NSObject {
+actor MediaImageService: NSObject {
     static let shared = MediaImageService()
 
     private let session: URLSession
     private let coreDataStack: CoreDataStackSwift
     private let mediaFileManager: MediaFileManager
-    private let ioQueue = DispatchQueue(label: "org.automattic.MediaImageService")
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
          mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache)) {
@@ -40,15 +39,18 @@ final class MediaImageService: NSObject {
     @MainActor
     func thumbnail(for media: Media, size: ThumbnailSize = .small) async throws -> UIImage {
         guard media.remoteStatus != .stub else {
-            let media = try await fetchStubMedia(for: media)
+            guard let mediaID = media.mediaID else {
+                throw URLError(.unknown) // This should never happen
+            }
+            let blogID = TaggedManagedObjectID(media.blog)
+            let media = try await fetchStubMedia(for: mediaID, blogID: blogID)
             return try await _thumbnail(for: media, size: size)
         }
-        return try await _thumbnail(for: media, size: size)
+        return try await _thumbnail(for: SafeMedia(media), size: size)
     }
 
-    @MainActor
-    private func _thumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
-        if let image = await cachedThumbnail(for: media.objectID, size: size) {
+    private func _thumbnail(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
+        if let image = await cachedThumbnail(for: media.mediaID, size: size) {
             return image
         }
         if let image = await localThumbnail(for: media, size: size) {
@@ -60,51 +62,31 @@ final class MediaImageService: NSObject {
     // MARK: - Cached Thumbnail
 
     /// Returns a local thumbnail for the given media object (if available).
-    private func cachedThumbnail(for mediaID: NSManagedObjectID, size: ThumbnailSize) async -> UIImage? {
+    private func cachedThumbnail(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize) async -> UIImage? {
+        guard let fileURL = getCachedThumbnailURL(for: mediaID, size: size) else { return nil }
         return try? await Task.detached {
-            let imageURL = try self.getCachedThumbnailURL(for: mediaID, size: size)
-            let data = try Data(contentsOf: imageURL)
-            return try makeImage(from: data)
+            try makeImage(from: Data(contentsOf: fileURL))
         }.value
     }
 
-    // The save is performed asynchronously to eliminate any delays. It's
-    // exceedingly unlikely it will result in any duplicated work thanks to the
-    // memore caches.
-    private func saveThumbnail(for mediaID: NSManagedObjectID, size: ThumbnailSize, _ closure: @escaping (URL) throws -> Void) {
-        ioQueue.async {
-            if let targetURL = try? self.getCachedThumbnailURL(for: mediaID, size: size) {
-                try? closure(targetURL)
-            }
-        }
-    }
-
-    private func getCachedThumbnailURL(for mediaID: NSManagedObjectID, size: ThumbnailSize) throws -> URL {
-        let mediaID = mediaID.uriRepresentation().lastPathComponent
-        return try mediaFileManager.makeLocalMediaURL(
+    private func getCachedThumbnailURL(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize) -> URL? {
+        let mediaID = mediaID.objectID.uriRepresentation().lastPathComponent
+        return try? mediaFileManager.makeLocalMediaURL(
             withFilename: "\(mediaID)-\(size.rawValue)-thumbnail",
             fileExtension: nil, // We don't know ahead of time
             incremented: false
         )
     }
 
-    /// Flushes all pending I/O changes to disk.
-    ///
-    /// - warning: For testing purposes only.
-    func flush() {
-        ioQueue.sync {}
-    }
-
     // MARK: - Local Thumbnail
 
     /// Generates a thumbnail from a local asset and saves it in cache.
-    @MainActor
-    private func localThumbnail(for media: Media, size: ThumbnailSize) async -> UIImage? {
+    private func localThumbnail(for media: SafeMedia, size: ThumbnailSize) async -> UIImage? {
         guard let sourceURL = media.absoluteLocalURL else {
             return nil
         }
 
-        let exporter = makeThumbnailExporter(for: media, size: size)
+        let exporter = await makeThumbnailExporter(for: media, size: size)
         guard exporter.supportsThumbnailExport(forFile: sourceURL),
               let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
               let image = try? await makeImage(from: export.url)
@@ -113,14 +95,15 @@ final class MediaImageService: NSObject {
         }
 
         // The order is important to ensure `export.url` still exists when creating an image
-        saveThumbnail(for: media.objectID, size: size) { targetURL in
-            try FileManager.default.moveItem(at: export.url, to: targetURL)
+        if let thumbnailURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
+            try? FileManager.default.moveItem(at: export.url, to: thumbnailURL)
         }
 
         return image
     }
 
-    private func makeThumbnailExporter(for media: Media, size: ThumbnailSize) -> MediaThumbnailExporter {
+    @MainActor
+    private func makeThumbnailExporter(for media: SafeMedia, size: ThumbnailSize) -> MediaThumbnailExporter {
         let exporter = MediaThumbnailExporter()
         exporter.mediaDirectoryType = .cache
         exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
@@ -131,10 +114,8 @@ final class MediaImageService: NSObject {
     // MARK: - Remote Thumbnail
 
     /// Downloads a remote thumbnail and saves it in cache.
-    @MainActor
-    private func remoteThumbnail(for media: Media, size: ThumbnailSize) async throws -> UIImage {
-        let targetSize = MediaImageService.getThumbnailSize(for: media, size: size)
-        guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize) else {
+    private func remoteThumbnail(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
+        guard let info = await getRemoteThumbnailInfo(for: media, size: size) else {
             // Self-hosted WordPress sites don't have `remoteThumbnailURL`, so
             // the app generates the thumbnail by itself.
             if media.mediaType == .video {
@@ -142,13 +123,8 @@ final class MediaImageService: NSObject {
             }
             throw URLError(.badURL)
         }
-
-        let blogID = TaggedManagedObjectID(media.blog)
-        let host = try await coreDataStack.performQuery { context in
-            MediaHost(with: try context.existingObject(with: blogID))
-        }
         let request = try await MediaRequestAuthenticator()
-            .authenticatedRequest(for: imageURL, host: host)
+            .authenticatedRequest(for: info.imageURL, host: info.host)
         guard !Task.isCancelled else {
             throw CancellationError()
         }
@@ -160,40 +136,55 @@ final class MediaImageService: NSObject {
         let image = try await Task.detached {
             try makeImage(from: data)
         }.value
-        saveThumbnail(for: media.objectID, size: size) { targetURL in
-            try data.write(to: targetURL)
+        if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
+            try? data.write(to: fileURL)
         }
         return image
     }
 
+    private struct RemoteThumbnailInfo {
+        let imageURL: URL
+        let host: MediaHost
+    }
+
+    // There are two reasons why these operations are performed in the background:
+    // performance and making sure the subsystem is thread-safe and can be used
+    // from the background.
+    private func getRemoteThumbnailInfo(for media: SafeMedia, size: ThumbnailSize) async -> RemoteThumbnailInfo? {
+        let targetSize = await MediaImageService.getThumbnailSize(for: media, size: size)
+        return try? await coreDataStack.performQuery { context in
+            let blog = try context.existingObject(with: media.blogID)
+            guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
+            return RemoteThumbnailInfo(imageURL: imageURL, host: MediaHost(with: blog))
+        }
+    }
+
     // MARK: - Thubmnail for Video
 
-    @MainActor
-    private func generateThumbnailForVideo(for media: Media, size: ThumbnailSize) async throws -> UIImage {
+    private func generateThumbnailForVideo(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
         guard let videoURL = media.remoteURL.flatMap(URL.init) else {
             throw URLError(.badURL)
         }
-        let exporter = makeThumbnailExporter(for: media, size: size)
+        let exporter = await makeThumbnailExporter(for: media, size: size)
         let (_, export) = try await exporter.exportThumbnail(forVideoURL: videoURL)
         let image = try await makeImage(from: export.url)
 
         // The order is important to ensure `export.url` exists when making an image
-        saveThumbnail(for: media.objectID, size: size) { targetURL in
-            try FileManager.default.moveItem(at: export.url, to: targetURL)
+        if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
+            try? FileManager.default.moveItem(at: export.url, to: fileURL)
         }
         return image
     }
 
     // MARK: - Stubs
 
-    @MainActor
-    private func fetchStubMedia(for media: Media) async throws -> Media {
-        guard let mediaID = media.mediaID else {
-            throw MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL
-        }
+    private func fetchStubMedia(for mediaID: NSNumber, blogID: TaggedManagedObjectID<Blog>) async throws -> SafeMedia {
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
-        let objectID = try await mediaRepository.getMedia(withID: mediaID, in: .init(media.blog))
-        return try coreDataStack.mainContext.existingObject(with: objectID)
+        let objectID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
+        return try await coreDataStack.performQuery { context in
+            let media = try context.existingObject(with: objectID)
+            return SafeMedia(media)
+        }
     }
 }
 
@@ -211,13 +202,17 @@ extension MediaImageService {
         case medium
     }
 
+    @MainActor
+    fileprivate static func getThumbnailSize(for media: SafeMedia, size: ThumbnailSize) -> CGSize {
+        let mediaSize = media.size ?? CGSize(width: 1024, height: 1024) // rhs should never happen
+        return MediaImageService.getThumbnailSize(for: mediaSize, size: size)
+
+    }
+
     /// Returns an optimal target size in pixels for a thumbnail of the given
     /// size for the given media asset.
-    static func getThumbnailSize(for media: Media, size: ThumbnailSize) -> CGSize {
-        let mediaSize = CGSize(
-            width: CGFloat(media.width?.floatValue ?? 0),
-            height: CGFloat(media.height?.floatValue ?? 0)
-        )
+    @MainActor
+    static func getThumbnailSize(for mediaSize: CGSize, size: ThumbnailSize) -> CGSize {
         let targetSize = MediaImageService.getPreferredThumbnailSize(for: size)
         return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
     }
@@ -227,6 +222,7 @@ extension MediaImageService {
     /// - important: It makes sure the app uses the same thumbnails across
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
+    @MainActor
     private static func getPreferredThumbnailSize(for thumbnail: ThumbnailSize) -> CGSize {
         let minScreenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
         switch thumbnail {
@@ -276,14 +272,37 @@ extension MediaImageService {
     }
 }
 
-// MARK: - Helpers (RemoteURL)
+// MARK: - SafeMedia
 
-private extension Media {
+/// A thread-safe media wrapper for use by `MediaImageService`.
+private final class SafeMedia {
+    let mediaID: TaggedManagedObjectID<Media>
+    let blogID: TaggedManagedObjectID<Blog>
+    let mediaType: MediaType
+    let absoluteLocalURL: URL?
+    let remoteThumbnailURL: String?
+    let remoteURL: String?
+    let size: CGSize?
+
+    init(_ media: Media) {
+        self.mediaID = TaggedManagedObjectID(media)
+        self.blogID = TaggedManagedObjectID(media.blog)
+        self.mediaType = media.mediaType
+        self.absoluteLocalURL = media.absoluteLocalURL
+        self.remoteURL = media.remoteURL
+        self.remoteThumbnailURL = media.remoteThumbnailURL
+        if let width = media.width?.floatValue, let height = media.height?.floatValue {
+            self.size = CGSize(width: CGFloat(width), height: CGFloat(height))
+        } else {
+            self.size = nil
+        }
+    }
+
     /// Returns the thumbnail remote URL with a given target size. It uses
     /// Image CDN (formerly Photon) if available.
     ///
     /// - parameter targetSize: Target size in pixels.
-    func getRemoteThumbnailURL(targetSize: CGSize) -> URL? {
+    func getRemoteThumbnailURL(targetSize: CGSize, blog: Blog) -> URL? {
         switch mediaType {
         case .image:
             guard let remoteURL = remoteURL.flatMap(URL.init) else {
@@ -298,7 +317,7 @@ private extension Media {
                     .scaled(by: 1.0 / scale)
                     .scaled(by: min(2, scale))
             }
-            if !isEligibleForPhoton {
+            if !blog.isEligibleForPhoton {
                 return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
             } else {
                 let targetSize = targetSize.scaled(by: 1.0 / UIScreen.main.scale)
@@ -308,9 +327,11 @@ private extension Media {
             return remoteThumbnailURL.flatMap(URL.init)
         }
     }
+}
 
+private extension Blog {
     var isEligibleForPhoton: Bool {
-        !(blog.isPrivateAtWPCom() || (!blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored()))
+        !(isPrivateAtWPCom() || (!isHostedAtWPcom && isBasicAuthCredentialStored()))
     }
 }
 
