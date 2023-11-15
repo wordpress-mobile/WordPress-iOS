@@ -72,6 +72,7 @@ actor MediaImageService: NSObject {
     }
 
     /// Returns a thread-safe media object and materializes a stub if needed.
+    @MainActor
     private func getSafeMedia(for media: Media) async throws -> SafeMedia {
         guard media.remoteStatus != .stub else {
             guard let mediaID = media.mediaID else {
