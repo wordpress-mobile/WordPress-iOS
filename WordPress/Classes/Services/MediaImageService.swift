@@ -33,21 +33,12 @@ final class MediaImageService: NSObject {
         }
     }
 
-    enum Error: Swift.Error {
-        case unsupportedMediaType
-        case unacceptableStatusCode(_ statusCode: Int)
-        case missingImageURL
-    }
-
     // MARK: - Thumbnails
 
     /// Returns a thumbnail for the given media asset. The images are decompressed
     /// (or bitmapped) and are ready to be displayed.
     @MainActor
     func thumbnail(for media: Media, size: ThumbnailSize = .small) async throws -> UIImage {
-        guard media.mediaType == .image || media.mediaType == .video else {
-            throw Error.unsupportedMediaType
-        }
         guard media.remoteStatus != .stub else {
             let media = try await fetchStubMedia(for: media)
             return try await _thumbnail(for: media, size: size)
@@ -153,17 +144,6 @@ final class MediaImageService: NSObject {
         }
 
         let blogID = TaggedManagedObjectID(media.blog)
-        let data = try await imageData(for: imageURL, blogID: blogID)
-        let image = try await Task.detached {
-            try makeImage(from: data)
-        }.value
-        saveThumbnail(for: media.objectID, size: size) { targetURL in
-            try data.write(to: targetURL)
-        }
-        return image
-    }
-
-    private func imageData(for imageURL: URL, blogID: TaggedManagedObjectID<Blog>) async throws -> Data {
         let host = try await coreDataStack.performQuery { context in
             MediaHost(with: try context.existingObject(with: blogID))
         }
@@ -173,13 +153,17 @@ final class MediaImageService: NSObject {
             throw CancellationError()
         }
         let (data, response) = try await session.data(for: request)
-        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
-            throw URLError(.unknown) // This should hever happen
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+              (200..<400).contains(statusCode) else {
+            throw URLError(.unknown)
         }
-        guard (200..<400).contains(statusCode) else {
-            throw Error.unacceptableStatusCode(statusCode)
+        let image = try await Task.detached {
+            try makeImage(from: data)
+        }.value
+        saveThumbnail(for: media.objectID, size: size) { targetURL in
+            try data.write(to: targetURL)
         }
-        return data
+        return image
     }
 
     // MARK: - Thubmnail for Video
@@ -235,7 +219,7 @@ extension MediaImageService {
             height: CGFloat(media.height?.floatValue ?? 0)
         )
         let targetSize = MediaImageService.getPreferredThumbnailSize(for: size)
-        return MediaImageService.aspectFillTargetSize(forMediaSize: mediaSize, targetSize: targetSize)
+        return MediaImageService.targetSize(forMediaSize: mediaSize, targetSize: targetSize)
     }
 
     /// Returns a preferred thumbnail size (in pixels) optimized for the device.
@@ -268,7 +252,7 @@ extension MediaImageService {
     ///
     /// Example: if media size is 2000x3000 px and targetSize is 200x200 px, the
     /// returned value will be 200x300 px. For more examples, see `MediaImageServiceTests`.
-    static func aspectFillTargetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
+    static func targetSize(forMediaSize mediaSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
         guard mediaSize.width > 0 && mediaSize.height > 0 else {
             return originalTargetSize
         }

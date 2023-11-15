@@ -149,7 +149,7 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testThatLandscapeImageIsResizedToFillTargetSize() {
         XCTAssertEqual(
-            MediaImageService.aspectFillTargetSize(
+            MediaImageService.targetSize(
                 forMediaSize: CGSize(width: 3000, height: 2000),
                 targetSize: CGSize(width: 200, height: 200)
             ),
@@ -159,7 +159,7 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testThatPortraitImageIsResizedToFillTargetSize() {
         XCTAssertEqual(
-            MediaImageService.aspectFillTargetSize(
+            MediaImageService.targetSize(
                 forMediaSize: CGSize(width: 2000, height: 3000),
                 targetSize: CGSize(width: 200, height: 200)
             ),
@@ -169,7 +169,7 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testThatPanoramaIsResizedToSaneSize() {
         XCTAssertEqual(
-            MediaImageService.aspectFillTargetSize(
+            MediaImageService.targetSize(
                 forMediaSize: CGSize(width: 4000, height: 400),
                 targetSize: CGSize(width: 200, height: 200)
             ),
@@ -179,7 +179,7 @@ class MediaImageServiceTests: CoreDataTestCase {
 
     func testThatImagesAreNotUpscaled() {
         XCTAssertEqual(
-            MediaImageService.aspectFillTargetSize(
+            MediaImageService.targetSize(
                 forMediaSize: CGSize(width: 30, height: 20),
                 targetSize: CGSize(width: 200, height: 200)
             ),

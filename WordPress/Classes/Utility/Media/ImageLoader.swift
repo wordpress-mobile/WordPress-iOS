@@ -29,8 +29,6 @@ import AutomatticTracks
     public var imageDimensionsHandler: ImageLoaderDimensionsBlock?
     private var imageDimensionsFetcher: ImageDimensionsFetcher? = nil
 
-    var hidesLoadingIndicatorOnError = false
-
     // MARK: Private Fields
 
     private unowned let imageView: CachedAnimatedImageView
