@@ -6,10 +6,7 @@ import WordPressShared
 #warning("TODO: add suppport for other formats")
 
 final class MediaItemHeaderView: UIView {
-    #warning("TODO: what about loaded image?")
-    var loadedImage: UIImage? { imageView.image }
-
-    let imageView = CachedAnimatedImageView()
+    private let imageView = CachedAnimatedImageView()
     private let errorView = UIImageView()
     private let videoIconView = PlayIconView()
     let loadingIndicator = UIActivityIndicatorView(style: .large)
@@ -24,19 +21,6 @@ final class MediaItemHeaderView: UIView {
     }
 
     private var aspectRatioConstraint: NSLayoutConstraint? = nil
-
-    private var targetAspectRatio: CGFloat {
-        set {
-            if let aspectRatioConstraint = aspectRatioConstraint {
-                imageView.removeConstraint(aspectRatioConstraint)
-            }
-            aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: newValue, constant: 1.0)
-            aspectRatioConstraint?.isActive = true
-        }
-        get {
-            return aspectRatioConstraint?.multiplier ?? 0
-        }
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -134,13 +118,6 @@ final class MediaItemHeaderView: UIView {
             }
 
             errorView.isHidden = image != nil
-
-#warning("TODO: is the image size OK?")
-#warning("TODO: improve error handling")
-            print("did-load-image", image?.size)
-
-            #warning("TODO: check image size; are we loading images that are too large?")
-            #warning("TODO: verify that fullscreen image gets loaded")
         }
 
         isVideo = media.mediaType == .video
@@ -150,24 +127,16 @@ final class MediaItemHeaderView: UIView {
         guard let width = media.width, let height = media.height, width.floatValue > 0 else {
             return
         }
-
-        let mediaAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
-
-        // Set a maximum aspect ratio for videos
-        if media.mediaType == .video {
-            targetAspectRatio = min(mediaAspectRatio, 0.75)
-        } else {
-            targetAspectRatio = mediaAspectRatio
-        }
+        let aspectRatio = CGFloat(height.floatValue / width.floatValue)
+        setAspectRatio(aspectRatio)
     }
 
-    private func placeholder(for media: Media) -> UIImage? {
-        if let url = media.absoluteLocalURL {
-            return UIImage(contentsOfFile: url.path)
-        } else if let url = media.absoluteThumbnailLocalURL {
-            return UIImage(contentsOfFile: url.path)
+    private func setAspectRatio(_ ratio: CGFloat) {
+        if let aspectRatioConstraint = aspectRatioConstraint {
+            imageView.removeConstraint(aspectRatioConstraint)
         }
-        return nil
+        aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ratio, constant: 1.0)
+        aspectRatioConstraint?.isActive = true
     }
 }
 

@@ -39,24 +39,6 @@ final class MediaImageService: NSObject {
         case missingImageURL
     }
 
-    // MARK: - Original Image
-
-    /// Returns original image data for the given media asset.
-    @MainActor
-    func imageData(for media: Media) async throws -> Data {
-        guard media.mediaType == .image || media.mediaType == .video else {
-            throw Error.unsupportedMediaType
-        }
-        if let localURL = media.absoluteLocalURL,
-           let data = try? Data(contentsOf: localURL) {
-            return data
-        }
-        if let remoteURL = media.remoteURL.flatMap(URL.init) {
-            return try await imageData(for: remoteURL, blogID: TaggedManagedObjectID(media.blog))
-        }
-        throw Error.missingImageURL
-    }
-
     // MARK: - Thumbnails
 
     /// Returns a thumbnail for the given media asset. The images are decompressed

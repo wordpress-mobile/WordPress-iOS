@@ -4,11 +4,10 @@ import UIKit
 import Gridicons
 import SVProgressHUD
 import WordPressShared
-import QuickLook
 
 /// Displays an image preview and metadata for a single Media asset.
 ///
-final class MediaItemViewController: UITableViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+final class MediaItemViewController: UITableViewController {
     let media: Media
 
     private var viewModel: ImmuTable!
@@ -188,60 +187,12 @@ final class MediaItemViewController: UITableViewController, QLPreviewControllerD
         }
     }
 
-    private var isLoadingFullscreenImage = false
-    private var previewURL: NSURL?
-
 #warning("TODO: reimplemnet / add support for video")
     @objc private func didTapHeaderView() {
-        guard !isLoadingFullscreenImage else { return }
-        isLoadingFullscreenImage = true
-        Task {
-            if let data = try? await MediaImageService.shared.imageData(for: media) {
-                let localURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(media.filename ?? "image")
-
-                try? data.write(to: localURL)
-                previewURL = localURL as NSURL
-
-                 let appearance = UINavigationBar.appearance(whenContainedInInstancesOf: [QLPreviewController.self])
-                appearance.isTranslucent = true // important!
-
-                let preview = QLPreviewController()
-                preview.dataSource = self
-                preview.delegate = self
-//                preview.modalTransitionStyle = .crossDissolve
-                present(preview, animated: true)
-
-#warning("TODO: add error handling")
-                //
-                //            headerView.loadingIndicator.startAnimating()
-                //                if let
-                //                    let fileURLs = try await Media.downloadRemoteData(for: [media], blog: media.blog)
-                //                    self.share(fileURLs, sender: sender)
-                //                } catch {
-                //                    SVProgressHUD.showError(withStatus: SiteMediaViewController.sharingFailureMessage)
-                //                }
-            }
-            headerView.loadingIndicator.stopAnimating()
-            isLoadingFullscreenImage = false
-        }
-    }
-
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        1
-    }
-
-    #warning("TODO: rework WPImageViewController and add nice transition animation instead of using QLPreviewController (?)")
-    #warning("TODO: disable editing? or keep?")
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        previewURL!
-    }
-
-    func previewController(_ controller: QLPreviewController, transitionViewFor item: QLPreviewItem) -> UIView? {
-        headerView.imageView
-    }
-
-    func previewController(_ controller: QLPreviewController, editingModeFor previewItem: QLPreviewItem) -> QLPreviewItemEditingMode {
-        .disabled
+        let controller = WPImageViewController(media: media)
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
     }
 
 #warning("TODO: remove or update")
