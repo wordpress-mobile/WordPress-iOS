@@ -20,7 +20,7 @@ final class MediaItemViewController: UITableViewController {
     }
 
     private let headerView = MediaItemHeaderView()
-    private lazy var headerHeightConstraint = headerView.heightAnchor.constraint(equalToConstant: 320)
+    private lazy var headerMaxHeightConstraint = headerView.heightAnchor.constraint(lessThanOrEqualToConstant: 320)
 
     init(media: Media) {
         self.media = media
@@ -75,8 +75,9 @@ final class MediaItemViewController: UITableViewController {
             ImmuTableSection(headerText: nil, rows: metadataRows, footerText: nil)
         ])
 
+        headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 280).isActive = true
+        headerMaxHeightConstraint.isActive = true
         headerView.configure(with: media)
-        headerHeightConstraint.isActive = true
         tableView.tableHeaderView = headerView
 
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapHeaderView)))
@@ -85,7 +86,7 @@ final class MediaItemViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        headerHeightConstraint.constant = view.bounds.height * 0.6
+        headerMaxHeightConstraint.constant = view.bounds.height * 0.75
         tableView.sizeToFitHeaderView()
     }
 

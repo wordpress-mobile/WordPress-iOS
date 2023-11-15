@@ -6,18 +6,9 @@ final class MediaItemHeaderView: UIView {
     private let imageView = CachedAnimatedImageView()
     private let errorView = UIImageView()
     private let videoIconView = PlayIconView()
-    let loadingIndicator = UIActivityIndicatorView(style: .large)
-
-    private var isVideo: Bool {
-        set {
-            videoIconView.isHidden = !newValue
-        }
-        get {
-            return !videoIconView.isHidden
-        }
-    }
-
-    private var aspectRatioConstraint: NSLayoutConstraint? = nil
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
+    private var aspectRatioConstraint: NSLayoutConstraint?
+    private var imageSizeConstraints: [NSLayoutConstraint] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,20 +24,19 @@ final class MediaItemHeaderView: UIView {
         fatalError("Not implemented")
     }
 
-#warning("TODO: resize to fit readable content width")
-#warning("TODO: fix portraint mode on iPad (dynamic size? max height 320 or smth?)")
     private func setupImageView() {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        let inset: CGFloat = 16
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: inset),
-            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -inset),
-            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: inset),
-            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -inset)
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 20),
+            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -24),
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: readableContentGuide.leadingAnchor, constant: 0),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: readableContentGuide.trailingAnchor, constant: 0),
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 20),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: 20)
         ])
 
         imageView.layer.cornerRadius = 12
@@ -99,9 +89,12 @@ final class MediaItemHeaderView: UIView {
     // MARK: - Media
 
     func configure(with media: Media) {
+        NSLayoutConstraint.deactivate(imageSizeConstraints)
+        imageSizeConstraints = []
+
         switch media.mediaType {
         case .image, .video:
-            setAspectRatio(with: media)
+            setImageConstraints(with: media)
 
             loadingIndicator.startAnimating()
             errorView.isHidden = true
@@ -119,24 +112,42 @@ final class MediaItemHeaderView: UIView {
                 errorView.isHidden = image != nil
             }
 
-            isVideo = media.mediaType == .video
+            videoIconView.isHidden = !(media.mediaType == .video)
         case .document:
-            aspectRatioConstraint.map(imageView.removeConstraint)
-            imageView.image = UIImage.gridicon(.pages, size: Constants.documentTypeIconSize)
+            setDocumentTypeIcon(.pages)
         case .audio:
-            aspectRatioConstraint.map(imageView.removeConstraint)
-            imageView.image = UIImage.gridicon(.audio, size: Constants.documentTypeIconSize)
+            setDocumentTypeIcon(.audio)
         default:
             break
         }
     }
 
-    private func setAspectRatio(with media: Media) {
-        guard let width = media.width, let height = media.height, width.floatValue > 0 else {
+    private func setDocumentTypeIcon(_ icon: GridiconType) {
+        let image = UIImage.gridicon(icon, size: CGSize(width: 96, height: 96))
+        setAspectRatio(image.size.height / image.size.width)
+        imageView.image = image
+    }
+
+    private func setImageConstraints(with media: Media) {
+        guard let width = media.width?.floatValue,
+              let height = media.height?.floatValue,
+              width > 0 else {
             return
         }
-        let aspectRatio = CGFloat(height.floatValue / width.floatValue)
-        setAspectRatio(aspectRatio)
+
+        // Configure before the image is loaded to ensure the header
+        // size is set to its final size before the image is loaded
+        imageSizeConstraints = [
+            imageView.widthAnchor.constraint(equalToConstant: CGFloat(width)),
+            imageView.heightAnchor.constraint(equalToConstant: CGFloat(height))
+        ]
+        for constraint in imageSizeConstraints {
+            constraint.priority = .defaultHigh
+            constraint.isActive = true
+        }
+
+        // Prevent the image view from losing the aspect ratio when scaled down
+        setAspectRatio(CGFloat(height / width))
     }
 
     private func setAspectRatio(_ ratio: CGFloat) {
@@ -146,8 +157,4 @@ final class MediaItemHeaderView: UIView {
         aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ratio, constant: 1.0)
         aspectRatioConstraint?.isActive = true
     }
-}
-
-private enum Constants {
-    static let documentTypeIconSize = CGSize(width: 80, height: 80)
 }
