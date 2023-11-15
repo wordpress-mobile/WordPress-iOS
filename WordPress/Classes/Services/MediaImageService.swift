@@ -2,7 +2,7 @@ import UIKit
 import CoreData
 
 /// A service for retrieval and caching of thumbnails for Media objects.
-actor MediaImageService: NSObject {
+actor MediaImageService {
     static let shared = MediaImageService()
 
     private let urlSession: URLSession
