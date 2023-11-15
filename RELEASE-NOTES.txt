@@ -1,6 +1,7 @@
 23.8
 -----
 
+* [*] Fix the media item details screen layout on iPad [#22042]
 
 23.7
 -----
