@@ -43,7 +43,8 @@ class MediaImageServiceTests: CoreDataTestCase {
         let thumbnail = try await sut.thumbnail(for: media)
 
         // THEN a small thumbnail is created
-        XCTAssertEqual(thumbnail.size, await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small))
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        XCTAssertEqual(thumbnail.size, expectedSize)
 
         // GIVEN local asset is deleted
         try FileManager.default.removeItem(at: localURL)
@@ -52,7 +53,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         let cachedThumbnail = try await sut.thumbnail(for: media)
 
         // THEN cached thumbnail is still available
-        XCTAssertEqual(cachedThumbnail.size, await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small))
+        XCTAssertEqual(cachedThumbnail.size, expectedSize)
     }
 
     // MARK: - Remote Resources (Images)
@@ -75,7 +76,8 @@ class MediaImageServiceTests: CoreDataTestCase {
         let thumbnail = try await sut.thumbnail(for: media)
 
         // THEN a small thumbnail is created
-        XCTAssertEqual(thumbnail.size, await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small))
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        XCTAssertEqual(thumbnail.size, expectedSize)
 
         // GIVEN local asset is deleted
 
@@ -83,7 +85,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         let cachedThumbnail = try await sut.thumbnail(for: media)
 
         // THEN cached thumbnail is still available
-        XCTAssertEqual(cachedThumbnail.size, await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small))
+        XCTAssertEqual(cachedThumbnail.size, expectedSize)
     }
 
     // MARK: - Remote Resources (Videos)
@@ -126,7 +128,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         // WHEN
         let thumbnail = try await sut.thumbnail(for: media)
 
-        let expectedSize = await MediaImageService.getThumbnailSize(for: media, size: .small)
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
 
         // THEN a thumbnail is downloaded using the remote URL as is
         XCTAssertEqual(thumbnail.size.width, expectedSize.width, accuracy: 1.5)
