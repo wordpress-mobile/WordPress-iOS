@@ -51,6 +51,8 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
     private var pages: [Page] = []
 
+    private var fetchAllPagesTask: Task<[TaggedManagedObjectID<Page>], Error>?
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
@@ -131,6 +133,11 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         QuickStartTourGuide.shared.endCurrentTour()
+
+        if self.isMovingFromParent {
+            fetchAllPagesTask?.cancel()
+            fetchAllPagesTask = nil
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -163,6 +170,22 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
     override internal func postTypeToSync() -> PostServiceType {
         return .page
+    }
+
+    @MainActor
+    override func syncPosts(isFirstPage: Bool) async throws -> ([AbstractPost], Bool) {
+        let coreDataStack = ContextManager.shared
+        let filter = filterSettings.currentPostListFilter()
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let blogID = TaggedManagedObjectID(blog)
+
+        let repository = PostRepository(coreDataStack: coreDataStack)
+        let task = repository.fetchAllPages(statuses: filter.statuses, authorUserID: author, in: blogID)
+        self.fetchAllPagesTask = task
+
+        let posts = try await task.value.map { try coreDataStack.mainContext.existingObject(with: $0) }
+
+        return (posts, false)
     }
 
     override func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> ())?, failure: ((NSError) -> ())?) {
