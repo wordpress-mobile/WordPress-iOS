@@ -5,7 +5,8 @@ import CoreData
 actor MediaImageService: NSObject {
     static let shared = MediaImageService()
 
-    private let session: URLSession
+    private let urlSession: URLSession
+    private let urlSessionWithCache: URLSession
     private let cache: MemoryCache
     private let coreDataStack: CoreDataStackSwift
     private let mediaFileManager: MediaFileManager
@@ -17,11 +18,23 @@ actor MediaImageService: NSObject {
         self.coreDataStack = coreDataStack
         self.mediaFileManager = mediaFileManager
 
-        let configuration = URLSessionConfiguration.default
-        // `MediaImageService` has its own disk cache, so it's important to
-        // disable the native url cache which is by default set to `URLCache.shared`
-        configuration.urlCache = nil
-        self.session = URLSession(configuration: configuration)
+        self.urlSession = URLSession(configuration: {
+            let configuration = URLSessionConfiguration.default
+            // The service has a custom disk cache for thumbnails, so it's important to
+            // disable the native url cache which is by default set to `URLCache.shared`
+            configuration.urlCache = nil
+            return configuration
+        }())
+
+        self.urlSessionWithCache = URLSession(configuration: {
+            let configuration = URLSessionConfiguration.default
+            configuration.urlCache = URLCache(
+                memoryCapacity: 32 * 1024 * 1024, // 32 MB
+                diskCapacity: 128 * 1024 * 1024,  // 128 MB
+                diskPath: "org.automattic.MediaImageService"
+            )
+            return configuration
+        }())
     }
 
     static func migrateCacheIfNeeded() {
@@ -100,7 +113,7 @@ actor MediaImageService: NSObject {
             return image
         }
         if let info = await getFullsizeImageInfo(for: media) {
-            let data = try await loadData(with: info, using: session)
+            let data = try await loadData(with: info, using: urlSessionWithCache)
             return try await makeImage(from: data)
         }
         // The media has no local or remote URL – should never happen
@@ -216,7 +229,7 @@ actor MediaImageService: NSObject {
             }
             throw URLError(.badURL)
         }
-        let data = try await loadData(with: info, using: session)
+        let data = try await loadData(with: info, using: urlSession)
         let image = try await makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
             try? data.write(to: fileURL)
