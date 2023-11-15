@@ -2,6 +2,7 @@
 -----
 
 * [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
 
 23.7
 -----
