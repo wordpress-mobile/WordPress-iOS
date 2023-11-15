@@ -119,7 +119,7 @@ final class SiteMediaCollectionCellViewModel {
         }
         imageTask = Task { @MainActor [service, media, weak self] in
             do {
-                let image = try await service.thumbnail(for: media)
+                let image = try await service.image(for: media, size: .small)
                 self?.didFinishLoading(with: image)
             } catch {
                 self?.didFinishLoading(with: nil)
