@@ -6,11 +6,14 @@ actor MediaImageService: NSObject {
     static let shared = MediaImageService()
 
     private let session: URLSession
+    private let cache: MemoryCache
     private let coreDataStack: CoreDataStackSwift
     private let mediaFileManager: MediaFileManager
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+    init(cache: MemoryCache = .shared,
+         coreDataStack: CoreDataStackSwift = ContextManager.shared,
          mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache)) {
+        self.cache = cache
         self.coreDataStack = coreDataStack
         self.mediaFileManager = mediaFileManager
 
@@ -36,6 +39,10 @@ actor MediaImageService: NSObject {
 
     /// Returns a thumbnail for the given media asset. The images are decompressed
     /// (or bitmapped) and are ready to be displayed.
+    ///
+    /// The thumbnails are stored in both disk and memory cache. They don't take
+    /// a lot of space and are used often. The memory cache holds decompressed
+    /// images ready to be displayed.
     @MainActor
     func thumbnail(for media: Media, size: ThumbnailSize = .small) async throws -> UIImage {
         guard media.remoteStatus != .stub else {
@@ -50,6 +57,15 @@ actor MediaImageService: NSObject {
     }
 
     private func _thumbnail(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
+        if let image = cache.getImage(forKey: makeCacheKey(for: media.mediaID, size: size)) {
+            return image
+        }
+        let image = try await actuallyLoadThumbnail(for: media, size: size)
+        cache.setImage(image, forKey: makeCacheKey(for: media.mediaID, size: size))
+        return image
+    }
+
+    private func actuallyLoadThumbnail(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
         if let image = await cachedThumbnail(for: media.mediaID, size: size) {
             return image
         }
@@ -59,7 +75,14 @@ actor MediaImageService: NSObject {
         return try await remoteThumbnail(for: media, size: size)
     }
 
-    // MARK: - Cached Thumbnail
+    // MARK: - Thumbnails (Memory Cache)
+
+    /// Returns cached image for the given thumbnail.
+    nonisolated func getCachedThumbnail(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize = .small) -> UIImage? {
+        cache.getImage(forKey: makeCacheKey(for: mediaID, size: size))
+    }
+
+    // MARK: - Thumbnails (Disk Cache)
 
     /// Returns a local thumbnail for the given media object (if available).
     private func cachedThumbnail(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize) async -> UIImage? {
@@ -333,6 +356,10 @@ private extension Blog {
     var isEligibleForPhoton: Bool {
         !(isPrivateAtWPCom() || (!isHostedAtWPcom && isBasicAuthCredentialStored()))
     }
+}
+
+private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: MediaImageService.ThumbnailSize) -> String {
+    "\(mediaID.objectID)-\(size.rawValue)"
 }
 
 // MARK: - Helpers (Decompression)
