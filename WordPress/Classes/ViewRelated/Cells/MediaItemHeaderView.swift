@@ -2,9 +2,6 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-#warning("TODO: remove unused imports")
-#warning("TODO: add suppport for other formats")
-
 final class MediaItemHeaderView: UIView {
     private let imageView = CachedAnimatedImageView()
     private let errorView = UIImageView()
@@ -102,25 +99,36 @@ final class MediaItemHeaderView: UIView {
     // MARK: - Media
 
     func configure(with media: Media) {
-        setAspectRatio(with: media)
+        switch media.mediaType {
+        case .image, .video:
+            setAspectRatio(with: media)
 
-        loadingIndicator.startAnimating()
-        errorView.isHidden = true
+            loadingIndicator.startAnimating()
+            errorView.isHidden = true
 
-        Task {
-            let image = try? await MediaImageService.shared.thumbnail(for: media, size: .medium)
-            loadingIndicator.stopAnimating()
+            Task {
+                let image = try? await MediaImageService.shared.thumbnail(for: media, size: .medium)
+                loadingIndicator.stopAnimating()
 
-            if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
-                imageView.animate(withGIFData: data)
-            } else {
-                imageView.image = image
+                if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+                    imageView.animate(withGIFData: data)
+                } else {
+                    imageView.image = image
+                }
+
+                errorView.isHidden = image != nil
             }
 
-            errorView.isHidden = image != nil
+            isVideo = media.mediaType == .video
+        case .document:
+            aspectRatioConstraint.map(imageView.removeConstraint)
+            imageView.image = UIImage.gridicon(.pages, size: Constants.documentTypeIconSize)
+        case .audio:
+            aspectRatioConstraint.map(imageView.removeConstraint)
+            imageView.image = UIImage.gridicon(.audio, size: Constants.documentTypeIconSize)
+        default:
+            break
         }
-
-        isVideo = media.mediaType == .video
     }
 
     private func setAspectRatio(with media: Media) {
@@ -140,75 +148,6 @@ final class MediaItemHeaderView: UIView {
     }
 }
 
-class MediaItemDocumentTableViewCell: WPTableViewCell {
-    @objc let customImageView = UIImageView()
-
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-
-    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        commonInit()
-    }
-
-    public convenience init() {
-        self.init(style: .default, reuseIdentifier: nil)
-    }
-
-    @objc func commonInit() {
-        setupImageView()
-    }
-
-    private func setupImageView() {
-        customImageView.backgroundColor = .clear
-
-        addSubview(customImageView)
-        customImageView.translatesAutoresizingMaskIntoConstraints = false
-        customImageView.contentMode = .center
-
-        NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            customImageView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
-            customImageView.topAnchor.constraint(equalTo: topAnchor),
-            customImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
-    }
-
-    @objc func showIconForMedia(_ media: Media) {
-        let dimension = CGFloat(MediaDocumentRow.customHeight! / 2)
-        let size = CGSize(width: dimension, height: dimension)
-
-        if media.mediaType == .audio {
-            customImageView.image = .gridicon(.audio, size: size)
-        } else {
-            customImageView.image = .gridicon(.pages, size: size)
-        }
-    }
-}
-
-struct MediaImageTableHeaderViewModel {
-    let media: Media
-    let action: ImmuTableAction?
-}
-
-struct MediaDocumentRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(MediaItemDocumentTableViewCell.self)
-    static let customHeight: Float? = 96.0
-
-    let media: Media
-    let action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        WPStyleGuide.configureTableViewCell(cell)
-
-        if let cell = cell as? MediaItemDocumentTableViewCell {
-            cell.customImageView.tintColor = cell.textLabel?.textColor
-            cell.showIconForMedia(media)
-            cell.accessibilityTraits = .button
-            cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
-            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
-        }
-    }
+private enum Constants {
+    static let documentTypeIconSize = CGSize(width: 80, height: 80)
 }

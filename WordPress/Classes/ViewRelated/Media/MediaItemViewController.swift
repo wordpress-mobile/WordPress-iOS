@@ -40,7 +40,7 @@ final class MediaItemViewController: UITableViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaDocumentRow.self], tableView: tableView)
+        ImmuTable.registerRows([TextRow.self, EditableTextRow.self], tableView: tableView)
 
         updateViewModel()
         updateNavigationItem()
@@ -88,37 +88,6 @@ final class MediaItemViewController: UITableViewController {
         headerHeightConstraint.constant = view.bounds.height * 0.6
         tableView.sizeToFitHeaderView()
     }
-
-    #warning("TODO: remove")
-
-//    private var headerRow: ImmuTableRow {
-//        switch media.mediaType {
-//        case .image, .video:
-//            return MediaImageTableHeaderViewModel(media: media, action: { [weak self] row in
-//                guard let media = self?.media else { return }
-//
-//                switch media.mediaType {
-//                case .image:
-//                    if self?.isMediaLoaded() == true {
-//                        self?.presentImageViewControllerForMedia()
-//                    }
-//                case .video:
-//                    self?.presentVideoViewControllerForMedia()
-//                default: break
-//                }
-//            })
-//        default:
-//            return MediaDocumentRow(media: media, action: { [weak self] _ in
-//                guard let media = self?.media else { return }
-//
-//                // We're currently not presenting previews for audio until
-//                // we can resolve an auth issue. @frosty 2017-05-02
-//                if media.mediaType != .audio {
-//                    self?.presentDocumentViewControllerForMedia()
-//                }
-//            })
-//        }
-//    }
 
     private var metadataRows: [ImmuTableRow] {
         let presenter = MediaMetadataPresenter(media: media)
@@ -187,15 +156,27 @@ final class MediaItemViewController: UITableViewController {
         }
     }
 
-#warning("TODO: reimplemnet / add support for video")
     @objc private func didTapHeaderView() {
-        let controller = WPImageViewController(media: media)
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true)
+        switch media.mediaType {
+        case .image:
+            presentImageViewControllerForMedia()
+        case .video:
+            presentVideoViewControllerForMedia()
+        case .document:
+            presentDocumentViewControllerForMedia()
+        default:
+            break
+        }
     }
 
-#warning("TODO: remove or update")
+    private func presentImageViewControllerForMedia() {
+        let controller = WPImageViewController(media: self.media)
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+
+        self.present(controller, animated: true)
+    }
+
     private func presentVideoViewControllerForMedia() {
         media.videoAsset { [weak self] asset, error in
             if let asset = asset,
@@ -415,38 +396,6 @@ extension MediaItemViewController {
 
 // MARK: - UITableViewDelegate
 extension MediaItemViewController {
-    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if row is MediaDocumentRow && media.mediaType == .audio {
-            return false
-        }
-
-        return true
-    }
-
-    #warning("TODO :cleanup")
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if let customHeight = type(of: row).customHeight {
-            return CGFloat(customHeight)
-        } else if row is MediaImageTableHeaderViewModel {
-            return UITableView.automaticDimension
-        }
-
-        return tableView.rowHeight
-    }
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if let customHeight = type(of: row).customHeight {
-            return CGFloat(customHeight)
-        } else if row is MediaImageTableHeaderViewModel {
-            return view.readableContentGuide.layoutFrame.width
-        }
-
-        return tableView.rowHeight
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
         row.action?(row)
