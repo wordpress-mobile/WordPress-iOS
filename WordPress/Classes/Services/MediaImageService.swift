@@ -35,6 +35,38 @@ actor MediaImageService: NSObject {
         }
     }
 
+    // MARK: - Images (Fullsize)
+
+    /// Returns a full-size image for the given media asset.
+    ///
+    /// The app rarely loads full-size images, and they make take a significant
+    /// amount of space and memory, so they are cached only in `URLCache`.
+    @MainActor
+    func image(for media: Media) async throws -> UIImage {
+        let media = try await getSafeMedia(for: media)
+
+        if let localURL = media.absoluteLocalURL,
+           let image = try? await makeImage(from: localURL) {
+            return image
+        }
+        if let info = await getFullsizeImageInfo(for: media) {
+            let data = try await loadData(with: info, using: session)
+            return try await makeImage(from: data)
+        }
+        // The media has no local or remote URL – should never happen
+        throw URLError(.unknown)
+    }
+
+    private func getFullsizeImageInfo(for media: SafeMedia) async -> RemoteImageInfo? {
+        guard let remoteURL = media.remoteURL.flatMap(URL.init) else {
+            return nil
+        }
+        return try? await coreDataStack.performQuery { context in
+            let blog = try context.existingObject(with: media.blogID)
+            return RemoteImageInfo(imageURL: remoteURL, host: MediaHost(with: blog))
+        }
+    }
+
     // MARK: - Thumbnails
 
     /// Returns a thumbnail for the given media asset. The images are decompressed
@@ -45,15 +77,19 @@ actor MediaImageService: NSObject {
     /// images ready to be displayed.
     @MainActor
     func thumbnail(for media: Media, size: ThumbnailSize = .small) async throws -> UIImage {
+        let media = try await getSafeMedia(for: media)
+        return try await _thumbnail(for: media, size: size)
+    }
+
+    private func getSafeMedia(for media: Media) async throws -> SafeMedia {
         guard media.remoteStatus != .stub else {
             guard let mediaID = media.mediaID else {
                 throw URLError(.unknown) // This should never happen
             }
             let blogID = TaggedManagedObjectID(media.blog)
-            let media = try await fetchStubMedia(for: mediaID, blogID: blogID)
-            return try await _thumbnail(for: media, size: size)
+            return try await fetchStubMedia(for: mediaID, blogID: blogID)
         }
-        return try await _thumbnail(for: SafeMedia(media), size: size)
+        return SafeMedia(media)
     }
 
     private func _thumbnail(for media: SafeMedia, size: ThumbnailSize) async throws -> UIImage {
@@ -87,9 +123,7 @@ actor MediaImageService: NSObject {
     /// Returns a local thumbnail for the given media object (if available).
     private func cachedThumbnail(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize) async -> UIImage? {
         guard let fileURL = getCachedThumbnailURL(for: mediaID, size: size) else { return nil }
-        return try? await Task.detached {
-            try makeImage(from: Data(contentsOf: fileURL))
-        }.value
+        return try? await makeImage(from: fileURL)
     }
 
     private func getCachedThumbnailURL(for mediaID: TaggedManagedObjectID<Media>, size: ThumbnailSize) -> URL? {
@@ -146,40 +180,42 @@ actor MediaImageService: NSObject {
             }
             throw URLError(.badURL)
         }
-        let request = try await MediaRequestAuthenticator()
-            .authenticatedRequest(for: info.imageURL, host: info.host)
-        guard !Task.isCancelled else {
-            throw CancellationError()
-        }
-        let (data, response) = try await session.data(for: request)
-        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
-              (200..<400).contains(statusCode) else {
-            throw URLError(.unknown)
-        }
-        let image = try await Task.detached {
-            try makeImage(from: data)
-        }.value
+        let data = try await loadData(with: info, using: session)
+        let image = try await makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
             try? data.write(to: fileURL)
         }
         return image
     }
 
-    private struct RemoteThumbnailInfo {
-        let imageURL: URL
-        let host: MediaHost
-    }
-
     // There are two reasons why these operations are performed in the background:
     // performance and making sure the subsystem is thread-safe and can be used
     // from the background.
-    private func getRemoteThumbnailInfo(for media: SafeMedia, size: ThumbnailSize) async -> RemoteThumbnailInfo? {
+    private func getRemoteThumbnailInfo(for media: SafeMedia, size: ThumbnailSize) async -> RemoteImageInfo? {
         let targetSize = await MediaImageService.getThumbnailSize(for: media, size: size)
         return try? await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: media.blogID)
             guard let imageURL = media.getRemoteThumbnailURL(targetSize: targetSize, blog: blog) else { return nil }
-            return RemoteThumbnailInfo(imageURL: imageURL, host: MediaHost(with: blog))
+            return RemoteImageInfo(imageURL: imageURL, host: MediaHost(with: blog))
         }
+    }
+
+    // MARK: - Networking
+
+    private func loadData(with info: RemoteImageInfo, using session: URLSession) async throws -> Data {
+        let request = try await MediaRequestAuthenticator()
+            .authenticatedRequest(for: info.imageURL, host: info.host)
+        let (data, response) = try await session.data(for: request)
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+              (200..<400).contains(statusCode) else {
+            throw URLError(.unknown)
+        }
+        return data
+    }
+
+    private struct RemoteImageInfo {
+        let imageURL: URL
+        let host: MediaHost
     }
 
     // MARK: - Thubmnail for Video
@@ -367,13 +403,19 @@ private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: Media
 private func makeImage(from fileURL: URL) async throws -> UIImage {
     try await Task.detached {
         let data = try Data(contentsOf: fileURL)
-        return try makeImage(from: data)
+        return try _makeImage(from: data)
+    }.value
+}
+
+private func makeImage(from data: Data) async throws -> UIImage {
+    try await Task.detached {
+        return try _makeImage(from: data)
     }.value
 }
 
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.
-private func makeImage(from data: Data) throws -> UIImage {
+private func _makeImage(from data: Data) throws -> UIImage {
     guard let image = UIImage(data: data) else {
         throw URLError(.cannotDecodeContentData)
     }
