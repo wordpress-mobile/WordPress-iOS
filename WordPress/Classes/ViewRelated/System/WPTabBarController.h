@@ -36,6 +36,7 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 - (NSString *)currentlySelectedScreen;
 
+- (UIViewController *)notificationsSplitViewController;
 - (void)showMySitesTab;
 - (void)showReaderTab;
 - (void)resetReaderTab;

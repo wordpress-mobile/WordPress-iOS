@@ -256,6 +256,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+@property (nonatomic, strong) WPTabBarController *tabBarController; // TEMP:
 
 @end
 
@@ -342,6 +343,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         self.restorationClass = [self class];
         self.extendedLayoutIncludesOpaqueBars = true;
         self.isScrollEnabled = false;
+        self.tabBarController = [[WPTabBarController alloc] init];
     }
     
     return self;
@@ -1041,7 +1043,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addNullableObject:[self quickStartSectionViewModel]];
     }
     if ([self isDashboardEnabled] && [self isSplitViewDisplayed]) {
-        [marr addNullableObject:[self homeSectionViewModel]];
+        [marr addNullableObject:[self mainNavigationSection]];
     }
 
     if ([AppConfiguration isWordPress]) {
@@ -1203,17 +1205,38 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return sections;
 }
 
-- (BlogDetailsSection *)homeSectionViewModel
+- (BlogDetailsSection *)mainNavigationSection
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
                                   accessibilityIdentifier:@"Home Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                    image:[UIImage imageNamed:@"main-nav-home"]
                                                  callback:^{
-                                                    [weakSelf showDashboard];
-                                                 }]];
+        [weakSelf showDashboard];
+    }]];
+
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Reader", @"Noun. Links to a blog's dashboard screen.")
+                                  accessibilityIdentifier:@"Reader Row"
+                                                    image:[UIImage imageNamed:@"main-nav-reader"]
+                                                 callback:^{
+        [weakSelf showReader];
+    }]];
+
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Notifications", @"Noun. Links to a blog's dashboard screen.")
+                                  accessibilityIdentifier:@"Notifications Row"
+                                                    image:[UIImage imageNamed:@"main-nav-notifications"]
+                                                 callback:^{
+        [weakSelf showNotifications];
+    }]];
+
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Me", @"Noun. Links to a blog's dashboard screen.")
+                                  accessibilityIdentifier:@"Me Row"
+                                                    image:[UIImage imageNamed:@"comment-author-gravatar"]
+                                                 callback:^{
+        // TODO:
+    }]];
     
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryHome];
 }
@@ -1933,6 +1956,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     controller.extendedLayoutIncludesOpaqueBars = YES;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
+}
+
+- (void)showReader
+{
+//    UIViewController *controller = [self.tabBarController makeReaderTabViewController];
+//    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+//    [self.presentationDelegate presentBlogDetailsViewController:navigation];
+}
+
+- (void)showNotifications
+{
+
+    // TODO:
+
+//    UIViewController *controller = [self.tabBarController notificationsSplitViewController];
+//    [self presentViewController:controller animated:true completion:nil];
 }
 
 - (void)showActivity

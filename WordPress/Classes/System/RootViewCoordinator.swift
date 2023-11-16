@@ -102,7 +102,12 @@ class RootViewCoordinator {
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
         switch appType {
         case .normal:
-            return WPTabBarController(staticScreens: false)
+            if UIDevice.isPad() {
+                let meScenePresenter = MeScenePresenter()
+                return MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+            } else {
+                return WPTabBarController(staticScreens: false)
+            }
         case .simplified:
             let meScenePresenter = MeScenePresenter()
             return MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
