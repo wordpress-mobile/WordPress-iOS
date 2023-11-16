@@ -76,8 +76,8 @@ final class MediaItemHeaderView: UIView {
 
     private func setupAccessibility() {
         accessibilityTraits = .button
-        accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
-        accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
+        accessibilityLabel = Strings.accessibilityLabel
+        accessibilityHint = Strings.accessibilityHint
     }
 
     override func layoutSubviews() {
@@ -157,4 +157,9 @@ final class MediaItemHeaderView: UIView {
         aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ratio, constant: 1.0)
         aspectRatioConstraint?.isActive = true
     }
+}
+
+private enum Strings {
+    static let accessibilityLabel = NSLocalizedString("siteMediaItem.contentViewAccessibilityLabel", value: "Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
+    static let accessibilityHint = NSLocalizedString("siteMediaItem.contentViewAccessibilityHint", value: "Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
 }
