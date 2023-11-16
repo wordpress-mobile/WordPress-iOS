@@ -455,9 +455,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
             [navController scrollContentToTopAnimated:YES];
-        } else if ([viewController isKindOfClass:[WPSplitViewController class]]) {
-            WPSplitViewController *splitViewController = (WPSplitViewController *)viewController;
-            [splitViewController popToRootViewControllersAnimated:YES];
         }
     }
 

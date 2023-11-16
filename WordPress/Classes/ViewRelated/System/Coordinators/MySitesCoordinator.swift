@@ -54,7 +54,6 @@ class MySitesCoordinator: NSObject {
         let splitViewController = WPSplitViewController()
 
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
-        splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
         splitViewController.tabBarItem = navigationController.tabBarItem
 

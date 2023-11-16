@@ -256,8 +256,7 @@ static NSInteger HideSearchMinSites = 3;
     } else {
         [self showNoResultsViewForSiteCount:count];
     }
-    
-    [self updateSplitViewAppearanceForSiteCount:count];
+
 }
 
 - (void)addNoResultsToView
@@ -343,16 +342,6 @@ static NSInteger HideSearchMinSites = 3;
     
 }
 
-- (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
-{
-    BOOL hasSites = (siteCount > 0);
-
-    // If we have no results, set the split view to full width
-    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-    if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
-        splitViewController.dimsDetailViewControllerAutomatically = hasSites;
-    }
-}
 
 - (void)validateBlogDetailsViewController
 {
