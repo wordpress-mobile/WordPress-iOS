@@ -659,6 +659,9 @@ class ReaderDetailCoordinator {
         if let railcar = readerPost.railcarDictionary() {
             WPAppAnalytics.trackTrainTracksInteraction(.readerArticleOpened, withProperties: railcar)
         }
+
+        // Track as significant event for App Rating calculations
+        AppRatingUtility.shared.incrementSignificantEvent()
     }
 
     /// Bump post page view
