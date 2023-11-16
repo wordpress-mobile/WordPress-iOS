@@ -408,10 +408,20 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
 
-    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
+    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true, loggedIn: Bool = false) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
+
         blog.dotComID = id as NSNumber
+
+        // Some tests fail when the account associated to the blog is the default account.
+        //
+        // See https://github.com/wordpress-mobile/WordPress-iOS/pull/21796#issuecomment-1767273816
+        if loggedIn {
+            blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+        }
+        // FIXME: There is a possible inconsistency here because in production the isAdmin value depends on the account, but here the two can go out of sync
         blog.isAdmin = isAdmin
+
         return blog
     }
 }
