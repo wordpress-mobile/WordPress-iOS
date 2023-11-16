@@ -74,6 +74,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .inAppRating:
             return true
+        case .inAppRating:
+            return true
         }
     }
 
