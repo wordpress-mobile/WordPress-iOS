@@ -410,7 +410,7 @@ extension WordPressAppDelegate {
         }
 
         let utility = AppRatingUtility.shared
-        utility.systemWideSignificantEventCountRequiredForPrompt = 10
+        utility.systemWideSignificantEventCountRequiredForPrompt = 20
         utility.setVersion(version)
     }
 
