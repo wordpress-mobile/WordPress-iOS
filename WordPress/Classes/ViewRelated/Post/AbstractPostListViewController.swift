@@ -160,6 +160,7 @@ class AbstractPostListViewController: UIViewController,
         tableView.backgroundColor = .systemBackground
         tableView.sectionHeaderTopPadding = 0
         tableView.estimatedRowHeight = 110
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -198,9 +199,6 @@ class AbstractPostListViewController: UIViewController,
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
-        if #available(iOS 16.0, *) {
-            navigationItem.preferredSearchBarPlacement = .stacked
-        }
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {
