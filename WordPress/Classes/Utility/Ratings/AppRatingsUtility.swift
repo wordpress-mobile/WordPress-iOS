@@ -16,7 +16,7 @@ class AppRatingUtility: NSObject {
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
     ///
-    @objc var appReviewUrl: URL = Constants.defaultAppReviewURL
+    @objc let appReviewUrl: URL = Constants.defaultAppReviewURL
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Apple only allows 3 prompts per year. We're trying to be a bit more conservative and are doing
@@ -27,8 +27,12 @@ class AppRatingUtility: NSObject {
     var didUpgradeVersion: Bool = false
 
     private let defaults: UserDefaults
+    private let featureFlagStore: RemoteFeatureFlagStore
     private var sections = [String: Section]()
-    private var promptingDisabledRemote = false
+    private var promptingDisabledRemote: Bool {
+        RemoteFeatureFlag.inAppRating.enabled(using: featureFlagStore)
+    }
+
     /// Don't prompt for reviews for internal builds
     /// http://stackoverflow.com/questions/26081543/how-to-tell-at-runtime-whether-an-ios-app-is-running-through-a-testflight-beta-i?noredirect=1&lq=1
     ///
@@ -43,10 +47,12 @@ class AppRatingUtility: NSObject {
         return promptingDisabledRemote || promptingDisabledLocal
     }
 
-    @objc static let shared = AppRatingUtility(defaults: UserDefaults.standard)
+    static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
-    @objc init(defaults: UserDefaults) {
+    init(defaults: UserDefaults,
+               featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
         self.defaults = defaults
+        self.featureFlagStore = featureFlagStore
     }
 
     /// This should be called with the current App Version so as to setup
@@ -65,52 +71,10 @@ class AppRatingUtility: NSObject {
             didUpgradeVersion = true
             let shouldSkipRating = shouldSkipRatingForCurrentVersion()
             resetValuesForNewVersion()
-            resetReviewPromptDisabledStatus()
             if shouldSkipRating {
                 checkNewVersionNeedsSkipping()
             }
         }
-    }
-
-    /// This checks if we've disabled app review prompts for a feature or at a
-    /// global level
-    ///
-    @objc func checkIfAppReviewPromptsHaveBeenDisabled(success: (() -> Void)?, failure: (() -> Void)?) {
-        let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
-        let task = session.dataTask(with: Constants.promptDisabledURL) { [weak self] data, _, error in
-            guard let this = self else {
-                return
-            }
-
-            guard let data = data, error == nil else {
-                this.resetReviewPromptDisabledStatus()
-                failure?()
-                return
-            }
-
-            guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
-                let response = object as? [String: AnyObject] else {
-                    this.resetReviewPromptDisabledStatus()
-                    failure?()
-                    return
-            }
-
-            this.promptingDisabledRemote = (response["all-disabled"] as? NSString)?.boolValue ?? false
-            for section in this.sections.keys {
-                let key = "\(section)-disabled"
-                let disabled = (response[key] as? NSString)?.boolValue ?? false
-                this.sections[section]?.enabled = !disabled
-            }
-
-            if let urlString = response["app-review-url"] as? String,
-                !urlString.isEmpty,
-                let url = URL(string: urlString) {
-                this.appReviewUrl = url
-            }
-
-            success?()
-        }
-        task.resume()
     }
 
     /// Registers a granular section to be tracked
@@ -121,7 +85,7 @@ class AppRatingUtility: NSObject {
     ///
     @objc(registerSection:withSignificantEventCount:)
     func register(section: String, significantEventCount count: Int) {
-        sections[section] = Section(significantEventCount: count, enabled: true)
+        sections[section] = Section(significantEventCount: count)
     }
 
     /// Increments significant events app wide.
@@ -225,8 +189,7 @@ class AppRatingUtility: NSObject {
 
         if !enoughTimePassedSinceLastPrompt()
             || shouldSkipRatingForCurrentVersion()
-            || promptingDisabled
-            || !section.enabled {
+            || promptingDisabled {
             return false
         }
 
@@ -274,13 +237,6 @@ class AppRatingUtility: NSObject {
         defaults.removeObject(forKey: Key.skipRatingCurrentVersion)
         for sectionName in sections.keys {
             defaults.removeObject(forKey: significantEventCountKey(section: sectionName))
-        }
-    }
-
-    private func resetReviewPromptDisabledStatus() {
-        promptingDisabledRemote = false
-        for key in sections.keys {
-            sections[key]?.enabled = true
         }
     }
 
@@ -358,7 +314,6 @@ class AppRatingUtility: NSObject {
 
     private struct Section {
         var significantEventCount: Int
-        var enabled: Bool
     }
 
     // MARK: - Constants
@@ -383,6 +338,5 @@ class AppRatingUtility: NSObject {
 
     private enum Constants {
         static let defaultAppReviewURL = URL(string: "https://itunes.apple.com/app/id\(AppConstants.itunesAppID)?mt=8&action=write-review")!
-        static let promptDisabledURL = URL(string: "https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/")!
     }
 }
