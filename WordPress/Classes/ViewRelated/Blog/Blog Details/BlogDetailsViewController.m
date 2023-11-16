@@ -1960,9 +1960,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showReader
 {
-//    UIViewController *controller = [self.tabBarController makeReaderTabViewController];
-//    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-//    [self.presentationDelegate presentBlogDetailsViewController:navigation];
+    UIViewController *controller = [self.tabBarController makeReaderTabViewController];
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self.presentationDelegate presentBlogDetailsViewController:navigation];
 }
 
 - (void)showNotifications
