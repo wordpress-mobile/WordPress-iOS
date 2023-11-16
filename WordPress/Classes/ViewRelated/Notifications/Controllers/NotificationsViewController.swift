@@ -255,6 +255,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 //        }
 
         if !unreadNotificationIds.isEmpty {
+            // Track as significant event for App Rating calculations
             AppRatingUtility.shared.incrementSignificantEvent()
         }
 

@@ -47,7 +47,7 @@ class AppRatingUtility: NSObject {
         return promptingDisabledRemote || promptingDisabledLocal
     }
 
-    static let shared = AppRatingUtility(defaults: UserDefaults.standard)
+    @objc static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
     init(defaults: UserDefaults,
                featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
