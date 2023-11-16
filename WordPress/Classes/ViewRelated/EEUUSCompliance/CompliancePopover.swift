@@ -57,13 +57,13 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Padding.single)
-                    .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
+                    .stroke(Color.DS.divider, lineWidth: Length.Border.thin)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }
         }
         .foregroundColor(Color.DS.Background.brand)
-        .frame(height: Length.Hitbox.minTapDimension)
+        .frame(height: Length.Hitbox.minTappableLength)
     }
 
     private var saveButton: some View {
@@ -71,14 +71,14 @@ struct CompliancePopover: View {
             self.viewModel.didTapSave()
         }) {
             ZStack {
-                RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
+                RoundedRectangle(cornerRadius: 8)
                     .fill(Color.DS.Background.brand)
                 Text(Strings.saveButtonTitle)
                     .font(.body)
             }
         }
         .foregroundColor(.white)
-        .frame(height: Length.Hitbox.minTapDimension)
+        .frame(height: Length.Hitbox.minTappableLength)
     }
 }
 

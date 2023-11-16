@@ -7,7 +7,7 @@ struct ColorGallery: View {
         List {
             foregroundSection
             backgroundSection
-            borderSection
+            dividerSection
         }
         .navigationTitle("Colors")
     }
@@ -34,16 +34,31 @@ struct ColorGallery: View {
                 hexString: hexString(for: .DS.Foreground.quaternary),
                 color: Color.DS.Foreground.quaternary
             )
+            listItem(
+                with: "Brand",
+                hexString: hexString(for: .DS.Foreground.brand),
+                color: Color.DS.Foreground.brand
+            )
+            listItem(
+                with: "Success",
+                hexString: hexString(for: .DS.Foreground.success),
+                color: Color.DS.Foreground.brand
+            )
+            listItem(
+                with: "Warning",
+                hexString: hexString(for: .DS.Foreground.warning),
+                color: Color.DS.Foreground.warning
+            )
+            listItem(
+                with: "Error",
+                hexString: hexString(for: .DS.Foreground.error),
+                color: Color.DS.Foreground.error
+            )
         }
     }
 
     private var backgroundSection: some View {
         Section(header: sectionTitle("Background")) {
-            listItem(
-                with: "Brand",
-                hexString: hexString(for: .DS.Background.brand),
-                color: Color.DS.Background.brand
-            )
             listItem(
                 with: "Primary",
                 hexString: hexString(for: .DS.Background.primary),
@@ -64,25 +79,20 @@ struct ColorGallery: View {
                 hexString: hexString(for: .DS.Background.quaternary),
                 color: Color.DS.Background.quaternary
             )
+            listItem(
+                with: "Brand",
+                hexString: hexString(for: .DS.Background.brand),
+                color: Color.DS.Background.brand
+            )
         }
     }
 
-    private var borderSection: some View {
-        Section(header: sectionTitle("Border")) {
+    private var dividerSection: some View {
+        Section(header: sectionTitle("Divider")) {
             listItem(
                 with: "Divider",
-                hexString: hexString(for: .DS.Border.divider),
-                color: Color.DS.Border.divider
-            )
-            listItem(
-                with: "Primary",
-                hexString: hexString(for: .DS.Border.primary),
-                color: Color.DS.Border.primary
-            )
-            listItem(
-                with: "Secondary",
-                hexString: hexString(for: .DS.Border.secondary),
-                color: Color.DS.Border.secondary
+                hexString: hexString(for: .DS.divider),
+                color: Color.DS.divider
             )
         }
     }

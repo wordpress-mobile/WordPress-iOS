@@ -12,6 +12,7 @@ struct DesignSystemGallery: View {
     private var foundationList: some View {
         List {
             NavigationLink("Colors", destination: ColorGallery())
+            NavigationLink("Fonts", destination: FontGallery())
 //            NavigationLink("Lengths", destination: LengthGallery())
         }
         .navigationTitle("Foundation")

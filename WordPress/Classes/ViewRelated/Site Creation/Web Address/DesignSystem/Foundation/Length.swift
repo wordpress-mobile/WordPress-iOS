@@ -10,11 +10,14 @@ public enum Length {
     }
 
     public enum Hitbox {
-        public static let minTapDimension: CGFloat = 44
+        public static let minTappableLength: CGFloat = 44
     }
 
     public enum Radius {
-        public static let minHeightButton: CGFloat = 8
+        public static let small: CGFloat = 5
+        public static let medium: CGFloat = 10
+        public static let large: CGFloat = 15
+        public static let max: CGFloat = 20
     }
 
     public enum Border {

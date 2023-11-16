@@ -14,8 +14,15 @@ public extension Color {
             public static let error = Color(DesignSystemColorNames.Foreground.error)
 
             public static var brand: Color {
-                DS.Background.brand
+                if AppConfiguration.isJetpack {
+                    return jetpack
+                } else {
+                    return wordPress
+                }
             }
+
+            private static let jetpack = Color(DesignSystemColorNames.Foreground.jetpack)
+            private static let wordPress = Color(DesignSystemColorNames.Foreground.wordPress)
         }
 
         public enum Background {
@@ -36,11 +43,7 @@ public extension Color {
             private static let wordPress = Color(DesignSystemColorNames.Background.wordPress)
         }
 
-        public enum Border {
-            public static let primary = Color(DesignSystemColorNames.Border.primary)
-            public static let secondary = Color(DesignSystemColorNames.Border.secondary)
-            public static let divider = Color(DesignSystemColorNames.Border.divider)
-        }
+        public static let divider = Color(DesignSystemColorNames.divider)
     }
 }
 
@@ -55,6 +58,8 @@ internal enum DesignSystemColorNames {
         internal static let success = "success"
         internal static let warning = "warning"
         internal static let error = "error"
+        internal static let jetpack = "foregroundBrandJP"
+        internal static let wordPress = "foregroundBrandWP"
     }
 
     internal enum Background {
@@ -62,13 +67,9 @@ internal enum DesignSystemColorNames {
         internal static let secondary = "backgroundSecondary"
         internal static let tertiary = "backgroundTertiary"
         internal static let quaternary = "backgroundQuaternary"
-        internal static let jetpack = "brandJetpack"
-        internal static let wordPress = "brandWordPress"
+        internal static let jetpack = "backgroundBrandJP"
+        internal static let wordPress = "backgroundBrandWP"
     }
 
-    internal enum Border {
-        internal static let primary = "borderPrimary"
-        internal static let secondary = "borderSecondary"
-        internal static let divider = "borderDivider"
-    }
+    internal static let divider = "divider"
 }

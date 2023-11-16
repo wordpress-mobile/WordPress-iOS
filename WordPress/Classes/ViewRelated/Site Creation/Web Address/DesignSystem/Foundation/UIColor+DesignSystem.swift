@@ -14,6 +14,20 @@ public extension UIColor {
             public static let secondary = UIColor(named: DesignSystemColorNames.Foreground.secondary)
             public static let tertiary = UIColor(named: DesignSystemColorNames.Foreground.tertiary)
             public static let quaternary = UIColor(named: DesignSystemColorNames.Foreground.quaternary)
+            public static let success = UIColor(named: DesignSystemColorNames.Foreground.success)
+            public static let warning = UIColor(named: DesignSystemColorNames.Foreground.warning)
+            public static let error = UIColor(named: DesignSystemColorNames.Foreground.error)
+
+            public static var brand: UIColor? {
+                if AppConfiguration.isJetpack {
+                    return jetpack
+                } else {
+                    return wordPress
+                }
+            }
+
+            private static let jetpack = UIColor(named: DesignSystemColorNames.Foreground.jetpack)
+            private static let wordPress = UIColor(named: DesignSystemColorNames.Foreground.wordPress)
         }
 
         public enum Background {
@@ -31,12 +45,9 @@ public extension UIColor {
             }
 
             private static let jetpack = UIColor(named: DesignSystemColorNames.Background.jetpack)
+            private static let wordPress = UIColor(named: DesignSystemColorNames.Background.wordPress)
         }
 
-        public enum Border {
-            public static let primary = UIColor(named: DesignSystemColorNames.Border.primary)
-            public static let secondary = UIColor(named: DesignSystemColorNames.Border.secondary)
-            public static let divider = UIColor(named: DesignSystemColorNames.Border.divider)
-        }
+        public static let divider = UIColor(named: DesignSystemColorNames.divider)
     }
 }

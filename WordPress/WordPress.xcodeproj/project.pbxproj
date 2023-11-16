@@ -341,8 +341,12 @@
 		08BB7BB72B0611950089059D /* PrimaryButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */; };
 		08BB7BB82B0611FD0089059D /* PrimaryButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */; };
 		08BB7BBA2B06172C0089059D /* LengthGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB92B06172C0089059D /* LengthGallery.swift */; };
-		08BB7BBC2B061AAF0089059D /* Font+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBB2B061AAF0089059D /* Font+DesignSystem.swift */; };
-		08BB7BBD2B061AAF0089059D /* Font+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBB2B061AAF0089059D /* Font+DesignSystem.swift */; };
+		08BB7BBF2B065AE20089059D /* FontGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBE2B065AE20089059D /* FontGallery.swift */; };
+		08BB7BC02B065AE20089059D /* FontGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBE2B065AE20089059D /* FontGallery.swift */; };
+		08BB7BC32B0660D80089059D /* Text+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */; };
+		08BB7BC42B0660D80089059D /* Text+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */; };
+		08BB7BC62B0665990089059D /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC52B0665990089059D /* TextStyle.swift */; };
+		08BB7BC72B0665990089059D /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC52B0665990089059D /* TextStyle.swift */; };
 		08BBA3502A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08BBA3512A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
@@ -6051,7 +6055,9 @@
 		08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemGallery.swift; sourceTree = "<group>"; };
 		08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonGallery.swift; sourceTree = "<group>"; };
 		08BB7BB92B06172C0089059D /* LengthGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthGallery.swift; sourceTree = "<group>"; };
-		08BB7BBB2B061AAF0089059D /* Font+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+DesignSystem.swift"; sourceTree = "<group>"; };
+		08BB7BBE2B065AE20089059D /* FontGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontGallery.swift; sourceTree = "<group>"; };
+		08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+DesignSystem.swift"; sourceTree = "<group>"; };
+		08BB7BC52B0665990089059D /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardCell.swift; sourceTree = "<group>"; };
 		08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporter.swift; sourceTree = "<group>"; };
 		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
@@ -10052,6 +10058,7 @@
 		084777922AEFFBBA00EC9F85 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				08BB7BC12B0660B30089059D /* Modifiers */,
 				084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */,
 			);
 			path = Components;
@@ -10064,7 +10071,6 @@
 				08EA036829C9B53000B72A87 /* Colors.xcassets */,
 				0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */,
 				08799C242A334645005317F7 /* Length.swift */,
-				08BB7BBB2B061AAF0089059D /* Font+DesignSystem.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -10211,8 +10217,18 @@
 				08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */,
 				08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */,
 				08BB7BB92B06172C0089059D /* LengthGallery.swift */,
+				08BB7BBE2B065AE20089059D /* FontGallery.swift */,
 			);
 			path = Gallery;
+			sourceTree = "<group>";
+		};
+		08BB7BC12B0660B30089059D /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				08BB7BC52B0665990089059D /* TextStyle.swift */,
+				08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		08D345461CD7F4E300358E8C /* View Models */ = {
@@ -21209,7 +21225,6 @@
 				7E4123BE20F4097B00DF8486 /* NotificationContentRangeFactory.swift in Sources */,
 				FA332AD429C1FC7A00182FBB /* MovedToJetpackViewModel.swift in Sources */,
 				FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */,
-				08BB7BBC2B061AAF0089059D /* Font+DesignSystem.swift in Sources */,
 				0C700B892AE1E1940085C2EE /* PageListItemViewModel.swift in Sources */,
 				E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */,
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
@@ -21603,6 +21618,7 @@
 				F16C35DA23F3F76C00C81331 /* PostAutoUploadMessageProvider.swift in Sources */,
 				91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */,
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
+				08BB7BBF2B065AE20089059D /* FontGallery.swift in Sources */,
 				74989B8C2088E3650054290B /* BlogDetailsViewController+Activity.swift in Sources */,
 				FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
@@ -21748,6 +21764,7 @@
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
 				80D9D00029E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
 				FA73D7E52798765B00DF24B3 /* SitePickerViewController.swift in Sources */,
+				08BB7BC62B0665990089059D /* TextStyle.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
 				3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */,
@@ -22002,6 +22019,7 @@
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
 				B50C0C5E1EF42A4A00372C65 /* AztecAttachmentViewController.swift in Sources */,
 				43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */,
+				08BB7BC32B0660D80089059D /* Text+DesignSystem.swift in Sources */,
 				0CFE9AC62AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */,
 				57D66B9A234BB206005A2D74 /* PostServiceRemoteFactory.swift in Sources */,
 				3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */,
@@ -24317,6 +24335,7 @@
 				FABB21E32602FC2C00C8785C /* NSCalendar+Helpers.swift in Sources */,
 				FABB21E42602FC2C00C8785C /* GutenbergCoverUploadProcessor.swift in Sources */,
 				FABB21E52602FC2C00C8785C /* MediaQuotaCell.swift in Sources */,
+				08BB7BC42B0660D80089059D /* Text+DesignSystem.swift in Sources */,
 				FABB21E62602FC2C00C8785C /* PartScreenPresentationController.swift in Sources */,
 				086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */,
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
@@ -24865,7 +24884,6 @@
 				FABB236B2602FC2C00C8785C /* InsightsManagementViewController.swift in Sources */,
 				FABB236C2602FC2C00C8785C /* StatSection.swift in Sources */,
 				FABB236D2602FC2C00C8785C /* ReaderDetailCoordinator.swift in Sources */,
-				08BB7BBD2B061AAF0089059D /* Font+DesignSystem.swift in Sources */,
 				9887560D2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				FABB236E2602FC2C00C8785C /* AccountService.m in Sources */,
 				FABB236F2602FC2C00C8785C /* MediaLibraryPickerDataSource.m in Sources */,
@@ -25000,6 +25018,7 @@
 				FABB23CF2602FC2C00C8785C /* ImageDownloader.swift in Sources */,
 				FABB23D02602FC2C00C8785C /* ReaderDetailHeaderView.swift in Sources */,
 				FABB23D12602FC2C00C8785C /* WPAnimatedBox.m in Sources */,
+				08BB7BC72B0665990089059D /* TextStyle.swift in Sources */,
 				FABB23D22602FC2C00C8785C /* PostServiceOptions.m in Sources */,
 				FABB23D32602FC2C00C8785C /* DiffTitleValue.swift in Sources */,
 				FABB23D42602FC2C00C8785C /* ReaderCommentsViewController.swift in Sources */,
@@ -25311,6 +25330,7 @@
 				3F3DD0B726FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */,
 				FABB24AF2602FC2C00C8785C /* ReaderSeenAction.swift in Sources */,
 				0C23F3372AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */,
+				08BB7BC02B065AE20089059D /* FontGallery.swift in Sources */,
 				FABB24B02602FC2C00C8785C /* SchedulingDate+Helpers.swift in Sources */,
 				08E39B4628A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
 				FABB24B12602FC2C00C8785C /* QuickStartChecklistCell.swift in Sources */,
