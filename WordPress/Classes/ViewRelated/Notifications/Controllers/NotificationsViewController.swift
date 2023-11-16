@@ -254,6 +254,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 //            self.showInlinePrompt()
 //        }
 
+        if !unreadNotificationIds.isEmpty {
+            AppRatingUtility.shared.incrementSignificantEvent()
+        }
+
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
     }
