@@ -63,7 +63,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testCallServiceWithCorrectIDAndCards() {
         let expect = expectation(description: "Request the correct ID")
 
-        let blog = newTestBlog(id: wpComID, context: mainContext)
+        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
@@ -135,7 +135,10 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testActivityLog() {
         let expect = expectation(description: "Parse activities")
 
-        let blog = newTestBlog(id: wpComID, context: mainContext)
+        // Will fail with logged in user.
+        //
+        // It happens because for some reason the logic that should add activity as one of the type of cards to fetch doesn't do that.
+        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
 
         service.fetch(blog: blog) { cards in
             guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
@@ -175,7 +178,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: mainContext)
+        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
 
         service.fetch(blog: blog) { cards in
             let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
@@ -242,7 +245,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: mainContext)
+        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
 
         service.fetch(blog: blog) { cards in
             // Then it's still disabled for other sites
@@ -408,7 +411,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
 
-    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true, loggedIn: Bool = false) -> Blog {
+    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true, loggedIn: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
 
         blog.dotComID = id as NSNumber
