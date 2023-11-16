@@ -38,7 +38,7 @@
     },
     {
       "target" : {
-        "containerPath" : "container:..\/JetpackStatsWidgetsCore",
+        "containerPath" : "container:..\/Modules",
         "identifier" : "JetpackStatsWidgetsCoreTests",
         "name" : "JetpackStatsWidgetsCoreTests"
       }

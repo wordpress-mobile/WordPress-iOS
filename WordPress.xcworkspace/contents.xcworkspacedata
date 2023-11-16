@@ -5,7 +5,7 @@
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:JetpackStatsWidgetsCore">
+      location = "group:Modules">
    </FileRef>
    <FileRef
       location = "group:WordPressFlux">
