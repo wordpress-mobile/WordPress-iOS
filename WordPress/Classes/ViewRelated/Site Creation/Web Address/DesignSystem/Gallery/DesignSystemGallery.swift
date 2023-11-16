@@ -13,7 +13,7 @@ struct DesignSystemGallery: View {
         List {
             NavigationLink("Colors", destination: ColorGallery())
             NavigationLink("Fonts", destination: FontGallery())
-//            NavigationLink("Lengths", destination: LengthGallery())
+            NavigationLink("Lengths", destination: LengthGallery())
         }
         .navigationTitle("Foundation")
     }
