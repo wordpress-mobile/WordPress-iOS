@@ -14,7 +14,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (5.0.3):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (2.4.0):
+  - Automattic-Tracks-iOS (3.0.0):
     - Sentry (~> 8.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -104,7 +104,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
-  - Automattic-Tracks-iOS (~> 2.2)
+  - Automattic-Tracks-iOS (~> 3.0)
   - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
@@ -199,7 +199,7 @@ SPEC CHECKSUMS:
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
-  Automattic-Tracks-iOS: eb06b138cd65453dc565ab047f55fbb759aca133
+  Automattic-Tracks-iOS: f30bf3362a77010ccb9fe9aded453645089f6ccb
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
@@ -240,6 +240,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 111cf685318a6ee88f6f6c75c044570fc8bf84f7
+PODFILE CHECKSUM: ee1715def28fcb8b610a3720653c5dcdef24fa5d
 
 COCOAPODS: 1.14.2

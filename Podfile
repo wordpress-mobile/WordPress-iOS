@@ -135,7 +135,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 2.2'
+  pod 'Automattic-Tracks-iOS', '~> 3.0'
   # While in PR
   # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
