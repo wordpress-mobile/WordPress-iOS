@@ -138,13 +138,32 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let activityCardItem = cards.first(where: {$0.cardType == .activityLog})
+            guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
 
-            // Activity section exists
-            XCTAssertNotNil(activityCardItem)
+            guard let apiResponse = activityCardItem.apiResponse else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let activity = apiResponse.activity else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let value = activity.value else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let current = value.current else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let orderedItems = current.orderedItems else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
 
             // 2 activity items
-            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.value!.current!.orderedItems!.count, 2)
+            XCTAssertEqual(orderedItems.count, 2)
 
             expect.fulfill()
         }
