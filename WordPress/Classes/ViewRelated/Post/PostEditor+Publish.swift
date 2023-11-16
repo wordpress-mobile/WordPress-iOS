@@ -183,6 +183,7 @@ extension PublishingEditor {
                 self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
             }
 
+            // Track as significant event for App Rating calculations
             AppRatingUtility.shared.incrementSignificantEvent()
         }
 
