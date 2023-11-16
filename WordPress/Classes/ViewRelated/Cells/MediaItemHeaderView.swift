@@ -83,7 +83,7 @@ final class MediaItemHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        videoIconView.center = center
+        videoIconView.center = center // `PlayIconView` doesn't support constraints
     }
 
     // MARK: - Media
