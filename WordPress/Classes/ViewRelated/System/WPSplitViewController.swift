@@ -30,54 +30,6 @@ class WPSplitViewController: UISplitViewController {
     /// Set to false to disable fullscreen display mode
     @objc var fullscreenDisplayEnabled = true
 
-    @objc var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .default {
-        didSet {
-            updateSplitViewForPrimaryColumnWidth()
-        }
-    }
-
-    fileprivate enum WPSplitViewControllerNarrowPrimaryColumnWidth: CGFloat {
-        case portrait = 230
-        case landscape = 320
-
-        static func width(for size: CGSize) -> CGFloat {
-            // If the app is in multitasking (so isn't fullscreen), just use the narrow width
-            if size.width < UIScreen.main.bounds.width {
-                return self.portrait.rawValue
-            }
-
-            if size.width < size.height || WPDeviceIdentification.isUnzoomediPhonePlus() {
-                return self.portrait.rawValue
-            } else {
-                return self.landscape.rawValue
-            }
-        }
-    }
-
-    fileprivate func updateSplitViewForPrimaryColumnWidth(size: CGSize = UIScreen.main.bounds.size) {
-        switch wpPrimaryColumnWidth {
-        case .default:
-            minimumPrimaryColumnWidth = UISplitViewController.automaticDimension
-            maximumPrimaryColumnWidth = UISplitViewController.automaticDimension
-            preferredPrimaryColumnWidthFraction = UISplitViewController.automaticDimension
-        case .narrow:
-            let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.width(for: size)
-            minimumPrimaryColumnWidth = columnWidth
-            maximumPrimaryColumnWidth = columnWidth
-            preferredPrimaryColumnWidthFraction = columnWidth / size.width
-        case .full:
-            break
-
-            // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
-            // Due to a bug where the column widths are not updating correctly when the primary column
-            // is set to full width, the empty views are not sized correctly on rotation. As a workaround,
-            // don't attempt to resize the columns for full width. These lines should be restored when
-            // the full width issue is resolved.
-            // maximumPrimaryColumnWidth = size.width
-            // preferredPrimaryColumnWidthFraction = 1.0
-        }
-    }
-
     // MARK: State restoration
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -102,8 +54,9 @@ class WPSplitViewController: UISplitViewController {
 
         delegate = self
         preferredDisplayMode = .oneBesideSecondary
+        preferredPrimaryColumnWidth = 280
 
-        extendedLayoutIncludesOpaqueBars = true
+//        extendedLayoutIncludesOpaqueBars = true
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -115,98 +68,6 @@ class WPSplitViewController: UISplitViewController {
             return topDetailViewController
         }
         return nil
-    }
-
-    @objc var overrideTraitCollection: UITraitCollection? = nil
-
-    override var traitCollection: UITraitCollection {
-        get {
-            if let overrideTraitCollection = overrideTraitCollection {
-                return UITraitCollection.init(traitsFrom: [super.traitCollection, overrideTraitCollection])
-            }
-
-            return super.traitCollection
-        }
-    }
-
-    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
-        guard let collection = super.overrideTraitCollection(forChild: childViewController) else { return nil }
-
-        var traits = [collection]
-
-        // By default, the detail view controller of a split view is passed the same size class as the split view itself.
-        // However, if the splitview is smaller than full screen (i.e. multitasking is active), a number of our
-        // view controllers will display better if we tell them they're compact even though the split view is regular.
-        if childViewController == viewControllers.last && shouldOverrideDetailViewControllerHorizontalSizeClass {
-            traits.append(UITraitCollection(horizontalSizeClass: .compact))
-        } else {
-            traits.append(UITraitCollection(horizontalSizeClass: traitCollection.horizontalSizeClass))
-        }
-
-        // This is to work around an apparent bug in iOS 13 where the detail view is assuming the system is in dark
-        // mode when switching out of the app and then back in. Here we ensure the overridden user interface style
-        // traits are replaced with the correct current traits before we use them.
-        traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
-
-        return UITraitCollection(traitsFrom: traits)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        updateDimmingViewFrame()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        updateSplitViewForPrimaryColumnWidth(size: size)
-        coordinator.animate(alongsideTransition: { context in
-            self.updateDimmingViewFrame()
-        })
-
-        // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
-        if let _ = overriddenTraitCollectionForDetailViewController,
-            let detailViewController = viewControllers.last {
-            setOverrideTraitCollection(detailViewController.traitCollection, forChild: detailViewController)
-        }
-    }
-
-    override var viewControllers: [UIViewController] {
-        didSet {
-            // Ensure that each top level navigation controller has
-            // `extendedLayoutIncludesOpaqueBars` set to true. Otherwise we
-            // see a large tab bar sized gap underneath each view controller.
-            for viewController in viewControllers {
-                if let viewController = viewController as? UINavigationController {
-                    viewController.extendedLayoutIncludesOpaqueBars = true
-
-                    // Override traits to pass a compact size class if necessary
-                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
-                                               forChild: viewController)
-                }
-            }
-        }
-    }
-
-    fileprivate var shouldOverrideDetailViewControllerHorizontalSizeClass: Bool {
-        return view.frame.width < UIScreen.main.bounds.width
-    }
-
-    fileprivate var overriddenTraitCollectionForDetailViewController: UITraitCollection? {
-        guard let detailViewController = viewControllers.last, shouldOverrideDetailViewControllerHorizontalSizeClass else {
-            return nil
-        }
-
-        return  UITraitCollection(traitsFrom: [detailViewController.traitCollection, UITraitCollection(horizontalSizeClass: .compact)])
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if hasHorizontallyCompactView() && preferredDisplayMode == .secondaryOnly {
-            setPrimaryViewControllerHidden(false, animated: false)
-        }
     }
 
     // MARK: - Dimming support
@@ -240,7 +101,6 @@ class WPSplitViewController: UISplitViewController {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
-                updateDimmingViewFrame()
                 dimmingView.alpha = WPAlphaZero
 
                 // Dismiss the keyboard from the detail view controller if active
@@ -257,19 +117,6 @@ class WPSplitViewController: UISplitViewController {
             })
         }
     }
-
-    fileprivate func updateDimmingViewFrame() {
-        if dimmingView.superview != nil {
-            dimmingView.frame = view.frame
-
-            if view.userInterfaceLayoutDirection() == .leftToRight {
-                dimmingView.frame.origin.x = primaryColumnWidth
-            } else {
-                dimmingView.frame.size.width = dimmingView.frame.size.width - primaryColumnWidth
-            }
-        }
-    }
-
     // MARK: - Detail view controller management
 
     override func showDetailViewController(_ vc: UIViewController, sender: Any?) {
@@ -431,12 +278,6 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         guard let primaryNavigationController = primaryViewController as? UINavigationController else {
             assertionFailure("Split view's primary view controller should be a navigation controller!")
             return nil
-        }
-
-        // If the primary view is full width (i.e. when the No Results View is displayed),
-        // don't show a detail view as it will be rendered on top of (thus covering) the primary view.
-        if wpPrimaryColumnWidth == .full {
-            return primaryNavigationController
         }
 
         var viewControllers: [UIViewController] = []

@@ -271,7 +271,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
          [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
-        _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
 
         _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
     }
@@ -286,7 +285,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
         _meSplitViewController.fullscreenDisplayEnabled = NO;
-        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
 
         _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     }

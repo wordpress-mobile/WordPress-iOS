@@ -1350,16 +1350,6 @@ extension NotificationsViewController {
             self.tableView(tableView, didSelectRowAt: indexPath)
             return
         }
-
-        // If we're not showing the Jetpack prompt or the fullscreen No Results View,
-        // then clear any detail view controller that may be present.
-        // (i.e. don't add an empty detail VC if the primary is full width)
-        if let splitViewController = splitViewController as? WPSplitViewController,
-            splitViewController.wpPrimaryColumnWidth != WPSplitViewControllerPrimaryColumnWidth.full {
-            let controller = UIViewController()
-            controller.navigationItem.largeTitleDisplayMode = .never
-            showDetailViewController(controller, sender: nil)
-        }
     }
 
     @objc func updateUnreadNotificationsForFilterTabChange() {
@@ -1597,20 +1587,6 @@ private extension NotificationsViewController {
     func updateSplitViewAppearanceForNoResultsView() {
         guard let splitViewController = splitViewController as? WPSplitViewController else {
             return
-        }
-
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
-        // Don't attempt to resize the columns for full width.
-        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = .default
-        // The above line should be replace with the following line when the full width issue is resolved.
-        // let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
-
-        if splitViewController.wpPrimaryColumnWidth != columnWidth {
-            splitViewController.wpPrimaryColumnWidth = columnWidth
-        }
-
-        if columnWidth == .default {
-            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
         }
     }
 

@@ -351,8 +351,6 @@ static NSInteger HideSearchMinSites = 3;
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
     if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
         splitViewController.dimsDetailViewControllerAutomatically = hasSites;
-        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow
-                                                              : WPSplitViewControllerPrimaryColumnWidthFull;
     }
 }
 
