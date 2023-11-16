@@ -1,7 +1,7 @@
 import Foundation
 
 enum AbstractPostHelper {
-    static func getLocalizedStatusWithDate(for post: AbstractPost) -> String? {
+    static func getLocalizedStatusWithDate(for post: AbstractPost, isCrossPost: Bool = false) -> String? {
         let timeZone = post.blog.timeZone
 
         switch post.status {
@@ -11,6 +11,9 @@ enum AbstractPostHelper {
             }
         case .publish, .publishPrivate:
             if let dateCreated = post.dateCreated {
+                if isCrossPost {
+                    return String(format: Strings.crossPosted, dateCreated.toMediumString(inTimeZone: timeZone))
+                }
                 return String(format: Strings.published, dateCreated.toMediumString(inTimeZone: timeZone))
             }
         case .trash:
@@ -48,6 +51,7 @@ enum AbstractPostHelper {
 
 private enum Strings {
     static let published = NSLocalizedString("post.publishedTimeAgo", value: "Published %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
+    static let crossPosted = NSLocalizedString("post.crossPostedTimeAgo", value: "X-posted %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
     static let scheduled = NSLocalizedString("post.scheduledForDate", value: "Scheduled %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
     static let created = NSLocalizedString("post.createdTimeAgo", value: "Created %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")
     static let edited = NSLocalizedString("post.editedTimeAgo", value: "Edited %@", comment: "Post status and date for list cells with %@ a placeholder for the date.")

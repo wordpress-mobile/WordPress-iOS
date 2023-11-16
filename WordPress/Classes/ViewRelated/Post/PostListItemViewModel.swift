@@ -6,6 +6,8 @@ final class PostListItemViewModel {
     let imageURL: URL?
     let badges: NSAttributedString
     let isEnabled: Bool
+    var isCrossPost: Bool
+
     private let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
@@ -14,9 +16,10 @@ final class PostListItemViewModel {
 
     init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
-        self.content = makeContentString(for: post)
+        self.isCrossPost = post.blog.isAutomatticP2 && (post.tags?.contains("p2-xpost") ?? false)
+        self.content = makeContentString(for: post, isCrossPost: isCrossPost)
         self.imageURL = post.featuredImageURL
-        self.badges = makeBadgesString(for: post, shouldHideAuthor: shouldHideAuthor)
+        self.badges = makeBadgesString(for: post, shouldHideAuthor: shouldHideAuthor, isCrossPost: isCrossPost)
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.isEnabled = !PostCoordinator.shared.isDeleting(post)
     }
@@ -58,7 +61,7 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         .joined(separator: " ")
 }
 
-private func makeContentString(for post: Post) -> NSAttributedString {
+private func makeContentString(for post: Post, isCrossPost: Bool) -> NSAttributedString {
     let title = post.titleForDisplay()
     let snippet = post.contentPreviewForDisplay()
 
@@ -66,12 +69,13 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: UIColor.text
+            .foregroundColor: isCrossPost ? UIColor.secondaryLabel : UIColor.text
         ]
+        let title = isCrossPost ? title.replacingOccurrences(of: "X-post: ", with: "") : title
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
     }
-    if !snippet.isEmpty {
+    if !isCrossPost && !snippet.isEmpty {
         // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
         let adjustedSnippet = snippet.replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
         if string.length > 0 {
@@ -92,9 +96,9 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     return string
 }
 
-private func makeBadgesString(for post: Post, shouldHideAuthor: Bool) -> NSAttributedString {
+private func makeBadgesString(for post: Post, shouldHideAuthor: Bool, isCrossPost: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
-    if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
+    if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post, isCrossPost: isCrossPost) {
         let color: UIColor? = post.status == .trash ? .systemRed : nil
         badges.append((date, color))
     }

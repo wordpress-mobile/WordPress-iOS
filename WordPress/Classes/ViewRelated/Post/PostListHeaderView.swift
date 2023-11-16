@@ -4,6 +4,7 @@ final class PostListHeaderView: UIView {
 
     // MARK: - Views
 
+    private let iconView = UIImageView()
     private let textLabel = UILabel()
     private let ellipsisButton = UIButton(type: .custom)
 
@@ -29,6 +30,7 @@ final class PostListHeaderView: UIView {
         if let delegate {
             configureEllipsisButton(with: viewModel.post, delegate: delegate)
         }
+        iconView.isHidden = !viewModel.isCrossPost
         textLabel.attributedText = viewModel.badges
     }
 
@@ -41,10 +43,17 @@ final class PostListHeaderView: UIView {
     // MARK: - Setup
 
     private func setupView() {
+        let configuration = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote))
+        iconView.image = UIImage(systemName: "arrow.2.squarepath", withConfiguration: configuration)
+        iconView.tintColor = .secondaryLabel
+        iconView.contentMode = .center
+        iconView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
         setupEllipsisButton()
 
-        let stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
+        let stackView = UIStackView(arrangedSubviews: [iconView, textLabel, ellipsisButton])
         stackView.spacing = 12
+        stackView.setCustomSpacing(4, after: iconView)
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(stackView)
