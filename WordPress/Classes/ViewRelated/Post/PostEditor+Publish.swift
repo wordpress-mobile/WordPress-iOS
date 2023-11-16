@@ -182,6 +182,8 @@ extension PublishingEditor {
             } else {
                 self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
             }
+
+            AppRatingUtility.shared.incrementSignificantEvent()
         }
 
         if action.isAsync,
