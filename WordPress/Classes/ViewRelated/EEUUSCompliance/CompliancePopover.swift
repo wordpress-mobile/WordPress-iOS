@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CompliancePopover: View {
     private enum Constants {
-        static let verticalScrollBuffer = Length.Padding.large
+        static let verticalScrollBuffer: CGFloat = 40
     }
 
     @StateObject
@@ -16,7 +16,7 @@ struct CompliancePopover: View {
             footnote
             buttonsHStack
         }
-        .padding(Length.Padding.small)
+        .padding(Length.Padding.large)
         .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -48,7 +48,7 @@ struct CompliancePopover: View {
         HStack(spacing: Length.Padding.single) {
             settingsButton
             saveButton
-        }.padding(.top, Length.Padding.small)
+        }.padding(.top, Length.Padding.large)
     }
 
     private var settingsButton: some View {

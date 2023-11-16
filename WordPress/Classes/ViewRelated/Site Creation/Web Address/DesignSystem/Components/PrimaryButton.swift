@@ -44,7 +44,7 @@ struct PrimaryButton_Previews: PreviewProvider {
             PrimaryButton(isLoading: .constant(true), title: "Get Domain") {
                 ()
             }
-            .padding(.horizontal, Length.Padding.small)
+            .padding(.horizontal, Length.Padding.large)
         }
     }
 }

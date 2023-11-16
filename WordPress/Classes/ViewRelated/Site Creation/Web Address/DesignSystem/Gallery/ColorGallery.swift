@@ -9,6 +9,7 @@ struct ColorGallery: View {
             backgroundSection
             borderSection
         }
+        .navigationTitle("Colors")
     }
 
     private var foregroundSection: some View {

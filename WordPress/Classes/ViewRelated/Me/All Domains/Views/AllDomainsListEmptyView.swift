@@ -7,7 +7,7 @@ final class AllDomainsListEmptyView: UIView {
 
     private enum Appearance {
         static let labelsSpacing: CGFloat = Length.Padding.single
-        static let labelsButtonSpacing: CGFloat = Length.Padding.medium
+        static let labelsButtonSpacing: CGFloat = Length.Padding.large
         static let titleLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
         static let descriptionLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         static let buttonLabelFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)

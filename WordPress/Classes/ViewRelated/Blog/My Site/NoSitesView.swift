@@ -28,12 +28,12 @@ struct NoSitesView: View {
                 .edgesIgnoringSafeArea(.all)
 
             mainView
-                .padding(.horizontal, Length.Padding.medium)
+                .padding(.horizontal, Length.Padding.large)
 
             if viewModel.isShowingAccountAndSettings {
                 accountAndSettingsButton
-                    .padding(.horizontal, Length.Padding.medium)
-                    .padding(.bottom, Length.Padding.small)
+                    .padding(.horizontal, Length.Padding.large)
+                    .padding(.bottom, Length.Padding.large)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -70,7 +70,7 @@ struct NoSitesView: View {
             handleAddNewSiteButtonTapped()
         } label: {
             Text(Strings.addNewSite)
-                .padding(.horizontal, Length.Padding.small)
+                .padding(.horizontal, Length.Padding.large)
                 .padding(.vertical, Length.Padding.single)
                 .foregroundColor(.white)
                 .background(colorScheme == .dark ? Color(uiColor: .listForeground) : .black)

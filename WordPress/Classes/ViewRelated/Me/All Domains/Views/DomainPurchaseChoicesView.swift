@@ -16,9 +16,9 @@ struct DomainPurchaseChoicesView: View {
                     .font(.largeTitle.bold())
                 Text(Strings.subheader)
                     .foregroundStyle(Color.DS.Foreground.secondary)
-                    .padding(.bottom, Length.Padding.small)
+                    .padding(.bottom, Length.Padding.large)
                 getDomainCard
-                    .padding(.bottom, Length.Padding.small)
+                    .padding(.bottom, Length.Padding.large)
                 chooseSiteCard
                     .padding(.bottom, Length.Padding.single)
                 Text(Strings.footnote)
