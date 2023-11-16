@@ -321,9 +321,18 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
         if let site = coordinator.site {
-            WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+            var properties = WPAnalytics.domainsProperties(for: site)
+            properties[WPAppAnalyticsKeySource] = "all_domains"
+            WPAnalytics.track(
+                .domainsSearchSelectDomainTapped,
+                properties: properties,
+                blog: site
+            )
         } else {
-            WPAnalytics.track(.domainsSearchSelectDomainTapped)
+            WPAnalytics.track(
+                .domainsSearchSelectDomainTapped,
+                properties: [WPAppAnalyticsKeySource: "all_domains"]
+            )
         }
 
         let onFailure: () -> () = { [weak self] in

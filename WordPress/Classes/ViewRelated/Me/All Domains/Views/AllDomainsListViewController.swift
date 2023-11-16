@@ -260,4 +260,8 @@ extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarD
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.viewModel.search(nil)
     }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        WPAnalytics.track(.myDomainsSearchDomainTapped)
+    }
 }
