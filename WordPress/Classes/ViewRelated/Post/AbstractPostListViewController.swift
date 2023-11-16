@@ -39,7 +39,7 @@ class AbstractPostListViewController: UIViewController,
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
     private var reloadTableViewBeforeAppearing = false
 
-    let tableView = UITableView(frame: .zero, style: .plain)
+    let tableView = UITableView(frame: .zero, style: UIDevice.isPad() ? .insetGrouped : .plain)
 
     var shouldHideAuthor: Bool {
         guard filterSettings.canFilterByAuthor() else {
@@ -157,7 +157,9 @@ class AbstractPostListViewController: UIViewController,
 
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .systemBackground
+        if !UIDevice.isPad() {
+            tableView.backgroundColor = .systemBackground
+        }
         tableView.sectionHeaderTopPadding = 0
         tableView.estimatedRowHeight = 110
         tableView.cellLayoutMarginsFollowReadableWidth = true
@@ -167,14 +169,44 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureFilterBar() {
-        WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.backgroundColor = .clear
-        filterTabBar.items = filterSettings.availablePostListFilters()
-        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        if UIDevice.isPad() {
 
-        filterTabBar.translatesAutoresizingMaskIntoConstraints = true
-        filterTabBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 40)
-        tableView.tableHeaderView = filterTabBar
+
+            // TODO: add handling
+            if #available(iOS 16.0, *) {
+                navigationItem.titleMenuProvider = { _ in
+                    UIMenu(title: "", children: [
+                        UIAction(title: "Published", image: nil) { _ in
+
+                        },
+                        UIAction(title: "Cross-Posted", image: nil) { _ in
+
+                        },
+                        UIAction(title: "Drafts", image: nil) { _ in
+
+                        },
+                        UIAction(title: "Scheduled", image: nil) { _ in
+
+                        },
+                        UIAction(title: "Trashed", image: nil, attributes: [.destructive]) { _ in
+
+                        }
+                    ])
+                }
+                title = "Published"
+            } else {
+                // Fallback on earlier versions
+            }
+        } else {
+            WPStyleGuide.configureFilterTabBar(filterTabBar)
+            filterTabBar.backgroundColor = .clear
+            filterTabBar.items = filterSettings.availablePostListFilters()
+            filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+
+            filterTabBar.translatesAutoresizingMaskIntoConstraints = true
+            filterTabBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 40)
+            tableView.tableHeaderView = filterTabBar
+        }
     }
 
     func refreshResults() {
@@ -199,6 +231,16 @@ class AbstractPostListViewController: UIViewController,
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "2023" // TEMP:
+        label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
+        let stack = UIStackView(arrangedSubviews: [label])
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        return stack
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {

@@ -123,23 +123,12 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton(for: blog)
-        }
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         QuickStartTourGuide.shared.endCurrentTour()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton(for: blog)
-        } else {
-            createButtonCoordinator.hideCreateButton()
-        }
     }
 
     // MARK: - Configuration

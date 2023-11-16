@@ -288,8 +288,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func configureNavBarAppearance(animated: Bool) {
-        #warning("TEMP")
-        guard !UIDevice.isPad() else { return }
+//        #warning("TEMP")
+//        guard !UIDevice.isPad() else { return }
 
         if scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {

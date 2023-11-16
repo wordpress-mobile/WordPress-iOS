@@ -82,12 +82,12 @@ import Foundation
 
         let query =
             // existing published/private posts
-            "(statusAfterSync = status AND status IN (%@))"
+            "!(postTitle BEGINSWITH 'X-post') AND ((statusAfterSync = status AND status IN (%@))"
             // existing published/private posts transitioned to another status but not uploaded yet
             + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
             // Include other existing published/private posts with `nil` `statusAfterSync`. This is
             // unlikely but this ensures that those posts will show up somewhere.
-            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
+            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@)))"
         let predicate = NSPredicate(format: query,
                                     statuses.strings,
                                     statuses.strings,

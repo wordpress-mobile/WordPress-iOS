@@ -64,7 +64,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
+//        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
@@ -91,9 +91,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton(for: blog)
-        }
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -103,11 +101,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
 
     /// Shows/hides the create button based on the trait collection horizontal size class
     @objc private func toggleCreateButton() {
-        if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton(for: blog)
-        } else {
-            createButtonCoordinator.hideCreateButton()
-        }
+//        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     // MARK: - Notifications

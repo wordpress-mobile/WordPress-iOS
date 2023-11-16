@@ -1968,10 +1968,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showNotifications
 {
 
-    // TODO:
-
-//    UIViewController *controller = [self.tabBarController notificationsSplitViewController];
-//    [self presentViewController:controller animated:true completion:nil];
+    UIViewController *controller = [self.tabBarController notificationsSplitViewController];
+    UIViewController *wrapper = [[UIViewController alloc] init];
+    [wrapper addChildViewController:controller];
+    [wrapper.view addSubview:controller.view];
+    controller.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [controller.view pinSubviewToAllEdges:wrapper.view];
+    wrapper.view.tag = 125324;
+    [controller didMoveToParentViewController:wrapper];
+    [self.presentationDelegate presentBlogDetailsViewController:wrapper];
 }
 
 - (void)showActivity

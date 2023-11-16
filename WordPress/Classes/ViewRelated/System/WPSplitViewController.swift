@@ -150,6 +150,10 @@ class WPSplitViewController: UISplitViewController {
     }
 
     fileprivate func wrapViewControllerInNavigationControllerIfRequired(_ viewController: UIViewController) -> UIViewController {
+        if viewController.view.tag == 125324 {
+            return viewController
+        }
+
         var navigationController: UINavigationController!
 
         if let viewController = viewController as? UINavigationController {
