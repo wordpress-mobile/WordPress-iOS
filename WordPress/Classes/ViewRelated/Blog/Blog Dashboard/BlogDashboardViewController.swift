@@ -55,6 +55,8 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        configureDefaultNavigationBarAppearance()
         setupNavigation()
         setupCollectionView()
         addHeightObservers()
