@@ -2,18 +2,22 @@
 
 import PackageDescription
 
-let librarySourceName = "JetpackStatsWidgetsCore"
+let jetpackStatsWidgetsCoreLibName = "JetpackStatsWidgetsCore"
 
 let package = Package(
-    name: librarySourceName,
+    name: "Modules",
     products: [
-        .library(name: librarySourceName, targets: [librarySourceName]),
+        .library(name: jetpackStatsWidgetsCoreLibName, targets: [jetpackStatsWidgetsCoreLibName]),
     ],
     targets: [
-        .target(name: librarySourceName),
+        .target(
+            name: jetpackStatsWidgetsCoreLibName,
+            path: "\(jetpackStatsWidgetsCoreLibName)/Sources"
+        ),
         .testTarget(
-            name: "\(librarySourceName)Tests",
-            dependencies: [.target(name: librarySourceName)]
+            name: "\(jetpackStatsWidgetsCoreLibName)Tests",
+            dependencies: [.target(name: jetpackStatsWidgetsCoreLibName)],
+            path: "\(jetpackStatsWidgetsCoreLibName)/Tests"
         )
     ]
 )
