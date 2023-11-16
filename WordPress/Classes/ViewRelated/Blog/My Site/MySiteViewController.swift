@@ -532,6 +532,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     // MARK: - FAB
 
     private func createFABIfNeeded() {
+        guard !UIDevice.isPad() else {
+            return
+        }
+
         createButtonCoordinator?.removeCreateButton()
         createButtonCoordinator = makeCreateButtonCoordinator()
         createButtonCoordinator?.add(to: view,

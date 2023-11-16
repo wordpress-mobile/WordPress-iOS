@@ -5,7 +5,7 @@ import WordPressFlux
 
     private enum Constants {
         static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
-        static let heightWidth: CGFloat = 56 // Height and width of the button
+        static let heightWidth: CGFloat = UIDevice.isPad() ? 44 : 56 // Height and width of the button
         static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
         static let maximumTooltipViews = 5 // Caps the number of times the user can see the announcement tooltip
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
