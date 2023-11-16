@@ -156,8 +156,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
-
-        Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
     }
 
     override func viewWillAppear(_ animated: Bool) {
