@@ -18790,7 +18790,11 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
+<<<<<<< HEAD
 				E42C39F1A003092A4AE8F2A2 /* [CP] Embed Pods Frameworks */,
+=======
+				DCA1DDBD52D7BA7A0E70EDCC /* [CP] Embed Pods Frameworks */,
+>>>>>>> f0029e0f51 (Implement groundwork for the in-app feedback feature)
 			);
 			buildRules = (
 			);
@@ -25352,6 +25356,7 @@
 				0133A7BF2A8CEADD00B36E58 /* SupportCoordinator.swift in Sources */,
 				FABB25282602FC2C00C8785C /* PostStatsTitleCell.swift in Sources */,
 				FABB25292602FC2C00C8785C /* CommentService.m in Sources */,
+				0880BADD29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift in Sources */,
 				F44EB6242B062AC300D09E0D /* InAppFeedbackCoordinator.swift in Sources */,
 				FE50965D2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */,
 				FABB252B2602FC2C00C8785C /* StoreFetchingStatus.swift in Sources */,
