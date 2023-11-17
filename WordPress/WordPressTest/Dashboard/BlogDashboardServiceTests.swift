@@ -55,9 +55,18 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             postsParser: postsParserMock
         )
 
+        // The state of the world these tests assume relies on certain feature flags.
+        //
+        // Similarly to the isJetpack, isDotComAvailable, etc above, it would be ideal to inject these at call site to:
+        // 1. Make the dependency on that bit of information explicit
+        // 2. Allow for testing all combinations
+        //
+        // At the time of writing, the priority was getting some tests for new code to pass under the important Jetpac user path.
+        // As such, here are a bunch of global-state feature flags overrides.
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
+        try? featureFlags.override(FeatureFlag.domainFocus, withValue: false)
     }
 
     override func tearDown() {
@@ -67,6 +76,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
+        try? featureFlags.override(FeatureFlag.domainFocus, withValue: FeatureFlag.domainFocus.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
