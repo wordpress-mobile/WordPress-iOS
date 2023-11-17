@@ -13,6 +13,8 @@ import MobileCoreServices
 import AutomatticTracks
 import MediaEditor
 import UniformTypeIdentifiers
+import Photos
+import PhotosUI
 
 // MARK: - Aztec's Native Editor!
 //
@@ -376,10 +378,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         dataSource.ignoreSyncErrors = true
         return dataSource
     }()
-
-    /// Device Photo Library Data Source
-    ///
-    fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
     fileprivate let mediaCoordinator = MediaCoordinator.shared
 
@@ -1586,7 +1584,7 @@ extension AztecPostViewController {
             switch mediaIdentifier {
             case .deviceLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
-                presentDeviceMediaPickerFullScreen(animated: true)
+                presentDeviceMediaPicker(animated: true)
             case .camera:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
                 mediaPickerInputViewController?.showCapture()
@@ -1833,7 +1831,7 @@ extension AztecPostViewController {
     /// - Parameter sender: the button that was pressed.
     ///
     @objc func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
-        presentDeviceMediaPickerFullScreen(animated: true)
+        presentDeviceMediaPicker(animated: true)
         restoreInputAssistantItems()
     }
 
@@ -1891,28 +1889,9 @@ extension AztecPostViewController {
         }
     }
 
-    fileprivate func presentDeviceMediaPickerFullScreen(animated: Bool) {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-        options.showSearchBar = true
-        options.badgedUTTypes = [UTType.gif.identifier]
-        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
-
-        let picker = WPNavigationMediaPickerViewController()
-        picker.dataSource = devicePhotoLibraryDataSource
-
-        picker.selectionActionTitle = Constants.mediaPickerInsertText
-        picker.mediaPicker.options = options
-        picker.delegate = self
-        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
-        picker.modalPresentationStyle = .currentContext
-        if let previousPicker = mediaPickerInputViewController?.mediaPicker {
-            picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
-        }
-
-        present(picker, animated: true)
+    fileprivate func presentDeviceMediaPicker(animated: Bool) {
+        MediaPickerMenu(viewController: self, isMultipleSelectionEnabled: true)
+            .showPhotosPicker(delegate: self)
     }
 
     private func presentSiteMediaPicker() {
@@ -3203,6 +3182,8 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 }
 
+// MARK: - MediaPickerViewController (SiteMediaPickerViewControllerDelegate)
+
 extension AztecPostViewController: SiteMediaPickerViewControllerDelegate {
     func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
         dismiss(animated: true)
@@ -3213,6 +3194,16 @@ extension AztecPostViewController: SiteMediaPickerViewControllerDelegate {
     }
 }
 
+// MARK: - MediaPickerViewController (PHPickerViewControllerDelegate)
+
+extension AztecPostViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+        for result in results {
+            insert(exportableAsset: result.itemProvider, source: .deviceLibrary)
+        }
+    }
+}
 
 // MARK: - MediaPickerViewController Delegate Conformance
 //
