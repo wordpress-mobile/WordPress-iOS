@@ -31,10 +31,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
 
-        // Simulate the app is signed in with a WP.com account
-        let accountService = AccountService(coreDataStack: contextManager)
-        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
-
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
@@ -426,6 +422,9 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         //
         // See https://github.com/wordpress-mobile/WordPress-iOS/pull/21796#issuecomment-1767273816
         if loggedIn {
+            let accountService = AccountService(coreDataStack: contextManager)
+            _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
+
             blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         }
         // FIXME: There is a possible inconsistency here because in production the isAdmin value depends on the account, but here the two can go out of sync
