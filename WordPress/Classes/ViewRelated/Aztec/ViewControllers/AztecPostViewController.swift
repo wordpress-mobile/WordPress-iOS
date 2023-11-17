@@ -1586,13 +1586,13 @@ extension AztecPostViewController {
             switch mediaIdentifier {
             case .deviceLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
-                presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
+                presentDeviceMediaPickerFullScreen(animated: true)
             case .camera:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
                 mediaPickerInputViewController?.showCapture()
             case .mediaLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
-                presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
+                presentSiteMediaPicker()
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
                 showMore(from: barItem)
@@ -1833,7 +1833,7 @@ extension AztecPostViewController {
     /// - Parameter sender: the button that was pressed.
     ///
     @objc func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
-        presentMediaPickerFullScreen(animated: true)
+        presentDeviceMediaPickerFullScreen(animated: true)
         restoreInputAssistantItems()
     }
 
@@ -1891,8 +1891,7 @@ extension AztecPostViewController {
         }
     }
 
-    fileprivate func presentMediaPickerFullScreen(animated: Bool, dataSourceType: MediaPickerDataSourceType = .device) {
-
+    fileprivate func presentDeviceMediaPickerFullScreen(animated: Bool) {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
@@ -1902,18 +1901,7 @@ extension AztecPostViewController {
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController()
-
-        switch dataSourceType {
-        case .device:
-            picker.dataSource = devicePhotoLibraryDataSource
-        case .mediaLibrary:
-            picker.startOnGroupSelector = false
-            picker.showGroupSelector = false
-            picker.dataSource = mediaLibraryDataSource
-            registerChangeObserver(forPicker: picker.mediaPicker)
-        @unknown default:
-            fatalError()
-        }
+        picker.dataSource = devicePhotoLibraryDataSource
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
@@ -1925,6 +1913,11 @@ extension AztecPostViewController {
         }
 
         present(picker, animated: true)
+    }
+
+    private func presentSiteMediaPicker() {
+        MediaPickerMenu(viewController: self, isMultipleSelectionEnabled: true)
+            .showSiteMediaPicker(blog: post.blog, delegate: self)
     }
 
     private func toggleMediaPicker(fromButton button: UIButton) {
@@ -3207,6 +3200,16 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
         return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize, tintColor: textView.textColor)
+    }
+}
+
+extension AztecPostViewController: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        dismiss(animated: true)
+        mediaSelectionMethod = .fullScreenPicker
+        for media in selection {
+            insertSiteMediaLibrary(media: media)
+        }
     }
 }
 
