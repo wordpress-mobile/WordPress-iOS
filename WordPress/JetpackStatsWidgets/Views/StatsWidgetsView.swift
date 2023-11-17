@@ -1,3 +1,4 @@
+import JetpackStatsWidgetsCore
 import SwiftUI
 import WidgetKit
 
