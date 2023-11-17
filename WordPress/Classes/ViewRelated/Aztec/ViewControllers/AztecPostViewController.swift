@@ -440,7 +440,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         UIAccessibility.isVoiceOverRunning
     }
 
-    fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
+    private var mediaPickerInputViewController: PHPickerViewController?
+    private var selectedPickerResults: [PHPickerResult] = []
 
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
 
@@ -451,7 +452,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate let noResultsView = NoResultsViewController.controller()
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
-
 
     /// Presents whatever happens when FormatBar's more button is selected
     ///
@@ -1603,11 +1603,7 @@ extension AztecPostViewController {
     }
 
     func handleFormatBarTrailingItem(_ item: UIButton) {
-        guard let mediaPicker = mediaPickerInputViewController else {
-            return
-        }
-
-        mediaPickerController(mediaPicker.mediaPicker, didFinishPicking: mediaPicker.mediaPicker.selectedAssets)
+        insertPickerResults()
     }
 
     @objc func toggleBold() {
@@ -1801,68 +1797,7 @@ extension AztecPostViewController {
         richTextView.removeLink(inRange: range)
     }
 
-    private var mediaInputToolbar: UIToolbar {
-        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
-        toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
-        toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-        let gridButton = UIBarButtonItem(image: .gridicon(.grid), style: .plain, target: self, action: #selector(mediaAddShowFullScreen))
-        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
-        toolbar.items = [
-            UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            gridButton,
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
-        ]
-
-        for item in toolbar.items! {
-            item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-            item.setTitleTextAttributes([.foregroundColor: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
-        }
-
-        return toolbar
-
-    }
-
-    // MARK: - Media Input toolbar button actions
-
-    /// Method to be called when the grid icon is pressed on the media input toolbar.
-    ///
-    /// - Parameter sender: the button that was pressed.
-    ///
-    @objc func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
-        presentDeviceMediaPicker(animated: true)
-        restoreInputAssistantItems()
-    }
-
-    /// Method to be called when canceled is pressed.
-    ///
-    /// - Parameter sender: the button that was pressed.
-    @objc func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
-
-        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
-            return
-        }
-        mediaPickerControllerDidCancel(mediaPicker)
-        restoreInputAssistantItems()
-    }
-
-    /// Method to be called when done is pressed on the media input toolbar.
-    ///
-    /// - Parameter sender: the button that was pressed.
-    @objc func mediaAddInputDone(_ sender: UIBarButtonItem) {
-
-        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker
-        else {
-            return
-        }
-        let selectedAssets = mediaPicker.selectedAssets
-        mediaPickerController(mediaPicker, didFinishPicking: selectedAssets)
-        restoreInputAssistantItems()
-    }
-
     func restoreInputAssistantItems() {
-
         richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
         richTextView.autocorrectionType = .yes
@@ -1885,7 +1820,7 @@ extension AztecPostViewController {
 
     @IBAction @objc func presentMediaPickerWasPressed() {
         if let item = formatBar.leadingItem {
-            presentMediaPicker(fromButton: item, animated: true)
+            presentEmbeddedMediaPicker(fromButton: item, animated: true)
         }
     }
 
@@ -1904,23 +1839,30 @@ extension AztecPostViewController {
             closeMediaPickerInputViewController()
             trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
         } else {
-            presentMediaPicker(fromButton: button, animated: true)
+            presentEmbeddedMediaPicker(fromButton: button, animated: true)
         }
     }
 
-    private func presentMediaPicker(fromButton button: UIButton, animated: Bool = true) {
+    private func presentEmbeddedMediaPicker(fromButton button: UIButton, animated: Bool = true) {
+        guard #available(iOS 17, *) else { return }
+
         trackFormatBarAnalytics(stat: .editorTappedImage)
 
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [WPMediaType.image, WPMediaType.video]
-        options.allowMultipleSelection = true
-        options.allowCaptureOfMedia = false
-        options.scrollVertically = true
-        options.badgedUTTypes = [UTType.gif.identifier]
-        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.preferredAssetRepresentationMode = .current
+        configuration.selectionLimit = 0
+        configuration.mode = .compact
+        configuration.disabledCapabilities = [
+            .collectionNavigation, .collectionNavigation, .search, .stagingArea
+        ]
+        configuration.edgesWithoutContentMargins = .all
+        configuration.selection = .continuousAndOrdered
 
-        let picker = WPInputMediaPickerViewController(options: options)
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        picker.zoomOut()
+
         mediaPickerInputViewController = picker
         updateToolbar(formatBar, forMode: .media)
 
@@ -1931,10 +1873,6 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.trailingBarButtonGroups = []
 
         richTextView.autocorrectionType = .no
-
-        picker.mediaPicker.viewControllerToUseToPresent = self
-        picker.dataSource = WPPHAssetDataSource.sharedInstance()
-        picker.mediaPicker.mediaPickerDelegate = self
 
         if currentKeyboardFrame != .zero {
             // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
@@ -3056,6 +2994,7 @@ extension AztecPostViewController {
         guard mediaPickerInputViewController != nil else {
             return
         }
+        selectedPickerResults = []
         mediaPickerInputViewController = nil
         changeRichTextInputView(to: nil)
         updateToolbar(formatBar, forMode: .text)
@@ -3229,10 +3168,25 @@ extension AztecPostViewController: VideoLimitsAlertPresenter {}
 
 extension AztecPostViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        dismiss(animated: true)
-        for result in results {
+        selectedPickerResults = results
+
+        // The delegate is configured to get called continuously
+        if picker == mediaPickerInputViewController {
+            updateFormatBarInsertAssetCount()
+        } else {
+            dismiss(animated: true)
+            insertPickerResults()
+        }
+    }
+
+    private func insertPickerResults() {
+        guard !selectedPickerResults.isEmpty else {
+            return
+        }
+        for result in selectedPickerResults {
             insert(exportableAsset: result.itemProvider, source: .deviceLibrary)
         }
+        closeMediaPickerInputViewController()
     }
 }
 
@@ -3241,9 +3195,6 @@ extension AztecPostViewController: PHPickerViewControllerDelegate {
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
-        if picker != mediaPickerInputViewController?.mediaPicker {
-            return noResultsView
-        }
         return nil
     }
 
@@ -3267,22 +3218,16 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        if picker != mediaPickerInputViewController?.mediaPicker {
-            unregisterChangeObserver()
-            mediaLibraryDataSource.searchCancelled()
-            dismiss(animated: true)
-        }
+        unregisterChangeObserver()
+        mediaLibraryDataSource.searchCancelled()
+        dismiss(animated: true)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        if picker != mediaPickerInputViewController?.mediaPicker {
-            unregisterChangeObserver()
-            mediaLibraryDataSource.searchCancelled()
-            dismiss(animated: true)
-            mediaSelectionMethod = .fullScreenPicker
-        } else {
-            mediaSelectionMethod = .inlinePicker
-        }
+        unregisterChangeObserver()
+        mediaLibraryDataSource.searchCancelled()
+        dismiss(animated: true)
+        mediaSelectionMethod = .fullScreenPicker
 
         closeMediaPickerInputViewController()
 
@@ -3332,9 +3277,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     private func updateFormatBarInsertAssetCount() {
-        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
-            return
-        }
+        let assetCount = selectedPickerResults.count
 
         if assetCount == 0 {
             insertToolbarItem.isEnabled = false
