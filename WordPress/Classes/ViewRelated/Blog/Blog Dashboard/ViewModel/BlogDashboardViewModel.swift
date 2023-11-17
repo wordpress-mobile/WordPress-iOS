@@ -41,7 +41,12 @@ final class BlogDashboardViewModel {
     }()
 
     private lazy var service: BlogDashboardService = {
-        return BlogDashboardService(managedObjectContext: managedObjectContext, isJetpack: AppConfiguration.isJetpack)
+        return BlogDashboardService(
+            managedObjectContext: managedObjectContext,
+            isJetpack: AppConfiguration.isJetpack,
+            isDotComAvailable: AccountHelper.isDotcomAvailable(),
+            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
+        )
     }()
 
     private lazy var dataSource: DashboardDataSource? = {

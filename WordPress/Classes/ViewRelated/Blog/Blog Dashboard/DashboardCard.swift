@@ -95,7 +95,16 @@ enum DashboardCard: String, CaseIterable {
     func shouldShow(
         for blog: Blog,
         apiResponse: BlogDashboardRemoteEntity? = nil,
-        isJetpack: Bool = AppConfiguration.isJetpack
+        // The following three parameter should not have default values.
+        // Unfortunately, this method is called many times because the type is an enum with many cases^.
+        //
+        // At the time of writing, the priority is addressing a test failure and pave the way for better testability.
+        // As such, we are leaving default values to keep compatibility with the existing code.
+        //
+        // ^ – See the following article for a better way to distribute configurations https://www.jessesquires.com/blog/2016/07/31/enums-as-configs/
+        isJetpack: Bool = AppConfiguration.isJetpack,
+        isDotComAvailable: Bool = AccountHelper.isDotcomAvailable(),
+        shouldShowJetpackFeatures: Bool = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
     ) -> Bool {
         switch self {
         case .jetpackInstall:
@@ -113,7 +122,11 @@ enum DashboardCard: String, CaseIterable {
         case .failure:
             return blog.dashboardState.isFirstLoadFailure
         case .jetpackBadge:
-            return JetpackBrandingVisibility.all.enabled
+            return JetpackBrandingVisibility.all.isEnabled(
+                isWordPress: isJetpack == false,
+                isDotComAvailable: isDotComAvailable,
+                shouldShowJetpackFeatures: shouldShowJetpackFeatures
+            )
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
         case .freeToPaidPlansDashboardCard:
