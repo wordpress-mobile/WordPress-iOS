@@ -37,11 +37,15 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
         service = BlogDashboardService(
             managedObjectContext: mainContext,
-            // At the time of writing, tests will fail when the service (DashboardCard under the hood)
-            // is running "as if in Jetpack".
+            // Notice these three boolean make the test run as if the app was Jetpack.
             //
-            // See https://github.com/wordpress-mobile/WordPress-iOS/pull/21740
-            isJetpack: false,
+            // What would be the additional effor to test the remaining 5 configurations?
+            // Is there something we can do to reduce the combinatorial space?
+            //
+            // See also https://github.com/wordpress-mobile/WordPress-iOS/pull/21740
+            isJetpack: true,
+            isDotComAvailable: true,
+            shouldShowJetpackFeatures: true,
             remoteService: remoteServiceMock,
             persistence: persistenceMock,
             repository: repositoryMock,
