@@ -5,7 +5,6 @@ import Foundation
 enum JetpackBrandingVisibility {
 
     case all
-    case dotcomAccounts
     case dotcomAccountsOnWpApp // useful if we want to release in phases and exclude the feature flag in some cases
     case featureFlagBased
 
@@ -15,8 +14,6 @@ enum JetpackBrandingVisibility {
             return AppConfiguration.isWordPress &&
             AccountHelper.isDotcomAvailable() &&
             JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
-        case .dotcomAccounts:
-            return AccountHelper.isDotcomAvailable()
         case .dotcomAccountsOnWpApp:
             return AppConfiguration.isWordPress &&
             AccountHelper.isDotcomAvailable()
