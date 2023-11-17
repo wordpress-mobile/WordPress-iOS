@@ -1,6 +1,5 @@
 import UIKit
 import PhotosUI
-import WPMediaPicker
 import UniformTypeIdentifiers
 import AVFoundation
 import CocoaLumberjack

@@ -1,5 +1,4 @@
 import UIKit
-import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
