@@ -1,6 +1,7 @@
 23.8
 -----
 
+* [*] Integrate native photos picker (`PHPickerViewControlle`) in Story Editor [#22059]
 
 23.7
 -----
