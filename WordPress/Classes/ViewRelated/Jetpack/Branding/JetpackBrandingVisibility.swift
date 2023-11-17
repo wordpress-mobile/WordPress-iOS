@@ -5,7 +5,6 @@ import Foundation
 enum JetpackBrandingVisibility {
 
     case all
-    case featureFlagBased
 
     var enabled: Bool {
         switch self {
@@ -13,8 +12,6 @@ enum JetpackBrandingVisibility {
             return AppConfiguration.isWordPress &&
             AccountHelper.isDotcomAvailable() &&
             JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
-        case .featureFlagBased:
-            return true
         }
     }
 }
