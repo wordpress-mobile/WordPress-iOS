@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct PrimaryButton: View {
+    @SwiftUI.Environment(\.isEnabled) private var isEnabled
     @Binding private var isLoading: Bool
     private let title: String
     private let action: (() -> Void)
@@ -21,7 +22,7 @@ public struct PrimaryButton: View {
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.DS.Background.brand)
+                    .fill(isEnabled ? Color.DS.Background.brand : Color.DS.Background.quaternary)
                 if isLoading {
                     ProgressView()
                         .tint(Color.white)
@@ -33,7 +34,17 @@ public struct PrimaryButton: View {
             }
             .frame(height: 50)
         }
+        .buttonStyle(ScalingPrimaryButtonStyle())
         .disabled(isLoading)
+    }
+}
+
+private struct ScalingPrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .brightness(configuration.isPressed ? 0.05 : 0)
+            .animation(.easeIn(duration: 0.15), value: configuration.isPressed)
     }
 }
 

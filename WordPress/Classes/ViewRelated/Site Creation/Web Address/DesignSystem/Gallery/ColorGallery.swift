@@ -5,9 +5,11 @@ struct ColorGallery: View {
 
     var body: some View {
         List {
-            foregroundSection
-            backgroundSection
-            dividerSection
+            Group {
+                foregroundSection
+                backgroundSection
+                dividerSection
+            }
         }
         .navigationTitle("Colors")
     }

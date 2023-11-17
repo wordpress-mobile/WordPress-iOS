@@ -4,13 +4,14 @@ struct PrimaryButtonGallery: View {
     var body: some View {
         List {
             Group {
-                PrimaryButton(title: "PrimaryButton S1") {
-                    print("Primary Button Tapped.")
+                PrimaryButton(title: "Active") {
+                    ()
                 }
 
-                PrimaryButton(title: "PrimaryButton S2") {
-                    print("Primary Button Tapped.")
+                PrimaryButton(title: "Disabled") {
+                    ()
                 }
+                .disabled(true)
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
