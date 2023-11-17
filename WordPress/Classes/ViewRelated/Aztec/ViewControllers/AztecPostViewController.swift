@@ -7,7 +7,6 @@ import Gridicons
 import WordPressShared
 import MobileCoreServices
 import WordPressEditor
-import WPMediaPicker
 import AVKit
 import MobileCoreServices
 import AutomatticTracks
@@ -371,14 +370,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var activeMediaRequests = [ImageDownloaderTask]()
 
-    /// Media Library Data Source
-    ///
-    lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        let dataSource = MediaLibraryPickerDataSource(post: self.post)
-        dataSource.ignoreSyncErrors = true
-        return dataSource
-    }()
-
     fileprivate let mediaCoordinator = MediaCoordinator.shared
 
     /// Media Progress View
@@ -447,22 +438,11 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
-    /// The view to show when media picker has no assets to show.
-    ///
-    fileprivate let noResultsView = NoResultsViewController.controller()
-
-    fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
-
     /// Presents whatever happens when FormatBar's more button is selected
     ///
     fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
         return AztecMediaPickingCoordinator(delegate: self)
     }()
-
-
-    /// Helps choosing the correct view controller for previewing a media asset
-    ///
-    private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
     private let database: KeyValueDatabase = UserDefaults.standard
     private enum Key {
@@ -534,7 +514,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureNavigationBar()
         configureView()
         configureSubviews()
-        noResultsView.configureForNoAssets(userCanUploadMedia: false)
 
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
@@ -909,44 +888,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     func reloadPublishButton() {
         navigationBarManager.reloadPublishButton()
     }
-
-    fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
-        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
-        let hasAssets = mediaLibraryDataSource.totalAssetCount > 0
-
-        if isSearching || hasAssets {
-            mediaPicker.showSearchBar()
-            if let searchBar = mediaPicker.searchBar {
-                WPStyleGuide.configureSearchBar(searchBar)
-            }
-        } else {
-            mediaPicker.hideSearchBar()
-        }
-    }
-
-    fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
-        assert(mediaLibraryChangeObserverKey == nil)
-        mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-
-            self?.updateSearchBar(mediaPicker: picker)
-
-            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 == 0
-            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
-
-            if isNotSearching && hasNoAssets {
-                self?.noResultsView.removeFromView()
-                self?.noResultsView.configureForNoAssets(userCanUploadMedia: false)
-            }
-        })
-    }
-
-    fileprivate func unregisterChangeObserver() {
-        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
-            mediaLibraryDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
-        }
-        mediaLibraryChangeObserverKey = nil
-    }
-
 
     // MARK: - Keyboard Handling
 
@@ -2361,13 +2302,12 @@ extension AztecPostViewController {
         attachment?.uploadID = media.uploadID
     }
 
-    /// Sets the badge title of `attachment` to "GIF" if either the media is being imported from Tenor,
-    /// or if it's a PHAsset with an animated playback style.
+    /// Sets the badge title of `attachment` to "GIF".
     private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
         var isGif = source == .tenor
 
-        if let asset = asset as? PHAsset,
-            asset.playbackStyle == .imageAnimated {
+        if let asset = (asset as? NSItemProvider),
+           asset.hasItemConformingToTypeIdentifier(UTType.gif.identifier) {
             isGif = true
         }
 
@@ -2382,10 +2322,6 @@ extension AztecPostViewController {
 
     fileprivate func insertImage(image: UIImage, source: MediaSource = .deviceLibrary) {
         insert(exportableAsset: image, source: source)
-    }
-
-    fileprivate func insertDeviceMedia(phAsset: PHAsset, source: MediaSource = .deviceLibrary) {
-        insert(exportableAsset: phAsset, source: source)
     }
 
     private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
@@ -3188,93 +3124,6 @@ extension AztecPostViewController: PHPickerViewControllerDelegate {
         }
         closeMediaPickerInputViewController()
     }
-}
-
-// MARK: - MediaPickerViewController Delegate Conformance
-//
-extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
-
-    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
-        return nil
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
-        noResultsView.removeFromView()
-
-        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
-            noResultsView.configureForNoSearchResult()
-        }
-    }
-
-    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
-        updateSearchBar(mediaPicker: picker)
-        noResultsView.configureForFetching()
-    }
-
-    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
-        updateSearchBar(mediaPicker: picker)
-        noResultsView.removeFromView()
-        noResultsView.configureForNoAssets(userCanUploadMedia: false)
-    }
-
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        unregisterChangeObserver()
-        mediaLibraryDataSource.searchCancelled()
-        dismiss(animated: true)
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        unregisterChangeObserver()
-        mediaLibraryDataSource.searchCancelled()
-        dismiss(animated: true)
-        mediaSelectionMethod = .fullScreenPicker
-
-        closeMediaPickerInputViewController()
-
-        if assets.isEmpty {
-            return
-        }
-
-        for asset in assets {
-            switch asset {
-            case let phAsset as PHAsset:
-                insertDeviceMedia(phAsset: phAsset)
-            case let media as Media:
-                insertSiteMediaLibrary(media: media)
-            default:
-                continue
-            }
-        }
-    }
-
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, selectionChanged assets: [WPMediaAsset]) {
-        updateFormatBarInsertAssetCount()
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
-        updateFormatBarInsertAssetCount()
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
-        updateFormatBarInsertAssetCount()
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
-        let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
-        present(alert, animated: true)
-        return true
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
-            edit(fromMediaPicker: picker, assets: phAssets)
-            return nil
-        } else {
-            mediaPreviewHelper = MediaPreviewHelper(assets: assets)
-            return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
-        }
-    }
 
     private func updateFormatBarInsertAssetCount() {
         let assetCount = selectedPickerResults.count
@@ -3560,41 +3409,6 @@ extension AztecPostViewController {
 // MARK: - Media Editing
 //
 extension AztecPostViewController {
-    private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
-        let mediaEditor = WPMediaEditor(assets)
-
-        // When the photo's library is updated (eg.: a new photo is added)
-        // the actionBar is appearing and conflicting with Media Editor.
-        // We hide it to prevent that issue
-        picker.actionBar?.isHidden = true
-
-        mediaEditor.edit(from: picker,
-                              onFinishEditing: { [weak self] images, actions in
-                                images.forEach { mediaEditorImage in
-                                    if let image = mediaEditorImage.editedImage {
-                                        self?.insertImage(image: image)
-                                    } else if let phAsset = mediaEditorImage as? PHAsset {
-                                        self?.insertDeviceMedia(phAsset: phAsset)
-                                    }
-                                }
-
-                                self?.dismissMediaPicker()
-            }, onCancel: {
-                // Dismiss the Preview screen in Media Picker
-                picker.navigationController?.popViewController(animated: false)
-
-                // Show picker actionBar again
-                picker.actionBar?.isHidden = false
-        })
-    }
-
-    private func dismissMediaPicker() {
-        unregisterChangeObserver()
-        mediaLibraryDataSource.searchCancelled()
-        closeMediaPickerInputViewController()
-        dismiss(animated: false)
-    }
-
     private func edit(_ imageAttachment: ImageAttachment) {
 
         guard imageAttachment.mediaURL?.isGif == false else {
