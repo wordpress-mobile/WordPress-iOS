@@ -3639,6 +3639,8 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
+		F464A0C42B06DB4D00576BE0 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F464A0C32B06DB4D00576BE0 /* SubmitFeedbackViewController.swift */; };
+		F464A0C52B06DB4D00576BE0 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F464A0C32B06DB4D00576BE0 /* SubmitFeedbackViewController.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
 		F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */; };
 		F46546312AF2F8D30017E3D1 /* DomainsStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */; };
@@ -8971,6 +8973,7 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F464A0C32B06DB4D00576BE0 /* SubmitFeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitFeedbackViewController.swift; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
 		F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsStateViewModel.swift; sourceTree = "<group>"; };
@@ -10737,7 +10740,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -17396,6 +17399,7 @@
 			isa = PBXGroup;
 			children = (
 				F44EB6222B062AC300D09E0D /* InAppFeedbackCoordinator.swift */,
+				F464A0C32B06DB4D00576BE0 /* SubmitFeedbackViewController.swift */,
 			);
 			path = "In-App Feedback";
 			sourceTree = "<group>";
@@ -19078,13 +19082,13 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
@@ -20685,11 +20689,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -20878,13 +20882,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22563,6 +22567,7 @@
 				FAD1263C2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */,
 				CE46018B21139E8300F242B6 /* FooterTextContent.swift in Sources */,
 				E6D6A1302683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
+				F464A0C42B06DB4D00576BE0 /* SubmitFeedbackViewController.swift in Sources */,
 				F1BC842E27035A1800C39993 /* BlogService+Domains.swift in Sources */,
 				80C740FB2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */,
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
@@ -25399,6 +25404,7 @@
 				FABB25482602FC2C00C8785C /* StatsGhostCells.swift in Sources */,
 				FABB25492602FC2C00C8785C /* NotificationCenter+ObserveOnce.swift in Sources */,
 				FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */,
+				F464A0C52B06DB4D00576BE0 /* SubmitFeedbackViewController.swift in Sources */,
 				FABB254B2602FC2C00C8785C /* RoleViewController.swift in Sources */,
 				FABB254C2602FC2C00C8785C /* SiteAddressService.swift in Sources */,
 				F484D4EE2A32C4520050BE15 /* CATransaction+Extension.swift in Sources */,
@@ -30279,7 +30285,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30368,12 +30374,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */ = {

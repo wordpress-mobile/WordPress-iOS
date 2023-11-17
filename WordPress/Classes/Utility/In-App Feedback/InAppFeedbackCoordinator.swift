@@ -75,6 +75,8 @@ struct InAppFeedbackCoordinator {
             preferredStyle: .alert
         )
         let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { _ in
+            let destination = UINavigationController(rootViewController: submitFeedbackViewController(in: controller))
+            controller.present(destination, animated: true)
         }
         let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { _ in
             WPAnalytics.track(.appReviewsDeclinedToRateApp)
@@ -85,6 +87,14 @@ struct InAppFeedbackCoordinator {
         controller.present(alert, animated: true)
         WPAnalytics.track(.appReviewsDidntLikeApp)
         appRatingUtility.dislikedCurrentVersion()
+    }
+
+    private func submitFeedbackViewController(in controller: UIViewController) -> SubmitFeedbackViewController {
+        let destination = SubmitFeedbackViewController()
+        destination.onFeedbackSubmitted = { _, _ in
+            
+        }
+        return destination
     }
 
 }
