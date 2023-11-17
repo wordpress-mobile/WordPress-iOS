@@ -2,6 +2,8 @@ import WPMediaPicker
 import Kanvas
 import Gridicons
 import Combine
+import Photos
+import PhotosUI
 
 class PortraitTabBarController: UITabBarController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -38,12 +40,12 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         fatalError("init(coder:) has not been implemented")
     }
 
-    public static func present(on: UIViewController,
+    public static func present(on presentingViewController: UIViewController,
                                with settings: CameraSettings,
                                delegate: KanvasMediaPickerViewControllerDelegate,
                                completion: @escaping () -> Void) {
 
-        guard let blog = (on as? StoryEditor)?.post.blog else {
+        guard let blog = (presentingViewController as? StoryEditor)?.post.blog else {
             DDLogWarn("No blog for Kanvas Media Picker")
             return
         }
@@ -51,7 +53,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         let tabBar = PortraitTabBarController()
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate,
-                                                      presenter: tabBar,
+                                                      presenter: presentingViewController,
                                                       blog: blog)
         let options = WPMediaPickerOptions()
         options.allowCaptureOfMedia = false
@@ -70,15 +72,25 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         mediaPicker.dataSource = pickerDataSource
         mediaPicker.tabBarItem = UITabBarItem(title: Constants.mediaPickerTabBarTitle, image: Constants.mediaPickerTabBarIcon, tag: 0)
 
-        tabBar.viewControllers = [
-            photoPicker,
-            mediaPicker
-        ]
-        on.present(tabBar, animated: true, completion: completion)
+
+        let photosPicker = PHPickerViewController(configuration: {
+            var configuration = PHPickerConfiguration()
+            configuration.preferredAssetRepresentationMode = .current
+            configuration.selection = .ordered
+            configuration.selectionLimit = 0
+            return configuration
+        }())
+        photosPicker.delegate = mediaPickerDelegate
+        photosPicker.tabBarItem = UITabBarItem(title: Constants.photosTabBarTitle, image: Constants.photosTabBarIcon, tag: 0)
+
+        retainedDelegate = mediaPickerDelegate
+        presentingViewController.present(photosPicker, animated: true, completion: completion)
     }
 }
 
-class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
+private var retainedDelegate: MediaPickerDelegate?
+
+class MediaPickerDelegate: NSObject, PHPickerViewControllerDelegate, WPMediaPickerViewControllerDelegate {
 
     private weak var kanvasDelegate: KanvasMediaPickerViewControllerDelegate?
     private weak var presenter: UIViewController?
@@ -93,6 +105,39 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
         self.blog = blog
     }
 
+    // MARK: - PHPickerViewControllerDelegate
+
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard !results.isEmpty else {
+            picker.presentingViewController?.dismiss(animated: true)
+            return
+        }
+        Task {
+            await process(results, picker: picker)
+        }
+    }
+
+    @MainActor
+    private func process(_ results: [PHPickerResult], picker: PHPickerViewController) async {
+        startLoading(in: picker)
+        defer { stopLoading() }
+
+        do {
+            let selection = try await exportPickedMedia(from: results, blog: blog)
+            picker.presentingViewController?.dismiss(animated: true)
+            kanvasDelegate?.didPick(media: selection)
+        } catch {
+            if let error = error as? VideoExportError,
+               case .videoLengthLimitExceeded = error {
+                presentVideoLimitExceededFromPicker(on: picker)
+            } else {
+                showError(error, in: picker)
+            }
+        }
+    }
+
+    // MARK: - WPMediaPickerViewControllerDelegate
+
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         presenter?.dismiss(animated: true, completion: nil)
     }
@@ -101,7 +146,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
         case missingImage
         case missingVideoURL
         case failedVideoDownload
-        case unexpectedAssetType // `WPMediaAsset.assetType()` was not an image or video
+        case unexpectedAssetType
     }
 
     private struct ExportOutput {
@@ -208,6 +253,102 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
         }
         return true
     }
+
+    // MARK: - Helpers
+
+    private func startLoading(in viewController: UIViewController) {
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.setContainerView(viewController.view)
+        SVProgressHUD.showProgress(-1)
+    }
+
+    private func stopLoading() {
+        SVProgressHUD.dismiss()
+    }
+
+    private func showError(_ error: Error, in viewController: UIViewController) {
+        let title = NSLocalizedString("mediaPicker.failedMediaExportAlert.title", value: "Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
+        let message = NSLocalizedString("mediaPicker.failedMediaExportAlert.message", value: "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
+        let dismissTitle = NSLocalizedString(
+            "mediaPicker.failedMediaExportAlert.dismissButton",
+            value: "Dismiss",
+            comment: "The title of the button to dismiss the alert shown when the picked media cannot be imported into stories."
+        )
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: dismissTitle, style: .default) { _ in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(dismiss)
+        viewController.present(alert, animated: true, completion: nil)
+
+        DDLogError("Failed to export picked Stories media: \(error)")
+    }
+}
+
+// MARK: - Helpers
+
+@MainActor
+private func exportPickedMedia(from results: [PHPickerResult], blog: Blog) async throws -> [PickedMedia] {
+    try await withThrowingTaskGroup(of: PickedMedia.self) { group in
+        for result in results {
+            group.addTask { @MainActor in
+                try await exportPickedMedia(from: result.itemProvider, blog: blog)
+            }
+        }
+        var selection: [PickedMedia] = []
+        for try await media in group {
+            selection.append(media)
+        }
+        return selection
+    }
+}
+
+// Isolating it on the @MainActor because NSItemProvider is non-Sendable.
+@MainActor
+private func exportPickedMedia(from provider: NSItemProvider, blog: Blog) async throws -> PickedMedia {
+    if provider.hasConformingType(.image) {
+        let image = try await NSItemProvider.image(for: provider)
+        let imageSize = image.size.scaled(by: image.scale)
+        let targetSize = getTargetSize(forImageSize: imageSize, targetSize: CGSize(width: 2048, height: 2048))
+        let resized = await Task.detached {
+            image.resizedImage(targetSize, interpolationQuality: .default)
+        }.value
+        return PickedMedia.image(resized ?? image, nil)
+    } else if provider.hasConformingType(.movie) || provider.hasConformingType(.video) {
+        let videoURL = try await NSItemProvider.video(for: provider)
+        guard blog.canUploadVideo(from: videoURL) else {
+            throw VideoExportError.videoLengthLimitExceeded
+        }
+        let asset = AVAsset(url: videoURL)
+        // important: Kanvas doesn't support video orientation!
+        guard asset.tracks(withMediaType: .video).first?.preferredTransform != .identity else {
+            return PickedMedia.video(videoURL)
+        }
+        defer { try? FileManager.default.removeItem(at: videoURL) }
+        let exportURL = try await asset.exportFixingOrientation(to: videoURL
+            .deletingLastPathComponent()
+            .appendingPathComponent(UUID().uuidString))
+        return PickedMedia.video(exportURL)
+    } else {
+        throw MediaPickerDelegate.ExportErrors.unexpectedAssetType
+    }
+}
+
+private enum VideoExportError: Error {
+    case videoLengthLimitExceeded
+}
+
+/// - parameter imageSize: Image size in pixels.
+private func getTargetSize(forImageSize imageSize: CGSize, targetSize originalTargetSize: CGSize) -> CGSize {
+    guard imageSize.width > 0 && imageSize.height > 0 else {
+        return originalTargetSize
+    }
+    // Scale image to fit the target size but avoid upscaling
+    let scale = min(1, min(
+        originalTargetSize.width / imageSize.width,
+        originalTargetSize.height / imageSize.height
+    ))
+    return imageSize.scaled(by: scale).rounded()
 }
 
 // MARK: - User messages for video limits allowances
@@ -329,6 +470,23 @@ extension WPMediaAsset {
 }
 
 private extension AVAsset {
+    func exportFixingOrientation(to exportURL: URL) async throws -> URL {
+        let exportURL = exportURL.deletingPathExtension().appendingPathExtension("mov")
+        let (composition, videoComposition) = try rotate()
+
+        guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPreset1920x1080) else {
+            throw WPMediaAssetError.videoAssetExportFailed
+        }
+        exportSession.videoComposition = videoComposition
+        exportSession.outputURL = exportURL
+        exportSession.outputFileType = .mov
+        await exportSession.export()
+        if let error = exportSession.error {
+            throw error
+        }
+        return exportURL
+    }
+
     func exportPublisher(url: URL) throws -> AnyPublisher<URL, Error> {
         let exportURL = url.appendingPathExtension("mov")
 

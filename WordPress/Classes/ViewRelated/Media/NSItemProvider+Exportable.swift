@@ -1,4 +1,5 @@
 import UIKit
+import UniformTypeIdentifiers
 
 extension NSItemProvider: ExportableAsset {
     public var assetMediaType: MediaType {
@@ -10,5 +11,11 @@ extension NSItemProvider: ExportableAsset {
         } else {
             return .document
         }
+    }
+}
+
+extension NSItemProvider {
+    func hasConformingType(_ type: UTType) -> Bool {
+        hasItemConformingToTypeIdentifier(type.identifier)
     }
 }
