@@ -115,7 +115,7 @@ extension InAppFeedbackCoordinator {
             )
             static let message = NSLocalizedString(
                 "in-app.feedback.alert.message",
-                value: "We value your opinion! Are you enjoying your mobile experience?",
+                value: "Are you enjoying the Jetpack mobile app?",
                 comment: "The message for the first feedback alert"
             )
             static let yes = NSLocalizedString(
@@ -132,12 +132,12 @@ extension InAppFeedbackCoordinator {
         enum NegativeFeedbackAlert {
             static let title = NSLocalizedString(
                 "in-app.feedback.negative.alert.title",
-                value: "Tell us more",
+                value: "Help us improve",
                 comment: "The title for the negative feedback alert"
             )
             static let message = NSLocalizedString(
                 "in-app.feedback.negative.alert.message",
-                value: "We're sorry to hear that. Can you share more details about what could be improved?",
+                value: "Would you like to share more details with us?",
                 comment: "The message for the negative feedback alert"
             )
             static let yes = NSLocalizedString(
@@ -154,12 +154,12 @@ extension InAppFeedbackCoordinator {
         enum ConfirmationNotice {
             static let title = NSLocalizedString(
                 "in-app.feedback.confirmation.notice.title",
-                value: "Your feedback has been received",
+                value: "Feedback sent",
                 comment: ""
             )
             static let message = NSLocalizedString(
                 "in-app.feedback.confirmation.notice.message",
-                value: "We're grateful for your input and strive to enhance your experience.",
+                value: "Thanks for helping us improve the app.",
                 comment: ""
             )
         }
