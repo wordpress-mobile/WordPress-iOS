@@ -348,6 +348,8 @@
 		08BB7BC62B0665990089059D /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC52B0665990089059D /* TextStyle.swift */; };
 		08BB7BC72B0665990089059D /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC52B0665990089059D /* TextStyle.swift */; };
 		08BB7BC82B06789D0089059D /* LengthGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB92B06172C0089059D /* LengthGallery.swift */; };
+		08BB7BCA2B076F230089059D /* UILabel+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC92B076F230089059D /* UILabel+DesignSystem.swift */; };
+		08BB7BCB2B076F230089059D /* UILabel+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BC92B076F230089059D /* UILabel+DesignSystem.swift */; };
 		08BBA3502A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08BBA3512A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
@@ -6059,6 +6061,7 @@
 		08BB7BBE2B065AE20089059D /* FontGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontGallery.swift; sourceTree = "<group>"; };
 		08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+DesignSystem.swift"; sourceTree = "<group>"; };
 		08BB7BC52B0665990089059D /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
+		08BB7BC92B076F230089059D /* UILabel+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DesignSystem.swift"; sourceTree = "<group>"; };
 		08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardCell.swift; sourceTree = "<group>"; };
 		08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporter.swift; sourceTree = "<group>"; };
 		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
@@ -10228,6 +10231,7 @@
 			children = (
 				08BB7BC52B0665990089059D /* TextStyle.swift */,
 				08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */,
+				08BB7BC92B076F230089059D /* UILabel+DesignSystem.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -22385,6 +22389,7 @@
 				803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
+				08BB7BCA2B076F230089059D /* UILabel+DesignSystem.swift in Sources */,
 				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
@@ -24748,6 +24753,7 @@
 				FABB23092602FC2C00C8785C /* MediaItemViewController.swift in Sources */,
 				FABB230A2602FC2C00C8785C /* PostAnnotation.m in Sources */,
 				FABB230B2602FC2C00C8785C /* GutenbergViewController.swift in Sources */,
+				08BB7BCB2B076F230089059D /* UILabel+DesignSystem.swift in Sources */,
 				FABB230C2602FC2C00C8785C /* EditPageViewController.swift in Sources */,
 				FABB230D2602FC2C00C8785C /* SiteCreator.swift in Sources */,
 				3FFDEF8329179CD000B625CE /* MigrationDependencyContainer.swift in Sources */,
