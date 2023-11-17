@@ -91,8 +91,11 @@ struct InAppFeedbackCoordinator {
 
     private func submitFeedbackViewController(in controller: UIViewController) -> SubmitFeedbackViewController {
         let destination = SubmitFeedbackViewController()
-        destination.onFeedbackSubmitted = { _, _ in
-
+        destination.onFeedbackSubmitted = { [weak controller] _, _ in
+            controller?.displayNotice(
+                title: Strings.ConfirmationNotice.title,
+                message: Strings.ConfirmationNotice.message
+            )
         }
         return destination
     }
@@ -146,6 +149,18 @@ extension InAppFeedbackCoordinator {
                 "in-app.feedback.negative.alert.no",
                 value: "Not now",
                 comment: "The 'no' button for the negative feedback alert"
+            )
+        }
+        enum ConfirmationNotice {
+            static let title = NSLocalizedString(
+                "in-app.feedback.confirmation.notice.title",
+                value: "Your feedback has been received",
+                comment: ""
+            )
+            static let message = NSLocalizedString(
+                "in-app.feedback.confirmation.notice.message",
+                value: "We're grateful for your input and strive to enhance your experience.",
+                comment: ""
             )
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 final class SubmitFeedbackViewController: UIViewController {
 
@@ -19,6 +20,10 @@ final class SubmitFeedbackViewController: UIViewController {
 
     var onFeedbackSubmitted: ((SubmitFeedbackViewController, String) -> Void)?
 
+    // MARK: -
+
+    private var cancellables = Set<AnyCancellable>()
+
     // MARK: - View Lifecycle
 
     deinit {
@@ -32,6 +37,7 @@ final class SubmitFeedbackViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         self.setupSubviews()
+        self.textView.becomeFirstResponder()
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
     }
 
@@ -56,6 +62,7 @@ final class SubmitFeedbackViewController: UIViewController {
     }
 
     private func setupTextView() {
+        self.textView.delegate = self
         self.view.addSubview(textView)
         NSLayoutConstraint.activate([
             self.textView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -63,16 +70,33 @@ final class SubmitFeedbackViewController: UIViewController {
             self.textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             self.textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         ])
+        self.updateSubmitNavigationItem(text: textView.text)
+    }
+
+    // MARK: - Updating UI
+
+    func updateSubmitNavigationItem(text: String?) {
+        let text = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        self.navigationItem.rightBarButtonItem?.isEnabled = !text.isEmpty
     }
 
     // MARK: - User Interaction
 
     private func didTapSubmit() {
         let text = textView.text ?? ""
-        self.onFeedbackSubmitted?(self, text)
         self.feedbackWasSubmitted = true
         WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
-        self.dismiss(animated: true)
+        self.view.endEditing(true)
+        self.dismiss(animated: true) {
+            self.onFeedbackSubmitted?(self, text)
+        }
+    }
+}
+
+extension SubmitFeedbackViewController: UITextViewDelegate {
+
+    func textViewDidChange(_ textView: UITextView) {
+        updateSubmitNavigationItem(text: textView.text)
     }
 }
 
