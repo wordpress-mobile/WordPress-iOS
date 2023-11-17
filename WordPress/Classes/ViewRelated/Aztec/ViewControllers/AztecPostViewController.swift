@@ -1587,7 +1587,7 @@ extension AztecPostViewController {
                 presentDeviceMediaPicker(animated: true)
             case .camera:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
-                mediaPickerInputViewController?.showCapture()
+                MediaPickerMenu(viewController: self).showCamera(delegate: self)
             case .mediaLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentSiteMediaPicker()
@@ -3193,6 +3193,37 @@ extension AztecPostViewController: SiteMediaPickerViewControllerDelegate {
         }
     }
 }
+
+// MARK: - AztecPostViewController (ImagePickerControllerDelegate)
+
+extension AztecPostViewController: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        dismiss(animated: true) {
+            guard let mediaType = info[.mediaType] as? String else {
+                return
+            }
+            switch mediaType {
+            case UTType.image.identifier:
+                if let image = info[.originalImage] as? UIImage {
+                    self.insertImage(image: image, source: .camera)
+                }
+            case UTType.movie.identifier:
+                guard let videoURL = info[.mediaURL] as? URL else {
+                    return
+                }
+                guard self.post.blog.canUploadVideo(from: videoURL) else {
+                    self.presentVideoLimitExceededAfterCapture(on: self)
+                    return
+                }
+                self.insert(exportableAsset: videoURL as NSURL, source: .camera)
+            default:
+                break
+            }
+        }
+    }
+}
+
+extension AztecPostViewController: VideoLimitsAlertPresenter {}
 
 // MARK: - MediaPickerViewController (PHPickerViewControllerDelegate)
 
