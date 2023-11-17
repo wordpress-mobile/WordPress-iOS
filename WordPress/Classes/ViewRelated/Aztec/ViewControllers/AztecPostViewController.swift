@@ -110,6 +110,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
+    private var toolbarMode: FormatBarMode = .text
+
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
@@ -1776,35 +1778,18 @@ extension AztecPostViewController {
     }
 
     private func toggleMediaPicker(fromButton button: UIButton) {
-        if mediaPickerInputViewController != nil {
+        switch toolbarMode {
+        case .media:
             closeMediaPickerInputViewController()
             trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
-        } else {
+        case .text:
             presentEmbeddedMediaPicker(fromButton: button, animated: true)
         }
     }
 
     private func presentEmbeddedMediaPicker(fromButton button: UIButton, animated: Bool = true) {
-        guard #available(iOS 17, *) else { return }
-
         trackFormatBarAnalytics(stat: .editorTappedImage)
 
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .any(of: [.images, .videos])
-        configuration.preferredAssetRepresentationMode = .current
-        configuration.selectionLimit = 0
-        configuration.mode = .compact
-        configuration.disabledCapabilities = [
-            .collectionNavigation, .collectionNavigation, .search, .stagingArea
-        ]
-        configuration.edgesWithoutContentMargins = .all
-        configuration.selection = .continuousAndOrdered
-
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        picker.zoomOut()
-
-        mediaPickerInputViewController = picker
         updateToolbar(formatBar, forMode: .media)
 
         originalLeadingBarButtonGroup = richTextView.inputAssistantItem.leadingBarButtonGroups
@@ -1815,15 +1800,31 @@ extension AztecPostViewController {
 
         richTextView.autocorrectionType = .no
 
-        if currentKeyboardFrame != .zero {
-            // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
-            // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
-            // set the picker's frame to the current keyboard's frame.
-            picker.view.autoresizingMask = []
-            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
-        }
+        if #available(iOS 17, *) {
+            var configuration = PHPickerConfiguration()
+            configuration.filter = .any(of: [.images, .videos])
+            configuration.preferredAssetRepresentationMode = .current
+            configuration.selectionLimit = 0
+            configuration.disabledCapabilities = [
+                .collectionNavigation, .collectionNavigation, .search, .stagingArea
+            ]
+            configuration.edgesWithoutContentMargins = .all
+            configuration.selection = .continuousAndOrdered
 
-        presentToolbarViewControllerAsInputView(picker)
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            mediaPickerInputViewController = picker
+
+            if currentKeyboardFrame != .zero {
+                // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
+                // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
+                // set the picker's frame to the current keyboard's frame.
+                picker.view.autoresizingMask = []
+                picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
+            }
+
+            presentToolbarViewControllerAsInputView(picker)
+        }
     }
 
     @objc func toggleEditingMode() {
@@ -1957,6 +1958,8 @@ extension AztecPostViewController {
     }
 
     fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar, forMode mode: FormatBarMode) {
+        self.toolbarMode = mode
+
         if let leadingItem = toolbar.leadingItem {
             rotateMediaToolbarItem(leadingItem, forMode: mode)
         }
@@ -2927,9 +2930,6 @@ extension AztecPostViewController {
     }
 
     func closeMediaPickerInputViewController() {
-        guard mediaPickerInputViewController != nil else {
-            return
-        }
         selectedPickerResults = []
         mediaPickerInputViewController = nil
         changeRichTextInputView(to: nil)
