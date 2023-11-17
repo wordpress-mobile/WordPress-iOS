@@ -6,7 +6,7 @@ import WordPressFlux
 import Kanvas
 import React
 
-class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor, UIDropInteractionDelegate {
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -363,6 +363,53 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        let dropInteraction = UIDropInteraction(delegate: self)
+        view.addInteraction(dropInteraction)
+    }
+
+    func saveToDisk(image: UIImage) -> URL? {
+        let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.jpg"
+
+        guard let data = image.jpegData(compressionQuality: 0.9) else {
+            return nil
+        }
+
+        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
+
+        guard (try? data.write(to: fileURL, options: [.atomic])) != nil else {
+            return nil
+        }
+
+        return fileURL
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: UIImage.self)
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+        let dropLocation = session.location(in: view)
+        self.gutenberg.filesOver(coords: dropLocation)
+        return UIDropProposal(operation: .copy)
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        session.loadObjects(ofClass: UIImage.self) { items in
+            guard let images = items as? [UIImage] else {
+                return
+            }
+            let imagesURLs = images.compactMap({ self.saveToDisk(image: $0)?.absoluteString })
+            self.gutenberg.filesDrop(imagesURLs)
+        }
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidExit session: UIDropSession) {
+        self.gutenberg.filesDropOutside()
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidEnd session: UIDropSession) {
+        self.gutenberg.filesDropEnded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
