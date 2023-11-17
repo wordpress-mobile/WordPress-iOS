@@ -92,7 +92,7 @@ struct InAppFeedbackCoordinator {
     private func submitFeedbackViewController(in controller: UIViewController) -> SubmitFeedbackViewController {
         let destination = SubmitFeedbackViewController()
         destination.onFeedbackSubmitted = { _, _ in
-            
+
         }
         return destination
     }
