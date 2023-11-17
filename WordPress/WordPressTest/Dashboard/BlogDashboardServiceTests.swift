@@ -29,7 +29,10 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        // Simulate the app is signed in with a WP.com account
         contextManager.useAsSharedInstance(untilTestFinished: self)
+        let accountService = AccountService(coreDataStack: contextManager)
+        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
@@ -69,7 +72,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testCallServiceWithCorrectIDAndCards() {
         let expect = expectation(description: "Request the correct ID")
 
-        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
@@ -144,7 +147,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         // Will fail with logged in user.
         //
         // It happens because for some reason the logic that should add activity as one of the type of cards to fetch doesn't do that.
-        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
@@ -184,7 +187,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
@@ -251,7 +254,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: mainContext, loggedIn: false)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             // Then it's still disabled for other sites
@@ -417,23 +420,11 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
 
-    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true, loggedIn: Bool = true) -> Blog {
+    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
 
         blog.dotComID = id as NSNumber
-
-        // Some tests fail when the account associated to the blog is the default account.
-        //
-        // See https://github.com/wordpress-mobile/WordPress-iOS/pull/21796#issuecomment-1767273816
-        if loggedIn {
-            let accountService = AccountService(coreDataStack: contextManager)
-            _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
-
-            blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
-        }
-        // FIXME: There is a possible inconsistency here because in production the isAdmin value depends on the account, but here the two can go out of sync
         blog.isAdmin = isAdmin
-
         return blog
     }
 }
