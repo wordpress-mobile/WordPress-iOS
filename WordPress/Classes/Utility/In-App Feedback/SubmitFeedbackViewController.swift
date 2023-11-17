@@ -48,13 +48,15 @@ final class SubmitFeedbackViewController: UIViewController {
 
     private func setupNavigationItems() {
         let navBarAppearance = self.navigationController?.navigationBar.standardAppearance
-        let submit = UIAction { [weak self] _ in
-            self?.didTapSubmit()
-        }
         let cancel = UIAction { [weak self] _ in
             self?.dismiss(animated: true)
         }
-        self.navigationItem.rightBarButtonItem = .init(title: Strings.submit, primaryAction: submit)
+        self.navigationItem.rightBarButtonItem = .init(
+            title: Strings.submit,
+            style: .done,
+            target: self,
+            action: #selector(didTapSubmit)
+        )
         self.navigationItem.leftBarButtonItem = .init(systemItem: .cancel, primaryAction: cancel)
         self.navigationItem.title = Strings.title
         self.navigationItem.scrollEdgeAppearance = navBarAppearance
@@ -82,7 +84,7 @@ final class SubmitFeedbackViewController: UIViewController {
 
     // MARK: - User Interaction
 
-    private func didTapSubmit() {
+    @objc private func didTapSubmit() {
         let text = textView.text ?? ""
         self.feedbackWasSubmitted = true
         WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
