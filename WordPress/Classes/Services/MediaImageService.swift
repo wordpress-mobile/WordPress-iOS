@@ -30,7 +30,7 @@ final class MediaImageService {
             let configuration = URLSessionConfiguration.default
             configuration.urlCache = URLCache(
                 memoryCapacity: 32 * 1024 * 1024, // 32 MB
-                diskCapacity: 128 * 1024 * 1024,  // 128 MB
+                diskCapacity: 256 * 1024 * 1024,  // 256 MB
                 diskPath: "org.automattic.MediaImageService"
             )
             return configuration
@@ -51,9 +51,38 @@ final class MediaImageService {
     enum Error: Swift.Error {
         case unsupportedMediaType(_ type: MediaType)
         case unsupportedThumbnailSize(_ size: ImageSize)
+        case unexpectedResponse
         case unacceptableStatusCode(_ statusCode: Int?)
         case missingImageURL
     }
+
+    // MARK: - URL
+
+    /// Returns an image for the given URL.
+    ///
+    /// **Performance Characteristics**
+    ///
+    /// The returned images are decompressed (or bitmapped) and are ready to be
+    /// displayed even during scrolling.
+    ///
+    /// The decompressed images are stored in the shared ``MemoryCache`` and the
+    /// data is cached by `URLSession` with a custom `URLCache` instance configured
+    /// with an increased disk capacity.
+    ///
+    /// - returns a decompressed image prepared for display. If the URL contains
+    /// an animated GIF, returns an instance of the ``AnimatedImageWrapper`` class.
+    func image(from url: URL) async throws -> UIImage {
+        let cacheKey = url.absoluteString
+        if let image = cache.getImage(forKey: cacheKey) {
+            return image
+        }
+        let data = try await data(for: URLRequest(url: url), session: urlSessionWithCache)
+        let image = try await makeImage(from: data)
+        cache.setImage(image, forKey: cacheKey)
+        return image
+    }
+
+    // MARK: - Media
 
     /// Returns an image for the given media asset.
     ///
@@ -97,7 +126,7 @@ final class MediaImageService {
         return SafeMedia(media)
     }
 
-    // MARK: - Images (Original)
+    // MARK: - Media (Original)
 
     /// Returns a full-size image for the given media asset.
     ///
@@ -113,7 +142,7 @@ final class MediaImageService {
             return image
         }
         if let info = await getFullsizeImageInfo(for: media) {
-            let data = try await loadData(with: info, using: urlSessionWithCache)
+            let data = try await data(for: info, session: urlSessionWithCache)
             return try await makeImage(from: data)
         }
         // The media has no local or remote URL – should never happen
@@ -130,7 +159,7 @@ final class MediaImageService {
         }
     }
 
-    // MARK: - Images (Thumbnails)
+    // MARK: - Media (Thumbnails)
 
     private func thumbnail(for media: SafeMedia, size: ImageSize) async throws -> UIImage {
         guard media.mediaType == .image || media.mediaType == .video else {
@@ -229,7 +258,7 @@ final class MediaImageService {
             }
             throw URLError(.badURL)
         }
-        let data = try await loadData(with: info, using: urlSession)
+        let data = try await data(for: info, session: urlSession)
         let image = try await makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
             try? data.write(to: fileURL)
@@ -251,15 +280,25 @@ final class MediaImageService {
 
     // MARK: - Networking
 
-    private func loadData(with info: RemoteImageInfo, using session: URLSession) async throws -> Data {
+    private func data(for info: RemoteImageInfo, session: URLSession) async throws -> Data {
         let request = try await MediaRequestAuthenticator()
             .authenticatedRequest(for: info.imageURL, host: info.host)
+        return try await data(for: request, session: session)
+    }
+
+    private func data(for request: URLRequest, session: URLSession) async throws -> Data {
         let (data, response) = try await session.data(for: request)
-        let statusCode = (response as? HTTPURLResponse)?.statusCode
-        guard (200..<400).contains(statusCode ?? -1) else {
-            throw Error.unacceptableStatusCode(statusCode)
-        }
+        try validate(response: response)
         return data
+    }
+
+    private func validate(response: URLResponse) throws {
+        guard let response = response as? HTTPURLResponse else {
+            throw Error.unexpectedResponse
+        }
+        guard (200..<400).contains(response.statusCode) else {
+            throw Error.unacceptableStatusCode(response.statusCode)
+        }
     }
 
     private struct RemoteImageInfo {
