@@ -509,10 +509,10 @@
 		0CD9CCA42AD831590044A33C /* PostSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9CCA22AD831590044A33C /* PostSearchViewModel.swift */; };
 		0CD9FB7E2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB7D2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift */; };
 		0CD9FB7F2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB7D2AF9C4DB009D9C7A /* UIBarButtonItem+Extensions.swift */; };
-		0CD9FB8B2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
-		0CD9FB8C2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
 		0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD9FB862AFA71B9009D9C7A /* DGCharts */; };
 		0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD9FB882AFA71C2009D9C7A /* DGCharts */; };
+		0CD9FB8B2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
+		0CD9FB8C2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
