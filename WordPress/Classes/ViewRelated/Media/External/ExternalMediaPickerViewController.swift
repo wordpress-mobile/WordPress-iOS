@@ -83,8 +83,10 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ExternalMediaPickerCollectionCell.self, for: indexPath)!
-        let _ = items[indexPath.row]
-        // TODO: display item
+        let item = items[indexPath.row]
+        // TODO: rework
+        let viewModel = ExternalMediaPickerCollectionCellViewModel(imageURL: item.url)
+        cell.configure(viewModel)
         return cell
     }
 

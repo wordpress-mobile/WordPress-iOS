@@ -82,6 +82,11 @@ final class MediaImageService {
         return image
     }
 
+    /// Returns a cached image for the given URL.
+    func cachedImage(for url: URL) -> UIImage? {
+        cache.getImage(forKey: url.absoluteString)
+    }
+
     // MARK: - Media
 
     /// Returns an image for the given media asset.
