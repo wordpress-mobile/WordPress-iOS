@@ -1,27 +1,23 @@
-* [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
-* [*] Posts & Pages: Moved actions to a context menu and added new actions such as “Comments”, “Settings”, and “Set as regular page”. Made the context menu available via long-press (#21886, #21965, #21963, #21967)
-* [*] Posts & Pages: Added swipe actions - left to view, right to share and/or delete (#21917)
-* [***] Posts & Pages: Added paging, full-text search, and searching via “author” / “tag” filters (#21789)
-* [*] Posts & Pages: Search now works across all authors unless you explicitly add the author filter (#21966)
-* [*] Posts & Pages: Fix an issue with the Pages list not refreshing when the pages are added or modified
-* [*] Posts & Pages: Fix an issue where “View” action was available for Trashed posts (#21958)
-* [*] Posts & Pages: Fix rare crashes in Posts & Pages (#21298)
-* [***] Site Media: Update the design of the Site Media screen with an improved selection mode, updated context menus, a way to share more than one item at a time, better support for animated GIFs, fix a couple of visual issues with state views and search, and more [#21457]
-* [**] Site Media: Improve performance by moving the work to the background, reducing memory usage, prefetching images, decompressing jpegs in the background, canceling unneeded requests, and more [#21470], [#21615], [#21664]
-* [**] Site Media: Add support for selecting site media with a pan gesture [#21702]
-* [*] Site Media: Add storage quota shown proactively in the context menu when adding media [#22013]
-* [*] Site Media: Add aspect ratio mode to Site Media on iPad, which is a new default [#22009]
-* [**] Site Media: Update the design of the Site Media details view that now allows swiping between photos, makes it easier to modify metadata, and delete items [#22008]
-* [*] Site Media: Fix an issue with blank image placeholders on the Site Media screen [#21457]
-* [*] Site Media: Fix an issue with 'you have no media' appears just before the media does [#9922] [#21457]
-* [*] Site Media: Fix an issue with media occasionally flashing white on the Site Media screen
-* [*] Site Media: Fix rare crashes in the Site Media screen and media picker [#21572]
-* [*] Site Media: Fix an issue with sharing PDF and other documents [#22021]
-* [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
-* [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
-* [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
-* [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
-* [*] Fix an issue with GIF uploads [#22025]
-* [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
-* [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
-* [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]
+Buckle up, this update’s a doozy. Let’s start with Site Media.
+
+- We updated the Site Media screen design with better menus, file selection and sharing, and more. It even runs faster—no more jerky GIFs or stalled-out videos.
+- You can use the pan gesture to select multiple media files at once. It’s also easier to swipe from one photo to another, change metadata, and delete items.
+- On iPad, you can switch between square image previews and aspect ratio.
+- We fixed issues with blank placeholder images, incorrect messages, document sharing, and occasional crashes.
+
+We’re not done yet. We also made big changes to Posts & Pages.
+
+- The Posts & Pages screen got a facelift with clean, simple display options.
+- Use more advanced search features, like author and tag filters, to find the content you’d like to edit. Search also works across all authors (unless, of course, you want content from one specific person.)
+- Use swipe actions to view, share, or delete posts and pages. Sweet.
+- The context menu now lets you access comments, settings, and other actions for a post or page.
+- We fixed issues with page refreshes and visibility, as well as a handful of crashes.
+
+Finally, we fixed a handful of pesky problems across the app.
+
+- The app now recognizes when you’ve finished uploading a GIF. (monty-burns-excellent.gif)
+- “Hidden” posts now have a better description for their privacy status.
+- The reader now scrolls to the top when you tap the status bar. Up, up, and away.
+- The Menus screen properly creates menu items based on top-level pages.
+- We fixed a crash related to using text colors in older site themes.
+- You shouldn’t run into any errors when you paste deeply nested content. Much like onions, ogres, cakes, or parfaits, your content can have many layers.
