@@ -208,17 +208,18 @@ final class PageTree {
     private var orphanNodes = IndexSet()
 
     func add(_ newPages: [Page]) {
+        let newNodes = newPages.map { TreeNode(page: $0) }
+        relocateOrphans(to: newNodes)
+
         let batch = 100
         for index in stride(from: 0, to: newPages.count, by: batch) {
             let tree = PageTree()
-            for page in newPages[index..<min(index + batch, newPages.count)] {
-                tree.add([TreeNode(page: page)])
-            }
+            tree.add(Array(newNodes[index..<min(index + batch, newPages.count)]))
             self.add(tree.nodes)
         }
     }
 
-    private func add(_ newNodes: [TreeNode]) {
+    private func relocateOrphans(to newNodes: [TreeNode]) {
         // If the orphan nodes can find their parents in `newNode`, move them under `newNode`.
         let movedOrphanIndexes = orphanNodes.filter { index in
             newNodes.contains { $0.add(nodes[index]) }
@@ -232,7 +233,9 @@ final class PageTree {
                 }
             }
         }
+    }
 
+    private func add(_ newNodes: [TreeNode]) {
         newNodes.forEach { newNode in
             // If the new node is at the root level, then simply add it as a child
             if (newNode.page.parentID?.int64Value ?? 0) == 0 {
