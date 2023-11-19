@@ -234,7 +234,7 @@ final class MediaImageService {
     // MARK: - Networking
 
     private func data(for info: RemoteImageInfo, isCached: Bool) async throws -> Data {
-        let options = ImageRequestOptions(isURLCacheEnabled: isCached)
+        let options = ImageRequestOptions(isDiskCacheEnabled: isCached)
         return try await downloader.data(from: info.imageURL, host: info.host, options: options)
     }
 

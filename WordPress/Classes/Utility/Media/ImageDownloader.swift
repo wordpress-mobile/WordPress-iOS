@@ -1,80 +1,46 @@
 import UIKit
 
-// MARK: - ImageDownloadTask protocol
-
-/// This protocol can be implemented to represent an image download task handled by the ImageDownloader.
-///
-protocol ImageDownloaderTask {
-    /// Calling this method should cancel the task's execution.
-    ///
-    func cancel()
-}
-
-extension Operation: ImageDownloaderTask {}
-extension URLSessionTask: ImageDownloaderTask {}
-
 struct ImageRequestOptions {
     /// If enabled, uses `URLSession` preconfigured with a custom `URLCache`
     /// with a relatively high disk capacity. By default, `true`.
-    var isURLCacheEnabled = true
+    var isDiskCacheEnabled = true
 }
-
-// MARK: - Image Downloading Tool
 
 /// The system that downloads and caches images, and prepares them for display.
 actor ImageDownloader {
-
-    /// Shared Instance!
-    ///
     static let shared = ImageDownloader()
 
-    /// Internal URLSession Instance
-    ///
-    private let urlSession = URLSession(configuration: {
-        let configuration = URLSessionConfiguration.default
+    private let urlSession = URLSession {
         // The service has a custom disk cache for thumbnails, so it's important to
         // disable the native url cache which is by default set to `URLCache.shared`
-        configuration.urlCache = nil
-        return configuration
-    }())
+        $0.urlCache = nil
+    }
 
-    private let urlSessionWithCache = URLSession(configuration: {
-        let configuration = URLSessionConfiguration.default
-        configuration.urlCache = URLCache(
+    private let urlSessionWithCache = URLSession {
+        $0.urlCache = URLCache(
             memoryCapacity: 32 * 1024 * 1024, // 32 MB
             diskCapacity: 256 * 1024 * 1024,  // 256 MB
             diskPath: "org.automattic.ImageDownloader"
         )
-        return configuration
-    }())
+    }
 
-    /// Downloads image for the given URL.
-    func image(at url: URL) async throws -> UIImage {
+    // MARK: - Images (URL)
+
+    /// Downloads image for the given `URL`.
+    func image(from url: URL, options: ImageRequestOptions = .init()) async throws -> UIImage {
         var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-        return try await image(for: request)
+        let data = try await data(for: request, options: options)
+        return try await ImageDecoder.makeImage(from: data)
     }
 
-    /// Downloads image for the given request.
-    func image(for request: URLRequest) async throws -> UIImage {
-        final class CancelationToken {
-            var task: ImageDownloaderTask?
-        }
-        let token = CancelationToken()
-        return try await withTaskCancellationHandler {
-            try await withUnsafeThrowingContinuation { continuation in
-                token.task = downloadImage(for: request) { image, error in
-                    if let image {
-                        continuation.resume(returning: image)
-                    } else {
-                        continuation.resume(throwing: error ?? URLError(.unknown))
-                    }
-                }
-            }
-        } onCancel: {
-            token.task?.cancel()
-        }
+    /// Downloads image for the given `URLRequest`.
+    func image(from request: URLRequest, options: ImageRequestOptions = .init()) async throws -> UIImage {
+        let data = try await data(for: request, options: options)
+        return try await ImageDecoder.makeImage(from: data)
     }
+
+    // MARK: - Images (MediaHost)
 
     /// Returns image for the given URL authenticated for the given host.
     func image(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> UIImage {
@@ -90,48 +56,10 @@ actor ImageDownloader {
         return try await data(for: request, options: options)
     }
 
-    #warning("TODO: reimplement these")
-
-    /// Downloads the UIImage resource at the specified URL. On completion the received closure will be executed.
-    ///
-    @discardableResult
-    nonisolated func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
-        var request = URLRequest(url: url)
-        request.addValue("image/*", forHTTPHeaderField: "Accept")
-
-        return downloadImage(for: request, completion: completion)
-    }
-
-    /// Downloads the UIImage resource at the specified endpoint. On completion the received closure will be executed.
-    ///
-    @discardableResult
-    nonisolated func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
-        let task = urlSession.dataTask(with: request) { (data, _, error) in
-//            guard let data = data else {
-//                if let error = error {
-//                    completion(nil, error)
-//                } else {
-//                    completion(nil, ImageDownloaderError.failed)
-//                }
-//              return
-//            }
-//            if let gif = self.makeGIF(with: data, request: request) {
-//                completion(gif, nil)
-//            } else if let image = UIImage.init(data: data) {
-//                completion(image, nil)
-//            } else {
-//                completion(nil, ImageDownloaderError.failed)
-//            }
-        }
-
-        task.resume()
-        return task
-    }
-
     // MARK: - Networking
 
     private func data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
-        let session = options.isURLCacheEnabled ? urlSessionWithCache : urlSession
+        let session = options.isDiskCacheEnabled ? urlSessionWithCache : urlSession
         let (data, response) = try await session.data(for: request)
         try validate(response: response)
         return data
@@ -144,6 +72,30 @@ actor ImageDownloader {
         guard (200..<400).contains(response.statusCode) else {
             throw ImageDownloaderError.unacceptableStatusCode(response.statusCode)
         }
+    }
+}
+
+// MARK: - ImageDownloader (Closures)
+
+extension ImageDownloader {
+    @discardableResult
+    nonisolated func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+        var request = URLRequest(url: url)
+        request.addValue("image/*", forHTTPHeaderField: "Accept")
+        return downloadImage(for: request, completion: completion)
+    }
+
+    @discardableResult
+    nonisolated func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+        let task = Task {
+            do {
+                let image = try await self.image(from: request, options: .init())
+                completion(image, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+        return AnonumousImageDownloadTask(closure: task.cancel)
     }
 }
 
@@ -174,8 +126,32 @@ class AnimatedImageWrapper: UIImage {
     }
 }
 
+// MARK: - Helpers
+
+protocol ImageDownloaderTask {
+    func cancel()
+}
+
+extension Operation: ImageDownloaderTask {}
+extension URLSessionTask: ImageDownloaderTask {}
+
+private struct AnonumousImageDownloadTask: ImageDownloaderTask {
+    let closure: () -> Void
+
+    func cancel() {
+        closure()
+    }
+}
+
 enum ImageDownloaderError: Error {
-    case failed
     case unexpectedResponse
     case unacceptableStatusCode(_ statusCode: Int?)
+}
+
+private extension URLSession {
+    convenience init(_ conifgure: (URLSessionConfiguration) -> Void) {
+        let configuration = URLSessionConfiguration.default
+        conifgure(configuration)
+        self.init(configuration: configuration)
+    }
 }
