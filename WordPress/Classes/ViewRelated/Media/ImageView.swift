@@ -47,21 +47,23 @@ final class ImageView: UIView {
     func setImage(with imageURL: URL) {
         task?.cancel()
 
-        if let image = service.cachedImage(for: imageURL) {
-            setState(.success(image))
-        } else {
-            setState(.loading)
-            task = Task { [service, weak self] in
-                do {
-                    let image = try await service.image(from: imageURL)
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.success(image))
-                } catch {
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.failure)
-                }
-            }
-        }
+        #warning("TODO: use ImageDownloader")
+
+//        if let image = service.cachedImage(for: imageURL) {
+//            setState(.success(image))
+//        } else {
+//            setState(.loading)
+//            task = Task { [service, weak self] in
+//                do {
+//                    let image = try await service.image(from: imageURL)
+//                    guard !Task.isCancelled else { return }
+//                    self?.setState(.success(image))
+//                } catch {
+//                    guard !Task.isCancelled else { return }
+//                    self?.setState(.failure)
+//                }
+//            }
+//        }
     }
 
     // MARK: - State

@@ -1,40 +1,23 @@
 import UIKit
 import CoreData
 
-/// A service for retrieval and caching of thumbnails for Media objects.
+/// A service for retrieval and caching of thumbnails for ``Media`` objects.
 final class MediaImageService {
     static let shared = MediaImageService()
 
-    private let urlSession: URLSession
-    private let urlSessionWithCache: URLSession
     private let cache: MemoryCache
     private let coreDataStack: CoreDataStackSwift
     private let mediaFileManager: MediaFileManager
+    private let downloader: ImageDownloader
 
     init(cache: MemoryCache = .shared,
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache)) {
+         mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache),
+         downloader: ImageDownloader = .shared) {
         self.cache = cache
         self.coreDataStack = coreDataStack
         self.mediaFileManager = mediaFileManager
-
-        self.urlSession = URLSession(configuration: {
-            let configuration = URLSessionConfiguration.default
-            // The service has a custom disk cache for thumbnails, so it's important to
-            // disable the native url cache which is by default set to `URLCache.shared`
-            configuration.urlCache = nil
-            return configuration
-        }())
-
-        self.urlSessionWithCache = URLSession(configuration: {
-            let configuration = URLSessionConfiguration.default
-            configuration.urlCache = URLCache(
-                memoryCapacity: 32 * 1024 * 1024, // 32 MB
-                diskCapacity: 256 * 1024 * 1024,  // 256 MB
-                diskPath: "org.automattic.MediaImageService"
-            )
-            return configuration
-        }())
+        self.downloader = downloader
     }
 
     static func migrateCacheIfNeeded() {
@@ -51,43 +34,8 @@ final class MediaImageService {
     enum Error: Swift.Error {
         case unsupportedMediaType(_ type: MediaType)
         case unsupportedThumbnailSize(_ size: ImageSize)
-        case unexpectedResponse
-        case unacceptableStatusCode(_ statusCode: Int?)
         case missingImageURL
     }
-
-    // MARK: - URL
-
-    /// Returns an image for the given URL.
-    ///
-    /// **Performance Characteristics**
-    ///
-    /// The returned images are decompressed (or bitmapped) and are ready to be
-    /// displayed even during scrolling.
-    ///
-    /// The decompressed images are stored in the shared ``MemoryCache`` and the
-    /// data is cached by `URLSession` with a custom `URLCache` instance configured
-    /// with an increased disk capacity.
-    ///
-    /// - returns a decompressed image prepared for display. If the URL contains
-    /// an animated GIF, returns an instance of the ``AnimatedImageWrapper`` class.
-    func image(from url: URL) async throws -> UIImage {
-        let cacheKey = url.absoluteString
-        if let image = cache.getImage(forKey: cacheKey) {
-            return image
-        }
-        let data = try await data(for: URLRequest(url: url), session: urlSessionWithCache)
-        let image = try await ImageDecoder.makeImage(from: data)
-        cache.setImage(image, forKey: cacheKey)
-        return image
-    }
-
-    /// Returns a cached image for the given URL.
-    func cachedImage(for url: URL) -> UIImage? {
-        cache.getImage(forKey: url.absoluteString)
-    }
-
-    // MARK: - Media
 
     /// Returns an image for the given media asset.
     ///
@@ -147,7 +95,7 @@ final class MediaImageService {
             return image
         }
         if let info = await getFullsizeImageInfo(for: media) {
-            let data = try await data(for: info, session: urlSessionWithCache)
+            let data = try await data(for: info, isCached: true)
             return try await ImageDecoder.makeImage(from: data)
         }
         // The media has no local or remote URL – should never happen
@@ -263,7 +211,7 @@ final class MediaImageService {
             }
             throw URLError(.badURL)
         }
-        let data = try await data(for: info, session: urlSession)
+        let data = try await data(for: info, isCached: false)
         let image = try await ImageDecoder.makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
             try? data.write(to: fileURL)
@@ -285,25 +233,9 @@ final class MediaImageService {
 
     // MARK: - Networking
 
-    private func data(for info: RemoteImageInfo, session: URLSession) async throws -> Data {
-        let request = try await MediaRequestAuthenticator()
-            .authenticatedRequest(for: info.imageURL, host: info.host)
-        return try await data(for: request, session: session)
-    }
-
-    private func data(for request: URLRequest, session: URLSession) async throws -> Data {
-        let (data, response) = try await session.data(for: request)
-        try validate(response: response)
-        return data
-    }
-
-    private func validate(response: URLResponse) throws {
-        guard let response = response as? HTTPURLResponse else {
-            throw Error.unexpectedResponse
-        }
-        guard (200..<400).contains(response.statusCode) else {
-            throw Error.unacceptableStatusCode(response.statusCode)
-        }
+    private func data(for info: RemoteImageInfo, isCached: Bool) async throws -> Data {
+        let options = ImageRequestOptions(isURLCacheEnabled: isCached)
+        return try await downloader.data(from: info.imageURL, host: info.host, options: options)
     }
 
     private struct RemoteImageInfo {
@@ -495,62 +427,4 @@ private extension Blog {
 
 private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: MediaImageService.ImageSize) -> String {
     "\(mediaID.objectID)-\(size.rawValue)"
-}
-
-// MARK: - Helpers (Decompression)
-
-private func makeImage(from fileURL: URL) async throws -> UIImage {
-    try await Task.detached {
-        let data = try Data(contentsOf: fileURL)
-        return try _makeImage(from: data)
-    }.value
-}
-
-private func makeImage(from data: Data) async throws -> UIImage {
-    try await Task.detached {
-        return try _makeImage(from: data)
-    }.value
-}
-
-// Forces decompression (or bitmapping) to happen in the background.
-// It's very expensive for some image formats, such as JPEG.
-private func _makeImage(from data: Data) throws -> UIImage {
-    guard let image = UIImage(data: data) else {
-        throw URLError(.cannotDecodeContentData)
-    }
-    if data.isMatchingMagicNumbers(Data.gifMagicNumbers) {
-        return AnimatedImageWrapper(gifData: data) ?? image
-    }
-    guard isDecompressionNeeded(for: data) else {
-        return image
-    }
-    return image.preparingForDisplay() ?? image
-}
-
-private func isDecompressionNeeded(for data: Data) -> Bool {
-    // This check is required to avoid the following error messages when
-    // using `preparingForDisplay`:
-    //
-    //    [Decompressor] Error -17102 decompressing image -- possibly corrupt
-    //
-    // More info: https://github.com/SDWebImage/SDWebImage/issues/3365
-    data.isMatchingMagicNumbers(Data.jpegMagicNumbers)
-}
-
-private extension Data {
-    // JPEG magic numbers https://en.wikipedia.org/wiki/JPEG
-    static let jpegMagicNumbers: [UInt8] = [0xFF, 0xD8, 0xFF]
-
-    // GIF magic numbers https://en.wikipedia.org/wiki/GIF
-    static let gifMagicNumbers: [UInt8] = [0x47, 0x49, 0x46]
-
-    func isMatchingMagicNumbers(_ numbers: [UInt8?]) -> Bool {
-        guard self.count >= numbers.count else {
-            return false
-        }
-        return zip(numbers.indices, numbers).allSatisfy { index, number in
-            guard let number = number else { return true }
-            return self[index] == number
-        }
-    }
 }

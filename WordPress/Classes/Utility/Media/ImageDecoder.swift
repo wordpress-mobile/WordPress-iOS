@@ -1,11 +1,15 @@
 import Foundation
 
 enum ImageDecoder {
+    /// Returns an image created from the given URL. The image is decompressed.
+    /// Returns ``AnimatedImageWrapper`` the image is a GIF.
     static func makeImage(from fileURL: URL) async throws -> UIImage {
         let data = try Data(contentsOf: fileURL)
         return try _makeImage(from: data)
     }
 
+    /// Returns an image created from the given data. The image is decompressed.
+    /// Returns ``AnimatedImageWrapper`` the image is a GIF.
     static func makeImage(from data: Data) async throws -> UIImage {
         try _makeImage(from: data)
     }

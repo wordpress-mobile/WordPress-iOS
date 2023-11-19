@@ -13,6 +13,12 @@ protocol ImageDownloaderTask {
 extension Operation: ImageDownloaderTask {}
 extension URLSessionTask: ImageDownloaderTask {}
 
+struct ImageRequestOptions {
+    /// If enabled, uses `URLSession` preconfigured with a custom `URLCache`
+    /// with a relatively high disk capacity. By default, `true`.
+    var isURLCacheEnabled = true
+}
+
 // MARK: - Image Downloading Tool
 
 /// The system that downloads and caches images, and prepares them for display.
@@ -24,11 +30,24 @@ actor ImageDownloader {
 
     /// Internal URLSession Instance
     ///
-    private let session = URLSession(configuration: .default)
+    private let urlSession = URLSession(configuration: {
+        let configuration = URLSessionConfiguration.default
+        // The service has a custom disk cache for thumbnails, so it's important to
+        // disable the native url cache which is by default set to `URLCache.shared`
+        configuration.urlCache = nil
+        return configuration
+    }())
 
-    deinit {
-        session.invalidateAndCancel()
-    }
+    private let urlSessionWithCache = URLSession(configuration: {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = URLCache(
+            memoryCapacity: 32 * 1024 * 1024, // 32 MB
+            diskCapacity: 256 * 1024 * 1024,  // 256 MB
+            diskPath: "org.automattic.ImageDownloader"
+        )
+        return configuration
+    }())
+
     /// Downloads image for the given URL.
     func image(at url: URL) async throws -> UIImage {
         var request = URLRequest(url: url)
@@ -57,10 +76,26 @@ actor ImageDownloader {
         }
     }
 
+    /// Returns image for the given URL authenticated for the given host.
+    func image(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> UIImage {
+        let data = try await data(from: imageURL, host: host, options: options)
+        return try await ImageDecoder.makeImage(from: data)
+    }
+
+    /// Returns data for the given URL authenticated for the given host.
+    func data(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> Data {
+        var request = try await MediaRequestAuthenticator()
+            .authenticatedRequest(for: imageURL, host: host)
+        request.setValue("image/*", forHTTPHeaderField: "Accept")
+        return try await data(for: request, options: options)
+    }
+
+    #warning("TODO: reimplement these")
+
     /// Downloads the UIImage resource at the specified URL. On completion the received closure will be executed.
     ///
     @discardableResult
-    func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+    nonisolated func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
@@ -70,36 +105,45 @@ actor ImageDownloader {
     /// Downloads the UIImage resource at the specified endpoint. On completion the received closure will be executed.
     ///
     @discardableResult
-    func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
-        let task = session.dataTask(with: request) { (data, _, error) in
-            guard let data = data else {
-                if let error = error {
-                    completion(nil, error)
-                } else {
-                    completion(nil, ImageDownloaderError.failed)
-                }
-              return
-            }
-
-            if let gif = self.makeGIF(with: data, request: request) {
-                completion(gif, nil)
-            } else if let image = UIImage.init(data: data) {
-                completion(image, nil)
-            } else {
-                completion(nil, ImageDownloaderError.failed)
-            }
+    nonisolated func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+        let task = urlSession.dataTask(with: request) { (data, _, error) in
+//            guard let data = data else {
+//                if let error = error {
+//                    completion(nil, error)
+//                } else {
+//                    completion(nil, ImageDownloaderError.failed)
+//                }
+//              return
+//            }
+//            if let gif = self.makeGIF(with: data, request: request) {
+//                completion(gif, nil)
+//            } else if let image = UIImage.init(data: data) {
+//                completion(image, nil)
+//            } else {
+//                completion(nil, ImageDownloaderError.failed)
+//            }
         }
 
         task.resume()
         return task
     }
 
-    private func makeGIF(with data: Data, request: URLRequest) -> AnimatedImageWrapper? {
-        guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
-            return nil
-        }
+    // MARK: - Networking
 
-        return AnimatedImageWrapper(gifData: data)
+    private func data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
+        let session = options.isURLCacheEnabled ? urlSessionWithCache : urlSession
+        let (data, response) = try await session.data(for: request)
+        try validate(response: response)
+        return data
+    }
+
+    private func validate(response: URLResponse) throws {
+        guard let response = response as? HTTPURLResponse else {
+            throw ImageDownloaderError.unexpectedResponse
+        }
+        guard (200..<400).contains(response.statusCode) else {
+            throw ImageDownloaderError.unacceptableStatusCode(response.statusCode)
+        }
     }
 }
 
@@ -130,8 +174,8 @@ class AnimatedImageWrapper: UIImage {
     }
 }
 
-// MARK: - Error Types
-//
 enum ImageDownloaderError: Error {
     case failed
+    case unexpectedResponse
+    case unacceptableStatusCode(_ statusCode: Int?)
 }

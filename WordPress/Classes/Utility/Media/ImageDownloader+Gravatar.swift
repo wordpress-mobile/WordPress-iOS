@@ -2,7 +2,7 @@ import Foundation
 
 extension ImageDownloader {
 
-    func downloadGravatarImage(with email: String, completion: @escaping (UIImage?) -> Void) {
+    nonisolated func downloadGravatarImage(with email: String, completion: @escaping (UIImage?) -> Void) {
 
         guard let url = Gravatar.gravatarUrl(for: email) else {
             completion(nil)
