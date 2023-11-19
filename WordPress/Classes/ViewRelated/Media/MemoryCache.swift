@@ -20,6 +20,19 @@ final class MemoryCache {
 
     // MARK: - UIImage
 
+    subscript(key: String) -> UIImage? {
+        get {
+            getImage(forKey: key)
+        }
+        set {
+            if let newValue {
+                setImage(newValue, forKey: key)
+            } else {
+                removeImage(forKey: key)
+            }
+        }
+    }
+
     func setImage(_ image: UIImage, forKey key: String) {
         cache.setObject(image, forKey: key as NSString, cost: image.cost)
     }

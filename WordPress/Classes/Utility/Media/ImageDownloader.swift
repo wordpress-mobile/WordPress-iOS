@@ -1,6 +1,12 @@
 import UIKit
 
 struct ImageRequestOptions {
+    /// Resize the thumbnail to the given size. By default, `nil`.
+    var size: CGSize?
+
+    /// If enabled, uses ``MemoryCache`` for caching decompressed images.
+    var isMemoryCacheEnabled = true
+
     /// If enabled, uses `URLSession` preconfigured with a custom `URLCache`
     /// with a relatively high disk capacity. By default, `true`.
     var isDiskCacheEnabled = true
@@ -10,9 +16,9 @@ struct ImageRequestOptions {
 actor ImageDownloader {
     static let shared = ImageDownloader()
 
+    private let cache: MemoryCache = .shared
+
     private let urlSession = URLSession {
-        // The service has a custom disk cache for thumbnails, so it's important to
-        // disable the native url cache which is by default set to `URLCache.shared`
         $0.urlCache = nil
     }
 
@@ -30,30 +36,61 @@ actor ImageDownloader {
     func image(from url: URL, options: ImageRequestOptions = .init()) async throws -> UIImage {
         var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-        let data = try await data(for: request, options: options)
-        return try await ImageDecoder.makeImage(from: data)
+        return try await image(from: request, options: options)
     }
 
     /// Downloads image for the given `URLRequest`.
     func image(from request: URLRequest, options: ImageRequestOptions = .init()) async throws -> UIImage {
+        if options.isMemoryCacheEnabled, let url = request.url, let image = cachedImage(for: url, targetSize: options.targetSize) {
+            return image
+        }
         let data = try await data(for: request, options: options)
-        return try await ImageDecoder.makeImage(from: data)
+        let image = try await ImageDecoder.makeImage(from: data, size: options.size)
+        if options.isMemoryCacheEnabled, let url = request.url {
+            setCachedImage(image, for: url, targetSize: options.targetSize)
+        }
+        return image
     }
 
-    // MARK: - Images (MediaHost)
+    // MARK: - Images (Blog)
 
     /// Returns image for the given URL authenticated for the given host.
     func image(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> UIImage {
-        let data = try await data(from: imageURL, host: host, options: options)
-        return try await ImageDecoder.makeImage(from: data)
+        let request = try await authenticatedRequest(for: imageURL, host: host)
+        return try await image(from: request, options: options)
     }
 
     /// Returns data for the given URL authenticated for the given host.
     func data(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> Data {
+        let request = try await authenticatedRequest(for: imageURL, host: host)
+        return try await data(for: request, options: options)
+    }
+
+    private func authenticatedRequest(for imageURL: URL, host: MediaHost) async throws -> URLRequest {
         var request = try await MediaRequestAuthenticator()
             .authenticatedRequest(for: imageURL, host: host)
         request.setValue("image/*", forHTTPHeaderField: "Accept")
-        return try await data(for: request, options: options)
+        return request
+    }
+
+    // MARK: - Caching
+
+    /// Returns an image from the memory cache.
+    ///
+    /// - note: Use it to retrieve the image synchronously, which is no not possible
+    /// with the async functions.
+    nonisolated func cachedImage(for imageURL: URL, targetSize: CGSize? = nil) -> UIImage? {
+        cache[makeCacheKey(for: imageURL, targetSize: targetSize)]
+    }
+
+    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, targetSize: CGSize? = nil) {
+        cache[makeCacheKey(for: imageURL, targetSize: targetSize)] = image
+    }
+
+    private nonisolated func makeCacheKey(for imageURL: URL, targetSize: CGSize?) -> String {
+        let imageURL = imageURL.absoluteString
+        guard let targetSize else { return imageURL }
+        return "\(imageURL)?size=\(targetSize)"
     }
 
     // MARK: - Networking

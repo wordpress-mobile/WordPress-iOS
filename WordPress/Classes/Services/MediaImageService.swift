@@ -211,6 +211,8 @@ final class MediaImageService {
             }
             throw URLError(.badURL)
         }
+        // The service has a custom disk cache for thumbnails, so it's important to
+        // disable the native url cache which is by default set to `URLCache.shared`
         let data = try await data(for: info, isCached: false)
         let image = try await ImageDecoder.makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {

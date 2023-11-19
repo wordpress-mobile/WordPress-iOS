@@ -5,29 +5,41 @@ enum ImageDecoder {
     /// Returns ``AnimatedImageWrapper`` the image is a GIF.
     static func makeImage(from fileURL: URL) async throws -> UIImage {
         let data = try Data(contentsOf: fileURL)
-        return try _makeImage(from: data)
+        return try _makeImage(from: data, size: nil)
     }
 
     /// Returns an image created from the given data. The image is decompressed.
     /// Returns ``AnimatedImageWrapper`` the image is a GIF.
-    static func makeImage(from data: Data) async throws -> UIImage {
-        try _makeImage(from: data)
+    ///
+    /// - parameter size: The desired size of the thumbnail in pixels.
+    static func makeImage(from data: Data, size: CGSize? = nil) async throws -> UIImage {
+        try _makeImage(from: data, size: size)
     }
 }
 
 // Forces decompression (or bitmapping) to happen in the background.
 // It's very expensive for some image formats, such as JPEG.
-private func _makeImage(from data: Data) throws -> UIImage {
+private func _makeImage(from data: Data, size: CGSize?) throws -> UIImage {
     guard let image = UIImage(data: data) else {
         throw URLError(.cannotDecodeContentData)
     }
     if data.isMatchingMagicNumbers(Data.gifMagicNumbers) {
         return AnimatedImageWrapper(gifData: data) ?? image
     }
-    guard isDecompressionNeeded(for: data) else {
-        return image
+    if let size {
+        let size = aspectFillSize(imageSize: image.size.scaled(by: image.scale), targetSize: size)
+        return image.preparingThumbnail(of: size) ?? image
     }
-    return image.preparingForDisplay() ?? image
+    if isDecompressionNeeded(for: data) {
+        return image.preparingForDisplay() ?? image
+    }
+    return image
+}
+
+private func aspectFillSize(imageSize: CGSize, targetSize: CGSize) -> CGSize {
+    // Scale image to fill the target size but avoid upscaling
+    let scale = min(1, max(targetSize.width / imageSize.width, targetSize.height / imageSize.height))
+    return imageSize.scaled(by: scale).rounded()
 }
 
 private func isDecompressionNeeded(for data: Data) -> Bool {
@@ -55,5 +67,11 @@ private extension Data {
             guard let number = number else { return true }
             return self[index] == number
         }
+    }
+}
+
+private extension UIImage {
+    var sizeInPixels: CGSize {
+        size.scaled(by: scale)
     }
 }
