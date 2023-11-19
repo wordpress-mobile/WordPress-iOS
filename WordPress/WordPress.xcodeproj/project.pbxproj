@@ -405,6 +405,8 @@
 		0C1531FF2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */; };
 		0C1DB5FF2B095DA50028F200 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB5FE2B095DA50028F200 /* ImageView.swift */; };
 		0C1DB6002B095DA50028F200 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB5FE2B095DA50028F200 /* ImageView.swift */; };
+		0C1DB6082B0A419B0028F200 /* ImageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */; };
+		0C1DB6092B0A419B0028F200 /* ImageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */; };
 		0C23F3362AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */; };
 		0C23F3372AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */; };
 		0C23F33E2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */; };
@@ -6147,6 +6149,7 @@
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSearchViewModel+Highlighter.swift"; sourceTree = "<group>"; };
 		0C1DB5FE2B095DA50028F200 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDecoder.swift; sourceTree = "<group>"; };
 		0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iphone-photo.heic"; sourceTree = "<group>"; };
@@ -10249,6 +10252,7 @@
 				7E729C27209A087200F76599 /* ImageLoader.swift */,
 				742B7F39209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift */,
 				B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */,
+				0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */,
 				FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */,
 				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
 			);
@@ -21783,6 +21787,7 @@
 				7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */,
 				321955C324BF77E400E3F316 /* ReaderTopicService+FollowedInterests.swift in Sources */,
 				3234BB342530EA980068DA40 /* ReaderRecommendedSiteCardCell.swift in Sources */,
+				0C1DB6082B0A419B0028F200 /* ImageDecoder.swift in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				011F52C32A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */,
@@ -25051,6 +25056,7 @@
 				FABB24122602FC2C00C8785C /* NoteBlockButtonTableViewCell.swift in Sources */,
 				084FC3BD299155CA00A17BCF /* JetpackOverlayCoordinator.swift in Sources */,
 				C7F7ABD6261CED7A00CE547F /* JetpackAuthenticationManager.swift in Sources */,
+				0C1DB6092B0A419B0028F200 /* ImageDecoder.swift in Sources */,
 				FABB24142602FC2C00C8785C /* ThemeBrowserSectionHeaderView.swift in Sources */,
 				0C0453292AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */,
 				FABB24152602FC2C00C8785C /* SiteIconPickerPresenter.swift in Sources */,

@@ -77,7 +77,7 @@ final class MediaImageService {
             return image
         }
         let data = try await data(for: URLRequest(url: url), session: urlSessionWithCache)
-        let image = try await makeImage(from: data)
+        let image = try await ImageDecoder.makeImage(from: data)
         cache.setImage(image, forKey: cacheKey)
         return image
     }
@@ -143,12 +143,12 @@ final class MediaImageService {
             throw Error.unsupportedMediaType(media.mediaType)
         }
         if let localURL = media.absoluteLocalURL,
-           let image = try? await makeImage(from: localURL) {
+           let image = try? await ImageDecoder.makeImage(from: localURL) {
             return image
         }
         if let info = await getFullsizeImageInfo(for: media) {
             let data = try await data(for: info, session: urlSessionWithCache)
-            return try await makeImage(from: data)
+            return try await ImageDecoder.makeImage(from: data)
         }
         // The media has no local or remote URL – should never happen
         throw Error.missingImageURL
@@ -206,7 +206,7 @@ final class MediaImageService {
     /// Returns a local thumbnail for the given media object (if available).
     private func cachedThumbnail(for mediaID: TaggedManagedObjectID<Media>, size: ImageSize) async -> UIImage? {
         guard let fileURL = getCachedThumbnailURL(for: mediaID, size: size) else { return nil }
-        return try? await makeImage(from: fileURL)
+        return try? await ImageDecoder.makeImage(from: fileURL)
     }
 
     private func getCachedThumbnailURL(for mediaID: TaggedManagedObjectID<Media>, size: ImageSize) -> URL? {
@@ -229,7 +229,7 @@ final class MediaImageService {
         let exporter = await makeThumbnailExporter(for: media, size: size)
         guard exporter.supportsThumbnailExport(forFile: sourceURL),
               let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
-              let image = try? await makeImage(from: export.url)
+              let image = try? await ImageDecoder.makeImage(from: export.url)
         else {
             return nil
         }
@@ -264,7 +264,7 @@ final class MediaImageService {
             throw URLError(.badURL)
         }
         let data = try await data(for: info, session: urlSession)
-        let image = try await makeImage(from: data)
+        let image = try await ImageDecoder.makeImage(from: data)
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
             try? data.write(to: fileURL)
         }
@@ -319,7 +319,7 @@ final class MediaImageService {
         }
         let exporter = await makeThumbnailExporter(for: media, size: size)
         let (_, export) = try await exporter.exportThumbnail(forVideoURL: videoURL)
-        let image = try await makeImage(from: export.url)
+        let image = try await ImageDecoder.makeImage(from: export.url)
 
         // The order is important to ensure `export.url` exists when making an image
         if let fileURL = getCachedThumbnailURL(for: media.mediaID, size: size) {

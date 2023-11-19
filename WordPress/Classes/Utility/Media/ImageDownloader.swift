@@ -13,15 +13,10 @@ protocol ImageDownloaderTask {
 extension Operation: ImageDownloaderTask {}
 extension URLSessionTask: ImageDownloaderTask {}
 
-extension URLSession: ImageDownloaderTask {
-    func cancel() {
-        invalidateAndCancel()
-    }
-}
-
 // MARK: - Image Downloading Tool
 
-class ImageDownloader {
+/// The system that downloads and caches images, and prepares them for display.
+actor ImageDownloader {
 
     /// Shared Instance!
     ///
@@ -30,7 +25,6 @@ class ImageDownloader {
     /// Internal URLSession Instance
     ///
     private let session = URLSession(configuration: .default)
-
 
     deinit {
         session.invalidateAndCancel()
