@@ -127,6 +127,8 @@ def gutenberg_post_install(installer:)
 end
 
 def gutenberg_post_integrate
+  return unless should_use_local_gutenberg
+
   # If the this workaround runs in the post_install step, the changes it makes get overridden somehow.
   workaround_broken_search_paths
 end

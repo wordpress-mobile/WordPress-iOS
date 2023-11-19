@@ -413,5 +413,5 @@ post_install do |installer|
 end
 
 post_integrate do
-  workaround_broken_search_paths
+  gutenberg_post_integrate
 end
