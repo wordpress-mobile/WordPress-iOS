@@ -112,6 +112,33 @@ class PagesListTests: CoreDataTestCase {
         makeAssertions(pages: pages)
     }
 
+    func testHierachyListRepresentationRoundtrip() throws {
+        let roundtrip: (String) throws -> Void = { string in
+            let pages = try Array<Page>(hierarchyListRepresentation: string, context: self.mainContext)
+            XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
+        }
+
+        try roundtrip("""
+            1
+              2
+            3
+              4
+                5
+              6
+            7
+            """)
+
+        try roundtrip("""
+            1
+              2
+                3
+              4
+                5
+              6
+            7
+            """)
+    }
+
     private func parentPage(childrenCount: Int, additionalLevels: Int = 0) -> [Page] {
         var pages = [Page]()
 
@@ -395,6 +422,12 @@ final class PageTree {
             $0.append(contentsOf: $1.dfsList())
         }
     }
+
+    static func hierarchyList(of pages: [Page]) -> [Page] {
+        let tree = PageTree()
+        tree.add(pages)
+        return tree.hierarchyList()
+    }
 }
 
 class UniquePool<Value: FixedWidthInteger> {
@@ -418,10 +451,52 @@ class UniquePool<Value: FixedWidthInteger> {
     }
 }
 
-extension Array where Element == Page {
-    func printHierarchyList() {
-        forEach { page in
-            print("\(String(repeating: " ", count: page.hierarchyIndex * 4)) id: \(page.postID!), parent: \(page.parentID ?? 0)")
+private extension Array where Element == Page {
+
+    static let indentation = 2
+
+    /// A string representation of a pages list whose element has a valid `hierarchyIndex` value.
+    ///
+    /// The output looks similar to the Pages List in the app, where child page is indented based on it's hierachy level.
+    ///
+    /// For example, this output here represents four page instances. The digits in the string are page ids.
+    /// Page 1 and 4 are top level pages. Page 1 has two child page: 2 and 3.
+    /// ```
+    /// 1
+    ///   2
+    ///   3
+    /// 4
+    /// ```
+    ///
+    /// The output can be converted back to `Page` instances using the init function below.
+    func hierarchyListRepresentation() -> String {
+        map { page in
+            "\(String(repeating: " ", count: page.hierarchyIndex * Self.indentation))\(page.postID!)"
         }
+        .joined(separator: "\n")
+    }
+
+    /// See the doc in `hierarchyListRepresentation`.
+    init(hierarchyListRepresentation: String, context: NSManagedObjectContext) throws {
+        var pages = [Page]()
+
+        // The non-root-level parent pages. The first element is the parent page at level 1, the second element is the parent page at level 2, and so on.
+        var parentStack = [Page]()
+        for line in hierarchyListRepresentation.split(separator: "\n") {
+            let firstNonWhitespaceIndex = try XCTUnwrap(line.firstIndex(where: { $0 != " " }))
+            let leadingSpaces = line.distance(from: line.startIndex, to: firstNonWhitespaceIndex)
+            // 'level' starts with 0 (the root).
+            let level = leadingSpaces / Self.indentation
+
+            let page = PageBuilder(context).build()
+            page.postID = try NSNumber(value: XCTUnwrap(Int64(line.trimmingCharacters(in: .whitespaces))))
+            page.parentID = level == 0 ? 0 : parentStack[level - 1].postID
+            pages.append(page)
+
+            parentStack.removeLast(parentStack.count - level)
+            parentStack.append(page)
+        }
+
+        self = pages
     }
 }
