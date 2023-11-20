@@ -86,7 +86,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         let item = items[indexPath.row]
         // TODO: rework
         let viewModel = ExternalMediaPickerCollectionCellViewModel(imageURL: item.url)
-        cell.configure(viewModel)
+        cell.configure(viewModel, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
         return cell
     }
 

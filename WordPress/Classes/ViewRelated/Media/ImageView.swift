@@ -7,7 +7,7 @@ import Gifu
 final class ImageView: UIView {
     private let imageView = GIFImageView()
     private var errorView: UIImageView?
-    private let service: MediaImageService = .shared
+    private let downloader: ImageDownloader = .shared
     private var task: Task<Void, Never>?
 
     override init(frame: CGRect) {
@@ -44,26 +44,25 @@ final class ImageView: UIView {
 
     // MARK: - Sources
 
-    func setImage(with imageURL: URL) {
+    func setImage(with imageURL: URL, size: CGSize? = nil) {
         task?.cancel()
 
-        #warning("TODO: use ImageDownloader")
-
-//        if let image = service.cachedImage(for: imageURL) {
-//            setState(.success(image))
-//        } else {
-//            setState(.loading)
-//            task = Task { [service, weak self] in
-//                do {
-//                    let image = try await service.image(from: imageURL)
-//                    guard !Task.isCancelled else { return }
-//                    self?.setState(.success(image))
-//                } catch {
-//                    guard !Task.isCancelled else { return }
-//                    self?.setState(.failure)
-//                }
-//            }
-//        }
+        if let image = downloader.cachedImage(for: imageURL, size: size) {
+            setState(.success(image))
+        } else {
+            setState(.loading)
+            task = Task { [downloader, weak self] in
+                do {
+                    let options = ImageRequestOptions(size: size)
+                    let image = try await downloader.image(from: imageURL, options: options)
+                    guard !Task.isCancelled else { return }
+                    self?.setState(.success(image))
+                } catch {
+                    guard !Task.isCancelled else { return }
+                    self?.setState(.failure)
+                }
+            }
+        }
     }
 
     // MARK: - State
@@ -100,7 +99,7 @@ final class ImageView: UIView {
             return errorView
         }
         let errorView = UIImageView(image: UIImage(systemName: "exclamationmark.triangle"))
-        errorView.tintColor = .secondaryLabel
+        errorView.tintColor = .separator
         addSubview(errorView)
         errorView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewAtCenter(errorView)
