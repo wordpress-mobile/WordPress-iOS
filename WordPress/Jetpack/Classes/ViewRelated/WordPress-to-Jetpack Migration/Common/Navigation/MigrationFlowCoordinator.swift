@@ -19,10 +19,18 @@ final class MigrationFlowCoordinator: ObservableObject {
     // MARK: - Init
 
     init(migrationEmailService: MigrationEmailService? = try? .init(),
-         userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+         userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+         account: WPAccount?) {
         self.migrationEmailService = migrationEmailService
         self.userPersistentRepository = userPersistentRepository
         self.userPersistentRepository.jetpackContentMigrationState = .inProgress
+
+        // Skip the migration if the user just created an account and haven't
+        // created any site yet.
+        if BlogListDataSource().visibleBlogsCount == 0 {
+            self.currentStep = MigrationStep.done
+            self.userPersistentRepository.jetpackContentMigrationState = .completed
+        }
     }
 
     deinit {

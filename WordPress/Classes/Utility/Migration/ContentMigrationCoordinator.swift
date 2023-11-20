@@ -187,7 +187,7 @@ protocol ContentMigrationEligibilityProvider {
 
 extension AppConfiguration: ContentMigrationEligibilityProvider {
     var isEligibleForMigration: Bool {
-        Self.isWordPress && AccountHelper.isLoggedIn && AccountHelper.hasBlogs
+        Self.isWordPress && AccountHelper.isLoggedIn
     }
 }
 

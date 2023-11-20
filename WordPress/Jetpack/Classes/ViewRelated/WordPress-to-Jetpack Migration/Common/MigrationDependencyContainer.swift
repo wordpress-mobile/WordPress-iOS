@@ -1,6 +1,6 @@
 struct MigrationDependencyContainer {
 
-    let migrationCoordinator = MigrationFlowCoordinator()
+    let migrationCoordinator = MigrationFlowCoordinator(account: makeAccount())
 
     func makeInitialViewController() -> UIViewController {
         MigrationNavigationController(coordinator: migrationCoordinator,
@@ -31,17 +31,6 @@ struct MigrationViewControllerFactory {
 
     func initialViewController() -> UIViewController? {
         viewController(for: coordinator.currentStep)
-    }
-
-    private func makeAccount() -> WPAccount? {
-
-        let context = ContextManager.shared.mainContext
-        do {
-            return try WPAccount.lookupDefaultWordPressComAccount(in: context)
-        } catch {
-            DDLogError("Account lookup failed with error: \(error)")
-            return nil
-        }
     }
 
     // MARK: - View Controllers
@@ -100,5 +89,15 @@ struct MigrationViewControllerFactory {
     private class ActionHandlers {
         var primary: (() -> Void)?
         var secondary: (() -> Void)?
+    }
+}
+
+private func makeAccount() -> WPAccount? {
+    let context = ContextManager.shared.mainContext
+    do {
+        return try WPAccount.lookupDefaultWordPressComAccount(in: context)
+    } catch {
+        DDLogError("Account lookup failed with error: \(error)")
+        return nil
     }
 }
