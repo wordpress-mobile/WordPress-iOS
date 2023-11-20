@@ -27,7 +27,7 @@ class StatsTests: XCTestCase {
         "Thursday",
         "34% of views",
         "Best Hour",
-        "4 AM",
+        "4 AM",
         "25% of views"
     ]
 
