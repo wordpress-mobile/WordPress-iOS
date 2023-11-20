@@ -16,7 +16,7 @@ struct ImageRequestOptions {
 actor ImageDownloader {
     static let shared = ImageDownloader()
 
-    private let cache: MemoryCache = .shared
+    private let cache: MemoryCacheProtocol
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -30,6 +30,10 @@ actor ImageDownloader {
         )
     }
 
+    init(cache: MemoryCacheProtocol = MemoryCache.shared) {
+        self.cache = cache
+    }
+
     // MARK: - Images (URL)
 
     /// Downloads image for the given `URL`.
@@ -41,13 +45,14 @@ actor ImageDownloader {
 
     /// Downloads image for the given `URLRequest`.
     func image(from request: URLRequest, options: ImageRequestOptions = .init()) async throws -> UIImage {
-        if options.isMemoryCacheEnabled, let url = request.url, let image = cachedImage(for: url, targetSize: options.targetSize) {
+        let key = makeKey(for: request.url, size: options.size)
+        if options.isMemoryCacheEnabled, let image = cache[key] {
             return image
         }
         let data = try await data(for: request, options: options)
         let image = try await ImageDecoder.makeImage(from: data, size: options.size)
-        if options.isMemoryCacheEnabled, let url = request.url {
-            setCachedImage(image, for: url, targetSize: options.targetSize)
+        if options.isMemoryCacheEnabled {
+            cache[key] = image
         }
         return image
     }
@@ -79,18 +84,20 @@ actor ImageDownloader {
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.
-    nonisolated func cachedImage(for imageURL: URL, targetSize: CGSize? = nil) -> UIImage? {
-        cache[makeCacheKey(for: imageURL, targetSize: targetSize)]
+    nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
+        cache[makeKey(for: imageURL, size: size)]
     }
 
-    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, targetSize: CGSize? = nil) {
-        cache[makeCacheKey(for: imageURL, targetSize: targetSize)] = image
+    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
+        cache[makeKey(for: imageURL, size: size)] = image
     }
 
-    private nonisolated func makeCacheKey(for imageURL: URL, targetSize: CGSize?) -> String {
-        let imageURL = imageURL.absoluteString
-        guard let targetSize else { return imageURL }
-        return "\(imageURL)?size=\(targetSize)"
+    private nonisolated func makeKey(for imageURL: URL?, size: CGSize?) -> String {
+        guard let imageURL else {
+            assertionFailure("The request.url was nil") // This should never happen
+            return ""
+        }
+        return imageURL.absoluteString + (size.map { "?size=\($0)" } ?? "")
     }
 
     // MARK: - Networking

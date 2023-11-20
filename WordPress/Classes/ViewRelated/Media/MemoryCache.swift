@@ -2,7 +2,11 @@ import Foundation
 import AlamofireImage
 import WordPressUI
 
-final class MemoryCache {
+protocol MemoryCacheProtocol: AnyObject {
+    subscript(key: String) -> UIImage? { get set }
+}
+
+final class MemoryCache: MemoryCacheProtocol {
     /// A shared image cache used by the entire system.
     static let shared = MemoryCache()
 
