@@ -28,7 +28,7 @@ struct DebugAnalyticsView: View {
         .onChange(of: searchText) {
             messages.nsPredicate = makePredicate(searchText: $0)
         }
-        .navigationTitle("Analyics")
+        .navigationTitle("Analytics")
         .listStyle(.plain)
     }
 }
