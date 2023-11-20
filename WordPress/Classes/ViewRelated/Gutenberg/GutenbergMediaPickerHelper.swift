@@ -4,7 +4,6 @@ import UIKit
 import Photos
 import PhotosUI
 import WordPressShared
-import WPMediaPicker
 import Gutenberg
 import UniformTypeIdentifiers
 
