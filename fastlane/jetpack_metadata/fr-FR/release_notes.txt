@@ -1,5 +1,0 @@
-Nous avons amélioré l’affichage du Lecteur. Vous remarquerez sûrement un nouveau look pour les différents éléments tels que l’en-tête, les boutons, les recommandations, et bien d’autres. N’hésitez pas à nous envoyer tous vos compliments.
-
-Dans l’éditeur de blocs, vous pouvez maintenant diviser ou sortir d’un bloc en appuyant sur « Entrée » trois fois. La bordure de gauche est maintenant toujours visible pour les blocs de citation, même pour les thèmes basés sur les blocs utilisant le mode sombre. Oui, vous pouvez nous citer là-dessus.
-
-Enfin, nous avons réglé un bug dans les réglages d’invites à bloguer, qui causait précédemment des plantages.

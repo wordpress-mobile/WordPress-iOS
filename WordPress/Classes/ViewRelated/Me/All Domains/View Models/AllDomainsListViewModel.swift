@@ -98,7 +98,9 @@ class AllDomainsListViewModel {
     // MARK: - Load Domains
 
     func loadData() {
-        self.state = .loading
+        if domains.isEmpty {
+            self.state = .loading
+        }
         self.fetchAllDomains { [weak self] result in
             guard let self else {
                 return

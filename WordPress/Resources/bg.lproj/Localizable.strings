@@ -386,10 +386,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -711,10 +708,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Изтриване на менюто";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Изтриване завинаги";
 
@@ -825,12 +819,9 @@
 "Draft" = "Чернова";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Редакция";
@@ -926,9 +917,6 @@
 
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Грешкa при обновяването на настройките на Jetpack";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Всички";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Описание на сайта.";
@@ -1420,7 +1408,6 @@
 "Max Video Upload Size" = "Максимален размер за качване на видео";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -1471,24 +1458,15 @@
 "Months and Years" = "Месеци и години";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Още";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Чернова";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Преместване в кошчето";
 
@@ -1501,7 +1479,8 @@
    Title of My Site tab */
 "My Site" = "Моят сайт";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Моите сайтове";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1746,18 +1725,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Страница";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Страницата бе възстановена като чернова";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Страницата бе възстановена към публикувана";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Страницата бе възстановена като насрочена.";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Страницата е преместестена във кошчето.";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1790,8 +1757,7 @@
    Title of pending Comments filter. */
 "Pending" = "На изчакване";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Очаква отзив";
 
 /* Noun. Title of the people management feature.
@@ -1865,18 +1831,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Формат";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Публикацията бе възстановена като чернова";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Публикацията е възстановена";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Публикацията е върната в чернова";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Публикацията е изтрита.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Активност";
@@ -1921,8 +1875,7 @@
 "Privacy Policy" = "Поверителност";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Лична";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1942,19 +1895,16 @@
    Title for the publish settings view */
 "Publish" = "Публикуване";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Публикуване веднага";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Публикуване";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Публикувано";
 
 /* Published on [date] */
@@ -2079,9 +2029,6 @@
 /* Setting: WordPress.com Surveys */
 "Research" = "Изследване";
 
-/* Title of the reset button */
-"Reset" = "Нулиране";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Преоразмеряване и изрязване";
 
@@ -2102,12 +2049,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -2155,11 +2099,7 @@
 /* Title of button allowing users to change the status of the post they are currently editing to Draft. */
 "Save as Draft" = "Запазване като чернова";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Запазена!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Запазване...";
 
@@ -2236,7 +2176,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -2384,8 +2323,7 @@
    Title of Start Over settings page */
 "Start Over" = "Започване отначало";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -2415,7 +2353,8 @@
    Theme Support action title */
 "Support" = "Помощ";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Превключване на сайта";
 
 /* Accessibility Identifier for the H1 Aztec Style */
@@ -2546,7 +2485,7 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Потребителят вече има тази роля. Опитайте да назначите друга роля.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Потребителското име или паролата, запазени в приложението, може да не са актуални. Моля, въведете отново паролата в настройките и опитайте отново.";
 
 /* Title of alert when theme activation succeeds */
@@ -2712,9 +2651,6 @@
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "ИЗПОЛЗВА";
 
-/* An error message. */
-"Unable to Connect" = "Неуспешно свързване";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Неуспешно зареждане на публикации";
 
@@ -2742,8 +2678,6 @@
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Връщане";
 
@@ -2854,8 +2788,6 @@
 "Videos" = "Видео клипове";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */

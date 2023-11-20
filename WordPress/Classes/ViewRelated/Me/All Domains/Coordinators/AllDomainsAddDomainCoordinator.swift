@@ -2,7 +2,8 @@ import Foundation
 
 @objc final class AllDomainsAddDomainCoordinator: NSObject {
     static func presentAddDomainFlow(in allDomainsViewController: AllDomainsListViewController) {
-        let coordinator = RegisterDomainCoordinator(site: nil)
+        let analyticsSource = AllDomainsListViewController.Constants.analyticsSource
+        let coordinator = RegisterDomainCoordinator(site: nil, analyticsSource: analyticsSource)
         let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
             coordinator: coordinator,
             domainSelectionType: .purchaseFromDomainManagement,
@@ -11,10 +12,19 @@ import Foundation
 
 
         let domainPurchasedCallback = { (domainViewController: UIViewController, domainName: String) in
-            allDomainsViewController.reloadDomains()
+            domainViewController.dismiss(animated: true) {
+                allDomainsViewController.reloadDomains()
+            }
         }
 
-        coordinator.domainPurchasedCallback = domainPurchasedCallback
+        let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
+            customTitle: RegisterDomainCoordinator.TextContent.checkoutTitle,
+            analyticsSource: analyticsSource,
+            purchaseCallback: domainPurchasedCallback
+        )
+
+        coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
+        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart // For existing site flow (plans)
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true

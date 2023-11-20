@@ -1,7 +1,0 @@
-Artık blok düzenleyicisinde biçimlendirilmiş bloku ikiye bölmek ya da bloktan çıkış yapmak için "giriş" tuşuna üç kere basabilirsiniz. Alıntı blokunun sol kenarı sürekli görünür olacak, koyu modundaki blok bazlı temalarda bile. Bizim sözümüz sözdür.
-
-Birkaç tane de hata ayıkladık. 
-
-- Blog yazma hatırlatıcısı ayarlarında, uygulamanın çökmesine sebep olan yazılımsal problemi çözdük.
-- Üye olurken, yanlışlıkla okuyucuya yönlendirilmeyeceksiniz.
-- Bir .com sitesi mi yaratıyorsunuz? Üye olma sürecini tamamladıktan sonra üst üste binen iki katman görmeyeceksiniz. Bir kerede tamam.

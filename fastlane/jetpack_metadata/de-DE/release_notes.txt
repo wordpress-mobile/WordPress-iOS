@@ -1,5 +1,0 @@
-Wir haben ein paar visuelle Änderungen am Reader vorgenommen. Diese betreffen Feed-Karten, Header, Buttons, Empfehlungen und mehr. Wir freuen uns schon auf eure zahlreichen Komplimente!
-
-Im Block-Editor kann man jetzt einen formatierten Block durch dreimaliges Drücken der „Enter“-Taste aufteilen oder verlassen. Außerdem ist der linke Rand bei Zitat-Blöcken immer sichtbar, selbst in blockbasierten Themes im dunklen Modus. Das dürft ihr gerne zitieren!
-
-Schließlich haben wir noch einen Code-Fehler bei den Einstellungen für die Blog-Schreibanregungen behoben, der die App zum Absturz gebracht hat.

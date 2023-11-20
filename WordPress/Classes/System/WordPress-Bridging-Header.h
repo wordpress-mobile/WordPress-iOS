@@ -17,7 +17,6 @@
 
 #import "CommentService.h"
 #import "CommentsViewController+Network.h"
-#import "ConfigurablePostView.h"
 #import "Confirmable.h"
 #import "Constants.h"
 #import "CoreDataStack.h"
@@ -101,7 +100,6 @@
 #import "WPImageViewController.h"
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Pages.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"

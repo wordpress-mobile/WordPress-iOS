@@ -24,7 +24,7 @@ final class MediaImageService: NSObject {
 
     static func migrateCacheIfNeeded() {
         let didMigrateKey = "MediaImageService-didMigrateCacheKey"
-        guard Feature.enabled(.mediaModernization) && !UserDefaults.standard.bool(forKey: didMigrateKey) else {
+        guard !UserDefaults.standard.bool(forKey: didMigrateKey) else {
             return
         }
         UserDefaults.standard.set(true, forKey: didMigrateKey)

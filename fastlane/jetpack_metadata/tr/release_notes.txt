@@ -1,5 +1,0 @@
-Okuyucunun görünümünde bazı değişiklikler yaptık. Akıştaki kartlarda, başlıklarda, butonlarda, önerilerde ve daha fazlasında güncellemeler fark edeceksiniz. Bizi bol bol övmekten hiç çekinmeyin lütfen.
-
-Artık blok düzenleyicisinde biçimlendirilmiş bloku ikiye bölmek ya da bloktan çıkış yapmak için "giriş" tuşuna üç kere basabilirsiniz. Alıntı blokunun sol kenarı sürekli görünür olacak, koyu modundaki blok bazlı temalarda bile. Bizim sözümüz sözdür.
-
-Son olarak, blog yazma hatırlatıcısı ayarlarında, uygulamanın çökmesine sebep olan yazılımsal problemi çözdük.  

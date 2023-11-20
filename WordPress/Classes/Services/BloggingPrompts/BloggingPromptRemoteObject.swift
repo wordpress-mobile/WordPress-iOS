@@ -9,6 +9,7 @@ struct BloggingPromptRemoteObject {
     let answeredUserAvatarURLs: [URL]
     let answeredLink: URL?
     let answeredLinkText: String
+    let bloganuaryId: String?
 }
 
 // MARK: - Decodable
@@ -24,6 +25,7 @@ extension BloggingPromptRemoteObject: Decodable {
         case answeredUserAvatarURLs = "answered_users_sample"
         case answeredLink = "answered_link"
         case answeredLinkText = "answered_link_text"
+        case bloganuaryId = "bloganuary_id"
     }
 
     /// meta structure to simplify decoding logic for user avatar objects.
@@ -54,13 +56,22 @@ extension BloggingPromptRemoteObject: Decodable {
         let userAvatars = try container.decode([UserAvatar].self, forKey: .answeredUserAvatarURLs)
         self.answeredUserAvatarURLs = userAvatars.compactMap { URL(string: $0.avatar) }
 
-        if let linkURLString = try? container.decode(String.self, forKey: .answeredLink),
-           let answeredLinkURL = URL(string: linkURLString) {
-            self.answeredLink = answeredLinkURL
-        } else {
-            self.answeredLink = nil
-        }
+        self.answeredLink = {
+            guard let linkURLString = try? container.decode(String.self, forKey: .answeredLink),
+                  let answeredLinkURL = URL(string: linkURLString) else {
+                return nil
+            }
+            return answeredLinkURL
+        }()
 
         self.answeredLinkText = try container.decode(String.self, forKey: .answeredLinkText)
+
+        self.bloganuaryId = {
+            guard let remoteBloganuaryId = try? container.decode(String.self, forKey: .bloganuaryId),
+                  !remoteBloganuaryId.isEmpty else {
+                return nil
+            }
+            return remoteBloganuaryId
+        }()
     }
 }

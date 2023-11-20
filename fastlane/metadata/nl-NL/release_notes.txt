@@ -1,7 +1,0 @@
-In de blok-editor kan je nu een opgemaakt blok splitsen of verlaten door drie keer op de "enter"-toets te drukken. De linkerrand is ook altijd zichtbaar voor citaatblokken. En je kan daarop rekenen.
-
-We hebben ook een paar bugs verholpen.
-
-- We hebben een codeprobleem opgelost in de instellingen voor blogprompts dat ervoor zorgde dat de app crashte.
-- Tijdens het aanmeldingsproces beland je niet per ongeluk in de lezer.
-- Maak je een .com site? Na het voltooien van het aanmeldingsproces zou je niet langer twee overlays moeten zien.

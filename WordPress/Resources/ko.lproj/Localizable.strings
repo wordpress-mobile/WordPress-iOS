@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-11-15 09:54:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@(%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d개의 글이 있습니다.";
 
@@ -270,6 +267,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 소셜 아이콘";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "블록으로 '%s' 블록 변환됨";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "‘%s’을(를) 완전히 지원하지 않습니다";
@@ -730,6 +730,9 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "대체 텍스트";
 
 /* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "콘텐츠를 블록으로 변환할 수도 있습니다.";
+
+/* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
 
 /* No comment provided by engineer. */
@@ -888,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "이 항목을 영구적으로 삭제하시겠습니까?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "이 페이지를 영구적으로 삭제하시겠어요?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "이 글을 영구적으로 삭제하시겠습니까?";
 
@@ -921,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "리뷰를 위해 제출하시겠습니까?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "이 페이지를 휴지통으로 이동하시겠어요?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "정말로 이 글을 삭제하기를 원하시나요?";
@@ -1259,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "작성자";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "%@ 작성.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "계속하는 것은, _약관_에 동의하는 것입니다.";
 
@@ -1333,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1353,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "취소";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "업로드 취소";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1760,9 +1750,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "공동체 및 비영리";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "콤팩트";
-
 /* The action is completed */
 "Completed" = "완료";
 
@@ -1947,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "복사된 블록";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "링크 복사";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "댓글로 링크 복사";
@@ -2321,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "메뉴 삭제";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "영구적으로 삭제하기";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "영구적으로 삭제할까요?";
 
 /* Button label for deleting the current site
@@ -2632,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "임시글을 작성하여 글을 발행하세요.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "임시글";
 
 /* No comment provided by engineer. */
@@ -2644,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "끌어서 초점 조정";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "복제";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "블록 복제하기";
@@ -2662,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "각 블록에는 자체 설정이 있습니다. 설정을 찾으려면 블록을 누르세요. 화면 하단의 도구 모음에 해당 설정이 표시됩니다.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "편집";
@@ -3028,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "매일 %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "모두 볼 수 있음";
-
 /* Example story title description */
 "Example story title" = "예제 이야기 제목";
 
@@ -3039,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "요약문 길이(단어)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "요약입니다. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "원하는 경우 내 콘텐츠를 직접 요약한 발췌본을 작성할 수 있습니다.";
@@ -3052,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "전체 화면 닫기";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "확장됨";
 
 /* Accessibility hint */
@@ -3624,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "홈";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "홈페이지";
 
 /* Label for Homepage Settings site settings section
@@ -4210,9 +4173,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "댓글의 링크";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "목록 스타일";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "로드";
 
@@ -4300,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "지역 봉사";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "로컬 변경";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4465,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "최대 비디오 업로드 크기";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4556,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "메시지";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "메타데이터";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "마이크로소프트 아웃룩";
 
@@ -4578,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "월 및 연도";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "더";
 
 /* Action button to display more available options
@@ -4642,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "메뉴 항목 움직이기";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "임시글로 이동";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "휴지통으로 이동";
 
@@ -4682,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "내 사이트";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "내 사이트";
 
 /* Siri Suggestion to open My Sites */
@@ -4952,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "아직 알림이 없습니다";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "검색어와 일치하는 페이지 없음";
 
 /* Text displayed when search for plugins returns no results */
@@ -4973,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "최근에 이 태그로 작성한 글이 없습니다.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "검색어와 일치하는 글 없음";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "글이 없습니다.";
@@ -5280,6 +5223,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "또는";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "또는 다른 인증 양식을 선택해 주세요.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "또는 사이트 주소를 입력하여 로그인하세요.";
 
@@ -5338,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "페이지";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "페이지를 원본으로 복원";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "페이지를 게시물로 복원";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "페이지를 예약된 글로 복원";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "페이지 설정";
@@ -5362,9 +5299,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "페이지 업로드 실패";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "페이지를 휴지통으로 이동했습니다.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "페이지 검토 대기 중";
@@ -5437,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "대기중";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "대기중인 리뷰";
 
 /* Noun. Title of the people management feature.
@@ -5564,6 +5497,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID로 로그인하려면 워드프레스닷컴 계정의 비밀번호를 입력하세요.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "OTP 앱의 확인 코드를 입력해 주세요.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "자격을 입력하세요";
 
@@ -5657,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "글 형식";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "글이 임시글 목록으로 복원됨";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "글이 발행 목록으로 복원됨";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "글이 예약 목록으로 복원됨";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "글 설정";
@@ -5684,9 +5611,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "글 업로드 실패";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "글을 휴지통으로 이동했습니다.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "글 검토 대기 중";
@@ -5745,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "게시물과 페이지";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "글 페이지";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "글 페이지 업데이트됨";
@@ -5840,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "캘리포니아 사용자를 위한 개인정보 공지";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "개인용";
 
 /* No comment provided by engineer. */
@@ -5891,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "발행일";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "즉시 발행";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "지금 게시";
 
@@ -5914,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "발행됨";
 
 /* Precedes the name of the blog just posted on */
@@ -6211,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "재전송";
 
-/* Title of the reset button */
-"Reset" = "재설정";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "활동 유형 필터 재설정하기";
 
@@ -6268,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6385,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "글이 저장됨";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "저장되었습니다!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "나중에 사용할 수 있게 이 글 저장";
 
@@ -6398,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "글을 저장하는 중…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "저장중...";
 
@@ -6488,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "검색하거나 URL 입력하기";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "페이지 검색";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "글 검색";
 
 /* No comment provided by engineer. */
 "Search settings" = "검색 설정";
@@ -6704,18 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "서비스";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "상위 항목 설정";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "특성 이미지로 설정";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "홈페이지로 설정";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "글 페이지로 설정";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "특성 이미지로 설정";
@@ -6760,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7146,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "정적인 홈페이지";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7177,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "붙박이";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "붙박이입니다.";
 
 /* User action to stop upload. */
 "Stop upload" = "업로드 중지";
@@ -7237,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "지원";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "사이트 전환";
 
 /* Switches the Editor to HTML Mode */
@@ -7452,6 +7342,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title */
 "Text me a code instead" = "코드를 문자로 대신 받기";
 
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "나에게 SMS 문자 메시지로 코드 보내기";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "%1$@(%2$@ 제공)을(를) 선택해 주셔서 감사합니다.";
 
@@ -7609,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "제거하려는 사용자가 이 사이트의 소유자입니다. 도움이 필요한 경우 지원 팀에 문의하세요.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "앱에 저장된 사용자명이나 비밀번호가 유효기간이 지났습니다. 설정에서 비밀번호를 재입력하고 다시 하세요. ";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7877,6 +7770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "사이트 설정을 완료할 시간입니다! 체크리스트가 다음 단계를 안내합니다.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "시간이 다 되었지만, 걱정하지 마세요. 보안이 무엇보다 중요합니다. 다시 시도해 보세요!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
 
@@ -8000,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "트래픽";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "이전된 도메인";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "다음으로 %s 변형";
 
@@ -8014,9 +7913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "선택한 미디어 삭제";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "이 페이지를 휴지통으로 이동할까요?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "이 글을 휴지통에 버릴까요?";
@@ -8135,9 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "연결할 수 없음";
 
-/* An error message. */
-"Unable to Connect" = "연결할 수 없음";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "스토리 편집기를 만들 수 없습니다.";
 
@@ -8219,12 +8112,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "링크를 공유할 수 없음";
 
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "오프라인 상태에서 글을 휴지통으로 이동할 수 없습니다. 나중에 다시 시도하세요.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "오프라인 상태에서 글을 휴지통으로 이동할 수 없음 나중에 다시 시도하세요.";
-
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "사이트 알림을 끌 수 없음";
 
@@ -8297,8 +8184,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "실행 취소";
 
@@ -8509,6 +8394,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "샌드박스 스토어 사용";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "보안 키 사용";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "블록 편집기 사용";
 
@@ -8591,8 +8479,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "비디오";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -8706,6 +8592,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google에서 완료하기를 기다리는 중…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "보안 키 기다리는 중";
 
 /* View title during the Google auth process. */
 "Waiting..." = "기다리는 중...";
@@ -9077,6 +8967,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "문제가 발생하여 로그인할 수 없습니다. 다시 시도하세요.";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "오류가 발생했습니다. 다시 시도해 보세요!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "죄송합니다. 보안 키가 유효하지 않은 것 같습니다. 다른 것으로 시도해 보세요.";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "2단계 인증코드가 맞지 않습니다. 코드를 다시 확인하시고 입력하여 주시기 바랍니다.";
@@ -9713,6 +9609,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@에 회신";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "앱에 저장된 사용자 이름 또는 비밀번호가 만료되었을 수 있습니다. 설정에서 비밀번호를 재입력 후 다시 시도해 보세요.";
+
+/* An error message. */
+"common.unableToConnect" = "연결할 수 없음";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "이러한 쿠키를 통해 당사에서는 사용자가 당사 웹사이트와 상호 작용하는 방식에 대한 정보를 수집하여 성능을 최적화할 수 있습니다.";
 
@@ -9863,6 +9765,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "숨기기";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "도메인 검색";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "도메인 받기";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "나중에 사이트를 추가하세요.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "도메인만 구매";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "만료됨";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "갱신";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "도메인 찾기";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "아래를 눌러서 알맞은 도메인을 찾아보세요.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "도메인이 없습니다.";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "도메인을 불러오는 중 오류가 발생했습니다. 문제가 지속되면 지원팀에 문의하세요.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "문제가 발생했습니다.";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "다시 시도";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "네트워크 연결을 확인하고 다시 시도하세요.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "인터넷에 연결되지 않음";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*모든 유료 연간 요금제에는 1년 무료 도메인이 포함됩니다.";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "나중에 사이트를 쉽게 추가할 수 있으니 걱정하지 마세요.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "도메인 사용 방법 선택";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "도메인 검색";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "'%@' 검색과 일치하는 도메인 없음";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "일치하는 도메인 없음";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "사이트 선택";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "최초 1년 무료 도메인*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "이미 시작한 사이트와 함께 사용하세요.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "기존 워드프레스닷컴 사이트";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "모든 도메인";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "사용자 정의 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
 
@@ -9874,39 +9851,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "사이트가 활성화되었습니다.";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "조치 필요";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "활성";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "설정 완료";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "오류";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "만료됨";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "곧 만료됨";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "실패";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "진행 중";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "갱신";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "이메일 확인";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "확인 중";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "최선의 대안";
@@ -9929,11 +9873,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/년";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "체크아웃";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "해제";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "죄송합니다. 추가하려는 도메인을 현재 잿팩에서 구매할 수 없습니다.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "도메인 구매";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "검색";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "사이트 선택";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
@@ -10354,6 +10310,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "상품";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "미디어 동기화 불가";
 
@@ -10375,8 +10334,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "추가";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "화면 비율 그리드";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "삭제";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "선택";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "공유";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "취소";
@@ -10410,6 +10378,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "검색과 일치하는 미디어 없음";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "선택한 아이템을 공유할 수 없습니다.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "정사각형 그리드";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "미디어";
@@ -10633,14 +10607,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "기타";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Blaze로 홍보";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "홈페이지";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "로컬 변경";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "검토 보류 중";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "글 페이지";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "비공개";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "홈페이지에서 테마 템플릿이 사용되고 있으며 웹 편집기에서 홈페이지가 열립니다.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "홈페이지";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "페이지 업데이트됨";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "영구 삭제";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "이 페이지를 영구적으로 삭제하시겠어요?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "영구적으로 삭제할까요?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "모두가 작성한 페이지";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "내가 작성한 페이지";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "휴지통으로 이동";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "이 페이지를 휴지통으로 이동하시겠어요?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "이 페이지를 휴지통으로 이동할까요?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "취소";
 
 /* No comment provided by engineer. */
 "password" = "비밀번호";
@@ -10681,6 +10697,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "%@ 생성됨";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "글 삭제 중...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "%@ 편집됨";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "휴지통으로 글 이동 중...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "%@ 공개됨";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "%@ 예약됨";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "%@ 삭제됨";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "%@ 작성.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "요약입니다. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "붙박이입니다.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "휴지통";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "공유";
+
+/* Swipe action title */
+"postList.swipeActionView" = "보기";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "해제";
 
@@ -10699,8 +10757,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "특성 이미지 설정";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "글 설정 업데이트 실패";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze로 홍보";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "업로드 취소";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "댓글";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "영구 삭제";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "임시글로 이동";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "복제";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "페이지 속성";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "미리보기";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "지금 공개";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "다시 시도";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "홈페이지로 설정";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "상위 항목 설정";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "글 페이지로 설정";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "일반 페이지로 설정";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "설정";
+
+/* Share the post. */
+"posts.share.actionTitle" = "공유";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "통계";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "휴지통으로 이동";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "보기";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "페이지 영구 삭제됨";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "글 영구 삭제됨";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "휴지통으로 페이지 이동됨";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "휴지통으로 글 이동됨";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "모두가 작성한 글";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "내가 작성한 글";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "더 많은 정보를 공유하려면 지금 구독하세요";
@@ -10846,12 +10979,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "좋아요";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "게시글을 좋아합니다.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "좋아함";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "글에 대한 좋아요를 취소합니다.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "추가 작업이 포함된 메뉴가 열립니다.";
@@ -10915,6 +11050,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "신규";
+
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "도메인 이전";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "이미 소유한 도메인을 이전하시겠습니까?";
 
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "관련 게시물은 글 아래에 사이트의 관련 콘텐츠를 표시합니다.";
@@ -11022,7 +11163,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteSettings.privacy.title" = "개인정보";
 
 /* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "사이트가 모든 사람에게 공개되지만 검색 엔진에서 사이트가 검색되지 않도록 지정하세요.";
+"siteVisibility.hidden.hint" = "사이트가 완성될 때까지 “Coming Soon” 알림 뒤로 사이트를 숨겨둡니다.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "숨김";

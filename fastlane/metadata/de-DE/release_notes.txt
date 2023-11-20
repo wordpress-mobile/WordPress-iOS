@@ -1,7 +1,0 @@
-Im Block-Editor kann man jetzt einen formatierten Block durch dreimaliges Drücken der „Enter“-Taste aufteilen oder verlassen. Außerdem ist der linke Rand bei Zitat-Blöcken immer sichtbar. Das dürft ihr gerne zitieren!
-
-Wir haben außerdem ein paar Fehler behoben.
-
-- Wir haben einen Code-Fehler bei den Einstellungen für die Blog-Schreibanregungen behoben, der die App zum Absturz gebracht hat.
-- Beim Registrierungsprozess landet man jetzt nicht mehr unabsichtlich im Reader.
-- Du erstellst eine .com-Website? Dann sollte das Dialogfenster nach dem Registrierungsprozess jetzt nicht mehr doppelt eingeblendet werden. Einmal genügt!

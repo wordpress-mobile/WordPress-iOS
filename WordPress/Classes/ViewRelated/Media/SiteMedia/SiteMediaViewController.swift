@@ -15,13 +15,16 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
     private var isPreparingToShare = false
+    private var isFirstAppearance = true
 
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        title = Strings.title
+        if !UIDevice.isPad() {
+            title = Strings.title
+        }
         extendedLayoutIncludesOpaqueBars = true
     }
 
@@ -45,14 +48,19 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.hidesSearchBarWhenScrolling = false
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        navigationItem.hidesSearchBarWhenScrolling = true
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = true
+            isFirstAppearance = false
+        }
     }
 
     // MARK: - Configuration
@@ -80,18 +88,39 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         navigationItem.rightBarButtonItems = {
             var rightBarButtonItems: [UIBarButtonItem] = []
 
-            if !isEditing, blog.userCanUploadMedia {
-                configureAddMediaButton()
-                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+            func addEditingButtons() {
+                if isEditing {
+                    let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                    rightBarButtonItems.append(doneButton)
+                } else {
+                    let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+                    rightBarButtonItems.append(selectButton)
+                }
             }
 
-            if isEditing {
-                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
-                rightBarButtonItems.append(doneButton)
-            } else {
-                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-                rightBarButtonItems.append(selectButton)
+            func addMoreButton() {
+                if let menu = collectionViewController.makeMoreMenu() {
+                    rightBarButtonItems.append(UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu))
+                }
             }
+
+            func addUploadButton() {
+                if !isEditing, blog.userCanUploadMedia {
+                    configureAddMediaButton()
+                    rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+                }
+            }
+
+            if UIDevice.isPad() {
+                addEditingButtons()
+                addMoreButton()
+                addUploadButton()
+
+            } else {
+                addUploadButton()
+                addEditingButtons()
+            }
+
             return rightBarButtonItems
         }()
     }
@@ -251,6 +280,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         }
         return UIMenu(children: actions)
     }
+}
+
+extension SiteMediaViewController {
+    static var sharingFailureMessage: String { Strings.sharingFailureMessage }
 }
 
 private enum Strings {

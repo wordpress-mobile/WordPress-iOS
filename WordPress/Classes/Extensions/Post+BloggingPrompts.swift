@@ -15,6 +15,13 @@ extension Post {
         }
 
         tags?.append(", \(Strings.promptTag)-\(prompt.promptID)")
+
+        // add any additional tags for the prompt.
+        if let additionalPostTags = prompt.additionalPostTags, !additionalPostTags.isEmpty {
+            additionalPostTags
+                .map { ", \($0)" }
+                .forEach { self.tags?.append($0) }
+        }
     }
 
     private func promptContent(withPromptText promptText: String) -> String {

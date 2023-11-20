@@ -1,5 +1,0 @@
-Vi har gjort några visuella förändringar för läsaren. Du kommer att märka uppdateringar av flödeskort, rubriker, knappar, rekommendationer och mer. Ge oss gärna många komplimanger.
-
-I blockredigeraren kan du nu dela eller avsluta ett formaterat block genom att trycka på tangenten ”enter” tre gånger. Den vänstra kanten är alltid synlig för citatblock också, även i blockbaserade teman i mörkt läge. Och du kan citera oss på det.
-
-Slutligen åtgärdade vi ett kodproblem i inställningar för bloggprompt som orsakade att appen kraschade.

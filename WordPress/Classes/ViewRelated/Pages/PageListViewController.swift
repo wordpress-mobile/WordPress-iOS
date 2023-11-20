@@ -4,11 +4,10 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 
-class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+final class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
-            static let pageListTableViewCellLeading = CGFloat(16.0)
         }
 
         struct Identifiers {
@@ -31,9 +30,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         case pages = 1
     }
 
-    private lazy var homepageSettingsService = {
-        HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
-    }()
+    private lazy var homepageSettingsService = HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
         let action = PageAction(handler: { [weak self] in
@@ -42,7 +39,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
-    var showEditorHomepage: Bool {
+    private var showEditorHomepage: Bool {
         guard RemoteFeatureFlag.siteEditorMVP.enabled() else {
             return false
         }
@@ -50,9 +47,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return isFSETheme && filterSettings.currentPostListFilter().filterType == .published
     }
 
-    private lazy var editorSettingsService = {
-        return BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
-    }()
+    private lazy var editorSettingsService = BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
 
     private var pages: [Page] = []
 
@@ -159,7 +154,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
     }
 
-    fileprivate func beginRefreshingManually() {
+    private func beginRefreshingManually() {
         refreshControl.beginRefreshing()
         tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
     }

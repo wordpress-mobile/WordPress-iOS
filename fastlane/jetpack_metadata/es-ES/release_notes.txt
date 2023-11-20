@@ -1,5 +1,0 @@
-Hemos realizado algunos cambios en el Lector y también actualizaciones en el feed, cabeceras, botones y recomendaciones, entre otras cosas. No dudes en dejarnos un montón de comentarios positivos.
-
-En el editor de bloques, ahora podrás separar o salir de un bloque con formato pulsando la tecla «intro» tres veces. Además, el borde de la izquierda estará siempre visible en el bloque Cita, incluso en los temas de bloques en modo oscuro. ¡Y puedes citarnos en esto!
-
-Y para terminar, hemos arreglado un problema de código en los ajustes de las sugerencias de escritura que causaba que la aplicación se bloquease.

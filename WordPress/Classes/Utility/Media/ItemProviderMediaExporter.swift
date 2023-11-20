@@ -38,6 +38,9 @@ final class ItemProviderMediaExporter: MediaExporter {
         func processGIF(at url: URL) throws {
             let pixelSize = url.pixelSize
             let media = MediaExport(url: url, fileSize: url.fileSize, width: pixelSize.width, height: pixelSize.height, duration: nil)
+            let exportProgress = Progress(totalUnitCount: 1)
+            exportProgress.completedUnitCount = 1
+            progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
             onCompletion(media)
         }
 

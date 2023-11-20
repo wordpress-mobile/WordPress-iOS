@@ -15,7 +15,7 @@ extension SiteMediaCollectionViewControllerDelegate {
 }
 
 /// The internal view controller for managing the media collection view.
-final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+final class SiteMediaCollectionViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UISearchResultsUpdating, UIGestureRecognizerDelegate, SiteMediaPageViewControllerDelegate {
     weak var delegate: SiteMediaCollectionViewControllerDelegate?
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -51,6 +51,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     static let spacing: CGFloat = 2
+    static let spacingAspectRatio: CGFloat = 8
 
     var selectedMedia: [Media] {
         guard let selection = selection.array as? [Media] else {
@@ -110,6 +111,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.pinSubviewToAllEdges(view)
+        collectionView.accessibilityIdentifier = "MediaCollection"
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -129,7 +131,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = SiteMediaCollectionViewController.spacing
+        let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
         let itemsPerRow = availableWidth < 450 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
@@ -138,6 +140,39 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+
+    func makeMoreMenu() -> UIMenu? {
+        guard !makeMoreMenuActions().isEmpty else {
+            return nil
+        }
+        return UIMenu(children: [UIDeferredMenuElement.uncached { [weak self] in
+            $0(self?.makeMoreMenuActions() ?? [])
+        }])
+    }
+
+    private func makeMoreMenuActions() -> [UIAction] {
+        var actions: [UIAction] = []
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+            actions.append(UIAction(
+                title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                    self?.toggleAspectRatioMode()
+                })
+        }
+        return actions
+    }
+
+    private func toggleAspectRatioMode() {
+        UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
+        UIView.animate(withDuration: 0.33) {
+            self.updateFlowLayoutItemSize()
+            for cell in self.collectionView.visibleCells {
+                guard let cell = cell as? SiteMediaCollectionCell else { continue }
+                cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
+            }
+        }
     }
 
     // MARK: - Editing (Selection)
@@ -216,7 +251,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
                   let panGestureInitialIndexPath,
                   let panGesturePeviousSelection else { return }
 
-            var isDeselecting = panGesturePeviousSelection.contains(fetchController.object(at: panGestureInitialIndexPath))
+            let isDeselecting = panGesturePeviousSelection.contains(fetchController.object(at: panGestureInitialIndexPath))
 
             updateSelection {
                 selection = NSMutableOrderedSet(orderedSet: panGesturePeviousSelection)
@@ -344,13 +379,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
             if let media = anObject as? Media {
                 setSelected(false, for: media)
-
-                if let viewController = navigationController?.topViewController,
-                   viewController !== self,
-                    let detailsViewController = viewController as? MediaItemViewController,
-                   detailsViewController.media.objectID == media.objectID {
-                    navigationController?.popViewController(animated: true)
-                }
+                didDeleteMedia(media, at: indexPath)
             } else {
                 assertionFailure("Invalid object: \(anObject)")
             }
@@ -363,6 +392,16 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })
         @unknown default:
             break
+        }
+    }
+
+    private func didDeleteMedia(_ media: Media, at indexPath: IndexPath) {
+        if let viewController = navigationController?.topViewController,
+           let detailsViewController = viewController as? SiteMediaPageViewController {
+            let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+
+            detailsViewController.didDeleteItem(media, before: before, after: after)
         }
     }
 
@@ -398,6 +437,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
+        cell.configure(isAspectRatioModeEnabled: UserDefaults.standard.isMediaAspectRatioModeEnabled)
         return cell
     }
 
@@ -412,9 +452,10 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             case .failed, .pushing, .processing:
                 showRetryOptions(for: media)
             case .sync:
-                let viewController = MediaItemViewController(media: media)
                 WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-                navigationController?.pushViewController(viewController, animated: true)
+
+                let viewController = SiteMediaPageViewController(media: media, delegate: self)
+                self.navigationController?.pushViewController(viewController, animated: true)
             default: break
             }
         }
@@ -477,6 +518,27 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         } catch {
             WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
+    }
+
+
+    // MARK: - SiteMediaPageViewControllerDelegate
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaBeforeMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index > 0 else {
+            return nil
+        }
+        return fetchedObjects[index - 1]
+    }
+
+    func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaAfterMedia media: Media) -> Media? {
+        guard let fetchedObjects = fetchController.fetchedObjects,
+              let index = fetchedObjects.firstIndex(of: media),
+              index < (fetchedObjects.count - 1) else {
+            return nil
+        }
+        return fetchedObjects[index + 1]
     }
 
     // MARK: - Menus
@@ -571,4 +633,6 @@ private enum Strings {
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
     static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
+    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
+    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }

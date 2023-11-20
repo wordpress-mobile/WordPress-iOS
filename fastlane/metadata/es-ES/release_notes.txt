@@ -1,7 +1,0 @@
-En el editor de bloques ahora puedes separar o salir de un bloque con formato pulsando la tecla «intro» tres veces. El borde de la izquierda siempre está visible también en los bloques de cita, aunque los temas basados en bloques estén en modo oscuro. Y puedes citarnos ahí.
-
-También aplastamos un puñado de bichos.
-
-- Hemos corregido un problema de código en los ajustes del aviso de bloguear que hacía que la aplicación se bloqueara.
-- Durante el proceso de registro, no acabarás en el lector por accidente.
-- ¿Estás creando un sitio .com? Ya no deberías ver dos superposiciones después de completar el proceso de registro. Uno y listo.

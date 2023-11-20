@@ -2,6 +2,9 @@ import UIKit
 import SwiftUI
 
 @objc final class FreeToPaidPlansCoordinator: NSObject {
+
+    typealias PurchaseCallback = ((UIViewController, String) -> Void)
+
     static func presentFreeDomainWithAnnualPlanFlow(
         in dashboardViewController: BlogDashboardViewController,
         source: String,
@@ -14,7 +17,7 @@ import SwiftUI
             includeSupportButton: false
         )
 
-        let purchaseCallback = { (checkoutViewController: CheckoutViewController, domainName: String) in
+        let purchaseCallback = { (checkoutViewController: UIViewController, domainName: String) in
 
             let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.syncBlogAndAllMetadata(blog) { }
@@ -30,9 +33,24 @@ import SwiftUI
             PlansTracker.trackPurchaseResult(source: "plan_selection")
         }
 
+        let domainAddedToCart = plansFlowAfterDomainAddedToCartBlock(customTitle: nil, purchaseCallback: purchaseCallback)
+
+        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart
+
+        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
+        dashboardViewController.present(navigationController, animated: true)
+    }
+
+    /// Creates a block that launches the plans selection flow after a domain is added to the user's shopping cart
+    /// - Parameters:
+    ///   - customTitle: Title of of the presented view. If nil the title displays the title of the webview..
+    ///   - purchaseCallback: closure to be called when user completes a plan purchase.
+    static func plansFlowAfterDomainAddedToCartBlock(customTitle: String?,
+                                                     analyticsSource: String? = nil,
+                                                     purchaseCallback: @escaping PurchaseCallback) -> RegisterDomainCoordinator.DomainAddedToCartCallback {
         let planSelected = { (planSelectionViewController: PlanSelectionViewController, domainName: String, checkoutURL: URL) in
             let viewModel = CheckoutViewModel(url: checkoutURL)
-            let checkoutViewController = CheckoutViewController(viewModel: viewModel, purchaseCallback: { checkoutViewController in
+            let checkoutViewController = CheckoutViewController(viewModel: viewModel, customTitle: customTitle, purchaseCallback: { checkoutViewController in
                 purchaseCallback(checkoutViewController, domainName)
             })
             checkoutViewController.configureSandboxStore {
@@ -40,17 +58,18 @@ import SwiftUI
             }
         }
 
-        let domainAddedToCart = { (domainViewController: UIViewController, domainName: String) in
+        let domainAddedToCart = { (domainViewController: UIViewController, domainName: String, blog: Blog) in
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
-            let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
+            let planSelectionViewController = PlanSelectionViewController(
+                viewModel: viewModel,
+                customTitle: customTitle,
+                analyticsSource: analyticsSource
+            )
             planSelectionViewController.planSelectedCallback = { planSelectionViewController, checkoutURL in
                 planSelected(planSelectionViewController, domainName, checkoutURL)
             }
             domainViewController.navigationController?.pushViewController(planSelectionViewController, animated: true)
         }
-        coordinator.domainAddedToCartCallback = domainAddedToCart
-
-        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
-        dashboardViewController.present(navigationController, animated: true)
+        return domainAddedToCart
     }
 }
