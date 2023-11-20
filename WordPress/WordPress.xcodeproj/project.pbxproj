@@ -408,6 +408,8 @@
 		0C1DB6082B0A419B0028F200 /* ImageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */; };
 		0C1DB6092B0A419B0028F200 /* ImageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */; };
 		0C1DB60B2B0A9A570028F200 /* ImageDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB60A2B0A9A570028F200 /* ImageDownloaderTests.swift */; };
+		0C1DB60D2B0BDA740028F200 /* TenorWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB60C2B0BDA740028F200 /* TenorWelcomeView.swift */; };
+		0C1DB60E2B0BDA740028F200 /* TenorWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB60C2B0BDA740028F200 /* TenorWelcomeView.swift */; };
 		0C23F3362AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */; };
 		0C23F3372AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */; };
 		0C23F33E2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */; };
@@ -6152,6 +6154,7 @@
 		0C1DB5FE2B095DA50028F200 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDecoder.swift; sourceTree = "<group>"; };
 		0C1DB60A2B0A9A570028F200 /* ImageDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloaderTests.swift; sourceTree = "<group>"; };
+		0C1DB60C2B0BDA740028F200 /* TenorWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorWelcomeView.swift; sourceTree = "<group>"; };
 		0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iphone-photo.heic"; sourceTree = "<group>"; };
@@ -10793,7 +10796,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -16234,6 +16237,7 @@
 				C81CCD76243BF7A600A83E27 /* TenorPicker.swift */,
 				C81CCD78243BF7A600A83E27 /* TenorResultsPage.swift */,
 				C81CCD77243BF7A600A83E27 /* TenorService.swift */,
+				0C1DB60C2B0BDA740028F200 /* TenorWelcomeView.swift */,
 				C81CCD71243BF7A500A83E27 /* TenorStrings.swift */,
 			);
 			path = Tenor;
@@ -19158,13 +19162,13 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
@@ -20772,11 +20776,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -20947,13 +20951,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -21427,6 +21431,7 @@
 				08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */,
 				3254366C24ABA82100B2C5F5 /* ReaderInterestsStyleGuide.swift in Sources */,
 				988056032183CCE50083B643 /* SiteStatsInsightsTableViewController.swift in Sources */,
+				0C1DB60D2B0BDA740028F200 /* TenorWelcomeView.swift in Sources */,
 				577C2AB422943FEC00AD1F03 /* PostCompactCell.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				E1222B631F877FD700D23173 /* WebProgressView.swift in Sources */,
@@ -24473,6 +24478,7 @@
 				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FE4DC5AA293A84F8008F322F /* WordPressExportRoute.swift in Sources */,
+				0C1DB60E2B0BDA740028F200 /* TenorWelcomeView.swift in Sources */,
 				FABB22652602FC2C00C8785C /* PageCoordinator.swift in Sources */,
 				FABB22662602FC2C00C8785C /* Blog+QuickStart.swift in Sources */,
 				FABB22672602FC2C00C8785C /* CommentsViewController+Filters.swift in Sources */,
@@ -30387,7 +30393,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30468,12 +30474,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {

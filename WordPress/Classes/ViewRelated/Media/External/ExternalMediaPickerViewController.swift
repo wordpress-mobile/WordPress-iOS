@@ -8,8 +8,14 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private let searchController = UISearchController()
+    // TODO: Remove WPMediaCollectionDataSource dependency
     private let dataSource: WPMediaCollectionDataSource
+    private let activityIndicator = UIActivityIndicatorView()
     private var observerKey: NSObject?
+
+    /// A view to show when the screen is first open and the search query
+    /// wasn't added.
+    var welcomeView: UIView?
 
     init(dataSource: WPMediaCollectionDataSource) {
         self.dataSource = dataSource
@@ -30,13 +36,26 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         configureCollectionView()
         configureSearchController()
 
+        if let welcomeView {
+            view.addSubview(welcomeView)
+            welcomeView.translatesAutoresizingMaskIntoConstraints = false
+            view.pinSubviewToAllEdges(welcomeView)
+        }
+
         dataSource.registerChangeObserverBlock { [weak self] _, _, _, _, _ in
             self?.collectionView.reloadData()
+            self?.welcomeView?.isHidden = true
+        }
+
+        // TODO: Move to a protocol
+        if let dataSource = dataSource as? TenorDataSource {
+            dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
+            dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
         }
 
         // TODO: add selection
         // TODO: add pan gesture recognizer
-        // TODO: add empty state
+        // TODO: become first responder when shown
         // TODO: add fullscreen preview for selection using QuickLookViewController
     }
 
@@ -76,6 +95,14 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+
+    private func didChangeLoading(_ isLoading: Bool) {
+        if isLoading && dataSource.numberOfAssets() == 0 {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
 
     // MARK: - UICollectionViewDataSource
