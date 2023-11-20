@@ -154,6 +154,8 @@ platform :ios do
     # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
     ensure_git_branch(branch: '^release/')
 
+    git_pull
+
     # Check versions
     message = <<-MESSAGE
       • Current build code: #{build_code_current}

@@ -189,10 +189,6 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gutenberg:
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
-    :submodules: true
-    :tag: v1.100.2
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -240,6 +236,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: ee1715def28fcb8b610a3720653c5dcdef24fa5d
+PODFILE CHECKSUM: 8f21b7aab84e57d7e16119c89573229552c8c418
 
 COCOAPODS: 1.14.2

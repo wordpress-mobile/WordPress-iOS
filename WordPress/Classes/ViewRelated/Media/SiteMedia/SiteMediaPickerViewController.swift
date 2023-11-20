@@ -45,15 +45,15 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         collectionViewController.delegate = self
 
         configureDefaultNavigationBarAppearance()
-        configurationNavigationItems()
+        configureNavigationItems()
         startSelection()
     }
 
     // MARK: - Configuration
 
-    private func configurationNavigationItems() {
+    private func configureNavigationItems() {
         let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
-            self?.buttonDoneTapped()
+            self?.buttonCancelTapped()
         })
 
         navigationItem.leftBarButtonItem = buttonCancel
