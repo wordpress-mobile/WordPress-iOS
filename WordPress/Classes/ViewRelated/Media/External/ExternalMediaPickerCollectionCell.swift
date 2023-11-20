@@ -21,15 +21,7 @@ final class ExternalMediaPickerCollectionCell: UICollectionViewCell {
         imageView.prepareForReuse()
     }
 
-    func configure(_ viewModel: ExternalMediaPickerCollectionCellViewModel, size: CGSize) {
-        imageView.setImage(with: viewModel.imageURL, size: size)
-    }
-}
-
-final class ExternalMediaPickerCollectionCellViewModel {
-    let imageURL: URL
-
-    init(imageURL: URL) {
-        self.imageURL = imageURL
+    func configure(imageURL: URL, size: CGSize) {
+        imageView.setImage(with: imageURL, size: size)
     }
 }
