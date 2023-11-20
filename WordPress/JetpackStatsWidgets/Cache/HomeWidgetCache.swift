@@ -1,4 +1,5 @@
 import Foundation
+import JetpackStatsWidgetsCore
 
 /// Cache manager that stores `HomeWidgetData` values in a plist file, contained in the specified security application group and with the specified file name.
 /// The corresponding dictionary is always in the form `[Int: T]`, where the `Int` key is the SiteID, and the `T` value is any `HomeWidgetData` instance.

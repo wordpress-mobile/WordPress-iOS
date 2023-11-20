@@ -1,3 +1,4 @@
+import JetpackStatsWidgetsCore
 import XCTest
 @testable import WordPress
 

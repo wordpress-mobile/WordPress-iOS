@@ -997,6 +997,9 @@
 		3F946C592684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
 		3F946C5A2684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
 		3F95FF4026C4F385007731D3 /* ScreenObject in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C34226C4E8B700C6D98F /* ScreenObject */; };
+		3F9F23252B0AE1AC00B56061 /* JetpackStatsWidgetsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */; };
+		3F9F232B2B0B27DD00B56061 /* JetpackStatsWidgetsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */; };
+		3F9F232D2B0B281400B56061 /* JetpackStatsWidgetsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */; };
 		3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
 		3FA62FD326FE2E4B0020793A /* ShapeWithTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA62FD226FE2E4B0020793A /* ShapeWithTextView.swift */; };
 		3FA62FD426FE2E4B0020793A /* ShapeWithTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA62FD226FE2E4B0020793A /* ShapeWithTextView.swift */; };
@@ -9572,6 +9575,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F9F23252B0AE1AC00B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				C649C66318E8B5EF92B8F196 /* Pods_JetpackIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9607,6 +9611,7 @@
 				24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */,
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
+				3F9F232B2B0B27DD00B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
@@ -9724,6 +9729,7 @@
 				FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */,
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
 				FABB26232602FC2C00C8785C /* QuickLook.framework in Frameworks */,
+				3F9F232D2B0B281400B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				FABB26242602FC2C00C8785C /* CoreText.framework in Frameworks */,
 				FABB26252602FC2C00C8785C /* UserNotifications.framework in Frameworks */,
 				FABB26262602FC2C00C8785C /* Photos.framework in Frameworks */,
@@ -18634,6 +18640,9 @@
 			dependencies = (
 			);
 			name = JetpackIntents;
+			packageProductDependencies = (
+				3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */,
+			);
 			productName = JetpackIntents;
 			productReference = 0107E15428FE9DB200DE87DB /* JetpackIntents.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -18669,6 +18678,7 @@
 				17A8858C2757B97F0071FCA3 /* AutomatticAbout */,
 				3F411B6E28987E3F002513AE /* Lottie */,
 				0CD9FB882AFA71C2009D9C7A /* DGCharts */,
+				3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -18927,6 +18937,7 @@
 				17A8858E2757BEC00071FCA3 /* AutomatticAbout */,
 				3F44DD57289C379C006334CD /* Lottie */,
 				0CD9FB862AFA71B9009D9C7A /* DGCharts */,
+				3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -30447,6 +30458,18 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JetpackStatsWidgetsCore;
+		};
+		3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JetpackStatsWidgetsCore;
+		};
+		3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JetpackStatsWidgetsCore;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
