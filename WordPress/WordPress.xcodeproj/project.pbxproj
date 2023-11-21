@@ -3031,11 +3031,9 @@
 		C81CCD7D243BF7A600A83E27 /* TenorDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD73243BF7A500A83E27 /* TenorDataSource.swift */; };
 		C81CCD7E243BF7A600A83E27 /* TenorMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD74243BF7A500A83E27 /* TenorMedia.swift */; };
 		C81CCD7F243BF7A600A83E27 /* TenorMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD75243BF7A500A83E27 /* TenorMediaGroup.swift */; };
-		C81CCD80243BF7A600A83E27 /* TenorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD76243BF7A600A83E27 /* TenorPicker.swift */; };
 		C81CCD81243BF7A600A83E27 /* TenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD77243BF7A600A83E27 /* TenorService.swift */; };
 		C81CCD82243BF7A600A83E27 /* TenorResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD78243BF7A600A83E27 /* TenorResultsPage.swift */; };
 		C81CCD83243BF7A600A83E27 /* TenorDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */; };
-		C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */; };
 		C81CCD86243C00E000A83E27 /* TenorPageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */; };
 		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		C8567492243F3751001A995E /* tenor-search-response.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567491243F3751001A995E /* tenor-search-response.json */; };
@@ -4606,7 +4604,6 @@
 		FABB22A22602FC2C00C8785C /* PlanListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644EC1CE0E4FE00D96E64 /* PlanListRow.swift */; };
 		FABB22A32602FC2C00C8785C /* SiteCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4021B85CF20005062B /* SiteCreationWizard.swift */; };
 		FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98656BD72037A1770079DE67 /* SignupEpilogueViewController.swift */; };
-		FABB22A62602FC2C00C8785C /* TenorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD76243BF7A600A83E27 /* TenorPicker.swift */; };
 		FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */; };
 		FABB22A82602FC2C00C8785C /* TableDataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4A21B85CF20005062B /* TableDataCoordinator.swift */; };
 		FABB22A92602FC2C00C8785C /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
@@ -4622,7 +4619,6 @@
 		FABB22B52602FC2C00C8785C /* SearchableItemConvertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74729CA52056FE6000D1394D /* SearchableItemConvertable.swift */; };
 		FABB22B72602FC2C00C8785C /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
 		FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
-		FABB22B92602FC2C00C8785C /* NoResultsTenorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */; };
 		FABB22BA2602FC2C00C8785C /* JetpackRemoteInstallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */; };
 		FABB22BB2602FC2C00C8785C /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		FABB22BC2602FC2C00C8785C /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
@@ -8375,11 +8371,9 @@
 		C81CCD73243BF7A500A83E27 /* TenorDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorDataSource.swift; sourceTree = "<group>"; };
 		C81CCD74243BF7A500A83E27 /* TenorMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorMedia.swift; sourceTree = "<group>"; };
 		C81CCD75243BF7A500A83E27 /* TenorMediaGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorMediaGroup.swift; sourceTree = "<group>"; };
-		C81CCD76243BF7A600A83E27 /* TenorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorPicker.swift; sourceTree = "<group>"; };
 		C81CCD77243BF7A600A83E27 /* TenorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorService.swift; sourceTree = "<group>"; };
 		C81CCD78243BF7A600A83E27 /* TenorResultsPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorResultsPage.swift; sourceTree = "<group>"; };
 		C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorDataLoader.swift; sourceTree = "<group>"; };
-		C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsTenorConfiguration.swift; sourceTree = "<group>"; };
 		C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorPageableTests.swift; sourceTree = "<group>"; };
 		C82B4C5ECF11C9FEE39CD9A0 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
@@ -16244,13 +16238,11 @@
 			isa = PBXGroup;
 			children = (
 				C81CCD5D243AEC8200A83E27 /* TenorAPI */,
-				C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */,
 				C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */,
 				C81CCD73243BF7A500A83E27 /* TenorDataSource.swift */,
 				C81CCD74243BF7A500A83E27 /* TenorMedia.swift */,
 				C81CCD75243BF7A500A83E27 /* TenorMediaGroup.swift */,
 				C81CCD72243BF7A500A83E27 /* TenorPageable.swift */,
-				C81CCD76243BF7A600A83E27 /* TenorPicker.swift */,
 				C81CCD78243BF7A600A83E27 /* TenorResultsPage.swift */,
 				C81CCD77243BF7A600A83E27 /* TenorService.swift */,
 				0C1DB60C2B0BDA740028F200 /* TenorWelcomeView.swift */,
@@ -21747,7 +21739,6 @@
 				8313B9FA2995A03C000AF26E /* JetpackRemoteInstallCardView.swift in Sources */,
 				DC772B0A28201F5300664C02 /* ViewsVisitorsLineChartCell.swift in Sources */,
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
-				C81CCD80243BF7A600A83E27 /* TenorPicker.swift in Sources */,
 				74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */,
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
 				80D9D00029E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
@@ -21776,7 +21767,6 @@
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
 				9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */,
 				FAC1B81E29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */,
-				C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */,
 				C9B477AE29CC35A0008CBF49 /* WidgetDataReader.swift in Sources */,
 				FEF28E822ACB3DCE006C6579 /* ReaderDetailNewHeaderView.swift in Sources */,
 				9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */,
@@ -24581,7 +24571,6 @@
 				FA4B203029A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */,
 				C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */,
 				FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */,
-				FABB22A62602FC2C00C8785C /* TenorPicker.swift in Sources */,
 				FAB985C22697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */,
 				3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
@@ -24605,7 +24594,6 @@
 				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
-				FABB22B92602FC2C00C8785C /* NoResultsTenorConfiguration.swift in Sources */,
 				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
 				FABB22BA2602FC2C00C8785C /* JetpackRemoteInstallViewController.swift in Sources */,
