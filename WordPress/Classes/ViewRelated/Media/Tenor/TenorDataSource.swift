@@ -4,7 +4,7 @@ import WPMediaPicker
 final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     fileprivate static let paginationThreshold = 10
 
-    fileprivate var tenorMedia = [TenorMedia]()
+    private(set) var tenorMedia = [TenorMedia]()
     var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: TenorDataLoader?
 

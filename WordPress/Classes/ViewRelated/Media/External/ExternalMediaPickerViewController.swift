@@ -1,24 +1,34 @@
 import UIKit
 
 protocol ExternalMediaPickerViewDelegate: AnyObject {
-    // TODO: add delegate
+    /// If the user cancels the flow, the selection is empty.
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [TenorMedia])
 }
 
 final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
+    private var collectionViewDataSource: UICollectionViewDiffableDataSource<Int, String>!
     private let searchController = UISearchController()
-    // TODO: Remove WPMediaCollectionDataSource dependency
-    private let dataSource: WPMediaCollectionDataSource
     private let activityIndicator = UIActivityIndicatorView()
-    private var observerKey: NSObject?
+    private let toolbarItemTitle = ExternalMediaSelectionTitleView()
+    private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
+
+    private let dataSource: TenorDataSource
+    private var allowsMultipleSelection: Bool
+    private var selection = NSMutableOrderedSet()
+    private var observerKey: NSObjectProtocol?
 
     /// A view to show when the screen is first open and the search query
     /// wasn't added.
     var welcomeView: UIView?
 
-    init(dataSource: WPMediaCollectionDataSource) {
+    weak var delegate: ExternalMediaPickerViewDelegate?
+
+    init(dataSource: TenorDataSource,
+         allowsMultipleSelection: Bool = false) {
         self.dataSource = dataSource
+        self.allowsMultipleSelection = allowsMultipleSelection
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -35,6 +45,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
         configureCollectionView()
         configureSearchController()
+        configureActivityIndicator()
+        configureNavigationItems()
+        configureToolbarItems()
 
         if let welcomeView {
             view.addSubview(welcomeView)
@@ -42,21 +55,16 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
             view.pinSubviewToAllEdges(welcomeView)
         }
 
-        dataSource.registerChangeObserverBlock { [weak self] _, _, _, _, _ in
-            self?.collectionView.reloadData()
-            self?.welcomeView?.isHidden = true
+        observerKey = dataSource.registerChangeObserverBlock { [weak self] _, _, _, _, _ in
+            self?.reloadData()
         }
 
-        // TODO: Move to a protocol
-        if let dataSource = dataSource as? TenorDataSource {
-            dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
-            dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
-        }
+        dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
+        dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
 
-        // TODO: add selection
-        // TODO: add pan gesture recognizer
-        // TODO: become first responder when shown
-        // TODO: add fullscreen preview for selection using QuickLookViewController
+        searchController.searchBar.becomeFirstResponder()
+
+        // TODO: add fullscreen preview for selection using QuickLookViewController and selection toolbar
     }
 
     override func viewDidLayoutSubviews() {
@@ -72,17 +80,12 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.pinSubviewToAllEdges(view)
         collectionView.accessibilityIdentifier = "MediaCollection"
+        collectionView.allowsMultipleSelection = allowsMultipleSelection
 
-        collectionView.dataSource = self
+        collectionViewDataSource = .init(collectionView: collectionView) { [weak self] collectionView, indexPath, _ in
+            self?.collectionView(collectionView, cellForItemAt: indexPath)
+        }
         collectionView.delegate = self
-    }
-
-    private func configureSearchController() {
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.autocorrectionType = .no
-
-        navigationItem.searchController = searchController
     }
 
     private func updateFlowLayoutItemSize() {
@@ -97,12 +100,100 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
     }
 
+    private func configureActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewAtCenter(activityIndicator)
+    }
+
+    private func configureSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+
+        navigationItem.searchController = searchController
+    }
+
+    private func configureNavigationItems() {
+        let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
+            self?.buttonCancelTapped()
+        })
+        navigationItem.leftBarButtonItem = buttonCancel
+        if allowsMultipleSelection {
+            navigationItem.rightBarButtonItems = [buttonDone]
+        }
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    private func configureToolbarItems() {
+        guard allowsMultipleSelection, toolbarItems == nil else { return }
+
+        var toolbarItems: [UIBarButtonItem] = []
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        self.toolbarItems = toolbarItems
+    }
+
+    private func reloadData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(dataSource.tenorMedia.map(\.id), toSection: 0)
+        collectionViewDataSource.apply(snapshot, animatingDifferences: false)
+
+        let remaning = NSOrderedSet(array: dataSource.tenorMedia)
+        selection.intersect(remaning)
+        didUpdateSelection()
+    }
+
     private func didChangeLoading(_ isLoading: Bool) {
         if isLoading && dataSource.numberOfAssets() == 0 {
             activityIndicator.startAnimating()
+            welcomeView?.isHidden = true
         } else {
             activityIndicator.stopAnimating()
         }
+    }
+
+    private func item(at index: Int) -> TenorMedia {
+        dataSource.media(at: index) as! TenorMedia
+    }
+
+    // MARK: - Selection
+
+    private func setSelected(_ isSelected: Bool, for media: TenorMedia) {
+        if isSelected {
+            selection.add(media)
+        } else {
+            selection.remove(media)
+        }
+        didUpdateSelection()
+    }
+
+    private func didUpdateSelection() {
+        toolbarItemTitle.setSelectionCount(selection.count)
+        navigationController?.setToolbarHidden(dataSource.numberOfAssets() == 0, animated: true)
+
+        // Update badges for visible items (might need to update count)
+        for indexPath in collectionView.indexPathsForVisibleItems {
+            let item = item(at: indexPath.item)
+            let index = selection.index(of: item)
+            if let cell = collectionView.cellForItem(at: indexPath) as? ExternalMediaPickerCollectionCell {
+                cell.setBadge(index == NSNotFound ? nil : .ordered(index: index))
+            }
+        }
+    }
+
+    // MARK: - Actions
+
+    private func buttonCancelTapped() {
+        delegate?.externalMediaPickerViewController(self, didFinishWithSelection: [])
+    }
+
+    @objc private func buttonDoneTapped() {
+        let selection = (collectionView.indexPathsForSelectedItems ?? [])
+            .map { item(at: $0.item) }
+        delegate?.externalMediaPickerViewController(self, didFinishWithSelection: selection)
     }
 
     // MARK: - UICollectionViewDataSource
@@ -113,19 +204,19 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ExternalMediaPickerCollectionCell.self, for: indexPath)!
-        let item = dataSource.media(at: indexPath.row)
-        if let item = item as? TenorMedia {
-            cell.configure(imageURL: item.previewURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
-        } else {
-            fatalError("Unsupported item \(item)")
-        }
+        let item = item(at: indexPath.row)
+        cell.configure(imageURL: item.previewURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
         return cell
     }
 
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO:
+        setSelected(true, for: item(at: indexPath.row))
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        setSelected(false, for: item(at: indexPath.row))
     }
 
     // MARK: - UISearchResultsUpdating
@@ -133,9 +224,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     func updateSearchResults(for searchController: UISearchController) {
         let searchTerm = searchController.searchBar.text ?? ""
         if searchTerm.count < 2 {
-            dataSource.searchCancelled?()
+            dataSource.searchCancelled()
         } else {
-            dataSource.search?(for: searchTerm)
+            dataSource.search(for: searchTerm)
         }
     }
 }
