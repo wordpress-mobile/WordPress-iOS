@@ -5,10 +5,19 @@ import Gifu
 /// (see ``AnimatedImageWrapper``).
 @MainActor
 final class ImageView: UIView {
-    private let imageView = GIFImageView()
+    let imageView = GIFImageView()
+
     private var errorView: UIImageView?
+    private var spinner: UIActivityIndicatorView?
     private let downloader: ImageDownloader = .shared
     private var task: Task<Void, Never>?
+
+    enum LoadingStyle {
+        case background
+        case spinner
+    }
+
+    var loadingStyle = LoadingStyle.background
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,13 +83,18 @@ final class ImageView: UIView {
     }
 
     func setState(_ state: State) {
-        errorView?.isHidden = true
         imageView.isHidden = true
-        backgroundColor = .secondarySystemBackground
+        errorView?.isHidden = true
+        spinner?.stopAnimating()
 
         switch state {
         case .loading:
-            break
+            switch loadingStyle {
+            case .background:
+                backgroundColor = .secondarySystemBackground
+            case .spinner:
+                makeSpinner().startAnimating()
+            }
         case .success(let image):
             if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
                 imageView.animate(withGIFData: data)
@@ -92,6 +106,18 @@ final class ImageView: UIView {
         case .failure:
             makeErrorView().isHidden = false
         }
+    }
+
+    private func makeSpinner() -> UIActivityIndicatorView {
+        if let spinner {
+            return spinner
+        }
+        let spinner = UIActivityIndicatorView()
+        addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewAtCenter(spinner)
+        self.spinner = spinner
+        return spinner
     }
 
     private func makeErrorView() -> UIImageView {

@@ -22,7 +22,7 @@ final class ExternalMediaSelectionTitleView: UIView {
         pinSubviewToAllEdges(buttonViewSelected)
 
         // Make sure it fits when displayed in `UIToolbar`.
-        buttonViewSelected.setTitle(String(format: Strings.toolbarViewSelected, 999999), for: [])
+        buttonViewSelected.setTitle(String(format: Strings.toolbarViewSelected, String(999999)), for: [])
         buttonViewSelected.sizeToFit()
 
         setSelectionCount(0)
@@ -37,7 +37,7 @@ final class ExternalMediaSelectionTitleView: UIView {
         textLabel.isHidden = count != 0
         if count > 0 {
             UIView.performWithoutAnimation {
-                buttonViewSelected.setTitle(String(format: Strings.toolbarViewSelected, count), for: [])
+                buttonViewSelected.setTitle(String(format: Strings.toolbarViewSelected, String(count)), for: [])
                 buttonViewSelected.layoutIfNeeded()
             }
         }
@@ -46,5 +46,5 @@ final class ExternalMediaSelectionTitleView: UIView {
 
 private enum Strings {
     static let toolbarSelectItems = NSLocalizedString("externalMediaPicker.toolbarSelectItemsPrompt", value: "Select Images", comment: "Bottom toolbar title in the selection mode")
-    static let toolbarViewSelected = NSLocalizedString("externalMediaPicker.toolbarViewSelected", value: "View Selected (%d)", comment: "Bottom toolbar title in the selection mode")
+    static let toolbarViewSelected = NSLocalizedString("externalMediaPicker.toolbarViewSelected", value: "View Selected (%@)", comment: "Bottom toolbar title in the selection mode")
 }

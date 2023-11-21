@@ -5,7 +5,7 @@ protocol ExternalMediaPickerViewDelegate: AnyObject {
     func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [TenorMedia])
 }
 
-final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating {
+final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating, MediaPreviewControllerDataSource {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private var collectionViewDataSource: UICollectionViewDiffableDataSource<Int, String>!
@@ -63,8 +63,6 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
 
         searchController.searchBar.becomeFirstResponder()
-
-        // TODO: add fullscreen preview for selection using QuickLookViewController and selection toolbar
     }
 
     override func viewDidLayoutSubviews() {
@@ -133,6 +131,8 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         self.toolbarItems = toolbarItems
+
+        toolbarItemTitle.buttonViewSelected.addTarget(self, action: #selector(buttonPreviewSelectionTapped), for: .touchUpInside)
     }
 
     private func reloadData() {
@@ -196,6 +196,13 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         delegate?.externalMediaPickerViewController(self, didFinishWithSelection: selection)
     }
 
+    @objc private func buttonPreviewSelectionTapped() {
+        let viewController = MediaPreviewController()
+        viewController.dataSource = self
+        let navigation = UINavigationController(rootViewController: viewController)
+        present(navigation, animated: true)
+    }
+
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -228,5 +235,15 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         } else {
             dataSource.search(for: searchTerm)
         }
+    }
+
+    // MARK: - MediaPreviewControllerDataSource
+
+    func numberOfPreviewItems(in controller: MediaPreviewController) -> Int {
+        selection.count
+    }
+
+    func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem {
+        MediaPreviewItem(url: (selection.object(at: index) as! TenorMedia).URL)
     }
 }

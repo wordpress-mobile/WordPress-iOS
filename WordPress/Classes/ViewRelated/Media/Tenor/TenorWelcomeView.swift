@@ -21,7 +21,6 @@ final class TenorWelcomeView: UIView {
         stack.spacing = 24
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
-        stack.setCustomSpacing(64, after: textLabel)
 
         let wrapper = UIStackView(arrangedSubviews: [stack])
         wrapper.alignment = .center
