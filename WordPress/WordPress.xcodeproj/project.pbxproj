@@ -274,6 +274,8 @@
 		084777942AEFFBCC00EC9F85 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */; };
 		084777962AEFFCBE00EC9F85 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */; };
 		084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
+		084BD8B42B090CA80050CD6A /* IconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084BD8B32B090CA80050CD6A /* IconGallery.swift */; };
+		084BD8B52B090CA80050CD6A /* IconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084BD8B32B090CA80050CD6A /* IconGallery.swift */; };
 		084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */; };
 		084FC3B729913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */; };
 		084FC3BC299155C900A17BCF /* JetpackOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */; };
@@ -6003,6 +6005,7 @@
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
 		084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		084A07052848E1820054508A /* FeatureHighlightStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlightStore.swift; sourceTree = "<group>"; };
+		084BD8B32B090CA80050CD6A /* IconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGallery.swift; sourceTree = "<group>"; };
 		084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video-device-gps.m4v"; sourceTree = "<group>"; };
 		084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayViewModelTests.swift; sourceTree = "<group>"; };
 		084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayCoordinator.swift; sourceTree = "<group>"; };
@@ -10222,6 +10225,7 @@
 				08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */,
 				08BB7BB92B06172C0089059D /* LengthGallery.swift */,
 				08BB7BBE2B065AE20089059D /* FontGallery.swift */,
+				084BD8B32B090CA80050CD6A /* IconGallery.swift */,
 			);
 			path = Gallery;
 			sourceTree = "<group>";
@@ -22020,6 +22024,7 @@
 				FEAC916E28001FC4005026E7 /* AvatarTrainView.swift in Sources */,
 				8BB185D224B63D5F00A4CCE8 /* ReaderCardsStreamViewController.swift in Sources */,
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
+				084BD8B42B090CA80050CD6A /* IconGallery.swift in Sources */,
 				0C748B4B2A9D71A100809E1A /* SiteMediaCollectionViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
 				B50C0C5E1EF42A4A00372C65 /* AztecAttachmentViewController.swift in Sources */,
@@ -24583,6 +24588,7 @@
 				FABB22962602FC2C00C8785C /* ApproveComment.swift in Sources */,
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
 				FABB22982602FC2C00C8785C /* PostingActivityCollectionViewCell.swift in Sources */,
+				084BD8B52B090CA80050CD6A /* IconGallery.swift in Sources */,
 				FABB22992602FC2C00C8785C /* NibLoadable.swift in Sources */,
 				FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				FABB229A2602FC2C00C8785C /* BackupListViewController.swift in Sources */,

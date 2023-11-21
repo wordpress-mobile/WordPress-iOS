@@ -21,7 +21,7 @@ public struct PrimaryButton: View {
             action()
         } label: {
             ZStack {
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: Length.Radius.medium)
                     .fill(isEnabled ? Color.DS.Background.brand : Color.DS.Background.quaternary)
                 if isLoading {
                     ProgressView()
@@ -32,7 +32,7 @@ public struct PrimaryButton: View {
                         .font(.body.weight(.semibold))
                 }
             }
-            .frame(height: 50)
+            .frame(height: Length.Padding.max)
         }
         .buttonStyle(ScalingPrimaryButtonStyle())
         .disabled(isLoading)
