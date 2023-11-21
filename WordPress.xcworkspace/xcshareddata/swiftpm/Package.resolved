@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
         "state": {
           "branch": null,
-          "revision": "3b123999de19bf04905bc1dfdb76f817b0f2cc00",
-          "version": "2.1.2"
+          "revision": "35f9e770f54ce62dd8526470f14c6e137cef3eea",
+          "version": "2.1.1"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
         "state": {
           "branch": null,
-          "revision": "a23ded2c91df9156628a6996ab4f347526f17b6b",
-          "version": "2.1.2"
+          "revision": "c21f7bab5ca8eee0a9998bbd17ca1d0eb45d4688",
+          "version": "2.1.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {
           "branch": null,
-          "revision": "54aa8747da6998a94c1e901dd70013b70e804333",
-          "version": "3.4.4"
+          "revision": "4ca8023b820b7d5d5ae1e2637c046e3dab0f45d0",
+          "version": "3.4.2"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/buildkite/test-collector-swift",
         "state": {
           "branch": null,
-          "revision": "6e46839e1a4507ee047acd0896e29b9b278d9e3a",
-          "version": "0.4.0"
+          "revision": "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
+          "version": "0.3.0"
         }
       },
       {
