@@ -218,7 +218,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ExternalMediaPickerCollectionCell.self, for: indexPath)!
         let item = item(at: indexPath.row)
-        cell.configure(imageURL: item.previewURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
+        cell.configure(imageURL: item.thumbnailURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
         return cell
     }
 
@@ -255,6 +255,6 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem {
-        MediaPreviewItem(url: (selection.object(at: index) as! TenorMedia).URL)
+        MediaPreviewItem(url: (selection.object(at: index) as! TenorMedia).largeURL)
     }
 }

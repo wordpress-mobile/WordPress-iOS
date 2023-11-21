@@ -98,8 +98,9 @@ extension StockPhotosMedia: ExportableAsset {
 
 // MARK: - MediaExternalAsset conformance
 
-extension StockPhotosMedia: MediaExternalAsset {
-
+extension StockPhotosMedia: ExternalMediaAsset {
+    var thumbnailURL: URL { thumbnails.thumbnailURL }
+    var largeURL: URL { thumbnails.largeURL }
 }
 
 // MARK: - Decodable conformance

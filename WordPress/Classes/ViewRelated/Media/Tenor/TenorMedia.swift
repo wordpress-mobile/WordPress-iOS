@@ -25,6 +25,15 @@ final class TenorMedia: NSObject {
     }
 }
 
+extension TenorMedia: ExternalMediaAsset {
+    var thumbnailURL: URL { images.staticThumbnailURL }
+    var largeURL: URL { images.largeURL }
+
+    var caption: String {
+        return ""
+    }
+}
+
 // MARK: - Create Tenor media from API GIF Entity
 
 extension TenorMedia {
@@ -99,26 +108,5 @@ extension TenorMedia: WPMediaAsset {
 extension TenorMedia: ExportableAsset {
     var assetMediaType: MediaType {
         return .image
-    }
-}
-
-// MARK: - MediaExternalAsset conformance
-
-extension TenorMedia: MediaExternalAsset {
-    // The URL source for saving into user's media library as well as GIF preview
-    var URL: URL {
-        return images.largeURL
-    }
-
-    var caption: String {
-        return ""
-    }
-}
-
-// Overlay
-extension TenorMedia {
-    // Return the smallest GIF size for previewing
-    var previewURL: URL {
-        return images.staticThumbnailURL
     }
 }

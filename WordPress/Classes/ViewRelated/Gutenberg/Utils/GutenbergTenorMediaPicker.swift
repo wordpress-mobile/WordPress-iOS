@@ -62,7 +62,7 @@ extension GutenbergTenorMediaPicker: ExternalMediaPickerViewDelegate {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)
+            return MediaInfo(id: mediaUploadID, url: asset.largeURL.absoluteString, type: media.mediaTypeString)
         }
 
         callback(mediaInfo)
@@ -73,7 +73,7 @@ extension GutenbergTenorMediaPicker: ExternalMediaPickerViewDelegate {
     func appendOnNewBlocks(assets: ArraySlice<TenorMedia>) {
         assets.forEach {
             if let media = self.mediaInserter.insert(exportableAsset: $0, source: .tenor) {
-                self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
+                self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.largeURL, type: .image)
             }
         }
     }
