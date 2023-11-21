@@ -58,18 +58,17 @@ class JetpackRedirector {
 
     // MARK: - SKStoreProductViewController navigation bar appearance
 
-    /// Sets SKStoreProductViewController navigation bar color as system background color
+    /// Sets SKStoreProductViewController navigation bar translucent
     ///
     /// Application's global navigation appearance settings interferes with SKStoreProductViewController
     /// which requires for this temporary workaround
     private static func configureNavigationBarAppearance(_ controller: SKStoreProductViewController) {
-        /// Temporarily override global navigation bar color to force non-transparent navigation bar
-        let previousNavigationBarBackgroundColor = UINavigationBar.appearance().backgroundColor
-        UINavigationBar.appearance().backgroundColor  = UIColor.systemBackground
+        let previousisTranslucentValue = UINavigationBar.appearance().isTranslucent
+        UINavigationBar.appearance().isTranslucent = true
 
-        /// Reset to default navigation bar color
+        /// Reset to default translucent value
         storeProductViewControllerObserver = StoreProductViewControllerObserver(onDismiss: {
-            UINavigationBar.appearance().backgroundColor = previousNavigationBarBackgroundColor
+            UINavigationBar.appearance().isTranslucent = previousisTranslucentValue
             storeProductViewControllerObserver = nil
         })
 
