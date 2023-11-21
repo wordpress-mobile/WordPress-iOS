@@ -62,7 +62,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
         dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
 
-        searchController.searchBar.becomeFirstResponder()
+        DispatchQueue.main.async {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -108,7 +110,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         searchController.searchResultsUpdater = self
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.autocorrectionType = .no
+        searchController.hidesNavigationBarDuringPresentation = false
 
+        navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
     }
 
@@ -171,8 +175,10 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     private func didUpdateSelection() {
-        toolbarItemTitle.setSelectionCount(selection.count)
-        navigationController?.setToolbarHidden(dataSource.numberOfAssets() == 0, animated: true)
+        if allowsMultipleSelection {
+            toolbarItemTitle.setSelectionCount(selection.count)
+            navigationController?.setToolbarHidden(dataSource.numberOfAssets() == 0, animated: true)
+        }
 
         // Update badges for visible items (might need to update count)
         for indexPath in collectionView.indexPathsForVisibleItems {
@@ -219,7 +225,12 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        setSelected(true, for: item(at: indexPath.row))
+        let item = item(at: indexPath.row)
+        if allowsMultipleSelection {
+            setSelected(true, for: item)
+        } else {
+            delegate?.externalMediaPickerViewController(self, didFinishWithSelection: [item])
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

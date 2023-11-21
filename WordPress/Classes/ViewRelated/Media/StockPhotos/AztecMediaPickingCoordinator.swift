@@ -3,9 +3,8 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & ExternalMediaPickerViewDelegate
     private weak var delegate: PickersDelegate?
-    private var tenor: TenorPicker?
     private let stockPhotos = StockPhotosPicker()
 
     init(delegate: PickersDelegate) {
@@ -66,10 +65,8 @@ final class AztecMediaPickingCoordinator {
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
-        let picker = TenorPicker()
-        picker.delegate = self
-        picker.presentPicker(origin: origin, blog: blog)
-        tenor = picker
+        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: true)
+            .showFreeGIFPicker(blog: blog, delegate: self)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
@@ -81,9 +78,8 @@ final class AztecMediaPickingCoordinator {
     }
 }
 
-extension AztecMediaPickingCoordinator: TenorPickerDelegate {
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
-        delegate?.tenorPicker(picker, didFinishPicking: assets)
-        tenor = nil
+extension AztecMediaPickingCoordinator: ExternalMediaPickerViewDelegate {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [TenorMedia]) {
+        delegate?.externalMediaPickerViewController(viewController, didFinishWithSelection: selection)
     }
 }

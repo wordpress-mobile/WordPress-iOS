@@ -1,7 +1,6 @@
 import Gutenberg
 
 class GutenbergTenorMediaPicker {
-    private var tenor: TenorPicker?
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?
     private let mediaInserter: GutenbergMediaInserterHelper
     private unowned var gutenberg: Gutenberg
@@ -13,22 +12,22 @@ class GutenbergTenorMediaPicker {
     }
 
     func presentPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let picker = TenorPicker()
-        tenor = picker
-        picker.allowMultipleSelection = true
-        picker.delegate = self
         mediaPickerCallback = callback
-        picker.presentPicker(origin: origin, blog: post.blog)
         self.multipleSelection = multipleSelection
+
+        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: multipleSelection)
+            .showFreeGIFPicker(blog: post.blog, delegate: self)
     }
 }
 
-extension GutenbergTenorMediaPicker: TenorPickerDelegate {
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+extension GutenbergTenorMediaPicker: ExternalMediaPickerViewDelegate {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [TenorMedia]) {
         defer {
             mediaPickerCallback = nil
-            tenor = nil
         }
+
+        viewController.presentingViewController?.dismiss(animated: true)
+
         guard assets.isEmpty == false else {
             mediaPickerCallback?(nil)
             return
