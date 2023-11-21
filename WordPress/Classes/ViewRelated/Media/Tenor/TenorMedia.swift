@@ -1,5 +1,4 @@
 import MobileCoreServices
-import WPMediaPicker
 import UniformTypeIdentifiers
 
 struct TenorImageCollection {
@@ -28,10 +27,8 @@ final class TenorMedia: NSObject {
 extension TenorMedia: ExternalMediaAsset {
     var thumbnailURL: URL { images.staticThumbnailURL }
     var largeURL: URL { images.largeURL }
-
-    var caption: String {
-        return ""
-    }
+    var caption: String { "" }
+    var assetMediaType: MediaType { .image }
 }
 
 // MARK: - Create Tenor media from API GIF Entity
@@ -55,58 +52,5 @@ extension TenorMedia {
                                           largeSize: largeSize)
 
         self.init(id: gif.id, name: gif.title ?? "", images: images, date: gif.created)
-    }
-}
-
-// MARK: - WPMediaAsset
-
-extension TenorMedia: WPMediaAsset {
-    func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
-        // We don't need to download any image here, leave it for the overlay to handle
-        return 0
-    }
-
-    func cancelImageRequest(_ requestID: WPMediaRequestID) {
-        // Nothing to do
-    }
-
-    func videoAsset(completionHandler: @escaping WPMediaAssetBlock) -> WPMediaRequestID {
-        return 0
-    }
-
-    func assetType() -> WPMediaType {
-        return .image
-    }
-
-    func duration() -> TimeInterval {
-        return 0
-    }
-
-    func baseAsset() -> Any {
-        return self
-    }
-
-    func identifier() -> String {
-        return id
-    }
-
-    func date() -> Date {
-        return updatedDate
-    }
-
-    func pixelSize() -> CGSize {
-        return images.largeSize
-    }
-
-    func utTypeIdentifier() -> String? {
-        return UTType.gif.identifier
-    }
-}
-
-// MARK: - ExportableAsset conformance
-
-extension TenorMedia: ExportableAsset {
-    var assetMediaType: MediaType {
-        return .image
     }
 }
