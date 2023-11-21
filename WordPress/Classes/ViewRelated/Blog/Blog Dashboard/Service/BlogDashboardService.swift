@@ -7,12 +7,23 @@ final class BlogDashboardService {
     private let persistence: BlogDashboardPersistence
     private let postsParser: BlogDashboardPostsParser
     private let repository: UserPersistentRepository
+    private let isJetpack: Bool
+    private let isDotComAvailable: Bool
+    private let shouldShowJetpackFeatures: Bool
 
-    init(managedObjectContext: NSManagedObjectContext,
-         remoteService: DashboardServiceRemote? = nil,
-         persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
-         repository: UserPersistentRepository = UserDefaults.standard,
-         postsParser: BlogDashboardPostsParser? = nil) {
+    init(
+        managedObjectContext: NSManagedObjectContext,
+        isJetpack: Bool,
+        isDotComAvailable: Bool,
+        shouldShowJetpackFeatures: Bool,
+        remoteService: DashboardServiceRemote? = nil,
+        persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
+        repository: UserPersistentRepository = UserDefaults.standard,
+        postsParser: BlogDashboardPostsParser? = nil
+    ) {
+        self.isJetpack = isJetpack
+        self.isDotComAvailable = isDotComAvailable
+        self.shouldShowJetpackFeatures = shouldShowJetpackFeatures
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
         self.repository = repository
@@ -87,10 +98,20 @@ private extension BlogDashboardService {
     func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
         let personalizationService = BlogDashboardPersonalizationService(repository: repository, siteID: dotComID)
         var cards: [DashboardCardModel] = DashboardCard.allCases.compactMap { card in
-            guard personalizationService.isEnabled(card),
-                  card.shouldShow(for: blog, apiResponse: entity) else {
+            guard personalizationService.isEnabled(card) else {
                 return nil
             }
+
+            guard card.shouldShow(
+                for: blog,
+                apiResponse: entity,
+                isJetpack: isJetpack,
+                isDotComAvailable: isDotComAvailable,
+                shouldShowJetpackFeatures: shouldShowJetpackFeatures
+            ) else {
+                return nil
+            }
+
             return DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
         }
         if cards.isEmpty || cards.map(\.cardType) == [.personalize] {
