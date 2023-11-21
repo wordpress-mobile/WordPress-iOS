@@ -86,6 +86,8 @@ final class MediaItemViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        // Using a constant instead of a `multiplier` because the multiplier-based
+        // constraint doesn't seem to go into effect until after `viewDidLayoutSubviews`.
         headerMaxHeightConstraint.constant = view.bounds.height * 0.75
         tableView.sizeToFitHeaderView()
     }

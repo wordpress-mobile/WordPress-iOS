@@ -94,18 +94,13 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteSwitcherTapped() {
-        guard let blogListController = BlogListViewController(configuration: .defaultConfig,
-                                                              meScenePresenter: meScenePresenter) else {
-            return
-        }
+        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
 
         blogListController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let blog = selectedBlog else {
-                return
-            }
-            self?.switchToBlog(blog)
-            controller?.dismiss(animated: true) {
-                self?.onBlogListDismiss?()
+            guard let self else { return }
+            self.switchToBlog(selectedBlog)
+            controller.dismiss(animated: true) {
+                self.onBlogListDismiss?()
             }
         }
 

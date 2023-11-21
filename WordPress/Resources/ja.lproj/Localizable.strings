@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-02 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-11-14 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -151,9 +151,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@、%2$@。";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d件の投稿。";
@@ -894,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "このページを完全に削除しますか ?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "この投稿を完全に削除してもよいですか ?";
 
@@ -927,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "レビュー待ちとして送信してもよいですか ?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "本当にこのページをゴミ箱に移動しますか ?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "この投稿を本当にゴミ箱へ移動してよいですか ?";
@@ -1265,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "By ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "作成者 : %@。";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "継続すると、利用規約に合意したことになります。";
 
@@ -1339,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1359,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "キャンセル";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "アップロードのキャンセル";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1766,9 +1750,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "コミュニティ & 非営利";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "コンパクト";
-
 /* The action is completed */
 "Completed" = "完了";
 
@@ -1953,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "コピーしたブロック";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "リンクをコピー";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "コメントへのリンクをコピー";
@@ -2327,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "メニューを削除";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "完全に削除する";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "完全に削除しますか ?";
 
 /* Button label for deleting the current site
@@ -2638,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "投稿の下書きを作成して公開してください。";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "下書き";
 
 /* No comment provided by engineer. */
@@ -2650,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "ドラッグしてフォーカルポイントを調整";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "複製";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "ブロックを複製";
@@ -2668,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "各ブロックには独自の設定があります。 確認するには、ブロックをタップします。 画面下部にあるツールバーに設定が表示されます。";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "編集";
@@ -3034,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "毎日%@時";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "誰でも";
-
 /* Example story title description */
 "Example story title" = "ストーリーのタイトルの例";
 
@@ -3045,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "抜粋の長さ (単語数)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "抜粋 :%@。";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "抜粋は、手動で書かれたコンテンツの要約です (オプション)。";
@@ -3058,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "フルスクリーン表示を終了";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "展開表示";
 
 /* Accessibility hint */
@@ -3630,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "ホーム";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "ホームページ";
 
 /* Label for Homepage Settings site settings section
@@ -4216,9 +4173,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "コメント内のリンク";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "リストスタイル";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "読み込む";
 
@@ -4306,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "地域サービス";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "ローカルでの変更";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4471,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "アップロードできる最大の動画サイズ";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4562,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "メッセージ";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "メタデータ";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4584,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "月・年ごと";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "続き";
 
 /* Action button to display more available options
@@ -4648,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "メニュー項目を移動";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "ドラフトに移動";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "ゴミ箱へ移動";
 
@@ -4688,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "マイサイト";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "自分のサイト";
 
 /* Siri Suggestion to open My Sites */
@@ -4958,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "まだ通知はありません";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "検索に一致するページはありません";
 
 /* Text displayed when search for plugins returns no results */
@@ -4979,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "最近このタグで公開された投稿はありません。";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "検索に一致する投稿はありません";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "投稿がありません。";
@@ -5347,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "ページ";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "ページが下書きに復元されました";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "ページが公開済みに復元されました";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "ページが予約済みに復元されました";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "ページ設定";
@@ -5443,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "承認待ち";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "レビュー待ち";
 
 /* Noun. Title of the people management feature.
@@ -5666,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "投稿フォーマット";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "投稿を下書きとして復元しました";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "公開した投稿を復元しました";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "投稿を予約済みとして復元しました";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "投稿設定";
@@ -5751,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "投稿とページ";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "投稿ページ";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "投稿ページが正常に更新されました";
@@ -5846,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "カリフォルニア州のユーザーへのプライバシー通知";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "プライベート";
 
 /* No comment provided by engineer. */
@@ -5897,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "公開日";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "すぐに公開";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "今すぐ公開";
 
@@ -5920,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "公開済み";
 
 /* Precedes the name of the blog just posted on */
@@ -6217,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "再送信";
 
-/* Title of the reset button */
-"Reset" = "リセット";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "アクティビティタイプフィルターを再設定";
 
@@ -6274,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6391,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "保存済みの投稿";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "保存しました。";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "この投稿をブックマークする。";
 
@@ -6404,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "投稿を保存中…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "保存中...";
 
@@ -6494,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "検索または URL を入力";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "ページを検索";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "投稿を検索";
 
 /* No comment provided by engineer. */
 "Search settings" = "検索設定";
@@ -6710,18 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "サービス";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "親の設定";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "アイキャッチ画像として設定";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "ホームページに設定する";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "投稿ページとして設定";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "アイキャッチ画像として設定";
@@ -6766,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7152,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "固定ホームページ";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7183,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "先頭固定表示";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "先頭固定表示。";
 
 /* User action to stop upload. */
 "Stop upload" = "アップロードを停止";
@@ -7243,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "サポート";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "サイト切り替え";
 
 /* Switches the Editor to HTML Mode */
@@ -7618,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "削除しようとしているユーザーはこのサイトの所有者です。ヘルプが必要な場合はサポートにご連絡ください。";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "アプリに保存されたユーザー名またはパスワードが古くなっているのかもしれません。設定画面でパスワードを再入力し、もう一度お試しください。";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -8027,9 +7911,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "選択したメディアをゴミ箱に移動";
 
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "このページをゴミ箱に移動しますか ?";
-
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "ゴミ箱に移動しますか ?";
 
@@ -8147,9 +8028,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "接続できない";
 
-/* An error message. */
-"Unable to Connect" = "連携できません";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "ストーリーエディターを作成できません";
 
@@ -8230,12 +8108,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "リンクを共有できません";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "オフライン中は、ページをゴミ箱に移動できません。 後ほど、もう一度お試しください。";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "オフライン中は、投稿をゴミ箱に移動できません。後ほど、もう一度お試しください。";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "サイト通知を無効にできません";
@@ -8604,8 +8476,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "動画";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -9883,6 +9753,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "非表示";
 
+/* Domain Management Screen Title */
+"domain.management.title" = "すべてのドメイン";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "カスタムドメインが使用可能になるまでに最大で30分かかる場合があります。";
 
@@ -9894,39 +9767,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "おめでとうございます ! サイトが公開されました。";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "アクションが必要";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "有効";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "設定を完了";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "エラー";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "期限切れ";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "まもなく期限切れ";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "失敗";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "進行中";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "更新";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "メールを確認";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "認証中";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "こちらもおすすめ";
@@ -10656,9 +10496,6 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "その他";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Blaze を使って宣伝";
-
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
 
@@ -10730,9 +10567,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "投稿をゴミ箱へ移動しました";
-
-/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
-"postsList.movePostToTrash.undo" = "取り消す";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
