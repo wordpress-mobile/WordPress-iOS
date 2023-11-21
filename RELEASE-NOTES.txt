@@ -1,3 +1,10 @@
+23.8
+-----
+
+* [*] Integrate native photos picker (`PHPickerViewControlle`) in Story Editor [#22059]
+* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
+* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+
 23.7
 -----
 * [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
@@ -23,7 +30,6 @@
 * [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
-* [*] Fix an issue with GIF uploads [#22025]
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
 * [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
 * [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]

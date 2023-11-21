@@ -2,7 +2,6 @@ import Foundation
 import Photos
 import PhotosUI
 import WordPressFlux
-import WPMediaPicker
 
 // MARK: - PostSettingsViewController (Featured Image Menu)
 
@@ -52,25 +51,6 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
                 self.setFeaturedImage(with: image)
             }
         }
-    }
-}
-
-extension PostSettingsViewController: MediaPickerViewControllerDelegate {
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        guard !assets.isEmpty else { return }
-
-        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added"])
-
-        if let media = assets.first as? Media {
-            setFeaturedImage(media: media)
-        }
-
-        dismiss(animated: true)
-        reloadFeaturedImageCell()
-    }
-
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        dismiss(animated: true)
     }
 }
 

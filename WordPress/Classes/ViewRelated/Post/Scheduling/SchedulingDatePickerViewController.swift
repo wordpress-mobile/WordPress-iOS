@@ -25,7 +25,7 @@ class DateCoordinator {
 
 // MARK: - Date Picker
 
-class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
+class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
     var coordinator: DateCoordinator? = nil
 
@@ -125,18 +125,6 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         } else {
             navigationItem.leftBarButtonItems = [publishButton]
         }
-    }
-}
-
-extension SchedulingDatePickerViewController {
-    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
-        presentationController.delegate = self
-        return presentationController
-    }
-
-    @objc func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return traitCollection.verticalSizeClass == .compact ? .overFullScreen : .none
     }
 }
 
