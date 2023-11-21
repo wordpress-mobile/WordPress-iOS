@@ -1,13 +1,6 @@
 import Foundation
 import JetpackStatsWidgetsCore
 
-enum WidgetDataReadError: Error {
-    case jetpackFeatureDisabled
-    case noData
-    case noSite
-    case loggedOut
-}
-
 final class WidgetDataReader<T: HomeWidgetData> {
     let userDefaults: UserDefaults?
     let cacheReader: WidgetDataCacheReader
@@ -35,25 +28,10 @@ final class WidgetDataReader<T: HomeWidgetData> {
             return .failure(.noData)
         }
 
-        if let selectedSite = configuration.site?.identifier,
-           let widgetData: T = cacheReader.widgetData(for: selectedSite) {
-            return .success(widgetData)
-        } else if let defaultSiteID = defaultSiteID,
-                  let widgetData: T = cacheReader.widgetData(for: String(defaultSiteID)) {
-            return .success(widgetData)
-        } else {
-            let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-
-            if loggedIn {
-                /// In rare cases there could be no default site and no defaultSiteId set
-                if let firstSiteData: T = cacheReader.widgetData()?.sorted(by: { $0.siteID < $1.siteID }).first {
-                    return .success(firstSiteData)
-                } else {
-                    return .failure(.noSite)
-                }
-            } else {
-                return .failure(.loggedOut)
-            }
-        }
+        return cacheReader.widgetData(
+            forSiteIdentifier: configuration.site?.identifier,
+            defaultSiteID: defaultSiteID,
+            userLoggedIn: defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+        )
     }
 }
