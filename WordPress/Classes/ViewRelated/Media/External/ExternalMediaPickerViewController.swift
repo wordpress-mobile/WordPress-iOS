@@ -2,7 +2,7 @@ import UIKit
 
 protocol ExternalMediaPickerViewDelegate: AnyObject {
     /// If the user cancels the flow, the selection is empty.
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [TenorMedia])
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset])
 }
 
 final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating, MediaPreviewControllerDataSource {
@@ -14,10 +14,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     private let toolbarItemTitle = ExternalMediaSelectionTitleView()
     private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
 
-    private let dataSource: TenorDataSource
+    private let dataSource: ExternalMediaDataSource
+    private var assets: [String: ExternalMediaAsset] = [:]
     private var allowsMultipleSelection: Bool
-    private var selection = NSMutableOrderedSet()
-    private var observerKey: NSObjectProtocol?
+    private var selection = NSMutableOrderedSet() // of String
+    private var isFirstAppearance = true
 
     /// A view to show when the screen is first open and the search query
     /// wasn't added.
@@ -25,15 +26,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     weak var delegate: ExternalMediaPickerViewDelegate?
 
-    init(dataSource: TenorDataSource,
+    init(dataSource: ExternalMediaDataSource,
          allowsMultipleSelection: Bool = false) {
         self.dataSource = dataSource
         self.allowsMultipleSelection = allowsMultipleSelection
         super.init(nibName: nil, bundle: nil)
-    }
-
-    deinit {
-        observerKey.map(dataSource.unregisterChangeObserver)
     }
 
     required init?(coder: NSCoder) {
@@ -55,15 +52,17 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
             view.pinSubviewToAllEdges(welcomeView)
         }
 
-        observerKey = dataSource.registerChangeObserverBlock { [weak self] _, _, _, _, _ in
-            self?.reloadData()
-        }
-
+        dataSource.onUpdatedAssets = { [weak self] in self?.didUpdateAssets() }
         dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
         dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
+    }
 
-        DispatchQueue.main.async {
-            self.searchController.searchBar.becomeFirstResponder()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if isFirstAppearance {
+            isFirstAppearance = false
+            searchController.searchBar.becomeFirstResponder()
         }
     }
 
@@ -139,19 +138,25 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         toolbarItemTitle.buttonViewSelected.addTarget(self, action: #selector(buttonPreviewSelectionTapped), for: .touchUpInside)
     }
 
-    private func reloadData() {
+    private func didUpdateAssets() {
+        self.assets = [:]
+        for asset in dataSource.assets {
+            self.assets[asset.id] = asset
+        }
+
         var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
         snapshot.appendSections([0])
-        snapshot.appendItems(dataSource.tenorMedia.map(\.id), toSection: 0)
+        let assetIDs = dataSource.assets.map(\.id)
+        snapshot.appendItems(assetIDs, toSection: 0)
         collectionViewDataSource.apply(snapshot, animatingDifferences: false)
 
-        let remaning = NSOrderedSet(array: dataSource.tenorMedia)
+        let remaning = NSOrderedSet(array: assetIDs)
         selection.intersect(remaning)
         didUpdateSelection()
     }
 
     private func didChangeLoading(_ isLoading: Bool) {
-        if isLoading && dataSource.numberOfAssets() == 0 {
+        if isLoading && dataSource.assets.isEmpty {
             activityIndicator.startAnimating()
             welcomeView?.isHidden = true
         } else {
@@ -159,17 +164,13 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         }
     }
 
-    private func item(at index: Int) -> TenorMedia {
-        dataSource.media(at: index) as! TenorMedia
-    }
-
     // MARK: - Selection
 
-    private func setSelected(_ isSelected: Bool, for media: TenorMedia) {
+    private func setSelected(_ isSelected: Bool, for asset: ExternalMediaAsset) {
         if isSelected {
-            selection.add(media)
+            selection.add(asset.id)
         } else {
-            selection.remove(media)
+            selection.remove(asset.id)
         }
         didUpdateSelection()
     }
@@ -177,13 +178,13 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     private func didUpdateSelection() {
         if allowsMultipleSelection {
             toolbarItemTitle.setSelectionCount(selection.count)
-            navigationController?.setToolbarHidden(dataSource.numberOfAssets() == 0, animated: true)
+            navigationController?.setToolbarHidden(dataSource.assets.isEmpty, animated: true)
         }
 
         // Update badges for visible items (might need to update count)
         for indexPath in collectionView.indexPathsForVisibleItems {
-            let item = item(at: indexPath.item)
-            let index = selection.index(of: item)
+            let item = dataSource.assets[indexPath.item]
+            let index = selection.index(of: item.id)
             if let cell = collectionView.cellForItem(at: indexPath) as? ExternalMediaPickerCollectionCell {
                 cell.setBadge(index == NSNotFound ? nil : .ordered(index: index))
             }
@@ -197,8 +198,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     @objc private func buttonDoneTapped() {
-        let selection = (collectionView.indexPathsForSelectedItems ?? [])
-            .map { item(at: $0.item) }
+
+
+        let selection = (selection.array as! [String]).compactMap { assets[$0] }
         delegate?.externalMediaPickerViewController(self, didFinishWithSelection: selection)
     }
 
@@ -212,12 +214,12 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        dataSource.numberOfAssets()
+        dataSource.assets.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ExternalMediaPickerCollectionCell.self, for: indexPath)!
-        let item = item(at: indexPath.row)
+        let item = dataSource.assets[indexPath.item]
         cell.configure(imageURL: item.thumbnailURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
         return cell
     }
@@ -225,7 +227,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = item(at: indexPath.row)
+        let item = dataSource.assets[indexPath.item]
         if allowsMultipleSelection {
             setSelected(true, for: item)
         } else {
@@ -234,18 +236,20 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        setSelected(false, for: item(at: indexPath.row))
+        setSelected(false, for: dataSource.assets[indexPath.item])
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
+            dataSource.loadMore()
+        }
     }
 
     // MARK: - UISearchResultsUpdating
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchTerm = searchController.searchBar.text ?? ""
-        if searchTerm.count < 2 {
-            dataSource.searchCancelled()
-        } else {
-            dataSource.search(for: searchTerm)
-        }
+        dataSource.search(for: searchTerm)
     }
 
     // MARK: - MediaPreviewControllerDataSource
@@ -254,7 +258,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         selection.count
     }
 
-    func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem {
-        MediaPreviewItem(url: (selection.object(at: index) as! TenorMedia).largeURL)
+    func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem? {
+        guard let id = selection.object(at: index) as? String,
+              let asset = assets[id] else {
+            return nil
+        }
+        return MediaPreviewItem(url: asset.largeURL)
     }
 }

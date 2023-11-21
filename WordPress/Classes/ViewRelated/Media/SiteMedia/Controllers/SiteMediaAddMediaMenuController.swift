@@ -83,7 +83,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
 
     // MARK: - ExternalMediaPickerViewDelegate
 
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [TenorMedia]) {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
         viewController.presentingViewController?.dismiss(animated: true)
         for asset in assets {
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)

@@ -2,7 +2,7 @@ import UIKit
 
 protocol MediaPreviewControllerDataSource: AnyObject {
     func numberOfPreviewItems(in controller: MediaPreviewController) -> Int
-    func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem
+    func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem?
 }
 
 struct MediaPreviewItem {

@@ -1,13 +1,14 @@
-import WPMediaPicker
+import Foundation
 
 /// Data Source for Tenor
-final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
+final class TenorDataSource: ExternalMediaDataSource {
+    private(set) var assets: [ExternalMediaAsset] = []
+
     fileprivate static let paginationThreshold = 10
 
-    private(set) var tenorMedia = [TenorMedia]()
-    var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: TenorDataLoader?
 
+    var onUpdatedAssets: (() -> Void)?
     var onStartLoading: (() -> Void)?
     var onStopLoading: (() -> Void)?
 
@@ -16,21 +17,13 @@ final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     private(set) var searchQuery: String = ""
 
     init(service: TenorService) {
-        super.init()
         self.dataLoader = TenorDataLoader(service: service, delegate: self)
     }
 
-    func clearSearch(notifyObservers shouldNotify: Bool) {
-        tenorMedia.removeAll()
-        if shouldNotify {
-            notifyObservers()
-        }
-    }
+    func search(for searchText: String) {
+        searchQuery = searchText
 
-    func search(for searchText: String?) {
-        searchQuery = searchText ?? ""
-
-        guard searchText?.isEmpty == false else {
+        guard searchQuery.count > 1 else {
             clearSearch(notifyObservers: true)
             scheduler.cancel()
             return
@@ -47,119 +40,19 @@ final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
         dataLoader?.search(params)
     }
 
-    func numberOfGroups() -> Int {
-        return 1
-    }
-
-    func group(at index: Int) -> WPMediaGroup {
-        return TenorMediaGroup()
-    }
-
-    func selectedGroup() -> WPMediaGroup? {
-        return TenorMediaGroup()
-    }
-
-    func numberOfAssets() -> Int {
-        return tenorMedia.count
-    }
-
-    func media(at index: Int) -> WPMediaAsset {
-        fetchMoreContentIfNecessary(index)
-        return tenorMedia[index]
-    }
-
-    func media(withIdentifier identifier: String) -> WPMediaAsset? {
-        return tenorMedia.filter { $0.identifier() == identifier }.first
-    }
-
-    func registerChangeObserverBlock(_ callback: @escaping WPMediaChangesBlock) -> NSObjectProtocol {
-        let blockKey = UUID().uuidString
-        observers[blockKey] = callback
-        return blockKey as NSString
-    }
-
-    func unregisterChangeObserver(_ blockKey: NSObjectProtocol) {
-        guard let key = blockKey as? String else {
-            assertionFailure("blockKey must be of type String")
-            return
+    private func clearSearch(notifyObservers shouldNotify: Bool) {
+        assets.removeAll()
+        if shouldNotify {
+            onUpdatedAssets?()
         }
-        observers.removeValue(forKey: key)
     }
 
-    func registerGroupChangeObserverBlock(_ callback: @escaping WPMediaGroupChangesBlock) -> NSObjectProtocol {
-        // The group never changes
-        return NSNull()
-    }
-
-    func unregisterGroupChangeObserver(_ blockKey: NSObjectProtocol) {
-        // The group never changes
-    }
-
-    func loadData(with options: WPMediaLoadOptions, success successBlock: WPMediaSuccessBlock?, failure failureBlock: WPMediaFailureBlock? = nil) {
-        successBlock?()
-    }
-
-    func mediaTypeFilter() -> WPMediaType {
-        return .image
-    }
-
-    func ascendingOrdering() -> Bool {
-        return true
-    }
-
-    func searchCancelled() {
-        searchQuery = ""
-        clearSearch(notifyObservers: true)
-    }
-
-    // MARK: Unused protocol methods
-
-    func setSelectedGroup(_ group: WPMediaGroup) {
-        //
-    }
-
-    func add(_ image: UIImage, metadata: [AnyHashable: Any]?, completionBlock: WPMediaAddedBlock? = nil) {
-        //
-    }
-
-    func addVideo(from url: URL, completionBlock: WPMediaAddedBlock? = nil) {
-        //
-    }
-
-    func setMediaTypeFilter(_ filter: WPMediaType) {
-        //
-    }
-
-    func setAscendingOrdering(_ ascending: Bool) {
-        //
-    }
-}
-
-// MARK: - Helpers
-
-extension TenorDataSource {
-    private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
-        DispatchQueue.main.async {
-            self.observers.forEach {
-                $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
-            }
-        }
+    func loadMore() {
+        dataLoader?.loadNextPage()
     }
 }
 
 // MARK: - Pagination
-
-extension TenorDataSource {
-    fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
-        if shouldLoadMore(index) {
-            dataLoader?.loadNextPage()
-        }
-    }
-
-    private func shouldLoadMore(_ index: Int) -> Bool {
-        return index + type(of: self).paginationThreshold >= numberOfAssets()
-    }
-}
 
 extension TenorDataSource: TenorDataLoaderDelegate {
     func didLoad(media: [TenorMedia], reset: Bool) {
@@ -172,26 +65,12 @@ extension TenorDataSource: TenorDataLoaderDelegate {
             return
         }
 
+        assert(Thread.isMainThread)
         if reset {
-            overwriteMedia(with: media)
+            self.assets = media
         } else {
-            appendMedia(with: media)
+            self.assets += media
         }
-    }
-
-    private func overwriteMedia(with media: [TenorMedia]) {
-        tenorMedia = media
-        notifyObservers(incremental: false)
-    }
-
-    private func appendMedia(with media: [TenorMedia]) {
-        let currentMaxIndex = tenorMedia.count
-        let newMaxIndex = currentMaxIndex + media.count - 1
-
-        let isIncremental = currentMaxIndex != 0
-        let insertedIndexes = IndexSet(integersIn: currentMaxIndex...newMaxIndex)
-
-        tenorMedia.append(contentsOf: media)
-        notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
+        onUpdatedAssets?()
     }
 }

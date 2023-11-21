@@ -79,7 +79,7 @@ final class AztecMediaPickingCoordinator {
 }
 
 extension AztecMediaPickingCoordinator: ExternalMediaPickerViewDelegate {
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [TenorMedia]) {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset]) {
         delegate?.externalMediaPickerViewController(viewController, didFinishWithSelection: selection)
     }
 }
