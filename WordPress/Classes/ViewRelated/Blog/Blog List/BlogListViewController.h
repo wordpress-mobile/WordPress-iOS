@@ -5,18 +5,22 @@
 
 @protocol ScenePresenter;
 
-@interface BlogListViewController : UIViewController
+NS_ASSUME_NONNULL_BEGIN
 
-@property (nonatomic, strong) Blog *selectedBlog;
+@interface BlogListViewController: UIViewController
+
+@property (nullable, nonatomic, strong) Blog *selectedBlog;
 @property (nonatomic, strong) BlogListConfiguration *configuration;
-@property (nonatomic, strong, nullable) id<ScenePresenter> meScenePresenter;
-@property (nonatomic, copy) void (^blogSelected)(BlogListViewController* blogListViewController, Blog* blog);
+@property (nullable, nonatomic, strong) id<ScenePresenter> meScenePresenter;
+@property (nullable, nonatomic, copy) void (^blogSelected)(BlogListViewController* blogListViewController, Blog* blog);
 
-- (id)initWithConfiguration:(BlogListConfiguration *)configuration
-           meScenePresenter:(id<ScenePresenter>)meScenePresenter;
+- (instancetype)initWithConfiguration:(BlogListConfiguration *)configuration
+                     meScenePresenter:(nullable id<ScenePresenter>)meScenePresenter;
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
 - (void)showLoading;
 - (void)hideLoading;
 
 @end
+
+NS_ASSUME_NONNULL_END

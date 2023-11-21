@@ -1,7 +1,10 @@
+// Notice the import is not @testable.
+// Let's test the behavior of the public interface and interact with the library the same a consumer would.
+import JetpackStatsWidgetsCore
 import XCTest
-@testable import WordPress
 
 final class WidgetUrlSourceTests: XCTestCase {
+
     func testHomeScreenWidgetSource() throws {
         let url = try XCTUnwrap(URL(string: "https://test"))
         let widgetUrl = url.appendingSource(.homeScreenWidget)
@@ -12,17 +15,5 @@ final class WidgetUrlSourceTests: XCTestCase {
         let url = try XCTUnwrap(URL(string: "https://test"))
         let widgetUrl = url.appendingSource(.lockScreenWidget)
         XCTAssertEqual(widgetUrl.absoluteString, "https://test?source=lockscreen_widget")
-    }
-
-    func testHomeScreenWidgetSourceType() {
-        let source = WidgetUrlSource.homeScreenWidget.rawValue
-        let deepLinkSource = DeepLinkSource(sourceName: source)
-        XCTAssertEqual(deepLinkSource, .widget)
-    }
-
-    func testLockScreenWidgetSourceType() {
-        let source = WidgetUrlSource.lockScreenWidget.rawValue
-        let deepLinkSource = DeepLinkSource(sourceName: source)
-        XCTAssertEqual(deepLinkSource, .lockScreenWidget)
     }
 }

@@ -389,10 +389,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showPostingActivityDetails() {
-        guard let viewModel = viewModel else {
-            return
-        }
-
         let postingActivityViewModel = PostingActivityViewModel(insightsStore: insightsStore)
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard { coder in
             return PostingActivityViewController(coder: coder, viewModel: postingActivityViewModel)

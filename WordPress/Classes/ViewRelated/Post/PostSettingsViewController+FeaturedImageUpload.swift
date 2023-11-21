@@ -2,7 +2,6 @@ import Foundation
 import Photos
 import PhotosUI
 import WordPressFlux
-import WPMediaPicker
 
 // MARK: - PostSettingsViewController (Featured Image Menu)
 
