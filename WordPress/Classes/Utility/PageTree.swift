@@ -2,7 +2,7 @@ final class PageTree {
 
     // A node in a tree, which of course is also a tree itself.
     private class TreeNode {
-        var page: Page
+        let page: Page
         var children = [TreeNode]()
         var parentNode: TreeNode?
 
