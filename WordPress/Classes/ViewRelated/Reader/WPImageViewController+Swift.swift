@@ -2,7 +2,7 @@ import UIKit
 
 extension WPImageViewController {
     @objc func loadOriginalImage(for media: Media, success: @escaping (UIImage) -> Void, failure: @escaping (Error) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let image = try await MediaImageService.shared.image(for: media, size: .original)
                 success(image)
