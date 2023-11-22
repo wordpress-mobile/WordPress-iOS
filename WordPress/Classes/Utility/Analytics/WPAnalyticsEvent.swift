@@ -286,10 +286,14 @@ import Foundation
     case accountCloseCompleted
 
     // App Settings
+    case appSettingsOptimizeImagesChanged
+    case appSettingsMaxImageSizeChanged
+    case appSettingsImageQualityChanged
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
+    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -1013,6 +1017,14 @@ import Foundation
             return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
+        case .appSettingsOptimizeImagesChanged:
+            return "app_settings_optimize_images_changed"
+        case .appSettingsMaxImageSizeChanged:
+            return "app_settings_max_image_size_changed"
+        case .appSettingsImageQualityChanged:
+            return "app_settings_image_quality_changed"
+        case .appSettingsOptimizeImagesPopupTapped:
+            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:

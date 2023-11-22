@@ -21,6 +21,9 @@ class ReaderWebView: WKWebView {
 
         isOpaque = false
         backgroundColor = .clear
+        if #available(iOS 16.4, *) {
+            isInspectable = true
+        }
     }
 
     /// Loads a HTML content into the webview and apply styles
