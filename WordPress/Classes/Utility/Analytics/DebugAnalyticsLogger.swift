@@ -2,7 +2,7 @@ import Foundation
 import Pulse
 import WordPressShared
 
-final class WPAnalyticsLogger: NSObject, WPAnalyticsTracker {
+final class DebugAnalyticsLogger: NSObject, WPAnalyticsTracker {
     static let analyticsLabel = "analytics"
 
     func track(_ stat: WPAnalyticsStat) {
@@ -25,7 +25,7 @@ final class WPAnalyticsLogger: NSObject, WPAnalyticsTracker {
         for (key, value) in properties {
             metadata[String(describing: key)] = .stringConvertible(MetadataValueConvertible(value: value))
         }
-        LoggerStore.shared.storeMessage(label: WPAnalyticsLogger.analyticsLabel, level: .trace, message: event, metadata: metadata)
+        LoggerStore.shared.storeMessage(label: DebugAnalyticsLogger.analyticsLabel, level: .trace, message: event, metadata: metadata)
     }
 }
 

@@ -428,8 +428,8 @@
 		0C5750F02AFFE77F001074E5 /* PulseUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5750EF2AFFE77F001074E5 /* PulseUI */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
-		0C5751132B01AAEF001074E5 /* WPAnalyics+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751122B01AAEF001074E5 /* WPAnalyics+Logging.swift */; };
-		0C5751142B01AAEF001074E5 /* WPAnalyics+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751122B01AAEF001074E5 /* WPAnalyics+Logging.swift */; };
+		0C5751132B01AAEF001074E5 /* DebugAnalyticsLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751122B01AAEF001074E5 /* DebugAnalyticsLogger.swift */; };
+		0C5751142B01AAEF001074E5 /* DebugAnalyticsLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751122B01AAEF001074E5 /* DebugAnalyticsLogger.swift */; };
 		0C5751162B01AD98001074E5 /* DebugAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751152B01AD98001074E5 /* DebugAnalyticsView.swift */; };
 		0C5751172B01AD98001074E5 /* DebugAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5751152B01AD98001074E5 /* DebugAnalyticsView.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
@@ -6170,7 +6170,7 @@
 		0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignStatusView.swift; sourceTree = "<group>"; };
 		0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignViewModelTests.swift; sourceTree = "<group>"; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
-		0C5751122B01AAEF001074E5 /* WPAnalyics+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAnalyics+Logging.swift"; sourceTree = "<group>"; };
+		0C5751122B01AAEF001074E5 /* DebugAnalyticsLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAnalyticsLogger.swift; sourceTree = "<group>"; };
 		0C5751152B01AD98001074E5 /* DebugAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAnalyticsView.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
@@ -13872,7 +13872,7 @@
 				5948AD0C1AB734F2006E8882 /* WPAppAnalytics.h */,
 				5948AD0D1AB734F2006E8882 /* WPAppAnalytics.m */,
 				0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */,
-				0C5751122B01AAEF001074E5 /* WPAnalyics+Logging.swift */,
+				0C5751122B01AAEF001074E5 /* DebugAnalyticsLogger.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -18894,7 +18894,7 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
-				4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */,
+				0B38185FF4D62528C8B9BCD6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -20262,6 +20262,26 @@
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 			showEnvVarsInLog = 0;
 		};
+		0B38185FF4D62528C8B9BCD6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2DF08408C90B90D744C56E02 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -20432,26 +20452,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4F4D5C2BB6478A3E90ADC3C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -22371,7 +22371,7 @@
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
 				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
-				0C5751132B01AAEF001074E5 /* WPAnalyics+Logging.swift in Sources */,
+				0C5751132B01AAEF001074E5 /* DebugAnalyticsLogger.swift in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
@@ -25282,7 +25282,7 @@
 				DC772AF2282009BA00664C02 /* InsightsLineChart.swift in Sources */,
 				176CE91727FB44C100F1E32B /* StatsBaseCell.swift in Sources */,
 				011F52DB2A1CA53300B04114 /* CheckoutViewController.swift in Sources */,
-				0C5751142B01AAEF001074E5 /* WPAnalyics+Logging.swift in Sources */,
+				0C5751142B01AAEF001074E5 /* DebugAnalyticsLogger.swift in Sources */,
 				934098C12719577D00B3E77E /* InsightType.swift in Sources */,
 				46F583AA2624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
 				FABB249A2602FC2C00C8785C /* Header+WordPress.swift in Sources */,
