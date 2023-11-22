@@ -44,9 +44,9 @@ public struct ScalingButtonStyle: ButtonStyle {
 
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .scaleEffect((configuration.isPressed && style != .tertiary) ? 0.98 : 1)
             .brightness(
-                configuration.isPressed ? pressedStateBrightness : 0
+                (configuration.isPressed && style != .secondary) ? pressedStateBrightness : 0
             )
             .animation(.easeIn(duration: 0.15), value: configuration.isPressed)
     }
