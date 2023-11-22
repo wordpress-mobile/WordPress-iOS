@@ -5725,6 +5725,13 @@
 			remoteGlobalIDString = 3F47AC482A7206BE00208F0D;
 			remoteInfo = ConfigureSimulatorForUITesting;
 		};
+		3F9F232E2B0DADDA00B56061 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FABB1F8F2602FC2C00C8785C;
+			remoteInfo = Jetpack;
+		};
 		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -5787,13 +5794,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 932225A61C7CE50300443B02;
 			remoteInfo = WordPressShare;
-		};
-		E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
-			remoteInfo = WordPress;
 		};
 		EA14534429AD877C001F3143 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -18859,7 +18859,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				E16AB93F14D978520047A2E5 /* PBXTargetDependency */,
+				3F9F232F2B0DADDA00B56061 /* PBXTargetDependency */,
 			);
 			name = WordPressTest;
 			packageProductDependencies = (
@@ -19077,7 +19077,7 @@
 					E16AB92914D978240047A2E5 = {
 						DevelopmentTeam = PZYM8XX95Q;
 						LastSwiftMigration = 1000;
-						TestTargetID = 1D6058900D05DD3D006BFB54;
+						TestTargetID = FABB1F8F2602FC2C00C8785C;
 					};
 					EA14532229AD874C001F3143 = {
 						TestTargetID = FABB1F8F2602FC2C00C8785C;
@@ -25851,6 +25851,11 @@
 			target = 3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */;
 			targetProxy = 3F47AC512A72074800208F0D /* PBXContainerItemProxy */;
 		};
+		3F9F232F2B0DADDA00B56061 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
+			targetProxy = 3F9F232E2B0DADDA00B56061 /* PBXContainerItemProxy */;
+		};
 		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
@@ -25895,11 +25900,6 @@
 			isa = PBXTargetDependency;
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 			targetProxy = 932225AF1C7CE50300443B02 /* PBXContainerItemProxy */;
-		};
-		E16AB93F14D978520047A2E5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */;
 		};
 		EA14534529AD877C001F3143 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -28517,7 +28517,7 @@
 			baseConfigurationReference = 131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -28541,7 +28541,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jetpack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Jetpack";
 			};
 			name = "Release-Alpha";
 		};
@@ -28955,7 +28955,7 @@
 			baseConfigurationReference = C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -28979,7 +28979,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jetpack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Jetpack";
 			};
 			name = "Release-Internal";
 		};
@@ -29133,7 +29133,7 @@
 			baseConfigurationReference = 084FF460C7742309671B3A86 /* Pods-WordPressTest.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -29165,7 +29165,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jetpack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Jetpack";
 			};
 			name = Debug;
 		};
@@ -29174,7 +29174,7 @@
 			baseConfigurationReference = EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -29198,7 +29198,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jetpack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Jetpack";
 			};
 			name = Release;
 		};
