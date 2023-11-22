@@ -253,18 +253,14 @@ class AppSettingsViewController: UITableViewController {
             guard let self, let tableView else {
                 return
             }
-            tableView.beginUpdates()
-            self.reloadViewModel()
-            let imageSizingIndex = IndexPath(row: 1, section: 0)
-            let imageQualityIndex = IndexPath(row: 2, section: 0)
-            let imageOptimizationSettingsIndexes = [imageSizingIndex, imageQualityIndex]
-            if value {
-                tableView.insertRows(at: imageOptimizationSettingsIndexes, with: .fade)
+            tableView.performBatchUpdates {
+                let originalAutomaticallyReloadTableView = self.handler.automaticallyReloadTableView
+                self.handler.automaticallyReloadTableView = false
+                self.reloadViewModel()
+                self.handler.automaticallyReloadTableView = originalAutomaticallyReloadTableView
+
+                tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
-            else {
-                tableView.deleteRows(at: imageOptimizationSettingsIndexes, with: .fade)
-            }
-            tableView.endUpdates()
         }
     }
 
