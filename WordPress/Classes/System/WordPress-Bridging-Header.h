@@ -101,7 +101,6 @@
 #import "WPImageViewController.h"
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Pages.h"
-#import "WPStyleGuide+ReadableMargins.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"

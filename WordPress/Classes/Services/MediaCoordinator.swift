@@ -154,7 +154,7 @@ class MediaCoordinator: NSObject {
         addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
     }
 
-    /// Create a `Media` instance from the main context and upload the asset to the Meida Library.
+    /// Create a `Media` instance from the main context and upload the asset to the Media Library.
     ///
     /// - Warning: This function must be called from the main thread.
     ///
@@ -186,7 +186,7 @@ class MediaCoordinator: NSObject {
         return media
     }
 
-    /// Create a `Media` instance and upload the asset to the Meida Library.
+    /// Create a `Media` instance and upload the asset to the Media Library.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:receiveUpdate:thumbnailCallback:completion:)`
     private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {

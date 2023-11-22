@@ -52,7 +52,7 @@ private extension MigrationHeaderConfiguration {
             case .notifications:
                 return notificationsPrimaryDescription
             case .done:
-                return donePrimaryDescription
+                return donePrimaryDescription + "\n\n" + doneSecondaryDescription
             case .dismiss:
                 return nil
             }
@@ -94,6 +94,8 @@ private extension MigrationHeaderConfiguration {
         static let donePrimaryDescription = NSLocalizedString("migration.done.primaryDescription",
                                                               value: "We’ve transferred all your data and settings. Everything is right where you left it.",
                                                               comment: "Primary description in the migration done screen.")
+
+        static let doneSecondaryDescription = NSLocalizedString("migration.done.secondaryDescription", value: "It's time to continue your WordPress journey on the Jetpack app!", comment: "Secondary description (second paragraph) in the migration done screen.")
 
         static let notificationsSecondaryDescription = NSLocalizedString("migration.notifications.secondaryDescription",
                                                                          value: "We’ll disable notifications for the WordPress app.",

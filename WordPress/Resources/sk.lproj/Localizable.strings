@@ -605,10 +605,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -625,8 +622,7 @@
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušiť";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "Zrušiť nahrávanie";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -905,10 +901,6 @@
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Prispieť";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Kopírovať odkaz";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Skopírovať odkaz do komentáru";
 
@@ -1079,15 +1071,11 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Zmazať menu";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Zmazať natrvalo";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Vymazať na trvalo?";
 
 /* Button label for deleting the current site
@@ -1211,17 +1199,13 @@
 /* Name for the status of a draft post. */
 "Draft" = "Koncept";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Upraviť";
@@ -1409,9 +1393,6 @@
 
 /* Title for the activity detail view */
 "Event" = "Udalosť";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Každý";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Zhrnutie";
@@ -1672,8 +1653,7 @@
 "Hold for Moderation" = "Podržať pre moderovanie";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Domovská stránka";
 
 /* Label for Homepage Settings site settings section
@@ -2014,8 +1994,7 @@
 /* Status for Media object that is only exists locally. */
 "Local" = "Miestne";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Miestne zmeny";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -2112,7 +2091,6 @@
 "Max Video Upload Size" = "Maximálna veľkosť nahraného videa";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -2181,9 +2159,6 @@
    Label for the share message field on the post settings. */
 "Message" = "Správa";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadáta";
-
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Sledujte dobu prevádzky vašej webovej stránky";
 
@@ -2194,13 +2169,11 @@
 "Months and Years" = "Mesiace a roky";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Viac";
 
 /* Action button to display more available options
@@ -2210,15 +2183,8 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Viac článkov";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Prejsť na koncept";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Presunúť do koša";
 
@@ -2234,7 +2200,8 @@
    Title of My Site tab */
 "My Site" = "Moja webová stránka";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Moje stránky";
 
 /* Siri Suggestion to open My Sites */
@@ -2369,8 +2336,7 @@
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Zatiaľ žiadne upozornenia";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Žiadne stránky nezodpovedajú vyhľadávaniu";
 
 /* Text displayed when search for plugins returns no results */
@@ -2390,9 +2356,6 @@
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "Žiadne nedávne články s touto značkou.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Žiadne články nezodpovedajú vyhľadávaniu";
 
 /* A message title */
 "No recent posts" = "Žiadne nedávne články";
@@ -2602,15 +2565,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Stránka obnovená do konceptov";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Stránka obnovená do publikovaných";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Stránka obnovená do naplánovaných";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Koncept stránky sa nahral";
 
@@ -2661,8 +2615,7 @@
    Title of pending Comments filter. */
 "Pending" = "Čakajúce";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Čakajúce na kontrolu";
 
 /* Noun. Title of the people management feature.
@@ -2778,15 +2731,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Pridať formát";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Článok obnovený ako koncept";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Článok obnovený ako publikovaný";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Článok obnovený ako naplánovaný";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Nastavenia článku";
@@ -2886,8 +2830,7 @@
 "Privacy Settings" = "Nastavenia súkromia";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Súkromné";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
@@ -2910,12 +2853,10 @@
    Title for the publish settings view */
 "Publish" = "Zverejniť";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Zverejniť okamžite";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publikovať";
 
@@ -2927,8 +2868,7 @@
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Zverejnené";
 
 /* Precedes the name of the blog just posted on */
@@ -3110,9 +3050,6 @@
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Znovu odoslať";
 
-/* Title of the reset button */
-"Reset" = "Obnoviť";
-
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Resetovať filtre";
 
@@ -3136,12 +3073,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -3220,9 +3154,6 @@
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Uložený príspevok";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Uložené!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Uložiť tento príspevok na neskôr.";
 
@@ -3230,7 +3161,6 @@
 "Saving post…" = "Článok sa ukladá...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Ukladá sa...";
 
@@ -3263,9 +3193,6 @@
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Vyhľadať stránky";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Vyhľadajte GIFy a pridajte ich do Knižnice médií!";
@@ -3355,8 +3282,7 @@
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Nastaviť Nadradený";
 
 /* No comment provided by engineer. */
@@ -3387,7 +3313,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -3617,8 +3542,7 @@
    Title of Start Over settings page */
 "Start Over" = "Začať znova";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -3672,7 +3596,8 @@
    Theme Support action title */
 "Support" = "Podpora";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Prepnúť webovú stránku";
 
 /* Switches the Editor to HTML Mode */
@@ -3854,7 +3779,7 @@
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Používateľ, ktorého sa pokúšate odstrániť, je vlastníkom tejto stránky. Ak potrebujete pomoc, kontaktujte technickú podporu.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Používateľské meno alebo heslo v aplikácii už môže byť neaktuálne. Zadajte vaše heslo v nastaveniach a skúste to znova.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -4152,9 +4077,6 @@
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Nedá sa pripojiť";
 
-/* An error message. */
-"Unable to Connect" = "Nedá sa pripojiť";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nepodarilo sa načítať články";
 
@@ -4422,8 +4344,6 @@
 "Videos" = "Videá";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
