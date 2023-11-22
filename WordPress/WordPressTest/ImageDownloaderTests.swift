@@ -68,7 +68,7 @@ class ImageDownloaderTests: CoreDataTestCase {
             let _ = try await task.value
             XCTFail()
         } catch {
-            XCTAssertEqual((error as? URLError)?.code == .cancelled)
+            XCTAssertEqual((error as? URLError)?.code, .cancelled)
         }
     }
 
