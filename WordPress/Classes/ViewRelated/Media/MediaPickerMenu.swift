@@ -199,7 +199,7 @@ extension MediaPickerMenu {
 // MARK: - MediaPickerMenu (Stock Photo)
 
 extension MediaPickerMenu {
-    func makeStockPhotos(blog: Blog, delegate: StockPhotosPickerDelegate) -> UIAction {
+    func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromStockPhotos,
             image: UIImage(systemName: "photo.on.rectangle"),
@@ -208,18 +208,24 @@ extension MediaPickerMenu {
         )
     }
 
-    func showStockPhotosPicker(blog: Blog, delegate: StockPhotosPickerDelegate) {
-        guard let presentingViewController else { return }
+    func showStockPhotosPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
+        guard let presentingViewController,
+              let api = blog.wordPressComRestApi() else {
+            return
+        }
 
-        let picker = StockPhotosPicker()
+        let picker = ExternalMediaPickerViewController(
+            dataSource: StockPhotosDataSource(service: DefaultStockPhotosService(api: api)),
+            source: .stockPhotos,
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        picker.title = Strings.pickFromStockPhotos
+        picker.welcomeView = StockPhotosWelcomeView()
         picker.delegate = delegate
-        picker.allowMultipleSelection = isMultipleSelectionEnabled
-        let stockPhotosViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
 
-        objc_setAssociatedObject(stockPhotosViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let navigation = UINavigationController(rootViewController: picker)
+        presentingViewController.present(navigation, animated: true)
     }
-
-    private static var dataSourceAssociatedKey: UInt8 = 0
 }
 
 // MARK: - MediaPickerMenu (Free GIF, Tenor)
@@ -239,6 +245,7 @@ extension MediaPickerMenu {
 
         let picker = ExternalMediaPickerViewController(
             dataSource: TenorDataSource(service: TenorService()),
+            source: .tenor,
             allowsMultipleSelection: isMultipleSelectionEnabled
         )
         picker.title = Strings.pickFromTenor

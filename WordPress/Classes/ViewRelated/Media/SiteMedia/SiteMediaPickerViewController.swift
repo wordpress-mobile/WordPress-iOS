@@ -12,7 +12,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
     private let collectionViewController: SiteMediaCollectionViewController
     private let toolbarItemTitle = SiteMediaSelectionTitleView()
-    private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
+    private lazy var buttonDone = UIBarButtonItem(title: Strings.add, style: .done, target: self, action: #selector(buttonDoneTapped))
 
     weak var delegate: SiteMediaPickerViewControllerDelegate?
 
@@ -112,4 +112,5 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
 private enum Strings {
     static let title = NSLocalizedString("siteMediaPicker.title", value: "Media", comment: "Media screen navigation title")
+    static let add = NSLocalizedString("siteMediaPicker.add", value: "Add", comment: "Title for confirmation navigation bar button item")
 }

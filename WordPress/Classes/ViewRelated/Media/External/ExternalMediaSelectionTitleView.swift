@@ -8,6 +8,7 @@ final class ExternalMediaSelectionTitleView: UIView {
         super.init(frame: frame)
 
         buttonViewSelected.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
+        buttonViewSelected.tintColor = UIColor.primary
 
         textLabel.font = WPStyleGuide.fontForTextStyle(.headline)
         textLabel.textAlignment = .center

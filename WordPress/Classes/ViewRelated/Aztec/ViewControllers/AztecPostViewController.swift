@@ -2065,8 +2065,7 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
-        moreCoordinator.present(context: moreCoordinatorContext)
+        moreCoordinator.present(in: self, blog: post.blog)
     }
 
     private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
@@ -3373,19 +3372,11 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension AztecPostViewController: StockPhotosPickerDelegate {
-    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
-        assets.forEach {
-            insert(exportableAsset: $0, source: .stockPhotos)
-        }
-    }
-}
-
 extension AztecPostViewController: ExternalMediaPickerViewDelegate {
     func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset]) {
         viewController.presentingViewController?.dismiss(animated: true)
         selection.forEach {
-            insert(exportableAsset: $0, source: .tenor)
+            insert(exportableAsset: $0, source: viewController.source)
         }
     }
 }
