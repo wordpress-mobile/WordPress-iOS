@@ -255,7 +255,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Parameter size: The proposed size for the gif image.
     /// - Returns: The most efficient size with good quality.
     fileprivate func efficientImageSize(with url: URL, proposedSize size: CGSize) -> CGSize {
-        guard url.isGif else {
+        guard url.isGif, !url.isA8CEmoji else {
             return size
         }
 
