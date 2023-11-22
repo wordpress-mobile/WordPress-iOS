@@ -77,7 +77,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15 Pro'
         depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
@@ -89,7 +89,7 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
         depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
