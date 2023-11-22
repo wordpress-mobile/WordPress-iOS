@@ -99,6 +99,12 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
     // MARK: - SiteMediaCollectionViewControllerDelegate
 
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? {
+        UIMenu(children: [UIAction(title: viewController.isSelected(media) ? Strings.deselect : Strings.select, image: UIImage(systemName: "checkmark.circle")) { [weak self] _ in
+            self?.collectionViewController.toggleSelection(for: media)
+        }])
+    }
+
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media]) {
         if !allowsMultipleSelection {
             if !selection.isEmpty {
@@ -112,4 +118,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
 private enum Strings {
     static let title = NSLocalizedString("siteMediaPicker.title", value: "Media", comment: "Media screen navigation title")
+    static let select = NSLocalizedString("siteMediaPicker.select", value: "Select", comment: "Button selection media in media picker")
+    static let deselect = NSLocalizedString("siteMediaPicker.deselect", value: "Deselect", comment: "Button selection media in media picker")
 }

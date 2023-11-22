@@ -219,7 +219,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         }
     }
 
-    private func toggleSelection(for media: Media) {
+    func isSelected(_ media: Media) -> Bool {
+        selection.contains(media)
+    }
+
+    func toggleSelection(for media: Media) {
         setSelected(!selection.contains(media), for: media)
     }
 
