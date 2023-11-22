@@ -121,7 +121,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
     func title(for post: AbstractPost) -> String {
         switch self {
         case .retry: return Strings.retry
-        case .view: return post.status == .publish ? Strings.preview : Strings.view
+        case .view: return post.status == .publish ? Strings.view : Strings.preview
         case .publish: return Strings.publish
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
