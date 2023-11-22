@@ -1,5 +1,5 @@
 import Foundation
-import Charts
+import DGCharts
 import UIKit
 
 final class ViewsVisitorsChartMarker: MarkerView {

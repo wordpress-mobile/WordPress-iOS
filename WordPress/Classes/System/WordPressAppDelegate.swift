@@ -132,6 +132,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ABTest.start()
 
         Media.removeTemporaryData()
+        NSItemProvider.removeTemporaryData()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)

@@ -59,7 +59,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failureNotice: Notice {
-        var canRetry = failedMedia.allSatisfy(\.canRetry)
+        let canRetry = failedMedia.allSatisfy(\.canRetry)
         guard canRetry else {
             return Notice(title: title,
                           message: message,

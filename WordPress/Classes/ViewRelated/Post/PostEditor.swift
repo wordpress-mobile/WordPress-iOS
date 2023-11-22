@@ -80,9 +80,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// Returns true if the site mode is on
     var isSingleSiteMode: Bool { get }
 
-    /// MediaLibraryPickerDataSource
-    var mediaLibraryDataSource: MediaLibraryPickerDataSource { get set }
-
     /// Returns the media attachment removed version of html
     func contentByStrippingMediaAttachments() -> String
 
