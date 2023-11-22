@@ -1,5 +1,6 @@
 23.8
 -----
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
 * [*] Fix the media item details screen layout on iPad [#22042]
 * [*] Integrate native photos picker (`PHPickerViewControlle`) in Story Editor [#22059]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
