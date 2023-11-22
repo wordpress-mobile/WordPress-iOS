@@ -233,16 +233,54 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
-        reloadPages()
+        Task {
+            await reloadPagesAndUI()
+        }
     }
 
-    private func reloadPages() {
+    @MainActor
+    private func reloadPagesAndUI() async {
         let status = filterSettings.currentPostListFilter().filterType
         let pages = (fetchResultsController.fetchedObjects ?? []) as! [Page]
+
         if status == .published {
-            self.pages = pages.setHomePageFirst().hierarchySort()
+            let coreDataStack = ContextManager.shared
+            let pageIDs = pages.map { TaggedManagedObjectID($0) }
+
+            do {
+                self.pages = try await buildPageTree(pageIDs: pageIDs)
+                    .hierarchyList(in: coreDataStack.mainContext)
+            } catch {
+                DDLogError("Failed to reload published pages: \(error)")
+            }
         } else {
             self.pages = pages
+        }
+
+        tableView.reloadData()
+        refreshResults()
+    }
+
+    /// Build page hierachy in background, which should not take long (less than 2 seconds for 6000+ pages).
+    @MainActor
+    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> PageTree {
+        assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
+
+        let coreDataStack = ContextManager.shared
+        return try await coreDataStack.performQuery { context in
+            var pages = [Page]()
+
+            if let pageIDs {
+                pages = try pageIDs.map(context.existingObject(with:))
+            } else if let request {
+                pages = try context.fetch(request)
+            }
+
+            pages = pages.setHomePageFirst()
+
+            let tree = PageTree()
+            tree.add(pages)
+            return tree
         }
     }
 
@@ -264,9 +302,9 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     }
 
     override func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        reloadPages()
-        tableView.reloadData()
-        refreshResults()
+        Task {
+            await reloadPagesAndUI()
+        }
     }
 
     // MARK: - Core Data
@@ -417,16 +455,14 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
     // MARK: - Cell Action Handling
 
-    func setParentPage(for page: Page) {
+    @MainActor
+    func setParentPage(for page: Page) async {
         let request = NSFetchRequest<Page>(entityName: Page.entityName())
         let filter = PostListFilter.publishedFilter()
         request.predicate = filter.predicate(for: blog, author: .everyone)
         request.sortDescriptors = filter.sortDescriptors
         do {
-            var pages = try managedObjectContext()
-                .fetch(request)
-                .setHomePageFirst()
-                .hierarchySort()
+            var pages = try await buildPageTree(request: request).hierarchyList(in: ContextManager.shared.mainContext)
             if let index = pages.firstIndex(of: page) {
                 pages = pages.remove(from: index)
             }
