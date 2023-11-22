@@ -296,6 +296,8 @@
 		086F2482284F52DD00032F39 /* TooltipAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E4B4B281C019A0085E89C /* TooltipAnchor.swift */; };
 		086F2483284F52DF00032F39 /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D553652821286300AA1E8D /* Tooltip.swift */; };
 		086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
+		0871BB272B0E9A0100248092 /* Font+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871BB262B0E9A0100248092 /* Font+DesignSystem.swift */; };
+		0871BB282B0E9A0100248092 /* Font+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871BB262B0E9A0100248092 /* Font+DesignSystem.swift */; };
 		0878580328B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */; };
 		0878580428B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */; };
 		08799C252A334645005317F7 /* Length.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08799C242A334645005317F7 /* Length.swift */; };
@@ -340,8 +342,8 @@
 		08BB7BB22B060EAF0089059D /* DesignSystemGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */; };
 		08BB7BB42B060FBC0089059D /* DesignSystemGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */; };
 		08BB7BB52B060FDD0089059D /* ColorGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088D58A429E724F300E6C0F4 /* ColorGallery.swift */; };
-		08BB7BB72B0611950089059D /* PrimaryButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */; };
-		08BB7BB82B0611FD0089059D /* PrimaryButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */; };
+		08BB7BB72B0611950089059D /* DSButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* DSButtonGallery.swift */; };
+		08BB7BB82B0611FD0089059D /* DSButtonGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB62B0611940089059D /* DSButtonGallery.swift */; };
 		08BB7BBA2B06172C0089059D /* LengthGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BB92B06172C0089059D /* LengthGallery.swift */; };
 		08BB7BBF2B065AE20089059D /* FontGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBE2B065AE20089059D /* FontGallery.swift */; };
 		08BB7BC02B065AE20089059D /* FontGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7BBE2B065AE20089059D /* FontGallery.swift */; };
@@ -362,6 +364,10 @@
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
+		08D215592B0E328A006F2318 /* DSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D215582B0E328A006F2318 /* DSButton.swift */; };
+		08D2155A2B0E328A006F2318 /* DSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D215582B0E328A006F2318 /* DSButton.swift */; };
+		08D2155C2B0E693E006F2318 /* DSButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2155B2B0E693E006F2318 /* DSButtonStyle.swift */; };
+		08D2155D2B0E693E006F2318 /* DSButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2155B2B0E693E006F2318 /* DSButtonStyle.swift */; };
 		08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */; };
 		08D345511CD7F50900358E8C /* MenusSelectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454B1CD7F50900358E8C /* MenusSelectionItem.m */; };
 		08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454D1CD7F50900358E8C /* MenusSelectionItemView.m */; };
@@ -6026,6 +6032,7 @@
 		086CCE7C2A7A70F0002A349E /* DashboardGoogleDomainsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardView.swift; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
+		0871BB262B0E9A0100248092 /* Font+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+DesignSystem.swift"; sourceTree = "<group>"; };
 		0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentRepositoryUtility.swift; sourceTree = "<group>"; };
 		08799C242A334645005317F7 /* Length.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Length.swift; sourceTree = "<group>"; };
 		0879FC151E9301DD00E1EFC8 /* MediaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTests.swift; sourceTree = "<group>"; };
@@ -6059,7 +6066,7 @@
 		08BA4BC5298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackInstallPluginLogoAnimation_rtl.json; sourceTree = "<group>"; };
 		08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackInstallPluginLogoAnimation_ltr.json; sourceTree = "<group>"; };
 		08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemGallery.swift; sourceTree = "<group>"; };
-		08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonGallery.swift; sourceTree = "<group>"; };
+		08BB7BB62B0611940089059D /* DSButtonGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSButtonGallery.swift; sourceTree = "<group>"; };
 		08BB7BB92B06172C0089059D /* LengthGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthGallery.swift; sourceTree = "<group>"; };
 		08BB7BBE2B065AE20089059D /* FontGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontGallery.swift; sourceTree = "<group>"; };
 		08BB7BC22B0660D80089059D /* Text+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+DesignSystem.swift"; sourceTree = "<group>"; };
@@ -6078,6 +6085,8 @@
 		08CC677B1C49B65A00153AD7 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		08CC677C1C49B65A00153AD7 /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		08CC677D1C49B65A00153AD7 /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
+		08D215582B0E328A006F2318 /* DSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSButton.swift; sourceTree = "<group>"; };
+		08D2155B2B0E693E006F2318 /* DSButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSButtonStyle.swift; sourceTree = "<group>"; };
 		08D345481CD7F50900358E8C /* MenusSelectionDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionDetailView.h; sourceTree = "<group>"; };
 		08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionDetailView.m; sourceTree = "<group>"; };
 		08D3454A1CD7F50900358E8C /* MenusSelectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionItem.h; sourceTree = "<group>"; };
@@ -10067,6 +10076,8 @@
 			children = (
 				08BB7BC12B0660B30089059D /* Modifiers */,
 				084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */,
+				08D215582B0E328A006F2318 /* DSButton.swift */,
+				08D2155B2B0E693E006F2318 /* DSButtonStyle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -10078,6 +10089,7 @@
 				08EA036829C9B53000B72A87 /* Colors.xcassets */,
 				0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */,
 				08799C242A334645005317F7 /* Length.swift */,
+				0871BB262B0E9A0100248092 /* Font+DesignSystem.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -10222,7 +10234,7 @@
 			children = (
 				088D58A429E724F300E6C0F4 /* ColorGallery.swift */,
 				08BB7BB12B060EAF0089059D /* DesignSystemGallery.swift */,
-				08BB7BB62B0611940089059D /* PrimaryButtonGallery.swift */,
+				08BB7BB62B0611940089059D /* DSButtonGallery.swift */,
 				08BB7BB92B06172C0089059D /* LengthGallery.swift */,
 				08BB7BBE2B065AE20089059D /* FontGallery.swift */,
 				084BD8B32B090CA80050CD6A /* IconGallery.swift */,
@@ -18916,7 +18928,7 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
-				4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */,
+				CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -20453,26 +20465,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4F4D5C2BB6478A3E90ADC3C5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -20739,6 +20731,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */ = {
@@ -21545,6 +21557,7 @@
 				4A9314E42979FA4700360232 /* PostCategory+Creation.swift in Sources */,
 				F5660D07235D114500020B1E /* CalendarCollectionView.swift in Sources */,
 				7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */,
+				0871BB272B0E9A0100248092 /* Font+DesignSystem.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				FA4BC0D02996A589005EB077 /* BlazeService.swift in Sources */,
@@ -21586,7 +21599,7 @@
 				175721162754D31F00DE38BC /* AppIcon.swift in Sources */,
 				7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */,
 				17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */,
-				08BB7BB72B0611950089059D /* PrimaryButtonGallery.swift in Sources */,
+				08BB7BB72B0611950089059D /* DSButtonGallery.swift in Sources */,
 				3F4D035028A56F9B00F0A4FD /* CircularImageButton.swift in Sources */,
 				0C8078AB2A4E01A5002ABF29 /* PagingFooterView.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
@@ -21961,6 +21974,7 @@
 				E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */,
 				E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */,
 				C81CCD7C243BF7A600A83E27 /* TenorPageable.swift in Sources */,
+				08D215592B0E328A006F2318 /* DSButton.swift in Sources */,
 				E6C0ED3B231DA23400A08B57 /* AccountService+MergeDuplicates.swift in Sources */,
 				0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */,
 				17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */,
@@ -22023,6 +22037,7 @@
 				8BA125EB27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */,
 				FEAC916E28001FC4005026E7 /* AvatarTrainView.swift in Sources */,
 				8BB185D224B63D5F00A4CCE8 /* ReaderCardsStreamViewController.swift in Sources */,
+				08D2155C2B0E693E006F2318 /* DSButtonStyle.swift in Sources */,
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				084BD8B42B090CA80050CD6A /* IconGallery.swift in Sources */,
 				0C748B4B2A9D71A100809E1A /* SiteMediaCollectionViewController.swift in Sources */,
@@ -24168,7 +24183,7 @@
 				FABB21652602FC2C00C8785C /* MediaFileManager.swift in Sources */,
 				FABB21662602FC2C00C8785C /* WPUserAgent.m in Sources */,
 				FABB21672602FC2C00C8785C /* AztecVerificationPromptHelper.swift in Sources */,
-				08BB7BB82B0611FD0089059D /* PrimaryButtonGallery.swift in Sources */,
+				08BB7BB82B0611FD0089059D /* DSButtonGallery.swift in Sources */,
 				FABB21682602FC2C00C8785C /* NullBlogPropertySanitizer.swift in Sources */,
 				FABB21692602FC2C00C8785C /* StockPhotosStrings.swift in Sources */,
 				FABB216A2602FC2C00C8785C /* StatsViewController.m in Sources */,
@@ -24724,6 +24739,7 @@
 				83E1E5602A5CB8BF000B576F /* PostEditor+JetpackSocial.swift in Sources */,
 				FABB22EF2602FC2C00C8785C /* PostingActivityDay.swift in Sources */,
 				C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */,
+				0871BB282B0E9A0100248092 /* Font+DesignSystem.swift in Sources */,
 				FABB22F02602FC2C00C8785C /* ReaderTeamTopic.swift in Sources */,
 				FABB22F12602FC2C00C8785C /* WPAccount+AccountSettings.swift in Sources */,
 				FABB22F22602FC2C00C8785C /* Route.swift in Sources */,
@@ -24792,6 +24808,7 @@
 				8320BDE6283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */,
 				0C8078AC2A4E01A5002ABF29 /* PagingFooterView.swift in Sources */,
 				FABB231E2602FC2C00C8785C /* MenuItemPostsViewController.m in Sources */,
+				08D2155A2B0E328A006F2318 /* DSButton.swift in Sources */,
 				FABB231F2602FC2C00C8785C /* SignupUsernameTableViewController.swift in Sources */,
 				FABB23202602FC2C00C8785C /* Blog+Editor.swift in Sources */,
 				FABB23212602FC2C00C8785C /* ReaderCardService.swift in Sources */,
@@ -25341,6 +25358,7 @@
 				FABB24AC2602FC2C00C8785C /* InteractiveNotificationsManager.swift in Sources */,
 				FABB24AD2602FC2C00C8785C /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
 				F195C42D26DFBE3A000EC884 /* WordPressBackgroundTaskEventHandler.swift in Sources */,
+				08D2155D2B0E693E006F2318 /* DSButtonStyle.swift in Sources */,
 				3F3DD0B726FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */,
 				FABB24AF2602FC2C00C8785C /* ReaderSeenAction.swift in Sources */,
 				0C23F3372AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */,

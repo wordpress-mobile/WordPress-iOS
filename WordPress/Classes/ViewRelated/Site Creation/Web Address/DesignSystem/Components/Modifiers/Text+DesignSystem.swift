@@ -67,27 +67,3 @@ extension Text {
     }
 }
 
-// MARK: - SwiftUI.Font
-fileprivate extension Font {
-    enum DS {
-        static let heading1 = Font.largeTitle
-        static let heading2 = Font.title
-        static let heading3 = Font.title2
-        static let heading4 = Font.title3
-
-        enum Body {
-            static let small = Font.body
-            static let medium = Font.callout
-            static let large = Font.subheadline
-
-            enum Emphasized {
-                static let small = Body.small.weight(.semibold)
-                static let medium = Body.medium.weight(.semibold)
-                static let large = Body.large.weight(.semibold)
-            }
-        }
-
-        static let footnote = Font.footnote
-        static let caption = Font.caption
-    }
-}

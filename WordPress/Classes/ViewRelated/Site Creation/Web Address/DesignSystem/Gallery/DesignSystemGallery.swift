@@ -21,7 +21,7 @@ struct DesignSystemGallery: View {
 
     private var componentsList: some View {
         List {
-            NavigationLink("PrimaryButton", destination: PrimaryButtonGallery())
+            NavigationLink("DSButton", destination: DSButtonGallery())
         }
         .navigationTitle("Components")
     }
