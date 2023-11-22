@@ -19,8 +19,7 @@ final class MigrationFlowCoordinator: ObservableObject {
     // MARK: - Init
 
     init(migrationEmailService: MigrationEmailService? = try? .init(),
-         userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
-         account: WPAccount?) {
+         userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.migrationEmailService = migrationEmailService
         self.userPersistentRepository = userPersistentRepository
         self.userPersistentRepository.jetpackContentMigrationState = .inProgress

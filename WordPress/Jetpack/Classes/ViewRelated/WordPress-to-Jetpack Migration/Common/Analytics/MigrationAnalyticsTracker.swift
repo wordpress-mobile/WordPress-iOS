@@ -1,7 +1,6 @@
 import Foundation
 
 struct MigrationAnalyticsTracker {
-
     // MARK: - Track Method
 
     func track(_ event: MigrationEvent, properties: Properties = [:]) {
@@ -16,12 +15,19 @@ struct MigrationAnalyticsTracker {
         self.track(.contentExportEligibility, properties: properties)
     }
 
-    func trackContentExportSucceeded() {
-        self.track(.contentExportSucceeded)
+    func trackContentExportSucceeded(hasBlogs: Bool) {
+        var properties: [String: String] = [:]
+        if !hasBlogs {
+            properties["no_sites"] = "true"
+        }
+        self.track(.contentExportSucceeded, properties: properties)
     }
 
-    func trackContentExportFailed(reason: String) {
-        let properties = ["error_type": reason]
+    func trackContentExportFailed(reason: String, hasBlogs: Bool) {
+        var properties = ["error_type": reason]
+        if !hasBlogs {
+            properties["no_sites"] = "true"
+        }
         self.track(.contentExportFailed, properties: properties)
     }
 
