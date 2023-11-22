@@ -3039,7 +3039,6 @@
 		C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */; };
 		C9B477AD29CC15D9008CBF49 /* WidgetDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477AB29CC15D9008CBF49 /* WidgetDataReader.swift */; };
 		C9B477AE29CC35A0008CBF49 /* WidgetDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477AB29CC15D9008CBF49 /* WidgetDataReader.swift */; };
-		C9B477B029CC35C5008CBF49 /* WidgetDataReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */; };
 		C9B477B229CC4949008CBF49 /* HomeWidgetDataFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */; };
 		C9B477B429CC4949008CBF49 /* HomeWidgetDataFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */; };
 		C9B477B729CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */; };
@@ -8381,7 +8380,6 @@
 		C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetEntry.swift; sourceTree = "<group>"; };
 		C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenSiteListProvider.swift; sourceTree = "<group>"; };
 		C9B477AB29CC15D9008CBF49 /* WidgetDataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetDataReader.swift; sourceTree = "<group>"; };
-		C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataReaderTests.swift; sourceTree = "<group>"; };
 		C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetDataFileReader.swift; sourceTree = "<group>"; };
 		C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenUnconfiguredView.swift; sourceTree = "<group>"; };
 		C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenUnconfiguredViewModel.swift; sourceTree = "<group>"; };
@@ -16279,14 +16277,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C9FE383329C2063900D39841 /* Widgets */ = {
-			isa = PBXGroup;
-			children = (
-				C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */,
-			);
-			path = Widgets;
-			sourceTree = "<group>";
-		};
 		C9FE383B29C2A3A300D39841 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -16691,7 +16681,6 @@
 				852416D01A12ED2D0030700C /* Utility */,
 				BE20F5E11B2F738E0020694C /* ViewRelated */,
 				3F3D8548251E63DF001CA4D2 /* What's New */,
-				C9FE383329C2063900D39841 /* Widgets */,
 				FF9839A71CD3960600E85258 /* WordPressAPI */,
 				3FB6D13A2ACFF63800768C07 /* MySiteViewModelTests.swift */,
 			);
@@ -23606,7 +23595,6 @@
 				D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */,
 				32110547250BFC3E0048446F /* ImageDimensionParserTests.swift in Sources */,
 				E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */,
-				C9B477B029CC35C5008CBF49 /* WidgetDataReaderTests.swift in Sources */,
 				8B7F51CB24EED8A8008CF5B5 /* ReaderTrackerTests.swift in Sources */,
 				D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,

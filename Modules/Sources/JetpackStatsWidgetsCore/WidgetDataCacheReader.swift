@@ -5,7 +5,7 @@ public protocol WidgetDataCacheReader {
 
 public extension WidgetDataCacheReader {
 
-    func widgetData(
+    func widgetData<T: HomeWidgetData>(
         forSiteIdentifier identifier: String?,
         defaultSiteID: Int?,
         userLoggedIn: Bool
