@@ -1,7 +1,6 @@
 import SwiftUI
 
 public struct PrimaryButton: View {
-    @SwiftUI.Environment(\.isEnabled) private var isEnabled
     @Binding private var isLoading: Bool
     private let title: String
     private let action: (() -> Void)
@@ -22,7 +21,7 @@ public struct PrimaryButton: View {
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Radius.medium)
-                    .fill(isEnabled ? Color.DS.Background.brand : Color.DS.Background.quaternary)
+                    .fill(Color.DS.Background.brand)
                 if isLoading {
                     ProgressView()
                         .tint(Color.white)
