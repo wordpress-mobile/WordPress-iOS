@@ -174,10 +174,7 @@ class AppSettingsViewController: UITableViewController {
                           MediaSettings.VideoResolution.size3840x2160,
                           MediaSettings.VideoResolution.sizeOriginal]
 
-            let titles = values.map({ (settings: MediaSettings.VideoResolution) -> String in
-                settings.description
-            })
-
+            let titles = values.map { $0.description }
             let currentVideoResolution = MediaSettings().maxVideoSizeSetting
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
@@ -208,10 +205,7 @@ class AppSettingsViewController: UITableViewController {
                           MediaSettings.ImageQuality.high,
                           MediaSettings.ImageQuality.maximum]
 
-            let titles = values.map({ (settings: MediaSettings.ImageQuality) -> String in
-                settings.description
-            })
-
+            let titles = values.map { $0.description }
             let currentImageQuality = MediaSettings().imageQualitySetting
             let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
 
@@ -222,7 +216,7 @@ class AppSettingsViewController: UITableViewController {
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
-            viewController?.onItemSelected = { (quality: Any!) -> () in
+            viewController?.onItemSelected = { quality in
                 let newQuality = quality as! MediaSettings.ImageQuality
                 MediaSettings().imageQualitySetting = newQuality
 
@@ -256,7 +250,7 @@ class AppSettingsViewController: UITableViewController {
             WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value])
 
             // Show/hide image optimization settings
-            guard let self = self, let tableView = self.tableView else {
+            guard let self, let tableView else {
                 return
             }
             tableView.beginUpdates()
@@ -449,7 +443,7 @@ private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
-        let imageOptimizationValue = Bool(MediaSettings().imageOptimizationEnabled)
+        let imageOptimizationValue = MediaSettings().imageOptimizationEnabled
         let imageOptimization = SwitchRow(
             title: NSLocalizedString("appSettings.media.imageOptimizationRow", value: "Optimize Images", comment: "Option to enable the optimization of images when uploading."),
             value: imageOptimizationValue,
