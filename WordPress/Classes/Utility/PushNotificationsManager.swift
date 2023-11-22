@@ -206,7 +206,8 @@ final public class PushNotificationsManager: NSObject {
                         handleAuthenticationNotification,
                         handleInactiveNotification,
                         handleBackgroundNotification,
-                        handleQuickStartLocalNotification]
+                        handleQuickStartLocalNotification,
+                        handleJetpackAppInstallNotification]
 
         for handler in handlers {
             if handler(userInfo, userInteraction, completionHandler) {
@@ -363,7 +364,7 @@ extension PushNotificationsManager {
         }
 
         RootViewCoordinator.sharedPresenter.showNotificationsTabForNote(withID: notificationId)
-        completionHandler?(.newData)
+        completionHandler?(.noData)
 
         return true
     }
@@ -425,6 +426,7 @@ extension PushNotificationsManager {
         static let badgeResetValue = "badge-reset"
         static let local = "qs-local-notification"
         static let bloggingPrompts = "blogging-prompts-notification"
+        static let jetpackAppInstall = "jetpack-app-install"
     }
 
     enum Tracking {
@@ -518,5 +520,31 @@ private extension Date {
     var components: DateComponents {
         return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
                                                from: self)
+    }
+}
+
+// MARK: - Jetpack App Installation Notifications
+
+extension PushNotificationsManager {
+
+    /// Handles a Jetpack App Install Notification
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    @objc private func handleJetpackAppInstallNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+              type == Notification.jetpackAppInstall else {
+            return false
+        }
+
+        let topmostViewController = RootViewCoordinator.sharedPresenter.rootViewController.topmostPresentedViewController
+        JetpackBrandingCoordinator.presentOverlay(from: topmostViewController)
+
+        completionHandler?(.newData)
+
+        return true
     }
 }
