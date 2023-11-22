@@ -19,8 +19,7 @@ class MigrationDoneViewController: UIViewController {
     override func loadView() {
         self.view = MigrationStepView(
             headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
-            actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-            centerView: MigrationCenterView.deleteWordPress(with: viewModel.configuration.centerViewConfiguration)
+            actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration)
         )
     }
 
