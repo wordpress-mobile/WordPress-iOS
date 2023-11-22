@@ -1,10 +1,10 @@
 23.8
 -----
-
 * [*] Fix the media item details screen layout on iPad [#22042]
 * [*] Integrate native photos picker (`PHPickerViewControlle`) in Story Editor [#22059]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
 
 23.7
 -----
