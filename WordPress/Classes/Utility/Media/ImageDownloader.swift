@@ -139,7 +139,7 @@ extension ImageDownloader {
                 completion(nil, error)
             }
         }
-        return AnonumousImageDownloadTask(closure: task.cancel)
+        return AnonymousImageDownloadTask(closure: task.cancel)
     }
 }
 
@@ -179,7 +179,7 @@ protocol ImageDownloaderTask {
 extension Operation: ImageDownloaderTask {}
 extension URLSessionTask: ImageDownloaderTask {}
 
-private struct AnonumousImageDownloadTask: ImageDownloaderTask {
+private struct AnonymousImageDownloadTask: ImageDownloaderTask {
     let closure: () -> Void
 
     func cancel() {
