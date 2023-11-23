@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-04 11:03:45+0000 */
+/* Translation-Revision-Date: 2023-11-09 18:23:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d entradas.";
 
@@ -270,6 +267,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icono social %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Bloque '%s' convertido en bloques";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "«%s» no es totalmente compatible";
@@ -730,6 +730,9 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Texto Alt";
 
 /* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternativamente, puedes convertir el contenido en bloques.";
+
+/* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Separar patrones».";
 
 /* No comment provided by engineer. */
@@ -888,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "¿Estás seguro de que quieres eliminar permanentemente este elemento?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "¿Seguro que quieres eliminar esta página permanentemente?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "¿Estás seguro de querer borrar permanentemente esta entrada?";
 
@@ -921,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "¿Estás seguro de que quieres enviarlo para su valoración?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "¿Seguro que quieres enviar esta página a la papelera de reciclaje?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "¿Estás seguro de querer enviar a la papelera esta entrada?";
@@ -1259,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "Por ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "Por %@.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Al continuar, aceptas nuestros _términos del servicio_.";
 
@@ -1333,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1353,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancelar";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "Cancelar subida";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1417,9 +1407,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Cambiar ajustes";
-
-/* Change site icon button */
-"Change Site Icon" = "Cambiar icono del sitio";
 
 /* Change Username title. */
 "Change Username" = "Cambiar nombre de usuario";
@@ -1516,9 +1503,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Elegir página de inicio";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Elige una imagen de mi dispositivo";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Elegir las páginas";
@@ -1766,9 +1750,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Comunitario y ONG";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "Compacto";
-
 /* The action is completed */
 "Completed" = "Completado";
 
@@ -1953,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "Bloque copiado";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Copiar enlace";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copiar enlace al comentario";
@@ -2327,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Eliminar menú";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Eliminar permanentemente";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "¿Borrar permanentemente?";
 
 /* Button label for deleting the current site
@@ -2638,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Guarda en borrador y publica tu una entrada.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Borradores";
 
 /* No comment provided by engineer. */
@@ -2650,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Arrastra para ajustar el punto focal";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "Duplicar";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicar bloque";
@@ -2668,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloque tiene sus propios ajustes. Para encontrarlos, toca en un bloque. Sus ajustes aparecerán en la barra de herramientas de la parte inferior de la pantalla.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Editar";
@@ -3034,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Cada día a las %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Todo el mundo";
-
 /* Example story title description */
 "Example story title" = "Título de la entrada de historia";
 
@@ -3045,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Longitud del extracto (palabras)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "Extracto. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Los extractos son resúmenes manuales opcionales de tu contenido.";
@@ -3058,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Salir de la pantalla completa";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Ampliado";
 
 /* Accessibility hint */
@@ -3630,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "Inicio";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Página de inicio";
 
 /* Label for Homepage Settings site settings section
@@ -4216,9 +4173,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "Enlaces en los comentarios";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "Estilo de lista";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Cargar";
 
@@ -4306,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "Servicios locales";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Cambios locales";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4471,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "Tamaño máximo de subida de vídeo";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4562,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "Mensaje";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadatos";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4584,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "Meses y años";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Más";
 
 /* Action button to display more available options
@@ -4648,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Mover elemento del menú";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Mover a borradores";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Mover a la papelera";
 
@@ -4688,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "Mi sitio";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Mis sitios";
 
 /* Siri Suggestion to open My Sites */
@@ -4958,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Aún no hay notificaciones";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Ninguna página coincide con tu búsqueda";
 
 /* Text displayed when search for plugins returns no results */
@@ -4979,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "No se han creado entradas recientemente con esta etiqueta.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Ninguna entrada coincide con tu búsqueda";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "No hay entradas.";
@@ -5286,6 +5223,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "O";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "O elige otra forma de identificación.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "O accede _introduciendo la dirección de tu sitio_.";
 
@@ -5344,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Se ha restaurado la página en Borradores";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Se ha restaurado la página en Publicado";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Se ha restaurado la página en Programado";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Ajustes de la página";
@@ -5368,9 +5299,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Página que falló al subirse";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Se ha enviado la página a la papelera.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Página pendiente de revisión";
@@ -5443,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "Pendiente";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Pendiente de revisión";
 
 /* Noun. Title of the people management feature.
@@ -5571,7 +5498,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Por favor, introduce la contraseña de tu cuenta en WordPress.com para acceder con tu ID de Apple.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Por favor, introduce el código de verificación de tu aplicación de identificación o toca el siguiente enlace para recibir un código por SMS.";
+"Please enter the verification code from your authenticator app." = "Por favor, introduce el código de verificación de tu aplicación Authenticator.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Introduce tus credenciales";
@@ -5666,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato de entrada";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Se ha restaurado la entrada a borradores";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Se ha restaurado la entrada a publicado";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Se ha restaurado la entrada a programado";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Ajustes de la entrada";
@@ -5693,9 +5611,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Entrada que falló al subirse";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Se ha enviado la entrada a la papelera.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Entrada pendiente de revisión";
@@ -5754,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Entradas y páginas";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "Página de entradas";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "Página de entradas actualizada correctamente";
@@ -5849,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "Aviso de privacidad para usuarios de California";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privada";
 
 /* No comment provided by engineer. */
@@ -5900,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "Fecha de publicación";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicar Inmediatamente";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publicar ahora";
 
@@ -5923,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicadas";
 
 /* Precedes the name of the blog just posted on */
@@ -6220,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Reenviar";
 
-/* Title of the reset button */
-"Reset" = "Restablecer";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Restablecer filtro de tipo de actividad";
 
@@ -6277,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6394,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Entrada guardada";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "¡Guardado!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Guarda esta entrada para más tarde.";
 
@@ -6407,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "Guardando entrada...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Guardando...";
 
@@ -6497,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Busca o escribe la URL";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Buscar páginas";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "Buscar entradas";
 
 /* No comment provided by engineer. */
 "Search settings" = "Ajustes de búsqueda";
@@ -6713,21 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Servicio";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Establecer la imagen destacada";
-
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Establecer como padre";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Establecer como imagen destacada";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Configurar como página de inicio";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Configurar como página de entradas";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Establecer como imagen destacada";
@@ -6772,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7158,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Página de inicio estática";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7189,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Fija";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "Fija.";
 
 /* User action to stop upload. */
 "Stop upload" = "Detener subida";
@@ -7249,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Soporte";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Cambiar de sitio";
 
 /* Switches the Editor to HTML Mode */
@@ -7461,9 +7339,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Los controles de formato de texto están dentro de la barra de herramientas situada encima del teclado mientras editas un bloque de texto";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Envía un código por mensaje de texto";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Envíame un texto con un código mediante SMS";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Gracias por elegir %1$@ de %2$@";
@@ -7622,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "El usuario que estás intentando eliminar es el propietario de este sitio. Por favor contacta con soporte para que te ayuden.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "El usuario o contraseña guardados pueden estar obsoletos. Introduce tu contraseña de nuevo en ajustes y prueba otra vez.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7890,6 +7770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "¡Hora de terminar de configurar tu sitio! Nuestra lista de tareas te guía por los siguientes pasos.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Se acabó el tiempo, pero no te preocupes, tu seguridad es nuestra prioridad. ¡Vuelve a intentarlo!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Trucos para sacar el máximo provecho a WordPress.com";
 
@@ -8028,9 +7911,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "Enviar a la papelera los medios seleccionados";
 
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "¿Enviar esta página a la papelera?";
-
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "¿Enviar a la papelera esta entrada?";
 
@@ -8148,9 +8028,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "No fue posible conectar";
 
-/* An error message. */
-"Unable to Connect" = "No se ha podido conectar";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "No se ha podido crear el editor de historias";
 
@@ -8232,12 +8109,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "No es posible compartir el enlace";
 
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "No se han podido enviar las páginas a la papelera mientras estabas sin conexión. Por favor, inténtalo de nuevo más tarde.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "No es posible enviar entradas a la papelera estando desconectado. Por favor, inténtalo de nuevo más tarde.";
-
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "No es posible desactivar los avisos del sitio";
 
@@ -8310,8 +8181,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Deshacer";
 
@@ -8522,6 +8391,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Usar la tienda en un entorno de pruebas";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Usa una clave de seguridad";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar el editor de bloques";
 
@@ -8604,8 +8476,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "Vídeos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -8719,6 +8589,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Esperando a que Google termine…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Esperando a la clave de seguridad";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Esperando...";
@@ -9093,6 +8967,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Vaya, algo salió mal y no pudimos conectarte. ¡Por favor, inténtalo de nuevo!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Vaya, algo ha ido mal. ¡Por favor, inténtalo de nuevo!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Vaya, esa clave de seguridad parece que no es válida. Por favor, inténtalo de nuevo con otra";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Vaya, eso no es un código de verificación en dos pasos. ¡Vuelve a comprobar tu código e inténtalo de nuevo!";
@@ -9879,6 +9759,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar esto";
 
+/* Domain Management Screen Title */
+"domain.management.title" = "Todos los dominios";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Puede tardar hasta 30 minutos en que tu dominio personalizado empiece a funcionar.";
 
@@ -9899,6 +9782,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Gratis";
+
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Gratis durante el primer año con los planes de pago anuales";
 
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recomendado";
@@ -10334,6 +10220,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcado como spam";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "Productos";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "No se pueden sincronizar los medios";
 
@@ -10613,9 +10502,6 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "otros";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Promocionar con Blaze";
-
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Tu página de inicio usa una plantilla de tema, por lo que se abrirá en el editor web.";
 
@@ -10681,6 +10567,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Página movida a la papelera.";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Entrada movida a la papelera.";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Suscríbete ahora para compartir más";
@@ -10767,6 +10659,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Más";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Muestra las entradas del sitio";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comentar";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Me gusta";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Da me gusta a la entrada.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Me gustó";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Anula el me gusta de la entrada.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Guarda esta entrada para más tarde.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Guardar entrada";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Deja de guardar la entrada.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Entrada guardada";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Buscar";
 
@@ -10780,11 +10709,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "lector.aviso.bloqueo.usuario.erróneo";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Abre los comentarios de la entrada.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Me gusta";
+
+/* Accessibility hint for the like button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Da me gusta a la entrada.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Me gustó";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "No le gusta la entrada.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Abre un menú con más acciones.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Más";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Rebloguear";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Vuelve a publicar la entrada.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Abre los detalles del sitio de la entrada.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bloquear a este usuario";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Borrar entrada guardada";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Denunciar a este usuario";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Guardar";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ entradas - %2$@ seguidores";
@@ -10897,14 +10865,35 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Dominios";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Elegir dominio";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Documento, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Imagen: %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Vídeo, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Fecha de creación desconocida";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Elige medios.";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Medios";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacidad";
-
-/* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Tu sitio es visible por todos pero pide a los motores de búsqueda que no lo indexen.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Oculto";

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -122,10 +122,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -148,9 +145,6 @@
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Nedostaje naslov kategorije.";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Odaberi sliku s mog uređaja";
 
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
@@ -191,10 +185,6 @@
 
 /* No comment provided by engineer. */
 "Connecting to WordPress.com" = "Spajanje sa WordPress.com";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Kopiraj Poveznicu";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Države";
@@ -286,12 +276,9 @@
 "Draft" = "Skica";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Uredi";
@@ -456,7 +443,6 @@
 "Manage" = "Upravljanje";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -598,8 +584,7 @@
    Title of pending Comments filter. */
 "Pending" = "Na čekanju";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Čeka recenziju";
 
 /* Label for date periods. */
@@ -648,8 +633,7 @@
 "Privacy Policy" = "Pravila privatnosti";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privatno";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
@@ -663,14 +647,12 @@
    Title for the publish settings view */
 "Publish" = "Objavi";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Objavi Odmah";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Objavljeno";
 
 /* Published on [date] */
@@ -716,12 +698,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -749,11 +728,7 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from the post. */
 "Save Draft" = "Snimi Skicu";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Spremljeno!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Snimam...";
 
@@ -784,9 +759,6 @@
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "Pogledajte upute";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Postavi istaknutu sliku";
-
 /* Link to plugin's Settings
    Section title
    The menu item to select during a guided tour.
@@ -797,7 +769,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -830,8 +801,7 @@
    Title of spam Comments filter. */
 "Spam" = "Spam";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -996,8 +966,6 @@
 "Version " = "Inačica:";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */

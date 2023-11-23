@@ -1,5 +1,6 @@
 #import "BlogListViewController.h"
 #import "WordPress-Swift.h"
+#import "SVProgressHUD+Dismiss.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
@@ -40,12 +41,8 @@ static NSInteger HideSearchMinSites = 3;
     return nil;
 }
 
-- (instancetype)init
-{
-    return [self initWithMeScenePresenter:[MeScenePresenter new]];
-}
-
-- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+- (instancetype)initWithConfiguration:(BlogListConfiguration *)configuration
+           meScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
     
@@ -53,6 +50,7 @@ static NSInteger HideSearchMinSites = 3;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _meScenePresenter = meScenePresenter;
+        _configuration = configuration;
         
         [self configureDataSource];
         [self configureNavigationBar];
@@ -66,6 +64,8 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.dataSource = [BlogListDataSource new];
     self.dataSource.shouldShowDisclosureIndicator = NO;
+    self.dataSource.shouldHideSelfHostedSites = self.configuration.shouldHideSelfHostedSites;
+    self.dataSource.shouldHideBlogsNotSupportingDomains = self.configuration.shouldHideBlogsNotSupportingDomains;
     
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
@@ -80,8 +80,8 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureNavigationBar
 {
-    // show 'Switch Site' for the next page's back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+    // Configure next page's back button title
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:self.configuration.backButtonTitle
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:nil
                                                                   action:nil];
@@ -92,10 +92,13 @@ static NSInteger HideSearchMinSites = 3;
                                                                        action:@selector(addSite)];
     self.addSiteButton.accessibilityIdentifier = @"add-site-button";
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"my-sites-cancel-button";
+    if (self.configuration.shouldShowCancelButton) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+        self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"my-sites-cancel-button";
+    }
+    
 
-    self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
+    self.navigationItem.title = self.configuration.navigationTitle;
 }
 
 - (void)cancelTapped
@@ -188,6 +191,9 @@ static NSInteger HideSearchMinSites = 3;
         [self.searchBar resignFirstResponder];
     }
     self.visible = NO;
+    
+    [SVProgressHUD resetOffsetFromCenter];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
 
     [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDismissed];
 }
@@ -473,6 +479,22 @@ static NSInteger HideSearchMinSites = 3;
             }
         }
     }
+}
+
+- (void)showLoading
+{
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setContainerView:self.view];
+    CGPoint containerCenter = self.view.frame.origin;
+    [SVProgressHUD setOffsetFromCenter: UIOffsetMake(0, -containerCenter.y)];
+    [SVProgressHUD show];
+    self.navigationItem.hidesBackButton = true;
+}
+
+- (void)hideLoading
+{
+    [SVProgressHUD dismiss];
+    self.navigationItem.hidesBackButton = false;
 }
 
 #pragma mark - Configuration
@@ -885,6 +907,10 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateBarButtons
 {
+    if (self.configuration.shouldShowNavBarButtons == false) {
+        return;
+    }
+
     BOOL showAddSiteButton = [self shouldShowAddSiteButton];
     BOOL showEditButton = [self shouldShowEditButton];
 

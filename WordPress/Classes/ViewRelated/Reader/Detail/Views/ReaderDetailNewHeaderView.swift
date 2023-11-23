@@ -60,8 +60,11 @@ class ReaderDetailNewHeaderViewHost: UIView {
         guard let swiftUIView = subviews.first else {
             return
         }
-        swiftUIView.invalidateIntrinsicContentSize()
-        layoutIfNeeded()
+
+        DispatchQueue.main.async {
+            swiftUIView.invalidateIntrinsicContentSize()
+            self.layoutIfNeeded()
+        }
     }
 }
 
@@ -237,7 +240,8 @@ struct ReaderDetailNewHeaderView: View {
             authorStack
             Spacer()
             ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                               isEnabled: viewModel.isFollowButtonInteractive) {
+                               isEnabled: viewModel.isFollowButtonInteractive,
+                               size: .compact) {
                 viewModel.didTapFollowButton()
             }
         }
@@ -249,7 +253,7 @@ struct ReaderDetailNewHeaderView: View {
                let avatarURL = viewModel.authorAvatarURL {
                 avatarView(with: siteIconURL, avatarURL: avatarURL)
             }
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4.0) {
                 Text(viewModel.siteName)
                     .font(.callout)
                     .fontWeight(.semibold)

@@ -34,9 +34,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     weak var delegate: ReaderDetailToolbarDelegate? = nil
 
+    private lazy var readerImprovementsEnabled: Bool = {
+        return RemoteFeatureFlag.readerImprovements.enabled()
+    }()
+
     private var likeButtonTitle: String {
-        guard let post,
-              RemoteFeatureFlag.readerImprovements.enabled() else {
+        guard let post, readerImprovementsEnabled else {
             return likeLabel(count: likeCount)
         }
         return post.isLiked ? Constants.likedButtonTitle : Constants.likeButtonTitle
@@ -163,7 +166,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
 
         // TODO: Apply changes on the XIB directly once the `readerImprovements` flag is removed.
-        if RemoteFeatureFlag.readerImprovements.enabled() {
+        if readerImprovementsEnabled {
             stackView.distribution = .fillEqually
             stackView.spacing = 16.0
             stackViewLeadingConstraint.constant = 16.0
@@ -226,7 +229,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         /// `imagePlacement` to `.top`.
         ///
         /// TODO: remove unused styles once the `readerImprovements` flag is removed.
-        guard RemoteFeatureFlag.readerImprovements.enabled() else {
+        guard readerImprovementsEnabled else {
             return
         }
 
@@ -244,6 +247,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             outgoing.font = WPStyleGuide.fontForTextStyle(.footnote)
             return outgoing
         }
+
+        // Don't allow the button title to wrap.
+        configuration.titleLineBreakMode = .byTruncatingTail
 
         button.configuration = configuration
 
@@ -269,8 +275,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         configureActionButton(likeButton,
                               title: likeButtonTitle,
-                              image: Constants.likeImage,
-                              highlightedImage: Constants.likedImage,
+                              image: WPStyleGuide.ReaderDetail.likeToolbarIcon,
+                              highlightedImage: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon,
                               selected: selected)
 
         if animated {
@@ -296,9 +302,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let animationDuration = 0.3
-        let imageView = UIImageView(image: Constants.likedImage)
+        let imageView = UIImageView(image: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon)
 
-        if RemoteFeatureFlag.readerImprovements.enabled() {
+        if readerImprovementsEnabled {
             /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
             /// To work around this, let's add the faux image to the image view instead, so it can be
             /// properly placed in front of the masking view.
@@ -317,7 +323,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             likeImageView.pinSubviewToAllEdges(mask)
             mask.translatesAutoresizingMaskIntoConstraints = false
 
-            if RemoteFeatureFlag.readerImprovements.enabled() {
+            if readerImprovementsEnabled {
                 likeImageView.bringSubviewToFront(imageView)
             } else {
                 likeButton.bringSubviewToFront(imageView)
@@ -371,11 +377,15 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     private func configureCommentActionButton() {
         commentButton.isEnabled = shouldShowCommentActionButton
 
-        commentButton.setImage(Constants.commentImage, for: .normal)
-        commentButton.setImage(Constants.commentSelectedImage, for: .selected)
-        commentButton.setImage(Constants.commentSelectedImage, for: .highlighted)
-        commentButton.setImage(Constants.commentSelectedImage, for: [.highlighted, .selected])
-        commentButton.setImage(Constants.commentImage, for: .disabled)
+        if readerImprovementsEnabled {
+            commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .normal)
+            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .selected)
+            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .highlighted)
+            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: [.highlighted, .selected])
+            commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .disabled)
+        } else {
+            WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
+        }
 
         configureActionButtonStyle(commentButton)
     }
@@ -426,8 +436,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let commentCount = post.commentCount()?.intValue ?? 0
-        let commentTitle = RemoteFeatureFlag.readerImprovements.enabled() ? Constants.commentButtonTitle : commentLabel(count: commentCount)
-        let showTitle: Bool = RemoteFeatureFlag.readerImprovements.enabled() || traitCollection.horizontalSizeClass != .compact
+        let commentTitle = readerImprovementsEnabled ? Constants.commentButtonTitle : commentLabel(count: commentCount)
+        let showTitle: Bool = readerImprovementsEnabled || traitCollection.horizontalSizeClass != .compact
 
         likeButton.setTitle(likeButtonTitle, for: .normal)
         likeButton.setTitle(likeButtonTitle, for: .highlighted)
@@ -492,38 +502,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 private extension ReaderDetailToolbar {
 
     struct Constants {
-        static let buttonContentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 0, bottom: 0, trailing: 0)
-        static let buttonImagePadding: CGFloat = 4.0
-
-        static var likeImage: UIImage? {
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                // reduce gridicon images to 20x20 since they don't have intrinsic padding.
-                return UIImage(named: "icon-reader-like")?
-                    .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)
-                    .withRenderingMode(.alwaysTemplate)
-            }
-            return UIImage(named: "icon-reader-like")
-        }
-
-        static var likedImage: UIImage? {
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                // reduce gridicon images to 20x20 since they don't have intrinsic padding.
-                return UIImage(named: "icon-reader-liked")?
-                    .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .default)
-                    .withRenderingMode(.alwaysTemplate)
-            }
-            return UIImage(named: "icon-reader-liked")
-        }
-
-        static let commentImage = UIImage(named: "icon-reader-comment-outline")?
-            .imageFlippedForRightToLeftLayoutDirection()
-            .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .high)
-            .withRenderingMode(.alwaysTemplate)
-
-        static let commentSelectedImage = UIImage(named: "icon-reader-comment-outline-highlighted")?
-            .imageFlippedForRightToLeftLayoutDirection()
-            .resizedImage(WPStyleGuide.Detail.actionBarIconSize, interpolationQuality: .high)
-            .withRenderingMode(.alwaysTemplate)
+        static let buttonContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        static let buttonImagePadding: CGFloat = 0
 
         // MARK: Strings
 

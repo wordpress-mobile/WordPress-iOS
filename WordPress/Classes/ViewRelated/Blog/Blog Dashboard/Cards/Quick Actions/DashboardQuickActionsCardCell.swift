@@ -98,7 +98,9 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             }
         case .media:
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
-            MediaLibraryViewController.showForBlog(blog, from: parentViewController)
+            let controller = SiteMediaViewController(blog: blog)
+            parentViewController.show(controller, sender: nil)
+            QuickStartTourGuide.shared.visited(.mediaScreen)
         case .stats:
             trackQuickActionsEvent(.statsAccessed, blog: blog)
             StatsViewController.show(for: blog, from: parentViewController)

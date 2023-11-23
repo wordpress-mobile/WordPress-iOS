@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
-    case mediaModernization
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -41,8 +40,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .domainFocus:
             return true
-        case .mediaModernization:
-            return false
         }
     }
 
@@ -85,8 +82,6 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
-        case .mediaModernization:
-            return "Media Modernization"
         }
     }
 }

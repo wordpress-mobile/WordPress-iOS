@@ -56,24 +56,15 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     func setupTableView() {
-        let separatorView = UIView()
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
-
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToSafeArea(containerView, insets: readerImprovements ? Constants.newContainerInsets : Constants.containerInsets)
         containerView.addSubview(tableView)
-        containerView.addSubview(separatorView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         let tableViewMargin = readerImprovements ? 16.0 : 0.0
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: tableViewMargin),
-            tableView.bottomAnchor.constraint(equalTo: separatorView.topAnchor, constant: -tableViewMargin),
-            separatorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: readerImprovements ? 0.5 : 0.0),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -tableViewMargin)
         ])
 
         // Constraints for regular horizontal size class
@@ -121,7 +112,8 @@ class ReaderTopicsTableCardCell: UITableViewCell {
         static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         static let newContainerInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         static let headerInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0)
-        static let newHeaderInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 0)
+        static let newHeaderInsets = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 0)
+        static let tableFooterHeight: CGFloat = 8.0
     }
 }
 
@@ -144,7 +136,7 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return RemoteFeatureFlag.readerImprovements.enabled() ? 16 : 0
+        return readerImprovements ? Constants.tableFooterHeight : 0
     }
 }
 

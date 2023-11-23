@@ -1,4 +1,5 @@
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 enum StatsWidgetEntry: TimelineEntry {
     case siteSelected(HomeWidgetData, TimelineProviderContext)

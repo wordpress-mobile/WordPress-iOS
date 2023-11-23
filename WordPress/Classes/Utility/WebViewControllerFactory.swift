@@ -45,10 +45,13 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration, source: source)
     }
 
-    static func controllerWithDefaultAccountAndSecureInteraction(url: URL, source: String) -> WebKitViewController {
+    static func controllerWithDefaultAccountAndSecureInteraction(url: URL,
+                                                                 source: String,
+                                                                 title: String? = nil) -> WebKitViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
+        configuration.customTitle = title
 
         return controller(configuration: configuration, source: source)
     }

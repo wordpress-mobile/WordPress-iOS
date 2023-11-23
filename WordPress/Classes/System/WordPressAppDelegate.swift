@@ -93,6 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
+        PostCoordinator.shared.delegate = self
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -131,12 +132,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ABTest.start()
 
         Media.removeTemporaryData()
+        NSItemProvider.removeTemporaryData()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
-        disableAnimationsForUITests(application)
-        logoutAtLaunchForUITests(application)
+        UITestConfigurator.prepareApplicationForUITests(application)
+        DebugMenuViewController.configure(in: window)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -359,25 +361,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Helpers
-
-    /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
-    /// It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton:
-    ///
-    /// XCUIApplication().launchArguments = ["-no-animations"]
-    ///
-    private func disableAnimationsForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-no-animations") {
-            UIView.setAnimationsEnabled(false)
-            application.windows.first?.layer.speed = MAXFLOAT
-            application.mainWindow?.layer.speed = MAXFLOAT
-        }
-    }
-
-    private func logoutAtLaunchForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-logout-at-launch") {
-            AccountHelper.logOutDefaultWordPressComAccount()
-        }
-    }
 
     var runningInBackground: Bool {
         return UIApplication.shared.applicationState == .background

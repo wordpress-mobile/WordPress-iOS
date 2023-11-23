@@ -124,7 +124,7 @@ public class MySiteScreen: ScreenObject {
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
     // Timeout duration to overwrite value defined in XCUITestHelpers
-    var duration: TimeInterval = 5.0
+    var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(

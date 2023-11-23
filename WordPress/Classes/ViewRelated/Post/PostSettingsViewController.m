@@ -159,6 +159,7 @@ FeaturedImageViewControllerDelegate>
     // reachability callbacks to trigger before such initial setup completes.
     //
     [self setupReachability];
+    [self setupStandaloneEditor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -177,9 +178,15 @@ FeaturedImageViewControllerDelegate>
 {
     [super viewWillDisappear:animated];
 
-    [self.apost.managedObjectContext performBlock:^{
-        [self.apost.managedObjectContext save:nil];
-    }];
+    if (self.isStandalone) {
+        if (!self.isStandaloneEditorDismissingAfterSave) {
+            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+        }
+    } else {
+        [self.apost.managedObjectContext performBlock:^{
+            [self.apost.managedObjectContext save:nil];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -1373,7 +1380,9 @@ FeaturedImageViewControllerDelegate>
 
     // Save changes.
     self.post.categories = [categories mutableCopy];
-    [self.post save];
+    if (!self.isStandalone) {
+        [self.post save];
+    }
 }
 
 #pragma mark - PostFeaturedImageCellDelegate

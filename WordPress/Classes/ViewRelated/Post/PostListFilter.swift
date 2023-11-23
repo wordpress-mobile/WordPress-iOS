@@ -219,7 +219,7 @@ import Foundation
         return filter
     }
 
-    func predicate(for blog: Blog) -> NSPredicate {
+    func predicate(for blog: Blog, author: PostListFilterSettings.AuthorFilter = .mine) -> NSPredicate {
         var predicates = [NSPredicate]()
 
         // Show all original posts without a revision & revision posts.
@@ -228,7 +228,7 @@ import Foundation
 
         predicates.append(predicateForFetchRequest)
 
-        if let myAuthorID = blog.userID {
+        if author == .mine, let myAuthorID = blog.userID {
             // Brand new local drafts have an authorID of 0.
             let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
             predicates.append(authorPredicate)

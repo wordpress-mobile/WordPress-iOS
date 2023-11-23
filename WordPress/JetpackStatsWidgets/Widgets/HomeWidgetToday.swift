@@ -23,12 +23,6 @@ struct HomeWidgetToday: Widget {
                                                             placeholderContent: placeholderContent,
                                                             widgetKind: .today)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
-
-            defer {
-                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeToday)
-            }
-
             return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)

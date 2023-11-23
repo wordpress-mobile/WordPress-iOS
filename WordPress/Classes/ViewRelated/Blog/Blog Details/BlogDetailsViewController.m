@@ -1740,70 +1740,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // only preload on wifi
     if (isOnWifi) {
-        [self preloadPosts];
-        [self preloadPages];
         [self preloadComments];
         [self preloadMetadata];
         [self preloadDomains];
-    }
-}
-
-- (void)preloadPosts
-{
-    [self preloadPostsOfType:PostServiceTypePost];
-}
-
-- (void)preloadPages
-{
-    [self preloadPostsOfType:PostServiceTypePage];
-}
-
-// preloads posts or pages.
-- (void)preloadPostsOfType:(PostServiceType)postType
-{
-    // Temporarily disable posts preloading until we can properly resolve the issues on:
-    // https://github.com/wordpress-mobile/WordPress-iOS/issues/6151
-    // Brent C. Nov 3/2016
-    BOOL preloadingPostsDisabled = YES;
-    if (preloadingPostsDisabled) {
-        return;
-    }
-
-    NSDate *lastSyncDate;
-    if ([postType isEqual:PostServiceTypePage]) {
-        lastSyncDate = self.blog.lastPagesSync;
-    } else {
-        lastSyncDate = self.blog.lastPostsSync;
-    }
-    NSTimeInterval now = [[NSDate date] timeIntervalSinceReferenceDate];
-    NSTimeInterval lastSync = lastSyncDate.timeIntervalSinceReferenceDate;
-    if (now - lastSync > PreloadingCacheTimeout) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-        PostListFilterSettings *filterSettings = [[PostListFilterSettings alloc] initWithBlog:self.blog postType:postType];
-        PostListFilter *filter = [filterSettings currentPostListFilter];
-
-        PostServiceSyncOptions *options = [PostServiceSyncOptions new];
-        options.statuses = filter.statuses;
-        options.authorID = [filterSettings authorIDFilter];
-        options.purgesLocalSync = YES;
-
-        if ([postType isEqual:PostServiceTypePage]) {
-            self.blog.lastPagesSync = [NSDate date];
-        } else {
-            self.blog.lastPostsSync = [NSDate date];
-        }
-        NSError *error = nil;
-        [self.blog.managedObjectContext save:&error];
-
-        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError * __unused error) {
-            NSDate *invalidatedDate = [NSDate dateWithTimeIntervalSince1970:0.0];
-            if ([postType isEqual:PostServiceTypePage]) {
-                self.blog.lastPagesSync = invalidatedDate;
-            } else {
-                self.blog.lastPostsSync = invalidatedDate;
-            }
-        }];
     }
 }
 
@@ -1888,15 +1827,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
-    if ([Feature enabled:FeatureFlagMediaModernization]) {
-        SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog];
-        [self.presentationDelegate presentBlogDetailsViewController:controller];
-    } else {
-        MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
-        controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-        [self.presentationDelegate presentBlogDetailsViewController:controller];
-    }
-
+    SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog];
+    [self.presentationDelegate presentBlogDetailsViewController:controller];
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
 

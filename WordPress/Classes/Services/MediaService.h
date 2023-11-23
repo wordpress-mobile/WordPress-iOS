@@ -59,7 +59,7 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  @failure a block that will be invoked when there is upload error.
  */
 - (void)updateMedia:(nonnull Media *)media
-     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+     fieldsToUpdate:(nonnull NSArray<NSString *> *)fieldsToUpdate
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
@@ -88,7 +88,7 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  @param success
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
-     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+     fieldsToUpdate:(nonnull NSArray<NSString *> *)fieldsToUpdate
      overallSuccess:(nullable void (^)(void))overallSuccess
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 

@@ -96,11 +96,20 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     }
 
     private func applyFollowButtonStyles() {
+        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
+            applyNewFollowButtonStyles()
+            return
+        }
         if UIDevice.current.userInterfaceIdiom == .pad {
             WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         } else {
             WPStyleGuide.applyReaderIconFollowButtonStyle(followButton)
         }
+    }
+
+    private func applyNewFollowButtonStyles() {
+        let contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
+        WPStyleGuide.applyNewReaderFollowButtonStyle(followButton, contentInsets: contentInsets)
     }
 
 }

@@ -55,18 +55,20 @@ struct ReaderPostCardCellViewModel {
     }
 
     var commentCount: String? {
-        guard isCommentsEnabled else {
+        guard isCommentsEnabled,
+              let count = contentProvider.commentCount()?.intValue,
+              count > 0 else {
             return nil
         }
-        let count = contentProvider.commentCount()?.intValue ?? 0
         return WPStyleGuide.commentCountForDisplay(count)
     }
 
     var likeCount: String? {
-        guard isLikesEnabled else {
+        guard isLikesEnabled,
+              let count = contentProvider.likeCount()?.intValue,
+              count > 0 else {
             return nil
         }
-        let count = contentProvider.likeCount()?.intValue ?? 0
         return WPStyleGuide.likeCountForDisplay(count)
     }
 
@@ -121,11 +123,15 @@ struct ReaderPostCardCellViewModel {
 
     private var followCommentsService: FollowCommentsService?
 
+    private(set) var showsSeparator: Bool
+
     init(contentProvider: ReaderPostContentProvider,
          isLoggedIn: Bool,
+         showsSeparator: Bool = true,
          parentViewController: ReaderStreamViewController) {
         self.contentProvider = contentProvider
         self.actionVisibility = .visible(enabled: isLoggedIn)
+        self.showsSeparator = showsSeparator
         self.parentViewController = parentViewController
     }
 

@@ -46,8 +46,8 @@ private extension MigrationActionsViewConfiguration {
                                                            value: "Continue",
                                                            comment: "The primary button title in the migration welcome and notifications screens.")
 
-        static let donePrimaryTitle = NSLocalizedString("migration.done.actions.primary.title",
-                                                        value: "Finish",
+        static let donePrimaryTitle = NSLocalizedString("migrationDone.actions.primaryTitle",
+                                                        value: "Let's go",
                                                         comment: "Primary button title in the migration done screen.")
 
         static let welcomeSecondaryTitle = NSLocalizedString("Need help?",

@@ -31,6 +31,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
+        modalPresentationStyle = .formSheet
     }
 
     required init?(coder: NSCoder) {
@@ -43,24 +44,16 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         collectionViewController.embed(in: self)
         collectionViewController.delegate = self
 
-        configureNavigationBarAppearance()
-        configurationNavigationItems()
+        configureDefaultNavigationBarAppearance()
+        configureNavigationItems()
         startSelection()
     }
 
     // MARK: - Configuration
 
-    private func configureNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-    }
-
-    private func configurationNavigationItems() {
+    private func configureNavigationItems() {
         let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
-            self?.buttonDoneTapped()
+            self?.buttonCancelTapped()
         })
 
         navigationItem.leftBarButtonItem = buttonCancel

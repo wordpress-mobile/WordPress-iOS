@@ -1,7 +1,0 @@
-Hemos estado eliminando errores (había muchos menos de lo que parece).
-
-- Ahora puedes incrustar URL desde X sin obtener un enlace roto. Esto nos parece eXcelente.
-- Hablando de enlaces, cuando utilices una URL de medios no válida, la aplicación mostrará ahora un mensaje de error en lugar de bloquearse. Mejor, ¿verdad?
-- Ahora a los colaboradores les aparecerá la ventana emergente correspondiente cuando envíen entradas para su revisión. ¡Menos mal!
-- Hemos solucionado un problema que hacía que los usuarios no administradores pudieran ver el menú de plugins de su sitio. Ojos que no ven, corazón que no siente.
-- En el editor de bloques, la aplicación ya no se bloqueará cuando anides demasiados bloques dentro de bloques... dentro de bloques... ya te haces una idea. Chúpate esa, Origen.

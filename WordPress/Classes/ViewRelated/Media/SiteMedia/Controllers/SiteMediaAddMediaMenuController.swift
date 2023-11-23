@@ -13,7 +13,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
 
     func makeMenu(for viewController: UIViewController) -> UIMenu {
         let menu = MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
-        return UIMenu(options: [.displayInline], children: [
+        var children: [UIMenuElement] = [
             UIMenu(options: [.displayInline], children: [
                 menu.makePhotosAction(delegate: self),
             ]),
@@ -25,7 +25,13 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
                 menu.makeStockPhotos(blog: blog, delegate: self),
                 menu.makeFreeGIFAction(blog: blog, delegate: self)
             ])
-        ])
+        ]
+        if let quotaUsageDescription = blog.quotaUsageDescription {
+            children += [
+                UIAction(subtitle: quotaUsageDescription, handler: { _ in })
+            ]
+        }
+        return UIMenu(options: [.displayInline], children: children)
     }
 
     // MARK: - PHPickerViewControllerDelegate
@@ -33,9 +39,15 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        for result in results {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        guard results.count > 0 else {
+            return
+        }
+
+        MediaHelper.advertiseImageOptimization() { [self] in
+            for result in results {
+                let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+                coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+            }
         }
     }
 
@@ -54,7 +66,9 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         switch mediaType {
         case UTType.image.identifier:
             if let image = info[.originalImage] as? UIImage {
-                addAsset(from: image)
+                MediaHelper.advertiseImageOptimization() {
+                    addAsset(from: image)
+                }
             }
         case UTType.movie.identifier:
             if let videoURL = info[.mediaURL] as? URL {

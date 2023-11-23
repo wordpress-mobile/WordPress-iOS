@@ -82,7 +82,7 @@ class MySitesCoordinator: NSObject {
 
     @objc
     private(set) lazy var blogListViewController: BlogListViewController = {
-        BlogListViewController(meScenePresenter: self.meScenePresenter)
+        BlogListViewController(configuration: .defaultConfig, meScenePresenter: self.meScenePresenter)
     }()
 
     private lazy var mySiteViewController: MySiteViewController = {

@@ -1,5 +1,4 @@
 import UIKit
-import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
@@ -255,12 +254,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return UInt(currentMetrics.wordCount)
     }
 
-    /// Media Library Data Source
-    ///
-    lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
-    }()
-
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
@@ -293,8 +286,24 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }()
 
     // MARK: - Initializers
-    required convenience init(post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorCallback, editorSession: PostEditorAnalyticsSession?) {
-        self.init(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor, editorSession: editorSession)
+    required convenience init(
+        post: AbstractPost, loadAutosaveRevision: Bool,
+        replaceEditor: @escaping ReplaceEditorCallback,
+        editorSession: PostEditorAnalyticsSession?
+    ) {
+        self.init(
+            post: post,
+            loadAutosaveRevision: loadAutosaveRevision,
+            replaceEditor: replaceEditor,
+            editorSession: editorSession,
+            // Notice this parameter.
+            // The value is the default set in the required init but we need to set it explicitly,
+            // otherwise we'd trigger and infinite loop on this init.
+            //
+            // The reason we need this init at all even though the other one does the same job is
+            // to conform to the PostEditor protocol.
+            navigationBarManager: nil
+        )
     }
 
     required init(

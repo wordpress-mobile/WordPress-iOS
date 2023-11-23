@@ -13,7 +13,7 @@ struct LockScreenChartView: View {
                 HStack() {
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer(minLength: 0)
-                    LockScreenSiteTitleView(title: dateInterval(viewModel.columns), alignment: .trailing)
+                    LockScreenSiteTitleView(title: dateInterval(viewModel.columns), alignment: .trailing, isIconShown: false)
                 }
                 Spacer(minLength: 0)
                 if isChartShown {
