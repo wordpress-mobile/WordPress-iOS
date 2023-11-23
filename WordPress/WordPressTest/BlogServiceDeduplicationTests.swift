@@ -150,10 +150,10 @@ private extension BlogServiceDeduplicationTests {
 
     @discardableResult
     func createBlog(id: Int, url: String, account: WPAccount) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
-        blog.dotComID = id as NSNumber
-        blog.url = url
-        blog.xmlrpc = url
+        let blog = BlogBuilder(mainContext)
+            .with(dotComID: id)
+            .with(url: url)
+            .build()
         blog.account = account
         return blog
     }

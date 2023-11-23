@@ -6,7 +6,7 @@ import XCTest
 class PostTests: CoreDataTestCase {
 
     fileprivate func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
+        BlogBuilder(mainContext).build()
     }
 
     fileprivate func newTestPost() -> Post {
