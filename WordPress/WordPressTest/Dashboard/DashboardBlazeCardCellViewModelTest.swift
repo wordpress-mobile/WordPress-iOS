@@ -3,8 +3,8 @@ import XCTest
 @testable import WordPress
 
 final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
-    private let service = MockBlazeService()
-    private let store = MockDashboardBlazeStore()
+    private var service: MockBlazeService!
+    private var store: MockDashboardBlazeStore!
     private var blog: Blog!
     private var sut: DashboardBlazeCardCellViewModel!
     private var isBlazeCampaignsFlagEnabled = true
@@ -12,18 +12,34 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        service = MockBlazeService()
+        store = MockDashboardBlazeStore()
         blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = 1
 
-        createSUT()
+        sut = createSUT(service: service, store: store, blog: blog)
     }
 
-    private func createSUT() {
-        sut = DashboardBlazeCardCellViewModel(
+    private func createSUT(blazeCampaignsEnabled: Bool = true) -> DashboardBlazeCardCellViewModel {
+        createSUT(
+            service: service,
+            store: store,
+            blog: blog,
+            blazeCampaignsEnabled: blazeCampaignsEnabled
+        )
+    }
+
+    private func createSUT(
+        service: MockBlazeService,
+        store: MockDashboardBlazeStore,
+        blog: Blog,
+        blazeCampaignsEnabled: Bool = true
+    ) -> DashboardBlazeCardCellViewModel {
+        DashboardBlazeCardCellViewModel(
             blog: blog,
             service: service,
             store: store,
-            isBlazeCampaignsFlagEnabled: { [unowned self] in self.isBlazeCampaignsFlagEnabled }
+            isBlazeCampaignsFlagEnabled: { blazeCampaignsEnabled }
         )
     }
 
@@ -64,7 +80,7 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         wait(for: [expectation], timeout: 1)
 
         // When the ViewModel is re-created
-        createSUT()
+        let newSUT = createSUT()
 
         // Then it shows the cached campaign
         switch sut.state {
@@ -75,10 +91,10 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         }
     }
 
+    // FIXME: This test is testing the default state of the service and exercises async behavior synchronousely.
     func testThatNoRequestsAreMadeWhenFlagDisabled() {
         // Given
-        isBlazeCampaignsFlagEnabled = false
-        createSUT()
+        let sut = createSUT(blazeCampaignsEnabled: false)
 
         // When
         sut.refresh()
