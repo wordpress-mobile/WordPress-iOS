@@ -76,9 +76,11 @@
             return
         }
 
+        let hasBlogs = AccountHelper.hasBlogs
+
         guard isLocalPostsSynced() else {
             let error = MigrationError.localDraftsNotSynced
-            tracker.trackContentExportFailed(reason: error.localizedDescription)
+            tracker.trackContentExportFailed(reason: error.localizedDescription, hasBlogs: hasBlogs)
             processResult(.failure(error), completion: completion)
             return
         }
@@ -86,12 +88,12 @@
         dataMigrator.exportData { [weak self] result in
             switch result {
             case .success:
-                self?.tracker.trackContentExportSucceeded()
+                self?.tracker.trackContentExportSucceeded(hasBlogs: hasBlogs)
                 self?.processResult(.success(()), completion: completion)
 
             case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
-                self?.tracker.trackContentExportFailed(reason: error.localizedDescription)
+                self?.tracker.trackContentExportFailed(reason: error.localizedDescription, hasBlogs: hasBlogs)
                 self?.processResult(.failure(.exportFailure), completion: completion)
             }
         }
@@ -187,7 +189,7 @@ protocol ContentMigrationEligibilityProvider {
 
 extension AppConfiguration: ContentMigrationEligibilityProvider {
     var isEligibleForMigration: Bool {
-        Self.isWordPress && AccountHelper.isLoggedIn && AccountHelper.hasBlogs
+        Self.isWordPress && AccountHelper.isLoggedIn
     }
 }
 

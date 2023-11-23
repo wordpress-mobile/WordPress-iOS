@@ -1,11 +1,16 @@
 23.8
 -----
-
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
 * [*] Fix the media item details screen layout on iPad [#22042]
 * [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
-* [*] Integrate native photos picker (`PHPickerViewControlle`) in Story Editor [#22059]
+* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
+* [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
+* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
 
 23.7
 -----
