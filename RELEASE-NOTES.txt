@@ -4,6 +4,7 @@
 * [*] Fix the media item details screen layout on iPad [#22042]
 * [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
 * [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
 * [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
