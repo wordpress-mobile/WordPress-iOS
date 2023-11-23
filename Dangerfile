@@ -35,3 +35,6 @@ pr_size_checker.check_diff_size
 milestone_checker.check_milestone_due_date(days_before_due: 4) unless github.pr_draft? || (wip_feature? && !(release_branch? || main_branch?))
 
 rubocop.lint(inline_comment: true, fail_on_inline_comment: true, include_cop_names: true)
+
+podfile_checks.check_podfile_does_not_have_branch_references
+podfile_checks.check_podfile_diff_does_not_have_branch_references
