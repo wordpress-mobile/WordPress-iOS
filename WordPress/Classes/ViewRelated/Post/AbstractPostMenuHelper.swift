@@ -99,7 +99,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
-        case .comments: return UIImage(systemName: "bubble")
+        case .comments: return UIImage(systemName: "bubble.right")
         case .settings: return UIImage(systemName: "gearshape")
         case .setParent: return UIImage(systemName: "text.append")
         case .setHomepage: return UIImage(systemName: "house")

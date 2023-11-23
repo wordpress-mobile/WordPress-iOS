@@ -102,6 +102,13 @@ platform :ios do
     # Only run Jetpack UI tests in parallel.
     # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
     parallel_testing_value = options[:name].include?('Jetpack')
+    # Disabled to test if it makes a difference performance wise in Xcode 15.0.1 in CI as we've seen errors such as this one:
+    # https://github.com/wordpress-mobile/WordPress-iOS/pull/21921#issuecomment-1820707121
+    #
+    # Also, simply disabling at the test plan level doesn't seem to have effect.
+    # In this CI run, it can be seen that there are at least two clones (UI tests logs on iPad, lines 1930 to 1934):
+    # https://buildkite.com/automattic/wpios-macv2-test/builds/14#018bfb60-6b6e-4a31-9acd-d27ee6f053e8/398-1930
+    parallel_testing_value = false
 
     run_tests(
       workspace: WORKSPACE_PATH,

@@ -6,6 +6,10 @@ final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Types
 
+    enum Constants {
+        static let analyticsSource = "all_domains"
+    }
+
     private enum Layout {
         static let interRowSpacing = Length.Padding.double
     }

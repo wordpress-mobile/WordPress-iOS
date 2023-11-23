@@ -450,6 +450,7 @@ class BloggingPromptsServiceRemoteMock: BloggingPromptsServiceRemote {
         let formatter = DateFormatter()
         formatter.locale = .init(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")!
 
         return formatter
     }()

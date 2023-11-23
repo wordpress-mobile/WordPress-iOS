@@ -3,9 +3,6 @@ common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
     - automattic/a8c-ci-toolkit#2.18.1
-    - automattic/git-s3-cache#1.1.4:
-        bucket: "a8c-repo-mirrors"
-        repo: "automattic/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
@@ -80,7 +77,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
         depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
@@ -92,7 +89,7 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
         depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins

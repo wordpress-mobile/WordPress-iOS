@@ -205,6 +205,10 @@ extension MediaImageService {
         /// The small thumbnail that can be used in collection view cells and
         /// similar situations.
         case small
+
+        /// A medium thumbnail thumbnail that can typically be used to fit
+        /// the entire screen on iPhone or a large portion of the sreen on iPad.
+        case medium
     }
 
     /// Returns an optimal target size in pixels for a thumbnail of the given
@@ -224,6 +228,7 @@ extension MediaImageService {
     /// different screens and presentation modes to avoid fetching and caching
     /// more than one version of the same image.
     private static func getPreferredThumbnailSize(for thumbnail: ThumbnailSize) -> CGSize {
+        let minScreenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
         switch thumbnail {
         case .small:
             /// The size is calculated to fill a collection view cell, assuming the app
@@ -231,12 +236,14 @@ extension MediaImageService {
             /// on whether the device is in landscape or portrait mode, but the thumbnail size is
             /// guaranteed to always be the same across app launches and optimized for
             /// a portraint (dominant) mode.
-            let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
             let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
-            let availableWidth = screenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
+            let availableWidth = minScreenSide - SiteMediaCollectionViewController.spacing * CGFloat(itemPerRow - 1)
             let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
             let targetSize = CGSize(width: targetSide, height: targetSide)
             return targetSize.scaled(by: UIScreen.main.scale)
+        case .medium:
+            let side = min(1024, minScreenSide * UIScreen.main.scale)
+            return CGSize(width: side, height: side)
         }
     }
 
