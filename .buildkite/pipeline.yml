@@ -12,29 +12,6 @@ common_params:
 steps:
 
   #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
   # Create Builds for Testing
   #################
   - group: "🛠 Builds for Testing"
@@ -47,15 +24,6 @@ steps:
         notify:
           - github_commit_status:
               context: "WordPress Build for Testing"
-
-      - label: "🛠 :jetpack: Build for Testing"
-        key: "build_jetpack"
-        command: ".buildkite/commands/build-for-testing.sh jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        notify:
-          - github_commit_status:
-              context: "Jetpack Build for Testing"
 
   #################
   # Run Unit Tests
@@ -70,66 +38,3 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
-
-  #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    steps:
-      - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
-        depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
-
-      - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
-        depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-
-  #################
-  # Linters
-  #################
-  - group: "Linters"
-    steps:
-      - label: "☢️ Danger - PR Check"
-        command: .buildkite/commands/danger-pr-check.sh
-        plugins:
-          - docker#v5.8.0:
-              image: "public.ecr.aws/docker/library/ruby:3.2.2"
-              propagate-environment: true
-              environment:
-                - "DANGER_GITHUB_API_TOKEN"
-        if: "build.pull_request.id != null"
-        agents:
-          queue: "default"
-        retry:
-          manual:
-            permit_on_passed: true
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-      - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
-        env: *common_env
