@@ -8,6 +8,7 @@
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
 * [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
 * [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
 
 23.7
 -----

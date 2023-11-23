@@ -253,6 +253,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             webView.postURL = postURL
         }
 
+        webView.isP2 = post.isP2Type()
+
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
