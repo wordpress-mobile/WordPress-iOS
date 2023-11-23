@@ -38,7 +38,6 @@ import AutomatticTracks
     private var errorHandler: ImageLoaderFailureBlock?
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
-    private let imageService: MediaImageService = .shared
 
     private lazy var assetRequestOptions: PHImageRequestOptions = {
         let requestOptions = PHImageRequestOptions()
@@ -326,14 +325,6 @@ import AutomatticTracks
 // MARK: - Loading Media object
 
 extension ImageLoader {
-    private func setImage(_ image: UIImage) {
-        if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
-            imageView.animate(withGIFData: data)
-        } else {
-            imageView.image = image
-        }
-    }
-
     private func getPhotonUrl(for url: URL, size: CGSize) -> URL? {
         var finalSize = size
         if url.isGif {
