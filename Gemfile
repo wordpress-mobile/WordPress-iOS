@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
-gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic'
+gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic', branch: 'mokagio/podfile-branch-check'
 gem 'dotenv'
 gem 'fastlane', '~> 2.216'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
