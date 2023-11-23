@@ -27,6 +27,7 @@
 * [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
 * [**] Refactor deleting media [#21748]
 * [*] [Jetpack-only] Add a dashboard card for Bloganuary. [https://github.com/wordpress-mobile/WordPress-iOS/pull/22136]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
 
 23.7
 -----
