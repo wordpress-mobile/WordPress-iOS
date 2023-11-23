@@ -105,6 +105,9 @@ final class MediaImageService: NSObject {
         }
 
         let exporter = makeThumbnailExporter(for: media, size: size)
+        if sourceURL.isGif {
+            exporter.options.thumbnailImageType = UTType.gif.identifier
+        }
         guard exporter.supportsThumbnailExport(forFile: sourceURL),
               let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
               let image = try? await makeImage(from: export.url)

@@ -56,6 +56,29 @@ class MediaImageServiceTests: CoreDataTestCase {
         XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
     }
 
+    func testThatThumbnailsGeneratedForGIFAreAnimatable() async throws {
+        // GIVEN
+        let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
+        media.mediaType = .image
+        media.width = 360
+        media.height = 360
+
+        let localURL = try makeLocalURL(forResource: "test-gif", fileExtension: "gif")
+        media.absoluteLocalURL = localURL
+        try mainContext.save()
+
+        // WHEN
+        let thumbnail = try await sut.thumbnail(for: media)
+
+        // THEN
+        XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        let gif = try XCTUnwrap(thumbnail as? AnimatedImageWrapper)
+        let data = await gif.gifData ?? Data()
+        let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
+        XCTAssertEqual(CGImageSourceGetCount(source), 20)
+    }
+
     // MARK: - Remote Resources (Images)
 
     func testSmallThumbnailForRemoteImage() async throws {
