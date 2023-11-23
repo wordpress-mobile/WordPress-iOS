@@ -12,12 +12,11 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
     // MARK: - Utility
 
     func setupAccount(username: String, authToken: String) {
-        let account = ModelTestHelper.insertAccount(context: mainContext)
-        account.uuid = UUID().uuidString
-        account.userID = NSNumber(value: 156)
-        account.username = username
-        account.authToken = authToken
-        contextManager.saveContextAndWait(mainContext)
+        let account = AccountBuilder(mainContext)
+            .with(id: 156)
+            .with(username: username)
+            .with(authToken: authToken)
+            .build()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 

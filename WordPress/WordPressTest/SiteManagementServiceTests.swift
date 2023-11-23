@@ -61,10 +61,10 @@ class SiteManagementServiceTests: CoreDataTestCase {
     }
 
     func insertBlog(_ context: NSManagedObjectContext) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
-        blog.xmlrpc = "http://mock.blog/xmlrpc.php"
-        blog.url = "http://mock.blog/"
-        blog.dotComID = 999999
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://mock.blog")
+            .with(dotComID: 999999)
+            .build()
 
         try! context.obtainPermanentIDs(for: [blog])
         try! context.save()

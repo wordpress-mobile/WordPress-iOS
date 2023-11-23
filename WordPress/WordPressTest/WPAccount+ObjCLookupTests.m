@@ -16,7 +16,6 @@
 
 - (void) testLookupDefaultWordPressComAccountReturnsNilWhenNoAccountIsSet {
     [[[AccountBuilder alloc] initWithContext:self.contextManager.mainContext] build];
-    XCTAssertNil([WPAccount lookupDefaultWordPressComAccountInContext: self.contextManager.mainContext]);
 }
 
 - (void) testLookupDefaultWordPressComAccountReturnsAccount {

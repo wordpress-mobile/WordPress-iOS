@@ -36,9 +36,12 @@ class EditorSettingsServiceTest: CoreDataTestCase {
     }
 
     func setupDefaultAccount(with context: NSManagedObjectContext) {
-        account = ModelTestHelper.insertAccount(context: context)
-        account.authToken = "auth"
-        account.uuid = "uuid"
+        // Note: an auth token is required to set the account as the default for WP.com.
+        // To have an auth token, we first need to set a username.
+        account = AccountBuilder(context)
+            .with(username: "test_user")
+            .with(authToken: "auth")
+            .build()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 
