@@ -189,8 +189,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-//        showBlogDetailsSubsection(.stats)
-
         complianceCoordinator = CompliancePopoverCoordinator()
         complianceCoordinator?.presentIfNeeded()
     }
