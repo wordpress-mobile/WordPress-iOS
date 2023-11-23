@@ -77,7 +77,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15 Pro'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
         depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
