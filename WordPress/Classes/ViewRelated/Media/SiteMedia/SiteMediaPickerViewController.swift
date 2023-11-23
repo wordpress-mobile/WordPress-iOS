@@ -100,7 +100,8 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     // MARK: - SiteMediaCollectionViewControllerDelegate
 
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? {
-        UIMenu(children: [UIAction(title: viewController.isSelected(media) ? Strings.deselect : Strings.select, image: UIImage(systemName: "checkmark.circle")) { [weak self] _ in
+        let title = viewController.isSelected(media) ? Strings.deselect : Strings.select
+        UIMenu(children: [UIAction(title: title, image: UIImage(systemName: "checkmark.circle")) { [weak self] _ in
             self?.collectionViewController.toggleSelection(for: media)
         }])
     }
