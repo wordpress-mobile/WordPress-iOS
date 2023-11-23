@@ -1,52 +1,86 @@
 import UIKit
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
-    func presentIfNeeded(on viewController: UIViewController)
+    func presentIfNeeded()
     func navigateToSettings()
     func dismiss()
 }
 
 final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
-    private weak var presentingViewController: UIViewController?
+
+    // MARK: - Dependencies
+
     private let complianceService = ComplianceLocationService()
     private let defaults: UserDefaults
+
+    // MARK: - Views
+
+    private static var window: UIWindow?
+
+    private let presentingViewController = UIViewController()
+
+    // MARK: - Init
 
     init(defaults: UserDefaults = UserDefaults.standard) {
         self.defaults = defaults
     }
 
-    func presentIfNeeded(on viewController: UIViewController) {
+    func presentIfNeeded() {
         guard FeatureFlag.compliancePopover.enabled, !defaults.didShowCompliancePopup else {
             return
         }
         complianceService.getIPCountryCode { [weak self] result in
-            if case .success(let countryCode) = result {
-                guard let self, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.presentPopover(on: viewController)
-                }
+            guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.presentPopover()
             }
         }
     }
 
     func navigateToSettings() {
-        presentingViewController?.dismiss(animated: true) {
+        self.dismiss {
             RootViewCoordinator.sharedPresenter.navigateToPrivacySettings()
         }
     }
 
     func dismiss() {
-        presentingViewController?.dismiss(animated: true)
+        self.dismiss(completion: nil)
     }
+
+    // MARK: - Helpers
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
         return isCountryInEU && !defaults.didShowCompliancePopup
     }
 
-    private func presentPopover(on viewController: UIViewController) {
+    private func dismiss(completion: (() -> Void)? = nil) {
+        self.presentingViewController.dismiss(animated: true) {
+            self.removeWindow()
+        }
+    }
+
+    private func removeWindow() {
+        guard let window = Self.window else {
+            return
+        }
+        window.isHidden = true
+        window.resignKey()
+        Self.window = nil
+    }
+
+    private func presentPopover() {
+        self.removeWindow()
+
+        let window = UIWindow()
+        window.windowLevel = .alert
+        window.backgroundColor = .clear
+        window.rootViewController = presentingViewController
+        window.makeKeyAndVisible()
+        Self.window = window
+
         let complianceViewModel = CompliancePopoverViewModel(
             defaults: defaults,
             contextManager: ContextManager.shared
@@ -55,9 +89,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
         let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
 
-        bottomSheetViewController.show(from: viewController)
-
-        self.presentingViewController = viewController
+        bottomSheetViewController.show(from: presentingViewController)
     }
 }
 
