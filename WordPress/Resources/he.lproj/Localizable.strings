@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 09:54:11+0000 */
+/* Translation-Revision-Date: 2023-11-15 11:54:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: he_IL */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "תעבורה";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "להעביר דומיין";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "לשנות את %s אל";
 
@@ -9603,6 +9606,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "לענות ל-%1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "ייתכן ששם המשתמש או הסיסמה המאוחסנים באפליקציה אינם מעודכנים. יש להזין מחדש את הסיסמה בהגדרות ולנסות שוב.";
+
+/* An error message. */
+"common.unableToConnect" = "אי אפשר להתחבר";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "קובצי Cookie אלו מאפשרים לנו לבצע אופטימיזציה של ביצועים על ידי איסוף מידע לגבי האופן שבו משתמשים יוצרים אינטראקציה עם אתרי האינטרנט שלנו.";
 
@@ -9753,6 +9762,78 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "להסתיר את המידע";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "לחפש דומיין";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "לקבל דומיין";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "ניתן להוסיף אתר בהמשך.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "עליך רק לרכוש דומיין";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "התוקף פג";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "מתחדש";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "למצוא דומיין";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "לאיתור הדומיין המושלם יש להקיש למטה.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "עדיין אין לך דומיינים";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "We encountered an error while loading your domains. אם הבעיה נמשכת, ניתן ליצור קשר עם התמיכה.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "משהו השתבש";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "יש לנסות שוב";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "עליך לבדוק את החיבור לרשת ולנסות שוב.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "אין חיבור אינטרנט";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*כל התוכניות השנתיות בתשלום כוללות דומיין בחינם לשנה.";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "אל דאגה, ניתן בקלות להוסיף אתר בהמשך.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "לבחור את אופן השימוש בדומיין שלך";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "לחפש דומיינים";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "אין דומיינים תואמים.";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "לבחור אתר";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "דומיין חינם בשנה הראשונה*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "להשתמש בפריט באתר שכבר הקמת.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "אתר WordPress.com קיים";
+
 /* Domain Management Screen Title */
 "domain.management.title" = "כל הדומיינים";
 
@@ -9789,11 +9870,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "לשנה";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "קופה";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "ביטול";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "מצטערים, לא ניתן לרכוש את הדומיין שברצונך להוסיף מהאפליקציה של Jetpack כעת.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "לרכוש דומיין";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "חיפוש";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "לבחור אתר";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
@@ -10238,8 +10331,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "להוסיף";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "יחס גובה:רוחב:";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "למחוק";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "לבחור";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "לשתף";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "ביטול";
@@ -10273,6 +10375,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "לא נמצאו פרטי מדיה שמתאימים לחיפוש שלך";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Unable to share the selected items.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Square Grid";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "מדיה";
@@ -10496,11 +10604,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "אחר";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "עמוד הבית";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "שינויים מקומיים";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "ביקורת  בהמתנה";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "פוסטים בכל עמוד";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "פרטי";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "עמוד הבית שלך משתמש בתבנית של ערכת עיצוב והוא ייפתח בעורך הדפדפן.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "עמוד הבית";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "העמוד עודכן בהצלחה.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "למחוק לצמיתות";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "האם ברצונך למחוק את העמוד לצמיתות?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "למחוק לצמיתות?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Pages by everyone";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Pages by me";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "להעביר לפח";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "בחרת לשלוח עמוד זה לפח – האם ההחלטה סופית?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "האם להעביר את העמוד לפח?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "ביטול";
 
 /* No comment provided by engineer. */
 "password" = "סיסמה";
@@ -10538,6 +10691,39 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
 
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "מוחק פוסט";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Edited %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "מעביר לפח...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "פורסם %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "מאת %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "תקציר. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "דביק.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "פח";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "לשתף";
+
+/* Swipe action title */
+"postList.swipeActionView" = "להציג";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "ביטול";
 
@@ -10556,14 +10742,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "קביעת תמונה מרכזית";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "העדכון של הגדרות ההודעה נכשל.";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "לבטל העלאה";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "תגובות";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "למחוק לצמיתות";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "העברה לטיוטות";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "לשכפל";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "מאפייני עמוד";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "תצוגה מקדימה";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "לפרסם כעת";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "לנסות שוב";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Set as homepage";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "הגדרת הורה";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "להגדיר כעמוד פוסטים";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "להגדיר כעמוד רגיל";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "הגדרות";
+
+/* Share the post. */
+"posts.share.actionTitle" = "לשתף";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "נתונים סטטיסטיים";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "להעביר לפח";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "להציג";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Page deleted permanently";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Post deleted permanently";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "העמוד הועבר לפח";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "הפוסט הועבר לפח";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Posts by everyone";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Posts by me";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "ניתן להירשם עכשיו לקבלת שיתופים נוספים";
@@ -10781,6 +11036,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "חדש";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "להעביר דומיין";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Looking to transfer a domain you already own?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "פוסטים קשורים מציגים תוכן רלוונטי מהאתר שלך, מתחת לפוסטים שלך.";
 
@@ -10885,6 +11146,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "פרטיות";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "האתר מוסתר ממבקרים, אשר רואים רק הודעת 'בקרוב' עד שהאתר יהיה מוכן לצפייה.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "מוסתר";
