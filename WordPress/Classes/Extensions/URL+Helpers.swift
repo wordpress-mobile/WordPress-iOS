@@ -108,7 +108,7 @@ extension URL {
         return components.count == 4 && isHostedAtWPCom
     }
 
-    var isA8CEmoji: Bool {
+    var isWPComEmoji: Bool {
         absoluteString.contains(".wp.com/i/emojis")
     }
 
