@@ -1,4 +1,5 @@
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 protocol LockScreenStatsWidgetConfig {
     associatedtype WidgetData: HomeWidgetData

@@ -1,5 +1,6 @@
 import SwiftUI
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 protocol LockScreenStatsWidgetsViewProvider<Data> {
     associatedtype SiteSelectedView: View
