@@ -94,7 +94,7 @@ platform :ios do
     # Their scheme and xctestrun name pairing are:
     #
     # - (JetpackUITests, JetpackUITests)
-    # - (WordPress, WordPressUnitTests)
+    # - (WordPress, AppUnitTests)
     #
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
     scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'

@@ -16,7 +16,7 @@ install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests
+bundle exec fastlane test_without_building name:AppUnitTests
 TESTS_EXIT_STATUS=$?
 set -e
 
