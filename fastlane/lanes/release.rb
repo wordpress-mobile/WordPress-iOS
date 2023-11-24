@@ -61,7 +61,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    commit_version_bump
+    commit_version_and_build_files
 
     new_version = release_version_current
 
@@ -173,7 +173,7 @@ platform :ios do
     lint_localizations
 
     bump_build_codes
-    commit_version_bump
+    commit_version_and_build_files
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
@@ -248,7 +248,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    commit_version_bump
+    commit_version_and_build_files
   end
 
   # Finalizes a hotfix, by triggering a release build on CI
@@ -302,7 +302,7 @@ platform :ios do
     lint_localizations
 
     bump_build_codes
-    commit_version_bump
+    commit_version_and_build_files
 
     # Wrap up
     version = release_version_current
@@ -464,7 +464,7 @@ def bump_internal_build_code
   UI.success "Done. New Internal Build Code: #{build_code_current_internal}"
 end
 
-def commit_version_bump
+def commit_version_and_build_files
   git_commit(
     path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
     message: 'Bump version number',
