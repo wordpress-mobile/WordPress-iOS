@@ -173,7 +173,6 @@ platform :ios do
     lint_localizations
 
     bump_build_codes
-    commit_version_and_build_files
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
@@ -302,7 +301,6 @@ platform :ios do
     lint_localizations
 
     bump_build_codes
-    commit_version_and_build_files
 
     # Wrap up
     version = release_version_current
@@ -450,6 +448,7 @@ end
 def bump_build_codes
   bump_production_build_code
   bump_internal_build_code
+  commit_version_and_build_files
 end
 
 def bump_production_build_code
