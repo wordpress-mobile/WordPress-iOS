@@ -133,7 +133,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func updateFlowLayoutItemSize() {
         let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
-        let itemsPerRow = availableWidth < 450 ? 4 : 5
+        let itemsPerRow = availableWidth < 500 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
 
         flowLayout.minimumInteritemSpacing = spacing

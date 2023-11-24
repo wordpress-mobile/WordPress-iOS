@@ -2,6 +2,7 @@
 -----
 * [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
 * [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
 * [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
 * [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
 * [*] Add Select and Deselect button to previews in Site Media picker [#22078]
