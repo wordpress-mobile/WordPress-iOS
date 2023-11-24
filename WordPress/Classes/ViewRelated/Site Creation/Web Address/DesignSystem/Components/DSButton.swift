@@ -33,6 +33,7 @@ public struct DSButton: View {
     private var button: some View {
         Button {
             action()
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         } label: {
             if style.emphasis == .tertiary {
                 buttonContent

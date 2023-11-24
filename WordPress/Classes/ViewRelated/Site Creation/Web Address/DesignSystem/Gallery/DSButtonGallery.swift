@@ -21,7 +21,7 @@ struct DSButtonGallery: View {
             Section("Medium") {
                 HStack {
                     Spacer()
-                    VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: Length.Padding.medium) {
+                    VStack(alignment: .center, spacing: Length.Padding.medium) {
                         DSButton(title: "Primary", style: .init(emphasis: .primary, size: .medium)) { () }
                         DSButton(title: "Secondary", style: .init(emphasis: .secondary, size: .medium)) { () }
                         DSButton(title: "Tertiary", style: .init(emphasis: .tertiary, size: .medium)) { () }
@@ -41,7 +41,7 @@ struct DSButtonGallery: View {
             Section("Small") {
                 HStack {
                     Spacer()
-                    VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: Length.Padding.medium) {
+                    VStack(alignment: .center, spacing: Length.Padding.medium) {
                         DSButton(title: "Primary", style: .init(emphasis: .primary, size: .small)) { () }
                         DSButton(title: "Secondary", style: .init(emphasis: .secondary, size: .small)) { () }
                         DSButton(title: "Tertiary", style: .init(emphasis: .tertiary, size: .small)) { () }
