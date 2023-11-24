@@ -124,7 +124,6 @@ abstract_target 'Apps' do
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
-  pod 'SDWebImage', '~> 5.11.1'
 
   ## Automattic libraries
   ## ====================
@@ -413,5 +412,5 @@ post_install do |installer|
 end
 
 post_integrate do
-  workaround_broken_search_paths
+  gutenberg_post_integrate
 end

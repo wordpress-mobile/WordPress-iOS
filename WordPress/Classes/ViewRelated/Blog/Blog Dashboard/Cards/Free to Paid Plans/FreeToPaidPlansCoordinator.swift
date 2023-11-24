@@ -46,6 +46,7 @@ import SwiftUI
     ///   - customTitle: Title of of the presented view. If nil the title displays the title of the webview..
     ///   - purchaseCallback: closure to be called when user completes a plan purchase.
     static func plansFlowAfterDomainAddedToCartBlock(customTitle: String?,
+                                                     analyticsSource: String? = nil,
                                                      purchaseCallback: @escaping PurchaseCallback) -> RegisterDomainCoordinator.DomainAddedToCartCallback {
         let planSelected = { (planSelectionViewController: PlanSelectionViewController, domainName: String, checkoutURL: URL) in
             let viewModel = CheckoutViewModel(url: checkoutURL)
@@ -59,7 +60,11 @@ import SwiftUI
 
         let domainAddedToCart = { (domainViewController: UIViewController, domainName: String, blog: Blog) in
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
-            let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel, customTitle: customTitle)
+            let planSelectionViewController = PlanSelectionViewController(
+                viewModel: viewModel,
+                customTitle: customTitle,
+                analyticsSource: analyticsSource
+            )
             planSelectionViewController.planSelectedCallback = { planSelectionViewController, checkoutURL in
                 planSelected(planSelectionViewController, domainName, checkoutURL)
             }

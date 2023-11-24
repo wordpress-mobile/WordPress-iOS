@@ -1,6 +1,5 @@
 import UIKit
 import PhotosUI
-import WPMediaPicker
 import UniformTypeIdentifiers
 import AVFoundation
 import CocoaLumberjack
@@ -246,7 +245,7 @@ extension MediaPickerMenu {
         objc_setAssociatedObject(tenorViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
-    private static var tenorPickereAssociatedKey: UInt8 = 0
+    private static var tenorPickerAssociatedKey: UInt8 = 0
 }
 
 extension MediaPickerMenu.MediaFilter {

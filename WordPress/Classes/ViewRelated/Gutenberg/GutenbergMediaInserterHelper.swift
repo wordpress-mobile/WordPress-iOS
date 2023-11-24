@@ -1,6 +1,5 @@
 import Foundation
 import CoreServices
-import WPMediaPicker
 import Gutenberg
 import MediaEditor
 

@@ -4,7 +4,6 @@ import UIKit
 import Photos
 import PhotosUI
 import WordPressShared
-import WPMediaPicker
 import Gutenberg
 import UniformTypeIdentifiers
 
@@ -74,8 +73,10 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
             switch mediaType {
             case UTType.image.identifier:
                 if let image = info[.originalImage] as? UIImage {
-                    self.didPickMediaCallback?([image])
-                    self.didPickMediaCallback = nil
+                    MediaHelper.advertiseImageOptimization() { [self] in
+                        self.didPickMediaCallback?([image])
+                        self.didPickMediaCallback = nil
+                    }
                 }
 
             case UTType.movie.identifier:
@@ -109,7 +110,20 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         context.dismiss(animated: true)
 
-        didPickMediaCallback?(results.map(\.itemProvider))
-        didPickMediaCallback = nil
+        guard results.count > 0 else {
+            return
+        }
+
+        let mediaFilter = picker.configuration.filter
+        if mediaFilter == PHPickerFilter(.all) || mediaFilter == PHPickerFilter(.image) {
+            MediaHelper.advertiseImageOptimization() { [self] in
+                didPickMediaCallback?(results.map(\.itemProvider))
+                didPickMediaCallback = nil
+            }
+        }
+        else {
+            didPickMediaCallback?(results.map(\.itemProvider))
+            didPickMediaCallback = nil
+        }
     }
 }

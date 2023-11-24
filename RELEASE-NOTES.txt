@@ -1,6 +1,20 @@
 23.8
 -----
-
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
+* [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
+* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
+* [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
+* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
+* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
+* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
+* [*] [Jetpack-only] Block Editor: Ensure text is always visible within Contact Info block [https://github.com/Automattic/jetpack/pull/33873]
+* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
+* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
 
 23.7
 -----
@@ -27,7 +41,6 @@
 * [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
 * [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
 * [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
-* [*] Fix an issue with GIF uploads [#22025]
 * [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
 * [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
 * [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]

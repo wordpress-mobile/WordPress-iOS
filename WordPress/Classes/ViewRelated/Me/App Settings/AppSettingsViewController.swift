@@ -163,12 +163,7 @@ class AppSettingsViewController: UITableViewController {
 
     @objc func trackImageSizeChanged() {
         let value = MediaSettings().maxImageSizeSetting
-
-        var properties = [String: AnyObject]()
-        properties["enabled"] = (value != Int.max) as AnyObject
-        properties["value"] = value as Int as AnyObject
-
-        WPAnalytics.track(.appSettingsImageOptimizationChanged, withProperties: properties)
+        WPAnalytics.track(.appSettingsMaxImageSizeChanged, properties: ["size": value])
     }
 
     func pushVideoResolutionSettings() -> ImmuTableAction {
@@ -179,10 +174,7 @@ class AppSettingsViewController: UITableViewController {
                           MediaSettings.VideoResolution.size3840x2160,
                           MediaSettings.VideoResolution.sizeOriginal]
 
-            let titles = values.map({ (settings: MediaSettings.VideoResolution) -> String in
-                settings.description
-            })
-
+            let titles = values.map { $0.description }
             let currentVideoResolution = MediaSettings().maxVideoSizeSetting
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
@@ -206,6 +198,36 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushImageQualitySettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let values = [MediaSettings.ImageQuality.low,
+                          MediaSettings.ImageQuality.medium,
+                          MediaSettings.ImageQuality.high,
+                          MediaSettings.ImageQuality.maximum]
+
+            let titles = values.map { $0.description }
+            let currentImageQuality = MediaSettings().imageQualitySetting
+            let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
+
+            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
+                                                         SettingsSelectionTitleKey: title,
+                                                        SettingsSelectionTitlesKey: titles,
+                                                        SettingsSelectionValuesKey: values] as [String: Any]
+
+            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
+
+            viewController?.onItemSelected = { quality in
+                let newQuality = quality as! MediaSettings.ImageQuality
+                MediaSettings().imageQualitySetting = newQuality
+
+                // Track setting changes
+                WPAnalytics.track(.appSettingsImageQualityChanged, properties: ["quality": newQuality.description])
+            }
+
+            self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
+
     func openMediaCacheSettings() -> ImmuTableAction {
         return { [weak self] _ in
             let controller = MediaCacheSettingsViewController(style: .insetGrouped)
@@ -217,6 +239,28 @@ class AppSettingsViewController: UITableViewController {
         return { value in
             MediaSettings().removeLocationSetting = value
             WPAnalytics.track(.appSettingsMediaRemoveLocationChanged, withProperties: ["enabled": value as AnyObject])
+        }
+    }
+
+    func imageOptimizationChanged() -> (Bool) -> Void {
+        return { [weak self] value in
+            MediaSettings().imageOptimizationEnabled = value
+
+            // Track setting changes
+            WPAnalytics.track(.appSettingsOptimizeImagesChanged, properties: ["enabled": value])
+
+            // Show/hide image optimization settings
+            guard let self, let tableView else {
+                return
+            }
+            tableView.performBatchUpdates {
+                let originalAutomaticallyReloadTableView = self.handler.automaticallyReloadTableView
+                self.handler.automaticallyReloadTableView = false
+                self.reloadViewModel()
+                self.handler.automaticallyReloadTableView = originalAutomaticallyReloadTableView
+
+                tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            }
         }
     }
 
@@ -395,10 +439,22 @@ private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
+        let imageOptimizationValue = MediaSettings().imageOptimizationEnabled
+        let imageOptimization = SwitchRow(
+            title: NSLocalizedString("appSettings.media.imageOptimizationRow", value: "Optimize Images", comment: "Option to enable the optimization of images when uploading."),
+            value: imageOptimizationValue,
+            onChange: imageOptimizationChanged()
+        )
+
         let imageSizingRow = ImageSizingRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: imageSizeChanged())
+
+        let imageQualityRow = NavigationItemRow(
+            title: NSLocalizedString("appSettings.media.imageQualityRow", value: "Image Quality", comment: "Title for the image quality settings option."),
+            detail: MediaSettings().imageQualitySetting.description,
+            action: pushImageQualitySettings())
 
         let videoSizingRow = NavigationItemRow(
             title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
@@ -410,13 +466,21 @@ private extension AppSettingsViewController {
             detail: mediaCacheRowDescription,
             action: openMediaCacheSettings())
 
+        let rows: [ImmuTableRow] = imageOptimizationValue ? [
+            imageOptimization,
+            imageSizingRow,
+            imageQualityRow,
+            videoSizingRow,
+            mediaCacheRow
+        ] : [
+            imageOptimization,
+            videoSizingRow,
+            mediaCacheRow
+        ]
+
         return ImmuTableSection(
             headerText: mediaHeader,
-            rows: [
-                imageSizingRow,
-                videoSizingRow,
-                mediaCacheRow
-            ],
+            rows: rows,
             footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
         )

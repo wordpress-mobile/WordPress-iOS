@@ -1,4 +1,5 @@
 import WordPressKit
+import JetpackStatsWidgetsCore
 
 /// Type that wraps the backend request for new stats
 class StatsWidgetsService {

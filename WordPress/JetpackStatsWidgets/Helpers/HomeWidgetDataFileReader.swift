@@ -1,4 +1,4 @@
-import Foundation
+import JetpackStatsWidgetsCore
 
 final class HomeWidgetDataFileReader: WidgetDataCacheReader {
     func widgetData<T: HomeWidgetData>(for siteID: String) -> T? {
