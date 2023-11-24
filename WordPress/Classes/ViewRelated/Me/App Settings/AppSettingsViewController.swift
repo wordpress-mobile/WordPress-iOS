@@ -443,7 +443,8 @@ private extension AppSettingsViewController {
         let imageOptimization = SwitchRow(
             title: NSLocalizedString("appSettings.media.imageOptimizationRow", value: "Optimize Images", comment: "Option to enable the optimization of images when uploading."),
             value: imageOptimizationValue,
-            onChange: imageOptimizationChanged()
+            onChange: imageOptimizationChanged(),
+            accessibilityIdentifier: "imageOptimizationSwitch"
         )
 
         let imageSizingRow = ImageSizingRow(
