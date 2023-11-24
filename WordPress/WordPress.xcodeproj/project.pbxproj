@@ -271,8 +271,6 @@
 		0840513F2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */; };
 		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
-		084777942AEFFBCC00EC9F85 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */; };
-		084777962AEFFCBE00EC9F85 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */; };
 		084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
 		084BD8B42B090CA80050CD6A /* IconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084BD8B32B090CA80050CD6A /* IconGallery.swift */; };
 		084BD8B52B090CA80050CD6A /* IconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084BD8B32B090CA80050CD6A /* IconGallery.swift */; };
@@ -6009,7 +6007,6 @@
 		0845B8C51E833C56001BA771 /* URL+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Helpers.swift"; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
-		084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		084A07052848E1820054508A /* FeatureHighlightStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlightStore.swift; sourceTree = "<group>"; };
 		084BD8B32B090CA80050CD6A /* IconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGallery.swift; sourceTree = "<group>"; };
 		084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video-device-gps.m4v"; sourceTree = "<group>"; };
@@ -10075,7 +10072,6 @@
 			isa = PBXGroup;
 			children = (
 				08BB7BC12B0660B30089059D /* Modifiers */,
-				084777932AEFFBCC00EC9F85 /* PrimaryButton.swift */,
 				08D215582B0E328A006F2318 /* DSButton.swift */,
 				08D2155B2B0E693E006F2318 /* DSButtonStyle.swift */,
 			);
@@ -22586,7 +22582,6 @@
 				57C3D393235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift in Sources */,
 				D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */,
 				B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */,
-				084777942AEFFBCC00EC9F85 /* PrimaryButton.swift in Sources */,
 				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				17A09B99238FE13B0022AE0D /* FeatureFlagOverrideStore.swift in Sources */,
 				B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */,
@@ -25470,7 +25465,6 @@
 				FABB24FD2602FC2C00C8785C /* StockPhotosDataLoader.swift in Sources */,
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
-				084777962AEFFCBE00EC9F85 /* PrimaryButton.swift in Sources */,
 				F4D140212AFD9D5300961797 /* TransferDomainsWebViewController.swift in Sources */,
 				FABB24FF2602FC2C00C8785C /* ChangeUsernameViewModel.swift in Sources */,
 				C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */,

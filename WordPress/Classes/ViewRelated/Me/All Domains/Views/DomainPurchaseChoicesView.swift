@@ -30,7 +30,7 @@ struct DomainPurchaseChoicesView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Length.Padding.double)
-        .background(Color.DS.Background.secondary)
+        .background(Color.DS.Background.primary)
     }
 
     private var getDomainCard: some View {
@@ -82,18 +82,18 @@ struct DomainPurchaseChoicesView: View {
                     }
                 }
                 .padding(.bottom, Length.Padding.single)
-                PrimaryButton(
+                DSButton(
+                    title: buttonTitle,
+                    style: .primary,
                     isLoading: isProgressViewActive ? $viewModel.isGetDomainLoading : .constant(false),
-                    title: buttonTitle
-                ) {
-                    action()
-                }
+                    action: action
+                )
                 .padding(.bottom, Length.Padding.double)
                 .disabled(viewModel.isGetDomainLoading)
             }
             .padding(.horizontal, Length.Padding.double)
         }
-        .background(Color.DS.Background.tertiary)
+        .background(Color.DS.Background.secondary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
