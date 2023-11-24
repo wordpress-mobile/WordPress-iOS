@@ -172,18 +172,7 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     lint_localizations
 
-    # Bump the build code
-    UI.message 'Bumping build code...'
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
-    UI.success "Done! New Build Code: #{build_code_current}"
-
-    # Bump the internal build code
-    UI.message 'Bumping internal build code...'
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next_internal)
-    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
-
+    bump_build_codes
     commit_version_bump
 
     if prompt_for_confirmation(
@@ -312,16 +301,8 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     lint_localizations
 
-    # Bump the build code
-    UI.message 'Bumping build code...'
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
-    UI.success "Done! New Build Code: #{build_code_current}"
-
-    # Bump the internal build code
-    UI.message 'Bumping internal build code...'
-    INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
+    bump_build_codes
     commit_version_bump
-    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
 
     # Wrap up
     version = release_version_current
@@ -464,6 +445,23 @@ end
 
 def release_branch_name
   "release/#{release_version_current}"
+end
+
+def bump_build_codes
+  bump_production_build_code
+  bump_internal_build_code
+end
+
+def bump_production_build_code
+  UI.message 'Bumping build code...'
+  PUBLIC_VERSION_FILE.write(version_long: build_code_next)
+  UI.success "Done. New Build Code: #{build_code_current}"
+end
+
+def bump_internal_build_code
+  UI.message 'Bumping internal build code...'
+  INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
+  UI.success "Done. New Internal Build Code: #{build_code_current_internal}"
 end
 
 def commit_version_bump
