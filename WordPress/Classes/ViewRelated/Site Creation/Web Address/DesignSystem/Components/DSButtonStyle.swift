@@ -1,15 +1,26 @@
 import SwiftUI
 
-public enum DSButtonStyle {
-    case primary
-    case secondary
-    case tertiary
+public struct DSButtonStyle {
+    public enum Emphasis {
+        case primary
+        case secondary
+        case tertiary
+    }
+
+    public enum Size {
+        case large
+        case medium
+        case small
+    }
+
+    public let emphasis: Emphasis
+    public let size: Size
 }
 
 // MARK: - SwiftUI.Button DSButtonStyle helpers
 extension DSButtonStyle {
     var foregroundColor: Color {
-        switch self {
+        switch self.emphasis {
         case .primary:
             return .DS.Background.primary
         case .secondary:
@@ -20,7 +31,7 @@ extension DSButtonStyle {
     }
 
     var backgroundColor: Color {
-        switch self {
+        switch self.emphasis {
         case .primary:
             return .DS.Foreground.primary
         case .secondary, .tertiary:
@@ -44,9 +55,9 @@ public struct ScalingButtonStyle: ButtonStyle {
 
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect((configuration.isPressed && style != .tertiary) ? 0.98 : 1)
+            .scaleEffect((configuration.isPressed && style.emphasis != .tertiary) ? 0.98 : 1)
             .brightness(
-                (configuration.isPressed && style != .secondary) ? pressedStateBrightness : 0
+                (configuration.isPressed && style.emphasis != .secondary) ? pressedStateBrightness : 0
             )
             .animation(.easeIn(duration: 0.15), value: configuration.isPressed)
     }

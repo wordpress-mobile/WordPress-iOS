@@ -84,7 +84,7 @@ struct DomainPurchaseChoicesView: View {
                 .padding(.bottom, Length.Padding.single)
                 DSButton(
                     title: buttonTitle,
-                    style: .primary,
+                    style: .init(emphasis: .primary, size: .large),
                     isLoading: isProgressViewActive ? $viewModel.isGetDomainLoading : .constant(false),
                     action: action
                 )

@@ -21,10 +21,20 @@ public struct DSButton: View {
     }
 
     public var body: some View {
+        switch style.size {
+        case .large:
+            button
+        case .medium, .small:
+            button
+                .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+
+    private var button: some View {
         Button {
             action()
         } label: {
-            if style == .tertiary {
+            if style.emphasis == .tertiary {
                 buttonContent
             } else {
                 buttonContent
@@ -46,23 +56,61 @@ public struct DSButton: View {
                 ProgressView()
                     .tint(Color.white)
             } else {
-                Text(title)
+                buttonText
                     .foregroundStyle(
                         style.foregroundColor
-                            .opacity(foregroundOpacity))
-                    .font(
-                        style == .tertiary
-                        ? .DS.Body.small
-                        : .DS.Body.Emphasized.small
+                            .opacity(foregroundOpacity)
+                    )
+                    .padding(
+                        .horizontal,
+                        style.size == .small
+                        ? Length.Padding.split
+                        : Length.Padding.medium
                     )
             }
         }
-        .frame(height: Length.Padding.max)
+        .frame(
+            height: style.size == .small
+            ? Length.Padding.large
+            : Length.Padding.max
+        )
+    }
+
+    private var buttonText: some View {
+        switch style.size {
+        case .large:
+            switch style.emphasis {
+            case .primary, .secondary:
+                return Text(title)
+                    .style(.bodyLarge(.emphasized))
+            case .tertiary:
+                return Text(title)
+                    .style(.bodyLarge(.regular))
+            }
+        case .medium:
+            switch style.emphasis {
+            case .primary, .secondary:
+                return Text(title)
+                    .style(.bodyMedium(.emphasized))
+            case .tertiary:
+                return Text(title)
+                    .style(.bodyMedium(.regular))
+            }
+        case .small:
+            switch style.emphasis {
+            case .primary, .secondary:
+                return Text(title)
+                    .style(.bodySmall(.emphasized))
+            case .tertiary:
+                return Text(title)
+                    .style(.bodySmall(.regular))
+            }
+        }
     }
 
     @ViewBuilder
     private var buttonBackground: some View {
-        switch style {
+        switch style.emphasis {
         case .primary:
             RoundedRectangle(cornerRadius: Length.Radius.small)
                 .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
@@ -70,6 +118,7 @@ public struct DSButton: View {
             RoundedRectangle(cornerRadius: Length.Radius.small)
                 .stroke(Color.DS.divider, lineWidth: 1)
                 .background(Color.clear)
+
         case .tertiary:
             Color.clear
         }
@@ -80,7 +129,7 @@ public struct DSButton: View {
             return 1
         }
 
-        if style == .primary {
+        if style.emphasis == .primary {
             return 1
         }
 
@@ -104,7 +153,7 @@ struct DSButton_Previews: PreviewProvider {
                 .ignoresSafeArea()
             DSButton(
                 title: "Get Domain",
-                style: .primary,
+                style: .init(emphasis: .primary, size: .large),
                 action: {
                     ()
                 }

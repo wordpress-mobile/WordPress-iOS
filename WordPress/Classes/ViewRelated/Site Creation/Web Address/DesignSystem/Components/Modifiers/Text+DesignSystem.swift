@@ -66,4 +66,3 @@ extension Text {
             .textCase(style.case)
     }
 }
-

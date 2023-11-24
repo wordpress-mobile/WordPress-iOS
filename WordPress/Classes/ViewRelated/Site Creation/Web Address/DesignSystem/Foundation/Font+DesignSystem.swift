@@ -8,9 +8,9 @@ public extension Font {
         public static let heading4 = Font.title3
 
         public enum Body {
-            public static let small = Font.body
+            public static let small = Font.subheadline
             public static let medium = Font.callout
-            public static let large = Font.subheadline
+            public static let large = Font.body
 
             public enum Emphasized {
                 public static let small = Body.small.weight(.semibold)
