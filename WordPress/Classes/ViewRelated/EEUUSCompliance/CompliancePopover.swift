@@ -16,7 +16,7 @@ struct CompliancePopover: View {
             footnote
             buttonsHStack
         }
-        .padding(Length.Padding.large)
+        .padding(Length.Padding.medium)
         .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -48,7 +48,7 @@ struct CompliancePopover: View {
         HStack(spacing: Length.Padding.single) {
             settingsButton
             saveButton
-        }.padding(.top, Length.Padding.large)
+        }.padding(.top, Length.Padding.medium)
     }
 
     private var settingsButton: some View {
