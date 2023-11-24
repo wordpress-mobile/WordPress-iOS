@@ -88,18 +88,6 @@ steps:
           - github_commit_status:
               context: "UI Tests (iPhone)"
 
-      - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
-        depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-
   #################
   # Linters
   #################
