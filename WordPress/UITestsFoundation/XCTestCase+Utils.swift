@@ -27,7 +27,7 @@ public extension XCTestCase {
 
         appToRemove.firstMatch.press(forDuration: 1)
         waitAndTap(Apps.springboard.buttons["Remove App"])
-        waitAndTap(Apps.springboard.alerts.buttons["Delete App"])
+        waitForExistenceAndTap(Apps.springboard.alerts.buttons["Delete App"])
         waitAndTap(Apps.springboard.alerts.buttons["Delete"])
     }
 
