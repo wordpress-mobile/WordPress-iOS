@@ -115,9 +115,9 @@ public class NotificationsScreen: ScreenObject {
 
 
     public func likeComment() -> Self {
-        let isCommentTextDisplayed = app.webViews.staticTexts.firstMatch.waitForExistence(timeout: 15)
+        let isCommentOnTextDisplayed = app.staticTexts["Comment on"].firstMatch.waitForExistence(timeout: 5)
 
-        if isCommentTextDisplayed {
+        if isCommentOnTextDisplayed {
             likeCommentButton.tap()
         }
 
