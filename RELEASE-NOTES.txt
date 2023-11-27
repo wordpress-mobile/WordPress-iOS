@@ -1,6 +1,7 @@
 23.9
 ----
 * [*] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+* [*] [internal] Remove WPMediaPicker dependency from Tenor picker [#22066]
 
 23.8
 -----
