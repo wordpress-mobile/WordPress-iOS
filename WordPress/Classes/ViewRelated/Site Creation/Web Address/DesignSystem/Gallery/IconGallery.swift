@@ -1,5 +1,4 @@
 import SwiftUI
-import TipKit
 
 struct IconGallery: View {
     var body: some View {
