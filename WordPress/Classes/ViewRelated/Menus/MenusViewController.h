@@ -2,11 +2,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Blog;
+@class Blog, MenusService;
 
 @interface MenusViewController : UIViewController
 
 + (MenusViewController *)controllerWithBlog:(Blog *)blog;
+
+@property (nonatomic, strong, readonly) Blog *blog;
+@property (nonatomic, strong, readonly) MenusService *menusService;
 
 @end
 

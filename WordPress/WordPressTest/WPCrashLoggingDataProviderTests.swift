@@ -43,7 +43,7 @@ final class WPCrashLoggingDataProviderTests: XCTestCase {
 
     private func makeCoreDataStack() -> ContextManager {
         let contextManager = ContextManager.forTesting()
-        let account = AccountBuilder(contextManager)
+        let account = AccountBuilder(contextManager.mainContext)
             .with(id: Constants.defaultAccountID)
             .with(email: Constants.defaultAccountEmail)
             .with(username: Constants.defaultAccountUsername)

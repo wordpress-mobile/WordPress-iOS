@@ -10,6 +10,12 @@ class RemoteFeatureFlagStore {
     /// Thread Safety Coordinator
     private var queue: DispatchQueue
     private var persistenceStore: UserPersistentRepository
+    private lazy var operationQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "Feature Flags Refresh Queue"
+        queue.maxConcurrentOperationCount = 1
+        return queue
+      }()
 
     init(queue: DispatchQueue = .remoteFeatureFlagStoreQueue,
                  persistenceStore: UserPersistentRepository = UserDefaults.standard) {
@@ -23,18 +29,19 @@ class RemoteFeatureFlagStore {
     /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
                                then callback: FetchCallback? = nil) {
-        DDLogInfo("🚩 Updating Remote Feature Flags with Device ID: \(deviceID)")
-        remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
+        let refreshOperation = FetchRemoteFeatureFlagsOperation(remote: remote,
+                                                                deviceID: deviceID,
+                                                                completion: { [weak self] result in
             switch result {
-                case .success(let flags):
-                    self?.cache = flags.dictionaryValue
-                    DDLogInfo("🚩 Successfully updated local feature flags: \(flags)")
-                    callback?()
-                case .failure(let error):
-                    DDLogError("🚩 Unable to update Feature Flag Store: \(error.localizedDescription)")
-                    callback?()
+            case .success(let flags):
+                self?.cache = flags
+                callback?()
+            case .failure:
+                callback?()
             }
-        }
+        })
+        operationQueue.cancelAllOperations()
+        operationQueue.addOperation(refreshOperation)
     }
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
@@ -82,6 +89,46 @@ extension RemoteFeatureFlagStore {
             self.queue.sync {
                 persistenceStore.set(newValue, forKey: Constants.CachedFlagsKey)
             }
+        }
+    }
+}
+
+fileprivate final class FetchRemoteFeatureFlagsOperation: AsyncOperation {
+    private let remote: FeatureFlagRemote
+    private let deviceID: String
+    private let completion: OperationCompletionHandler
+
+    typealias OperationCompletionHandler = (Result<[String: Bool], Error>) -> ()
+
+    enum OperationError: Error {
+        case operationCanceled
+    }
+
+    init(remote: FeatureFlagRemote, deviceID: String, completion: @escaping OperationCompletionHandler) {
+        self.remote = remote
+        self.deviceID = deviceID
+        self.completion = completion
+        super.init()
+    }
+
+    override func main() {
+        DDLogInfo("🚩 Updating Remote Feature Flags with Device ID: \(deviceID)")
+        remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
+            if self?.isCancelled == true {
+                self?.state = .isFinished
+                DDLogInfo("🚩 Feature flags update operation canceled")
+                self?.completion(.failure(OperationError.operationCanceled))
+                return
+            }
+            switch result {
+                case .success(let flags):
+                    DDLogInfo("🚩 Successfully updated local feature flags: \(flags.dictionaryValue)")
+                    self?.completion(.success(flags.dictionaryValue))
+                case .failure(let error):
+                    DDLogError("🚩 Unable to update Feature Flag Store: \(error.localizedDescription)")
+                    self?.completion(.failure(error))
+            }
+            self?.state = .isFinished
         }
     }
 }

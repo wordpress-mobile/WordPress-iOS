@@ -2,7 +2,6 @@ import Foundation
 import Photos
 import PhotosUI
 import WordPressFlux
-import WPMediaPicker
 
 // MARK: - PostSettingsViewController (Featured Image Menu)
 
@@ -32,7 +31,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
         return UIMenu(children: [
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
-            menu.makeMediaAction(blog: self.apost.blog, delegate: self)
+            menu.makeSiteMediaAction(blog: self.apost.blog, delegate: self)
         ])
     }
 
@@ -41,7 +40,9 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         self.dismiss(animated: true) {
             if let result = results.first {
-                self.setFeaturedImage(with: result.itemProvider)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    self.setFeaturedImage(with: result.itemProvider)
+                }
             }
         }
     }
@@ -49,13 +50,25 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         self.dismiss(animated: true) {
             if let image = info[.originalImage] as? UIImage {
-                self.setFeaturedImage(with: image)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    self.setFeaturedImage(with: image)
+                }
             }
         }
     }
 }
 
-extension PostSettingsViewController: MediaPickerViewControllerDelegate {}
+extension PostSettingsViewController: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        dismiss(animated: true)
+
+        guard let media = selection.first else { return }
+
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added"])
+        setFeaturedImage(media: media)
+        reloadFeaturedImageCell()
+    }
+}
 
 // MARK: - PostSettingsViewController (Featured Image Upload)
 
@@ -66,14 +79,6 @@ extension PostSettingsViewController {
         }
         self.apost.featuredImage = media
         self.setupObservingOf(media: media)
-    }
-
-    @objc func setFeaturedImage(asset: PHAsset) {
-        guard let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost) else {
-            return
-        }
-        apost.featuredImage = media
-        setupObservingOf(media: media)
     }
 
     @objc func setFeaturedImage(media: Media) {

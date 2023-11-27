@@ -37,7 +37,7 @@ final class NoSiteViewModelTests: CoreDataTestCase {
 
     func test_gravatarURLIsNotNil_WhenAccountIsNotNil() {
         // Given
-        let account = AccountBuilder(contextManager)
+        let account = AccountBuilder(contextManager.mainContext)
             .with(email: "account@email.com")
             .build()
         let viewModel = NoSitesViewModel(appUIType: nil, account: account)
@@ -56,7 +56,7 @@ final class NoSiteViewModelTests: CoreDataTestCase {
 
     func test_displayNameIsAccountDisplayName_WhenAccountIsNotNil() {
         // Given
-        let account = AccountBuilder(contextManager)
+        let account = AccountBuilder(contextManager.mainContext)
             .with(email: "account@email.com")
             .with(displayName: "Test")
             .build()

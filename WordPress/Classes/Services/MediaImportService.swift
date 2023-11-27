@@ -378,7 +378,7 @@ class MediaImportService: NSObject {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
-        options.imageCompressionQuality = MediaImportService.preferredImageCompressionQuality
+        options.imageCompressionQuality = MediaSettings().imageQualityForUpload.doubleValue
         return options
     }
 

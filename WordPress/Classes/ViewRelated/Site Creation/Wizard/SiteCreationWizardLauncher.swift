@@ -6,12 +6,24 @@ final class SiteCreationWizardLauncher {
         return SiteCreator()
     }()
 
-    let steps: [SiteCreationStep] = [
-        .intent,
-        .design,
-        .address,
-        .siteAssembly
-    ]
+    let steps: [SiteCreationStep] = {
+        if RemoteFeatureFlag.plansInSiteCreation.enabled() {
+            return [
+                .intent,
+                .design,
+                .address,
+                .plan,
+                .siteAssembly
+            ]
+        } else {
+            return [
+                .intent,
+                .design,
+                .address,
+                .siteAssembly
+            ]
+        }
+    }()
 
     private lazy var wizard: SiteCreationWizard = {
         return SiteCreationWizard(steps: steps.map { initStep($0) })
@@ -43,6 +55,8 @@ final class SiteCreationWizardLauncher {
         case .address:
             let addressService = DomainsServiceAdapter(coreDataStack: ContextManager.shared)
             return WebAddressStep(creator: self.creator, service: addressService)
+        case .plan:
+            return PlanStep(creator: self.creator)
         case .design:
             // we call dropLast to remove .siteAssembly
             let isLastStep = steps.dropLast().last == .design

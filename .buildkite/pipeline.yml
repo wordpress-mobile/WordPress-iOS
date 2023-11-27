@@ -108,6 +108,20 @@ steps:
   #################
   - group: "Linters"
     steps:
+      - label: "☢️ Danger - PR Check"
+        command: .buildkite/commands/danger-pr-check.sh
+        plugins:
+          - docker#v5.8.0:
+              image: "public.ecr.aws/docker/library/ruby:3.2.2"
+              propagate-environment: true
+              environment:
+                - "DANGER_GITHUB_API_TOKEN"
+        if: "build.pull_request.id != null"
+        agents:
+          queue: "default"
+        retry:
+          manual:
+            permit_on_passed: true
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
@@ -118,13 +132,6 @@ steps:
         notify:
           - github_commit_status:
               context: "Lint Translations"
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        plugins: *common_plugins
-        agents:
-          queue: "android"
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: *common_plugins

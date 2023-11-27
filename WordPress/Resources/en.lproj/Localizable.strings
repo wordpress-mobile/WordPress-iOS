@@ -133,9 +133,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d posts.";
 
@@ -250,6 +247,9 @@
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s social icon";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "'%s' block converted to blocks";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' is not fully-supported";
@@ -761,6 +761,9 @@
 "Alt Text" = "Alt Text";
 
 /* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "Alternatively, you can convert the content to blocks.";
+
+/* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”.";
 
 /* No comment provided by engineer. */
@@ -928,9 +931,6 @@
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Are you sure you want to permanently delete this page?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Are you sure you want to permanently delete this post?";
 
@@ -961,9 +961,6 @@
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Are you sure you want to submit for review?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
@@ -1422,9 +1419,6 @@
 /* Used when displaying author of a plugin. */
 "by %@" = "by %@";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "By %@.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "By continuing, you agree to our _Terms of Service_.";
 
@@ -1492,10 +1486,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1526,8 +1517,7 @@
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Cancel sharing";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "Cancel Upload";
 
 /* The action was canceled */
@@ -1582,9 +1572,6 @@
 
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Change Settings";
-
-/* Change site icon button */
-"Change Site Icon" = "Change Site Icon";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Change the device type used for preview";
@@ -1727,9 +1714,6 @@
 
 /* No comment provided by engineer. */
 "Choose image" = "Choose image";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
 
 /* No comment provided by engineer. */
 "Choose image or video" = "Choose image or video";
@@ -1938,14 +1922,17 @@ Example: Reply to Pamela Nguyen */
 /* A label title. */
 "Comments per page" = "Comments per page";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
+
+/* An error message. */
+"common.unableToConnect" = "Unable to Connect";
+
 /* Setting: WordPress.com Community */
 "Community" = "Community";
 
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Community & Non-Profit";
-
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "Compact";
 
 /* The action is completed */
 "Completed" = "Completed";
@@ -2155,10 +2142,6 @@ Example: Reply to Pamela Nguyen */
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Copy Link";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copy Link to Comment";
@@ -2655,15 +2638,11 @@ Example: Reply to Pamela Nguyen */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Delete Menu";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Delete Permanently";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Delete Permanently?";
 
 /* Button label for deleting the current site
@@ -2818,6 +2797,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Search for a domain";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Get Domain";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Add a site later.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Just buy a domain";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Expired";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Renews";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Find a domain";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Tap below to find your perfect domain.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "You don't have any domains";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "We encountered an error while loading your domains. Please contact support if the issue persists.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Something went wrong";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Try again";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Please check your network connection and try again.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "No Internet Connection";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*A free domain for one year is included with all paid annual plans";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Don't worry, you can easily add a site later.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Choose how to use your domain";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Search domains";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "No Matching Domains Found";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Choose Site";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "Free domain for the first year*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Use with a site you already started.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Existing WordPress.com site";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "All Domains";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
 
@@ -2839,6 +2893,9 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "Free";
 
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "Free for the first year with annual paid plans";
+
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "Recommended";
 
@@ -2857,11 +2914,23 @@ Example: Reply to Pamela Nguyen */
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Checkout";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Dismiss";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Purchase Domain";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Search";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Choose Site";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Don't have an account? _Sign up_";
@@ -3008,8 +3077,7 @@ Example: Reply to Pamela Nguyen */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Draft and publish a post.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Drafts";
 
 /* No comment provided by engineer. */
@@ -3020,10 +3088,6 @@ Example: Reply to Pamela Nguyen */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Drag to adjust focal point";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "Duplicate";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicate block";
@@ -3038,12 +3102,9 @@ Example: Reply to Pamela Nguyen */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Edit";
@@ -3413,9 +3474,6 @@ Example: Reply to Pamela Nguyen */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Every day at %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Everyone";
-
 /* Example story title description */
 "Example story title" = "Example story title";
 
@@ -3430,9 +3488,6 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Excerpt length (words)";
 
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "Excerpt. %@.";
-
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Excerpts are optional hand-crafted summaries of your content.";
 
@@ -3442,8 +3497,7 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Exit Full Screen";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanded";
 
 /* Accessibility hint */
@@ -4103,8 +4157,7 @@ Example: Reply to Pamela Nguyen */
 "Home" = "Home";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Homepage";
 
 /* Label for Homepage Settings site settings section
@@ -4967,9 +5020,6 @@ Please install the %3$@ to use the app with this site.";
    Settings: Comments Approval settings */
 "Links in comments" = "Links in comments";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "List style";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Load";
 
@@ -5054,8 +5104,7 @@ Please install the %3$@ to use the app with this site.";
 /* Status for Media object that is only exists locally. */
 "Local" = "Local";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Local changes";
 
 /* Local Services site intent topic */
@@ -5225,12 +5274,14 @@ Please install the %3$@ to use the app with this site.";
 "Max Video Upload Size" = "Max Video Upload Size";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
+
+/* Products header text in Me Screen. */
+"me.products.header" = "Products";
 
 /* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
@@ -5306,8 +5357,17 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Add";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Aspect Ratio Grid";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Delete";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Select";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Share";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Cancel";
@@ -5341,6 +5401,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "No media matching your search";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Unable to share the selected items.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Square Grid";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
@@ -5426,9 +5492,6 @@ Please install the %3$@ to use the app with this site.";
 /* Invite Message Editor's Title
    Label for the share message field on the post settings. */
 "Message" = "Message";
-
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadata";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
@@ -5521,13 +5584,11 @@ Please install the %3$@ to use the app with this site.";
 "Months and Years" = "Months and Years";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "More";
 
 /* Action button to display more available options
@@ -5588,18 +5649,11 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "Move to bottom" = "Move to bottom";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Move to Draft";
-
 /* No comment provided by engineer. */
 "Move to top" = "Move to top";
 
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Move to Trash";
 
@@ -5646,7 +5700,8 @@ Please install the %3$@ to use the app with this site.";
    Title of My Site tab */
 "My Site" = "My Site";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "My Sites";
 
 /* Siri Suggestion to open My Sites */
@@ -5963,8 +6018,7 @@ Please install the %3$@ to use the app with this site.";
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "No notifications yet";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "No pages matching your search";
 
 /* Text displayed when search for plugins returns no results */
@@ -5984,9 +6038,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "No posts have been made recently with this tag.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "No posts matching your search";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "No posts.";
@@ -6315,6 +6366,9 @@ Please install the %3$@ to use the app with this site.";
 /* Divider on initial auth view separating auth options. */
 "Or" = "Or";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Or choose another form of authentication.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Or log in by _entering your site address_.";
 
@@ -6382,23 +6436,11 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "Page failed to upload";
 
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Page moved to trash.";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "Page pending review";
 
 /* Title of notification displayed when a page has been successfully published. */
 "Page published" = "Page published";
-
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Page Restored to Drafts";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Page Restored to Published";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Page Restored to Scheduled";
 
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Page scheduled";
@@ -6416,20 +6458,62 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Page updated";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Homepage";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Local changes";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "Pending review";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Posts page";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Private";
+
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pages";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Promote with Blaze";
-
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Your homepage is using a Theme template and will open in the web editor.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Homepage";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Page successfully updated";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Delete Permanently";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Are you sure you want to permanently delete this page?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Delete Permanently?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Pages by everyone";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Pages by me";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Move to Trash";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Are you sure you want to trash this page?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Trash this page?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "Cancel";
 
 /* Comments Paging
    Discussion Settings
@@ -6481,8 +6565,7 @@ Please install the %3$@ to use the app with this site.";
    Title of pending Comments filter. */
 "Pending" = "Pending";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Pending review";
 
 /* Noun. Title of the people management feature.
@@ -6651,7 +6734,7 @@ Please install the %3$@ to use the app with this site.";
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Please enter the password for your WordPress.com account to log in with your Apple ID.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app." = "Please enter the verification code from your authenticator app.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Please enter your credentials";
@@ -6758,9 +6841,6 @@ Please install the %3$@ to use the app with this site.";
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
 
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Post moved to trash.";
-
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "Post pending review";
 
@@ -6769,15 +6849,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Post removed.";
-
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Post Restored to Drafts";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Post Restored to Published";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Post Restored to Scheduled";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Post saved.";
@@ -6807,6 +6878,27 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a post has been successfully updated. */
 "Post updated" = "Post updated";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Created %@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Deleting post...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Edited %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Moving post to trash...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Published %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Scheduled %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Trashed %@";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
 
@@ -6819,6 +6911,27 @@ Please install the %3$@ to use the app with this site.";
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Posting Activity";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "By %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Excerpt. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Sticky.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Trash";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "Share";
+
+/* Swipe action title */
+"postList.swipeActionView" = "View";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -6835,9 +6948,6 @@ Please install the %3$@ to use the app with this site.";
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Posts Page";
 
-/* Title of the Posts Page Badge */
-"Posts page" = "Posts page";
-
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "Posts page successfully updated";
 
@@ -6852,6 +6962,60 @@ Please install the %3$@ to use the app with this site.";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promote with Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Cancel upload";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Comments";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Delete permanently";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Move to draft";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Duplicate";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Page attributes";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Preview";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Publish now";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Retry";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Set as homepage";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Set parent";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Set as posts page";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Set as regular page";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Settings";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Share";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "Stats";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Move to trash";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "View";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Dismiss";
@@ -6879,6 +7043,27 @@ Please install the %3$@ to use the app with this site.";
 
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d social shares remaining";
+
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Failed to update the post settings";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Page deleted permanently";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Post deleted permanently";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Page moved to trash";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Post moved to trash";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Posts by everyone";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Posts by me";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
@@ -7018,8 +7203,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "Privacy Settings" = "Privacy Settings";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Private";
 
 /* No comment provided by engineer. */
@@ -7084,12 +7268,10 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Immediately publish button title */
 "Publish immediately" = "Publish immediately";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publish Immediately";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publish Now";
 
@@ -7101,8 +7283,7 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Published";
 
 /* Precedes the name of the blog just posted on */
@@ -7175,6 +7356,43 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comment";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Like";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Likes this post.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Liked";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Unlikes this post.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Saves this post for later.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Save post";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Unsaves this post.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Saved Post";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Search";
 
@@ -7188,11 +7406,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comment";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Opens the comments for the post.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Like";
+
+/* Accessibility hint for the like button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Likes the post.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Liked";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Unlikes the post.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Opens a menu with more actions.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "More";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblog";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Reblogs the post.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Opens the site details for the post.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Block this user";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Remove Saved Post";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Report this user";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Save";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
 "reader.site.header.counts" = "%1$@ posts • %2$@ followers";
@@ -7295,6 +7552,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Register Domain - Register publicly option title */
 "Register publicly" = "Register publicly";
+
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Transfer domain";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Looking to transfer a domain you already own?";
 
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Registered Domain";
@@ -7507,9 +7770,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Resend";
 
-/* Title of the reset button */
-"Reset" = "Reset";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Reset Activity Type filter";
 
@@ -7564,12 +7824,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -7675,9 +7932,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Saved Post";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Saved!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Saves this post for later.";
 
@@ -7688,7 +7942,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Saving post…" = "Saving post…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Saving...";
 
@@ -7769,12 +8022,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Search or type URL";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Search pages";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "Search posts";
 
 /* No comment provided by engineer. */
 "Search settings" = "Search settings";
@@ -7999,17 +8246,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Set as featured image";
 
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Set as Homepage";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Set as Posts Page";
-
-/* No comment provided by engineer. */
-"Set Featured Image" = "Set Featured Image";
-
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Set Parent";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
@@ -8052,7 +8289,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -8296,6 +8532,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domains";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Select domain";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Document, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Image, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Unknown creation date";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Select media.";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
 
@@ -8316,7 +8576,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "sitesettings.reminders.title" = "Reminders";
 
 /* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "Your site is visible to everyone, but asks search engines not to index your site.";
+"siteVisibility.hidden.hint" = "Your site is hidden from visitors behind a \"Coming Soon\" notice until it is ready for viewing.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Hidden";
@@ -8539,8 +8799,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Static Homepage";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -8672,9 +8931,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Sticky";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "Sticky.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Dismiss";
@@ -8882,7 +9138,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "Help";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Switch Site";
 
 /* Switches from the classic editor to block editor. */
@@ -9091,9 +9348,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "Text me a code instead";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Text me a code via SMS";
 
 /* Title of a button style */
 "Text Only" = "Text Only";
@@ -9252,7 +9511,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "The user you are trying to remove is the owner of this site. Please contact support for assistance.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -9526,6 +9785,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Title for the time zone selector */
 "Time Zone" = "Time Zone";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Time's up, but don't worry, your security is our priority. Please try again!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
 
@@ -9652,6 +9914,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Traffic";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Transferred Domain";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Transform %s to";
 
@@ -9666,9 +9931,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "Trash selected media";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Trash this post?";
@@ -9781,9 +10043,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a site fails. */
 "Unable to block site" = "Unable to block site";
 
-/* An error message. */
-"Unable to Connect" = "Unable to Connect";
-
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Unable To Connect";
 
@@ -9865,12 +10124,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Unable to Sync";
 
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "Unable to trash posts while offline. Please try again later.";
-
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "Unable to turn off site notifications";
 
@@ -9943,8 +10196,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Undo";
 
@@ -10164,6 +10415,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "Use %@ to find sites and tags.";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "Use a security key";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Use block editor";
 
@@ -10255,8 +10509,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Videos" = "Videos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -10367,6 +10619,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Waiting for Google to complete…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Waiting for security key";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Waiting...";
@@ -10744,6 +11000,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Whoops, something went wrong and we couldn't log you in. Please try again!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Whoops, something went wrong. Please try again!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Whoops, that security key does not seem valid. Please try again with another one";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!";

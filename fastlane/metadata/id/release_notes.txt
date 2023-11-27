@@ -1,3 +1,23 @@
-Kami mengubah cara peringatan muncul ketika Anda menyisipkan media ke dalam blok dari URL. Kami menyukainya.
+Pembaruan kali ini penuh kejutan. Sudah siap? Yuk, kita mulai dari Media Situs.
 
-Teks placeholder dan konten aktual kini lebih mudah dibedakan dalam tema berbasis blok.
+- Menu-menu, fitur pemilih dan berbagi berkas, serta berbagai elemen lain di layar Media Situs sekarang lebih intuitif. Performanya juga lebih kencang, jadi GIF dan video dijamin tidak akan patah-patah.
+- Anda bisa memilih beberapa berkas media sekaligus dengan mengusapnya. Bergeser dari satu foto ke lainnya, mengubah metadata, dan menghapus item sekarang juga jadi lebih mudah.
+- Di iPad, kini ada dua macam tampilan pratinjau media: persegi dan sesuai rasio aspek.
+- Placeholder kosong, pesan tidak sesuai, error saat berbagi dokumen, dan crash yang kadang terjadi sudah berhasil kami atasi.
+
+Eits, belum selesai. Ada pembaruan besar untuk layar Pos & Halaman.
+
+- Layar Pos & Halaman sekarang lebih segar dengan opsi tampilan yang simpel nan bersih.
+- Untuk menemukan konten yang ingin diedit, Anda bisa menyaringnya dengan fitur pencarian yang kini lebih canggih, seperti filter penulis konten dan tag. Anda juga bisa menelusuri konten dari semua penulis konten atau dari satu orang saja.
+- Lihat, bagikan, atau hapus pos dan halaman lebih mudah dengan menggeser item-nya. Mantap.
+- Mengakses komentar, pengaturan, dan opsi lain kini bisa dilakukan dari menu konteks pos atau halaman.
+- Masalah pemuatan ulang dan penampilan halaman sekaligus berbagai error lainnya sudah teratasi.
+
+Terakhir, masalah-masalah menyebalkan juga sudah kami berantas.
+
+- Aplikasi sekarang sadar saat GIF selesai diunggah. (monty-burns-excellent.gif)
+- Deskripsi status privasi untuk pos "tersembunyi" sekarang lebih jelas.
+- Di fitur pembaca, layar akan bergulir ke atas saat bilah status ditekan. Lancar tanpa masalah.
+- Di layar Menu, fitur untuk membuat item menu berdasarkan halaman level teratas sekarang berfungsi maksimal.
+- Crash di editor blok akibat mengaktifkan warna teks di tema situs lawas sudah teratasi.
+- Kami pastikan error akibat menempel konten yang lapisannya jauh di bawah tidak akan muncul lagi di blok editor. Seperti bawang, lapis legit, rainbow cake, dan lasagna, konten bisa saja berlapis-lapis.

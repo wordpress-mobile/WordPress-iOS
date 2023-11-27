@@ -14,11 +14,11 @@ class MigrationStepView: UIView {
     // MARK: - Views
 
     private let headerView: MigrationHeaderView
-    private let centerView: UIView
+    private let centerView: UIView?
     private let actionsView: MigrationActionsView
 
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [headerView, centerView, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [headerView, centerView, UIView()].compactMap { $0 })
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.directionalLayoutMargins = Constants.mainStackViewMargins
@@ -50,10 +50,9 @@ class MigrationStepView: UIView {
 
     init(headerView: MigrationHeaderView,
          actionsView: MigrationActionsView,
-         centerView: UIView) {
+         centerView: UIView? = nil) {
         self.headerView = headerView
         self.centerView = centerView
-        centerView.translatesAutoresizingMaskIntoConstraints = false
         self.actionsView = actionsView
         headerView.directionalLayoutMargins = .zero
         actionsView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,6 +140,6 @@ class MigrationStepView: UIView {
         static let stackViewSpacing: CGFloat = 20
 
         // Adds margins to the main sack view.
-        static let mainStackViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
+        static let mainStackViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
     }
 }

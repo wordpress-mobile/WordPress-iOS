@@ -334,62 +334,86 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     return error;
 }
 
-#pragma mark - Getting media
+#pragma mark - Deleting media
 
-- (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
-                success:(void (^)(Media *media))success
-                failure:(void (^)(NSError *error))failure
+- (void)deleteMedia:(nonnull Media *)media
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(NSError * _Nonnull error))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogID = blog.objectID;
+    NSManagedObjectID *mediaObjectID = media.objectID;
 
-    [remote getMediaWithID:mediaID success:^(RemoteMedia *remoteMedia) {
-       [self.managedObjectContext performBlock:^{
-           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-           if (!blog) {
-               return;
-           }
-           Media *media = [Media existingMediaWithMediaID:remoteMedia.mediaID inBlog:blog];
-           if (!media) {
-               media = [Media makeMediaWithBlog:blog];
-           }
-           [MediaHelper updateMedia:media withRemoteMedia:remoteMedia];
+    void (^successBlock)(void) = ^() {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
 
-           [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+            if (mediaInContext == nil) {
+                // Considering the intent of calling this method is to delete the media object,
+                // when it doesn't exist, we can simply signal success, since the intent is fulfilled.
+                success();
+                return;
+            }
 
-           if (success){
-               success(media);
+            [self.managedObjectContext deleteObject:mediaInContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                     withCompletionBlock:success
+                                                 onQueue:dispatch_get_main_queue()];
+        }];
+    };
 
-               if ([media hasChanges]) {
-                   NSCAssert(NO, @"The success callback should not modify the Media instance");
-                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-               }
-           }
-       }];
-    } failure:^(NSError *error) {
-        if (failure) {
-            [self.managedObjectContext performBlock:^{
-                failure(error);
-            }];
-        }
-    }];
+    if (media.remoteStatus != MediaRemoteStatusSync) {
+        successBlock();
+        return;
+    }
+
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
+
+    [remote deleteMedia:remoteMedia
+                success:successBlock
+                failure:failure];
 }
 
-- (void)getMetadataFromVideoPressID:(NSString *)videoPressID
-                             inBlog:(Blog *)blog
-                            success:(void (^)(RemoteVideoPressVideo *metadata))success
-                            failure:(void (^)(NSError *error))failure
+- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
+           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(void))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMetadataFromVideoPressID:videoPressID isSitePrivate:blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
+    if (mediaObjects.count == 0) {
         if (success) {
-            success(metadata);
+            success();
         }
-    } failure:^(NSError * error) {
-        if (failure) {
-            failure(error);
-        }
+        return;
+    }
+
+    NSProgress *currentProgress = [NSProgress progressWithTotalUnitCount:mediaObjects.count];
+
+    dispatch_group_t group = dispatch_group_create();
+
+    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger __unused idx, BOOL * __unused stop) {
+        dispatch_group_enter(group);
+        [self deleteMedia:media success:^{
+            currentProgress.completedUnitCount++;
+            if (progress) {
+                progress(currentProgress);
+            }
+            dispatch_group_leave(group);
+        } failure:^(NSError * __unused error) {
+            dispatch_group_leave(group);
+        }];
     }];
+
+    // After all the operations have succeeded (or failed)
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (currentProgress.completedUnitCount >= currentProgress.totalUnitCount) {
+            if (success) {
+                success();
+            }
+        } else {
+            if (failure) {
+                failure();
+            }
+        }
+    });
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog

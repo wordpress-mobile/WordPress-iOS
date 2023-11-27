@@ -4,8 +4,7 @@ protocol DashboardPostsSyncManagerListener: AnyObject {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
-                     for statuses: [String])
+                     for statuses: [BasePost.Status])
 }
 
 class DashboardPostsSyncManager {
@@ -22,7 +21,7 @@ class DashboardPostsSyncManager {
 
     // MARK: Private Variables
 
-    private let postService: PostService
+    private let postRepository: PostRepository
     private let blogService: BlogService
     @Atomic private var listeners: [DashboardPostsSyncManagerListener] = []
 
@@ -32,9 +31,9 @@ class DashboardPostsSyncManager {
 
     // MARK: Initializer
 
-    init(postService: PostService = PostService(managedObjectContext: ContextManager.shared.mainContext),
+    init(postRepository: PostRepository = PostRepository(coreDataStack: ContextManager.shared),
          blogService: BlogService = BlogService(coreDataStack: ContextManager.shared)) {
-        self.postService = postService
+        self.postRepository = postRepository
         self.blogService = blogService
     }
 
@@ -50,21 +49,13 @@ class DashboardPostsSyncManager {
         }
     }
 
-    func syncPosts(blog: Blog, postType: PostType, statuses: [String]) {
+    func syncPosts(blog: Blog, postType: PostType, statuses: [BasePost.Status]) {
         let toBeSynced = postType.statusesNotBeingSynced(statuses, for: blog)
         guard toBeSynced.isEmpty == false else {
             return
         }
 
         postType.markStatusesAsBeingSynced(toBeSynced, for: blog)
-
-        let options = PostServiceSyncOptions()
-        options.statuses = toBeSynced
-        options.authorID = blog.userID
-        options.number = Constants.numberOfPostsToSync
-        options.order = .descending
-        options.orderBy = .byModified
-        options.purgesLocalSync = true
 
         // If the userID is nil we need to sync authors
         // But only if the user is an admin
@@ -74,17 +65,33 @@ class DashboardPostsSyncManager {
                 self?.syncPosts(blog: blog, postType: postType, statuses: toBeSynced)
             }, failure: { [weak self] error in
                 postType.stopSyncingStatuses(toBeSynced, for: blog)
-                self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, posts: nil, for: toBeSynced)
+                self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, for: toBeSynced)
             })
             return
         }
 
-        postService.syncPosts(ofType: postType.postServiceType, with: options, for: blog) { [weak self] posts in
+        Task { @MainActor [weak self, postRepository, authorID = blog.userID, blogID = TaggedManagedObjectID(blog)] in
+            let success: Bool
+            do {
+                _ = try await postRepository.search(
+                    type: postType == .post ? Post.self : Page.self,
+                    input: nil,
+                    statuses: toBeSynced,
+                    tag: nil,
+                    authorUserID: authorID,
+                    offset: 0,
+                    limit: Constants.numberOfPostsToSync,
+                    orderBy: .byModified,
+                    descending: true,
+                    in: blogID
+                )
+                success = true
+            } catch {
+                success = false
+            }
+
             postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: true, blog: blog, postType: postType, posts: posts, for: toBeSynced)
-        } failure: { [weak self] error in
-            postType.stopSyncingStatuses(toBeSynced, for: blog)
-            self?.notifyListenersOfPostsSync(success: false, blog: blog, postType: postType, posts: nil, for: toBeSynced)
+            self?.notifyListenersOfPostsSync(success: success, blog: blog, postType: postType, for: toBeSynced)
         }
     }
 
@@ -97,15 +104,14 @@ class DashboardPostsSyncManager {
     private func notifyListenersOfPostsSync(success: Bool,
                                             blog: Blog,
                                             postType: PostType,
-                                            posts: [AbstractPost]?,
-                                            for statuses: [String]) {
+                                            for statuses: [BasePost.Status]) {
         for aListener in listeners {
-            aListener.postsSynced(success: success, blog: blog, postType: postType, posts: posts, for: statuses)
+            aListener.postsSynced(success: success, blog: blog, postType: postType, for: statuses)
         }
     }
 
     enum Constants {
-        static let numberOfPostsToSync: NSNumber = 3
+        static let numberOfPostsToSync: Int = 3
     }
 }
 
@@ -119,8 +125,8 @@ private extension DashboardPostsSyncManager.PostType {
         }
     }
 
-    func statusesNotBeingSynced(_ statuses: [String], for blog: Blog) -> [String] {
-        var currentlySyncing: [String]
+    func statusesNotBeingSynced(_ statuses: [BasePost.Status], for blog: Blog) -> [BasePost.Status] {
+        var currentlySyncing: [BasePost.Status]
         switch self {
         case .post:
             currentlySyncing = blog.dashboardState.postsSyncingStatuses
@@ -131,7 +137,7 @@ private extension DashboardPostsSyncManager.PostType {
         return notCurrentlySyncing
     }
 
-    func markStatusesAsBeingSynced(_ toBeSynced: [String], for blog: Blog) {
+    func markStatusesAsBeingSynced(_ toBeSynced: [BasePost.Status], for blog: Blog) {
         switch self {
         case .post:
             blog.dashboardState.postsSyncingStatuses.append(contentsOf: toBeSynced)
@@ -140,7 +146,7 @@ private extension DashboardPostsSyncManager.PostType {
         }
     }
 
-    func stopSyncingStatuses(_ statuses: [String], for blog: Blog) {
+    func stopSyncingStatuses(_ statuses: [BasePost.Status], for blog: Blog) {
         switch self {
         case .post:
             blog.dashboardState.postsSyncingStatuses = blog.dashboardState.postsSyncingStatuses.filter({ !statuses.contains($0) })

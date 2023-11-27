@@ -60,8 +60,11 @@ class ReaderDetailNewHeaderViewHost: UIView {
         guard let swiftUIView = subviews.first else {
             return
         }
-        swiftUIView.invalidateIntrinsicContentSize()
-        layoutIfNeeded()
+
+        DispatchQueue.main.async {
+            swiftUIView.invalidateIntrinsicContentSize()
+            self.layoutIfNeeded()
+        }
     }
 }
 
@@ -144,7 +147,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
             // hide the author name if it exactly matches the site name.
             // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
-            self.showsAuthorName = self.authorName != self.siteName
+            self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
             self.postTitle = post.titleForDisplay() ?? nil
             self.tags = post.tagsForDisplay() ?? []
@@ -236,7 +239,11 @@ struct ReaderDetailNewHeaderView: View {
         HStack(spacing: 8.0) {
             authorStack
             Spacer()
-            followButton(isPhone: WPDeviceIdentification.isiPhone())
+            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                               isEnabled: viewModel.isFollowButtonInteractive,
+                               size: .compact) {
+                viewModel.didTapFollowButton()
+            }
         }
     }
 
@@ -246,7 +253,7 @@ struct ReaderDetailNewHeaderView: View {
                let avatarURL = viewModel.authorAvatarURL {
                 avatarView(with: siteIconURL, avatarURL: avatarURL)
             }
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4.0) {
                 Text(viewModel.siteName)
                     .font(.callout)
                     .fontWeight(.semibold)
@@ -255,6 +262,9 @@ struct ReaderDetailNewHeaderView: View {
                 authorAndTimestampView
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits([.isButton])
+        .accessibilityHint(Constants.authorStackAccessibilityHint)
         .onTapGesture {
             viewModel.didTapAuthorSection()
         }
@@ -313,7 +323,7 @@ struct ReaderDetailNewHeaderView: View {
 
     var authorAndTimestampView: some View {
         HStack(spacing: 0) {
-            if viewModel.showsAuthorName, !viewModel.authorName.isEmpty {
+            if viewModel.showsAuthorName {
                 Text(viewModel.authorName)
                     .font(.footnote)
                     .foregroundColor(Color(.text))
@@ -332,48 +342,14 @@ struct ReaderDetailNewHeaderView: View {
 
             Spacer()
         }
+        .accessibilityElement()
+        .accessibilityLabel(authorAccessibilityLabel)
     }
 
     var timestampText: Text {
         Text(viewModel.relativePostTime)
             .font(.footnote)
             .foregroundColor(Color(.secondaryLabel))
-    }
-
-    /// TODO: Update when the Follow buttons are updated.
-    @ViewBuilder
-    private func followButton(isPhone: Bool = true) -> some View {
-        let style: LegacyFollowButtonStyle = viewModel.isFollowingSite ? .following : .follow
-
-        Button {
-            viewModel.didTapFollowButton()
-        } label: {
-            if isPhone {
-                // only shows the icon as the button.
-                Image(uiImage: .gridicon(style.gridiconType, size: style.iconButtonSize))
-                    .tint(style.tintColor)
-            } else {
-                // shows both the icon and the label.
-                Label {
-                    Text(style.buttonLabel)
-                        .font(.callout)
-                        .fontWeight(style.fontWeight)
-                } icon: {
-                    Image(uiImage: .gridicon(style.gridiconType, size: style.labelIconSize).imageWithTintColor(style.labelIconTintColor)!)
-                }
-                .padding(style.buttonPadding)
-                .background(style.labelBackgroundColor)
-                .tint(style.labelTintColor)
-                .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius))
-                .overlay {
-                    RoundedRectangle(cornerRadius: style.cornerRadius)
-                        .stroke(style.borderColor, lineWidth: style.borderWidth)
-                }
-            }
-        }
-        .accessibilityLabel(style.buttonLabel)
-        .accessibilityHint(style.accessibilityHint)
-        .disabled(!viewModel.isFollowButtonInteractive)
     }
 }
 
@@ -384,62 +360,22 @@ fileprivate extension ReaderDetailNewHeaderView {
     struct Constants {
         static let siteIconLength: CGFloat = 40.0
         static let authorImageLength: CGFloat = 20.0
+
+        static let authorStackAccessibilityHint = NSLocalizedString(
+            "reader.detail.header.authorInfo.a11y.hint",
+            value: "Views posts from the site",
+            comment: "Accessibility hint to inform that the author section can be tapped to see posts from the site."
+        )
     }
 
-    /// "Legacy" follow button styling.
-    /// Mostly taken from `WPStyleGuide+Reader`'s `applyReaderFollowButtonStyle`
-    ///
-    /// TODO: Remove this when the new Follow buttons are added.
-    struct LegacyFollowButtonStyle {
-        // Style for the Follow button
-        static let follow = LegacyFollowButtonStyle(
-            gridiconType: .readerFollow,
-            tintColor: Color(uiColor: .primary),
-            fontWeight: .semibold,
-            labelBackgroundColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followBackgroundColor),
-            labelTintColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followTextColor),
-            labelIconTintColor: WPStyleGuide.FollowButton.Style.followTextColor,
-            borderWidth: 0.0,
-            buttonLabel: WPStyleGuide.FollowButton.Text.followStringForDisplay,
-            accessibilityHint: WPStyleGuide.FollowButton.Text.accessibilityHint
-        )
+    var authorAccessibilityLabel: String {
+        var labels = [viewModel.relativePostTime]
 
-        // Style for the Following button
-        static let following = LegacyFollowButtonStyle(
-            gridiconType: .readerFollowing,
-            tintColor: Color(uiColor: .gray(.shade20)),
-            fontWeight: .regular,
-            labelBackgroundColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followingBackgroundColor),
-            labelTintColor: Color(uiColor: WPStyleGuide.FollowButton.Style.followingIconColor),
-            labelIconTintColor: WPStyleGuide.FollowButton.Style.followingTextColor,
-            borderWidth: 1.0,
-            buttonLabel: WPStyleGuide.FollowButton.Text.followingStringForDisplay,
-            accessibilityHint: WPStyleGuide.FollowButton.Text.accessibilityHint
-        )
+        if viewModel.showsAuthorName {
+            labels.insert(viewModel.authorName, at: .zero)
+        }
 
-        let gridiconType: GridiconType
-
-        // iPhone-specific styling
-        let iconButtonSize = CGSize(width: 24, height: 24)
-        let tintColor: Color
-        let iconBackgroundColor: Color = .clear
-
-        // iPad-specific styling
-        let font: Font = .callout
-        let fontWeight: Font.Weight
-        let buttonPadding = EdgeInsets(top: 6.0, leading: 12.0, bottom: 6.0, trailing: 12.0)
-        let labelBackgroundColor: Color
-        let labelTintColor: Color
-        let labelIconTintColor: UIColor
-        let cornerRadius = 4.0
-        let borderColor = Color(uiColor: .primaryButtonBorder)
-        let borderWidth: CGFloat
-        let labelIconSize = CGSize(width: WPStyleGuide.fontSizeForTextStyle(.callout),
-                                   height: WPStyleGuide.fontSizeForTextStyle(.callout))
-
-        // localization-related
-        let buttonLabel: String
-        let accessibilityHint: String
+        return labels.joined(separator: ", ")
     }
 }
 
@@ -461,6 +397,7 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
 
         // ensure that the collection view hugs its content.
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return view
     }
 

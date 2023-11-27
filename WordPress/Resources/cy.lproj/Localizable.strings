@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -345,10 +345,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -650,10 +647,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Dileu Dewislen";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Dileu'n Barhol";
 
@@ -750,12 +744,9 @@
 "Draft" = "Drafft";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Golygu";
@@ -833,9 +824,6 @@
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "Digwyddodd gwall\/n\nwrth gadw";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Pawb";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Esboniwch bwrpas y wefan.";
@@ -1227,7 +1215,6 @@
 "Max Image Upload Size" = "Maint mwyaf Llwytho Delwedd";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -1278,24 +1265,15 @@
 "Months and Years" = "Misoedd a Blynyddoedd";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Rhagor";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Symud i'r Drafft";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Symud i'r Sbwriel";
 
@@ -1303,7 +1281,8 @@
    My Profile view title */
 "My Profile" = "Fy Mhroffil";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Gwefannau";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1535,18 +1514,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Tudalen";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Wedi Adfer Tudalen i'r Drafftiau";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Wedi Adfer Tudalen i'r Cyhoeddwyd";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Wedi Adfer Tudalen i'r Amserlenwyd";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Symudwyd y dudalen i'r sbwriel.";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1579,8 +1546,7 @@
    Title of pending Comments filter. */
 "Pending" = "Dan Ystyriaeth";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Disgwyl adolygiad";
 
 /* Noun. Title of the people management feature.
@@ -1644,18 +1610,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Fformat Cofnod";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Wedi Adfer Cofnod i'r Drafftiau";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Cofnod wedi ei Adfer i Cyhoeddwyd";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Cofnod wedi ei Adfer i Amserlennwyd";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Mae'r cofnod wedi ei symud i'r sbwriel.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Gweithgaredd Cofnodi";
@@ -1700,8 +1654,7 @@
 "Privacy Policy" = "Polisi Preifatrwydd";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Preifat";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1721,14 +1674,12 @@
    Title for the publish settings view */
 "Publish" = "Cyhoeddi";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Cyhoeddi'n Syth";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Cyhoeddwyd";
 
 /* Published on [date] */
@@ -1802,8 +1753,7 @@
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "Tynnu";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1851,9 +1801,6 @@
 /* Setting: WordPress.com Surveys */
 "Research" = "Ymchwil";
 
-/* Title of the reset button */
-"Reset" = "Ailosod";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Newid Maint a Thocio";
 
@@ -1871,12 +1818,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -1921,11 +1865,7 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from the post. */
 "Save Draft" = "Cadw'r Drafft";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Cadwyd!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Wrthi'n Cadw...";
 
@@ -1980,9 +1920,6 @@
 /* Label for connected service in Publicize stat. */
 "Service" = "Gwasanaeth";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "Gosod Delwedd Nodwedd";
-
 /* Link to plugin's Settings
    Section title
    The menu item to select during a guided tour.
@@ -2005,7 +1942,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -2156,8 +2092,7 @@
    Title of Start Over settings page */
 "Start Over" = "Cychwyn Eto";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -2184,7 +2119,8 @@
    Theme Support action title */
 "Support" = "Cefnogaeth";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Newid Gwefan";
 
 /* Menu item label for linking a specific tag.
@@ -2294,7 +2230,7 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Mae gan y defnyddiwr rôl sydd eisoes wedi'i bennu. Ceisiwch neilltuo rôl gwahanol.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Gall fod yr enw defnyddiwr neu gyfrinair sy'n cael ei gadw yn y app yn hen. Rhowch eich cyfrinair eto yn y gosodiadau a cheisio eto.";
 
 /* Title of alert when theme activation succeeds */
@@ -2451,9 +2387,6 @@
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "DEFNYDD";
 
-/* An error message. */
-"Unable to Connect" = "Methu Cysylltu";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Methu Llwytho Cofnodion";
 
@@ -2484,8 +2417,6 @@
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Dadwneud";
 
@@ -2592,8 +2523,6 @@
 "Videos" = "Fideos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */

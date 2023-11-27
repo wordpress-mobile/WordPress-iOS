@@ -5,6 +5,9 @@
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Modules">
+   </FileRef>
+   <FileRef
       location = "group:WordPressFlux">
    </FileRef>
    <FileRef

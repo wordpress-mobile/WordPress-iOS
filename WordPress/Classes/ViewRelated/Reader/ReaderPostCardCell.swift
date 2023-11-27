@@ -56,6 +56,10 @@ class ReaderPostCardCell: UITableViewCell {
         addViewConstraints()
     }
 
+    func prepareForDisplay() {
+        updateSeparatorState()
+    }
+
     func configure(with viewModel: ReaderPostCardCellViewModel) {
         self.viewModel = viewModel
     }
@@ -101,7 +105,7 @@ class ReaderPostCardCell: UITableViewCell {
             static let likeButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
                                                           value: "Likes the post.",
                                                           comment: "Accessibility hint for the like button on the reader post card cell")
-            static let likedButtonHint = NSLocalizedString("reader.post.button.like.accessibility.hint",
+            static let likedButtonHint = NSLocalizedString("reader.post.button.liked.accessibility.hint",
                                                           value: "Unlikes the post.",
                                                           comment: "Accessibility hint for the liked button on the reader post card cell")
             static let menuButtonLabel = NSLocalizedString("reader.post.button.menu.accessibility.label",
@@ -139,6 +143,7 @@ class ReaderPostCardCell: UITableViewCell {
         static let borderWidth: CGFloat = 0.5
         static let imageSeparatorBorderWidth: CGFloat = 1.0
         static let separatorHeight: CGFloat = 0.5
+        static let likeButtonIdentifier = "reader-like-button"
     }
 
 }
@@ -146,6 +151,14 @@ class ReaderPostCardCell: UITableViewCell {
 // MARK: - Private methods
 
 private extension ReaderPostCardCell {
+
+    var usesAccessibilitySize: Bool {
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    var showsSeparator: Bool {
+        viewModel?.showsSeparator ?? true
+    }
 
     func commonInit() {
         setupViews()
@@ -176,7 +189,7 @@ private extension ReaderPostCardCell {
     }
 
     func setupContentView() {
-        contentView.backgroundColor = .listForeground
+        contentView.backgroundColor = .systemBackground
     }
 
     func setupContentStackView() {
@@ -236,7 +249,11 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-        siteStackView.addArrangedSubview(postDateLabel)
+
+        // if accessibility size
+        if !usesAccessibilitySize {
+            siteStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupSiteStackView() {
@@ -249,6 +266,10 @@ private extension ReaderPostCardCell {
         siteStackView.addGestureRecognizer(tapGesture)
 
         contentStackView.addArrangedSubview(siteStackView)
+
+        if usesAccessibilitySize {
+            contentStackView.addArrangedSubview(postDateLabel)
+        }
     }
 
     func setupPostTitle() {
@@ -295,10 +316,12 @@ private extension ReaderPostCardCell {
     }
 
     func setupControlButtons() {
-        setupControlButton(reblogButton,
-                           image: Constants.reblogButtonImage,
-                           text: Constants.reblogButtonText,
-                           action: #selector(didTapReblog))
+        if !usesAccessibilitySize {
+            setupControlButton(reblogButton,
+                               image: Constants.reblogButtonImage,
+                               text: Constants.reblogButtonText,
+                               action: #selector(didTapReblog))
+        }
         setupControlButton(commentButton,
                            image: Constants.commentButtonImage,
                            text: Constants.commentButtonText,
@@ -330,8 +353,12 @@ private extension ReaderPostCardCell {
 
     func setupSeparatorView() {
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
+        updateSeparatorState()
         contentView.addSubview(separatorView)
+    }
+
+    func updateSeparatorState() {
+        separatorView.backgroundColor = showsSeparator ? .separator : .clear
     }
 
     // MARK: - View constraints
@@ -351,8 +378,8 @@ private extension ReaderPostCardCell {
     func contentViewConstraints() -> [NSLayoutConstraint] {
         let margins = Constants.ContentStackView.margins
         return [
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margins),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margins),
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margins),
             contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor,
                                                      constant: Constants.ContentStackView.bottomAnchor)
@@ -429,7 +456,7 @@ private extension ReaderPostCardCell {
 
     func configureLabels() {
         configureLabel(siteTitleLabel, text: viewModel?.siteTitle)
-        configureLabel(postDateLabel, text: viewModel?.postDate)
+        configureLabel(postDateLabel, text: usesAccessibilitySize ? viewModel?.shortPostDate : viewModel?.postDate)
         configureLabel(postTitleLabel, text: viewModel?.postTitle)
         configureLabel(postSummaryLabel, text: viewModel?.postSummary)
         configureLabel(postCountsLabel, text: viewModel?.postCounts)
@@ -459,6 +486,7 @@ private extension ReaderPostCardCell {
 
     func configureSiteIcon() {
         guard let viewModel, viewModel.isSiteIconEnabled else {
+            siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: avatarContainerView)
             removeFromStackView(siteStackView, view: siteIconContainerView)
             return
         }
@@ -483,12 +511,12 @@ private extension ReaderPostCardCell {
         if !viewModel.isReblogEnabled {
             removeFromStackView(controlsStackView, view: reblogButton)
         }
-        if viewModel.isCommentsEnabled {
-            configureLikeButton()
-        } else {
+        if !viewModel.isCommentsEnabled {
             removeFromStackView(controlsStackView, view: commentButton)
         }
-        if !viewModel.isLikesEnabled {
+        if viewModel.isLikesEnabled {
+            configureLikeButton()
+        } else {
             removeFromStackView(controlsStackView, view: likeButton)
         }
     }
@@ -516,12 +544,13 @@ private extension ReaderPostCardCell {
         reblogButton.accessibilityHint = Constants.Accessibility.reblogButtonHint
         commentButton.accessibilityHint = Constants.Accessibility.commentButtonHint
         likeButton.accessibilityHint = viewModel?.isPostLiked == true ? Constants.Accessibility.likedButtonHint : Constants.Accessibility.likeButtonHint
+        likeButton.accessibilityIdentifier = Constants.likeButtonIdentifier
         menuButton.accessibilityLabel = Constants.Accessibility.menuButtonLabel
         menuButton.accessibilityHint = Constants.Accessibility.menuButtonHint
         accessibilityElements = [
             siteStackView, postTitleLabel, postSummaryLabel, postCountsLabel,
             reblogButton, commentButton, likeButton, menuButton
-        ]
+        ].filter { $0 != reblogButton || !self.usesAccessibilitySize } // skip reblog button if a11y size is active.
     }
 
     // MARK: - Cell reuse
@@ -529,7 +558,10 @@ private extension ReaderPostCardCell {
     func addMissingViews() {
         let siteHeaderViews = [avatarContainerView, siteIconContainerView, siteTitleLabel, postDateLabel]
         let contentViews = [siteStackView, postTitleLabel, postSummaryLabel, featuredImageView, postCountsLabel]
-        let controlViews = [reblogButton, commentButton, likeButton]
+        let controlViews = [reblogButton, commentButton, likeButton].filter {
+            // skip reblog button if a11y size is active.
+            $0 != reblogButton || !self.usesAccessibilitySize
+        }
 
         siteHeaderViews.enumerated().forEach { (index, view) in
             addToStackView(siteStackView, view: view, index: index)

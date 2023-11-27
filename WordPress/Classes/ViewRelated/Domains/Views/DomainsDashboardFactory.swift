@@ -3,18 +3,19 @@ import SwiftUI
 
 struct DomainsDashboardFactory {
     static func makeDomainsDashboardViewController(blog: Blog) -> UIViewController {
-        let viewController = UIHostingController(rootView: DomainsDashboardView(blog: blog))
+        let viewController = SiteDomainsViewController(blog: blog)
         viewController.extendedLayoutIncludesOpaqueBars = true
         return viewController
     }
 
     static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
+        let coordinator = RegisterDomainCoordinator(site: blog)
         let viewController = RegisterDomainSuggestionsViewController.instance(
-            site: blog,
+            coordinator: coordinator,
             domainSelectionType: domainSelectionType,
             includeSupportButton: false)
 
-        viewController.domainPurchasedCallback = { viewController, domain in
+        coordinator.domainPurchasedCallback = { viewController, domain in
             let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.syncBlogAndAllMetadata(blog) { }
             WPAnalytics.track(.domainCreditRedemptionSuccess)

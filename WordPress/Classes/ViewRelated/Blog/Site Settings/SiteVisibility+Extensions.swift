@@ -35,7 +35,7 @@ extension SiteVisibility {
         case .private:
             return NSLocalizedString("siteVisibility.private.hint", value: "Your site is only visible to you and users you approve.", comment: "Hint for users when private privacy setting is set")
         case .hidden:
-            return NSLocalizedString("siteVisibility.hidden.hint", value: "Your site is visible to everyone, but asks search engines not to index your site.", comment: "Hint for users when hidden privacy setting is set")
+            return NSLocalizedString("siteVisibility.hidden.hint", value: "Your site is hidden from visitors behind a \"Coming Soon\" notice until it is ready for viewing.", comment: "Hint for users when hidden privacy setting is set")
         case .public:
             return NSLocalizedString("siteVisibility.public.hint", value: "Your site is visible to everyone, and it may be indexed by search engines.", comment: "Hint for users when public privacy setting is set")
         case .unknown:

@@ -197,6 +197,30 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
            failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
+
+    // It's possible that the post has been updated while the user is making changes to the post in the app.
+    // In that case, this function here will overwrite the latest revision on the server.
+    //
+    // See also: https://github.com/wordpress-mobile/WordPress-iOS/issues/8111
+    //
+    // Here we check (only for WP.com posts for now) and log events for such scenario to get a sense of how
+    // often it occurs.
+    //
+    // The updating post API is made in parallel with this get revision API request–we don't want to delay
+    // saving post. In theory, it's possible that the updating post API finishes before the server handles
+    // the get revision API request, which means we'll receive an incorrect revision. But that should be
+    // extremely rare and we'll ignore it for now.
+    [self checkLatestRevisionForPost:post usingRemote:remote];
+
+    [self uploadPost:post forceDraftIfCreating:forceDraftIfCreating usingRemote:remote success:success failure:failure];
+}
+
+- (void)uploadPost:(AbstractPost *)post
+forceDraftIfCreating:(BOOL)forceDraftIfCreating
+        usingRemote:(id<PostServiceRemote>)remote
+           success:(nullable void (^)(AbstractPost * _Nullable post))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure
+{
     RemotePost *remotePost = [PostHelper remotePostWithPost:post];
 
     post.remoteStatus = AbstractPostRemoteStatusPushing;
@@ -447,195 +471,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         setPostAsFailedAndCallFailureBlock(error);
     }];
 
-}
-
-#pragma mark - Delete, Trashing, Restoring
-
-- (void)deletePost:(AbstractPost *)post
-           success:(void (^)(void))success
-           failure:(void (^)(NSError *error))failure
-{
-    void (^privateBlock)(void) = ^void() {
-        NSNumber *postID = post.postID;
-        if ([postID longLongValue] > 0) {
-            RemotePost *remotePost = [PostHelper remotePostWithPost:post];
-            id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-            [remote deletePost:remotePost success:success failure:failure];
-        }
-        [self.managedObjectContext deleteObject:post];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    };
-    
-    if ([post isRevision]) {
-        [self deletePost:post.original success:privateBlock failure:failure];
-    } else {
-        privateBlock();
-    }
-}
-
-- (void)trashPost:(AbstractPost *)post
-          success:(void (^)(void))success
-          failure:(void (^)(NSError *error))failure
-{
-    if ([post.status isEqualToString:PostStatusTrash]) {
-        [self deletePost:post success:success failure:failure];
-        return;
-    }
-    
-    void(^privateBodyBlock)(void) = ^void() {
-        post.restorableStatus = post.status;
-        
-        NSNumber *postID = post.postID;
-        
-        if ([post isRevision] || [postID longLongValue] <= 0) {
-            post.status = PostStatusTrash;
-            
-            if (success) {
-                success();
-            }
-            
-            return;
-        }
-        
-        [self trashRemotePostWithPost:post
-                              success:success
-                              failure:failure];
-    };
-    
-    if ([post isRevision]) {
-        [self trashPost:post.original
-                success:privateBodyBlock
-                failure:failure];
-    } else {
-        privateBodyBlock();
-    }
-}
-
-- (void)trashRemotePostWithPost:(AbstractPost*)post
-                        success:(void (^)(void))success
-                        failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectID *postObjectID = post.objectID;
-    
-    void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
-        NSError *err;
-        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        if (err) {
-            DDLogError(@"%@", err);
-        }
-        if (postInContext) {
-            if (!remotePost || [remotePost.status isEqualToString:PostStatusDeleted]) {
-                [self.managedObjectContext deleteObject:post];
-            } else {
-                [PostHelper updatePost:postInContext withRemotePost:remotePost inContext:self.managedObjectContext];
-                postInContext.latest.statusAfterSync = postInContext.statusAfterSync;
-                postInContext.latest.status = postInContext.status;
-            }
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }
-        if (success) {
-            success();
-        }
-    };
-    
-    void (^failureBlock)(NSError *error) = ^(NSError *error) {
-        NSError *err;
-        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        if (err) {
-            DDLogError(@"%@", err);
-        }
-        if (postInContext) {
-            postInContext.restorableStatus = nil;
-        }
-        if (failure){
-            failure(error);
-        }
-    };
-    
-    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-    [remote trashPost:remotePost success:successBlock failure:failureBlock];
-}
-
-- (void)restorePost:(AbstractPost *)post
-            success:(void (^)(void))success
-            failure:(void (^)(NSError *error))failure
-{
-    void (^privateBodyBlock)(void) = ^void() {
-        post.status = post.restorableStatus;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        
-        if (![post isRevision] && [post.postID longLongValue] > 0) {
-            [self restoreRemotePostWithPost:post success:success failure:failure];
-        } else {
-            if (success) {
-                success();
-            }
-        }
-    };
-    
-    if (post.isRevision) {
-        [self restorePost:post.original
-                  success:privateBodyBlock
-                  failure:failure];
-        
-        return;
-    } else {
-        privateBodyBlock();
-    }
-}
-
-- (void)restoreRemotePostWithPost:(AbstractPost*)post
-                          success:(void (^)(void))success
-                          failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectID *postObjectID = post.objectID;
-    
-    void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
-        NSError *err;
-        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        postInContext.restorableStatus = nil;
-        if (err) {
-            DDLogError(@"%@", err);
-        }
-        if (postInContext) {
-            [PostHelper updatePost:postInContext withRemotePost:remotePost inContext:self.managedObjectContext];
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }
-        if (success) {
-            success();
-        }
-    };
-    
-    void (^failureBlock)(NSError *error) = ^(NSError *error) {
-        NSError *err;
-        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        if (err) {
-            DDLogError(@"%@", err);
-        }
-        if (postInContext) {
-            // Put the post back in the trash bin.
-            postInContext.status = PostStatusTrash;
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }
-        if (failure){
-            failure(error);
-        }
-    };
-    
-    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
-    if (post.restorableStatus) {
-        remotePost.status = post.restorableStatus;
-    } else {
-        // Assign a status of draft to the remote post. The WordPress.com REST API will
-        // ignore this and should restore the post's previous status. The XML-RPC API
-        // needs a status assigned to move a post out of the trash folder. Draft is the
-        // safest option when we don't know what the status was previously.
-        remotePost.status = PostStatusDraft;
-    }
-    
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-    [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
 #pragma mark - Helpers

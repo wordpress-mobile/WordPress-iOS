@@ -70,12 +70,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
+    @IBOutlet weak var toolbarHeightConstraint: NSLayoutConstraint!
+
     /// The actual header
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
     private lazy var header: UIView & ReaderDetailHeader = {
-        guard FeatureFlag.readerImprovements.enabled else {
+        guard RemoteFeatureFlag.readerImprovements.enabled() else {
             return ReaderDetailHeaderView.loadFromNib()
         }
         return ReaderDetailNewHeaderViewHost()
@@ -250,6 +252,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
            let postURL = URL(string: postURLString) {
             webView.postURL = postURL
         }
+
+        webView.isP2 = post.isP2Type()
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
@@ -531,7 +535,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Configure the webview
     private func configureWebView() {
-        webView.usesSansSerifStyle = FeatureFlag.readerImprovements.enabled
+        webView.usesSansSerifStyle = RemoteFeatureFlag.readerImprovements.enabled()
         webView.navigationDelegate = self
     }
 
@@ -604,7 +608,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         headerContainerView.pinSubviewToAllEdges(header)
 
-        if !FeatureFlag.readerImprovements.enabled {
+        if !RemoteFeatureFlag.readerImprovements.enabled() {
             headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         }
     }
@@ -674,6 +678,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
+
+        if RemoteFeatureFlag.readerImprovements.enabled() {
+            toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
+        }
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -803,6 +811,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         static let bottomMargin: CGFloat = 16
         static let toolbarHeight: CGFloat = 50
         static let delay: Double = 50
+        static let preferredToolbarHeight: CGFloat = 58.0
     }
 }
 

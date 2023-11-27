@@ -1,3 +1,23 @@
-Vi har ändrat hur aviseringar visas när du infogar media i block från en URL. Det känns bra att det är ordnat.
+Spänn fast dig, den här uppdateringen är en riktig höjdare. Låt oss börja med Webbplatsmedia.
 
-Det är också enklare att se skillnaden mellan platshållartext och faktiskt innehåll i blockbaserade teman.
+- Vi har uppdaterat skärmdesignen för Webbplatsmedia med bättre menyer, filval och fildelning med mera. Det går till och med snabbare - inga fler ryckiga GIF:ar eller videoklipp som laggar.
+- Du kan använda panoreringsgesten för att välja flera mediafiler samtidigt. Det är också enklare att svepa från ett foto till ett annat, ändra metadata och radera objekt.
+- På iPad kan du växla mellan kvadratisk förhandsgranskning av bilder och bildförhållande.
+- Vi har åtgärdat problem med tomma platshållarbilder, felaktiga meddelanden, dokumentdelning och enstaka krascher.
+
+Vi är inte färdiga ännu. Vi har också gjort stora förändringar av Inlägg och sidor.
+
+- Skärmen Inlägg och sidor har fått en ansiktslyftning med rena och enkla visningsalternativ.
+- Använd mer avancerade sökfunktioner, som författar- och etikettfilter, för att hitta det innehåll du vill redigera. Sökningen fungerar också över samtliga författare (om du inte vill ha innehåll från en specifik person, förstås).
+- Använd svepgester för att visa, dela eller ta bort inlägg och sidor. Perfekt.
+- I kontextmenyn kan du nu komma åt kommentarer, inställningar och andra åtgärder för ett inlägg eller en sida.
+- Vi har åtgärdat problem med siduppdateringar och synlighet, samt en handfull krascher.
+
+Slutligen har vi åtgärdat en handfull irriterande problem i appen.
+
+- Appen känner nu igen när du har slutfört uppladdningen av en GIF. (monty-burns-excellent.gif)
+- "Dolda" inlägg har nu en bättre beskrivning av sin integritetsstatus.
+- Läsaren rullas nu till toppen när du trycker på statusfältet. Upp, upp och iväg.
+- Skärmen Menyer skapar korrekta menyval baserat på sidorna högst upp.
+- Vi har åtgärdat en krasch relaterad till användning av textfärger från äldre webbplatsteman.
+- Du bör inte stöta på några fel när du klistrar in djupt inbäddat innehåll. Precis som lökar, troll, kakor eller parfaiter kan ditt innehåll ha många lager.

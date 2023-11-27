@@ -1,7 +1,27 @@
-Sperrbildschirm-Widgets sind jetzt auf Jetpack verfügbar. Du kannst nun also deine Website-Statistiken überprüfen, ohne dein Smartphone zu entsperren. Aber denk dran: Aus großer Macht folgt große Effizienz. Oder so ähnlich.
+Schnall dich an, dieses Update ist der Hammer.
 
-Benachrichtigungen werden nun anders angezeigt, wenn du über eine URL Medien in Blöcke einfügst. Ist das nicht fabelhaft?
+Zuallererst haben wir den Bildschirm „Alle Domains“ hinzugefügt, damit du alle deine Domains an einem Ort in der App verwalten kannst. Zu Hause ist es doch am schönsten.
 
-Außerdem können Platzhaltertext und tatsächlicher Inhalt in blockbasierten Themes nun leichter unterschieden werden.
+Anschließend haben wir die Websitemedien aktualisiert.
 
-Zu guter Letzt haben wir die Navigation unter „Meine Website“ aktualisiert, wodurch du schneller zu beliebten Abschnitten der Website gelangen kannst. (Du magst diese Tastaturkürzel nicht? Keine Sorge, du kannst sie nach Herzenslust anpassen.)
+- Im Design des Bildschirms „Site Media“ (Websitemedien) wurden die Menüs, das Auswählen und Teilen von Dateien sowie vieles mehr verbessert. Es ist sogar schneller! Keine ruckeligen GIFs oder eingefrorenen Videos mehr.
+- Mit einer Schwenkbewegung kannst du mehrere Mediendateien gleichzeitig auswählen. Es ist jetzt auch einfacher, von einem Foto zu einem anderen zu wischen, Metadaten zu ändern und Elemente zu löschen.
+- Auf dem iPad kannst du zwischen einer quadratischen Bildvorschau und einer Vorschau mit Seitenverhältnis wechseln.
+- Wir haben Probleme mit leeren Platzhalterbildern, falschen Benachrichtigungen, dem Teilen von Dokumenten und gelegentlichen Abstürzen behoben.
+
+Wir sind noch nicht fertig. Wir haben auch grundlegende Änderungen an dem Bildschirm „Beiträge & Seiten“ vorgenommen.
+
+- Der Bildschirm „Beiträge & Seiten“ wurde umfassend überarbeitet und enthält nun schlichte, einfache Anzeigeoptionen.
+- Du kannst erweiterte Suchfunktionen verwenden, wie z. B. Filter für Autoren und Schlagwörter, um die Inhalte zu finden, die du bearbeiten möchtest. Die Suche funktioniert für alle Autoren (es sei denn natürlich, du suchst nach Inhalten von einer bestimmten Person).
+- Mit Wischbewegungen kannst du Beiträge und Seiten anzeigen, teilen oder löschen. Das ist doch super.
+- Im Kontextmenü kannst du jetzt auf Kommentare, Einstellungen und andere Aktionen für einen Beitrag oder eine Seite zugreifen.
+- Wir haben Probleme mit dem Aktualisieren und der Sichtbarkeit von Seiten sowie mit einigen Abstürzen behoben.
+
+Abschließend haben wir noch ein paar lästige Probleme in der App behoben.
+
+- Die App erkennt jetzt, wenn du eine GIF-Datei fertig hochgeladen hast. (monty-burns-excellent.gif)
+- „Versteckte“ Beiträge haben jetzt eine bessere Beschreibung für ihren Datenschutzstatus.
+- Der Reader scrollt jetzt ans obere Ende, wenn du auf die Statusleiste tippst. Auf, auf und davon.
+- Im Bildschirm „Menüs“ werden jetzt Menüelemente basierend auf Seiten der ersten Ebene ordnungsgemäß erstellt.
+- Wir haben einen Absturz des Block-Editors behoben, der mit dem Verwenden von Textfarben in älteren Website-Themes zusammenhing.
+- Es sollten keine Fehler auftreten, wenn du tief verschachtelte Inhalte in den Block-Editor einfügst. Genauso wie Zwiebeln, Oger, Kuchen oder Parfaits – deine Inhalte können viele Schichten haben.

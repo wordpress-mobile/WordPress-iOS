@@ -19,6 +19,9 @@ import Foundation
     case mediaLibraryAddedPhotoViaTenor
     case editorAddedPhotoViaTenor
 
+    // Media
+    case siteMediaShareTapped
+
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostPublishDismissed
@@ -255,8 +258,11 @@ import Foundation
 
     // Post List
     case postListShareAction
+    case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
+    case postListSetAsRegularPageAction
+    case postListSettingsAction
 
     // Page List
     case pageListEditHomepageTapped
@@ -280,10 +286,14 @@ import Foundation
     case accountCloseCompleted
 
     // App Settings
+    case appSettingsOptimizeImagesChanged
+    case appSettingsMaxImageSizeChanged
+    case appSettingsImageQualityChanged
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
+    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -509,6 +519,9 @@ import Foundation
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
+    // Widgets
+    case widgetsLoadedOnApplicationOpened
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -536,6 +549,9 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
+            // Media
+        case .siteMediaShareTapped:
+            return "site_media_shared_tapped"
         // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
@@ -957,9 +973,15 @@ import Foundation
         // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListCommentsAction:
+            return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
+            return "post_list_button_pressed"
+        case .postListSetAsRegularPageAction:
+            return "post_list_button_pressed"
+        case .postListSettingsAction:
             return "post_list_button_pressed"
 
         // Page List
@@ -995,6 +1017,14 @@ import Foundation
             return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
+        case .appSettingsOptimizeImagesChanged:
+            return "app_settings_optimize_images_changed"
+        case .appSettingsMaxImageSizeChanged:
+            return "app_settings_max_image_size_changed"
+        case .appSettingsImageQualityChanged:
+            return "app_settings_image_quality_changed"
+        case .appSettingsOptimizeImagesPopupTapped:
+            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:
@@ -1388,6 +1418,10 @@ import Foundation
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
 
+        // Widgets
+        case .widgetsLoadedOnApplicationOpened:
+            return "widgets_loaded_on_application_opened"
+
         } // END OF SWITCH
     }
 
@@ -1408,10 +1442,16 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListCommentsAction:
+            return ["button": "comments"]
         case .postListSetAsPostsPageAction:
             return ["button": "set_posts_page"]
         case .postListSetHomePageAction:
             return ["button": "set_homepage"]
+        case .postListSetAsRegularPageAction:
+            return ["button": "set_regular_page"]
+        case .postListSettingsAction:
+            return ["button": "settings"]
         default:
             return nil
         }

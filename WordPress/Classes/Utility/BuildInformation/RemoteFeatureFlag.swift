@@ -21,6 +21,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackSocialImprovements
     case domainManagement
     case plansInSiteCreation
+    case readerImprovements // pcdRpT-3Eb-p2
 
     var defaultValue: Bool {
         switch self {
@@ -59,9 +60,11 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
         case .domainManagement:
-            return false
+            return false // TODO: Update as `AppConfiguration.isJetpack`
         case .plansInSiteCreation:
             return false
+        case .readerImprovements:
+            return true
         }
     }
 
@@ -106,6 +109,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "domain_management"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
+        case .readerImprovements:
+            return "reader_improvements"
         }
     }
 
@@ -149,6 +154,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Domain Management"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
+        case .readerImprovements:
+            return "Reader Improvements v1"
         }
     }
 

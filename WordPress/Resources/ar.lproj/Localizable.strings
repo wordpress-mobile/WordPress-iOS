@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-09-18 15:54:31+0000 */
+/* Translation-Revision-Date: 2023-11-15 20:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-alpha.9 */
+/* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@، %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d من المقالات.";
 
@@ -270,6 +267,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "أيقونة %s الاجتماعية";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "تم تحويل مكوّن \"%s\" إلى المكوّنات";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "لم يتم دعم \"%s\" بالكامل";
@@ -730,6 +730,9 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "النص البديل";
 
 /* No comment provided by engineer. */
+"Alternatively, you can convert the content to blocks." = "بدلاً من ذلك، يمكنك تحويل المحتوى إلى مكوّنات.";
+
+/* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"فصل الأنماط\".";
 
 /* No comment provided by engineer. */
@@ -888,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "هل تريد بالتأكيد حذف هذا العنصر نهائيًا؟";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "هل أنت متأكد من رغبتك في حذف هذه الصفحة نهائيًا؟";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "هل أنت متأكد من رغبتك في حذف هذه المقالة نهائيًا؟";
 
@@ -921,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "هل تريد بالتأكيد الإرسال للمراجعة؟";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "هل أنت متأكد من رغبتك في نقل هذه الصفحة إلى سلة المهملات؟";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "هل أنت متأكد من رغبتك في نقل هذه المقالة إلى سلة المهملات؟";
@@ -1122,6 +1119,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "حظر الاقتباس";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered because it is deeply nested. Tap here for more details." = "يتعذر عرض المكوّن نظرًا إلى تداخله بشكل عميق. اضغط هنا للحصول على مزيد من التفاصيل.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "المكوِّن الذي تم نسخه";
 
@@ -1173,6 +1173,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "قائمة المكوّنات";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام محرر الويب.";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام متصفح الويب لديك.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "مدونة";
@@ -1250,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "بواسطة ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "بواسطة %@.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "بالمتابعة، فإنك توافق على _شروط الخدمة_ الخاصة بنا.";
 
@@ -1324,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1344,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "إلغاء";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "إلغاء الرفع";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1408,9 +1407,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "تغيير الإعدادات";
-
-/* Change site icon button */
-"Change Site Icon" = "تغيير رمز الموقع";
 
 /* Change Username title. */
 "Change Username" = "تغيير اسم المستخدم";
@@ -1507,9 +1503,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Choose Homepage";
-
-/* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "اختيار صور من جهازي";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "اختيار الصفحات";
@@ -1757,9 +1750,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "المجتمع وغير ربحي";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "صغير";
-
 /* The action is completed */
 "Completed" = "اكتمال";
 
@@ -1944,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "المكوِّن الذي تم نسخه";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "نسخ الرابط";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "نسخ الرابط إلى التعليق";
@@ -2283,6 +2269,9 @@ translators: Block name. %s: The localized block name */
 /* Only December needs to be translated */
 "December 17, 2017" = "17 ديسمبر، 2017";
 
+/* No comment provided by engineer. */
+"Deeply nested block" = "مكوّن متداخل بشكل عميق";
+
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "الافتراضي";
@@ -2315,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "حذف القائمة";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "حذف بشكل دائم";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "هل تريد الحذف نهائيًا؟";
 
 /* Button label for deleting the current site
@@ -2626,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "اكتب مسودّة مقالة ثم أنشرها.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "المسودات";
 
 /* No comment provided by engineer. */
@@ -2638,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "السحب لضبط نقطة التركيز";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "تكرار";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "تكرار المكوِّن";
@@ -2656,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "لكل مكوِّن الإعدادات الخاصة به. للعثور عليها، أنقر على مكوِّن. ستظهر إعداداته على شريط الأدوات في الجزء السفلي من الشاشة.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "تحرير";
@@ -3022,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "كل يوم في %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "الجميع";
-
 /* Example story title description */
 "Example story title" = "مثال لعنوان قصة";
 
@@ -3033,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "طول المقتطف (كلمات)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "المقتطف. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "المقتطفات هي ملخصات يدوية اختيارية لمحتواك.";
@@ -3046,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "إنهاء وضع ملء الشاشة";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "موسعة";
 
 /* Accessibility hint */
@@ -3618,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "الرئيسية";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "الصفحة الرئيسية";
 
 /* Label for Homepage Settings site settings section
@@ -4204,9 +4173,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "الروابط في التعليقات";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "نمط القائمة";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "تحميل";
 
@@ -4294,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "الخدمات المحلية";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "التغييرات المحلية";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4459,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "أقصى حجم لمقطع الفيديو الذي سيتم رفعه";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4550,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "رسالة";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "بيانات التعريف";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4572,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "شهور وسنوات";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "المزيد";
 
 /* Action button to display more available options
@@ -4636,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "نقل عنصر القائمة";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "نقل إلى المسودة";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "نقل إلى سلة المهملات";
 
@@ -4676,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "موقعي";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "مواقعي";
 
 /* Siri Suggestion to open My Sites */
@@ -4946,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "لا توجد إشعارات حتى الآن";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "لا تتطابق أي صفحات مع بحثك";
 
 /* Text displayed when search for plugins returns no results */
@@ -4967,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "لم يتم نشر أي مقالات مؤخرًا بهذا الوسم.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "لا تتطابق أي مقالة مع بحثك";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "لا توجد مقالات.";
@@ -5274,6 +5223,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Divider on initial auth view separating auth options. */
 "Or" = "أو";
 
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "أو اختر نموذج مصادقة آخر.";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "أو تسجيل الدخول عن طريق _إدخال عنوان رابط موقعك_.";
 
@@ -5332,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "الصفحة";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "تمت استعادة الصفحة إلى مسودات";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "تمت استعادة الصفحة إلى منشور";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "تمت استعادة الصفحة إلى مجدول";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "إعدادات الصفحة";
@@ -5356,9 +5299,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "فشل رفع الصفحة";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "تم نقل الصفحة إلى سلة المهملات.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "الصفحة في انتظار المراجعة";
@@ -5431,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "انتظار";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "في انتظار المراجعة";
 
 /* Noun. Title of the people management feature.
@@ -5559,7 +5498,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "يرجى إدخال كلمة المرور لحساب WordPress.com الخاص بك لتسجيل الدخول باستخدام مُعرّف Apple الخاص بك.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "يُرجى إدخال رمز التحقُّق من تطبيق الموثق الخاص بك، أو اضغط على الرابط أدناه لتلقي كود عبر خدمة الرسائل النصية القصيرة.";
+"Please enter the verification code from your authenticator app." = "يرجى إدخال رمز التحقق من تطبيق الموثق الخاص بك.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "يُرجى إدخال بيانات اعتمادك";
@@ -5654,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "تنسيق المقالة";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "تم استعادة المقالة إلى المسودات";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "تم استعادة المقالة إلى النشر";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "تم استعادة المقالة إلى الجدول";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "إعدادات المقالة";
@@ -5681,9 +5611,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "فشل رفع المقالة";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "تم نقل المقالة إلى سلة المهملات.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "المقالة في انتظار المراجعة";
@@ -5742,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "المقالات والصفحات";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "صفحة المقالات";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "تم تحديث صفحة المقالات بنجاح";
@@ -5837,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "إشعار الخصوصية الخاص بالمستخدمين في كاليفورنيا";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "خاص";
 
 /* No comment provided by engineer. */
@@ -5888,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "تاريخ النشر";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "النشر في الحال";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "النشر الآن";
 
@@ -5911,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "منشور";
 
 /* Precedes the name of the blog just posted on */
@@ -6060,8 +5980,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
-   Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus. */
+   Removes a self hosted site from the app */
 "Remove" = "إزالة";
 
 /* Remove Person Alert Title
@@ -6209,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "إعادة إرسال";
 
-/* Title of the reset button */
-"Reset" = "استعادة";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "إعادة تعيين عامل تصفية نوع النشاط";
 
@@ -6266,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6383,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "تم حفظ المقالة";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "تم الحفظ!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "يحفظ هذه المقالة لوقت لاحق.";
 
@@ -6396,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "جاري حفظ المقالة…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "جاري الحفظ...";
 
@@ -6486,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "ابحث أو اكتب رابطًا";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "بحث في الصفحات";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "بحث في المقالات";
 
 /* No comment provided by engineer. */
 "Search settings" = "إعدادات البحث";
@@ -6702,21 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "الخدمة";
 
-/* No comment provided by engineer. */
-"Set Featured Image" = "تعيين صورة بارزة";
-
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "تعيين الأصل";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "تعيين كصورة بارزة";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "تعيين كصفحة رئيسية";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "تعيين كصفحة مقالات";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "تعيين كصورة بارزة";
@@ -6761,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7147,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "صفحة رئيسية ثابتة";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7178,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "مثبّت";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "مثبت.";
 
 /* User action to stop upload. */
 "Stop upload" = "إيقاف الرفع";
@@ -7238,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "الدعم";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "تبديل الموقع";
 
 /* Switches the Editor to HTML Mode */
@@ -7282,6 +7171,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "التبديل إلى حجم الخط الافتراضي";
+
+/* No comment provided by engineer. */
+"Synced patterns" = "الأنماط التي تمت مزامنتها";
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "النظام الافتراضي";
@@ -7330,9 +7222,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Photo" = "التقاط صورة";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "التقاط صورة أو تسجيل فيديو";
-
-/* No comment provided by engineer. */
 "Take a Video" = "تسجيل مقطع فيديو";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
@@ -7346,6 +7235,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "أنقر هنا لإظهار المساعدة";
+
+/* No comment provided by engineer. */
+"Tap here to show more details." = "اضغط هنا لعرض مزيد من التفاصيل.";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "اضغط لإضافة بطاقات الإحصاءات الجديدة.";
@@ -7447,9 +7339,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "توجد عناصر التحكم في تنسيق النص ضمن شريط الأدوات الذي يوجد فوق لوحة المفاتيح في أثناء تحرير مكوِّن نص";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "اكتب رمزًا لي بدلاً من ذلك";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "إرسال الكود إليَّ عبر رسالة نصية قصيرة";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "شكرًا لاختيارك %1$@ من %2$@";
@@ -7608,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "المستخدم الذي تحاول إزالته هو مالك هذا الموقع. يرجى الاتصال بالدعم للحصول على المساعدة.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "قد يكون اسم المستخدم أو كلمة المرور المخزنان في التطبيق غير محدثين. يُرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7876,6 +7770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "حان الوقت لإنهاء إعداد موقعك! توضِّح لك قائمة الاختيار الخاصة بنا الخطوات التالية.";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "انتهى الوقت، لكن لا داعي للقلق، فأمانك هو أولويتنا. يرجى المحاولة مرة أخرى!";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "نصائح للحصول على أكبر استفادة من WordPress.com.";
 
@@ -7999,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "المرور";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "النطاق المنقول";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "تحويل %s إلى";
 
@@ -8013,9 +7913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "نقل الوسائط المُحدَّدة إلى سلة المهملات";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "هل تريد نقل هذه الصفحة إلى سلة المهملات؟";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "هل تريد نقل هذه المقالة إلى سلة المهملات؟";
@@ -8134,9 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "يتعذر الاتصال";
 
-/* An error message. */
-"Unable to Connect" = "يتعذر الاتصال";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "تعذر إنشاء محرر القصص";
 
@@ -8218,12 +8112,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "تعذرت مشاركة الرابط";
 
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "غير قادر على نقل الصفحات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "غير قادر على نقل المقالات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
-
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "تعذر إيقاف تشغيل إشعارات الموقع";
 
@@ -8296,8 +8184,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "تراجع";
 
@@ -8326,6 +8212,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "إلغاء متابعة المدونة.";
+
+/* No comment provided by engineer. */
+"Ungroup block" = "مكوّن الترقية";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "إظهار";
@@ -8505,6 +8394,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "استخدام مخزن Sandbox";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "استخدام مفتاح الأمان";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "استخدام مُحرر المكوّنات";
 
@@ -8587,8 +8479,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "الفيديوهات";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -8702,6 +8592,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "بانتظار اكتمال Google…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "انتظار مفتاح الأمان";
 
 /* View title during the Google auth process. */
 "Waiting..." = "جاري الانتظار...";
@@ -9073,6 +8967,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "عذرًا، حدث خطأ ما وتعذر عليك تسجيل الدخول. يرجى المحاولة مرة أخرى!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "عذرًا، حدث خطأ ما. يرجى المحاولة مرة أخرى!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "عذرًا، لا يبدو مفتاح الأمان ذلك صالحًا. يرجى المحاولة مجددًا باستخدام واحد آخر";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "عذرًا، هذا رمز تحقق من عاملين غير صالح. تحقق مجددًا من رمزك وحاول مجددًا!";
@@ -9641,6 +9541,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.active" = "نشط";
 
 /* Short status description */
+"blazeCampaign.status.approved" = "تمت الموافقة على";
+
+/* Short status description */
 "blazeCampaign.status.canceled" = "تم الإلغاء";
 
 /* Short status description */
@@ -9702,6 +9605,12 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "الرد على %1$@";
+
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "قد يكون اسم المستخدم أو كلمة المرور المخزَّنان في التطبيق غير محدَّثين. يرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
+
+/* An error message. */
+"common.unableToConnect" = "يتعذر الاتصال";
 
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "تسمح لنا ملفات تعريف الارتباط هذه بتحسين الأداء عن طريق جمع المعلومات حول كيفية تفاعل المستخدمين مع مواقعنا على الويب.";
@@ -9850,14 +9759,83 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "إزالة الجولة الحالية";
 
-/* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "شارك مطالبتك في زاوية الويب لديك مع عنوان الموقع الذي يسهل العثور عليه ومشاركته ومتابعته.";
-
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
 
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.shortTitle" = "العثور على نطاق مخصص";
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "البحث عن نطاق";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "الحصول على نطاق";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "أضف موقعًا لاحقًا.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "شراء نطاق فقط";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "منتهي الصلاحية";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "التجديدات";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "العثور على نطاق";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "اضغط أدناه للعثور على نطاقك المثالي.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "لا تتوافر لديك أي نطاقات";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "واجهنا خطأ في أثناء تحميل نطاقاتك. يرجى الاتصال بالدعم إذا استمرت المشكلة.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "حدث خطأ";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "المحاولة مجددًا";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "يرجى التحقق من اتصال شبكتك والمحاولة لاحقًا.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "لا يوجد اتصال بالإنترنت";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* تتضمّن جميع الخطط السنوية المدفوعة نطاقًا مجانيًّا لمدة عام كامل";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "لا تقلق، يمكنك بسهولة إضافة موقع لاحقًا.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "اختيار طريقة استخدام نطاقك";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "البحث عن النطاقات";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "يتعذر العثور على أي نطاقات تتطابق مع البحث عن \"%@\"";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "لم يتم العثور على نطاقات متطابقة";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "اختيار موقع";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "نطاق مجاني للعام الأول*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "الاستخدام مع أي موقع بدأته بالفعل.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "موقع ووردبريس.كوم الحالي";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "جميع النطاقات";
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك المخصص بالعمل.";
@@ -9880,6 +9858,9 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for free domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.free" = "مجانًا";
 
+/* The text to display for paid domains that are free for the first year with the paid plan in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free-with-plan" = "مجاني للعام الأول مع الخطط السنوية المدفوعة";
+
 /* The 'Recommended' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.recommended" = "موصى به";
 
@@ -9889,11 +9870,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "سنوياً";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "السداد";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "تجاهل";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "عذرًا، يتعذر شراء النطاق الذي تحاول إضافته على تطبيق Jetpack في هذه المرة.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "شراء النطاق";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "البحث";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "اختيار موقع";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "أنقر نقرًا مزدوجًا لتغيير الوحدة";
@@ -10314,11 +10307,11 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "تم وضع علامة على أنه بريد مزعج";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "المنتجات";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "تتعذر مزامنة الوسائط";
-
-/* Media screen navigation title */
-"media.title" = "الوسائط";
 
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unknown" = "تتعذر إضافة العنصر إلى مكتبة الوسائط";
@@ -10332,6 +10325,45 @@ Example: Reply to Pamela Nguyen */
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "تجاهُل";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "إضافة وسائط جديدة";
+
+/* Accessibility label for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityLabel" = "إضافة";
+
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "شبكة نسبة العرض إلى الارتفاع";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "حذف";
+
+/* Media screen navigation bar button Select title */
+"mediaLibrary.buttonSelect" = "تحديد";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "مشاركة";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "إلغاء";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "حذف";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"mediaLibrary.deleteConfirmationMessageMany" = "هل تريد بالتأكيد حذف هذه العناصر نهائيًّا؟";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"mediaLibrary.deleteConfirmationMessageOne" = "هل تريد بالتأكيد حذف هذا العنصر نهائيًا؟";
+
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "يتعذر حذف كل عناصر الوسائط.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"mediaLibrary.deletionProgressViewTitle" = "جارٍ الحذف...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "محذوف!";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "حذف";
 
@@ -10340,6 +10372,33 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "إعادة محاولة الرفع";
+
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
+"mediaLibrary.searchResultsEmptyTitle" = "لا توجد وسائط مطابقة لبحثك";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "تتعذر مشاركة العناصر المحددة.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "شبكة مربعة";
+
+/* Media screen navigation title */
+"mediaLibrary.title" = "الوسائط";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "تم تحديد %d من الصور";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "تم تحديد صورة واحدة";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "تم تحديد %d من العناصر";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "تم تحديد عنصر واحد";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "تحديد العناصر";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
@@ -10545,14 +10604,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "أخرى";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "الترويج مع الإبراز";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "الصفحة الرئيسية";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "التغييرات المحلية";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "في انتظار المراجعة";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "صفحة التدوينات";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "خاص";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "تستخدم صفحتك الرئيسية قالب القالب وستفتح في محرر الويب.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "الصفحة الرئيسية";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "تم تحديث الصفحة بنجاح.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "الحذف نهائيًا";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "هل تريد بالتأكد حذف هذه الصفحة نهائيًا؟";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "هل تريد الحذف نهائيًا؟";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "الصفحات بواسطة الجميع";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "الصفحات بواسطتي";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "نقل إلى سلة المهملات";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "هل تريد بالتأكيد نقل هذه الصفحة إلى سلة المهملات؟";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "هل تريد نقل هذه الصفحة إلى سلة المهملات؟";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "إلغاء";
 
 /* No comment provided by engineer. */
 "password" = "كلمة المرور";
@@ -10571,12 +10672,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "إعداد مسودة للتدوينات";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.getToKnowTheApp" = "التعرُّف على التطبيق";
-
-/* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.nextSteps" = "الخطوات التالية";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "الصفحات";
@@ -10599,6 +10694,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "%@ الذي تم إنشاؤه";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "جارٍ حذف التدوينة...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "%@ الذي تم تحريره";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "جارٍ نقل التدوينة إلى سلة المهملات...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "%@ المنشور";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "%@ المجدول";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "%@ الموضوع في سلة المهملات";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "بواسطة %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "المقتطف. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "مثبت.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@، %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "سلة المهملات";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "مشاركة";
+
+/* Swipe action title */
+"postList.swipeActionView" = "عرض";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "تجاهل";
 
@@ -10617,8 +10754,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "تعيين صورة بارزة";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "فشل تحديث إعدادات التدوينة";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "إلغاء الرفع";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "التعليقات";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "الحذف نهائيًا";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "انتقل إلى المسودة";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "تكرار";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "سمات الصفحة";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "معاينة";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "النشر الآن";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "إعادة المحاولة";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "تعيين كصفحة رئيسية";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "تعيين الأصل";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "تعيين كصفحة تدوينات";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "تعيين كصفحة عادية";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "الإعدادات";
+
+/* Share the post. */
+"posts.share.actionTitle" = "مشاركة";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "الإحصاءات";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "نقل إلى سلة المهملات";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "عرض";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "تم حذف الصفحة نهائيًا";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "تم حذف التدوينة نهائيًا";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "تم نقل الصفحة إلى سلة المهملات";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "تم نقل التدوينة إلى سلة المهملات";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "التدوينات بواسطة الجميع";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "التدوينات بواسطتي";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "الاشتراك الآن لمشاركة المزيد";
@@ -10696,6 +10908,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "مزيد";
 
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "لعرض التدوينات الواردة من الموقع";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "للإعجاب بهذه التدوينة.";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "لإلغاء الإعجاب هذه التدوينة.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "لحفظ هذه التدوينة لوقت لاحق.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "حفظ التدوينة";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "لإلغاء حفظ هذه التدوينة.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "تدوينة محفوظة";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "البحث";
 
@@ -10709,11 +10944,38 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "لفتح التعليقات الخاصة بالتدوينة.";
+
+/* Accessibility hint for the like button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "للإعجاب بالتدوينة.";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "لإلغاء الإعجاب بالتدوينة.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "لفتح قائمة تتضمن مزيدًا من الإجراءات.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "مزيد";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "إعادة تدوين التدوينة";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "لفتح تفاصيل التدوينة في الموقع.";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "حظر هذا المستخدم";
 
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "إزالة التدوينات المحفوظة";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
+"reader.site.header.counts" = "%1$@ من التدوينات • %2$@ من المتابعين";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "رجوع";
@@ -10747,6 +11009,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "جديد";
+
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "نقل النطاق";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "هل تبحث عن نطاق تمتلكه بالفعل؟";
 
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "تعرض التدوينات ذات الصلة المحتوى ذا الصلة من موقعك أسفل تدويناتك.";
@@ -10823,11 +11091,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "النطاقات";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "الصورة، %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "الفيديو، %@";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "حدِّد الوسائط.";
+
+/* Media screen navigation title */
+"siteMediaPicker.title" = "الوسائط";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
 
 /* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "إن موقعك مرئي للجميع، ولكنه يطلب من محركات البحث عدم فهرسة موقعك.";
+"siteVisibility.hidden.hint" = "تم إخفاء موقعك عن الزوار خلف ملاحظة \"قريبًا\" حتى يصبح جاهزًا لمشاهدته.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "مخفي";

@@ -9,8 +9,6 @@
 #import "CoreDataStack.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
-#import "WPAndDeviceMediaLibraryDataSource.h"
-#import <WPMediaPicker/WPMediaPicker.h>
 #import <Photos/Photos.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <Reachability/Reachability.h>
@@ -74,13 +72,9 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, readonly) CGSize featuredImageSize;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
 
-@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *enabledConnections;
-
-@property (nonatomic, strong) NoResultsViewController *noResultsView;
-@property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
 
 @property (nonatomic, strong) NSDateFormatter *postDateFormatter;
 
@@ -102,7 +96,7 @@ FeaturedImageViewControllerDelegate>
 - (void)dealloc
 {
     [self.internetReachability stopNotifier];
-    
+
     [self removeMediaObserver];
 }
 
@@ -122,13 +116,13 @@ FeaturedImageViewControllerDelegate>
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     if ([self.apost isKindOfClass:[Page class]]) {
         self.title = NSLocalizedString(@"Page Settings", @"The title of the Page Settings screen.");
     } else {
         self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
     }
-    
+
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -156,15 +150,16 @@ FeaturedImageViewControllerDelegate>
     self.isUploadingMedia = NO;
 
     _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    
+
     [self setupPostDateFormatter];
 
     [WPAnalytics track:WPAnalyticsStatPostSettingsShown];
-    
+
     // It's recommended to keep this call near the end of the initial setup, since we don't want
     // reachability callbacks to trigger before such initial setup completes.
     //
     [self setupReachability];
+    [self setupStandaloneEditor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -183,9 +178,15 @@ FeaturedImageViewControllerDelegate>
 {
     [super viewWillDisappear:animated];
 
-    [self.apost.managedObjectContext performBlock:^{
-        [self.apost.managedObjectContext save:nil];
-    }];
+    if (self.isStandalone) {
+        if (!self.isStandaloneEditorDismissingAfterSave) {
+            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
+        }
+    } else {
+        [self.apost.managedObjectContext performBlock:^{
+            [self.apost.managedObjectContext save:nil];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -207,7 +208,7 @@ FeaturedImageViewControllerDelegate>
 - (void)togglePasswordVisibility
 {
     NSAssert(_passwordTextField, @"The password text field should be set here.");
-    
+
     self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
     [self refreshPasswordVisibilityButton];
 }
@@ -216,16 +217,16 @@ FeaturedImageViewControllerDelegate>
 {
     NSAssert(_passwordTextField, @"The password text field should be set here.");
     NSAssert(_passwordVisibilityButton, @"The password visibility button should be set here.");
-    
+
     UIImage *icon;
     BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
-    
+
     if (passwordIsVisible) {
         icon = [UIImage gridiconOfType:GridiconTypeVisible];
     } else {
         icon = [UIImage gridiconOfType:GridiconTypeNotVisible];
     }
-    
+
     [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];
     [self.passwordVisibilityButton sizeToFit];
 }
@@ -270,13 +271,13 @@ FeaturedImageViewControllerDelegate>
 - (void)setupReachability
 {
     self.internetReachability = [Reachability reachabilityForInternetConnection];
-    
+
     __weak __typeof(self) weakSelf = self;
-    
+
     self.internetReachability.reachableBlock = ^void(Reachability * __unused reachability) {
         [weakSelf internetIsReachableAgain];
     };
-    
+
     [self.internetReachability startNotifier];
 }
 
@@ -299,7 +300,7 @@ FeaturedImageViewControllerDelegate>
 - (void)synchUnavailableData
 {
     __weak __typeof(self) weakSelf = self;
-    
+
     if (self.formatsList.count == 0) {
         [self synchPostFormatsAndDo:^{
             // DRM: if we ever start synchronizing anything else that could affect the table data
@@ -314,7 +315,7 @@ FeaturedImageViewControllerDelegate>
 - (void)synchPostFormatsAndDo:(void(^)(void))completionBlock
 {
     __weak __typeof(self) weakSelf = self;
-    
+
     [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
         [weakSelf setupFormatsList];
         completionBlock();
@@ -481,7 +482,7 @@ FeaturedImageViewControllerDelegate>
 
     } else if (sec == PostSettingsSectionStickyPost) {
         return NSLocalizedString(@"Mark as Sticky", @"Label for the Mark as Sticky option in post settings.");
-        
+
     } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
         return NSLocalizedString(@"Jetpack Social", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
@@ -627,7 +628,7 @@ FeaturedImageViewControllerDelegate>
     if ([self.apost.status isEqualToString:@"private"]) {
         return 0;
     }
-    
+
     if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
@@ -697,7 +698,7 @@ FeaturedImageViewControllerDelegate>
             } else {
                 cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
             }
-            
+
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
             cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
@@ -753,14 +754,14 @@ FeaturedImageViewControllerDelegate>
     textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
     textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textCell.textField.secureTextEntry = YES;
-    
+
     textCell.tag = PostSettingsRowPassword;
-    
+
     self.passwordTextField = textCell.textField;
     self.passwordTextField.accessibilityIdentifier = @"Password Value";
-    
+
     [self configureVisibilityButtonForPasswordCell:textCell];
-    
+
     return textCell;
 }
 
@@ -769,9 +770,9 @@ FeaturedImageViewControllerDelegate>
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.passwordVisibilityButton.tintColor = [UIColor murielNeutral20];
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self refreshPasswordVisibilityButton];
-    
+
     textCell.accessoryView = self.passwordVisibilityButton;
 }
 
@@ -780,14 +781,14 @@ FeaturedImageViewControllerDelegate>
     UITableViewCell *cell = [self getWPTableViewDisclosureCell];
 
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
-    
+
     if (self.post.postFormatText.length > 0) {
         cell.detailTextLabel.text = self.post.postFormatText;
     } else {
         cell.detailTextLabel.text = NSLocalizedString(@"Unavailable",
                                                       @"Message to show in the post-format cell when the post format is not available");
     }
-    
+
     cell.tag = PostSettingsRowFormat;
     cell.accessibilityIdentifier = @"Post Format";
     return cell;
@@ -823,7 +824,7 @@ FeaturedImageViewControllerDelegate>
 - (UITableViewCell *)configureStickyPostCellForIndexPath:(NSIndexPath *)indexPath
 {
     __weak __typeof(self) weakSelf = self;
-    
+
     SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewStickyPostCellIdentifier];
     cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
     cell.on = self.post.isStickyPost;
@@ -836,17 +837,9 @@ FeaturedImageViewControllerDelegate>
 
 - (UITableViewCell *)cellForSetFeaturedImage
 {
-    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
-        UITableViewCell *cell = [self makeSetFeaturedImageCell];
-        cell.tag = PostSettingsRowFeaturedImageAdd;
-        return cell;
-    }
-    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-    activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
-    activityCell.accessibilityIdentifier = @"SetFeaturedImage";
-    activityCell.tag = PostSettingsRowFeaturedImageAdd;
-
-    return activityCell;
+    UITableViewCell *cell = [self makeSetFeaturedImageCell];
+    cell.tag = PostSettingsRowFeaturedImageAdd;
+    return cell;
 }
 
 - (UITableViewCell *)cellForFeaturedImageError
@@ -1121,7 +1114,7 @@ FeaturedImageViewControllerDelegate>
         [self showCantShowPostFormatsAlert];
         return;
     }
-    
+
     if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
@@ -1165,18 +1158,18 @@ FeaturedImageViewControllerDelegate>
 {
     NSString *title = NSLocalizedString(@"Connection not available",
                                         @"Title of a prompt saying the app needs an internet connection before it can load post formats");
-    
+
     NSString *message = NSLocalizedString(@"Please check your internet connection and try again.",
                                           @"Politely asks the user to check their internet connection before trying again. ");
-    
+
     NSString *cancelButtonTitle = NSLocalizedString(@"OK", @"Title of a button that dismisses a prompt");
-    
+
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    
+
     [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
-    
+
     [alertController presentFromRootViewController];
 }
 
@@ -1251,28 +1244,16 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showFeaturedImageSelector
 {
-    if (self.apost.featuredImage) {
-        // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
-        if (self.featuredImage) {
-            FeaturedImageViewController *featuredImageVC;
-            if (self.animatedFeaturedImageData) {
-                featuredImageVC = [[FeaturedImageViewController alloc] initWithGifData:self.animatedFeaturedImageData];
-            } else {
-                featuredImageVC = [[FeaturedImageViewController alloc] initWithImage:self.featuredImage];
-            }
-
-            featuredImageVC.delegate = self;
-
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
-            [self presentViewController:navigationController animated:YES completion:nil];
-        } else if ([self urlForFeaturedImage] == nil) {
-            //If we don't have a featured image url, the image won't be loaded.
-            [self showMediaPicker];
+    if (self.apost.featuredImage && self.featuredImage) {
+        FeaturedImageViewController *featuredImageVC;
+        if (self.animatedFeaturedImageData) {
+            featuredImageVC = [[FeaturedImageViewController alloc] initWithGifData:self.animatedFeaturedImageData];
+        } else {
+            featuredImageVC = [[FeaturedImageViewController alloc] initWithImage:self.featuredImage];
         }
-    } else {
-        if (!self.isUploadingMedia) {
-            [self showMediaPicker];
-        }
+        featuredImageVC.delegate = self;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
@@ -1308,33 +1289,6 @@ FeaturedImageViewControllerDelegate>
         [self.tableView reloadData];
     };
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showMediaPicker
-{
-    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
-        return; // Do nothing (showing the menu instead
-    }
-    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
-    options.showMostRecentFirst = YES;
-    options.allowMultipleSelection = NO;
-    options.filter = WPMediaTypeImage;
-    options.showSearchBar = YES;
-    options.badgedUTTypes = [NSSet setWithObject:UTTypeGIF.identifier];
-    options.preferredStatusBarStyle = [WPStyleGuide preferredStatusBarStyle];
-    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
-
-    WPAndDeviceMediaLibraryDataSource *mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
-                                                                                           initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
-
-    picker.dataSource = mediaDataSource;
-    picker.delegate = self;
-    [self registerChangeObserverForPicker:picker.mediaPicker];
-
-    picker.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:picker animated:YES completion:nil];
-
-    self.mediaDataSource = mediaDataSource;
 }
 
 - (void)showCategoriesSelection
@@ -1377,60 +1331,6 @@ FeaturedImageViewControllerDelegate>
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
-- (NoResultsViewController *)noResultsView
-{
-    if (!_noResultsView) {
-        _noResultsView = [NoResultsViewController controller];
-    }
-    return _noResultsView;
-}
-
-- (void)registerChangeObserverForPicker:(WPMediaPickerViewController *)picker
-{
-    NSAssert(self.mediaLibraryChangeObserverKey == nil, nil);
-    __weak PostSettingsViewController * weakSelf = self;
-    self.mediaLibraryChangeObserverKey = [self.mediaDataSource registerChangeObserverBlock:^(BOOL __unused incrementalChanges, NSIndexSet * _Nonnull __unused removed, NSIndexSet * _Nonnull __unused inserted, NSIndexSet * _Nonnull __unused changed, NSArray<id<WPMediaMove>> * _Nonnull __unused moves) {
-
-        [weakSelf updateSearchBarForPicker:picker];
-        BOOL isNotSearching = [weakSelf.mediaDataSource.searchQuery isEmpty];
-        BOOL hasNoAsset = [weakSelf.mediaDataSource numberOfAssets] == 0;
-
-        if (hasNoAsset && isNotSearching) {
-            [weakSelf.noResultsView removeFromView];
-            [weakSelf.noResultsView configureForNoAssetsWithUserCanUploadMedia:NO];
-        }
-    }];
-}
-
-- (void)unregisterChangeObserver
-{
-    if (self.mediaLibraryChangeObserverKey) {
-        [self.mediaDataSource unregisterChangeObserver:self.mediaLibraryChangeObserverKey];
-        self.mediaLibraryChangeObserverKey = nil;
-    }
-}
-
-- (void)updateSearchBarForPicker:(WPMediaPickerViewController *)picker
-{
-    if (self.mediaDataSource.dataSourceType != MediaPickerDataSourceTypeMediaLibrary) {
-        [picker hideSearchBar];
-        return;
-    }
-
-    NSString *searchQuery = self.mediaDataSource.searchQuery;
-    BOOL isSearching = (searchQuery != nil) && ![searchQuery isEmpty];
-    BOOL hasAsset = [self.mediaDataSource numberOfAssets] > 0;
-
-    if (hasAsset || isSearching) {
-        [picker showSearchBar];
-        if (self.mediaDataSource.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
-            [WPStyleGuide configureSearchBar:picker.searchBar];
-        }
-    } else {
-        [picker hideSearchBar];
-    }
-}
-
 #pragma mark - Jetpack Social
 
 - (UITableViewCell *)configureGenericCellWith:(UIView *)view {
@@ -1466,67 +1366,10 @@ FeaturedImageViewControllerDelegate>
     }
 }
 
-#pragma mark - WPMediaPickerViewControllerDelegate methods
-
-- (UIViewController *)emptyViewControllerForMediaPickerController:(WPMediaPickerViewController *)picker
-{
-    return self.noResultsView;
-}
-
-- (void)mediaPickerControllerWillBeginLoadingData:(WPMediaPickerViewController *)picker
-{
-    [self updateSearchBarForPicker:picker];
-    [self.noResultsView configureForFetching];
-}
-
-- (void)mediaPickerControllerDidEndLoadingData:(WPMediaPickerViewController *)picker
-{
-    [self updateSearchBarForPicker:picker];
-    [self.noResultsView removeFromView];
-    [self.noResultsView configureForNoAssetsWithUserCanUploadMedia:NO];
-}
-
-- (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount
-{
-    [self.noResultsView removeFromView];
-  
-    if (self.mediaDataSource.searchQuery.wordCount > 0) {
-        [self.noResultsView configureForNoSearchResult];
-    }
-}
-
-- (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
-{
-    if (assets.count == 0) {
-        return;
-    }
-
-    [self unregisterChangeObserver];
-    [self.mediaDataSource searchCancelled];
-
-    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"added"}];
-
-    if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
-        PHAsset *asset = [assets firstObject];
-        self.isUploadingMedia = YES;
-        [self setFeaturedImageWithAsset:asset];
-    } else if ([[assets firstObject] isKindOfClass:[Media class]]){
-        Media *media = [assets firstObject];
-        [self setFeaturedImageWithMedia:media];
-    }
-    
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-
-    // Reload the featured image row so that way the activity indicator will be displayed.
+- (void)reloadFeaturedImageCell {
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
                           withRowAnimation:UITableViewRowAnimationFade];
-}
-
-- (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
-    [self unregisterChangeObserver];
-    [self.mediaDataSource searchCancelled];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate
@@ -1537,7 +1380,9 @@ FeaturedImageViewControllerDelegate>
 
     // Save changes.
     self.post.categories = [categories mutableCopy];
-    [self.post save];
+    if (!self.isStandalone) {
+        [self.post save];
+    }
 }
 
 #pragma mark - PostFeaturedImageCellDelegate
@@ -1569,7 +1414,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
 {
-    self.featuredImage = cell.image;    
+    self.featuredImage = cell.image;
     NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
     NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
     [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];

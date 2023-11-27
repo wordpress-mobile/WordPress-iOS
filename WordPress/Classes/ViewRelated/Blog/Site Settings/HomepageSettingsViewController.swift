@@ -2,7 +2,7 @@ import UIKit
 import WordPressFlux
 import WordPressShared
 
-@objc open class HomepageSettingsViewController: UITableViewController {
+@objc class HomepageSettingsViewController: UITableViewController {
 
     fileprivate enum PageSelectionType {
         case homepage
@@ -44,13 +44,15 @@ import WordPressShared
     ///
     /// - Parameter blog: The blog for which we want to configure Homepage settings
     ///
-    @objc public convenience init(blog: Blog) {
-        self.init(style: .insetGrouped)
-
+    @objc init(blog: Blog) {
+        self.coreDataStack = ContextManager.shared
         self.blog = blog
+        self.postRepository = PostRepository(coreDataStack: self.coreDataStack)
+        super.init(style: .insetGrouped)
+    }
 
-        let context = blog.managedObjectContext ?? ContextManager.shared.mainContext
-        postService = PostService(managedObjectContext: context)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     open override func viewDidLoad() {
@@ -66,23 +68,21 @@ import WordPressShared
         ImmuTable.registerRows([CheckmarkRow.self, NavigationItemRow.self, ActivityIndicatorRow.self], tableView: tableView)
         reloadViewModel()
 
-        fetchAllPages()
-    }
-
-    private func fetchAllPages() {
-        let options = PostServiceSyncOptions()
-        options.number = 20
-
-        postService.syncPosts(ofType: .page, with: options, for: blog, success: { [weak self] posts in
-            self?.reloadViewModel()
-        }, failure: { _ in
-
-        })
+        fetchAllPagesTask = postRepository.fetchAllPages(statuses: [], in: TaggedManagedObjectID(blog))
     }
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateDeselectionInteractively()
+    }
+
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if self.navigationController == nil {
+            fetchAllPagesTask?.cancel()
+            fetchAllPagesTask = nil
+        }
     }
 
     // MARK: - Model
@@ -151,23 +151,23 @@ import WordPressShared
 
     var selectedPagesRows: [ImmuTableRow] {
         let homepageID = blog.homepagePageID
-        let homepage = homepageID.flatMap { blog.lookupPost(withID: $0, in: postService.managedObjectContext) }
+        let homepage = homepageID.flatMap { blog.lookupPost(withID: $0, in: coreDataStack.mainContext) }
         let homepageTitle = homepage?.titleForDisplay() ?? ""
 
         let postsPageID = blog.homepagePostsPageID
-        let postsPage = postsPageID.flatMap { blog.lookupPost(withID: $0, in: postService.managedObjectContext) }
+        let postsPage = postsPageID.flatMap { blog.lookupPost(withID: $0, in: coreDataStack.mainContext) }
         let postsPageTitle = postsPage?.titleForDisplay() ?? ""
 
         let homepageRow = pageSelectionRow(selectionType: .homepage,
                                                       detail: homepageTitle,
-                                                      selectedPostID: blog?.homepagePageID,
-                                                      hiddenPostID: blog?.homepagePostsPageID,
+                                                      selectedPostID: blog.homepagePageID,
+                                                      hiddenPostID: blog.homepagePostsPageID,
                                                       isInProgress: HomepageChange.isSelectedHomepage,
                                                       changeForPost: { .selectedHomepage($0) })
         let postsPageRow = pageSelectionRow(selectionType: .postsPage,
                                                        detail: postsPageTitle,
-                                                       selectedPostID: blog?.homepagePostsPageID,
-                                                       hiddenPostID: blog?.homepagePageID,
+                                                       selectedPostID: blog.homepagePostsPageID,
+                                                       hiddenPostID: blog.homepagePageID,
                                                        isInProgress: HomepageChange.isSelectedPostsPage,
                                                        changeForPost: { .selectedPostsPage($0) })
         return [homepageRow, postsPageRow]
@@ -304,9 +304,11 @@ import WordPressShared
     }
 
     // MARK: - Private Properties
-    fileprivate var blog: Blog!
+    private let coreDataStack: CoreDataStackSwift
+    private let blog: Blog
+    private let postRepository: PostRepository
 
-    fileprivate var postService: PostService!
+    private var fetchAllPagesTask: Task<[TaggedManagedObjectID<Page>], Error>?
 
     /// Are we currently updating the homepage type?
     private var inProgressChange: HomepageChange? = nil

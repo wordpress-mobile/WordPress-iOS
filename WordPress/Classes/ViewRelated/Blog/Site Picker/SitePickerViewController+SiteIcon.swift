@@ -39,23 +39,11 @@ extension SitePickerViewController {
 
         let presenter = makeSiteIconPresenter()
         let mediaMenu = MediaPickerMenu(viewController: self, filter: .images)
-        var actions: [UIAction] = []
-        if FeatureFlag.nativePhotoPicker.enabled {
-            actions += [
-                mediaMenu.makePhotosAction(delegate: presenter),
-                mediaMenu.makeCameraAction(delegate: presenter),
-                mediaMenu.makeMediaAction(blog: blog, delegate: presenter)
-            ]
-        } else {
-            actions.append(UIAction(
-                title: SiteIconAlertStrings.Actions.changeSiteIcon,
-                image: UIImage(systemName: "photo.on.rectangle"),
-                handler: { [weak self] _ in
-                    guard let self else { return }
-                    presenter.presentPickerFrom(self)
-                }
-            ))
-        }
+        var actions = [
+            mediaMenu.makePhotosAction(delegate: presenter),
+            mediaMenu.makeCameraAction(delegate: presenter),
+            mediaMenu.makeSiteMediaAction(blog: blog, delegate: presenter)
+        ]
         if FeatureFlag.siteIconCreator.enabled {
             actions.append(UIAction(
                 title: SiteIconAlertStrings.Actions.createWithEmoji,
@@ -210,8 +198,6 @@ extension SitePickerViewController {
         static let title = NSLocalizedString("Update Site Icon", comment: "Title for sheet displayed allowing user to update their site icon")
 
         enum Actions {
-            static let changeSiteIcon = NSLocalizedString("Change Site Icon", comment: "Change site icon button")
-            static let chooseImage = NSLocalizedString("Choose Image From My Device", comment: "Button allowing the user to choose an image from their device to use as their site icon")
             static let createWithEmoji = NSLocalizedString("Create With Emoji", comment: "Button allowing the user to create a site icon by choosing an emoji character")
             static let removeSiteIcon = NSLocalizedString("Remove Site Icon", comment: "Remove site icon button")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button")

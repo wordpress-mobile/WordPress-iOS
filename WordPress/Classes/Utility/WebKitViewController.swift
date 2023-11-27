@@ -30,7 +30,11 @@ extension WebKitAuthenticatable {
 
 class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
-    @objc let progressView = WebProgressView()
+    @objc let progressView: WebProgressView = {
+        let progressView = WebProgressView()
+        progressView.isHidden = true
+        return progressView
+    }()
     @objc let titleView = NavigationTitleView()
     let analyticsSource: String?
 
@@ -86,6 +90,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var customTitle: String?
+    @objc var displayStatusInNavigationBar = true
     private let opensNewInSafari: Bool
     let linkBehavior: LinkBehavior
 
@@ -128,6 +133,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         opensNewInSafari = configuration.opensNewInSafari
         onClose = configuration.onClose
         analyticsSource = configuration.analyticsSource
+        displayStatusInNavigationBar = configuration.displayStatusInNavigationBar
 
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -214,6 +220,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
 
         loadWebViewRequest()
 
@@ -253,6 +262,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     // MARK: Navigation bar setup
 
     @objc func configureNavigation() {
+        guard displayStatusInNavigationBar else {
+            return
+        }
+
         setupNavBarTitleView()
         setupRefreshButton()
 
@@ -470,6 +483,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard displayStatusInNavigationBar else {
+            return
+        }
+
         guard let object = object as? WKWebView,
             object == webView,
             let keyPath = keyPath else {
@@ -499,8 +516,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             assertionFailure("Observed change to web view that we are not handling")
         }
 
-        // Set the title for the HUD which shows up on tap+hold w/ accessibile font sizes enabled
-        navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+        if customTitle == nil {
+            // Set the title for the HUD which shows up on tap+hold w/ accessible font sizes enabled
+            navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+        }
 
         // Accessibility values which emulate those found in Safari
         navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")

@@ -24,7 +24,7 @@ final class ShareAppContentPresenterTests: CoreDataTestCase {
         super.setUp()
 
         TestAnalyticsTracker.setup()
-        account = AccountBuilder(contextManager).build()
+        account = AccountBuilder(contextManager.mainContext).build()
         mockRemote = MockShareAppContentServiceRemote()
         presenter = ShareAppContentPresenter(remote: mockRemote, account: account)
         viewController = MockViewController()

@@ -87,12 +87,15 @@ struct ReaderSiteHeader: View {
             }
             countsDisplay
             if !viewModel.isFollowHidden {
-                followButton
-                    .padding(.top, 4)
+                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                                   isEnabled: viewModel.isFollowEnabled,
+                                   size: .regular) {
+                    viewModel.updateFollowStatus()
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(EdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16))
+        .padding(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
         .background(Color(UIColor.listForeground))
     }
 
@@ -109,49 +112,6 @@ struct ReaderSiteHeader: View {
             }
             return $0 + text + Text(" ")
         })
-    }
-
-    @ViewBuilder
-    private var followButton: some View {
-        if viewModel.isFollowingSite {
-            Button {
-                viewModel.updateFollowStatus()
-            } label: {
-                Image(uiImage: Constants.followingIcon ?? UIImage())
-                    .padding(.leading, -2.0)
-                    .padding(.trailing, 2.0)
-                Text(WPStyleGuide.FollowButton.Text.followingStringForDisplay)
-                    .padding(.leading, 2.0)
-                    .padding(.trailing, -2.0)
-                    .foregroundColor(.secondary)
-                    .font(.callout)
-            }
-            .disabled(!viewModel.isFollowEnabled)
-            .padding(.horizontal, 12.0)
-            .padding(.vertical, 6.0)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color(UIColor.primaryButtonBorder), lineWidth: 1)
-            )
-        } else {
-            Button {
-                viewModel.updateFollowStatus()
-            } label: {
-                Image(uiImage: Constants.followIcon ?? UIImage())
-                    .padding(.leading, -2.0)
-                    .padding(.trailing, 2.0)
-                Text(WPStyleGuide.FollowButton.Text.followStringForDisplay)
-                    .padding(.leading, 2.0)
-                    .padding(.trailing, -2.0)
-                    .foregroundColor(.white)
-                    .font(.callout.weight(.semibold))
-            }
-            .disabled(!viewModel.isFollowEnabled)
-            .padding(.horizontal, 12.0)
-            .padding(.vertical, 6.0)
-            .background(Color(UIColor.primary))
-            .cornerRadius(4)
-        }
     }
 
     struct Constants {

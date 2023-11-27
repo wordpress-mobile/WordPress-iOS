@@ -28,20 +28,25 @@ final class BlogDashboardViewModel {
 
     private var currentCards: [DashboardCardModel] = []
 
-    private lazy var draftStatusesToSync: [String] = {
-        return PostListFilter.draftFilter().statuses.strings
+    private lazy var draftStatusesToSync: [BasePost.Status] = {
+        return PostListFilter.draftFilter().statuses
     }()
 
-    private lazy var scheduledStatusesToSync: [String] = {
-        return PostListFilter.scheduledFilter().statuses.strings
+    private lazy var scheduledStatusesToSync: [BasePost.Status] = {
+        return PostListFilter.scheduledFilter().statuses
     }()
 
-    private lazy var pageStatusesToSync: [String] = {
-        return PostListFilter.allNonTrashedFilter().statuses.strings
+    private lazy var pageStatusesToSync: [BasePost.Status] = {
+        return PostListFilter.allNonTrashedFilter().statuses
     }()
 
     private lazy var service: BlogDashboardService = {
-        return BlogDashboardService(managedObjectContext: managedObjectContext)
+        return BlogDashboardService(
+            managedObjectContext: managedObjectContext,
+            isJetpack: AppConfiguration.isJetpack,
+            isDotComAvailable: AccountHelper.isDotcomAvailable(),
+            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
+        )
     }()
 
     private lazy var dataSource: DashboardDataSource? = {
