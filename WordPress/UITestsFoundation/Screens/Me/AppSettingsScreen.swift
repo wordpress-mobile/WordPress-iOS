@@ -17,7 +17,7 @@ public class AppSettingsScreen: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                backButtonGetter,
+                imageOptimizationSwitchGetter,
             ],
             app: app
         )
