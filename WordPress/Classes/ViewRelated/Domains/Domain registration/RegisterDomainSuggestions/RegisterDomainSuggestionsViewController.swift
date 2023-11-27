@@ -111,6 +111,14 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         hideButton()
         setupTransferFooterView()
     }
+   
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAnalytics.track(
+            .domainsDashboardDomainsSearchShown,
+            properties: [WPAppAnalyticsKeySource: "all_domains"]
+        )
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -320,9 +328,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let coordinator else {
             return
         }
+        let domainPropertyTitle = "domain_name"
+        let domainName = self.coordinator?.domain?.domainName ?? ""
         if let site = coordinator.site {
             var properties = WPAnalytics.domainsProperties(for: site)
             properties[WPAppAnalyticsKeySource] = "all_domains"
+            properties[domainPropertyTitle] = domainName
             WPAnalytics.track(
                 .domainsSearchSelectDomainTapped,
                 properties: properties,
@@ -331,7 +342,10 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         } else {
             WPAnalytics.track(
                 .domainsSearchSelectDomainTapped,
-                properties: [WPAppAnalyticsKeySource: "all_domains"]
+                properties: [
+                    WPAppAnalyticsKeySource: "all_domains",
+                    domainPropertyTitle: domainName
+                ]
             )
         }
 

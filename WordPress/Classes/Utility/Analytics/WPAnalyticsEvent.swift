@@ -242,6 +242,7 @@ import Foundation
     // Domain Management
     case meDomainsTapped
     case domainsDashboardAllDomainsTapped
+    case domainsDashboardDomainsSearchShown
     case domainsListShown
     case allDomainsFindDomainTapped
     case addDomainTapped
@@ -959,17 +960,19 @@ import Foundation
 
         // Domain Management
         case .meDomainsTapped:
-            return "domain_management_me_domains_tapped"
+            return "me_all_domains_tapped"
         case .domainsDashboardAllDomainsTapped:
-            return "domain_management_domains_dashboard_all_domains_tapped"
+            return "all_domains_add_domain_tapped"
+        case .domainsDashboardDomainsSearchShown:
+            return "domains_dashboard_domains_search_shown"
         case .domainsListShown:
-            return "domain_management_domains_list_shown"
+            return "all_domains_domains_list_shown"
         case .allDomainsFindDomainTapped:
             return "domain_management_all_domains_find_domain_tapped"
         case .addDomainTapped:
-            return "domain_management_add_domain_tapped"
+            return "all_domains_add_domain_tapped"
         case .domainsSearchTransferDomainTapped:
-            return "domain_management_domains_search_transfer_domain_tapped"
+            return "domains_dashboard_domains_search_transfer_domain_tapped"
         case .domainsSearchRowSelected:
             return "domain_management_domains_search_row_selected"
         case .purchaseDomainSiteSelected:
