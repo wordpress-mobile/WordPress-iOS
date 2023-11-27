@@ -1,7 +1,7 @@
 23.9
 ----
 * [*] Update the classic editor to use the new Photos and Site Media pickers [#22060]
-* [*] [internal] Remove WPMediaPicker dependency from Tenor picker [#22066]
+* [*] [internal] Remove WPMediaPicker dependency from Tenor and Stock Photos pickers [#22066, #22074]
 
 23.8
 -----
@@ -13,8 +13,6 @@
 * [*] Add Select and Deselect button to previews in Site Media picker [#22078]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
-* [*] [internal] Remove WPMediaPicker dependency from Stock Photos and Tenor pickers [#22066], [#22074]
-22074
 * [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
 * [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
 * [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
