@@ -4458,7 +4458,6 @@
 		FABB21FE2602FC2C00C8785C /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
 		FABB21FF2602FC2C00C8785C /* JetpackBackupStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */; };
 		FABB22012602FC2C00C8785C /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
-		FABB22022602FC2C00C8785C /* MediaThumbnailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */; };
 		FABB22032602FC2C00C8785C /* RevisionDiffsPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */; };
 		FABB22042602FC2C00C8785C /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660D06235D114500020B1E /* CalendarCollectionView.swift */; };
 		FABB22052602FC2C00C8785C /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
@@ -5655,7 +5654,6 @@
 		FF2EC3C22209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2EC3C12209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift */; };
 		FF355D981FB492DD00244E6D /* ExportableAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF355D971FB492DD00244E6D /* ExportableAsset.swift */; };
 		FF37F90922385CA000AFA3DB /* RELEASE-NOTES.txt in Resources */ = {isa = PBXBuildFile; fileRef = FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */; };
-		FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */; };
 		FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4DEAD7244B56E200ACA032 /* CoreServices.framework */; };
 		FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5371621FDFF64F00619A3F /* MediaService.swift */; };
 		FF54D4641D6F3FA900A0DC4D /* GutenbergSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF54D4631D6F3FA900A0DC4D /* GutenbergSettings.swift */; };
@@ -9492,7 +9490,6 @@
 		FF2EC3C12209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GutenbergImgUploadProcessorTests.swift; path = Gutenberg/GutenbergImgUploadProcessorTests.swift; sourceTree = "<group>"; };
 		FF355D971FB492DD00244E6D /* ExportableAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableAsset.swift; sourceTree = "<group>"; };
 		FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "RELEASE-NOTES.txt"; path = "../RELEASE-NOTES.txt"; sourceTree = "<group>"; };
-		FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailCoordinator.swift; sourceTree = "<group>"; };
 		FF4DEAD7244B56E200ACA032 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		FF5371621FDFF64F00619A3F /* MediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaService.swift; sourceTree = "<group>"; };
 		FF54D4631D6F3FA900A0DC4D /* GutenbergSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergSettings.swift; sourceTree = "<group>"; };
@@ -14272,7 +14269,6 @@
 				FF5371621FDFF64F00619A3F /* MediaService.swift */,
 				FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */,
 				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
-				FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */,
 				087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */,
 				0C75E26D2A9F63CB00B784E5 /* MediaImageService.swift */,
 				08AAD69D1CBEA47D002B2418 /* MenusService.h */,
@@ -21480,7 +21476,6 @@
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				FAB8FD5025AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift in Sources */,
 				9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */,
-				FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */,
 				9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */,
 				4A9314E42979FA4700360232 /* PostCategory+Creation.swift in Sources */,
 				F5660D07235D114500020B1E /* CalendarCollectionView.swift in Sources */,
@@ -24307,7 +24302,6 @@
 				3F720C222889B65B00519938 /* JetpackBrandingVisibility.swift in Sources */,
 				0C35FFF729CBB5DE00D224EB /* BlogDashboardEmptyStateCell.swift in Sources */,
 				FABB22012602FC2C00C8785C /* RevisionDiff.swift in Sources */,
-				FABB22022602FC2C00C8785C /* MediaThumbnailCoordinator.swift in Sources */,
 				FABB22032602FC2C00C8785C /* RevisionDiffsPageManager.swift in Sources */,
 				FABB22042602FC2C00C8785C /* CalendarCollectionView.swift in Sources */,
 				3F946C5A2684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */,
