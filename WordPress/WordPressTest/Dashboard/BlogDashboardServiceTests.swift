@@ -15,17 +15,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     private let wpComID = 123456
 
-    // FIXME: Accessing WPAccount wordPressComRestApi will crash if WordPressAuthenticationManager has not been initialized!
-    //
-    // This issue doesn't manifest itself when running the whole test suite beceause of the lucky coincidence that a test running before this one sets it up.
-    // But try to comment this class setUp method and run only this test case and you'll get a crash.
-    override class func setUp() {
-        WordPressAuthenticationManager(
-            windowManager: WindowManager(window: UIWindow()),
-            remoteFeaturesStore: RemoteFeatureFlagStore()
-        ).initializeWordPressAuthenticator()
-    }
-
     override func setUp() {
         super.setUp()
 
@@ -432,7 +421,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
-
+        blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: context)
         blog.dotComID = id as NSNumber
         blog.isAdmin = isAdmin
         return blog

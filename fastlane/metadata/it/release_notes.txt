@@ -1,0 +1,23 @@
+Preparati, questo aggiornamento è una chicca! Iniziamo con Media sito.
+
+- Abbiamo aggiornato il design della schermata Media sito con menu, migliori opzioni per la selezione e la condivisione dei file e molto altro. È anche più veloce, potrai dire addio alle GIF che scattano e ai video a singhiozzo.
+- Puoi usare più dita per selezionare diversi file multimediali alla volta. È anche più facile sfogliare le foto, cambiare metadati ed eliminare elementi.
+- Su iPad, puoi visualizzare in anteprima le immagini in un quadrato e controllare le proporzioni.
+- Sono stati corretti alcuni problemi correlati a immagini segnaposto vuote, messaggi non corretti, alla condivisione di documenti e ad interruzioni impreviste occasionali.
+
+Ma non è tutto. Abbiamo anche apportato modifiche importanti ad Articoli e pagine.
+
+- La schermata Articoli e pagine è stata ottimizzata con opzioni di visualizzazione semplici e intuitive.
+- Usa funzionalità di ricerca avanzate, come i filtri per autore e tag, per trovare i contenuti che desideri modificare. La ricerca viene effettuata tra tutti gli autori (a meno che tu non stia cercando contenuti di una persona specifica).
+- Usa le azioni di scorrimento per visualizzare, condividere o eliminare articoli e pagine. Carino.
+- Il menu contestuale ora consente di accedere a commenti, impostazioni e altre azioni da un articolo o una pagina.
+- Sono stati corretti problemi correlati all'aggiornamento e alla visibilità della pagina, come anche a diversi arresti anomali.
+
+Infine, abbiamo corretto alcuni problemi fastidiosi dell'app.
+
+- Ora l'app riconosce quando hai completato il caricamento di un file GIF. (monty-burns-excellent.gif)
+- Gli articoli "nascosti" ora hanno una descrizione migliore per lo stato della privacy.
+- Il lettore adesso scorre verso l'alto quando tocchi la barra di stato. Spicchiamo il volo.
+- La schermata Menu crea voci di menu in modo appropriato in base alle pagine di livello superiore.
+- È stato risolto un problema di arresto anomalo correlato all'utilizzo dei colori del testo nei temi del sito precedenti.
+- Non dovresti riscontrare errori quando incolli contenuti con molti livelli di nidificazione. Come le cipolle, le torte e i semifreddi sono formati da più strati, così i tuoi contenuti sono formati da più livelli.

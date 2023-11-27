@@ -26,6 +26,29 @@ class MediaImageServiceTests: CoreDataTestCase {
         }
     }
 
+    // MARK: - Original Image
+
+    func testLoadOriginalImage() async throws {
+        // GIVEN
+        let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
+        media.mediaType = .image
+        media.width = 1024
+        media.height = 680
+        let remoteURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        media.remoteURL = remoteURL.absoluteString
+        try mainContext.save()
+
+        // GIVEN remote image is mocked
+        try mockResponse(withResource: "test-image", fileExtension: "jpg")
+
+        // WHEN
+        let image = try await sut.image(for: media, size: .original)
+
+        // THEN
+        XCTAssertEqual(image.size, CGSize(width: 1024, height: 680))
+    }
+
     // MARK: - Local Resources
 
     func testSmallThumbnailForLocalImage() async throws {
@@ -40,20 +63,44 @@ class MediaImageServiceTests: CoreDataTestCase {
         try mainContext.save()
 
         // WHEN
-        let thumbnail = try await sut.thumbnail(for: media)
+        let thumbnail = try await sut.image(for: media, size: .small)
 
         // THEN a small thumbnail is created
-        XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        XCTAssertEqual(thumbnail.size, expectedSize)
 
         // GIVEN local asset is deleted
         try FileManager.default.removeItem(at: localURL)
-        sut.flush()
 
         // WHEN
-        let cachedThumbnail = try await sut.thumbnail(for: media)
+        let cachedThumbnail = try await sut.image(for: media, size: .small)
 
         // THEN cached thumbnail is still available
-        XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        XCTAssertEqual(cachedThumbnail.size, expectedSize)
+    }
+
+    func testThatThumbnailsGeneratedForGIFAreAnimatable() async throws {
+        // GIVEN
+        let media = Media(context: mainContext)
+        media.blog = makeEmptyBlog()
+        media.mediaType = .image
+        media.width = 360
+        media.height = 360
+
+        let localURL = try makeLocalURL(forResource: "test-gif", fileExtension: "gif")
+        media.absoluteLocalURL = localURL
+        try mainContext.save()
+
+        // WHEN
+        let thumbnail = try await sut.image(for: media, size: .small)
+
+        // THEN
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        XCTAssertEqual(thumbnail.size, expectedSize)
+        let gif = try XCTUnwrap(thumbnail as? AnimatedImageWrapper)
+        let data = await gif.gifData ?? Data()
+        let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
+        XCTAssertEqual(CGImageSourceGetCount(source), 20)
     }
 
     // MARK: - Remote Resources (Images)
@@ -73,19 +120,19 @@ class MediaImageServiceTests: CoreDataTestCase {
         try mockResizableImage(withResource: "test-image", fileExtension: "jpg")
 
         // WHEN
-        let thumbnail = try await sut.thumbnail(for: media)
+        let thumbnail = try await sut.image(for: media, size: .small)
 
         // THEN a small thumbnail is created
-        XCTAssertEqual(thumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        XCTAssertEqual(thumbnail.size, expectedSize)
 
         // GIVEN local asset is deleted
-        sut.flush()
 
         // WHEN
-        let cachedThumbnail = try await sut.thumbnail(for: media)
+        let cachedThumbnail = try await sut.image(for: media, size: .small)
 
         // THEN cached thumbnail is still available
-        XCTAssertEqual(cachedThumbnail.size, MediaImageService.getThumbnailSize(for: media, size: .small))
+        XCTAssertEqual(cachedThumbnail.size, expectedSize)
     }
 
     // MARK: - Remote Resources (Videos)
@@ -104,7 +151,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
 
         // WHEN
-        let thumbnail = try await sut.thumbnail(for: media)
+        let thumbnail = try await sut.image(for: media, size: .small)
 
         // THEN a thumbnail is downloaded using the remote URL as is
         XCTAssertEqual(thumbnail.size, CGSize(width: 1024, height: 680))
@@ -126,19 +173,18 @@ class MediaImageServiceTests: CoreDataTestCase {
         try mainContext.save()
 
         // WHEN
-        let thumbnail = try await sut.thumbnail(for: media)
+        let thumbnail = try await sut.image(for: media, size: .small)
 
-        let expectedSize = MediaImageService.getThumbnailSize(for: media, size: .small)
+        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
 
         // THEN a thumbnail is downloaded using the remote URL as is
         XCTAssertEqual(thumbnail.size.width, expectedSize.width, accuracy: 1.5)
         XCTAssertEqual(thumbnail.size.height, expectedSize.height, accuracy: 1.5)
 
         // GIVEN local asset is deleted
-        sut.flush()
 
         // WHEN
-        let cachedThumbnail = try await sut.thumbnail(for: media)
+        let cachedThumbnail = try await sut.image(for: media, size: .small)
 
         // THEN cached thumbnail is still available
         XCTAssertEqual(cachedThumbnail.size.width, expectedSize.width, accuracy: 1.5)

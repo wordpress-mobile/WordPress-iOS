@@ -1,0 +1,23 @@
+Prepare-se porque vem aí uma grande atualização. Vamos começar com a Mídia do site.
+
+- Atualizamos o design da tela Mídia do site com menus melhorados, compartilhamento e seleção de arquivos e muito mais. Está até mais rápido, sem GIFs ou vídeos que travam inesperadamente.
+- Você pode usar o gesto de arrastar para selecionar vários arquivos de mídia de uma vez. Além disso, está mais fácil de deslizar de uma foto para outra, alterar metadados e excluir itens.
+- No iPad, você pode alternar entre as visualizações de imagem em formato quadrado e outras proporções de tela.
+- Corrigimos problemas nas imagens de espaços reservados em branco, mensagens incorretas, compartilhamento de documentos e travamentos ocasionais.
+
+Não para por aí. Fizemos também grandes mudanças em Posts e páginas.
+
+- A tela Posts e páginas foi reformulada com opções de exibição claras e simples.
+- Use funcionalidades de pesquisa mais avançadas, como filtros de tags e autores, para encontrar o conteúdo que deseja editar. A pesquisa também funciona com todos os autores (a menos que queira conteúdo de uma pessoa em específico).
+- Use as ações de deslizar para visualizar, compartilhar ou excluir posts e páginas. Maneiro.
+- O menu de contexto agora permite acessar comentários, configurações e outras ações de um post ou página.
+- Corrigimos alguns problemas nas atualizações e visibilidade da página, bem como algumas falhas.
+
+Por fim, corrigimos alguns problemas chatinhos em todo o app.
+
+- O app agora reconhece quando você termina de fazer upload de um GIF (monty-burns-excelente.gif).
+- Posts "ocultos" agora contam com uma descrição melhor do seu status de privacidade.
+- O Leitor agora rola para a parte superior quando você toca na barra de status. Para o alto e avante!
+- A tela Menus cria corretamente itens de menu com base nas páginas de nível superior.
+- Corrigimos um travamento relacionado ao uso de cores de texto em temas de sites mais antigos.
+- É improvável que você encontre qualquer erro ao colar conteúdo bastante aninhado. Assim como cebolas, bolos, suflês e ogros, seu conteúdo pode ter muitas camadas.

@@ -280,13 +280,15 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.imageView.image = self.image;
     self.isLoadingImage = YES;
+    [self.activityIndicatorView startAnimating];
+
     __weak __typeof__(self) weakSelf = self;
-    BOOL isBlogAtomic = [self.media.blog isAtomic];
-    [self.imageLoader loadImageFromMedia:self.media preferredSize:CGSizeZero placeholder:self.image isBlogAtomic:isBlogAtomic success:^{
+    [self loadOriginalImageFor:self.media success:^(UIImage * _Nonnull image) {
         weakSelf.isLoadingImage = NO;
-        weakSelf.image = weakSelf.imageView.image;
+        weakSelf.image = image;
         [weakSelf updateImageView];
-    } error:^(NSError * _Nullable error) {
+        [weakSelf startAnimationIfNeededFor:image in:weakSelf.imageView];
+    } failure:^(NSError * _Nonnull error) {
         [weakSelf.activityIndicatorView showError];
         DDLogError(@"Error loading image: %@", error);
     }];
