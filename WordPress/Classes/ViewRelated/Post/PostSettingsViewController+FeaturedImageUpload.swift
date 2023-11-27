@@ -40,7 +40,9 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         self.dismiss(animated: true) {
             if let result = results.first {
-                self.setFeaturedImage(with: result.itemProvider)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    self.setFeaturedImage(with: result.itemProvider)
+                }
             }
         }
     }
@@ -48,7 +50,9 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         self.dismiss(animated: true) {
             if let image = info[.originalImage] as? UIImage {
-                self.setFeaturedImage(with: image)
+                MediaHelper.advertiseImageOptimization() { [self] in
+                    self.setFeaturedImage(with: image)
+                }
             }
         }
     }

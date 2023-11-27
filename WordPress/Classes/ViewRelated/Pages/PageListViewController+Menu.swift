@@ -66,7 +66,9 @@ extension PageListViewController: InteractivePostViewDelegate {
 
     func setParent(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
-        setParentPage(for: page)
+        Task {
+            await setParentPage(for: page)
+        }
     }
 
     func setHomepage(for apost: AbstractPost) {

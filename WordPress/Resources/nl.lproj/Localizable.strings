@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 13:54:10+0000 */
+/* Translation-Revision-Date: 2023-11-15 17:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -7884,6 +7884,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Verkeer";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Domein overzetten";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Transformeer %s naar";
 
@@ -9587,6 +9590,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reageer op %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Gebruikersnaam en wachtwoord die in de app zijn opgeslagen zijn wellicht verouderd. Voer je wachtwoord opnieuw in bij de instellingen en probeer het nogmaals.";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze website.";
 
@@ -9718,6 +9724,60 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Neem een domein";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Later een site toevoegen.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Koop gewoon een domein";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Een domein vinden";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Tik hieronder om jouw ideale domein te vinden.";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "We encountered an error while loading your domains. Neem contact op met het ondersteunend personeel als het probleem nog niet is opgelost.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Er is iets fout gegaan";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Opnieuw proberen";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Controleer je verbinding en probeer het nogmaals.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "Geen internetverbinding.";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*Bij alle betaalde jaarabonnementen is een gratis domein voor een jaar inbegrepen.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Kies hoe je jouw domein gebruikt";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Domeinen zoeken";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "Geen overeenkomstige domeinen.";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Site kiezen";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "Een gratis domein voor het eerste jaar";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Bestaande WordPress.com-site";
 
 /* Domain Management Screen Title */
 "domain.management.title" = "Alle domeinen";
@@ -10192,6 +10252,12 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Aspect ratio:";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Verwijderen";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Selecteer";
 
@@ -10215,6 +10281,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Er komt geen media overeen met je zoekopdracht";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Unable to share the selected items.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Square Grid";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
@@ -10393,11 +10465,26 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Startpagina";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Startpagina";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Pagina is bijgewerkt.";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Pages by everyone";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Pages by me";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Verplaatsen naar prullenbak";
 
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
@@ -10432,6 +10519,21 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
 
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Bericht verwijderen";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Edited %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Bezig met verplaatsen naar de prullenbak …";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "%@ gepubliceerd";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Weergave";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Negeren";
 
@@ -10450,8 +10552,47 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Stel uitgelichte afbeelding in";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Kan de meldingsinstellingen niet bijwerken.";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Uploaden annuleren";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Pagina-eigenschappen";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Nu publiceren";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Opnieuw proberen";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Instellen als bovenliggend item";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Stel je berichtenpagina in";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Verplaatsen naar prullenbak";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Weergave";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Beoordeling permanent verwijderd.";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Beoordeling permanent verwijderd.";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Posts by everyone";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Posts by me";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Neem nu een abonnement om meer te delen";
@@ -10608,6 +10749,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
 
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Looking to transfer a domain you already own?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Gerelateerde berichten geeft relevante content van je site weer onder je berichten.";
 
@@ -10676,6 +10820,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Je site wordt verborgen voor bezoekers door middel van een melding 'Binnenkort beschikbaar' tot hij klaar is om bekeken te worden.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Verborgen";

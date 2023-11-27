@@ -154,7 +154,7 @@ class MediaCoordinator: NSObject {
         addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
     }
 
-    /// Create a `Media` instance from the main context and upload the asset to the Meida Library.
+    /// Create a `Media` instance from the main context and upload the asset to the Media Library.
     ///
     /// - Warning: This function must be called from the main thread.
     ///
@@ -186,7 +186,7 @@ class MediaCoordinator: NSObject {
         return media
     }
 
-    /// Create a `Media` instance and upload the asset to the Meida Library.
+    /// Create a `Media` instance and upload the asset to the Media Library.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:receiveUpdate:thumbnailCallback:completion:)`
     private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {
@@ -300,13 +300,12 @@ class MediaCoordinator: NSObject {
     /// the upload will be canceled.
     ///
     /// - Parameter media: The media object to delete
-    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
     /// - Parameter success: Optional block called after all media items are deleted successfully
     /// - Parameter failure: Optional block called if deletion failed for any media items,
     ///                      after attempted deletion of all media items
     ///
-    func delete(_ media: Media, onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
-        delete(media: [media], onProgress: onProgress, success: success, failure: failure)
+    func delete(_ media: Media, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        delete(media: [media], success: success, failure: failure)
     }
 
     /// Deletes media objects. If the objects are currently being uploaded,
@@ -321,12 +320,42 @@ class MediaCoordinator: NSObject {
     func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
         media.forEach({ self.cancelUpload(of: $0) })
 
-        coreDataStack.performAndSave { context in
-            let service = self.mediaServiceFactory.create(context)
-            service.deleteMedia(media,
-                                progress: { onProgress?($0) },
-                                success: success,
-                                failure: failure)
+        let mediaIDs = media.map { TaggedManagedObjectID($0) }
+        Task { @MainActor in
+            let failures = await self.delete(mediaIDs, onProgress: onProgress)
+            if failures.isEmpty {
+                success?()
+            } else {
+                failure?()
+            }
+        }
+    }
+
+    /// Delete media from WordPress Media Library concurrently.
+    ///
+    /// - Returns: Media objects that are failed to be deleted.
+    private func delete(_ mediaIDs: [TaggedManagedObjectID<Media>], onProgress: ((Progress?) -> Void)?) async -> [TaggedManagedObjectID<Media>] {
+        let progress = Progress.discreteProgress(totalUnitCount: Int64(mediaIDs.count))
+        onProgress?(progress)
+        let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
+        return await withTaskGroup(of: (TaggedManagedObjectID<Media>, Bool).self) { group in
+            for id in mediaIDs {
+                group.addTask {
+                    do {
+                        try await mediaRepository.delete(id)
+                        progress.completedUnitCount += 1
+                        return (id, true)
+                    } catch {
+                        return (id, false)
+                    }
+                }
+            }
+            return await group.reduce(into: [TaggedManagedObjectID<Media>]()) { partialResult, deletion in
+                let (id, success) = deletion
+                if !success {
+                    partialResult.append(id)
+                }
+            }
         }
     }
 

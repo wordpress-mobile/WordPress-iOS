@@ -12,6 +12,8 @@ class ReaderWebView: WKWebView {
 
     var postURL: URL? = nil
 
+    var isP2 = false
+
     var usesSansSerifStyle = false
 
     /// Make the webview transparent
@@ -21,6 +23,9 @@ class ReaderWebView: WKWebView {
 
         isOpaque = false
         backgroundColor = .clear
+        if #available(iOS 16.4, *) {
+            isInspectable = true
+        }
     }
 
     /// Loads a HTML content into the webview and apply styles
@@ -47,6 +52,7 @@ class ReaderWebView: WKWebView {
         <style>
         \(cssColors())
         \(cssStyles())
+        \(p2Styles())
         \(overrideStyles())
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
@@ -159,6 +165,19 @@ class ReaderWebView: WKWebView {
 
         let cssContent = try? String(contentsOf: cssURL)
         return cssContent ?? ""
+    }
+
+    /// Enforce a width for emojis on P2
+    private func p2Styles() -> String {
+        guard isP2 else {
+            return ""
+        }
+
+        return """
+        img.emoji {
+            width: 1em;
+        }
+        """
     }
 
     private func overrideStyles() -> String {

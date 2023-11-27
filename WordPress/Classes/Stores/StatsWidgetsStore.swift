@@ -1,3 +1,4 @@
+import JetpackStatsWidgetsCore
 import WidgetKit
 import WordPressAuthenticator
 
