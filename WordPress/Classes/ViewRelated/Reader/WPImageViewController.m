@@ -11,7 +11,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, strong) PHAsset *asset;
-@property (nonatomic, strong) id<WPMediaAsset> mediaAsset;
 @property (nonatomic, strong) NSData *data;
 @property (nonatomic) BOOL isExternal;
 
@@ -96,19 +95,6 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = nil;
         _url = url;
-        _isExternal = YES;
-        [self commonInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithExternalMediaURL:(NSURL *)url andAsset:(id<WPMediaAsset>)asset
-{
-    self = [super init];
-    if (self) {
-        _image = nil;
-        _url = url;
-        _mediaAsset = asset;
         _isExternal = YES;
         [self commonInit];
     }
@@ -380,22 +366,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 }
 
 #pragma mark - Instance Methods
-
-- (id<WPMediaAsset>)mediaAsset
-{
-    if (_mediaAsset) {
-        return _mediaAsset;
-    }
-
-    if (self.asset) {
-        return self.asset;
-    }
-    if (self.media) {
-        return self.media;
-    }
-
-    return nil;
-}
 
 - (void)setShouldDismissWithGestures:(BOOL)shouldDismissWithGestures
 {
