@@ -4,8 +4,6 @@ import Foundation
 final class TenorDataSource: ExternalMediaDataSource {
     private(set) var assets: [ExternalMediaAsset] = []
 
-    fileprivate static let paginationThreshold = 10
-
     private var dataLoader: TenorDataLoader?
 
     var onUpdatedAssets: (() -> Void)?

@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate {
+final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -79,24 +79,22 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         }
     }
 
-    // MARK: - StockPhotosPickerDelegate
-
-    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
-        for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.stockPhotos), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.stockMediaUploaded)
-        }
-    }
-
     // MARK: - ExternalMediaPickerViewDelegate
 
     func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
         viewController.presentingViewController?.dismiss(animated: true)
         for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(viewController.source), selectionMethod: .fullScreenPicker)
             coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.tenorUploaded)
+
+            switch viewController.source {
+            case .stockPhotos:
+                WPAnalytics.track(.stockMediaUploaded)
+            case .tenor:
+                WPAnalytics.track(.tenorUploaded)
+            default:
+                assertionFailure("Unsupported source: \(viewController.source)")
+            }
         }
     }
 

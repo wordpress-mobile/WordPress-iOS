@@ -12,7 +12,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     private let searchController = UISearchController()
     private let activityIndicator = UIActivityIndicatorView()
     private let toolbarItemTitle = ExternalMediaSelectionTitleView()
-    private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
+    private lazy var buttonDone = UIBarButtonItem(title: Strings.add, style: .done, target: self, action: #selector(buttonDoneTapped))
 
     private let dataSource: ExternalMediaDataSource
     private var assets: [String: ExternalMediaAsset] = [:]
@@ -26,9 +26,13 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     weak var delegate: ExternalMediaPickerViewDelegate?
 
+    let source: MediaSource
+
     init(dataSource: ExternalMediaDataSource,
+         source: MediaSource,
          allowsMultipleSelection: Bool = false) {
         self.dataSource = dataSource
+        self.source = source
         self.allowsMultipleSelection = allowsMultipleSelection
         super.init(nibName: nil, bundle: nil)
     }
@@ -55,6 +59,15 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         dataSource.onUpdatedAssets = { [weak self] in self?.didUpdateAssets() }
         dataSource.onStartLoading = { [weak self] in self?.didChangeLoading(true) }
         dataSource.onStopLoading = { [weak self] in self?.didChangeLoading(false) }
+
+        switch source {
+        case .stockPhotos:
+            WPAnalytics.track(.tenorAccessed)
+        case .tenor:
+            WPAnalytics.track(.stockMediaAccessed)
+        default:
+            assertionFailure("Unsupported source: \(source)")
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -265,4 +278,8 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         }
         return MediaPreviewItem(url: asset.largeURL)
     }
+}
+
+private enum Strings {
+    static let add = NSLocalizedString("externalMediaPicker.add", value: "Add", comment: "Title for confirmation navigation bar button item")
 }
