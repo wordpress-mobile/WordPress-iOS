@@ -403,7 +403,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         if let viewController = navigationController?.topViewController,
            let detailsViewController = viewController as? SiteMediaPageViewController {
             let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
-            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item, section: 0)) : nil
 
             detailsViewController.didDeleteItem(media, before: before, after: after)
         }
