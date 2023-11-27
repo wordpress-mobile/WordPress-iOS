@@ -251,6 +251,7 @@ import Foundation
     case purchaseDomainScreenShown
     case purchaseDomainGetDomainTapped
     case purchaseDomainChooseSiteTapped
+    case purchaseDomainCompleted
     case myDomainsSearchDomainTapped
 
     // My Site
