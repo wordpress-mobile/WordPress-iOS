@@ -34,6 +34,7 @@
 #import "MenuItemsViewController.h"
 #import "MenusService.h"
 #import "MenusViewController.h"
+#import "Media+Extensions.h"
 
 #import "NSObject+Helpers.h"
 
@@ -112,9 +113,6 @@
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
-
-#import <WPMediaPicker/WPMediaPicker.h>
-#import "Media+Extensions.h"
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
