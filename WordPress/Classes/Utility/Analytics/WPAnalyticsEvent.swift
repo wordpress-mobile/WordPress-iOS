@@ -962,7 +962,7 @@ import Foundation
         case .meDomainsTapped:
             return "me_all_domains_tapped"
         case .domainsDashboardAllDomainsTapped:
-            return "all_domains_add_domain_tapped"
+            return "domains_dashboard_all_domains_tapped"
         case .domainsDashboardDomainsSearchShown:
             return "domains_dashboard_domains_search_shown"
         case .domainsListShown:
