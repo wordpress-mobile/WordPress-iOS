@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-09 18:23:53+0000 */
+/* Translation-Revision-Date: 2023-11-16 15:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfico";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Dominio transferido";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Transformar %s a";
 
@@ -9609,6 +9612,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Responder a %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Es posible que el nombre de usuario o la contraseña que están guardados en la aplicación hayan caducado. Introduce de nuevo tu contraseña en la configuración y vuelve a intentarlo.";
+
+/* An error message. */
+"common.unableToConnect" = "No se ha podido conectar";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Estas cookies nos permiten optimizar el rendimiento al recopilar información sobre cómo los usuarios interactúan con nuestras webs.";
 
@@ -9759,6 +9768,78 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar esto";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Buscar un dominio";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Obtener dominio";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Añade un sitio más tarde.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Solo tienes que comprar un dominio.";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Caducado";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Se renueva";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Buscar un dominio";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Pulsa a continuación para encontrar tu dominio perfecto.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "No tienes ningún domino.";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Se ha producido un error al cargar tus dominios. Ponte en contacto con el servicio de soporte si el problema continúa.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Se ha producido un error.";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Volver a intentarlo";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Comprueba tu conexión a la red e inténtalo de nuevo.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "Sin conexión a Internet";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* Los planes anuales de pago incluyen un dominio gratis durante un año.";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "No te preocupes, puedes añadir un sitio fácilmente más adelante.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Elige cómo usar tu dominio.";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Buscar dominios";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "No hemos encontrado ningún dominio que se ajuste a tu búsqueda por «%@».";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "No se ha encontrado ningún dominio que coincida";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Elige el sitio";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "Dominio gratuito durante el primer año*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Utilízalo con un sitio que ya hayas empezado a crear.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Sitio de WordPress.com ya existente";
+
 /* Domain Management Screen Title */
 "domain.management.title" = "Todos los dominios";
 
@@ -9795,11 +9876,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "por año";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Finalizar compra";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Descartar";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Lo sentimos, el dominio que quieres añadir no se puede comprar en la aplicación Jetpack en estos momentos.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Comprar dominio";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Buscar";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Elegir sitio";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "doble toque para cambiar de unidad";
@@ -10244,8 +10337,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Añadir";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Cuadrícula de relación de aspecto";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Borrar";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seleccionar";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Compartir";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Cancelar";
@@ -10279,6 +10381,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Ningún medio coincide con tu búsqueda";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "No se pueden compartir los elementos seleccionados.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Cuadrícula";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Medios";
@@ -10502,11 +10610,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "otros";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Página de inicio";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Cambios locales";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "Pendiente de revisión";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Página de entradas";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Privado";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Tu página de inicio usa una plantilla de tema, por lo que se abrirá en el editor web.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Página de inicio";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "La página se ha actualizado correctamente.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Borrar permanentemente";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "¿Seguro que quieres eliminar esta página permanentemente?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "¿Borrar permanentemente?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Páginas de todos";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Mis páginas";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Mover a la papelera";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "¿Seguro que quieres enviar esta página a la papelera de reciclaje?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "¿Enviar esta página a la papelera?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "Cancelar";
 
 /* No comment provided by engineer. */
 "password" = "contraseña";
@@ -10547,6 +10700,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de teléfono";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Creado el %s";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Borrando entrada...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Editado el %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Moviendo a la papelera...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Publicado %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Programado %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Enviado a la papelera %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "Por %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Extracto. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Fija.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Papelera";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "Compartir";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Ver";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Descartar";
 
@@ -10565,14 +10760,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Establecer la imagen destacada";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Error al actualizar los ajustes de la entrada";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Cancelar subida";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Comentarios";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Borrar permanentemente";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Mover a borradores";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Duplicar";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Atributos de página";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Vista previa";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Publicar ahora";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Volver a intentar";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Establecer como página de inicio";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Establecer como padre";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Establecer como página de entradas";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Establecer como página normal";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Ajustes";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Compartir";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "Estadísticas";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Mover a la papelera";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Ver";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Página eliminada permanentemente";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Entrada eliminada permanentemente";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Página movida a la papelera.";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "Entrada movida a la papelera.";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Entradas de todos";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Mis entradas";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Suscríbete ahora para compartir más";
@@ -10790,6 +11054,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nueva";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Transferir dominio";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "¿Quieres transferir un dominio que ya tienes?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Las entradas relacionadas muestran contenido relacionado de tu sitio bajo tus entradas.";
 
@@ -10894,6 +11164,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacidad";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "El sitio web se ocultará a los visitantes y mostrará el aviso \"Próximamente\" hasta que se pueda visualizar.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Oculto";

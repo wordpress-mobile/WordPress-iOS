@@ -45,7 +45,7 @@
     }
 
     if (!url && self.videopressGUID.length > 0 ){
-        id<MediaServiceRemote> mediaServiceRemote = [[MediaServiceRemoteFactory new] remoteForBlog:self.blog];
+        id<MediaServiceRemote> mediaServiceRemote = [[MediaServiceRemoteFactory new] remoteForBlog:self.blog error:nil];
         [mediaServiceRemote getMetadataFromVideoPressID:self.videopressGUID isSitePrivate:self.blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
             // Let see if can create an asset with this url
             NSURL *originalURL = metadata.originalURL;

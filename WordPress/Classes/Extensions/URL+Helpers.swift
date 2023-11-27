@@ -108,6 +108,10 @@ extension URL {
         return components.count == 4 && isHostedAtWPCom
     }
 
+    var isWPComEmoji: Bool {
+        absoluteString.contains(".wp.com/i/emojis")
+    }
+
 
     /// Handle the common link protocols.
     /// - tel: open a prompt to call the phone number

@@ -19,8 +19,7 @@ class MigrationDoneViewController: UIViewController {
     override func loadView() {
         self.view = MigrationStepView(
             headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
-            actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-            centerView: MigrationCenterView.deleteWordPress(with: viewModel.configuration.centerViewConfiguration)
+            actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration)
         )
     }
 
@@ -36,6 +35,11 @@ class MigrationDoneViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.tracker.track(.thanksScreenShown)
+
+        var properties: [String: String] = [:]
+        if BlogListDataSource().visibleBlogsCount == 0 {
+            properties["no_sites"] = "true"
+        }
+        tracker.track(.thanksScreenShown, properties: properties)
     }
 }

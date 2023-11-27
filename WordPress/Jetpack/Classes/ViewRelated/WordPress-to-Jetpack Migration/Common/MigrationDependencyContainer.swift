@@ -34,7 +34,6 @@ struct MigrationViewControllerFactory {
     }
 
     private func makeAccount() -> WPAccount? {
-
         let context = ContextManager.shared.mainContext
         do {
             return try WPAccount.lookupDefaultWordPressComAccount(in: context)

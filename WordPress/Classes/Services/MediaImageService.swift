@@ -175,6 +175,9 @@ final class MediaImageService {
         }
 
         let exporter = await makeThumbnailExporter(for: media, size: size)
+        if sourceURL.isGif {
+            exporter.options.thumbnailImageType = UTType.gif.identifier
+        }
         guard exporter.supportsThumbnailExport(forFile: sourceURL),
               let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
               let image = try? await ImageDecoder.makeImage(from: export.url)

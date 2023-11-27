@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 struct LockScreenSiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let service: StatsWidgetsService
