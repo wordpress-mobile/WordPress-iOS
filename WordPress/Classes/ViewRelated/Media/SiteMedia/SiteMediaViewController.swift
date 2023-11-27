@@ -299,7 +299,7 @@ extension SiteMediaViewController {
 }
 
 private enum Strings {
-        static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
+    static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
     static let addButtonAccessibilityLabel = NSLocalizedString("mediaLibrary.addButtonAccessibilityLabel", value: "Add", comment: "Accessibility label for add button to add items to the user's media library")
     static let addButtonAccessibilityHint = NSLocalizedString("mediaLibrary.addButtonAccessibilityHint", value: "Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
