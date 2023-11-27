@@ -106,7 +106,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackSocialImprovements:
             return "jetpack_social_improvements_v1"
         case .domainManagement:
-            return "domain_management_x"
+            return "domain_management"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
         case .readerImprovements:
