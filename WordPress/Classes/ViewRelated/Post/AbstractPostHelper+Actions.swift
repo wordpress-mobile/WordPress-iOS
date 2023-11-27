@@ -50,5 +50,5 @@ private enum Strings {
     static let swipeActionView = NSLocalizedString("postList.swipeActionView", value: "View", comment: "Swipe action title")
     static let swipeActionShare = NSLocalizedString("postList.swipeActionShare", value: "Share", comment: "Swipe action title")
     static let swipeActionTrash = NSLocalizedString("postList.swipeActionDelete", value: "Trash", comment: "Swipe action title")
-    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDelete", value: "Delete", comment: "Swipe action title")
+    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDeletePermanently", value: "Delete", comment: "Swipe action title")
 }
