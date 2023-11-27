@@ -539,6 +539,7 @@ class AbstractPostListViewController: UIViewController,
             do {
                 guard let (posts, hasMore) = try await self?.syncPosts(isFirstPage: false) else { return }
 
+                // User may have exit the screen when the "syncPosts" call above completes.
                 guard let self else { return }
 
                 if posts.count > 0 {
