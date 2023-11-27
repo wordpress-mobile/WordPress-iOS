@@ -412,6 +412,10 @@
 		0C2C83FB2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
 		0C2C83FD2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
 		0C2C83FE2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
+		0C308FFE2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */; };
+		0C308FFF2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */; };
+		0C3090222B12A5C90071C551 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */; };
+		0C3090232B12A5C90071C551 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */; };
 		0C35FFF129CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF229CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF429CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */; };
@@ -6151,6 +6155,8 @@
 		0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iphone-photo.heic"; sourceTree = "<group>"; };
 		0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodCache.swift; sourceTree = "<group>"; };
 		0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInsightsCache.swift; sourceTree = "<group>"; };
+		0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaFilterButtonView.swift; sourceTree = "<group>"; };
+		0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardHelpers.swift; sourceTree = "<group>"; };
 		0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModelTests.swift; sourceTree = "<group>"; };
 		0C35FFF529CBB5DE00D224EB /* BlogDashboardEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardEmptyStateCell.swift; sourceTree = "<group>"; };
@@ -10301,6 +10307,14 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		0C3090202B1290730071C551 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		0C7D48182A4DB91B0023CF84 /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
@@ -10328,6 +10342,7 @@
 				0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */,
 				0C23F33C2AC4AED900EE6117 /* Controllers */,
 				0C23F3332AC49C1000EE6117 /* Views */,
+				0C3090202B1290730071C551 /* Helpers */,
 			);
 			path = SiteMedia;
 			sourceTree = "<group>";
@@ -15402,6 +15417,7 @@
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
 				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
+				0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */,
 				B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */,
 				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */,
@@ -22454,6 +22470,7 @@
 				4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */,
 				FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
+				0C3090222B12A5C90071C551 /* UIButton+Extensions.swift in Sources */,
 				D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */,
 				17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				98DCF4A5275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
@@ -22922,6 +22939,7 @@
 				F111B87826580FCE00057942 /* BloggingRemindersStore.swift in Sources */,
 				8B16CE9A25251C89007BE5A9 /* ReaderPostStreamService.swift in Sources */,
 				FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
+				0C308FFE2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */,
 				803BB986295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift in Sources */,
 				F4CBE3D6292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */,
 				8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */,
@@ -24402,6 +24420,7 @@
 				FABB22402602FC2C00C8785C /* FeatureFlag.swift in Sources */,
 				3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */,
 				80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */,
+				0C308FFF2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */,
 				FABB22422602FC2C00C8785C /* BlogDetailsViewController+Activity.swift in Sources */,
 				FABB22432602FC2C00C8785C /* NoteBlockTableViewCell.swift in Sources */,
 				FABB22442602FC2C00C8785C /* WPTabBarController+QuickStart.swift in Sources */,
@@ -24826,6 +24845,7 @@
 				9887560D2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				FABB236E2602FC2C00C8785C /* AccountService.m in Sources */,
 				FABB236F2602FC2C00C8785C /* MediaLibraryPickerDataSource.m in Sources */,
+				0C3090232B12A5C90071C551 /* UIButton+Extensions.swift in Sources */,
 				FABB23702602FC2C00C8785C /* PostStatsViewModel.swift in Sources */,
 				FABB23712602FC2C00C8785C /* StatsStore+Cache.swift in Sources */,
 				FABB23722602FC2C00C8785C /* WP3DTouchShortcutHandler.swift in Sources */,
