@@ -173,7 +173,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     }
 
     @MainActor
-    override func syncPosts(isFirstPage: Bool) async throws -> ([AbstractPost], Bool) {
+    override func syncPosts(isFirstPage: Bool) async throws -> SyncPostResult {
         let coreDataStack = ContextManager.shared
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil

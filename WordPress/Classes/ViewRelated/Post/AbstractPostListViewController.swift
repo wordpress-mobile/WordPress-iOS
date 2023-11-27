@@ -13,6 +13,8 @@ class AbstractPostListViewController: UIViewController,
                                       UITableViewDataSource,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
+    typealias SyncPostResult = (posts: [AbstractPost], hasMore: Bool)
+
     private static let postsControllerRefreshInterval = TimeInterval(300)
     private static let httpErrorCodeForbidden = 403
     private static let postsFetchRequestBatchSize = 10
@@ -476,7 +478,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @MainActor
-    func syncPosts(isFirstPage: Bool) async throws -> ([AbstractPost], Bool) {
+    func syncPosts(isFirstPage: Bool) async throws -> SyncPostResult {
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
