@@ -3200,9 +3200,10 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     }
 }
 
-extension AztecPostViewController: TenorPickerDelegate {
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
-        assets.forEach {
+extension AztecPostViewController: ExternalMediaPickerViewDelegate {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset]) {
+        viewController.presentingViewController?.dismiss(animated: true)
+        selection.forEach {
             insert(exportableAsset: $0, source: .tenor)
         }
     }

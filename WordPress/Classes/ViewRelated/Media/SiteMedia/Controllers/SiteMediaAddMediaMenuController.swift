@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate, UIDocumentPickerDelegate {
+final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -89,9 +89,10 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         }
     }
 
-    // MARK: - TenorPickerDelegate
+    // MARK: - ExternalMediaPickerViewDelegate
 
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
+        viewController.presentingViewController?.dismiss(animated: true)
         for asset in assets {
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
             coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
