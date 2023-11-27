@@ -59,9 +59,9 @@
         "package": "Pulse",
         "repositoryURL": "https://github.com/kean/Pulse",
         "state": {
-          "branch": "main",
-          "revision": "c804e1d298db22a3ed12bcb4181954939854460c",
-          "version": null
+          "branch": null,
+          "revision": "d647e99f06abc94d63579e335ad4ce368195c149",
+          "version": "4.0.5"
         }
       },
       {

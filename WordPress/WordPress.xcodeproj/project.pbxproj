@@ -22517,7 +22517,6 @@
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				C3C39B0726F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */,
-				80A2154329D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */,
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
 				57C3D393235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift in Sources */,
@@ -30357,8 +30356,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Pulse";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
 			};
 		};
 		0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */ = {
