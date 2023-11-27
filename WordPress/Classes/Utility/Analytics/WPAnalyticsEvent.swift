@@ -980,6 +980,8 @@ import Foundation
             return "domain_management_purchase_domain_get_domain_tapped"
         case .purchaseDomainChooseSiteTapped:
             return "domain_management_purchase_domain_choose_site_tapped"
+        case .purchaseDomainCompleted:
+            return "domain_management_purchase_domain_completed"
         case .myDomainsSearchDomainTapped:
             return "domain_management_my_domains_search_domain_tapped"
 
