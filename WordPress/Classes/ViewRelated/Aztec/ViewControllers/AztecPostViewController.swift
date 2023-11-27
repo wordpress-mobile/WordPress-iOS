@@ -1800,6 +1800,7 @@ extension AztecPostViewController {
 
         richTextView.autocorrectionType = .no
 
+#if swift(>=5.9) // Requires Xcode 15
         if #available(iOS 17, *) {
             var configuration = PHPickerConfiguration()
             configuration.filter = .any(of: [.images, .videos])
@@ -1825,6 +1826,7 @@ extension AztecPostViewController {
 
             presentToolbarViewControllerAsInputView(picker)
         }
+#endif
     }
 
     @objc func toggleEditingMode() {
