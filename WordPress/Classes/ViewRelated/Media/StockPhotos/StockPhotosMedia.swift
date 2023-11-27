@@ -1,12 +1,4 @@
 import Foundation
-import WPMediaPicker
-
-struct ThumbnailCollection {
-    private(set) var largeURL: URL
-    private(set) var mediumURL: URL
-    private(set) var postThumbnailURL: URL
-    private(set) var thumbnailURL: URL
-}
 
 /// Models a Stock Photo
 ///
@@ -19,6 +11,13 @@ final class StockPhotosMedia: NSObject {
     private(set) var size: CGSize
     private(set) var thumbnails: ThumbnailCollection
 
+    struct ThumbnailCollection {
+        private(set) var largeURL: URL
+        private(set) var mediumURL: URL
+        private(set) var postThumbnailURL: URL
+        private(set) var thumbnailURL: URL
+    }
+
     init(id: String, URL: URL, title: String, name: String, caption: String, size: CGSize, thumbnails: ThumbnailCollection) {
         self.id = id
         self.URL = URL
@@ -30,81 +29,15 @@ final class StockPhotosMedia: NSObject {
     }
 }
 
-// MARK: - WPMediaAsset conformance
-
-extension StockPhotosMedia: WPMediaAsset {
-    func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
-        let thumb = thumbURL(with: size)
-
-        DispatchQueue.global().async {
-            do {
-                let data = try Data(contentsOf: thumb)
-                let image = UIImage(data: data)
-                completionHandler(image, nil)
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
-
-        let number = Int32(id) ?? 0
-        return number as WPMediaRequestID
-    }
-
-    // We assume that if the size passed is .zero, we want the largest possible image
-    private func thumbURL(with size: CGSize) -> URL {
-        return size == .zero ? thumbnails.largeURL : thumbnails.postThumbnailURL
-    }
-
-    func cancelImageRequest(_ requestID: WPMediaRequestID) {
-        //
-    }
-
-    func videoAsset(completionHandler: @escaping WPMediaAssetBlock) -> WPMediaRequestID {
-        return 0
-    }
-
-    func assetType() -> WPMediaType {
-        return .image
-    }
-
-    func duration() -> TimeInterval {
-        return 0
-    }
-
-    func baseAsset() -> Any {
-        return self
-    }
-
-    func identifier() -> String {
-        return id
-    }
-
-    func date() -> Date {
-        return Date()
-    }
-
-    func pixelSize() -> CGSize {
-        return size
-    }
-}
-
-// MARK: - ExportableAsset conformance
-
-extension StockPhotosMedia: ExportableAsset {
-    var assetMediaType: MediaType {
-        return .image
-    }
-}
-
-// MARK: - MediaExternalAsset conformance
-
-extension StockPhotosMedia: MediaExternalAsset {
-
+extension StockPhotosMedia: ExternalMediaAsset {
+    var assetMediaType: MediaType { .image }
+    var thumbnailURL: URL { thumbnails.thumbnailURL }
+    var largeURL: URL { thumbnails.largeURL }
 }
 
 // MARK: - Decodable conformance
 
-extension ThumbnailCollection: Decodable {
+extension StockPhotosMedia.ThumbnailCollection: Decodable {
     enum CodingKeys: String, CodingKey {
         case large
         case medium
