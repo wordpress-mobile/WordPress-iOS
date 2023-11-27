@@ -1,6 +1,6 @@
 import Gutenberg
 
-class GutenbergExternalMeidaPicker {
+class GutenbergExternalMediaPicker {
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?
     private let mediaInserter: GutenbergMediaInserterHelper
     private unowned var gutenberg: Gutenberg
@@ -19,7 +19,7 @@ class GutenbergExternalMeidaPicker {
             .showFreeGIFPicker(blog: post.blog, delegate: self)
     }
 
-    func presentStockPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentStockPhotoPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerCallback = callback
         self.multipleSelection = multipleSelection
 
@@ -28,7 +28,7 @@ class GutenbergExternalMeidaPicker {
     }
 }
 
-extension GutenbergExternalMeidaPicker: ExternalMediaPickerViewDelegate {
+extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
         defer {
             mediaPickerCallback = nil

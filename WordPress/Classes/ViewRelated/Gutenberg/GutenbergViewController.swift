@@ -17,7 +17,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-    private lazy var externalMediaPicker = GutenbergExternalMeidaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    private lazy var externalMediaPicker = GutenbergExternalMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
 
     lazy var gutenbergSettings: GutenbergSettings = {
         return GutenbergSettings()
@@ -200,7 +200,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
             featuredImageHelper = GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
             filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-            externalMediaPicker = GutenbergExternalMeidaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            externalMediaPicker = GutenbergExternalMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             gutenbergImageLoader.post = post
             refreshInterface()
         }
@@ -611,7 +611,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .stockPhotos:
-            externalMediaPicker.presentStockPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+            externalMediaPicker.presentStockPhotoPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         case .tenor:
             externalMediaPicker.presentTenorPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         case .otherApps, .allFiles:
