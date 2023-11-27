@@ -1,6 +1,5 @@
 import Foundation
 import SVProgressHUD
-import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
 import UniformTypeIdentifiers

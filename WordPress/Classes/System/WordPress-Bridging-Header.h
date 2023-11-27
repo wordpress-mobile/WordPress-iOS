@@ -28,7 +28,6 @@
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
-#import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 #import "MenuItem.h"
@@ -115,6 +114,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 #import <WPMediaPicker/WPMediaPicker.h>
+#import "Media+WPMediaAsset.h"
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>

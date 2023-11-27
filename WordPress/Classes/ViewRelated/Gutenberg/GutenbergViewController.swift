@@ -643,31 +643,22 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: filter,
-                                                       dataSourceType: .mediaLibrary,
-                                                       allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { [weak self] assets in
+        mediaPickerHelper.presentSiteMediaPickere(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
                 return
             }
             self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
-        })
+        }
     }
 
     func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: filter,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { [weak self] assets in
+        mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
             }
             self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
-        })
+        }
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
