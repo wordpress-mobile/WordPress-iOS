@@ -6937,13 +6937,16 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Trash";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Delete";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Share";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
 
 /* All Time Stats 'Posts' label
