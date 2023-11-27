@@ -64,7 +64,7 @@ class ReaderInterestsStyleGuide {
     public class func applyCompactCellLabelStyle(label: UILabel) {
         label.font = Self.compactCellLabelTitleFont
         label.textColor = .text
-        label.backgroundColor = RemoteFeatureFlag.readerImprovements.enabled() ? .clear : .quaternaryBackground
+        label.backgroundColor = .clear
     }
 
     // MARK: - Next Button
