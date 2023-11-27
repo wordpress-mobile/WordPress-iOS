@@ -561,8 +561,8 @@ private extension AppSettingsViewController {
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
-            rows.append(designSystem)
         }
+        rows.append(designSystem) // DO NOT MERGE: Only to allow testing through TestFlight
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
