@@ -1,27 +1,18 @@
-Buckle up, this update’s a doozy.
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
+* [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
+* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
+* [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
+* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
+* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
+* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
+* [*] [Jetpack-only] Block Editor: Ensure text is always visible within Contact Info block [https://github.com/Automattic/jetpack/pull/33873]
+* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
+* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
+* [**] Refactor deleting media [#21748]
 
-First off, we added the All Domains screen so you can manage all your domains in one place within the app. There’s no place like home.
-
-Next, we made updates to Site Media.
-
-- The Site Media screen design has better menus, file selection and sharing, and more. It even runs faster—no more jerky GIFs or stalled-out videos.
-- You can use the pan gesture to select multiple media files at once. It’s also easier to swipe from one photo to another, change metadata, and delete items.
-- On iPad, you can switch between square image previews and aspect ratio.
-- We fixed issues with blank placeholder images, incorrect messages, document sharing, and occasional crashes.
-
-We’re not done yet. We also made big changes to Posts & Pages.
-
-- The Posts & Pages screen got a facelift with clean, simple display options.
-- Use more advanced search features, like author and tag filters, to find the content you’d like to edit. Search also works across all authors (unless, of course, you want content from one specific person.)
-- Use swipe actions to view, share, or delete posts and pages. Sweet.
-- The context menu now lets you access comments, settings, and other actions for a post or page.
-- We fixed issues with page refreshes and visibility, as well as a handful of crashes.
-
-Finally, we fixed a handful of pesky problems across the app.
-
-- The app now recognizes when you’ve finished uploading a GIF. (monty-burns-excellent.gif)
-- “Hidden” posts now have a better description for their privacy status.
-- The reader now scrolls to the top when you tap the status bar. Up, up, and away.
-- The Menus screen properly creates menu items based on top-level pages.
-- We fixed a block editor crash related to using text colors in older site themes.
-- You shouldn’t run into any errors when you paste deeply nested content in the block editor. Much like onions, ogres, cakes, or parfaits, your content can have many layers.
