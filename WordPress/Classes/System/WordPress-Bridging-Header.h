@@ -114,7 +114,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 #import <WPMediaPicker/WPMediaPicker.h>
-#import "Media+WPMediaAsset.h"
+#import "Media+Extensions.h"
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>

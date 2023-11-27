@@ -339,7 +339,7 @@
 		08BBA3502A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08BBA3512A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
-		08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */; };
+		08C3886A1ED78EE70057BE49 /* Media+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+Extensions.m */; };
 		08C42C31281807880034720B /* ReaderSubscribeCommentsActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */; };
 		08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
 		08CBC77A29AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
@@ -4706,7 +4706,7 @@
 		FABB23162602FC2C00C8785C /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
 		FABB23172602FC2C00C8785C /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D813D67E21AA8BBF0055CCA1 /* ShadowView.swift */; };
 		FABB23182602FC2C00C8785C /* Wizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721121869C590023A99C /* Wizard.swift */; };
-		FABB23192602FC2C00C8785C /* Media+WPMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */; };
+		FABB23192602FC2C00C8785C /* Media+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+Extensions.m */; };
 		FABB231A2602FC2C00C8785C /* GutenbergImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2EC3BF2209A144006176E1 /* GutenbergImgUploadProcessor.swift */; };
 		FABB231B2602FC2C00C8785C /* PluginListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151C0C71F388A2000710A83 /* PluginListViewModel.swift */; };
 		FABB231C2602FC2C00C8785C /* WPStyleGuide+People.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B9128A1BB0129C003C25B9 /* WPStyleGuide+People.swift */; };
@@ -6039,8 +6039,8 @@
 		08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackInstallPluginLogoAnimation_ltr.json; sourceTree = "<group>"; };
 		08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardCell.swift; sourceTree = "<group>"; };
 		08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporter.swift; sourceTree = "<group>"; };
-		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
-		08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+WPMediaAsset.m"; sourceTree = "<group>"; };
+		08C388681ED78EE70057BE49 /* Media+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+Extensions.h"; sourceTree = "<group>"; };
+		08C388691ED78EE70057BE49 /* Media+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+Extensions.m"; sourceTree = "<group>"; };
 		08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscribeCommentsActionTests.swift; sourceTree = "<group>"; };
 		08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEmptySiteTemplate.swift; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
@@ -16000,8 +16000,8 @@
 		C59D3D480E6410BC00AA591D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */,
-				08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */,
+				08C388681ED78EE70057BE49 /* Media+Extensions.h */,
+				08C388691ED78EE70057BE49 /* Media+Extensions.m */,
 				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
 				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
 				8261B4CB1EA8E13700668298 /* SVProgressHUD+Dismiss.h */,
@@ -21888,7 +21888,7 @@
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				D813D67F21AA8BBF0055CCA1 /* ShadowView.swift in Sources */,
 				D865721321869C590023A99C /* Wizard.swift in Sources */,
-				08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */,
+				08C3886A1ED78EE70057BE49 /* Media+Extensions.m in Sources */,
 				FF2EC3C02209A144006176E1 /* GutenbergImgUploadProcessor.swift in Sources */,
 				E151C0C81F388A2000710A83 /* PluginListViewModel.swift in Sources */,
 				E1B9128B1BB0129C003C25B9 /* WPStyleGuide+People.swift in Sources */,
@@ -24716,7 +24716,7 @@
 				FABB23182602FC2C00C8785C /* Wizard.swift in Sources */,
 				0CD9FB8C2AFADAFE009D9C7A /* SiteMediaPageViewController.swift in Sources */,
 				98E14A3D27C9712D007B0896 /* NotificationCommentDetailViewController.swift in Sources */,
-				FABB23192602FC2C00C8785C /* Media+WPMediaAsset.m in Sources */,
+				FABB23192602FC2C00C8785C /* Media+Extensions.m in Sources */,
 				FABB231A2602FC2C00C8785C /* GutenbergImgUploadProcessor.swift in Sources */,
 				FABB231B2602FC2C00C8785C /* PluginListViewModel.swift in Sources */,
 				FABB231C2602FC2C00C8785C /* WPStyleGuide+People.swift in Sources */,
