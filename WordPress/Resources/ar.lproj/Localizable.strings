@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 11:54:09+0000 */
+/* Translation-Revision-Date: 2023-11-15 20:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "المرور";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "النطاق المنقول";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "تحويل %s إلى";
 
@@ -9603,6 +9606,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "الرد على %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "قد يكون اسم المستخدم أو كلمة المرور المخزَّنان في التطبيق غير محدَّثين. يرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
+
+/* An error message. */
+"common.unableToConnect" = "يتعذر الاتصال";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "تسمح لنا ملفات تعريف الارتباط هذه بتحسين الأداء عن طريق جمع المعلومات حول كيفية تفاعل المستخدمين مع مواقعنا على الويب.";
 
@@ -9753,6 +9762,78 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "البحث عن نطاق";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "الحصول على نطاق";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "أضف موقعًا لاحقًا.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "شراء نطاق فقط";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "منتهي الصلاحية";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "التجديدات";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "العثور على نطاق";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "اضغط أدناه للعثور على نطاقك المثالي.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "لا تتوافر لديك أي نطاقات";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "واجهنا خطأ في أثناء تحميل نطاقاتك. يرجى الاتصال بالدعم إذا استمرت المشكلة.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "حدث خطأ";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "المحاولة مجددًا";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "يرجى التحقق من اتصال شبكتك والمحاولة لاحقًا.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "لا يوجد اتصال بالإنترنت";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* تتضمّن جميع الخطط السنوية المدفوعة نطاقًا مجانيًّا لمدة عام كامل";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "لا تقلق، يمكنك بسهولة إضافة موقع لاحقًا.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "اختيار طريقة استخدام نطاقك";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "البحث عن النطاقات";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "يتعذر العثور على أي نطاقات تتطابق مع البحث عن \"%@\"";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "لم يتم العثور على نطاقات متطابقة";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "اختيار موقع";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "نطاق مجاني للعام الأول*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "الاستخدام مع أي موقع بدأته بالفعل.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "موقع ووردبريس.كوم الحالي";
+
 /* Domain Management Screen Title */
 "domain.management.title" = "جميع النطاقات";
 
@@ -9789,11 +9870,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "سنوياً";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "السداد";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "تجاهل";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "عذرًا، يتعذر شراء النطاق الذي تحاول إضافته على تطبيق Jetpack في هذه المرة.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "شراء النطاق";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "البحث";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "اختيار موقع";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "أنقر نقرًا مزدوجًا لتغيير الوحدة";
@@ -10238,8 +10331,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "إضافة";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "شبكة نسبة العرض إلى الارتفاع";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "حذف";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "تحديد";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "مشاركة";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "إلغاء";
@@ -10273,6 +10375,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "لا توجد وسائط مطابقة لبحثك";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "تتعذر مشاركة العناصر المحددة.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "شبكة مربعة";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "الوسائط";
@@ -10496,11 +10604,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "أخرى";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "الصفحة الرئيسية";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "التغييرات المحلية";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "في انتظار المراجعة";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "صفحة التدوينات";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "خاص";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "تستخدم صفحتك الرئيسية قالب القالب وستفتح في محرر الويب.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "الصفحة الرئيسية";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "تم تحديث الصفحة بنجاح.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "الحذف نهائيًا";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "هل تريد بالتأكد حذف هذه الصفحة نهائيًا؟";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "هل تريد الحذف نهائيًا؟";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "الصفحات بواسطة الجميع";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "الصفحات بواسطتي";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "نقل إلى سلة المهملات";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "هل تريد بالتأكيد نقل هذه الصفحة إلى سلة المهملات؟";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "هل تريد نقل هذه الصفحة إلى سلة المهملات؟";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "إلغاء";
 
 /* No comment provided by engineer. */
 "password" = "كلمة المرور";
@@ -10541,6 +10694,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "%@ الذي تم إنشاؤه";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "جارٍ حذف التدوينة...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "%@ الذي تم تحريره";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "جارٍ نقل التدوينة إلى سلة المهملات...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "%@ المنشور";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "%@ المجدول";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "%@ الموضوع في سلة المهملات";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "بواسطة %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "المقتطف. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "مثبت.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@، %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "سلة المهملات";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "مشاركة";
+
+/* Swipe action title */
+"postList.swipeActionView" = "عرض";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "تجاهل";
 
@@ -10559,14 +10754,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "تعيين صورة بارزة";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "فشل تحديث إعدادات التدوينة";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "إلغاء الرفع";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "التعليقات";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "الحذف نهائيًا";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "انتقل إلى المسودة";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "تكرار";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "سمات الصفحة";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "معاينة";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "النشر الآن";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "إعادة المحاولة";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "تعيين كصفحة رئيسية";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "تعيين الأصل";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "تعيين كصفحة تدوينات";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "تعيين كصفحة عادية";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "الإعدادات";
+
+/* Share the post. */
+"posts.share.actionTitle" = "مشاركة";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "الإحصاءات";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "نقل إلى سلة المهملات";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "عرض";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "تم حذف الصفحة نهائيًا";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "تم حذف التدوينة نهائيًا";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "تم نقل الصفحة إلى سلة المهملات";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "تم نقل التدوينة إلى سلة المهملات";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "التدوينات بواسطة الجميع";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "التدوينات بواسطتي";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "الاشتراك الآن لمشاركة المزيد";
@@ -10746,6 +11010,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "جديد";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "نقل النطاق";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "هل تبحث عن نطاق تمتلكه بالفعل؟";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "تعرض التدوينات ذات الصلة المحتوى ذا الصلة من موقعك أسفل تدويناتك.";
 
@@ -10838,6 +11108,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "تم إخفاء موقعك عن الزوار خلف ملاحظة \"قريبًا\" حتى يصبح جاهزًا لمشاهدته.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "مخفي";

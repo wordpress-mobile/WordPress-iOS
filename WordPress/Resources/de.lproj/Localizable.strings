@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 18:34:17+0000 */
+/* Translation-Revision-Date: 2023-11-15 13:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: de */
@@ -9612,6 +9612,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Antwort auf %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Der in der App gespeicherte Benutzername oder das Passwort ist unter Umständen veraltet. Bitte gib dein Passwort in den Einstellungen erneut ein und versuche es noch einmal.";
+
 /* An error message. */
 "common.unableToConnect" = "Keine Verbindung möglich";
 
@@ -9774,8 +9777,14 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card subtitle */
 "domain.management.buy.card.subtitle" = "Füge später eine Website hinzu.";
 
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Kaufe lediglich eine Domain";
+
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Abgelaufen";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Wird verlängert";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Eine Domain finden";
@@ -9786,17 +9795,35 @@ Example: Reply to Pamela Nguyen */
 /* The empty state title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.title" = "Du hast keine Domains";
 
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Beim Laden deiner Domains ist ein Fehler aufgetreten. Wenn das Problem weiterhin besteht, wende dich bitte an den Support.";
+
 /* The empty state title in All Domains screen when an error occurs */
 "domain.management.error.empty.state.title" = "Etwas ist schiefgelaufen";
 
 /* The empty state button title in All Domains screen when an error occurs */
 "domain.management.error.state.button.title" = "Erneut versuchen";
 
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Bitte überprüfe deine Netzwerkverbindung und versuche es erneut.";
+
 /* The empty state title in All Domains screen when the user is offline */
 "domain.management.offline.empty.state.title" = "Keine Internetverbindung";
 
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* Bei allen kostenpflichtigen Jahrestarifen ist ein Jahr lang eine kostenlose Domain enthalten";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Keine Sorge, du kannst später ganz einfach eine Website hinzufügen.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Entscheide, wie du deine Domain nutzen möchtest";
+
 /* The search bar title in All Domains screen. */
 "domain.management.search-bar.title" = "Domains suchen";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "Es konnten keine Domains gefunden werden, die mit deiner Suche für „%@“ übereinstimmen";
 
 /* The empty state title in All Domains screen when the are no domains matching the search criteria */
 "domain.management.search.empty.state.title" = "Es wurden keine passenden Domains gefunden";
@@ -10310,6 +10337,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Hinzufügen";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Bildformat Raster";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Löschen";
 
@@ -10351,6 +10381,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Keine Medien entsprechen deiner Suche";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Die ausgewählten Elemente konnten nicht geteilt werden.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Quadratisches Raster";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Medien";
@@ -10595,6 +10631,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Startseite";
 
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Seite wurde erfolgreich aktualisiert";
+
 /* Delete option in the confirmation alert when deleting a page from the trash. */
 "pagesList.deletePermanently.actionTitle" = "Unwiderruflich löschen";
 
@@ -10780,6 +10819,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Anzeigen";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Seite dauerhaft gelöscht";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Beitrag dauerhaft gelöscht";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Seite in den Papierkorb verschoben";

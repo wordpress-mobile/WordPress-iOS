@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 15:54:11+0000 */
+/* Translation-Revision-Date: 2023-11-15 13:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: it */
@@ -7897,7 +7897,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Traffic" = "Traffico";
 
 /* Describes a domain that was transferred from elsewhere to wordpress.com */
-"Transferred Domain" = "Trasferisci dominio";
+"Transferred Domain" = "Dominio trasferito";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Trasforma %s in";
@@ -9610,7 +9610,7 @@ Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Rispondi a %1$@";
 
 /* Error message informing a user about an invalid password. */
-"common.reEnterPasswordMessage" = "Potrebbe non essere stato eseguito l'aggiornamento della password memorizzata o del nome utente memorizzato nell'app. Inserisci nuovamente la password nelle impostazioni e riprova.";
+"common.reEnterPasswordMessage" = "L'aggiornamento della password memorizzata o del nome utente memorizzato nell'app potrebbe non essere stato eseguito. Inserisci nuovamente la password nelle impostazioni e riprova.";
 
 /* An error message. */
 "common.unableToConnect" = "Impossibile connettersi";
@@ -9769,7 +9769,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.addDomain.search.title" = "Cerca un dominio";
 
 /* Domain management buy domain card button title */
-"domain.management.buy.card.button.title" = "Ottieni un dominio";
+"domain.management.buy.card.button.title" = "Ottieni il dominio";
 
 /* Domain management buy domain card subtitle */
 "domain.management.buy.card.subtitle" = "Aggiungi un sito in seguito.";
@@ -9784,7 +9784,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.card.renews.label" = "Rinnovi";
 
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
-"domain.management.default.empty.state.button.title" = "Scegli un dominio";
+"domain.management.default.empty.state.button.title" = "Trova un dominio";
 
 /* The empty state description in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.description" = "Tocca qui sotto per trovare il dominio perfetto.";
@@ -9832,7 +9832,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.site.card.footer" = "Dominio gratuito per il primo anno*";
 
 /* Domain management choose site card subtitle */
-"domain.management.site.card.subtitle" = "Usa con un sito già iniziato.";
+"domain.management.site.card.subtitle" = "Usa con un sito già esistente.";
 
 /* Domain management choose site card title */
 "domain.management.site.card.title" = "Sito WordPress.com esistente";
@@ -10335,7 +10335,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.addButtonAccessibilityLabel" = "Aggiungi";
 
 /* Button name in the more menu */
-"mediaLibrary.aspectRatioGrid" = "Griglia rapporto dimensioni";
+"mediaLibrary.aspectRatioGrid" = "Griglia proporzioni";
 
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Elimina";
@@ -10380,7 +10380,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.searchResultsEmptyTitle" = "Nessun elemento multimediale corrispondente alla ricerca";
 
 /* Text displayed in HUD if there was an error attempting to share a group of media items. */
-"mediaLibrary.sharingFailureMessage" = "Impossibile condividere gli elementi";
+"mediaLibrary.sharingFailureMessage" = "Impossibile condividere gli elementi selezionati.";
 
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Griglia quadrata";
@@ -10623,7 +10623,7 @@ Example: Reply to Pamela Nguyen */
 "pages.template.title" = "Home page";
 
 /* Message informing the user that their static homepage page was set successfully */
-"pages.updatePage.successTitle" = "Pagina aggiornata correttamente.";
+"pages.updatePage.successTitle" = "Pagina aggiornata correttamente";
 
 /* Delete option in the confirmation alert when deleting a page from the trash. */
 "pagesList.deletePermanently.actionTitle" = "Elimina in modo permanente";
@@ -10632,7 +10632,7 @@ Example: Reply to Pamela Nguyen */
 "pagesList.deletePermanently.alertMessage" = "Desideri eliminare in modo permanente questa pagina?";
 
 /* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Elimina in modo permanente?";
+"pagesList.deletePermanently.alertTitle" = "Eliminare in modo permanente?";
 
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Pagine di tutti";
@@ -10647,7 +10647,7 @@ Example: Reply to Pamela Nguyen */
 "pagesList.trash.alertMessage" = "Desideri spostare questa pagina nel cestino?";
 
 /* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Sposta la pagina nel cestino?";
+"pagesList.trash.alertTitle" = "Spostare la pagina nel cestino?";
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Annulla";
@@ -10692,25 +10692,25 @@ Example: Reply to Pamela Nguyen */
 "phone number" = "numero di telefono";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Creato %@ fa";
+"post.createdTimeAgo" = "Creazione: %@";
 
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Eliminazione dell'articolo in corso...";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Modificato %@ fa";
+"post.editedTimeAgo" = "Modifica: %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Spostamento dell'articolo nel cestino in corso...";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Pubblicato %@ fa";
+"post.publishedTimeAgo" = "Pubblicazione: %@";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Pianificato %@ fa";
+"post.scheduledForDate" = "Pianificazione: %@";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Spostato nel cestino %@ fa";
+"post.trashedTimeAgo" = "Spostamento nel cestino: %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Di %@.";
