@@ -7,8 +7,8 @@
 @implementation Media (Extensions)
 
 - (NSError *)errorWithMessage:(NSString *)errorMessage {
-    return [NSError errorWithDomain:WPMediaPickerErrorDomain
-                               code:WPMediaPickerErrorCodeVideoURLNotAvailable
+    return [NSError errorWithDomain:@"MediaErrorDomain"
+                               code:4
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 

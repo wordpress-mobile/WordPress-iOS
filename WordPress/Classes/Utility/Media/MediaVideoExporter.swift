@@ -3,7 +3,7 @@ import MobileCoreServices
 import UniformTypeIdentifiers
 import AVFoundation
 
-/// Media export handling of Videos from PHAssets or AVAssets.
+/// Media export handling of Videos from AVAssets.
 ///
 class MediaVideoExporter: MediaExporter {
 

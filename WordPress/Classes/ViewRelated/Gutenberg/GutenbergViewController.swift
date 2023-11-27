@@ -666,9 +666,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             guard let self, let asset = assets?.first else {
                 return callback(nil)
             }
-            if let asset = asset as? PHAsset {
-                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
-            } else if let image = asset as? UIImage {
+            if let image = asset as? UIImage {
                 self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
             } else if let url = asset as? URL {
                 self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)

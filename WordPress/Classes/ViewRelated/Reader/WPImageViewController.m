@@ -10,7 +10,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
-@property (nonatomic, strong) PHAsset *asset;
 @property (nonatomic, strong) NSData *data;
 @property (nonatomic) BOOL isExternal;
 
@@ -45,16 +44,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (instancetype)initWithMedia:(Media *)media
 {
     return [self initWithImage:nil andMedia:media];
-}
-
-- (instancetype)initWithAsset:(PHAsset *)asset
-{
-    self = [super init];
-    if (self) {
-        _asset = asset;
-        [self commonInit];
-    }
-    return self;
 }
 
 - (instancetype)initWithGifData:(NSData *)data
@@ -219,8 +208,6 @@ static CGFloat const MinimumZoomScale = 0.1;
         [self loadImageFromURL];
     } else if (self.media) {
         [self loadImageFromMedia];
-    } else if (self.asset) {
-        [self loadImageFromPHAsset];
     } else if (self.data) {
         [self loadImageFromGifData];
     }
@@ -275,21 +262,6 @@ static CGFloat const MinimumZoomScale = 0.1;
         [weakSelf updateImageView];
         [weakSelf startAnimationIfNeededFor:image in:weakSelf.imageView];
     } failure:^(NSError * _Nonnull error) {
-        [weakSelf.activityIndicatorView showError];
-        DDLogError(@"Error loading image: %@", error);
-    }];
-}
-
-- (void)loadImageFromPHAsset
-{
-    self.imageView.image = self.image;
-    self.isLoadingImage = YES;
-    __weak __typeof__(self) weakSelf = self;
-    [self.imageLoader loadImageFromPHAsset:self.asset preferredSize:CGSizeZero placeholder:self.image success:^{
-        weakSelf.isLoadingImage = NO;
-        weakSelf.image = weakSelf.imageView.image;
-        [weakSelf updateImageView];
-    } error:^(NSError * _Nullable error) {
         [weakSelf.activityIndicatorView showError];
         DDLogError(@"Error loading image: %@", error);
     }];

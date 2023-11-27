@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithMedia:(Media *)media;
-- (instancetype)initWithAsset:(PHAsset *)asset;
+
 - (instancetype)initWithGifData:(NSData *)data;
 - (instancetype)initWithExternalMediaURL:(NSURL *)url;
 
