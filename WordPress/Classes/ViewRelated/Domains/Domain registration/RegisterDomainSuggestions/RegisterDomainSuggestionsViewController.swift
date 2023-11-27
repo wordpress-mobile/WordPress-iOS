@@ -110,14 +110,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         configure()
         hideButton()
         setupTransferFooterView()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         WPAnalytics.track(
             .domainsDashboardDomainsSearchShown,
             properties: [WPAppAnalyticsKeySource: "all_domains"]
         )
+
     }
 
     override func viewDidLayoutSubviews() {
