@@ -5,6 +5,7 @@ final class AppSettingsTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite(removeBeforeLaunching: true)
 
         try LoginFlow
@@ -12,6 +13,7 @@ final class AppSettingsTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         takeScreenshotOfFailedTest()
     }
 
