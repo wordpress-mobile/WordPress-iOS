@@ -1,3 +1,7 @@
+23.9
+----
+* [*] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+
 23.8
 -----
 * [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
@@ -17,7 +21,6 @@
 * [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
 * [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
 * [**] Refactor deleting media [#21748]
-* [*] Update the classic editor to use the new Photos and Site Media pickers [#22060]
 
 23.7
 -----
