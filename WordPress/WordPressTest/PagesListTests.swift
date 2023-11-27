@@ -14,12 +14,12 @@ class PagesListTests: CoreDataTestCase {
             page.postID = NSNumber(value: id)
             return page
         }
-        makeAssertions(pages: pages)
+        try makeAssertions(pages: pages)
     }
 
     func testOneNestedList() throws {
         let pages = parentPage(childrenCount: 1, additionalLevels: 5)
-        makeAssertions(pages: pages)
+        try makeAssertions(pages: pages)
     }
 
     func testManyNestedLists() throws {
@@ -35,7 +35,7 @@ class PagesListTests: CoreDataTestCase {
         groups[0][4].parentID = NSNumber(value: randomID.next())
         let pages = groups.flatMap { $0 }
 
-        makeAssertions(pages: pages)
+        try makeAssertions(pages: pages)
     }
 
     func testHugeNestedLists() throws {
@@ -50,7 +50,7 @@ class PagesListTests: CoreDataTestCase {
             pages.append(contentsOf: newPages)
         }
 
-        makeAssertions(pages: pages)
+        try makeAssertions(pages: pages)
     }
 
     // Measure performance using a page list where somewhat reflects a real-world page list, where some pages whose parent pages are in list.
@@ -72,9 +72,7 @@ class PagesListTests: CoreDataTestCase {
         NSLog("\(pages.count) pages used in \(#function)")
 
         measure {
-            let pageTree = PageTree()
-            pageTree.add(pages)
-            let list = pageTree.hierarchyList()
+            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
             XCTAssertEqual(list.count, pages.count)
         }
     }
@@ -91,9 +89,7 @@ class PagesListTests: CoreDataTestCase {
         NSLog("\(pages.count) pages used in \(#function)")
 
         measure {
-            let pageTree = PageTree()
-            pageTree.add(pages)
-            let list = pageTree.hierarchyList()
+            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
             XCTAssertEqual(list.count, pages.count)
         }
     }
@@ -109,13 +105,13 @@ class PagesListTests: CoreDataTestCase {
         orphan1[0].parentID = 100000
         orphan2[0].parentID = 200000
 
-        makeAssertions(pages: pages)
+        try makeAssertions(pages: pages)
     }
 
     func testHierachyListRepresentationRoundtrip() throws {
         let roundtrip: (String) throws -> Void = { string in
             let pages = try Array<Page>(hierarchyListRepresentation: string, context: self.mainContext)
-            XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
+            try XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
         }
 
         try roundtrip("""
@@ -164,7 +160,7 @@ class PagesListTests: CoreDataTestCase {
         return pages
     }
 
-    private func makeAssertions(pages: [Page], file: StaticString = #file, line: UInt = #line) {
+    private func makeAssertions(pages: [Page], file: StaticString = #file, line: UInt = #line) throws {
         var start: CFAbsoluteTime
 
         start = CFAbsoluteTimeGetCurrent()
@@ -172,9 +168,7 @@ class PagesListTests: CoreDataTestCase {
         NSLog("hierarchySort took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
         start = CFAbsoluteTimeGetCurrent()
-        let pageTree = PageTree()
-        pageTree.add(pages)
-        let new = pageTree.hierarchyList()
+        let new = try PageTree.hierarchyList(of: pages)
         NSLog("PageTree took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
         start = CFAbsoluteTimeGetCurrent()
