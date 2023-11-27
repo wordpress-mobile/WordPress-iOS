@@ -1,8 +1,8 @@
 import XCTest
 @testable import WordPress
 
-final class ThumbnailCollectionTests: XCTestCase {
-    private var subject: ThumbnailCollection?
+final class StockPhotosThumbnailCollectionTests: XCTestCase {
+    private var subject: StockPhotosMedia.ThumbnailCollection?
 
     private struct MockValues {
         static let largeURL = URL(string: "https://images.pexels.com/photos/946630/pexels-photo-946630.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")!
@@ -14,11 +14,11 @@ final class ThumbnailCollectionTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let json = Bundle(for: ThumbnailCollectionTests.self).url(forResource: "thumbnail-collection", withExtension: "json")!
+        let json = Bundle(for: StockPhotosThumbnailCollectionTests.self).url(forResource: "thumbnail-collection", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
-        subject = try! jsonDecoder.decode(ThumbnailCollection.self, from: data)
+        subject = try! jsonDecoder.decode(StockPhotosMedia.ThumbnailCollection.self, from: data)
     }
 
     override func tearDown() {

@@ -1,17 +1,5 @@
 import Foundation
 
-/// A media asset protocol used to export media from external sources
-///
-protocol MediaExternalAsset {
-
-    /// The external URL
-    var URL: URL { get }
-    /// Asset name
-    var name: String { get }
-    // Caption
-    var caption: String { get }
-}
-
 enum MediaExternalExporterError: MediaExportError {
     case unknownError
 
@@ -45,20 +33,20 @@ class MediaExternalExporter: MediaExporter {
 
     var mediaDirectoryType: MediaDirectory = .uploads
 
-    let asset: MediaExternalAsset
+    let asset: ExternalMediaAsset
 
-    init(externalAsset: MediaExternalAsset) {
+    init(externalAsset: ExternalMediaAsset) {
         asset = externalAsset
     }
 
     /// Downloads and export the external media asset
     ///
     func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
-        if asset.URL.isGif {
-            return downloadGif(from: asset.URL, onCompletion: onCompletion, onError: onError)
+        if asset.largeURL.isGif {
+            return downloadGif(from: asset.largeURL, onCompletion: onCompletion, onError: onError)
         }
 
-        WPImageSource.shared().downloadImage(for: asset.URL, withSuccess: { (image) in
+        WPImageSource.shared().downloadImage(for: asset.largeURL, withSuccess: { (image) in
             self.imageDownloaded(image: image, error: nil, onCompletion: onCompletion, onError: onError)
         }) { (error) in
             self.imageDownloaded(image: nil, error: error, onCompletion: onCompletion, onError: onError)

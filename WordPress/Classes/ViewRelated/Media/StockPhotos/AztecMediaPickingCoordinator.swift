@@ -3,20 +3,15 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & TenorPickerDelegate
-    private weak var delegate: PickersDelegate?
-    private var tenor: TenorPicker?
-    private let stockPhotos = StockPhotosPicker()
+    private weak var delegate: ExternalMediaPickerViewDelegate?
 
-    init(delegate: PickersDelegate) {
+    init(delegate: ExternalMediaPickerViewDelegate) {
         self.delegate = delegate
-        stockPhotos.delegate = delegate
     }
 
-    func present(context: MediaPickingContext) {
-        let origin = context.origin
-        let blog = context.blog
-        let fromView = context.view
+    func present(in origin: UIViewController & UIDocumentPickerDelegate,
+                 blog: Blog) {
+        let fromView = origin.view ?? UIView()
 
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
@@ -62,14 +57,13 @@ final class AztecMediaPickingCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
-        stockPhotos.presentPicker(origin: origin, blog: blog)
+        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: true)
+            .showStockPhotosPicker(blog: blog, delegate: self)
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
-        let picker = TenorPicker()
-        picker.delegate = self
-        picker.presentPicker(origin: origin, blog: blog)
-        tenor = picker
+        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: true)
+            .showFreeGIFPicker(blog: blog, delegate: self)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
@@ -81,9 +75,8 @@ final class AztecMediaPickingCoordinator {
     }
 }
 
-extension AztecMediaPickingCoordinator: TenorPickerDelegate {
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
-        delegate?.tenorPicker(picker, didFinishPicking: assets)
-        tenor = nil
+extension AztecMediaPickingCoordinator: ExternalMediaPickerViewDelegate {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset]) {
+        delegate?.externalMediaPickerViewController(viewController, didFinishWithSelection: selection)
     }
 }
