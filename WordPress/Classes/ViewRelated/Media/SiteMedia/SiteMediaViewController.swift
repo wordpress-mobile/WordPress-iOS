@@ -82,7 +82,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
             }
         ])
 
-        let button = UIButton.makeMenuItem(title: Strings.title, menu: menu)
+        let button = UIButton.makeMenu(title: Strings.title, menu: menu)
         self.buttonFilter = button
         if UIDevice.isPad() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)

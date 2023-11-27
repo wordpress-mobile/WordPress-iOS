@@ -3,7 +3,7 @@ import UIKit
 extension UIButton {
     /// Creates a bar button item that looks like the native title menu
     /// (see `navigationItem.titleMenuProvider`, iOS 16+).
-    static func makeMenuItem(title: String, menu: UIMenu) -> UIButton {
+    static func makeMenu(title: String, menu: UIMenu) -> UIButton {
         let button = UIButton(configuration: {
             var configuration = UIButton.Configuration.plain()
             configuration.title = title
