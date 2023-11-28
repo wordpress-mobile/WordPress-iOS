@@ -10226,6 +10226,7 @@
 				0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */,
 				FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */,
 				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
+				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -12600,7 +12601,6 @@
 				0C1DB5FE2B095DA50028F200 /* ImageView.swift */,
 				7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */,
 				0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */,
-				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
 				1782BE831E70063100A91E7D /* MediaItemViewController.swift */,
 				177074841FB209F100951A4A /* CircularProgressView.swift */,
 				981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */,
