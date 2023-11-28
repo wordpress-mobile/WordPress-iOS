@@ -306,7 +306,7 @@ class MediaImportService: NSObject {
     }
 
     /// Generate a thumbnail image for the `Media` so that consumers of the `absoluteThumbnailLocalURL` property
-    /// will have an image ready to load, without using the async methods provided via `MediaThumbnailService`.
+    /// will have an image ready to load, without using the async methods provided via `MediaImageService`.
     ///
     /// This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
     ///

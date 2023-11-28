@@ -299,7 +299,6 @@
 		08799C252A334645005317F7 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08799C242A334645005317F7 /* Spacing.swift */; };
 		08799C262A334645005317F7 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08799C242A334645005317F7 /* Spacing.swift */; };
 		0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0879FC151E9301DD00E1EFC8 /* MediaTests.swift */; };
-		087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */; };
 		0880BADC29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */; };
 		0880BADD29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */; };
 		088134FF2A56C5240027C086 /* CompliancePopoverViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088134FE2A56C5240027C086 /* CompliancePopoverViewModelTests.swift */; };
@@ -5254,7 +5253,6 @@
 		FABB257E2602FC2C00C8785C /* MessageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* MessageAnimator.swift */; };
 		FABB257F2602FC2C00C8785C /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
 		FABB25802602FC2C00C8785C /* WPStyleGuide+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */; };
-		FABB25812602FC2C00C8785C /* MediaThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */; };
 		FABB25822602FC2C00C8785C /* MediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */; };
 		FABB25832602FC2C00C8785C /* ReaderRelatedPostsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */; };
 		FABB25842602FC2C00C8785C /* NoResultsViewController+FollowedSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */; };
@@ -5999,7 +5997,6 @@
 		0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentRepositoryUtility.swift; sourceTree = "<group>"; };
 		08799C242A334645005317F7 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		0879FC151E9301DD00E1EFC8 /* MediaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTests.swift; sourceTree = "<group>"; };
-		087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailService.swift; sourceTree = "<group>"; };
 		0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+DesignSystem.swift"; sourceTree = "<group>"; };
 		088134FE2A56C5240027C086 /* CompliancePopoverViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverViewModelTests.swift; sourceTree = "<group>"; };
 		0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLIncrementalFilenameTests.swift; sourceTree = "<group>"; };
@@ -10784,7 +10781,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -14269,7 +14266,6 @@
 				FF5371621FDFF64F00619A3F /* MediaService.swift */,
 				FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */,
 				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
-				087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */,
 				0C75E26D2A9F63CB00B784E5 /* MediaImageService.swift */,
 				08AAD69D1CBEA47D002B2418 /* MenusService.h */,
 				08AAD69E1CBEA47D002B2418 /* MenusService.m */,
@@ -19134,13 +19130,13 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
@@ -20746,11 +20742,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -20919,13 +20915,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22692,7 +22688,6 @@
 				C77FC90F2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */,
 				FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */,
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
-				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
 				F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
 				FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */,
@@ -25535,7 +25530,6 @@
 				C3AB4879292F114A001F7AF8 /* UIApplication+AppAvailability.swift in Sources */,
 				FABB257F2602FC2C00C8785C /* JetpackRestoreOptionsViewController.swift in Sources */,
 				FABB25802602FC2C00C8785C /* WPStyleGuide+Loader.swift in Sources */,
-				FABB25812602FC2C00C8785C /* MediaThumbnailService.swift in Sources */,
 				FABB25822602FC2C00C8785C /* MediaExporter.swift in Sources */,
 				1756DBE028328B76006E6DB9 /* DonutChartView.swift in Sources */,
 				8B15CDAC27EB89AD00A75749 /* BlogDashboardPostsParser.swift in Sources */,
@@ -30340,7 +30334,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30421,12 +30415,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */ = {
