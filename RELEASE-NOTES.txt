@@ -5,6 +5,7 @@
 * [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
 * [**] [internal] Remove WPMediaPicker dependency [#22103]
 * [*] [internal] Remove WPMediaPicker dependency from Tenor and Stock Photos pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService [#22106]
 
 23.8
 -----
