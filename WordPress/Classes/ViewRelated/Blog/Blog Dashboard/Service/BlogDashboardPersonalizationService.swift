@@ -118,7 +118,7 @@ private func makeKey(for card: DashboardCard) -> String? {
         // It no longer does, but it's important to keep the flag around for
         // users that hidden it using this flag.
         return "quick-start-card-enabled-site-settings"
-    case .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty:
+    case .jetpackBadge, .jetpackInstall, .jetpackSocial, .bloganuaryNudge, .failure, .ghost, .personalize, .empty:
         return nil
     }
 }
