@@ -299,7 +299,7 @@ extension MediaImageService {
         /// similar situations.
         case small
 
-        /// A medium thumbnail thumbnail that can typically be used to fit
+        /// A large thumbnail thumbnail that can typically be used to fit
         /// the entire screen on iPhone or a large portion of the sreen on iPad.
         case large
 
