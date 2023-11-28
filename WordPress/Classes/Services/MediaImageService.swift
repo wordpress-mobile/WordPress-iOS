@@ -59,7 +59,7 @@ final class MediaImageService {
     func image(for media: Media, size: ImageSize) async throws -> UIImage {
         let media = try await getSafeMedia(for: media)
         switch size {
-        case .small, .medium:
+        case .small, .large:
             return try await thumbnail(for: media, size: size)
         case .original:
             return try await originalImage(for: media)
@@ -170,6 +170,13 @@ final class MediaImageService {
 
     /// Generates a thumbnail from a local asset and saves it in cache.
     private func localThumbnail(for media: SafeMedia, size: ImageSize) async -> UIImage? {
+        guard let url = await generateLocalThumbnail(for: media, size: size) else {
+            return nil
+        }
+        return try? await ImageDecoder.makeImage(from: url)
+    }
+
+    private func generateLocalThumbnail(for media: SafeMedia, size: ImageSize) async -> URL? {
         guard let sourceURL = media.absoluteLocalURL else {
             return nil
         }
@@ -180,17 +187,12 @@ final class MediaImageService {
         }
         guard exporter.supportsThumbnailExport(forFile: sourceURL),
               let (_, export) = try? await exporter.exportThumbnail(forFileURL: sourceURL),
-              let image = try? await ImageDecoder.makeImage(from: export.url)
+              let thumbnailURL = getCachedThumbnailURL(for: media.mediaID, size: size)
         else {
             return nil
         }
-
-        // The order is important to ensure `export.url` still exists when creating an image
-        if let thumbnailURL = getCachedThumbnailURL(for: media.mediaID, size: size) {
-            try? FileManager.default.moveItem(at: export.url, to: thumbnailURL)
-        }
-
-        return image
+        try? FileManager.default.moveItem(at: export.url, to: thumbnailURL)
+        return thumbnailURL
     }
 
     @MainActor
@@ -200,6 +202,17 @@ final class MediaImageService {
         exporter.options.preferredSize = MediaImageService.getThumbnailSize(for: media, size: size)
         exporter.options.scale = 1 // In pixels
         return exporter
+    }
+
+    /// - warning: This method was added only for backward-compatability with
+    /// the editor that relies on using URLs for displaying the preview thumbnail
+    /// while the image is loaded.
+    public func getThumbnailURL(for media: Media, _ completion: @escaping (URL?) -> Void) {
+        let media = SafeMedia(media)
+        Task {
+            let url = await generateLocalThumbnail(for: media, size: .large)
+            completion(url)
+        }
     }
 
     // MARK: - Remote Thumbnail
@@ -286,9 +299,9 @@ extension MediaImageService {
         /// similar situations.
         case small
 
-        /// A medium thumbnail thumbnail that can typically be used to fit
+        /// A large thumbnail thumbnail that can typically be used to fit
         /// the entire screen on iPhone or a large portion of the sreen on iPad.
-        case medium
+        case large
 
         /// Loads an original image.
         case original
@@ -329,7 +342,7 @@ extension MediaImageService {
             let targetSide = (availableWidth / CGFloat(itemPerRow)).rounded(.down)
             let targetSize = CGSize(width: targetSide, height: targetSide)
             return targetSize.scaled(by: UIScreen.main.scale)
-        case .medium:
+        case .large:
             let side = min(1024, minScreenSide * UIScreen.main.scale)
             return CGSize(width: side, height: side)
         case .original:

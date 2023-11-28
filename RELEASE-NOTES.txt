@@ -5,6 +5,7 @@
 * [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
 * [**] [internal] Remove WPMediaPicker dependency [#22103]
 * [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
 
 23.8
 -----
