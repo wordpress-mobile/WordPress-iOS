@@ -28,16 +28,33 @@ final class AppSettingsTests: XCTestCase {
     }
 
     func testImageOptimizationEnabledByDefault() throws {
-        try TabNavComponent().goToMeScreen().goToAppSettings().verifyImageOptimizationSwitch(enabled: true)
+        try TabNavComponent()
+            .goToMeScreen()
+            .goToAppSettings()
+            .verifyImageOptimizationSwitch(enabled: true)
     }
 
     func testImageOptimizationIsTurnedOnEditor() throws {
-        try TabNavComponent().goToBlockEditorScreen().addImage().chooseOptimizeImages(option: true).closeEditor()
-        try TabNavComponent().goToMeScreen().goToAppSettings().verifyImageOptimizationSwitch(enabled: true)
+        try TabNavComponent()
+            .goToBlockEditorScreen()
+            .addImage()
+            .chooseOptimizeImages(option: true)
+            .closeEditor()
+        try TabNavComponent()
+            .goToMeScreen()
+            .goToAppSettings()
+            .verifyImageOptimizationSwitch(enabled: true)
     }
 
     func testImageOptimizationIsTurnedOffEditor() throws {
-        try TabNavComponent().goToBlockEditorScreen().addImage().chooseOptimizeImages(option: false).closeEditor()
-        try TabNavComponent().goToMeScreen().goToAppSettings().verifyImageOptimizationSwitch(enabled: false)
+        try TabNavComponent()
+            .goToBlockEditorScreen()
+            .addImage()
+            .chooseOptimizeImages(option: false)
+            .closeEditor()
+        try TabNavComponent()
+            .goToMeScreen()
+            .goToAppSettings()
+            .verifyImageOptimizationSwitch(enabled: false)
     }
 }
