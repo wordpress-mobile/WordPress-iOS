@@ -3,10 +3,20 @@ import XCTest
 
 final class AppSettingsTests: XCTestCase {
 
+    let testsRequiringAppDeletion = [
+        "testImageOptimizationEnabledByDefault",
+        "testImageOptimizationIsTurnedOnEditor",
+        "testImageOptimizationIsTurnedOffEditor"
+    ]
+
     @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
-        setUpTestSuite(removeBeforeLaunching: true)
+
+        let removeBeforeLaunching = testsRequiringAppDeletion.contains { testName in
+            self.name.contains(testName)
+        }
+        setUpTestSuite(removeBeforeLaunching: removeBeforeLaunching)
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
