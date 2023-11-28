@@ -188,6 +188,7 @@ class RegisterDomainCoordinator {
                 }
             }) { domain in
                 self.domainPurchasedCallback?(viewController, domain)
+                WPAnalytics.track(.purchaseDomainCompleted)
             }
         }
 
