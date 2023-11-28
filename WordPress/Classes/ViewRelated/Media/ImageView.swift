@@ -2,7 +2,7 @@ import UIKit
 import Gifu
 
 /// A simple image view that supports rendering both static and animated images
-/// (see ``AnimatedImageWrapper``).
+/// (see ``AnimatedImage``).
 @MainActor
 final class ImageView: UIView {
     let imageView = GIFImageView()
@@ -96,7 +96,7 @@ final class ImageView: UIView {
                 makeSpinner().startAnimating()
             }
         case .success(let image):
-            if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+            if let gif = image as? AnimatedImage, let data = gif.gifData {
                 imageView.animate(withGIFData: data)
             } else {
                 imageView.image = image
