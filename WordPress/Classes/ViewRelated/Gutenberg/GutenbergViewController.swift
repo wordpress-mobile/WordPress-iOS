@@ -643,7 +643,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentSiteMediaPickere(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
+        mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
                 return
