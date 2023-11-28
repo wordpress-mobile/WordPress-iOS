@@ -10330,6 +10330,16 @@
 			path = BlogPersonalization;
 			sourceTree = "<group>";
 		};
+		0CB786102B161BE800DF7625 /* Crop */ = {
+			isa = PBXGroup;
+			children = (
+				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
+				B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */,
+				B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */,
+			);
+			path = Crop;
+			sourceTree = "<group>";
+		};
 		0CD9CCA12AD8313E0044A33C /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -12585,14 +12595,12 @@
 				0C0AD1082B0CCEC900EC06E6 /* Preview */,
 				C87501EF243AEC290002CD60 /* Tenor */,
 				D8A3A5AD206A059100992576 /* StockPhotos */,
+				0CB786102B161BE800DF7625 /* Crop */,
 				FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */,
 				0C1DB5FE2B095DA50028F200 /* ImageView.swift */,
 				7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */,
 				0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */,
 				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
-				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
-				B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */,
-				B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */,
 				1782BE831E70063100A91E7D /* MediaItemViewController.swift */,
 				177074841FB209F100951A4A /* CircularProgressView.swift */,
 				981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */,
