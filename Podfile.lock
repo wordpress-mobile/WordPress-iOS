@@ -78,7 +78,6 @@ PODS:
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
   - WordPressUI (1.15.0)
-  - WPMediaPicker (1.8.10)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -125,7 +124,6 @@ DEPENDENCIES:
   - WordPressKit (~> 8.11)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
-  - WPMediaPicker (>= 1.8.10, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -162,7 +160,6 @@ SPEC REPOS:
     - WordPressKit
     - WordPressShared
     - WordPressUI
-    - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -219,7 +216,6 @@ SPEC CHECKSUMS:
   WordPressKit: 13e01ed70f6ab2397c228959bc47cb2073521f63
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
-  WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -230,6 +226,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: beaa30560a95fe4f9e8153c20fa4b4ae54be1fd5
+PODFILE CHECKSUM: 2edd8f6d2c7475c9aeda02ae80af96002ff1ca8b
 
 COCOAPODS: 1.14.2

@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import PhotosUI
 
-/// Encapsulates importing assets such as PHAssets, images, videos, or files at URLs to Media objects.
+/// Encapsulates importing assets such as images, videos, or files at URLs to Media objects.
 ///
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
@@ -232,7 +232,7 @@ class MediaImportService: NSObject {
         return self.import(exportable, to: media, options: options, completion: completion)
     }
 
-    /// Imports media from a PHAsset to the Media object, asynchronously.
+    /// Imports media from exportable assets to the Media object, asynchronously.
     ///
     /// - Parameters:
     ///     - exportable: the exportable resource where data will be read from.
@@ -279,12 +279,6 @@ class MediaImportService: NSObject {
 
     private func makeExporter(for exportable: ExportableAsset, options: ExportOptions) -> MediaExporter? {
         switch exportable {
-        case let asset as PHAsset:
-            let exporter = MediaAssetExporter(asset: asset)
-            exporter.imageOptions = options.imageOptions
-            exporter.videoOptions = options.videoOptions
-            exporter.allowableFileExtensions = options.allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : options.allowableFileExtensions
-            return exporter
         case let provider as NSItemProvider:
             let exporter = ItemProviderMediaExporter(provider: provider)
             exporter.imageOptions = options.imageOptions
@@ -341,8 +335,6 @@ class MediaImportService: NSObject {
         // Write an error logging message to help track specific sources of export errors.
         var errorLogMessage = "Error occurred importing to Media"
         switch error {
-        case is MediaAssetExporter.AssetExportError:
-            errorLogMessage.append(" with asset export error")
         case is MediaImageExporter.ImageExportError:
             errorLogMessage.append(" with image export error")
         case is MediaURLExporter.URLExportError:
