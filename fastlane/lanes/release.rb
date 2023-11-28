@@ -213,6 +213,7 @@ platform :ios do
 
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
     build_code_hotfix = build_code_hotfix(release_version: new_version)
+    build_code_hotfix_internal = build_code_hotfix_internal(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -226,7 +227,7 @@ platform :ios do
       • New release version and build code: #{new_version} (#{build_code_hotfix}).
 
       • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
-      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal(release_version: new_version)}).
+      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal}).
 
       Branching from tag: #{previous_version}
     MESSAGE
