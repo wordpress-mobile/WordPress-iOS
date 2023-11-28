@@ -22,6 +22,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case domainManagement
     case plansInSiteCreation
     case readerImprovements // pcdRpT-3Eb-p2
+    case bloganuaryDashboardNudge // pcdRpT-4FE-p2
 
     var defaultValue: Bool {
         switch self {
@@ -65,6 +66,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .readerImprovements:
             return true
+        case .bloganuaryDashboardNudge:
+            return false
         }
     }
 
@@ -111,6 +114,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "plans_in_site_creation"
         case .readerImprovements:
             return "reader_improvements"
+        case .bloganuaryDashboardNudge:
+            return "bloganuary_dashboard_nudge"
         }
     }
 
@@ -156,6 +161,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Plans in Site Creation"
         case .readerImprovements:
             return "Reader Improvements v1"
+        case .bloganuaryDashboardNudge:
+            return "Bloganuary Dashboard Nudge"
         }
     }
 
