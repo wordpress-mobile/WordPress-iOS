@@ -976,7 +976,7 @@ import Foundation
         case .domainsSearchRowSelected:
             return "domain_management_domains_search_row_selected"
         case .purchaseDomainSiteSelected:
-            return "domain_management_purchase_domain_site_selected"
+            return "site_switcher_domain_site_selected"
         case .purchaseDomainScreenShown:
             return "domain_management_purchase_domain_screen_shown"
         case .purchaseDomainGetDomainTapped:
