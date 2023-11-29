@@ -2,6 +2,8 @@ import SwiftUI
 
 class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
+    private var blog: Blog?
+
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
@@ -11,12 +13,12 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         // to avoid additional trailing padding.
         frameView.hideHeader()
 
-        frameView.onEllipsisButtonTap = { }
-        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        let action = BlogDashboardHelpers.makeHideCardAction {
-            // TODO: Implement hide card logic.
+        if let blog {
+            frameView.onEllipsisButtonTap = { }
+            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
+            frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
         }
-        frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
 
         return frameView
     }()
@@ -32,6 +34,8 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.blog = blog
+
         let hostView = UIView.embedSwiftUIView(BloganuaryNudgeCardView())
         cardFrameView.add(subview: hostView)
 
