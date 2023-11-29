@@ -1,13 +1,13 @@
 import SwiftUI
 
 public struct DSButtonStyle {
-    public enum Emphasis {
+    public enum Emphasis: CaseIterable {
         case primary
         case secondary
         case tertiary
     }
 
-    public enum Size {
+    public enum Size: CaseIterable {
         case large
         case medium
         case small

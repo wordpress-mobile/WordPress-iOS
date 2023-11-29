@@ -3,61 +3,48 @@ import SwiftUI
 struct DSButtonGallery: View {
     var body: some View {
         List {
-            Section("Large") {
-                DSButton(title: "Primary", style: .init(emphasis: .primary, size: .large)) { () }
-                DSButton(title: "Secondary", style: .init(emphasis: .secondary, size: .large)) { () }
-                DSButton(title: "Tertiary", style: .init(emphasis: .tertiary, size: .large)) { () }
-                DSButton(title: "Primary Disabled", style: .init(emphasis: .primary, size: .large)) { () }
-                    .disabled(true)
-                DSButton(title: "Secondary Disabled", style: .init(emphasis: .secondary, size: .large)) { () }
-                    .disabled(true)
-                DSButton(title: "Tertiary Disabled", style: .init(emphasis: .tertiary, size: .large)) { () }
-                    .disabled(true)
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: Length.Padding.split, leading: 0, bottom: Length.Padding.split, trailing: 0))
+            ForEach(DSButtonStyle.Size.allCases, id: \.title) { size in
+                Section(size.title) {
+                    ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
+                        DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
+                    }
 
-            Section("Medium") {
-                HStack {
-                    Spacer()
-                    VStack(alignment: .center, spacing: Length.Padding.medium) {
-                        DSButton(title: "Primary", style: .init(emphasis: .primary, size: .medium)) { () }
-                        DSButton(title: "Secondary", style: .init(emphasis: .secondary, size: .medium)) { () }
-                        DSButton(title: "Tertiary", style: .init(emphasis: .tertiary, size: .medium)) { () }
-                        DSButton(title: "Primary Disabled", style: .init(emphasis: .primary, size: .medium)) { () }
-                            .disabled(true)
-                        DSButton(title: "Secondary Disabled", style: .init(emphasis: .secondary, size: .medium)) { () }
-                            .disabled(true)
-                        DSButton(title: "Tertiary Disabled", style: .init(emphasis: .tertiary, size: .medium)) { () }
+                    ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
+                        DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
                             .disabled(true)
                     }
-                    Spacer()
                 }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+                .listRowInsets(.init(top: Length.Padding.split, leading: 0, bottom: Length.Padding.split, trailing: 0))
             }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-
-            Section("Small") {
-                HStack {
-                    Spacer()
-                    VStack(alignment: .center, spacing: Length.Padding.medium) {
-                        DSButton(title: "Primary", style: .init(emphasis: .primary, size: .small)) { () }
-                        DSButton(title: "Secondary", style: .init(emphasis: .secondary, size: .small)) { () }
-                        DSButton(title: "Tertiary", style: .init(emphasis: .tertiary, size: .small)) { () }
-                        DSButton(title: "Primary Disabled", style: .init(emphasis: .primary, size: .small)) { () }
-                            .disabled(true)
-                        DSButton(title: "Secondary Disabled", style: .init(emphasis: .secondary, size: .small)) { () }
-                            .disabled(true)
-                        DSButton(title: "Tertiary Disabled", style: .init(emphasis: .tertiary, size: .small)) { () }
-                            .disabled(true)
-                    }
-                    Spacer()
-                }
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
+            .navigationTitle("DSButton")
         }
-        .navigationTitle("DSButton")
+    }
+}
+
+private extension DSButtonStyle.Size {
+    var title: String {
+        switch self {
+        case .large:
+            return "Large"
+        case .medium:
+            return "Medium"
+        case .small:
+            return "Small"
+        }
+    }
+}
+
+private extension DSButtonStyle.Emphasis {
+    var title: String {
+        switch self {
+        case .primary:
+            return "Primary"
+        case .secondary:
+            return "Secondary"
+        case .tertiary:
+            return "Tertiary"
+        }
     }
 }

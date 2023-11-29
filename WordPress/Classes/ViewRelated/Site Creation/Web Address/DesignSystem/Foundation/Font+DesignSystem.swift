@@ -2,10 +2,10 @@ import SwiftUI
 
 public extension Font {
     enum DS {
-        public static let heading1 = Font.largeTitle
-        public static let heading2 = Font.title
-        public static let heading3 = Font.title2
-        public static let heading4 = Font.title3
+        public static let heading1 = Font.largeTitle.weight(.semibold)
+        public static let heading2 = Font.title.weight(.semibold)
+        public static let heading3 = Font.title2.weight(.semibold)
+        public static let heading4 = Font.title3.weight(.semibold)
 
         public enum Body {
             public static let small = Font.subheadline
