@@ -6,6 +6,7 @@
 	<array>
 		<string>webcredentials:wordpress.com</string>
 		<string>applinks:wordpress.com</string>
+		<string>applinks:*.wordpress.com</string>
 		<string>applinks:apps.wordpress.com</string>
 		<string>applinks:links.wp.a8cmail.com</string>
 	</array>

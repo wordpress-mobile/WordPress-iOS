@@ -125,7 +125,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (~> 7.3)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `task/add-option-disable-webauthn`)
   - WordPressKit (~> 8.11)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
@@ -163,7 +163,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WordPressUI
@@ -184,6 +183,9 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.108.0.podspec
+  WordPressAuthenticator:
+    :branch: task/add-option-disable-webauthn
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -193,6 +195,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
+  WordPressAuthenticator:
+    :commit: 0e58dede2cb9f30979fff190d7a0081e703e9fec
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -240,6 +245,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 111cf685318a6ee88f6f6c75c044570fc8bf84f7
+PODFILE CHECKSUM: 6525f5eafbd12a89a0425cca6d323c8cb31fb235
 
 COCOAPODS: 1.14.2
