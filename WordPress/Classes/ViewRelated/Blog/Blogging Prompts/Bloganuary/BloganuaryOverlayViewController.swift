@@ -129,7 +129,6 @@ private struct BloganuaryOverlayView: View {
         }
     }
 
-    // TODO: Localize
     var descriptionList: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             ForEach(Strings.descriptions, id: \.self) {
@@ -143,14 +142,14 @@ private struct BloganuaryOverlayView: View {
             Divider()
                 .frame(maxWidth: .infinity)
             Group {
-                button
+                ctaButton
             }
             .padding(.top, 24.0)
             .padding(.horizontal, Metrics.horizontalPadding)
         }
     }
 
-    var button: some View {
+    var ctaButton: some View {
         Button {
             // TODO: Implement.
         } label: {
