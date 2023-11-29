@@ -239,6 +239,22 @@ import Foundation
     case domainTransferMoreTapped
     case domainTransferButtonTapped
 
+    // Domain Management
+    case meDomainsTapped
+    case domainsDashboardAllDomainsTapped
+    case domainsDashboardDomainsSearchShown
+    case domainsListShown
+    case allDomainsFindDomainTapped
+    case addDomainTapped
+    case domainsSearchTransferDomainTapped
+    case domainsSearchRowSelected
+    case siteSwitcherDomainSiteSelected
+    case purchaseDomainScreenShown
+    case purchaseDomainGetDomainTapped
+    case purchaseDomainChooseSiteTapped
+    case purchaseDomainCompleted
+    case myDomainsSearchDomainTapped
+
     // My Site
     case mySitePullToRefresh
 
@@ -937,6 +953,36 @@ import Foundation
             return "dashboard_card_domain_transfer_more_menu_tapped"
         case .domainTransferButtonTapped:
             return "dashboard_card_domain_transfer_button_tapped"
+
+        // Domain Management
+        case .meDomainsTapped:
+            return "me_all_domains_tapped"
+        case .domainsDashboardAllDomainsTapped:
+            return "domains_dashboard_all_domains_tapped"
+        case .domainsDashboardDomainsSearchShown:
+            return "domains_dashboard_domains_search_shown"
+        case .domainsListShown:
+            return "all_domains_domains_list_shown"
+        case .allDomainsFindDomainTapped:
+            return "domain_management_all_domains_find_domain_tapped"
+        case .addDomainTapped:
+            return "all_domains_add_domain_tapped"
+        case .domainsSearchTransferDomainTapped:
+            return "domains_dashboard_domains_search_transfer_domain_tapped"
+        case .domainsSearchRowSelected:
+            return "domain_management_domains_search_row_selected"
+        case .siteSwitcherDomainSiteSelected:
+            return "site_switcher_domain_site_selected"
+        case .purchaseDomainScreenShown:
+            return "domain_management_purchase_domain_screen_shown"
+        case .purchaseDomainGetDomainTapped:
+            return "domain_management_purchase_domain_get_domain_tapped"
+        case .purchaseDomainChooseSiteTapped:
+            return "domain_management_purchase_domain_choose_site_tapped"
+        case .purchaseDomainCompleted:
+            return "domain_management_purchase_domain_completed"
+        case .myDomainsSearchDomainTapped:
+            return "domain_management_my_domains_search_domain_tapped"
 
         // My Site
         case .mySitePullToRefresh:
