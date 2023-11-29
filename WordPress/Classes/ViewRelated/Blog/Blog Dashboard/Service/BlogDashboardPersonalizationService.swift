@@ -98,6 +98,8 @@ private func makeKey(for card: DashboardCard) -> String? {
         return "scheduled-posts-card-enabled-site-settings"
     case .blaze:
         return "blaze-card-enabled-site-settings"
+    case .bloganuaryNudge:
+        return "bloganuary-nudge-card-enabled-site-settings"
     case .prompts:
         // Warning: there is an irregularity with the prompts key that doesn't
         // have a "-card" component in the key name. Keeping it like this to
@@ -118,7 +120,7 @@ private func makeKey(for card: DashboardCard) -> String? {
         // It no longer does, but it's important to keep the flag around for
         // users that hidden it using this flag.
         return "quick-start-card-enabled-site-settings"
-    case .jetpackBadge, .jetpackInstall, .jetpackSocial, .bloganuaryNudge, .failure, .ghost, .personalize, .empty:
+    case .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty:
         return nil
     }
 }

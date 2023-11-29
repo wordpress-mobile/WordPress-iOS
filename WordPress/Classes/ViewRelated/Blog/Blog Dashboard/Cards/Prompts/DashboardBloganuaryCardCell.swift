@@ -92,7 +92,7 @@ private struct BloganuaryNudgeCardView: View {
             }
         }
         .padding(.top, 12.0)
-        .padding([.leading, .bottom, .trailing], 16.0)
+        .padding([.horizontal, .bottom], 16.0)
     }
 
     var bloganuaryImage: Image {
