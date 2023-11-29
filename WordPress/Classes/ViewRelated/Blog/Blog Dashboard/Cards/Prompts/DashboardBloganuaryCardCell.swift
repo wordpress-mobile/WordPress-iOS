@@ -23,14 +23,41 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         return frameView
     }()
 
-    static func shouldShowCard() -> Bool {
-        guard RemoteFeatureFlag.bloganuaryDashboardNudge.enabled() else {
+    /// Checks whether the Bloganuary nudge card should be shown on the dashboard.
+    ///
+    /// The card is only going to be shown in December, and will be hidden in January.
+    /// It's also going to be shown for blogs that are marked as potential blogs by the backend, regardless
+    /// of whether the user has manually disabled the blogging prompts.
+    ///
+    /// - Parameters:
+    ///   - blog: The current `Blog` instance.
+    ///   - date: The date to check. Defaults to today.
+    /// - Returns: `true` if the Bloganuary card should be shown. `false` otherwise.
+    static func shouldShowCard(for blog: Blog, date: Date = Date()) -> Bool {
+        guard RemoteFeatureFlag.bloganuaryDashboardNudge.enabled(),
+              let context = blog.managedObjectContext else {
             return false
         }
 
-        // TODO: Check if date is within December 2023.
-        // TODO: Further check if prompts can be enabled.
-        return true
+        // Check for date eligibility.
+        let isDateInDecember: Bool = {
+            let components = date.dateAndTimeComponents()
+            guard let month = components.month,
+                  let year = components.year else {
+                return false
+            }
+
+            // NOTE: For simplicity, we're going to hardcode the date check to December 2023.
+            // Let's revisit this later so this doesn't have to be changed every year.
+            return month == 11 && year == 2023
+        }()
+
+        // Check if the blog is marked as a potential blogging site.
+        let isPotentialBloggingSite: Bool = context.performAndWait {
+            return (try? BloggingPromptSettings.of(blog))?.isPotentialBloggingSite ?? false
+        }
+
+        return isDateInDecember && isPotentialBloggingSite
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {

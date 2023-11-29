@@ -119,7 +119,7 @@ enum DashboardCard: String, CaseIterable {
         case .todaysStats:
             return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .bloganuaryNudge:
-            return DashboardBloganuaryCardCell.shouldShowCard()
+            return DashboardBloganuaryCardCell.shouldShowCard(for: blog)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
