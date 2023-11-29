@@ -5,13 +5,18 @@ struct DSButtonGallery: View {
         List {
             ForEach(DSButtonStyle.Size.allCases, id: \.title) { size in
                 Section(size.title) {
-                    ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
-                        DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
-                    }
-
-                    ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
-                        DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
-                            .disabled(true)
+                    HStack {
+                        Spacer()
+                        VStack(spacing: Length.Padding.medium) {
+                            ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
+                                DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
+                            }
+                            ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
+                                DSButton(title: emphasis.title + " Disabled", style: .init(emphasis: emphasis, size: size)) { () }
+                                    .disabled(true)
+                            }
+                        }
+                        Spacer()
                     }
                 }
                 .listRowSeparator(.hidden)
