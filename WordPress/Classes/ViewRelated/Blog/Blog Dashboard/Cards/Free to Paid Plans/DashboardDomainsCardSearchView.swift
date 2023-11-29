@@ -58,7 +58,7 @@ private extension DashboardDomainsCardSearchView {
 
     enum Constants {
         static let iconName = "globe"
-        static let searchBarPlaceholder = "domain.blog"
+        static let searchBarPlaceholder = "yourgroovydomain.com"
     }
 
     enum Colors {
