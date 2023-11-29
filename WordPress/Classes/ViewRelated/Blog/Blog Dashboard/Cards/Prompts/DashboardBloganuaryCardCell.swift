@@ -21,14 +21,6 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         return frameView
     }()
 
-    private lazy var bloganuaryImageView: UIImageView = {
-        let icon = UIImage(named: "logo-bloganuary")?
-            .withRenderingMode(.alwaysTemplate)
-            .withTintColor(.label)
-
-        return .init(image: icon)
-    }()
-
     static func shouldShowCard() -> Bool {
         guard RemoteFeatureFlag.bloganuaryDashboardNudge.enabled() else {
             return false
