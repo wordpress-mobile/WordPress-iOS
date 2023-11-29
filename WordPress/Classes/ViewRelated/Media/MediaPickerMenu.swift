@@ -199,7 +199,7 @@ extension MediaPickerMenu {
 // MARK: - MediaPickerMenu (Stock Photo)
 
 extension MediaPickerMenu {
-    func makeStockPhotos(blog: Blog, delegate: StockPhotosPickerDelegate) -> UIAction {
+    func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromStockPhotos,
             image: UIImage(systemName: "photo.on.rectangle"),
@@ -208,24 +208,30 @@ extension MediaPickerMenu {
         )
     }
 
-    func showStockPhotosPicker(blog: Blog, delegate: StockPhotosPickerDelegate) {
-        guard let presentingViewController else { return }
+    func showStockPhotosPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
+        guard let presentingViewController,
+              let api = blog.wordPressComRestApi() else {
+            return
+        }
 
-        let picker = StockPhotosPicker()
+        let picker = ExternalMediaPickerViewController(
+            dataSource: StockPhotosDataSource(service: DefaultStockPhotosService(api: api)),
+            source: .stockPhotos,
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        picker.title = Strings.pickFromStockPhotos
+        picker.welcomeView = StockPhotosWelcomeView()
         picker.delegate = delegate
-        picker.allowMultipleSelection = isMultipleSelectionEnabled
-        let stockPhotosViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
 
-        objc_setAssociatedObject(stockPhotosViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let navigation = UINavigationController(rootViewController: picker)
+        presentingViewController.present(navigation, animated: true)
     }
-
-    private static var dataSourceAssociatedKey: UInt8 = 0
 }
 
 // MARK: - MediaPickerMenu (Free GIF, Tenor)
 
 extension MediaPickerMenu {
-    func makeFreeGIFAction(blog: Blog, delegate: TenorPickerDelegate) -> UIAction {
+    func makeFreeGIFAction(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromTenor,
             image: UIImage(systemName: "play.square.stack"),
@@ -234,18 +240,21 @@ extension MediaPickerMenu {
         )
     }
 
-    func showFreeGIFPicker(blog: Blog, delegate: TenorPickerDelegate) {
+    func showFreeGIFPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
         guard let presentingViewController else { return }
 
-        let picker = TenorPicker()
-        picker.allowMultipleSelection = isMultipleSelectionEnabled
+        let picker = ExternalMediaPickerViewController(
+            dataSource: TenorDataSource(service: TenorService()),
+            source: .tenor,
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        picker.title = Strings.pickFromTenor
+        picker.welcomeView = TenorWelcomeView()
         picker.delegate = delegate
-        let tenorViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
 
-        objc_setAssociatedObject(tenorViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let navigation = UINavigationController(rootViewController: picker)
+        presentingViewController.present(navigation, animated: true)
     }
-
-    private static var tenorPickerAssociatedKey: UInt8 = 0
 }
 
 extension MediaPickerMenu.MediaFilter {

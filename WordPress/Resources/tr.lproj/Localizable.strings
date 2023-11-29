@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-10 12:28:41+0000 */
+/* Translation-Revision-Date: 2023-11-15 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafik";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Aktarılan Alan Adı";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "%s öğesini şuna dönüştür:";
 
@@ -9609,6 +9612,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Uygulamada depolanan kullanıcı adı veya parolanın süresi geçmiş olabilir. Lütfen ayarlarda parolanızı tekrar girin ve tekrar deneyin.";
+
+/* An error message. */
+"common.unableToConnect" = "Bağlanamıyor";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Bu tanımlama bilgileri, kullanıcıların web sitelerimizle nasıl etkileşimde bulunduğu hakkında bilgi toplayarak performansı optimize etmemizi sağlar.";
 
@@ -9759,6 +9768,78 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Bir alan adı arayın";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Alan Adı Al";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Siteyi daha sonra ekleyin.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Sadece alan adı satın alın";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Süresi Dolmuş";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Yenilemeler";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Bir alan adı bulun";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Mükemmel alan adınızı bulmak için aşağıya tıklayın.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "Alan adınız yok";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Alan adlarınız yüklenirken bir hatayla karşılaştık. Sorun devam ederse lütfen desteğe başvurun.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Bir sorun oluştu";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Tekrar dene";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Lütfen ağ bağlantınızı kontrol edip tekrar deneyin.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "İnternet Bağlantısı Yok";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*Tüm ücretli yıllık paketlere bir yıllık ücretsiz alan adı dahildir";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Merak etmeyin, daha sonra site ekleyebilirsiniz.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Alan adınızı nasıl kullanacağınızı seçin";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Alan adı arayın";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "\"%@\" aramanızla eşleşen alan adı bulunamadı";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "Eşleşen Alan Adı Bulunamadı";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Site Seç";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "İlk yıl için ücretsiz alan adı*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Zaten başlatmış olduğunuz bir siteyle kullanın.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Var olan WordPress.com sitesi";
+
 /* Domain Management Screen Title */
 "domain.management.title" = "Tüm alan adları";
 
@@ -9795,11 +9876,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "yıllık";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Ödeme";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Kapat";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Maalesef eklemeye çalıştığınız alan adı şu anda Jetpack'ten satın alınamıyor.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Alan Adı Satın Alın";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Ara";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Site Seçin";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
@@ -10244,8 +10337,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Ekle";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "En Boy Oranı Izgarası";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Sil";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seç";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Paylaş";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "İptal et";
@@ -10279,6 +10381,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Aramanızla eşleşen ortam yok";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Seçilen öğeler paylaşılamadı.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Kare Izgara";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Ortam";
@@ -10502,11 +10610,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "diğer";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Ana sayfa";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Yerel değişiklikler";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "İnceleme bekliyor";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Gönderiler sayfası";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Gizli";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Ana sayfanız, Tema şablonunu kullanıyor ve web düzenleyicisinde açılacak.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Ana sayfa";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Sayfa başarıyla güncellendi";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Kalıcı Olarak Sil";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Bu sayfayı kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Kalıcı olarak silinsin mi?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Herkese ait sayfalar";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Bana ait sayfalar";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Çöp Kutusuna Taşı";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Bu sayfayı çöpe atmak istediğinizden emin misiniz?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Bu sayfa çöpe atılsın mı?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "İptal Et";
 
 /* No comment provided by engineer. */
 "password" = "parola";
@@ -10547,6 +10700,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Oluşturma tarihi: %@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Gönderi siliniyor...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Düzenlenme tarihi: %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Gönderi çöpe taşınıyor...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Yayımlanma tarihi: %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Zamanlanma tarihi: %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Çöpe atılma tarihi: %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "%@ tarafından.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Alıntı. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Yapışkan.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Sil";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "Paylaş";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Görüntüle";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Kapat";
 
@@ -10565,14 +10760,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Öne Çıkan Görseli Ayarla";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Gönderi ayarları güncellenemedi.";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Yüklemeyi iptal et";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Yorumlar";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Kalıcı olarak sil";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Taslağa taşı";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Çoğalt";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Sayfa nitelikleri";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Önizle";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Şimdi yayınla";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Tekrar dene";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Anasayfa olarak ayarla";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Üst öğe belirle";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Gönderiler sayfası olarak ayarla";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Normal sayfa olarak ayarla";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Ayarlar";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Paylaş";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "İstatistikler";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Çöp kutusuna taşı";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Görüntüle";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Sayfa kalıcı olarak silindi";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Gönderi kalıcı olarak silindi";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Sayfa çöpe taşındı";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "Gönderi çöpe taşındı";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Herkese ait gönderiler";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Bana ait gönderiler";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Daha fazla paylaşım için şimdi abone olun";
@@ -10790,6 +11054,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Yeni";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Alan adını aktar";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Zaten sahip olduğunuz bir alan adını aktarmak mı istiyorsunuz?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Benzer Yazılar, yazılarınızın altında sitenizden ilgili içerikler gösterir.";
 
@@ -10894,6 +11164,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Siteniz görüntülemeye hazır oluncaya kadar “Yakında” uyarısıyla birlikte ziyaretçilerden gizlenir.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Gizli";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-11-16 10:54:31+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "トラフィック";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "移管されたドメイン";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "%sを変換:";
 
@@ -9603,6 +9606,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ への返信";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "アプリに格納されているユーザー名またはパスワードが古い可能性があります。 設定にパスワードを再度入力して、もう一度お試しください。";
+
+/* An error message. */
+"common.unableToConnect" = "連携できません";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "これらの Cookie を使用することにより、ユーザーによるサイトの利用状況に関する情報が収集され、パフォーマンスが最適化されます。";
 
@@ -9753,6 +9762,78 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "非表示";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "ドメインを検索";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "ドメインを取得";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "サイトは後で追加します。";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "ドメインだけを購入";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "期限切れ";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "更新";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "ドメインを探す";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "以下をタップして最適なドメインを見つけてください。";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "ドメインがありません";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "ドメインの読み込み中にエラーが発生しました。 問題が解決しない場合は、サポートにご連絡ください。";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "エラーが発生しました";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "再試行";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "ネットワーク接続を確認して、もう一度お試しください。";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "インターネットに接続していません";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* すべての有料年間プランに1年間の無料ドメインが含まれています";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "サイトは後から簡単に追加できます。";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "ドメインの使用方法を選択してください";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "ドメインを検索";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "「%@」の検索に一致するドメインが見つかりませんでした";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "一致するドメインは見つかりませんでした";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "サイトを選択";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "ドメインは最初の1年間無料 *";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "お持ちのサイトと一緒に使用しましょう。";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "既存の WordPress.com サイト";
+
 /* Domain Management Screen Title */
 "domain.management.title" = "すべてのドメイン";
 
@@ -9789,11 +9870,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/ 年";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "購入手続き";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "閉じる";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "追加しようとしているドメインは現在 Jetpack アプリでは購入できません。";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "ドメインを購入する";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "検索";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "サイトを選択";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
@@ -10238,8 +10331,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "追加";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "縦横比グリッド";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "削除";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選択";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "共有";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "キャンセル";
@@ -10273,6 +10375,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "検索と一致するメディアがありません";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "選択したアイテムを共有できません。";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "正方形グリッド";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "メディア";
@@ -10496,11 +10604,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "その他";
 
+/* Badge for page cells */
+"pageList.badgeHomepage" = "ホームページ";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "ローカルの変更";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "レビュー待ち";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "投稿ページ";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "非公開";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "ホームページ";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "ページの更新に成功しました";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "完全に削除";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "このページを完全に削除しますか ?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "完全に削除しますか ?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "全員のページ";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "自分のページ";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "ゴミ箱に移動";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "本当にこのページをゴミ箱に移動しますか ?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "このページをゴミ箱に移動しますか ?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "キャンセル";
 
 /* No comment provided by engineer. */
 "password" = "パスワード";
@@ -10541,6 +10694,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "%@に作成済み";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "投稿を削除中...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "%@に編集済み";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "投稿をゴミ箱に移動中...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "%@に公開";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "%@に予約";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "%@にゴミ箱に移動";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "作成者: %@。";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "抜粋: %@。";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "先頭固定表示。";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@、%2$@。";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "ゴミ箱";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "共有";
+
+/* Swipe action title */
+"postList.swipeActionView" = "表示";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "閉じる";
 
@@ -10559,14 +10754,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "投稿設定を更新できませんでした";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "アップロードのキャンセル";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "コメント";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "完全に削除";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "下書きに移動";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "複製";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "ページ属性";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "プレビュー";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "今すぐ公開";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "再試行";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "ホームページに設定する";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "親の設定";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "投稿ページとして設定";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "標準ページとして設定";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "設定";
+
+/* Share the post. */
+"posts.share.actionTitle" = "共有";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "統計情報";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "ゴミ箱に移動";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "表示";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "ページが完全に削除されました";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "投稿が完全に削除されました";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "ページをゴミ箱へ移動しました";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "投稿をゴミ箱へ移動しました";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "全員の投稿";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "自分の投稿";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
@@ -10784,6 +11048,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新規";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "ドメイン移管";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "すでにお持ちのドメインの転送を希望していますか ?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します。";
 
@@ -10885,6 +11155,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "プライバシー";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "閲覧の準備が整うまでは「まもなく公開予定」の通知が表示され、訪問者はサイトを閲覧できないようになっています。";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "非表示";

@@ -1,3 +1,12 @@
+23.9
+-----
+* [**] Add media fitlers to the Site Media screen [#22096]
+* [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
+* [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+* [**] [internal] Remove WPMediaPicker dependency [#22103]
+* [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
+
 23.8
 -----
 * [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
@@ -9,12 +18,14 @@
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
 * [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
 * [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
 * [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
 * [*] [internal] Add workarounds for large emoji on P2. [#22080]
 * [*] [Jetpack-only] Block Editor: Ensure text is always visible within Contact Info block [https://github.com/Automattic/jetpack/pull/33873]
 * [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
 * [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
+* [**] Refactor deleting media [#21748]
 
 23.7
 -----

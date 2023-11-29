@@ -31,6 +31,9 @@ struct DomainPurchaseChoicesView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Length.Padding.double)
         .background(Color.DS.Background.primary)
+        .onAppear {
+            WPAnalytics.track(.purchaseDomainScreenShown)
+        }
     }
 
     private var getDomainCard: some View {

@@ -906,21 +906,6 @@ extension WordPressAppDelegate {
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
 
-        // Media Picker styles
-        let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
-        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
-
-        let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = .listBackground
-        cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
-        cellAppearance.placeholderTintColor = .neutral(.shade5)
-        cellAppearance.setCellTintColor(.primary)
-
-        UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
-        WPActionBar.appearance().barBackgroundColor = .basicBackground
-        WPActionBar.appearance().lineColor = .basicBackground
-
         // Post Settings styles
         UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
         UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary

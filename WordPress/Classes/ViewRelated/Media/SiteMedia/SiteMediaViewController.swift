@@ -9,6 +9,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
     private lazy var buttonAddMedia = SpotlightableButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
+    private var buttonFilter: UIButton?
 
     private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
@@ -22,9 +23,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        if !UIDevice.isPad() {
-            title = Strings.title
-        }
         extendedLayoutIncludesOpaqueBars = true
     }
 
@@ -42,6 +40,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         configureAddMediaButton()
         configureDefaultNavigationBarAppearance()
+        configureNavigationTitle()
         refreshNavigationItems()
     }
 
@@ -64,6 +63,33 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     }
 
     // MARK: - Configuration
+
+    private func configureNavigationTitle() {
+        let menu = UIMenu(children: [
+            UIMenu(options: [.displayInline], children: SiteMediaFilter.allFilters.map { filter in
+                UIAction(title: filter.title, image: filter.image) { [weak self] _ in
+                    self?.didUpdateFilter(filter)
+                }
+            }),
+            UIDeferredMenuElement.uncached { [weak self] in
+                let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+                let action = UIAction(
+                    title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                    image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                        self?.collectionViewController.toggleAspectRatioMode()
+                    }
+                $0([action])
+            }
+        ])
+
+        let button = UIButton.makeMenu(title: Strings.title, menu: menu)
+        self.buttonFilter = button
+        if UIDevice.isPad() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        } else {
+            navigationItem.titleView = button
+        }
+    }
 
     private func configureAddMediaButton() {
         let button = self.buttonAddMedia
@@ -88,41 +114,27 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         navigationItem.rightBarButtonItems = {
             var rightBarButtonItems: [UIBarButtonItem] = []
 
-            func addEditingButtons() {
-                if isEditing {
-                    let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
-                    rightBarButtonItems.append(doneButton)
-                } else {
-                    let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-                    rightBarButtonItems.append(selectButton)
-                }
+            if !isEditing, blog.userCanUploadMedia {
+                configureAddMediaButton()
+                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
             }
 
-            func addMoreButton() {
-                if let menu = collectionViewController.makeMoreMenu() {
-                    rightBarButtonItems.append(UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu))
-                }
-            }
-
-            func addUploadButton() {
-                if !isEditing, blog.userCanUploadMedia {
-                    configureAddMediaButton()
-                    rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
-                }
-            }
-
-            if UIDevice.isPad() {
-                addEditingButtons()
-                addMoreButton()
-                addUploadButton()
-
+            if isEditing {
+                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                rightBarButtonItems.append(doneButton)
             } else {
-                addUploadButton()
-                addEditingButtons()
+                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+                rightBarButtonItems.append(selectButton)
             }
 
             return rightBarButtonItems
         }()
+    }
+
+    private func didUpdateFilter(_ filter: SiteMediaFilter) {
+        buttonFilter?.setTitle(filter.title, for: .normal)
+        buttonFilter?.sizeToFit() // Important!
+        collectionViewController.setMediaType(filter.mediaType)
     }
 
     // MARK: - Actions
@@ -301,4 +313,6 @@ private enum Strings {
     static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
     static let buttonShare = NSLocalizedString("mediaLibrary.buttonShare", value: "Share", comment: "Context menu button")
     static let buttonDelete = NSLocalizedString("mediaLibrary.buttonDelete", value: "Delete", comment: "Context menu button")
+    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
+    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }

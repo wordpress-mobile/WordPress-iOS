@@ -18,14 +18,7 @@ final class MediaRepository {
 
     /// Get the Media object from the server using the blog and the mediaID as the identifier of the resource
     func getMedia(withID mediaID: NSNumber, in blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<Media> {
-        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
-            let blog = try context.existingObject(with: blogID)
-            return remoteFactory.remote(for: blog)
-        }
-        guard let remote else {
-            throw MediaRepository.Error.remoteAPIUnavailable
-        }
-
+        let remote = try await remote(for: blogID)
         let remoteMedia: RemoteMedia? = try await withCheckedThrowingContinuation { continuation in
             remote.getMediaWithID(
                 mediaID, success: continuation.resume(returning:),
@@ -43,12 +36,57 @@ final class MediaRepository {
         }
     }
 
+    /// Deletes the Media object from the server. Note the Media is deleted, not trashed.
+    func delete(_ mediaID: TaggedManagedObjectID<Media>) async throws {
+        // Delete the media from WordPress Media Library
+        let queryResult: (MediaServiceRemote, RemoteMedia)? = try await coreDataStack.performQuery { [remoteFactory] context in
+            guard let media = try? context.existingObject(with: mediaID) else {
+                return nil
+            }
+            // No need to delete the media from Media Library if it's not synced
+            if media.remoteStatus != .sync {
+                return nil
+            }
+            let remote = try remoteFactory.remote(for: media.blog)
+            return (remote, RemoteMedia.from(media))
+        }
+        if let queryResult {
+            let (remote, remoteMedia) = queryResult
+
+            try await withCheckedThrowingContinuation { [remote] continuation in
+                remote.delete(
+                    remoteMedia,
+                    success: { continuation.resume(returning: ()) },
+                    failure: { continuation.resume(throwing: $0!) }
+                )
+            }
+        }
+
+        // Delete the media locally from Core Data.
+        //
+        // Considering the intent of calling this method is to delete the media object,
+        // when it doesn't exist, we can treat the flow as success, since the intent is fulfilled.
+        try? await coreDataStack.performAndSave { context in
+            let media = try context.existingObject(with: mediaID)
+            context.delete(media)
+        }
+    }
+
+}
+
+private extension MediaRepository {
+    func remote(for blogID: TaggedManagedObjectID<Blog>) async throws -> MediaServiceRemote {
+        try await coreDataStack.performQuery { [remoteFactory] context in
+            let blog = try context.existingObject(with: blogID)
+            return try remoteFactory.remote(for: blog)
+        }
+    }
 }
 
 @objc class MediaServiceRemoteFactory: NSObject {
 
-    @objc(remoteForBlog:)
-    func remote(for blog: Blog) -> MediaServiceRemote? {
+    @objc(remoteForBlog:error:)
+    func remote(for blog: Blog) throws -> MediaServiceRemote {
         if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi() {
             return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
@@ -57,7 +95,7 @@ final class MediaRepository {
             return MediaServiceRemoteXMLRPC(api: api, username: username, password: password)
         }
 
-        return nil
+        throw MediaRepository.Error.remoteAPIUnavailable
     }
 
 }
@@ -84,6 +122,34 @@ extension MediaServiceRemote {
                 failure: { continuation.resume(throwing: $0!) }
             )
         }
+    }
+
+}
+
+extension RemoteMedia {
+
+    @objc(remoteMediaWithMedia:)
+    static func from(_ media: Media) -> RemoteMedia {
+        let remoteMedia = RemoteMedia()
+        remoteMedia.mediaID = media.mediaID
+        remoteMedia.url = media.remoteURL.flatMap(URL.init(string:))
+        remoteMedia.largeURL = media.remoteLargeURL.flatMap(URL.init(string:))
+        remoteMedia.mediumURL = media.remoteMediumURL.flatMap(URL.init(string:))
+        remoteMedia.date = media.creationDate
+        remoteMedia.file = media.filename
+        remoteMedia.`extension` = media.fileExtension() ?? "unknown"
+        remoteMedia.title = media.title
+        remoteMedia.caption = media.caption
+        remoteMedia.descriptionText = media.desc
+        remoteMedia.alt = media.alt
+        remoteMedia.height = media.height
+        remoteMedia.width = media.width
+        remoteMedia.localURL = media.absoluteLocalURL
+        remoteMedia.mimeType = media.mimeType
+        remoteMedia.videopressGUID = media.videopressGUID
+        remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL
+        remoteMedia.postID = media.postID
+        return remoteMedia
     }
 
 }

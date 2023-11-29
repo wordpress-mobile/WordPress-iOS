@@ -100,7 +100,7 @@ final class MediaItemHeaderView: UIView {
             errorView.isHidden = true
 
             Task {
-                let image = try? await MediaImageService.shared.image(for: media, size: .medium)
+                let image = try? await MediaImageService.shared.image(for: media, size: .large)
                 loadingIndicator.stopAnimating()
 
                 if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {

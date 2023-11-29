@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 11:14:41+0000 */
+/* Translation-Revision-Date: 2023-11-15 13:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
@@ -7896,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafik";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Överförd domän";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Omvandla %s till";
 
@@ -9609,6 +9612,9 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Svar till %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Användarnamnet eller lösenordet som är lagrat i appen kan vara inaktuellt. Ange ditt lösenord i inställningarna och försök igen.";
+
 /* An error message. */
 "common.unableToConnect" = "Kan inte ansluta";
 
@@ -9789,6 +9795,9 @@ Example: Reply to Pamela Nguyen */
 /* The empty state title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.title" = "Du har inga domäner";
 
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Vi stötte på ett fel vid inläsningen av dina domäner. Kontakta supporten om problemet kvarstår.";
+
 /* The empty state title in All Domains screen when an error occurs */
 "domain.management.error.empty.state.title" = "Något gick fel";
 
@@ -9812,6 +9821,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The search bar title in All Domains screen. */
 "domain.management.search-bar.title" = "Sök domäner";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "Vi kunde inte hitta några domäner som matchar din sökning på \"%@\"";
 
 /* The empty state title in All Domains screen when the are no domains matching the search criteria */
 "domain.management.search.empty.state.title" = "Inga matchande domäner hittades";
@@ -10325,6 +10337,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Lägg till";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Bildförhållande för rutnät";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Ta bort";
 
@@ -10366,6 +10381,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Ingen media matchar din sökning";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Det gick inte att dela de valda objekten.";
 
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Fyrkantigt rutnät";
@@ -10599,6 +10617,9 @@ Example: Reply to Pamela Nguyen */
 "pageList.badgeLocalChanges" = "Lokala ändringar";
 
 /* Badge for page cells */
+"pageList.badgePendingReview" = "Inväntar granskning";
+
+/* Badge for page cells */
 "pageList.badgePosts" = "Inläggssida";
 
 /* Badge for page cells */
@@ -10609,6 +10630,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Startsida";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Sidan har uppdaterats";
 
 /* Delete option in the confirmation alert when deleting a page from the trash. */
 "pagesList.deletePermanently.actionTitle" = "Ta bort permanent";
@@ -10624,6 +10648,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Sidor av mig";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Flytta till papperskorgen";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Är det säkert att du vill lägga denna sida i papperskorgen?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Vill du lägga denna sida i papperskorgen?";
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Avbryt";
@@ -10667,11 +10700,26 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Skapades %@";
+
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Tar bort inlägg …";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Redigerades %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Flyttar inlägget till papperskorgen …";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Publicerades %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
 "post.scheduledForDate" = "Schemalagd %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Borttaget %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Av %@.";
@@ -10682,8 +10730,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a sticky post in the post list. */
 "postList.a11y.sticky" = "Klistrat.";
 
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Papperskorg";
+
 /* Swipe action title */
 "postList.swipeActionShare" = "Dela";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Visa";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Avfärda";
@@ -10702,6 +10759,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Ange utvald bild";
+
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Det gick inte att uppdatera inläggsinställningarna";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Marknadsför med Blaze";
@@ -11104,6 +11164,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Din webbplats döljs för besökare bakom ett \"Kommer snart\"-meddelande tills den är klar att visas.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Dold";
