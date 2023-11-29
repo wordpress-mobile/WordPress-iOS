@@ -8,6 +8,8 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         }
     }
 
+    private weak var presenterViewController: BlogDashboardViewController?
+
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +60,8 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
+        self.presenterViewController = viewController
+        
         // TODO: Tracks for card shown. No extra properties needed.
     }
 
@@ -71,7 +75,18 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     }
 
     private func setupViews() {
-        let hostView = UIView.embedSwiftUIView(BloganuaryNudgeCardView())
+        let cardView = BloganuaryNudgeCardView(onLearnMoreTapped: { [weak self] in
+            let overlayView = BloganuaryOverlayViewController()
+            let navigationController = UINavigationController(rootViewController: overlayView)
+            navigationController.modalPresentationStyle = .formSheet
+            if let sheet = navigationController.sheetPresentationController {
+                sheet.prefersGrabberVisible = true
+            }
+
+            self?.presenterViewController?.present(navigationController, animated: true)
+        })
+
+        let hostView = UIView.embedSwiftUIView(cardView)
         cardFrameView.add(subview: hostView)
 
         contentView.addSubview(cardFrameView)
@@ -93,6 +108,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 // MARK: - SwiftUI
 
 private struct BloganuaryNudgeCardView: View {
+    let onLearnMoreTapped: (() -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12.0) {
@@ -102,6 +118,7 @@ private struct BloganuaryNudgeCardView: View {
             textContainer
             Button {
                 // TODO: Show the Learn More modal.
+                onLearnMoreTapped?()
             } label: {
                 Text(Strings.cta)
                     .font(.subheadline)
