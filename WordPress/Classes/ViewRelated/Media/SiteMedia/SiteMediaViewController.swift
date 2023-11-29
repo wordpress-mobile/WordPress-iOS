@@ -221,7 +221,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     // MARK: - Actions (Share)
 
-    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil) {
+    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil, sourceView: UIView? = nil) {
         guard !selection.isEmpty else {
             return
         }
@@ -242,7 +242,13 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                 let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
 
                 let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
-                activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+                if let popover = activityViewController.popoverPresentationController {
+                    if let barButtonItem {
+                        popover.barButtonItem = barButtonItem
+                    } else {
+                        popover.sourceView = sourceView ?? view
+                    }
+                }
                 activityViewController.completionWithItemsHandler = { [weak self] _, isCompleted, _, _ in
                     if isCompleted {
                         self?.setEditing(false)
@@ -267,11 +273,11 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         buttonAddMediaMenuController.makeMenu(for: self)
     }
 
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? {
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? {
         var actions: [UIAction] = []
 
         actions.append(UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
-            self?.shareSelectedMedia([media])
+            self?.shareSelectedMedia([media], sourceView: sourceView)
         })
         if blog.supports(.mediaDeletion) {
             actions.append(UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
