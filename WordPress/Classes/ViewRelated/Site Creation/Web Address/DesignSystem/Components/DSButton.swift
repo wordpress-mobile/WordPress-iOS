@@ -78,35 +78,23 @@ public struct DSButton: View {
     }
 
     private var buttonText: some View {
+        let textStyle: (TextStyle.Weight) -> TextStyle
+        let weight: TextStyle.Weight
         switch style.size {
         case .large:
-            switch style.emphasis {
-            case .primary, .secondary:
-                return Text(title)
-                    .style(.bodyLarge(.emphasized))
-            case .tertiary:
-                return Text(title)
-                    .style(.bodyLarge(.regular))
-            }
+            textStyle = TextStyle.bodyLarge
         case .medium:
-            switch style.emphasis {
-            case .primary, .secondary:
-                return Text(title)
-                    .style(.bodyMedium(.emphasized))
-            case .tertiary:
-                return Text(title)
-                    .style(.bodyMedium(.regular))
-            }
+            textStyle = TextStyle.bodyMedium
         case .small:
-            switch style.emphasis {
-            case .primary, .secondary:
-                return Text(title)
-                    .style(.bodySmall(.emphasized))
-            case .tertiary:
-                return Text(title)
-                    .style(.bodySmall(.regular))
-            }
+            textStyle = TextStyle.bodySmall
         }
+        switch style.emphasis {
+        case .primary, .secondary:
+            weight = .emphasized
+        case .tertiary:
+            weight = .regular
+        }
+        return Text(title).style(textStyle(weight))
     }
 
     @ViewBuilder
@@ -146,7 +134,7 @@ public struct DSButton: View {
     }
 }
 
-
+#if DEBUG
 struct DSButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -163,3 +151,4 @@ struct DSButton_Previews: PreviewProvider {
         }
     }
 }
+#endif
