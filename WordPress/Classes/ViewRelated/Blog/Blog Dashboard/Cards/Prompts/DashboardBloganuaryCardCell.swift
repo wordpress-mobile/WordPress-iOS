@@ -61,7 +61,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presenterViewController = viewController
-        
+
         // TODO: Tracks for card shown. No extra properties needed.
     }
 
@@ -75,8 +75,12 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     }
 
     private func setupViews() {
+        let promptsEnabled: Bool = blog.managedObjectContext?.performAndWait {
+            return (try? BloggingPromptSettings.of(blog))?.promptCardEnabled ?? false
+        } ?? false
+
         let cardView = BloganuaryNudgeCardView(onLearnMoreTapped: { [weak self] in
-            let overlayView = BloganuaryOverlayViewController()
+            let overlayView = BloganuaryOverlayViewController(promptsEnabled: promptsEnabled)
             let navigationController = UINavigationController(rootViewController: overlayView)
             navigationController.modalPresentationStyle = .formSheet
             if let sheet = navigationController.sheetPresentationController {

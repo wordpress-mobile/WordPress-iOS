@@ -2,8 +2,10 @@ import SwiftUI
 
 class BloganuaryOverlayViewController: UIViewController {
 
+    private let promptsEnabled: Bool
+
     private lazy var viewModel: BloganuaryOverlayViewModel = {
-        return BloganuaryOverlayViewModel(orientation: UIDevice.current.orientation)
+        return BloganuaryOverlayViewModel(promptsEnabled: promptsEnabled, orientation: UIDevice.current.orientation)
     }()
 
     // MARK: Lifecycle
@@ -21,6 +23,15 @@ class BloganuaryOverlayViewController: UIViewController {
         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
             self?.viewModel.orientation = UIDevice.current.orientation
         }
+    }
+
+    init(promptsEnabled: Bool) {
+        self.promptsEnabled = promptsEnabled
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Private Methods
@@ -44,9 +55,11 @@ class BloganuaryOverlayViewController: UIViewController {
 // - MARK: SwiftUI
 
 class BloganuaryOverlayViewModel: ObservableObject {
+    let promptsEnabled: Bool
     @Published var orientation: UIDeviceOrientation
 
-    init(orientation: UIDeviceOrientation) {
+    init(promptsEnabled: Bool, orientation: UIDeviceOrientation) {
+        self.promptsEnabled = promptsEnabled
         self.orientation = orientation
     }
 }
@@ -69,7 +82,7 @@ private struct BloganuaryOverlayView: View {
             VStack {
                 content
                 Spacer(minLength: 16.0)
-                Text("Bloganuary will take over the normal blogging prompts you see from Day One for January. To join Bloganuary you need to enable Blogging Prompts.")
+                Text(stringForFooter)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, Metrics.horizontalPadding)
@@ -109,7 +122,7 @@ private struct BloganuaryOverlayView: View {
 
     var descriptionContainer: some View {
         VStack(alignment: .leading, spacing: 24.0) {
-            Text("Join our month-long writing challenge") // TODO: Localize
+            Text(Strings.headline)
                 .font(.largeTitle)
                 .fontWeight(.bold)
             descriptionList
@@ -119,9 +132,9 @@ private struct BloganuaryOverlayView: View {
     // TODO: Localize
     var descriptionList: some View {
         VStack(alignment: .leading, spacing: 16.0) {
-            Text("Receive a new prompt to inspire you each day.")
-            Text("Publish your response.")
-            Text("Read other bloggers’ responses to get inspiration and make new connections.")
+            ForEach(Strings.descriptions, id: \.self) {
+                Text($0)
+            }
         }
     }
 
@@ -138,11 +151,10 @@ private struct BloganuaryOverlayView: View {
     }
 
     var button: some View {
-        // TODO: Deal with the button style.
         Button {
             // TODO: Implement.
         } label: {
-            Text("Turn on blogging prompts") // TODO: Variate based on blogging prompt status.
+            Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
         }
         .padding(.vertical, 14.0)
         .padding(.horizontal, 20.0)
@@ -152,6 +164,13 @@ private struct BloganuaryOverlayView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12.0))
     }
 
+    var stringForFooter: String {
+        guard viewModel.promptsEnabled else {
+            return "\(Strings.footer) \(Strings.footerAddition)"
+        }
+        return Strings.footer
+    }
+
     // MARK: Constants
 
     struct Metrics {
@@ -159,6 +178,55 @@ private struct BloganuaryOverlayView: View {
     }
 
     struct Strings {
-        // TODO
+        static let headline = NSLocalizedString(
+            "bloganuary.learnMore.modal.headline",
+            value: "Join our month-long writing challenge",
+            comment: "The headline text of the Bloganuary modal sheet."
+        )
+
+        static let descriptions = [
+            NSLocalizedString(
+                "bloganuary.learnMore.modal.descriptions.first",
+                value: "Receive a new prompt to inspire you each day.",
+                comment: "The first line of the description shown in the Bloganuary modal sheet."
+            ),
+            NSLocalizedString(
+                "bloganuary.learnMore.modal.description.second",
+                value: "Publish your response.",
+                comment: "The second line of the description shown in the Bloganuary modal sheet."
+            ),
+            NSLocalizedString(
+                "bloganuary.learnMore.modal.description.third",
+                value: "Read other bloggers’ responses to get inspiration and make new connections.",
+                comment: "The third line of the description shown in the Bloganuary modal sheet."
+            )
+        ]
+
+        static let footer = NSLocalizedString(
+            "bloganuary.learnMore.modal.footer.text",
+            value: "Bloganuary will take over the normal blogging prompts you see from Day One for January.",
+            comment: "An informative excerpt shown in a subtler tone."
+        )
+
+        static let footerAddition = NSLocalizedString(
+            "bloganuary.learnMore.modal.footer.addition",
+            value: "To join Bloganuary you need to enable Blogging Prompts.",
+            comment: "An additional piece of information shown in case the user has the Blogging Prompts feature disabled."
+        )
+
+        static let buttonTitleForDisabledPrompts = NSLocalizedString(
+            "bloganuary.learnMore.modal.button.promptsDisabled",
+            value: "Turn on blogging prompts.",
+            comment: "Title of a button that calls the user to enable the Blogging Prompts feature."
+        )
+
+        static let buttonTitleForEnabledPrompts = NSLocalizedString(
+            "bloganuary.learnMore.modal.button.promptsEnabled",
+            value: "Let’s go!",
+            comment: """
+                Title of a button that will dismiss the Bloganuary modal when tapped.
+                Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'.
+                """
+        )
     }
 }
