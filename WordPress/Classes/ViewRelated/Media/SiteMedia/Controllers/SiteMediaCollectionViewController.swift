@@ -5,13 +5,13 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
     /// Return a non-nil value to allow adding media using the empty state.
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu?
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu?
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? { nil }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
@@ -475,7 +475,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             return self.makePreviewViewController(for: media)
         }, actionProvider: { [weak self] _ in
             guard let self else { return nil }
-            return self.delegate?.siteMediaViewController(self, contextMenuFor: media)
+            let cell = collectionView.cellForItem(at: indexPath)
+            return self.delegate?.siteMediaViewController(self, contextMenuFor: media, sourceView: cell ?? self.view)
         })
     }
 
