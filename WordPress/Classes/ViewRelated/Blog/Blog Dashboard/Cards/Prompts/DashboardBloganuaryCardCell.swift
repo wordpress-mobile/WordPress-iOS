@@ -47,9 +47,9 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
                 return false
             }
 
-            // NOTE: For simplicity, we're going to hardcode the date check to December 2023.
-            // Let's revisit this later so this doesn't have to be changed every year.
-            return month == 11 && year == 2023
+            // NOTE: For simplicity, we're going to hardcode the date check if the date is within December 2023.
+            // revisit this later so this doesn't have to be changed every year.
+            return month == 12 && year == 2023
         }()
 
         // Check if the blog is marked as a potential blogging site.
