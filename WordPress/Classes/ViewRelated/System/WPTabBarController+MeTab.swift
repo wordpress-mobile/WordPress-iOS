@@ -9,7 +9,9 @@ extension WPTabBarController {
     @objc func observeGravatarImageUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountChanged), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountEmailAndDefaultBlogUpdated, object: nil)
     }
 
     @objc func configureMeTabImage(placeholderImage: UIImage) {
@@ -42,7 +44,7 @@ extension WPTabBarController {
         meNavigationController?.tabBarItem.configureGravatarImage(image)
     }
 
-    @objc private func defaultAccountChanged() {
+    @objc private func accountDidChange() {
         configureMeTabImage(placeholderImage: UIImage(named: "icon-tab-me") ?? UIImage())
     }
 }
