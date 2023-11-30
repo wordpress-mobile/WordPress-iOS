@@ -21,6 +21,11 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     ///   - date: The date to check. Defaults to today.
     /// - Returns: `true` if the Bloganuary card should be shown. `false` otherwise.
     static func shouldShowCard(for blog: Blog, date: Date = Date()) -> Bool {
+        // TODO: Remove before this feature is shipped.
+        if FeatureFlag.bloganuaryCardDebugOverride.enabled {
+            return true
+        }
+
         guard RemoteFeatureFlag.bloganuaryDashboardNudge.enabled(),
               let context = blog.managedObjectContext else {
             return false
@@ -33,7 +38,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
                 return false
             }
 
-            // NOTE: For simplicity, we're going to hardcode the date check if the date is within December 2023.
+            // NOTE: For simplicity, we're going to hardcode the date check if the date is within December.
             return month == 12
         }()
 
@@ -56,18 +61,18 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
     @MainActor
     private func updateUI() {
-        guard let blog else {
+        guard let blog,
+              let blogID = blog.dotComID?.intValue else {
             return
         }
 
         contentView.subviews.forEach { $0.removeFromSuperview() }
 
-        let promptsEnabled: Bool = blog.managedObjectContext?.performAndWait {
-            return (try? BloggingPromptSettings.of(blog))?.promptCardEnabled ?? false
-        } ?? false
-
         let cardView = BloganuaryNudgeCardView(onLearnMoreTapped: { [weak self] in
-            let overlayView = BloganuaryOverlayViewController(promptsEnabled: promptsEnabled)
+            // check if the prompts card is enabled in the dashboard.
+            let promptsCardEnabled = BlogDashboardPersonalizationService(siteID: blogID).isEnabled(.prompts)
+            let overlayView = BloganuaryOverlayViewController(promptsEnabled: promptsCardEnabled)
+
             let navigationController = UINavigationController(rootViewController: overlayView)
             navigationController.modalPresentationStyle = .formSheet
             if let sheet = navigationController.sheetPresentationController {
@@ -117,7 +122,6 @@ private struct BloganuaryNudgeCardView: View {
                 .frame(width: 24.0, height: 24.0)
             textContainer
             Button {
-                // TODO: Show the Learn More modal.
                 onLearnMoreTapped?()
             } label: {
                 Text(Strings.cta)

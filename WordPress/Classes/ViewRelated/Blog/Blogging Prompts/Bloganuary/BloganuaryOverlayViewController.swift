@@ -255,7 +255,7 @@ private struct BloganuaryOverlayView: View {
 
         static let buttonTitleForDisabledPrompts = NSLocalizedString(
             "bloganuary.learnMore.modal.button.promptsDisabled",
-            value: "Turn on blogging prompts.",
+            value: "Turn on blogging prompts",
             comment: "Title of a button that calls the user to enable the Blogging Prompts feature."
         )
 
