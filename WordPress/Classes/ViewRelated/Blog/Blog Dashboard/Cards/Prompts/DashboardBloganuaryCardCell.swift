@@ -2,23 +2,21 @@ import SwiftUI
 
 class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
-    private var blog: Blog?
+    private var blog: Blog? {
+        didSet {
+            configureEllipsisMenu(for: cardFrameView)
+        }
+    }
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.configureButtonContainerStackView()
 
-        // NOTE: this is intentionally called *before* setting the ellipsis button action,
+        // NOTE: this is intentionally called *before* configuring the ellipsis button action,
         // to avoid additional trailing padding.
         frameView.hideHeader()
-
-        if let blog {
-            frameView.onEllipsisButtonTap = { }
-            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
-            frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
-        }
+        configureEllipsisMenu(for: frameView)
 
         return frameView
     }()
@@ -62,16 +60,36 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
+        // TODO: Tracks for card shown. No extra properties needed.
+    }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
         let hostView = UIView.embedSwiftUIView(BloganuaryNudgeCardView())
         cardFrameView.add(subview: hostView)
 
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView)
-
-        // TODO: Tracks for card shown. No extra properties needed.
     }
 
+    private func configureEllipsisMenu(for frameView: BlogDashboardCardFrameView) {
+        guard let blog else {
+            return
+        }
+
+        frameView.onEllipsisButtonTap = { }
+        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
+        frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
+    }
 }
 
 // MARK: - SwiftUI
