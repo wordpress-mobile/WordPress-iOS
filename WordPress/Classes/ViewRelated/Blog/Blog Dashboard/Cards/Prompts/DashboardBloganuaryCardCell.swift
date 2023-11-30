@@ -84,7 +84,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
             let navigationController = UINavigationController(rootViewController: overlayView)
             navigationController.modalPresentationStyle = .formSheet
             if let sheet = navigationController.sheetPresentationController {
-                sheet.prefersGrabberVisible = true
+                sheet.prefersGrabberVisible = WPDeviceIdentification.isiPhone()
             }
 
             self?.presenterViewController?.present(navigationController, animated: true)

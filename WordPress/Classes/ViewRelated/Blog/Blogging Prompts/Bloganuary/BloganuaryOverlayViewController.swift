@@ -45,6 +45,12 @@ class BloganuaryOverlayViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactScrollEdgeAppearance = appearance
+
         let dismissAction = UIAction { [weak self] _ in
             self?.navigationController?.dismiss(animated: true)
         }
@@ -85,7 +91,7 @@ private struct BloganuaryOverlayView: View {
                 Text(stringForFooter)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal, Metrics.horizontalPadding)
+                    .padding(.horizontal, Constants.horizontalPadding)
                     .multilineTextAlignment(.center)
             }
             .padding(.vertical, 18.0)
@@ -109,14 +115,15 @@ private struct BloganuaryOverlayView: View {
 
     var content: some View {
         VStack(alignment: .leading) {
-            Image("logo-bloganuary", bundle: .main)
+            bloganuaryImage
                 .resizable()
-                .frame(width: 42.0, height: 42.0) // TODO: Figure out aspect ratio sizing.
+                .scaledToFit()
+                .frame(width: 160)
             Spacer(minLength: 16.0)
                 .frame(maxHeight: 72.0)
             descriptionContainer
         }
-        .padding(.horizontal, Metrics.horizontalPadding)
+        .padding(.horizontal, Constants.horizontalPadding)
         .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 
@@ -125,6 +132,8 @@ private struct BloganuaryOverlayView: View {
             Text(Strings.headline)
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
             descriptionList
         }
     }
@@ -133,6 +142,8 @@ private struct BloganuaryOverlayView: View {
         VStack(alignment: .leading, spacing: 16.0) {
             ForEach(Strings.descriptions, id: \.self) {
                 Text($0)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
@@ -144,8 +155,8 @@ private struct BloganuaryOverlayView: View {
             Group {
                 ctaButton
             }
-            .padding(.top, 24.0)
-            .padding(.horizontal, Metrics.horizontalPadding)
+            .padding(.vertical, 24.0)
+            .padding(.horizontal, Constants.horizontalPadding)
         }
     }
 
@@ -155,7 +166,7 @@ private struct BloganuaryOverlayView: View {
         } label: {
             Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
         }
-        .padding(.vertical, 14.0)
+        .padding(WPDeviceIdentification.isiPad() ? .vertical : .top, 14.0)
         .padding(.horizontal, 20.0)
         .frame(maxWidth: .infinity, alignment: .center)
         .foregroundStyle(Color(.systemBackground))
@@ -170,10 +181,19 @@ private struct BloganuaryOverlayView: View {
         return Strings.footer
     }
 
+    var bloganuaryImage: Image {
+        if let image = UIImage(named: Constants.bloganuaryImageName)?.withTintColor(.label, renderingMode: .alwaysTemplate) {
+            return Image(uiImage: image)
+        }
+
+        return Image(Constants.bloganuaryImageName, bundle: nil)
+    }
+
     // MARK: Constants
 
-    struct Metrics {
+    struct Constants {
         static let horizontalPadding: CGFloat = 32.0
+        static let bloganuaryImageName = "logo-bloganuary-large"
     }
 
     struct Strings {
