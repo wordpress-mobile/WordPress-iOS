@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.8.0)
+  - Alamofire (4.8.2)
   - AlamofireImage (3.5.2):
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
@@ -95,7 +95,6 @@ PODS:
   - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
-  - Alamofire (= 4.8.0)
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 5.0)
@@ -189,7 +188,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
-  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
@@ -232,6 +231,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 8638d2a485a756411d904506c5cce8c10652cd3f
+PODFILE CHECKSUM: 9ed23c1a12abf7621d4b831f7aebac740c8fab7d
 
 COCOAPODS: 1.14.2
