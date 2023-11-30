@@ -147,7 +147,7 @@ private struct BloganuaryOverlayView: View {
             bloganuaryImage
                 .resizable()
                 .scaledToFit()
-                .frame(width: 160)
+                .frame(minWidth: Constants.preferredLogoSize, maxWidth: Constants.preferredLogoSize)
             Spacer(minLength: 16.0)
                 .frame(maxHeight: 72.0)
             descriptionContainer
@@ -194,6 +194,9 @@ private struct BloganuaryOverlayView: View {
             onPrimaryButtonTapped?()
         } label: {
             Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.vertical, 14.0)
         .padding(.horizontal, 20.0)
@@ -222,6 +225,7 @@ private struct BloganuaryOverlayView: View {
 
     struct Constants {
         static let horizontalPadding: CGFloat = 32.0
+        static let preferredLogoSize: CGFloat = 200.0
         static let bloganuaryImageName = "logo-bloganuary-large"
     }
 
