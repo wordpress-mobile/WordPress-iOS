@@ -98,7 +98,7 @@ class NotificationMediaDownloader: NSObject {
             let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
             let resizedImage    = resizedImagesMap[url]
 
-            if resizedImage == nil || resizedImage?.size == targetSize || resizedImage as? AnimatedImageWrapper != nil {
+            if resizedImage == nil || resizedImage?.size == targetSize || resizedImage as? AnimatedImage != nil {
                 continue
             }
 
@@ -193,7 +193,7 @@ class NotificationMediaDownloader: NSObject {
     ///
     private func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping (UIImage) -> Void) {
         // Animated images aren't actually resized, so return the image itself if we've already recorded the target size
-        if let animatedImage = image as? AnimatedImageWrapper, animatedImage.targetSize != nil {
+        if let animatedImage = image as? AnimatedImage, animatedImage.targetSize != nil {
             callback(animatedImage)
             return
         }
@@ -209,7 +209,7 @@ class NotificationMediaDownloader: NSObject {
 
             // If we try to resize the animate image it will lose all of its frames
             // Instead record the target size so we can properly set the bounds of the view later
-            if let animatedImage = image as? AnimatedImageWrapper, animatedImage.gifData != nil {
+            if let animatedImage = image as? AnimatedImage, animatedImage.gifData != nil {
                 animatedImage.targetSize = targetSize
                 resizedImage = animatedImage
             } else {

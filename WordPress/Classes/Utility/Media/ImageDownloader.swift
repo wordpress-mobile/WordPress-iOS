@@ -143,16 +143,11 @@ extension ImageDownloader {
     }
 }
 
-// MARK: - AnimatedImageWrapper
+// MARK: - AnimatedImage
 
-/// This is a wrapper around `RCTAnimatedImage` that allows including extra information
-/// to better render the gifs in text views.
-///
-/// This class uses the RCTAnimatedImage to verify the image is a valid gif which is why I'm still
-/// using that here.
-class AnimatedImageWrapper: UIImage {
-    var gifData: Data? = nil
-    var targetSize: CGSize? = nil
+final class AnimatedImage: UIImage {
+    private(set) var gifData: Data?
+    var targetSize: CGSize?
 
     private static let playbackStrategy: GIFPlaybackStrategy = LargeGIFPlaybackStrategy()
 
