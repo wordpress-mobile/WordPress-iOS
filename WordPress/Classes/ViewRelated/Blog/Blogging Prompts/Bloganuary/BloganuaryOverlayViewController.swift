@@ -39,7 +39,20 @@ class BloganuaryOverlayViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
 
-        let swiftUIView = UIView.embedSwiftUIView(BloganuaryOverlayView(viewModel: viewModel))
+        let overlayView = BloganuaryOverlayView(viewModel: viewModel, onButtonTapped: { [weak self] in
+            guard let self else {
+                return
+            }
+
+            if self.promptsEnabled {
+                // TODO: Tracks
+                self.dismiss()
+            } else {
+                // TODO: Redirect to personalization dashboard? Enable the prompt card and dismiss?
+            }
+        })
+
+        let swiftUIView = UIView.embedSwiftUIView(overlayView)
         view.addSubview(swiftUIView)
         view.pinSubviewToAllEdges(swiftUIView)
     }
@@ -51,10 +64,15 @@ class BloganuaryOverlayViewController: UIViewController {
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactScrollEdgeAppearance = appearance
 
+        // Set up the close button in the navigation bar.
         let dismissAction = UIAction { [weak self] _ in
-            self?.navigationController?.dismiss(animated: true)
+            self?.dismiss()
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: dismissAction)
+    }
+
+    private func dismiss() {
+        navigationController?.dismiss(animated: true)
     }
 }
 
@@ -75,6 +93,8 @@ private struct BloganuaryOverlayView: View {
     @ObservedObject var viewModel: BloganuaryOverlayViewModel
 
     @State var scrollViewHeight: CGFloat = 0.0
+
+    var onButtonTapped: (() -> Void)?
 
     var body: some View {
         VStack(spacing: .zero) {
@@ -155,7 +175,7 @@ private struct BloganuaryOverlayView: View {
             Group {
                 ctaButton
             }
-            .padding(.vertical, 24.0)
+            .padding(WPDeviceIdentification.isiPad() ? .vertical : .top, 24.0)
             .padding(.horizontal, Constants.horizontalPadding)
         }
     }
@@ -166,7 +186,7 @@ private struct BloganuaryOverlayView: View {
         } label: {
             Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
         }
-        .padding(WPDeviceIdentification.isiPad() ? .vertical : .top, 14.0)
+        .padding(.vertical, 14.0)
         .padding(.horizontal, 20.0)
         .frame(maxWidth: .infinity, alignment: .center)
         .foregroundStyle(Color(.systemBackground))
