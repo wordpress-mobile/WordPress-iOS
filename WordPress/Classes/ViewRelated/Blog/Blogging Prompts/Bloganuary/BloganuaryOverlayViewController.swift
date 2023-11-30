@@ -85,7 +85,7 @@ class BloganuaryOverlayViewController: UIViewController {
     }
 }
 
-// - MARK: SwiftUI
+// MARK: - SwiftUI
 
 class BloganuaryOverlayViewModel: ObservableObject {
     let promptsEnabled: Bool
@@ -105,6 +105,15 @@ private struct BloganuaryOverlayView: View {
 
     var onPrimaryButtonTapped: (() -> Void)?
 
+    @ScaledMetric(relativeTo: Constants.descriptionTextStyle)
+    private var descriptionIconSize = 24.0
+
+    @ScaledMetric(relativeTo: Constants.descriptionTextStyle)
+    private var descriptionItemHSpacing = 16.0
+
+    @ScaledMetric(relativeTo: Constants.descriptionTextStyle)
+    private var descriptionItemVSpacing = 24.0
+
     var body: some View {
         VStack(spacing: .zero) {
             contentScrollView
@@ -116,7 +125,7 @@ private struct BloganuaryOverlayView: View {
         ScrollView {
             VStack {
                 content
-                Spacer(minLength: 16.0)
+                Spacer(minLength: 32.0)
                 Text(stringForFooter)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -143,13 +152,13 @@ private struct BloganuaryOverlayView: View {
     }
 
     var content: some View {
-        VStack(alignment: .leading) {
-            bloganuaryImage
+        VStack(alignment: .center, spacing: 24.0) {
+            Image(Constants.bloganuaryImageName, bundle: nil)
                 .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(.primary)
                 .scaledToFit()
-                .frame(minWidth: Constants.preferredLogoSize, maxWidth: Constants.preferredLogoSize)
-            Spacer(minLength: 16.0)
-                .frame(maxHeight: 72.0)
+                .frame(width: Constants.preferredLogoWidth, height: Constants.preferredLogoHeight)
             descriptionContainer
         }
         .padding(.horizontal, Constants.horizontalPadding)
@@ -157,23 +166,41 @@ private struct BloganuaryOverlayView: View {
     }
 
     var descriptionContainer: some View {
-        VStack(alignment: .leading, spacing: 24.0) {
+        VStack(alignment: .leading, spacing: 32.0) {
             Text(Strings.headline)
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .multilineTextAlignment(.center)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .center)
             descriptionList
         }
     }
 
     var descriptionList: some View {
-        VStack(alignment: .leading, spacing: 16.0) {
-            ForEach(Strings.descriptions, id: \.self) {
-                Text($0)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
+        HStack(spacing: .zero) {
+            Spacer(minLength: .zero)
+            VStack(alignment: .leading, spacing: descriptionItemVSpacing) {
+                descriptionEntry(iconName: Constants.firstDescriptionIconName, text: Strings.firstDescriptionLine)
+                descriptionEntry(iconName: Constants.secondDescriptionIconName, text: Strings.secondDescriptionLine)
+                descriptionEntry(iconName: Constants.thirdDescriptionIconName, text: Strings.thirdDescriptionLine)
             }
+            .padding(.horizontal, 16.0)
+            .frame(maxWidth: 420.0)
+            .layoutPriority(1)
+            Spacer(minLength: .zero)
+        }
+    }
+
+    func descriptionEntry(iconName: String, text: String) -> some View {
+        HStack(alignment: .center, spacing: descriptionItemHSpacing) {
+            descriptionIconView(for: iconName)
+            Text(text)
+                .font(.headline)
+                .fontWeight(.semibold)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -213,20 +240,31 @@ private struct BloganuaryOverlayView: View {
         return Strings.footer
     }
 
-    var bloganuaryImage: Image {
-        if let image = UIImage(named: Constants.bloganuaryImageName)?.withTintColor(.label, renderingMode: .alwaysTemplate) {
-            return Image(uiImage: image)
-        }
-
-        return Image(Constants.bloganuaryImageName, bundle: nil)
+    func descriptionIconView(for iconName: String) -> some View {
+        Image(iconName, bundle: nil)
+            .resizable()
+            .renderingMode(.template)
+            .foregroundStyle(Color(.systemBackground))
+            .flipsForRightToLeftLayoutDirection(true)
+            .frame(width: descriptionIconSize, height: descriptionIconSize)
+            .padding(12.0)
+            .background {
+                Circle().fill(.primary)
+            }
     }
 
     // MARK: Constants
 
     struct Constants {
         static let horizontalPadding: CGFloat = 32.0
-        static let preferredLogoSize: CGFloat = 200.0
+        static let preferredLogoWidth: CGFloat = 180.0
+        static let preferredLogoHeight: CGFloat = 42.0
         static let bloganuaryImageName = "logo-bloganuary-large"
+        static let descriptionTextStyle: Font.TextStyle = .headline
+
+        static let firstDescriptionIconName = "bloganuary-icon-page"
+        static let secondDescriptionIconName = "bloganuary-icon-verse"
+        static let thirdDescriptionIconName = "bloganuary-icon-people"
     }
 
     struct Strings {
@@ -236,27 +274,27 @@ private struct BloganuaryOverlayView: View {
             comment: "The headline text of the Bloganuary modal sheet."
         )
 
-        static let descriptions = [
-            NSLocalizedString(
-                "bloganuary.learnMore.modal.descriptions.first",
-                value: "Receive a new prompt to inspire you each day.",
-                comment: "The first line of the description shown in the Bloganuary modal sheet."
-            ),
-            NSLocalizedString(
-                "bloganuary.learnMore.modal.description.second",
-                value: "Publish your response.",
-                comment: "The second line of the description shown in the Bloganuary modal sheet."
-            ),
-            NSLocalizedString(
-                "bloganuary.learnMore.modal.description.third",
-                value: "Read other bloggers’ responses to get inspiration and make new connections.",
-                comment: "The third line of the description shown in the Bloganuary modal sheet."
-            )
-        ]
+        static let firstDescriptionLine = NSLocalizedString(
+            "bloganuary.learnMore.modal.descriptions.first",
+            value: "Receive a new prompt to inspire you each day.",
+            comment: "The first line of the description shown in the Bloganuary modal sheet."
+        )
+
+        static let secondDescriptionLine = NSLocalizedString(
+            "bloganuary.learnMore.modal.description.second",
+            value: "Publish your response.",
+            comment: "The second line of the description shown in the Bloganuary modal sheet."
+        )
+
+        static let thirdDescriptionLine = NSLocalizedString(
+            "bloganuary.learnMore.modal.description.third",
+            value: "Read other bloggers’ responses to get inspiration and make new connections.",
+            comment: "The third line of the description shown in the Bloganuary modal sheet."
+        )
 
         static let footer = NSLocalizedString(
             "bloganuary.learnMore.modal.footer.text",
-            value: "Bloganuary will take over the normal blogging prompts you see from Day One for January.",
+            value: "Bloganuary will use Daily Blogging Prompts to send you topics for the month of January.",
             comment: "An informative excerpt shown in a subtler tone."
         )
 
