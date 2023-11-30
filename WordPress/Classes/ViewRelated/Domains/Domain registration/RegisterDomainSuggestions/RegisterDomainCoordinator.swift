@@ -104,14 +104,10 @@ class RegisterDomainCoordinator {
                                            backButtonTitle: TextContent.sitePickerNavigationTitle,
                                            shouldHideSelfHostedSites: true,
                                            shouldHideBlogsNotSupportingDomains: true)
-        guard let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil) else {
-            return
-        }
+        let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil)
 
         blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self,
-                  let controller,
-                  let selectedBlog else {
+            guard let self else {
                 return
             }
             self.site = selectedBlog

@@ -1,11 +1,7 @@
 import Foundation
 
-enum WidgetUrlSource: String {
-    case homeScreenWidget = "widget"
-    case lockScreenWidget = "lockscreen_widget"
-}
+public extension URL {
 
-extension URL {
     func appendingSource(_ source: WidgetUrlSource) -> URL {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
         var queryItems = components?.queryItems ?? []

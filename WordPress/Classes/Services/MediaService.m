@@ -72,7 +72,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     Blog *blog = media.blog;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    RemoteMedia *remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
@@ -184,7 +184,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     if (fieldsToUpdate != nil && [fieldsToUpdate count] > 0) {
         remoteMedia = [self remoteMediaFromMedia:media fieldsToUpdate:fieldsToUpdate];
     } else {
-        remoteMedia = [self remoteMediaFromMedia:media];
+        remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
     }
 
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
@@ -366,7 +366,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }
 
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    RemoteMedia *remoteMedia = [RemoteMedia remoteMediaWithMedia:media];
 
     [remote deleteMedia:remoteMedia
                 success:successBlock
@@ -526,30 +526,6 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     if (completion) {
         completion();
     }
-}
-
-- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
-{
-    RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.mediaID = media.mediaID;
-    remoteMedia.url = [NSURL URLWithString:media.remoteURL];
-    remoteMedia.largeURL = [NSURL URLWithString:media.remoteLargeURL];
-    remoteMedia.mediumURL = [NSURL URLWithString:media.remoteMediumURL];
-    remoteMedia.date = media.creationDate;
-    remoteMedia.file = media.filename;
-    remoteMedia.extension = [media fileExtension] ?: @"unknown";
-    remoteMedia.title = media.title;
-    remoteMedia.caption = media.caption;
-    remoteMedia.descriptionText = media.desc;
-    remoteMedia.alt = media.alt;
-    remoteMedia.height = media.height;
-    remoteMedia.width = media.width;
-    remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = media.mimeType;
-	remoteMedia.videopressGUID = media.videopressGUID;
-    remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
-    remoteMedia.postID = media.postID;
-    return remoteMedia;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate

@@ -5,13 +5,13 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
     /// Return a non-nil value to allow adding media using the empty state.
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu?
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu?
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? { nil }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
@@ -133,7 +133,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func updateFlowLayoutItemSize() {
         let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
-        let itemsPerRow = availableWidth < 450 ? 4 : 5
+        let itemsPerRow = availableWidth < 500 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
 
         flowLayout.minimumInteritemSpacing = spacing
@@ -219,7 +219,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         }
     }
 
-    private func toggleSelection(for media: Media) {
+    func isSelected(_ media: Media) -> Bool {
+        selection.contains(media)
+    }
+
+    func toggleSelection(for media: Media) {
         setSelected(!selection.contains(media), for: media)
     }
 
@@ -471,7 +475,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             return self.makePreviewViewController(for: media)
         }, actionProvider: { [weak self] _ in
             guard let self else { return nil }
-            return self.delegate?.siteMediaViewController(self, contextMenuFor: media)
+            let cell = collectionView.cellForItem(at: indexPath)
+            return self.delegate?.siteMediaViewController(self, contextMenuFor: media, sourceView: cell ?? self.view)
         })
     }
 

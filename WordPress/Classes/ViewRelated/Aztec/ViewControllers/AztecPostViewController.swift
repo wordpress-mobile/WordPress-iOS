@@ -2827,7 +2827,7 @@ extension AztecPostViewController {
            videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
-            let remote = MediaServiceRemoteFactory().remote(for: self.post.blog)
+            let remote = try? MediaServiceRemoteFactory().remote(for: self.post.blog)
             remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate(), success: { metadata in
                 if let metadata, let originalURL = metadata.originalURL {
                     videoAttachment.updateURL(metadata.getURLWithToken(url: originalURL) ?? originalURL)
@@ -3005,7 +3005,7 @@ extension AztecPostViewController {
             return
         }
         // It's videoPress video so let's fetch the information for the video
-        let remote = MediaServiceRemoteFactory().remote(for: self.post.blog)
+        let remote = try? MediaServiceRemoteFactory().remote(for: self.post.blog)
         guard let remote else {
             displayUnableToPlayVideoAlert()
             DDLogError("Unable to create a remote instance for \(String(describing: self.post.blog.dotComID))")
