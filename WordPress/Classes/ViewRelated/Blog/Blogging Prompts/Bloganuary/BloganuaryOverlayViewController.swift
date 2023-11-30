@@ -39,7 +39,7 @@ class BloganuaryOverlayViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
 
-        let overlayView = BloganuaryOverlayView(viewModel: viewModel, onButtonTapped: { [weak self] in
+        let overlayView = BloganuaryOverlayView(viewModel: viewModel, onPrimaryButtonTapped: { [weak self] in
             guard let self else {
                 return
             }
@@ -94,7 +94,7 @@ private struct BloganuaryOverlayView: View {
 
     @State var scrollViewHeight: CGFloat = 0.0
 
-    var onButtonTapped: (() -> Void)?
+    var onPrimaryButtonTapped: (() -> Void)?
 
     var body: some View {
         VStack(spacing: .zero) {
@@ -182,7 +182,7 @@ private struct BloganuaryOverlayView: View {
 
     var ctaButton: some View {
         Button {
-            // TODO: Implement.
+            onPrimaryButtonTapped?()
         } label: {
             Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
         }
