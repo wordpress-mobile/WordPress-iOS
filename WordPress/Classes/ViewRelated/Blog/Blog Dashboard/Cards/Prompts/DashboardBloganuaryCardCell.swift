@@ -40,14 +40,12 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         // Check for date eligibility.
         let isDateInDecember: Bool = {
             let components = date.dateAndTimeComponents()
-            guard let month = components.month,
-                  let year = components.year else {
+            guard let month = components.month else {
                 return false
             }
 
             // NOTE: For simplicity, we're going to hardcode the date check if the date is within December 2023.
-            // revisit this later so this doesn't have to be changed every year.
-            return month == 12 && year == 2023
+            return month == 12
         }()
 
         // Check if the blog is marked as a potential blogging site.
