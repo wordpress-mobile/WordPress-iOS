@@ -2,6 +2,8 @@ import SwiftUI
 
 class BloganuaryOverlayViewController: UIViewController {
 
+    private let blogID: Int
+
     private let promptsEnabled: Bool
 
     private lazy var viewModel: BloganuaryOverlayViewModel = {
@@ -25,7 +27,8 @@ class BloganuaryOverlayViewController: UIViewController {
         }
     }
 
-    init(promptsEnabled: Bool) {
+    init(blogID: Int, promptsEnabled: Bool) {
+        self.blogID = blogID
         self.promptsEnabled = promptsEnabled
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,12 +47,18 @@ class BloganuaryOverlayViewController: UIViewController {
                 return
             }
 
-            if self.promptsEnabled {
-                // TODO: Tracks
-                self.dismiss()
-            } else {
-                // TODO: Redirect to personalization dashboard? Enable the prompt card and dismiss?
-            }
+            // TODO: Tracks.
+
+            self.dismiss(completion: {
+                if self.promptsEnabled {
+                    return
+                }
+
+                Task { @MainActor in
+                    // enable prompts card on the dashboard.
+                    BlogDashboardPersonalizationService(siteID: self.blogID).setEnabled(true, for: .prompts)
+                }
+            })
         })
 
         let swiftUIView = UIView.embedSwiftUIView(overlayView)
@@ -71,8 +80,8 @@ class BloganuaryOverlayViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: dismissAction)
     }
 
-    private func dismiss() {
-        navigationController?.dismiss(animated: true)
+    private func dismiss(completion: (() -> Void)? = nil) {
+        navigationController?.dismiss(animated: true, completion: completion)
     }
 }
 

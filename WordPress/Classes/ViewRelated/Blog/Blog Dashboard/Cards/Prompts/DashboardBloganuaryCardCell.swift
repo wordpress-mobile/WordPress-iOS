@@ -71,7 +71,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         let cardView = BloganuaryNudgeCardView(onLearnMoreTapped: { [weak self] in
             // check if the prompts card is enabled in the dashboard.
             let promptsCardEnabled = BlogDashboardPersonalizationService(siteID: blogID).isEnabled(.prompts)
-            let overlayView = BloganuaryOverlayViewController(promptsEnabled: promptsCardEnabled)
+            let overlayView = BloganuaryOverlayViewController(blogID: blogID, promptsEnabled: promptsCardEnabled)
 
             let navigationController = UINavigationController(rootViewController: overlayView)
             navigationController.modalPresentationStyle = .formSheet
