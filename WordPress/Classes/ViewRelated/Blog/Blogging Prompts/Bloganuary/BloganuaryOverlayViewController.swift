@@ -78,7 +78,7 @@ class BloganuaryOverlayViewController: UIViewController {
 
         // Set up the close button in the navigation bar.
         let dismissAction = UIAction { [weak self] _ in
-            BloganuaryTracker.trackModalDismissed(promptsEnabled: self?.promptsEnabled ?? false)
+            BloganuaryTracker.trackModalDismissed()
             self?.dismiss()
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: dismissAction)
