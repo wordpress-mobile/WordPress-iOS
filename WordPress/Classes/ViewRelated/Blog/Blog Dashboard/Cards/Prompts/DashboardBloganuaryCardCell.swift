@@ -4,24 +4,11 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
     private var blog: Blog? {
         didSet {
-            configureEllipsisMenu(for: cardFrameView)
+            updateUI()
         }
     }
 
     private weak var presenterViewController: BlogDashboardViewController?
-
-    private lazy var cardFrameView: BlogDashboardCardFrameView = {
-        let frameView = BlogDashboardCardFrameView()
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.configureButtonContainerStackView()
-
-        // NOTE: this is intentionally called *before* configuring the ellipsis button action,
-        // to avoid additional trailing padding.
-        frameView.hideHeader()
-        configureEllipsisMenu(for: frameView)
-
-        return frameView
-    }()
 
     /// Checks whether the Bloganuary nudge card should be shown on the dashboard.
     ///
@@ -65,16 +52,16 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         // TODO: Tracks for card shown. No extra properties needed.
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
+    // MARK: Private methods
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    @MainActor
+    private func updateUI() {
+        guard let blog else {
+            return
+        }
 
-    private func setupViews() {
+        contentView.subviews.forEach { $0.removeFromSuperview() }
+
         let promptsEnabled: Bool = blog.managedObjectContext?.performAndWait {
             return (try? BloggingPromptSettings.of(blog))?.promptCardEnabled ?? false
         } ?? false
@@ -91,21 +78,30 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         })
 
         let hostView = UIView.embedSwiftUIView(cardView)
-        cardFrameView.add(subview: hostView)
+        let frameView = makeCardFrameView()
+        frameView.add(subview: hostView)
 
-        contentView.addSubview(cardFrameView)
-        contentView.pinSubviewToAllEdges(cardFrameView)
+        contentView.addSubview(frameView)
+        contentView.pinSubviewToAllEdges(frameView)
     }
 
-    private func configureEllipsisMenu(for frameView: BlogDashboardCardFrameView) {
-        guard let blog else {
-            return
+    private func makeCardFrameView() -> BlogDashboardCardFrameView {
+        let frameView = BlogDashboardCardFrameView()
+        frameView.translatesAutoresizingMaskIntoConstraints = false
+        frameView.configureButtonContainerStackView()
+
+        // NOTE: this is intentionally called *before* configuring the ellipsis button action,
+        // to avoid additional trailing padding.
+        frameView.hideHeader()
+
+        if let blog {
+            frameView.onEllipsisButtonTap = { }
+            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
+            frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
         }
 
-        frameView.onEllipsisButtonTap = { }
-        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
-        frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
+        return frameView
     }
 }
 
