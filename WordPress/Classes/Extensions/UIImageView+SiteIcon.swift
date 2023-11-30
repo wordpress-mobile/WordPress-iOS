@@ -1,5 +1,4 @@
 import AlamofireImage
-import Alamofire
 import AutomatticTracks
 import Foundation
 import Gridicons
