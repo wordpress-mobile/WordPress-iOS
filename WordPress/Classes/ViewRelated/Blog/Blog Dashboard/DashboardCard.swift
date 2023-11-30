@@ -9,7 +9,7 @@ import Foundation
 enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
-    case bloganuaryNudge
+    case bloganuaryNudge = "bloganuary_nudge"
     case prompts
     case googleDomains
     case blaze

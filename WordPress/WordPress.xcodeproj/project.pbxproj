@@ -5576,6 +5576,8 @@
 		FE50965A2A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5096582A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift */; };
 		FE50965C2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
 		FE50965D2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
+		FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
+		FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
 		FE6BB143293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB1462932289B001E5F7A /* ContentMigrationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */; };
@@ -9444,6 +9446,7 @@
 		FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableHeaderView.swift; sourceTree = "<group>"; };
 		FE59DA9527D1FD0700624D26 /* WordPress 138.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 138.xcdatamodel"; sourceTree = "<group>"; };
 		FE5F52D82AF9461200371A3A /* WordPress 153.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 153.xcdatamodel"; sourceTree = "<group>"; };
+		FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloganuaryTracker.swift; sourceTree = "<group>"; };
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsViewController.swift; sourceTree = "<group>"; };
@@ -18428,6 +18431,7 @@
 			isa = PBXGroup;
 			children = (
 				FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */,
+				FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */,
 			);
 			path = Bloganuary;
 			sourceTree = "<group>";
@@ -22727,6 +22731,7 @@
 				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				83BFAE482A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* MessageAnimator.swift in Sources */,
+				FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */,
 				C77FC90F2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */,
 				FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */,
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
@@ -23914,6 +23919,7 @@
 				FABB20D22602FC2C00C8785C /* AztecNavigationController.swift in Sources */,
 				FABB20D32602FC2C00C8785C /* Notification+Interface.swift in Sources */,
 				B07F133F2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */,
+				FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */,
 				FABB20D42602FC2C00C8785C /* ReaderSaveForLater+Analytics.swift in Sources */,
 				FABB20D62602FC2C00C8785C /* RevisionOperation.swift in Sources */,
 				FABB20D72602FC2C00C8785C /* ZendeskUtils.swift in Sources */,
