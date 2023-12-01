@@ -127,7 +127,7 @@ private struct BloganuaryOverlayView: View {
                 content
                 Spacer(minLength: 32.0)
                 Text(stringForFooter)
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, Constants.horizontalPadding)
                     .multilineTextAlignment(.center)
@@ -199,6 +199,7 @@ private struct BloganuaryOverlayView: View {
             Text(text)
                 .font(.headline)
                 .fontWeight(.semibold)
+                .foregroundStyle(Constants.descriptionItemTextColor)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -244,12 +245,12 @@ private struct BloganuaryOverlayView: View {
         Image(iconName, bundle: nil)
             .resizable()
             .renderingMode(.template)
-            .foregroundStyle(Color(.systemBackground))
+            .foregroundStyle(Constants.descriptionIconColor)
             .flipsForRightToLeftLayoutDirection(true)
             .frame(width: descriptionIconSize, height: descriptionIconSize)
             .padding(12.0)
             .background {
-                Circle().fill(.primary)
+                Circle().fill(Constants.descriptionIconBackgroundColor)
             }
     }
 
@@ -260,11 +261,15 @@ private struct BloganuaryOverlayView: View {
         static let preferredLogoWidth: CGFloat = 180.0
         static let preferredLogoHeight: CGFloat = 42.0
         static let bloganuaryImageName = "logo-bloganuary-large"
-        static let descriptionTextStyle: Font.TextStyle = .headline
+        static let descriptionTextStyle: Font.TextStyle = .footnote
 
         static let firstDescriptionIconName = "bloganuary-icon-page"
         static let secondDescriptionIconName = "bloganuary-icon-verse"
         static let thirdDescriptionIconName = "bloganuary-icon-people"
+
+        static let descriptionItemTextColor = Color(.init(light: .label, dark: .secondaryLabel))
+        static let descriptionIconColor = Color(.init(light: .systemBackground, dark: .label))
+        static let descriptionIconBackgroundColor = Color(.init(light: .label, dark: .tertiaryBackground))
     }
 
     struct Strings {
