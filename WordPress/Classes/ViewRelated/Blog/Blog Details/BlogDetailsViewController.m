@@ -32,6 +32,7 @@ static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSection
 static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetailsMigrationSuccessCell";
 static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDetailsJetpackBrandingCardCellIdentifier";
 static NSString *const BlogDetailsJetpackInstallCardCellIdentifier = @"BlogDetailsJetpackInstallCardCellIdentifier";
+static NSString *const BlogDetailsSotWCardCellIdentifier = @"BlogDetailsSotWCardCellIdentifier";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -384,7 +385,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
     [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
     [self.tableView registerClass:[JetpackRemoteInstallTableViewCell class] forCellReuseIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
-    
+    [self.tableView registerClass:[SotWTableViewCell class] forCellReuseIdentifier:BlogDetailsSotWCardCellIdentifier];
+
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
@@ -1017,6 +1019,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *marr = [NSMutableArray array];
 
     // TODO: Add the SoTW card here.
+    if ([self shouldShowSotW2023Card]) {
+        [marr addNullableObject:[self sotw2023SectionViewModel]];
+    }
 
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addNullableObject:[self migrationSuccessSectionViewModel]];
@@ -1579,6 +1584,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
+
+    if (section.category == BlogDetailsSectionCategorySotW2023Card) {
+        SotWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsSotWCardCellIdentifier];
+        return cell;
+    }
 
     if (section.category == BlogDetailsSectionCategoryJetpackInstallCard) {
         JetpackRemoteInstallTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
