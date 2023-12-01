@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-16 10:54:31+0000 */
+/* Translation-Revision-Date: 2023-11-29 13:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -206,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d年";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dピクセル";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "このテーマにはメニューエリアが%i個あります";
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "アクティビティタイプ (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "追加";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "子項目としてメニュー項目を追加";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "新しいメディアを追加";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "新規メニューを追加";
@@ -733,10 +726,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "またはコンテンツをブロックに変換することもできます。";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "または、「パターンを切り離す」をタップして、これらのブロックを個別に切り離して編集できます。";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "または、「切り離す」をタップして、このブロックを個別に切り離して編集できます。";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "または、「パターンを切り離す」をタップして、このブロックを個別に切り離して編集できます。";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "あるいは、ブロックのグループ化を解除してコンテンツをフラットにすることもできます。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "または、このアカウントのパスワードを入力することもできます。";
@@ -884,9 +877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "このサイトから Jetpack の連携を解除してもよいですか ?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "本当にこれらの項目を永久に削除しますか ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
@@ -1175,10 +1165,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "ブロックのメニュー";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "%dレベルよりも深くネストされたブロックは、モバイルエディターで適切にレンダリングされない場合があります。 このため、ブロックのグループを解除するか Web エディターでブロックを編集して、コンテンツをフラット化することをお勧めします。";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "%dレベルよりも深くネストされたブロックは、モバイルエディターで適切にレンダリングされない場合があります。 このため、ブロックのグループを解除するか Web ブラウザーでブロックを編集して、コンテンツをフラット化することをお勧めします。";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "%dレベルよりも深くネストされたブロックは、モバイルエディターで適切にレンダリングされない場合があります。";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "ブログ";
@@ -1344,9 +1331,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "キャンセル";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "アップロードのキャンセル";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "パスワードの変更";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "設定を変更";
 
 /* Change Username title. */
 "Change Username" = "ユーザー名の変更";
@@ -2296,7 +2277,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "削除";
@@ -2635,8 +2615,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "各ブロックには独自の設定があります。 確認するには、ブロックをタップします。 画面下部にあるツールバーに設定が表示されます。";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "上に別の語句を入力してください。一致するアドレスを検索します。";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "複数選択および削除を有効にするには、編集モードに移動してください";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3067,9 +3043,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "失敗しました";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "メディアのエクスポートに失敗しました";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "「通知」を既読としてマークできませんでした";
 
@@ -3270,6 +3243,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "フットボール";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "このため、Web エディターでブロックを編集することをお勧めします。";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "このため、Web ブラウザーでブロックを編集することをお勧めします。";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "お手間を省くため、WordPress.com 連絡先情報にはデータが事前に入力されています。このドメインに使用する正しい情報かどうか、ご確認ください。";
@@ -4431,9 +4410,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "自分";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "メディア";
@@ -5144,9 +5121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "抜粋のみを表示";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "アクセスを付与された選択済みの写真のみ使用できます。";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "写真";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "写真";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "写真提供元: Pexels";
@@ -5711,9 +5682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "プレビューは利用できません";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "メディアをプレビュー";
 
 /* No comment provided by engineer. */
 "Preview page" = "固定ページをプレビュー";
@@ -6196,9 +6164,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "スキャンを再試行";
 
-/* User action to retry media upload. */
-"Retry Upload" = "再アップロード";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "すべて再試行";
 
@@ -6474,9 +6439,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "国名を選択";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "さらに選択";
 
 /* Blog Picker's Title */
 "Select Site" = "サイトを選択";
@@ -7291,9 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "タップして別のサイトに切り替え、または新しいサイトを追加";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "タップしてメディアをフルスクリーンで表示";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "タップして詳細を表示します。";
 
@@ -7569,9 +7528,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "この投稿を表示する際に問題が発生しました。";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "メディア項目を読み込む際に問題が発生しました。";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "データの読み込み中に問題が発生しました。ページを更新してもう一度お試しください。";
@@ -7905,14 +7861,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "ブロックを変換…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "ゴミ箱";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "選択したメディアをゴミ箱に移動";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "ゴミ箱に移動しますか ?";
@@ -8045,9 +7997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "新規招待リストを作成できません。";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "すべてのメディアファイルを削除できません。";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "メディアファイルを削除できません。";
@@ -9339,9 +9288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "あなたの WordPress.com の無料アドレスは";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません。問題が解決しない場合、「自分 > ヘルプ & サポート」画面からお問い合わせください。";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "新しいドメイン %@ の設定中です。 ドメインが使用可能になるまでに最大で30分かかる場合があります。";
 
@@ -9464,6 +9410,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "WordPress アプリについてどう思いますか ?";
+
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "画像を最適化";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "高い";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "低い";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "最高";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "普通";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "品質";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "画質";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "画像の最適化により、画像のサイズを縮小して迅速に読み込めます。\n\nこのオプションはデフォルトで有効になっていますが、アプリの設定でいつでも変更できます。";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "画像の最適化を続けますか ?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "オフにする";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "そのままにする";
 
 /* Label displayed on audio media items. */
 "audio" = "音声ファイル";
@@ -10322,9 +10301,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "5分以上の動画ファイルのアップロードには有料プランのご利用が必要です。";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "削除";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "新しいメディアを追加";
 
@@ -10403,6 +10379,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "メディアをエクスポートできませんでした。 問題が解決しない場合は、「ME」>「ヘルプとサポート」画面からお問い合わせください。";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "メディアのエクスポートに失敗しました";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "このアプリが新しいメディアをキャプチャするためカメラにアクセスするには許可が必要です。許可するには、プライバシー設定を変更してください。";
 
@@ -10436,6 +10418,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "動画を撮影";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "WordPress アプリがまだインストールされているようです。";
 
@@ -10448,9 +10433,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "お使いの端末に WordPress アプリは不要になりました";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "完了";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "データの競合を避けるため、お使いの端末から WordPress アプリをアンインストールすることをおすすめします。";
 
@@ -10459,6 +10441,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "すべてのデータと設定を転送しました。 すべて移行先にあります。";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "Jetpack アプリで WordPress のジャーニーを続ける時が来ました。";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack にお切り替えいただきありがとうございます。";
@@ -10507,6 +10492,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack へようこそ !";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "スタート";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Jetpack アプリで WordPress アプリの全機能に加えて統計、Reader、通知などを特別に利用できるようになりました。";
@@ -10727,13 +10715,16 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@、%2$@。";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "ゴミ箱";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "削除";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "共有";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "表示";
 
 /* User action to dismiss featured media options. */
@@ -11149,6 +11140,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "メディアを選択します。";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "タップしてメディアをフルスクリーンで表示";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "メディアをプレビュー";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "選択を解除";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "選択";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "メディア";

@@ -95,6 +95,7 @@ final class RegisterDomainTransferFooterView: UIView {
 
         let action = UIAction { _ in
             configuration.buttonAction()
+            WPAnalytics.track(.domainsSearchTransferDomainTapped)
         }
         self.titleLabel.text = configuration.title
         self.primaryButton.setTitle(configuration.buttonTitle, for: .normal)
