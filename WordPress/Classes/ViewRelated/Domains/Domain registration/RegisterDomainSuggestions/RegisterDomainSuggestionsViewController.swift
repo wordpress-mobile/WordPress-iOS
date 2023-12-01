@@ -401,11 +401,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
-            guard let self = self else {
+            guard let self = self, let coordinator else {
                 return
             }
-
-            self.coordinator?.domainPurchasedCallback?(self, name)
+            coordinator.domainPurchasedCallback?(self, name)
+            coordinator.trackDomainPurchasingCompleted()
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }

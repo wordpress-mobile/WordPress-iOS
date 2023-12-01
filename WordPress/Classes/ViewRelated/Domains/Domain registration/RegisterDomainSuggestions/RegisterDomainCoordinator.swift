@@ -128,6 +128,10 @@ class RegisterDomainCoordinator {
         viewController.navigationController?.pushViewController(blogListViewController, animated: true)
     }
 
+    func trackDomainPurchasingCompleted() {
+        WPAnalytics.track(.purchaseDomainCompleted)
+    }
+
     // MARK: Helpers
 
     private func createCart(completion: @escaping (Result<FullyQuotedDomainSuggestion, Swift.Error>) -> Void) {
@@ -185,7 +189,7 @@ class RegisterDomainCoordinator {
                 }
             }) { domain in
                 self.domainPurchasedCallback?(viewController, domain)
-                WPAnalytics.track(.purchaseDomainCompleted)
+                self.trackDomainPurchasingCompleted()
             }
         }
 
