@@ -41,7 +41,7 @@ static NSInteger HideSearchMinSites = 3;
     return nil;
 }
 
-- (id)initWithConfiguration:(BlogListConfiguration *)configuration
+- (instancetype)initWithConfiguration:(BlogListConfiguration *)configuration
            meScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
@@ -803,6 +803,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setSelectedBlog:(Blog *)selectedBlog
 {
     [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDomainSiteSelected];
 }
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated

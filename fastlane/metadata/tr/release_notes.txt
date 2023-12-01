@@ -1,13 +1,23 @@
-Bir gönderiyi çöp kutusuna taşıdığınızda, artık ekranın altında bir onay mesajı göreceksiniz.
+Sıkı tutunun, bu güncelleme her zamankinden farklı. Site Ortamı ile başlayalım.
 
-Blok düzenleyicide bazı değişiklikler yaptık.
+- Site Ortamı ekranı tasarımını daha iyi menüler, dosya seçimi ile paylaşımı ve daha fazlasıyla güncelledik. Ayrıca daha da hızlı çalıştığından artık sarsıntılı GIF'ler veya donan videolar yok.
+- Aynı anda birden fazla ortam dosyası seçmek için kaydırma hareketini kullanın. Ayrıca bir fotoğraftan diğerine kaydırmak, meta verileri değiştirmek ve öğeleri silmek daha kolaydır.
+- iPad'de kare görsel önizlemeleri ve en boy oranı arasında geçiş yapabilirsiniz.
+- Boş yer tutucu görselleri, yanlış mesajlar, belge paylaşımı ve ara sıra meydana gelen çökmelerle ilgili sorunları düzelttik.
 
-- Etkin olmayan sosyal simgeler ve senkronize model başlıkları artık karanlık mod kullanan blok tabanlı temalarda görünmez değil. İyi denemeydi dostlar ama sandığınız kadar ninja değilsiniz.
-- Klasik düzenleyicide artık tek bir düğmeye tıklayarak içeriğinizi bloklara dönüştürebilirsiniz.
+Henüz işimiz bitmedi. Ayrıca Gönderiler ve Sayfalarda da büyük değişiklikler yaptık.
 
-Sonunda, mini bir böcek sürüsünü ezdik.
+- Gönderiler ve Sayfalar ekranı, temiz ve basit görüntüleme seçenekleriyle büyük bir görsel gelişim yaşadı.
+- Düzenlemek istediğiniz içerikleri bulmak için yazar ve etiket filtreleri gibi daha gelişmiş arama özelliklerini kullanın. Arama ayrıca tüm yazarlar genelinde çalışır (tabii belirli bir kişinin içeriklerini istemiyorsanız).
+- Gönderileri ve sayfaları görüntülemek, paylaşmak veya silmek için kaydırma hareketlerini kullanın. Çok hoş.
+- Bağlam menüsü artık bir gönderinin veya sayfanın yorumlarına, ayarlarına ve diğer işlemlerine erişmenizi sağlar.
+- Birkaç çökmenin yanı sıra sayfa yenilemeleri ve görünürlüğü ile ilgili sorunları düzelttik.
 
-- İlk denemede yanlış site adresi girerseniz herhangi bir giriş sorunuyla karşılaşmayacaksınız.
-- Hatalı HTML etiketleri gönderi başlıklarınızda görünmez; yalnızca düz metin göreceksiniz.
-- İki faktörlü kimlik doğrulama sırasında, oturum açarken yanlış kod girerseniz çok daha açıklayıcı bir hata mesajı alacaksınız.
-- İki faktörlü kimlik doğrulama sürecinde gereksiz güvenlik önlemleri ekleyen ekstra kontrolleri kaldırdık. Oturum açmak hala güvenli, ancak artık daha az baş ağrısı ile birlikte geliyor.
+Son olarak uygulama genelindeki birkaç sinir bozucu sorunu düzelttik.
+
+- Uygulama artık bir GIF yüklemeyi bitirdiğinizi algılıyor. (monty-burns-excellent.gif)
+- “Gizli” uygulamaların artık gizlilik durumu için daha iyi bir açıklaması var.
+- Okuyucu artık durum çubuğuna bastığınızda en üste kaydırıyor. Uçma zamanı.
+- Menüler ekranı, üst düzey sayfalara göre menü öğelerini uygun şekilde oluşturuyor.
+- Daha eski site temalarında metin renkleri kullanmakla ilgili bir çökmeyi düzelttik.
+- Derin şekilde iç içe geçmiş içerik yapıştırırken herhangi bir hatayla karşılaşmamalısınız. Tıpkı soğanlar, devler, kekler veya parfelerde olduğu gibi içeriklerinizde de birden fazla katman olabilir.

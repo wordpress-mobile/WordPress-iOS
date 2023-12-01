@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import PhotosUI
 
-/// Encapsulates importing assets such as PHAssets, images, videos, or files at URLs to Media objects.
+/// Encapsulates importing assets such as images, videos, or files at URLs to Media objects.
 ///
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
@@ -232,7 +232,7 @@ class MediaImportService: NSObject {
         return self.import(exportable, to: media, options: options, completion: completion)
     }
 
-    /// Imports media from a PHAsset to the Media object, asynchronously.
+    /// Imports media from exportable assets to the Media object, asynchronously.
     ///
     /// - Parameters:
     ///     - exportable: the exportable resource where data will be read from.
@@ -279,12 +279,6 @@ class MediaImportService: NSObject {
 
     private func makeExporter(for exportable: ExportableAsset, options: ExportOptions) -> MediaExporter? {
         switch exportable {
-        case let asset as PHAsset:
-            let exporter = MediaAssetExporter(asset: asset)
-            exporter.imageOptions = options.imageOptions
-            exporter.videoOptions = options.videoOptions
-            exporter.allowableFileExtensions = options.allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : options.allowableFileExtensions
-            return exporter
         case let provider as NSItemProvider:
             let exporter = ItemProviderMediaExporter(provider: provider)
             exporter.imageOptions = options.imageOptions
@@ -312,7 +306,7 @@ class MediaImportService: NSObject {
     }
 
     /// Generate a thumbnail image for the `Media` so that consumers of the `absoluteThumbnailLocalURL` property
-    /// will have an image ready to load, without using the async methods provided via `MediaThumbnailService`.
+    /// will have an image ready to load, without using the async methods provided via `MediaImageService`.
     ///
     /// This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
     ///
@@ -321,8 +315,7 @@ class MediaImportService: NSObject {
     ///       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
     ///       using `absoluteThumbnailLocalURL`.
     func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
-        let thumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
-        thumbnailService.thumbnailURL(forMedia: media, preferredSize: .zero) { url in
+        MediaImageService.shared.getThumbnailURL(for: media) { url in
             self.coreDataStack.performAndSave({ context in
                 let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                 // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
@@ -330,8 +323,6 @@ class MediaImportService: NSObject {
             }, completion: { _ in
                 completion?(url)
             }, on: .main)
-        } onError: { error in
-            DDLogError("Error occurred exporting placeholder thumbnail: \(error)")
         }
     }
 
@@ -341,8 +332,6 @@ class MediaImportService: NSObject {
         // Write an error logging message to help track specific sources of export errors.
         var errorLogMessage = "Error occurred importing to Media"
         switch error {
-        case is MediaAssetExporter.AssetExportError:
-            errorLogMessage.append(" with asset export error")
         case is MediaImageExporter.ImageExportError:
             errorLogMessage.append(" with image export error")
         case is MediaURLExporter.URLExportError:
@@ -378,7 +367,7 @@ class MediaImportService: NSObject {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
-        options.imageCompressionQuality = MediaImportService.preferredImageCompressionQuality
+        options.imageCompressionQuality = MediaSettings().imageQualityForUpload.doubleValue
         return options
     }
 

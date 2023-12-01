@@ -46,7 +46,6 @@ class ShareNoticeNavigationCoordinator {
                                   onSuccess: @escaping (_ post: Post?) -> Void,
                                   onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
 
         guard let postIDString = userInfo[ShareNoticeUserInfoKey.postID] as? String,
             let postID = NumberFormatter().number(from: postIDString),

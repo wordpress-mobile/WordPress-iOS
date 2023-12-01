@@ -110,6 +110,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         configure()
         hideButton()
         setupTransferFooterView()
+        WPAnalytics.track(
+            .domainsDashboardDomainsSearchShown,
+            properties: [WPAppAnalyticsKeySource: "all_domains"]
+        )
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -320,10 +325,25 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let coordinator else {
             return
         }
+        let domainPropertyTitle = "domain_name"
+        let domainName = self.coordinator?.domain?.domainName ?? ""
         if let site = coordinator.site {
-            WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+            var properties = WPAnalytics.domainsProperties(for: site)
+            properties[WPAppAnalyticsKeySource] = "all_domains"
+            properties[domainPropertyTitle] = domainName
+            WPAnalytics.track(
+                .domainsSearchSelectDomainTapped,
+                properties: properties,
+                blog: site
+            )
         } else {
-            WPAnalytics.track(.domainsSearchSelectDomainTapped)
+            WPAnalytics.track(
+                .domainsSearchSelectDomainTapped,
+                properties: [
+                    WPAppAnalyticsKeySource: "all_domains",
+                    domainPropertyTitle: domainName
+                ]
+            )
         }
 
         let onFailure: () -> () = { [weak self] in
@@ -392,9 +412,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             guard let self else { return }
             choicesViewModel.isGetDomainLoading = true
             self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+            WPAnalytics.track(.purchaseDomainGetDomainTapped)
         } chooseSiteAction: { [weak self] in
             guard let self else { return }
             self.coordinator?.handleExistingSiteChoice(on: self)
+            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
         }
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = TextContent.domainChoiceTitle

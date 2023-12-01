@@ -1,7 +1,7 @@
 // Ported from https://github.com/danielgindi/Charts/ChartsDemo-iOS/Swift/Formatters/LargeValueFormatter.swift
 
 import Foundation
-import Charts
+import DGCharts
 
 private let MAX_LENGTH = 5
 

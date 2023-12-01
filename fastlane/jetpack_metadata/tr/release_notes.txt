@@ -1,14 +1,27 @@
-Bir gönderiyi çöpe taşıdığınızda ekranın altında bir onay mesajı görürsünüz.
+Sıkı tutunun, bu güncelleme her zamankinden farklı.
 
-Blok düzenleyicide bazı değişiklikler yaptık.
+İlk olarak uygulama içinden tek bir yerde tüm alan adlarınızı yönetebilmeniz için Tüm Alan Adları ekranını ekledik. Eviniz gibisi yoktur.
 
-- Etkin olmayan sosyal simgeler ve Senkronize Edilmiş Desen başlıkları artık karanlık modu kullanan blok tabanlı temalarda görünmez değil. İyi denemeydi arkadaşlar, ama sandığınız kadar görünmez değilsiniz.
-- Klasik düzenleyicide artık bir düğmeye tıklayarak içeriklerinizi bloklara dönüştürebilirsiniz.
+Ardından Site Ortamında güncellemeler yaptık.
 
-Son olarak birkaç hatayı giderdik.
+- Site Ortamı ekranı tasarımında daha iyi menüler, dosya seçimi ile paylaşımı ve daha fazlası vardır. Ayrıca daha da hızlı çalıştığından artık sarsıntılı GIF'ler veya donan videolar yok.
+- Aynı anda birden fazla ortam dosyası seçmek için kaydırma hareketini kullanın. Ayrıca bir fotoğraftan diğerine kaydırmak, meta verileri değiştirmek ve öğeleri silmek daha kolaydır.
+- iPad'de kare görsel önizlemeleri ve en boy oranı arasında geçiş yapabilirsiniz.
+- Boş yer tutucu görselleri, yanlış mesajlar, belge paylaşımı ve ara sıra meydana gelen çökmelerle ilgili sorunları düzelttik.
 
-- İlk denemenizde yanlış site adresini girerseniz herhangi bir oturum açma sorunuyla karşılaşmamalısınız.
-- Yanlış HTML etiketleri, gönderi başlıklarınızda gösterilmez, yalnızca düz metni görürsünüz.
-- İki Faktörlü Kimlik Doğrulama sırasında oturum açarken yanlış kodu girerseniz çok daha açıklayıcı bir hata mesajı alırsınız.
-- Yeni bir alan adı eklerken yeni alan adının nasıl davranacağını açıklayan daha doğru bir mesaj alacaksınız.
-- İki faktörlü kimlik doğrulaması sürecinde gereksiz güvenlik önlemleri ekleyen ekstra kontroller kaldırıldı. Oturum açmak hala güvenlidir ancak artık daha az zahmetlidir.
+Henüz işimiz bitmedi. Ayrıca Gönderiler ve Sayfalarda da büyük değişiklikler yaptık.
+
+- Gönderiler ve Sayfalar ekranı, temiz ve basit görüntüleme seçenekleriyle büyük bir görsel gelişim yaşadı.
+- Düzenlemek istediğiniz içerikleri bulmak için yazar ve etiket filtreleri gibi daha gelişmiş arama özelliklerini kullanın. Arama ayrıca tüm yazarlar genelinde çalışır (tabii belirli bir kişinin içeriklerini istemiyorsanız).
+- Gönderileri ve sayfaları görüntülemek, paylaşmak veya silmek için kaydırma hareketlerini kullanın. Çok hoş.
+- Bağlam menüsü artık bir gönderinin veya sayfanın yorumlarına, ayarlarına ve diğer işlemlerine erişmenizi sağlar.
+- Birkaç çökmenin yanı sıra sayfa yenilemeleri ve görünürlüğü ile ilgili sorunları düzelttik.
+
+Son olarak uygulama genelindeki birkaç sinir bozucu sorunu düzelttik.
+
+- Uygulama artık bir GIF yüklemeyi bitirdiğinizi algılıyor. (monty-burns-excellent.gif)
+- “Gizli” uygulamaların artık gizlilik durumu için daha iyi bir açıklaması var.
+- Okuyucu artık durum çubuğuna bastığınızda en üste kaydırıyor. Uçma zamanı.
+- Menüler ekranı, üst düzey sayfalara göre menü öğelerini uygun şekilde oluşturuyor.
+- Daha eski site temalarında metin renkleri kullanmakla ilgili bir blok düzenleyici çökmesini düzelttik.
+- Blok düzenleyicide derin şekilde iç içe geçmiş içerik yapıştırırken herhangi bir hatayla karşılaşmamalısınız. Tıpkı soğanlar, devler, kekler veya parfelerde olduğu gibi içeriklerinizde de birden fazla katman olabilir.

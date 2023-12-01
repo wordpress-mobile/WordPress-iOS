@@ -30,7 +30,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private var pendingChanges: [(UICollectionView) -> Void] = []
     private var viewModels: [NSManagedObjectID: SiteMediaCollectionCellViewModel] = [:]
     private let blog: Blog
-    private let filter: Set<MediaType>?
+    private var filter: Set<MediaType>?
     private let isShowingPendingUploads: Bool
     private let coordinator = MediaCoordinator.shared
 
@@ -133,7 +133,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func updateFlowLayoutItemSize() {
         let spacing = UserDefaults.standard.isMediaAspectRatioModeEnabled ? SiteMediaCollectionViewController.spacingAspectRatio : SiteMediaCollectionViewController.spacing
         let availableWidth = collectionView.bounds.width
-        let itemsPerRow = availableWidth < 450 ? 4 : 5
+        let itemsPerRow = availableWidth < 500 ? 4 : 5
         let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
 
         flowLayout.minimumInteritemSpacing = spacing
@@ -142,29 +142,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
     }
 
-    func makeMoreMenu() -> UIMenu? {
-        guard !makeMoreMenuActions().isEmpty else {
-            return nil
-        }
-        return UIMenu(children: [UIDeferredMenuElement.uncached { [weak self] in
-            $0(self?.makeMoreMenuActions() ?? [])
-        }])
-    }
-
-    private func makeMoreMenuActions() -> [UIAction] {
-        var actions: [UIAction] = []
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
-            actions.append(UIAction(
-                title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
-                image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
-                    self?.toggleAspectRatioMode()
-                })
-        }
-        return actions
-    }
-
-    private func toggleAspectRatioMode() {
+    func toggleAspectRatioMode() {
         UserDefaults.standard.isMediaAspectRatioModeEnabled.toggle()
         UIView.animate(withDuration: 0.33) {
             self.updateFlowLayoutItemSize()
@@ -219,7 +197,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         }
     }
 
-    private func toggleSelection(for media: Media) {
+    func isSelected(_ media: Media) -> Bool {
+        selection.contains(media)
+    }
+
+    func toggleSelection(for media: Media) {
         setSelected(!selection.contains(media), for: media)
     }
 
@@ -265,6 +247,17 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         default:
             break
         }
+    }
+
+    // MARK: - Filter
+
+    func setMediaType(_ mediaType: MediaType?) {
+        if let mediaType {
+            self.filter = [mediaType]
+        } else {
+            self.filter = nil
+        }
+        reloadFetchController()
     }
 
     // MARK: - UIGestureRecognizerDelegate (Selection)
@@ -361,6 +354,18 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             predicates.append(NSPredicate(format: "(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", searchTerm, searchTerm, searchTerm))
         }
         return predicates.count == 1 ? predicates[0] : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+
+    private func reloadFetchController() {
+        let searchTerm = searchController.searchBar.text ?? ""
+        fetchController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
+        do {
+            try fetchController.performFetch()
+            collectionView.reloadData()
+            updateEmptyViewState()
+        } catch {
+            WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
+        }
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
@@ -509,17 +514,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     // MARK: - UISearchResultsUpdating
 
     func updateSearchResults(for searchController: UISearchController) {
-        let searchTerm = searchController.searchBar.text ?? ""
-        fetchController.fetchRequest.predicate = makePredicate(searchTerm: searchTerm)
-        do {
-            try fetchController.performFetch()
-            collectionView.reloadData()
-            updateEmptyViewState()
-        } catch {
-            WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
-        }
+        reloadFetchController()
     }
-
 
     // MARK: - SiteMediaPageViewControllerDelegate
 
@@ -628,11 +624,10 @@ extension SiteMediaCollectionViewController: NoResultsViewHost {
 }
 
 private enum Strings {
+    static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let syncFailed = NSLocalizedString("media.syncFailed", value: "Unable to sync media", comment: "Title of error prompt shown when a sync fails.")
     static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
     static let noSearchResultsTitle = NSLocalizedString("mediaLibrary.searchResultsEmptyTitle", value: "No media matching your search", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
-    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
-    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }

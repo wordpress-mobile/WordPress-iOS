@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-04 21:44:09+0000 */
+/* Translation-Revision-Date: 2023-11-15 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -151,9 +151,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d yazı.";
@@ -894,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Bu sayfayı kalıcı olarak silmek istediğinizden emin misiniz?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Bu yazıyı kalıcı olarak silmek istediğinizden emin misiniz?";
 
@@ -927,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "İncelenmek üzere göndermek istediğinizden emin misiniz?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Bu sayfayı çöpe atmak istediğinizden emin misiniz?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Bu yazıyı çöpe taşımak istediğinize emin misiniz?";
@@ -1265,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "Gönderen:";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "%@ tarafından.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Devam ederek _hizmet koşullarını_ kabul etmiş olursunuz.";
 
@@ -1339,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1359,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "İptal";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "Karşıya yüklemeyi iptal et";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1766,9 +1750,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Topluluk ve Kâr Amacı Gütmeyen Kuruluş";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "Kompakt";
-
 /* The action is completed */
 "Completed" = "Tamamlandı";
 
@@ -1953,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopyalanan blok";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Bağlantıyı kopyala";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Bağlantıyı yoruma kopyalayın";
@@ -2327,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Menüyü sil";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Kalıcı olarak sil";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Kalıcı olarak silinsin mi?";
 
 /* Button label for deleting the current site
@@ -2638,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Bir yazıyı taslak olarak yazın ve yayınlayın.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Taslaklar";
 
 /* No comment provided by engineer. */
@@ -2650,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Odak noktasını ayarlamak için sürükleyin";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "Çoğalt";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Bloğu çoğalt";
@@ -2668,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Her blokun kendi ayarları vardır. Onları bulmak için bir bloka dokunun. Ayarları, ekranın altındaki araç çubuğunda görünür.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Düzenle";
@@ -3034,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Her gün saat %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Herkes";
-
 /* Example story title description */
 "Example story title" = "Öykü başlığı örneği";
 
@@ -3045,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Özet uzunluğu (kelime)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "Alıntı. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Özetler, içeriğinizin elle hazırlanmış özetidir.";
@@ -3058,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Tam ekran modundan çık";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Genişletilmiş";
 
 /* Accessibility hint */
@@ -3630,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "Ana Sayfa";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Ana sayfa";
 
 /* Label for Homepage Settings site settings section
@@ -4216,9 +4173,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "Yorumlardaki bağlantılar";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "Liste stili";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Yükle";
 
@@ -4306,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "Yerel Hizmetler";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Yerel değişiklikler";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4471,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "En büyük dosya yükleme boyutu";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4562,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "Mesaj";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadata";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4584,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "Aylar ve yıllar";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Daha fazla";
 
 /* Action button to display more available options
@@ -4648,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Menü öğesini taşı";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Taslaklara taşı";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Çöpe taşı";
 
@@ -4688,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "Benim sitem";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Sitelerim";
 
 /* Siri Suggestion to open My Sites */
@@ -4958,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Henüz bildirim yok";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Aramanızla eşleşen sayfa yok";
 
 /* Text displayed when search for plugins returns no results */
@@ -4979,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "Bu etiket ile yakın zamanda yazı yazılmadı.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Aramanızla eşleşen yazı yok";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Yazı yok.";
@@ -5347,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Sayfa";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Sayfa taslaklara kaydedildi";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Sayfa yayımlananlara kaydedildi";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Sayfa takvime eklendi";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Sayfa Ayarları";
@@ -5443,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "Bekleyen";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Bekleyen eleştiri";
 
 /* Noun. Title of the people management feature.
@@ -5666,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Yazı biçimi";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Yazı taslaklara geri yüklendi";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Yazı yayımlanmak üzere geri yüklendi";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Yazı takvime eklenmek üzere geri yüklendi";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Yazı ayarları";
@@ -5751,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Yazılar ve sayfalar";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "Yazılar sayfası";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "Yazılar sayfası başarıyla güncellendi";
@@ -5846,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "Californiya kullanıcıları için gizlilik notu";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Özel";
 
 /* No comment provided by engineer. */
@@ -5897,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "Yayımlama tarihi";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Hemen yayımla";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Şimdi yayımla";
 
@@ -5920,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Yayımlandı";
 
 /* Precedes the name of the blog just posted on */
@@ -6217,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Tekrar gönder";
 
-/* Title of the reset button */
-"Reset" = "Sıfırla";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Etkinlik türü filtresini sıfırla";
 
@@ -6274,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6391,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Kaydedilen yazı";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Kaydedildi!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Bu yazıyı sonrası için kaydeder.";
 
@@ -6404,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "Yazı kaydediliyor...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Kaydediliyor...";
 
@@ -6494,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "URL ara veya yaz";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Sayfalarda arama yap";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "Yazıları ara";
 
 /* No comment provided by engineer. */
 "Search settings" = "Arama ayarları";
@@ -6710,18 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Hizmet";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Ana sayfayı belirleyin";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Öne çıkan görsel olarak ayarla";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Ana sayfa olarak ayarla";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Yazılar sayfası olarak belirle";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Öne çıkan görsel olarak ayarla";
@@ -6766,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7152,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Sabit ana sayfa";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7183,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Yapışkan";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "Sabit.";
 
 /* User action to stop upload. */
 "Stop upload" = "Yüklemeyi durdur";
@@ -7243,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Destek";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Site değiştir";
 
 /* Switches the Editor to HTML Mode */
@@ -7618,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Silmeye çalıştığınız kullanıcı bı sitenin yöneticisi. Lütfen yardım almak için destek ile iletişime geçin.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Uygulama içinde saklanan kullanıcı adı ve parolanın zamanı geçmiş olabilir. Lütfen parolanızı tekrar girerek yeniden deneyiniz.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -8012,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafik";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Aktarılan Alan Adı";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "%s öğesini şuna dönüştür:";
 
@@ -8026,9 +7913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "Seçilen ortamı çöpe at";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "Bu sayfa çöp kutusuna gönderilsin mi?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Bu yazı silinsin mi?";
@@ -8147,9 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Bağlanılamıyor";
 
-/* An error message. */
-"Unable to Connect" = "Bağlanamıyor";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "Öyküler Düzenleyicisi Oluşturulamıyor";
 
@@ -8230,12 +8111,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Bağlantı paylaşılamıyor";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Çevrimdışı iken sayfalar çöpe atılamaz. Lütfen daha sonra tekrar deneyin.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "Çevrimdışıyken yazılar çöpe atılamıyor. Lütfen daha sonra tekrar deneyin.";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "Site bildirimleri kapatılamıyor";
@@ -8604,8 +8479,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "Videolar";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -9739,6 +9612,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Uygulamada depolanan kullanıcı adı veya parolanın süresi geçmiş olabilir. Lütfen ayarlarda parolanızı tekrar girin ve tekrar deneyin.";
+
+/* An error message. */
+"common.unableToConnect" = "Bağlanamıyor";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Bu tanımlama bilgileri, kullanıcıların web sitelerimizle nasıl etkileşimde bulunduğu hakkında bilgi toplayarak performansı optimize etmemizi sağlar.";
 
@@ -9889,6 +9768,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Bir alan adı arayın";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Alan Adı Al";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Siteyi daha sonra ekleyin.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Sadece alan adı satın alın";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Süresi Dolmuş";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Yenilemeler";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Bir alan adı bulun";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Mükemmel alan adınızı bulmak için aşağıya tıklayın.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "Alan adınız yok";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Alan adlarınız yüklenirken bir hatayla karşılaştık. Sorun devam ederse lütfen desteğe başvurun.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Bir sorun oluştu";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Tekrar dene";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Lütfen ağ bağlantınızı kontrol edip tekrar deneyin.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "İnternet Bağlantısı Yok";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*Tüm ücretli yıllık paketlere bir yıllık ücretsiz alan adı dahildir";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Merak etmeyin, daha sonra site ekleyebilirsiniz.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Alan adınızı nasıl kullanacağınızı seçin";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Alan adı arayın";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "\"%@\" aramanızla eşleşen alan adı bulunamadı";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "Eşleşen Alan Adı Bulunamadı";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Site Seç";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "İlk yıl için ücretsiz alan adı*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Zaten başlatmış olduğunuz bir siteyle kullanın.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Var olan WordPress.com sitesi";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "Tüm alan adları";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Özel alan adınızın çalışmaya başlaması 30 dakika kadar sürebilir.";
 
@@ -9900,39 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Tebrikler, siteniz yayında!";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "Eylem Gerekli";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "Etkin";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "Kurulumu Tamamla";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "Hata";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "Süresi Dolmuş";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "Süresi Yakında Dolacak";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "Başarısız";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "Devam Ediyor";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "Yenile";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "E-posta Adresini Doğrula";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "Doğrulanıyor";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "En İyi Alternatif";
@@ -9955,11 +9876,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "yıllık";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Ödeme";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Kapat";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Maalesef eklemeye çalıştığınız alan adı şu anda Jetpack'ten satın alınamıyor.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Alan Adı Satın Alın";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Ara";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Site Seçin";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
@@ -10404,8 +10337,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Ekle";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "En Boy Oranı Izgarası";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Sil";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seç";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Paylaş";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "İptal et";
@@ -10439,6 +10381,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Aramanızla eşleşen ortam yok";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Seçilen öğeler paylaşılamadı.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Kare Izgara";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Ortam";
@@ -10662,14 +10610,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "diğer";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Blaze ile tanıt";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Ana sayfa";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Yerel değişiklikler";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "İnceleme bekliyor";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Gönderiler sayfası";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Gizli";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Ana sayfanız, Tema şablonunu kullanıyor ve web düzenleyicisinde açılacak.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Ana sayfa";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Sayfa başarıyla güncellendi";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Kalıcı Olarak Sil";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Bu sayfayı kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Kalıcı olarak silinsin mi?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Herkese ait sayfalar";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Bana ait sayfalar";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Çöp Kutusuna Taşı";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Bu sayfayı çöpe atmak istediğinizden emin misiniz?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Bu sayfa çöpe atılsın mı?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "İptal Et";
 
 /* No comment provided by engineer. */
 "password" = "parola";
@@ -10710,6 +10700,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Oluşturma tarihi: %@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Gönderi siliniyor...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Düzenlenme tarihi: %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Gönderi çöpe taşınıyor...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Yayımlanma tarihi: %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Zamanlanma tarihi: %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Çöpe atılma tarihi: %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "%@ tarafından.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Alıntı. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Yapışkan.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Sil";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "Paylaş";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Görüntüle";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Kapat";
 
@@ -10728,8 +10760,71 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Öne Çıkan Görseli Ayarla";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Gönderi ayarları güncellenemedi.";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Yüklemeyi iptal et";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Yorumlar";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Kalıcı olarak sil";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Taslağa taşı";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Çoğalt";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Sayfa nitelikleri";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Önizle";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Şimdi yayınla";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Tekrar dene";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Anasayfa olarak ayarla";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Üst öğe belirle";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Gönderiler sayfası olarak ayarla";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Normal sayfa olarak ayarla";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Ayarlar";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Paylaş";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "İstatistikler";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Çöp kutusuna taşı";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Görüntüle";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Sayfa kalıcı olarak silindi";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Gönderi kalıcı olarak silindi";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Sayfa çöpe taşındı";
@@ -10737,8 +10832,11 @@ Example: Reply to Pamela Nguyen */
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "Gönderi çöpe taşındı";
 
-/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
-"postsList.movePostToTrash.undo" = "Geri al";
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Herkese ait gönderiler";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Bana ait gönderiler";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Daha fazla paylaşım için şimdi abone olun";
@@ -10956,6 +11054,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Yeni";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Alan adını aktar";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Zaten sahip olduğunuz bir alan adını aktarmak mı istiyorsunuz?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Benzer Yazılar, yazılarınızın altında sitenizden ilgili içerikler gösterir.";
 
@@ -11060,6 +11164,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Siteniz görüntülemeye hazır oluncaya kadar “Yakında” uyarısıyla birlikte ziyaretçilerden gizlenir.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Gizli";

@@ -277,6 +277,10 @@ class MediaImageExporter: MediaExporter {
         /// Write a given image source, succeeds unless an error is thrown, returns the resulting properties if available.
         ///
         func writeImageSource(_ source: CGImageSource) throws -> WriteResultProperties {
+            if (sourceUTType as String) == UTType.gif.identifier && (CGImageSourceGetType(source) as? String) == UTType.gif.identifier {
+                return try writeAnimatedImageSource(source)
+            }
+
             // Create the destination with the URL, or error
             guard let destination = CGImageDestinationCreateWithURL(url as CFURL, sourceUTType, 1, nil) else {
                 throw ImageExportError.imageSourceDestinationWithURLFailed
@@ -343,6 +347,29 @@ class MediaImageExporter: MediaExporter {
             // Return the result with any interesting properties.
             return WriteResultProperties(width: width,
                                          height: height)
+        }
+
+        private func writeAnimatedImageSource(_ source: CGImageSource) throws -> WriteResultProperties {
+            guard let destination = CGImageDestinationCreateWithURL(url as CFURL, sourceUTType, CGImageSourceGetCount(source), nil) else {
+                throw ImageExportError.imageSourceDestinationWithURLFailed
+            }
+            var options: [NSString: Any] = [:]
+            if let maximumSize {
+                options[kCGImageSourceCreateThumbnailWithTransform] = true
+                options[kCGImageSourceCreateThumbnailFromImageAlways] = true
+                options[kCGImageSourceThumbnailMaxPixelSize] = maximumSize
+            }
+            var outputSize: CGSize?
+            for i in 0..<CGImageSourceGetCount(source) {
+                if let image = CGImageSourceCreateThumbnailAtIndex(source, i, options as CFDictionary) {
+                    CGImageDestinationAddImage(destination, image, nil)
+                    outputSize = CGSize(width: CGFloat(image.width), height: CGFloat(image.height))
+                }
+            }
+            guard CGImageDestinationFinalize(destination) else {
+                throw ImageExportError.imageSourceDestinationWriteFailed
+            }
+            return WriteResultProperties(width: outputSize?.width, height: outputSize?.height)
         }
     }
 }

@@ -1,14 +1,27 @@
-Al enviar un artículo a la papelera, aparecerá un mensaje de confirmación en la parte inferior de la pantalla.
+Abróchate el cinturón: esta actualización es una pasada.
 
-Hemos realizado algunos cambios en el editor de bloques.
+En primer lugar, hemos añadido la pantalla Todos los dominios para que puedas gestionar todos tus dominios en un solo lugar dentro de la aplicación. No hay lugar como el hogar.
 
-- Los iconos sociales inactivos y los títulos de patrones sincronizados ya no son invisibles en los temas basados en bloques que utilizan el modo oscuro. Buen intento, pero no eres tan ninja como crees.
-- En el editor clásico, ya puedes convertir el contenido en bloques con tan solo un clic.
+A continuación, hemos actualizado Medios del sitio.
 
-Por último, hemos eliminado un pequeño grupo de errores.
+- El diseño de la pantalla Medios del sitio tiene mejores menús, selección y uso compartido de archivos y mucho más. Incluso funciona más rápido: se acabaron los GIF entrecortados y los vídeos parados.
+- Puedes utilizar el gesto panorámico para seleccionar varios archivos de medios a la vez. También es más fácil pasar de una foto a otra, cambiar los metadatos y eliminar elementos.
+- En el iPad, puedes cambiar entre la vista previa de imágenes cuadradas y la relación de aspecto.
+- Hemos solucionado problemas con imágenes de marcador de posición en blanco, mensajes incorrectos, documentos compartidos y fallos ocasionales.
 
-- No deberías encontrarte con ningún problema de acceso si introduces la dirección del sitio equivocada en el primer intento.
-- Las etiquetas HTML incorrectas no aparecerán en los títulos de las entradas; solo verás texto sin formato.
-- Durante la autenticación de dos factores, recibirás un mensaje de error mucho más descriptivo si introduces un código incorrecto al iniciar sesión.
-- Cuando añadas un nuevo dominio, verás un mensaje más preciso que describe cómo se comportará el nuevo dominio.
-- Hemos eliminado controles adicionales en el proceso de autenticación de dos factores que añadían medidas de seguridad innecesarias. El inicio de sesión sigue siendo seguro, pero ahora supone menos problemas.
+Aún no hemos terminado. También hemos hecho grandes cambios en Entradas y páginas.
+
+- La pantalla Entradas y páginas se ha renovado con opciones de visualización limpias y sencillas.
+- Utiliza funciones de búsqueda más avanzadas, como filtros de autor y etiquetas, para encontrar el contenido que deseas editar. La búsqueda también funciona con todos los autores (a menos, claro está, que quieras contenidos de una persona en concreto).
+- Utiliza las acciones de deslizamiento para ver, compartir o eliminar publicaciones y páginas. Perfecto.
+- Ahora, el menú contextual te permite acceder a los comentarios, la configuración y otras acciones de una entrada o página.
+- Hemos solucionado problemas de actualización y visibilidad de la página, así como algunos fallos.
+
+Por último, hemos solucionado un puñado de problemas molestos en toda la aplicación.
+
+- La aplicación reconoce ahora cuándo has terminado de subir un GIF. (monty-burns-excellent.gif)
+- Las entradas «ocultas» ahora tienen una mejor descripción de su estado de privacidad.
+- El lector se desplaza ahora a la parte superior cuando se toca la barra de estado. ¡Hasta el infinito!
+- La pantalla Menús crea correctamente elementos del menú basados en páginas de nivel superior.
+- Hemos corregido un fallo del editor de bloques relacionado con el uso de colores de texto en temas de sitios antiguos.
+- No deberías encontrarte con ningún error al pegar contenido profundamente anidado en el editor de bloques. Al igual que las cebollas, los ogros, los pasteles o los parfaits, tu contenido puede tener muchas capas.

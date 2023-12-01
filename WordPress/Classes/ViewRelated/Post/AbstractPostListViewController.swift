@@ -13,6 +13,8 @@ class AbstractPostListViewController: UIViewController,
                                       UITableViewDataSource,
                                       NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
 {
+    typealias SyncPostResult = (posts: [AbstractPost], hasMore: Bool)
+
     private static let postsControllerRefreshInterval = TimeInterval(300)
     private static let httpErrorCodeForbidden = 403
     private static let postsFetchRequestBatchSize = 10
@@ -449,7 +451,7 @@ class AbstractPostListViewController: UIViewController,
         refreshResults()
     }
 
-    @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
+    @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
         guard posts.count > 0 else {
             assertionFailure("This method should not be called with no posts.")
             return
@@ -459,7 +461,7 @@ class AbstractPostListViewController: UIViewController,
         // differing time offsets in the created dates.
         let oldestPost = posts.min { ($0.date_created_gmt ?? .distantPast) < ($1.date_created_gmt ?? .distantPast) }
         filter.oldestPostDate = oldestPost?.date_created_gmt
-        filter.hasMore = posts.count >= options.number.intValue
+        filter.hasMore = hasMore
 
         updateAndPerformFetchRequestRefreshingResults()
     }
@@ -475,85 +477,81 @@ class AbstractPostListViewController: UIViewController,
         return .any
     }
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
+    @MainActor
+    func syncPosts(isFirstPage: Bool) async throws -> SyncPostResult {
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
-        let postService = PostService(managedObjectContext: managedObjectContext())
+        let coreDataStack = ContextManager.shared
+        let blogID = TaggedManagedObjectID(blog)
+        let number = numberOfLoadedElement.intValue
 
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses.strings
-        options.authorID = author
-        options.number = numberOfLoadedElement
-        options.purgesLocalSync = true
+        let repository = PostRepository(coreDataStack: coreDataStack)
+        let result = try await repository.paginate(
+            type: postType == .post ? Post.self : Page.self,
+            statuses: filter.statuses,
+            authorUserID: author,
+            offset: isFirstPage ? 0 : fetchResultsController.fetchedObjects?.count ?? 0,
+            number: number,
+            in: blogID
+        )
 
-        postService.syncPosts(
-            ofType: postType,
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                guard let self, let posts else {
-                    return
-                }
+        let posts = try result.map { try coreDataStack.mainContext.existingObject(with: $0) }
+        let hasMore = result.count >= number
+
+        return (posts, hasMore)
+    }
+
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
+        let filter = filterSettings.currentPostListFilter()
+        Task { @MainActor [weak self] in
+            do {
+                guard let (posts, hasMore) = try await self?.syncPosts(isFirstPage: true) else { return }
+
+                guard let self else { return }
 
                 if posts.count > 0 {
-                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: { [weak self] error in
-
-                guard let self, let error else {
-                    return
-                }
+            } catch {
+                guard let self else { return }
 
                 failure?(error as NSError)
 
                 if userInteraction == true {
                     self.handleSyncFailure(error as NSError)
                 }
-        })
+            }
+        }
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
         setFooterHidden(false)
 
-        let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
-        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
-        let postService = PostService(managedObjectContext: managedObjectContext())
+        Task { @MainActor [weak self] in
+            do {
+                guard let (posts, hasMore) = try await self?.syncPosts(isFirstPage: false) else { return }
 
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses.strings
-        options.authorID = author
-        options.number = numberOfLoadedElement
-        options.offset = fetchResultsController.fetchedObjects?.count as NSNumber?
-
-        postService.syncPosts(
-            ofType: postType,
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                guard let self, let posts else {
-                    return
-                }
+                // User may have exit the screen when the "syncPosts" call above completes.
+                guard let self else { return }
 
                 if posts.count > 0 {
-                    self.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
-            }, failure: { error in
-                guard let error else {
-                    return
-                }
+            } catch {
                 failure?(error as NSError)
-            })
+            }
+        }
     }
 
     func syncContentStart(_ syncHelper: WPContentSyncHelper) {

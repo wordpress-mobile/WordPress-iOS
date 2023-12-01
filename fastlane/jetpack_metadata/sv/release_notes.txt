@@ -1,14 +1,27 @@
-När du flyttar ett inlägg till papperskorgen visas nu ett bekräftelsemeddelande längst ner på skärmen.
+Spänn fast dig, den här uppdateringen är en riktig höjdare.
 
-Vi har gjort några ändringar i blockredigeraren.
+Först och främst har vi lagt till skärmen Alla domäner så att du kan hantera alla dina domäner på ett och samma ställe i appen. Det finns ingen plats som hemma.
 
-- Inaktiva sociala ikoner och rubriker för synkroniserade mönster är inte längre osynliga i blockbaserade teman som använder mörkt läge. Bra försök, hörrni, men ni är inte så skickliga som ni tror.
-- Du kan nu konvertera ditt innehåll till block med en knapptryckning i den klassiska redigeraren.
+Därefter uppdaterade vi Webbplatsmedia.
 
-Slutligen har vi även åtgärdat en mindre anhopning av buggar.
+- Skärmdesignen för Webbplatsmedia har bättre menyer, filval och fildelning med mera. Det går till och med snabbare - inga fler ryckiga GIF:ar eller videoklipp som laggar.
+- Du kan använda panoreringsgesten för att välja flera mediafiler samtidigt. Det är också enklare att svepa från ett foto till ett annat, ändra metadata och radera objekt.
+- På iPad kan du växla mellan kvadratisk förhandsgranskning av bilder och bildförhållande.
+- Vi har åtgärdat problem med tomma platshållarbilder, felaktiga meddelanden, dokumentdelning och enstaka krascher.
 
-- Du bör inte stöta på några inloggningsproblem om du anger fel webbplatsadress vid första försöket.
-- Felaktiga HTML-taggar visas inte i dina inläggsrubriker - du ser bara oformaterad text.
-- Vid tvåfaktors-autentisering får du ett mycket mer beskrivande felmeddelande om du anger fel kod när du loggar in.
-- När du lägger till en ny domän visas ett mer exakt meddelande som beskriver hur den nya domänen kommer att fungera.
-- Vi tog bort extra kontroller som lade till onödiga säkerhetsåtgärder i processen för tvåfaktors-autentisering. Det är fortfarande säkert att logga in, men det medför nu färre problem.
+Vi är inte färdiga ännu. Vi har också gjort stora förändringar av Inlägg och sidor.
+
+- Skärmen Inlägg och sidor har fått en ansiktslyftning med rena och enkla visningsalternativ.
+- Använd mer avancerade sökfunktioner, som författar- och etikettfilter, för att hitta det innehåll du vill redigera. Sökningen fungerar också över samtliga författare (om du inte vill ha innehåll från en specifik person, förstås).
+- Använd svepgester för att visa, dela eller ta bort inlägg och sidor. Perfekt.
+- I kontextmenyn kan du nu komma åt kommentarer, inställningar och andra åtgärder för ett inlägg eller en sida.
+- Vi har åtgärdat problem med siduppdateringar och synlighet, samt en handfull krascher.
+
+Slutligen har vi åtgärdat en handfull irriterande problem i appen.
+
+- Appen känner nu igen när du har slutfört uppladdningen av en GIF. (monty-burns-excellent.gif)
+- "Dolda" inlägg har nu en bättre beskrivning av sin integritetsstatus.
+- Läsaren rullas nu till toppen när du trycker på statusfältet. Upp, upp och iväg.
+- Skärmen Menyer skapar korrekta menyval baserat på sidorna högst upp.
+- Vi har åtgärdat en krasch i blockredigeraren relaterad till användning av textfärger från äldre webbplatsteman.
+- Du bör inte stöta på några fel när du klistrar in djupt inbäddat innehåll i blockredigeraren. Precis som lökar, troll, kakor eller parfaiter kan ditt innehåll ha många lager.

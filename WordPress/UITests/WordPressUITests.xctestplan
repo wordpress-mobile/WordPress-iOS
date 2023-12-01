@@ -16,7 +16,8 @@
       "identifier" : "1D6058900D05DD3D006BFB54",
       "name" : "WordPress"
     },
-    "testRepetitionMode" : "retryOnFailure"
+    "testRepetitionMode" : "retryOnFailure",
+    "uiTestingScreenshotsLifetime" : "keepAlways"
   },
   "testTargets" : [
     {

@@ -1,12 +1,23 @@
-When you move a post to the trash, you’ll now see a confirmation message appear at the bottom of the screen.
+Buckle up, this update’s a doozy. Let’s start with Site Media.
 
-We made some changes to the block editor.
+- We updated the Site Media screen design with better menus, file selection and sharing, and more. It even runs faster—no more jerky GIFs or stalled-out videos.
+- You can use the pan gesture to select multiple media files at once. It’s also easier to swipe from one photo to another, change metadata, and delete items.
+- On iPad, you can switch between square image previews and aspect ratio.
+- We fixed issues with blank placeholder images, incorrect messages, document sharing, and occasional crashes.
 
-- Inactive social icons and Synced Pattern titles are no longer invisible in block-based themes using dark mode. Good try, fellas, but you’re not as ninja as you think.
-- In the Classic editor, you can now convert your content into blocks with the click of a button.
+We’re not done yet. We also made big changes to Posts & Pages.
 
-Finally, we squashed a mini-swarm of bugs.
+- The Posts & Pages screen got a facelift with clean, simple display options.
+- Use more advanced search features, like author and tag filters, to find the content you’d like to edit. Search also works across all authors (unless, of course, you want content from one specific person.)
+- Use swipe actions to view, share, or delete posts and pages. Sweet.
+- The context menu now lets you access comments, settings, and other actions for a post or page.
+- We fixed issues with page refreshes and visibility, as well as a handful of crashes.
 
-- You shouldn’t run into any login issues if you enter the wrong site address on the first try.
-- Incorrect HTML tags won’t show up in your post titles—you’ll only see plain text.
-- We removed extra controls in the two-factor authentication process that added unnecessary security measures. Logging in is still safe, but now it comes with fewer headaches.
+Finally, we fixed a handful of pesky problems across the app.
+
+- The app now recognizes when you’ve finished uploading a GIF. (monty-burns-excellent.gif)
+- “Hidden” posts now have a better description for their privacy status.
+- The reader now scrolls to the top when you tap the status bar. Up, up, and away.
+- The Menus screen properly creates menu items based on top-level pages.
+- We fixed a crash related to using text colors in older site themes.
+- You shouldn’t run into any errors when you paste deeply nested content. Much like onions, ogres, cakes, or parfaits, your content can have many layers.

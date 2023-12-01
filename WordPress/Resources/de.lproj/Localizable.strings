@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-02 14:16:25+0000 */
+/* Translation-Revision-Date: 2023-11-15 13:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: de */
@@ -50,11 +50,11 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Gefällt mir";
+"%1$d Like" = "%1$d Like";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Gefällt mir";
+"%1$d Likes" = "%1$d Likes";
 
 /* Singular format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answer" = "%1$d Antwort";
@@ -151,9 +151,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d Beiträge.";
@@ -894,9 +891,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Bist du sicher, dass du dieses Element endgültig löschen möchtest?";
 
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Bist du sicher, dass du diese Seite endgültig löschen möchtest?";
-
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Bist du sicher, dass du diesen Beitrag endgültig löschen möchtest?";
 
@@ -927,9 +921,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Bist du sicher, dass du den Inhalt zur Überprüfung einreichen möchtest?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Bist du sicher, dass du diese Seite in den Papierkorb verschieben möchtest?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Willst du diesen Artikel wirklich löschen?";
@@ -1265,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "Von ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "Von %@.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Wenn du fortfährst, stimmst du unseren _Geschäftsbedingungen_ zu.";
 
@@ -1339,10 +1327,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1359,8 +1344,7 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Abbrechen";
 
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
+/* Media Library option to cancel an in-progress or failed upload. */
 "Cancel Upload" = "Upload abbrechen";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
@@ -1695,7 +1679,7 @@ translators: Block name. %s: The localized block name */
 "Comment" = "Kommentar";
 
 /* Title for the `comment likes` setting */
-"Comment Likes" = "„Gefällt mir“ bei Kommentaren";
+"Comment Likes" = "Kommentar-Likes";
 
 /* Message displayed when approving a comment succeeds. */
 "Comment approved." = "Kommentar genehmigt.";
@@ -1765,9 +1749,6 @@ translators: Block name. %s: The localized block name */
 
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Community und gemeinnützige Organisationen";
-
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "Kompakt";
 
 /* The action is completed */
 "Completed" = "Abgeschlossen";
@@ -1953,10 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopierter Block";
-
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Link kopieren";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Link in Kommentar kopieren";
@@ -2327,15 +2304,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Menü löschen";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Endgültig löschen";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Unwiderruflich löschen?";
 
 /* Button label for deleting the current site
@@ -2638,8 +2611,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Entwirf und veröffentliche einen Beitrag.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Entwürfe";
 
 /* No comment provided by engineer. */
@@ -2650,10 +2622,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Ziehen, um Fokuspunkt anzupassen";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "Duplizieren";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Block duplizieren";
@@ -2668,12 +2636,9 @@ translators: Block name. %s: The localized block name */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Jeder Block hat eigene Einstellungen. Tippe auf den jeweiligen Block, um sie zu finden. Die Einstellungen werden in der Werkzeugleiste unten auf dem Bildschirm angezeigt.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Bearbeiten";
@@ -3034,9 +2999,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Jeden Tag um %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Jeder";
-
 /* Example story title description */
 "Example story title" = "Beispieltitel für Story";
 
@@ -3045,9 +3007,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Länge des Textauszugs (in Wörtern)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "Textauszug. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Auszüge sind optionale, manuell angefertigte Zusammenfassungen deines Inhalts.";
@@ -3058,8 +3017,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Vollbild verlassen";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Erweitert";
 
 /* Accessibility hint */
@@ -3630,8 +3588,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "Startseite";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Homepage";
 
 /* Label for Homepage Settings site settings section
@@ -4154,7 +4111,7 @@ translators: Block name. %s: The localized block name */
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
-"Likes" = "Gefällt mir";
+"Likes" = "Likes";
 
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "Likes zu meinen Kommentaren";
@@ -4215,9 +4172,6 @@ translators: Block name. %s: The localized block name */
    Comments Paging
    Settings: Comments Approval settings */
 "Links in comments" = "Links in Kommentaren";
-
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "Listen-Stil";
 
 /* Title of the screen that load selected the revisions. */
 "Load" = "Laden";
@@ -4306,8 +4260,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "Lokale Dienstleistungen";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Lokale Änderungen";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4471,7 +4424,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "Max. Videogröße für Upload";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4562,9 +4514,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "Nachricht";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadaten";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4584,13 +4533,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "Monate und Jahre";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Mehr";
 
 /* Action button to display more available options
@@ -4648,15 +4595,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Menüeintrag verschieben";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Verschiebe zu Entwürfe";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "In Papierkorb verschieben";
 
@@ -4688,7 +4628,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "Meine Webseite";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Meine Websites";
 
 /* Siri Suggestion to open My Sites */
@@ -4958,8 +4899,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Es gibt noch keine Benachrichtigungen";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Keine Seiten entsprechen deiner Suche";
 
 /* Text displayed when search for plugins returns no results */
@@ -4979,9 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "In letzter Zeit wurden keine Beiträge mit diesem Schlagwort veröffentlicht.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Keine Beiträge entsprechen deiner Suche";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Keine Beiträge.";
@@ -5347,15 +5284,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Seite";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Seite unter „Entwürfe“ wiederhergestellt";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Seite unter „Veröffentlicht“ wiederhergestellt";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Seite unter „Geplant“ wiederhergestellt";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Seiten-Einstellungen";
@@ -5443,8 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "Ausstehend";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Ausstehender Review";
 
 /* Noun. Title of the people management feature.
@@ -5666,15 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Artikel-Formatvorlage";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Beitrag als Entwurf wiederhergestellt";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Beitrag als veröffentlicht wiederhergestellt";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Beitrag als geplant wiederhergestellt";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Beitragseinstellungen";
@@ -5751,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Beiträge und Seiten";
-
-/* Title of the Posts Page Badge */
-"Posts page" = "Beitragsseite";
 
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "Beitragsseite wurde erfolgreich aktualisiert";
@@ -5846,8 +5761,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "Datenschutzhinweis für Benutzer in Kalifornien";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
@@ -5897,12 +5811,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "Veröffentlichungsdatum";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Sofort veröffentlichen";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Jetzt veröffentlichen";
 
@@ -5920,8 +5832,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Veröffentlicht";
 
 /* Precedes the name of the blog just posted on */
@@ -6217,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Erneut senden";
 
-/* Title of the reset button */
-"Reset" = "Zurücksetzen";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Aktivitätstyp-Filter zurücksetzen";
 
@@ -6274,12 +6182,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6391,9 +6296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Gespeicherter Beitrag";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Gespeichert!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Speichert diesen Beitrag für später.";
 
@@ -6404,7 +6306,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "Beitrag wird gespeichert …";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Wird gespeichert …";
 
@@ -6494,12 +6395,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search or type URL" = "URL suchen oder eingeben";
-
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Seiten suchen";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "Beiträge durchsuchen";
 
 /* No comment provided by engineer. */
 "Search settings" = "Sucheinstellungen";
@@ -6710,18 +6605,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Dienst";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Übergeordnete festlegen";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Als Beitragsbild festlegen ";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Als Homepage festlegen";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Als Beitragsseite festlegen";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Als Beitragsbild festlegen";
@@ -6766,7 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7152,8 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Statische Seite";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7183,9 +7069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Oben gehalten";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "Oben gehalten.";
 
 /* User action to stop upload. */
 "Stop upload" = "Hochladen beenden";
@@ -7243,7 +7126,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Support";
 
-/* Button used to switch site */
+/* Button used to switch site
+   Title for back button that leads to the site picker screen. */
 "Switch Site" = "Website wechseln";
 
 /* Switches the Editor to HTML Mode */
@@ -7523,7 +7407,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Wenn du deine Schreibkünste verbessern willst, kreiere deinen eigenen Schreibstil und teile ihn mit anderen – und dabei helfen dir unsere Themenvorschläge!";
 
 /* No comment provided by engineer. */
-"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Du könntest zu einem Server verbinden, der nur vorgibt \"%@\" zu sein, was ein Sicherheitsrisiko darstellt.\n\nMöchtest Du dem Zertifikat trotzdem vertrauen?";
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Möglicherweise stellst du eine Verbindung zu einem Server her, der vorgibt, „%@“ zu sein, wodurch deine vertraulichen Daten gefährdet werden könnten.\n\nMöchtest du dem Zertifikat trotzdem vertrauen?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Der Inhalt der Seite mit deinen letzten Beiträgen wird automatisch generiert und kann nicht bearbeitet werden.";
@@ -7618,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Der Benutzer, den du zu entfernen versuchst, ist der Betreiber dieser Website. Bitte kontaktiere den Support, um Unterstützung zu erhalten.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Der Zugangsname und das Passwort, die in der App gespeichert waren, sind wohl nicht mehr aktuell. Bitte gib dein Passwort in den Einstellungen noch einmal ein.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -8012,6 +7896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Traffic";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Übertragene Domain";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "%s umwandeln in ";
 
@@ -8026,9 +7913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "Ausgewählte Medien in den Papierkorb legen";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "Diese Seite in den Papierkorb verschieben?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Diesen Beitrag in den Papierkorb verschieben?";
@@ -8147,9 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Verbindung kann nicht hergestellt werden";
 
-/* An error message. */
-"Unable to Connect" = "Keine Verbindung möglich";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "Editor zum Erstellen von Storys kann nicht geöffnet werden";
 
@@ -8230,12 +8111,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Link kann nicht geteilt werden";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Seiten können offline nicht in den Papierkorb gelegt werden. Bitte versuche es später erneut.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "Beiträge können offline nicht in den Papierkorb gelegt werden. Bitte versuche es später erneut.";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "Website-Benachrichtigungen können nicht deaktiviert werden";
@@ -8604,8 +8479,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "Videos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -9394,7 +9267,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your comment" = "Du hast *50 Likes* für deinen Kommentar bekommen";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "Du hast *50 likes* on your site today dafür bekommen";
+"You received *50 likes* on your site today" = "Du hast heute *50 Likes* für deine Website erhalten";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -9739,6 +9612,12 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Antwort auf %1$@";
 
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Der in der App gespeicherte Benutzername oder das Passwort ist unter Umständen veraltet. Bitte gib dein Passwort in den Einstellungen erneut ein und versuche es noch einmal.";
+
+/* An error message. */
+"common.unableToConnect" = "Keine Verbindung möglich";
+
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Mithilfe dieser Cookies können wir die Leistung optimieren, indem wir Informationen darüber sammeln, wie Benutzer mit unseren Websites interagieren.";
 
@@ -9889,6 +9768,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ausblenden";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Nach einer Domain suchen";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Domain erhalten";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Füge später eine Website hinzu.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Kaufe lediglich eine Domain";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Abgelaufen";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Wird verlängert";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Eine Domain finden";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Tippe unten, um die perfekte Domain zu finden.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "Du hast keine Domains";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Beim Laden deiner Domains ist ein Fehler aufgetreten. Wenn das Problem weiterhin besteht, wende dich bitte an den Support.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Etwas ist schiefgelaufen";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Erneut versuchen";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Bitte überprüfe deine Netzwerkverbindung und versuche es erneut.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "Keine Internetverbindung";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "* Bei allen kostenpflichtigen Jahrestarifen ist ein Jahr lang eine kostenlose Domain enthalten";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Keine Sorge, du kannst später ganz einfach eine Website hinzufügen.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Entscheide, wie du deine Domain nutzen möchtest";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Domains suchen";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "Es konnten keine Domains gefunden werden, die mit deiner Suche für „%@“ übereinstimmen";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "Es wurden keine passenden Domains gefunden";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Website auswählen";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "Kostenlose Domain im ersten Jahr*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Mit einer Website verwenden, mit der du bereits begonnen hast.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Vorhandene WordPress.com-Website";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "Alle Domains";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Es kann bis zu 30 Minuten dauern, bis deine individuelle Domain funktioniert.";
 
@@ -9900,39 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Super, deine Website ist live!";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "Handlung erforderlich";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "Aktiv";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "Einrichtung abschließen";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "Fehler";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "Abgelaufen";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "Läuft bald ab";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "Fehlgeschlagen";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "In Bearbeitung";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "Verlängern";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "E-Mail-Adresse verifizieren";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "Wird geprüft";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Beste Alternative";
@@ -9955,11 +9876,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "pro Jahr";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Kasse";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Verwerfen";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Die Domain, die du hinzufügen möchtest, kann derzeit leider nicht über die Jetpack-App erworben werden.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Domain kaufen";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Suchen";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Website auswählen";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";
@@ -10404,8 +10337,17 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Hinzufügen";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Bildformat Raster";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Löschen";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Auswählen";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Teilen";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Abbrechen";
@@ -10439,6 +10381,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Keine Medien entsprechen deiner Suche";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Die ausgewählten Elemente konnten nicht geteilt werden.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Quadratisches Raster";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Medien";
@@ -10662,14 +10610,56 @@ Example: Reply to Pamela Nguyen */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Mit Blaze bewerben";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Homepage";
+
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Lokale Änderungen";
+
+/* Badge for page cells */
+"pageList.badgePendingReview" = "Ausstehende Überprüfung";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Beitragsseite";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Privat";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Deine Startseite verwendet ein Theme-Template und wird im Webeditor geöffnet.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Startseite";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Seite wurde erfolgreich aktualisiert";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Unwiderruflich löschen";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Bist du sicher, dass du diese Seite endgültig löschen möchtest?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Unwiderruflich löschen?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Seiten von allen";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Seiten von mir";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "In den Papierkorb verschieben";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Bist du sicher, dass du diese Seite in den Papierkorb verschieben möchtest?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Diese Seite in den Papierkorb verschieben?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "Abbrechen";
 
 /* No comment provided by engineer. */
 "password" = "Passwort";
@@ -10710,6 +10700,48 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonnummer";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Erstellt %@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Der Beitrag wird gelöscht …";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Bearbeitet %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Der Beitrag wird in den Papierkorb verschoben …";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Veröffentlicht %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Geplant %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "In den Papierkorb verschoben %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "Von %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Textauszug. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Oben gehalten.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Swipe action title */
+"postList.swipeActionDelete" = "Papierkorb";
+
+/* Swipe action title */
+"postList.swipeActionShare" = "Teilen";
+
+/* Swipe action title */
+"postList.swipeActionView" = "Anzeigen";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Schließen";
 
@@ -10728,8 +10760,71 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Beitragsbild festlegen";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Aktualisierung der Beitragseinstellungen fehlgeschlagen";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Mit Blaze bewerben";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Upload abbrechen";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Kommentare";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Unwiderruflich löschen";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "In Entwurf verschieben";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Duplizieren";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Seiten-Attribute";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Vorschau";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Jetzt veröffentlichen";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Erneut versuchen";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Als Homepage festlegen";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Übergeordnete festlegen";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Als Beitragsseite festlegen";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Als normale Seite festlegen";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Einstellungen";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Teilen";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "Statistiken";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "In den Papierkorb verschieben";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Anzeigen";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Seite dauerhaft gelöscht";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Beitrag dauerhaft gelöscht";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Seite in den Papierkorb verschoben";
@@ -10737,8 +10832,11 @@ Example: Reply to Pamela Nguyen */
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "Beitrag in den Papierkorb verschoben";
 
-/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
-"postsList.movePostToTrash.undo" = "Rückgängig";
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Beiträge von allen";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Beiträge von mir";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Jetzt registrieren, um mehr zu teilen";
@@ -10940,6 +11038,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Neu";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Domain übertragen";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Du möchtest eine Domain übertragen, die du bereits besitzt?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Als „Ähnliche Beiträge“ werden relevante Inhalte von deiner Website unter deinen Beiträgen angezeigt.";
 
@@ -11044,6 +11148,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Datenschutz";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Bis deine Website einsatzbereit ist, bleibt sie mit dem Hinweis „Demnächst verfügbar“ für Besucher verborgen.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Verborgen";
@@ -11445,7 +11552,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "widget.today.disabled.view.title" = "Die Statistiken wurden in die Jetpack-App verschoben. Der Wechsel ist kostenlos und dauert nur eine Minute.";
 
 /* Title of likes label in today widget */
-"widget.today.likes.label" = "Gefällt mir";
+"widget.today.likes.label" = "Likes";
 
 /* Fallback title of the no data view in the stats widget */
 "widget.today.nodata.view.fallbackTitle" = "Website-Statistiken konnten nicht geladen werden.";

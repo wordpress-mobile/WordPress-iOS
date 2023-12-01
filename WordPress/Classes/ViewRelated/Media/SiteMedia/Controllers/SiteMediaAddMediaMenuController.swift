@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate, UIDocumentPickerDelegate {
+final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -39,9 +39,15 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        for result in results {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        guard results.count > 0 else {
+            return
+        }
+
+        MediaHelper.advertiseImageOptimization() { [self] in
+            for result in results {
+                let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+                coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+            }
         }
     }
 
@@ -60,7 +66,9 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         switch mediaType {
         case UTType.image.identifier:
             if let image = info[.originalImage] as? UIImage {
-                addAsset(from: image)
+                MediaHelper.advertiseImageOptimization() {
+                    addAsset(from: image)
+                }
             }
         case UTType.movie.identifier:
             if let videoURL = info[.mediaURL] as? URL {
@@ -71,23 +79,22 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         }
     }
 
-    // MARK: - StockPhotosPickerDelegate
+    // MARK: - ExternalMediaPickerViewDelegate
 
-    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
+        viewController.presentingViewController?.dismiss(animated: true)
         for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.stockPhotos), selectionMethod: .fullScreenPicker)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(viewController.source), selectionMethod: .fullScreenPicker)
             coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.stockMediaUploaded)
-        }
-    }
 
-    // MARK: - TenorPickerDelegate
-
-    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
-        for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.tenorUploaded)
+            switch viewController.source {
+            case .stockPhotos:
+                WPAnalytics.track(.stockMediaUploaded)
+            case .tenor:
+                WPAnalytics.track(.tenorUploaded)
+            default:
+                assertionFailure("Unsupported source: \(viewController.source)")
+            }
         }
     }
 

@@ -1,13 +1,23 @@
-Lorsque vous déplacez une publication vers la corbeille, vous verrez désormais un message de confirmation apparaître en bas de l’écran.
+Accrochez-vous, cette mise à jour, c’est quelque chose ! Commençons avec les Médias du site.
 
-Nous avons apporté quelques changements à l’éditeur de blocs.
+- Nous avons mis à jour les menus, la sélection de fichiers, le partage, etc. Le design de tous ces éléments sur l’écran Médias du site a été amélioré. Le chargement est encore plus rapide : finis les GIF et vidéos saccadés.
+- Vous pouvez faire un geste panoramique pour sélectionner plusieurs fichiers médias à la fois. Par ailleurs, il est plus facile de passer d’une photo à l’autre, de modifier les métadonnées et de supprimer des éléments.
+- Sur iPad, vous pouvez basculer entre des aperçus d’image carrés et les proportions.
+- Nous avons corrigé des erreurs relatives à des images de substitution vides, des messages incorrects, au partage de documents et à des incidents occasionnels.
 
-- Les icônes de réseaux sociaux inactives et les URL de compositions synchronisées ne sont plus invisibles dans les thèmes reposant sur les blocs qui utilisent le mode sombre. Bien essayé les gars, mais contrairement à ce que vous pensez, vous n’êtes pas des ninjas.
-- Dans l’éditeur classique, vous pouvez désormais convertir votre contenu en blocs d’un simple clic sur un bouton.
+C’est pas fini. La section Articles et Pages a subi une refonte.
 
-Enfin, nous avons corrigé un mini-essaim de bugs.
+- L’écran Articles et Pages a bénéficié d’un lifting et dispose désormais d’options d’affichage épurées et simples.
+- Utilisez des fonctionnalités de recherche encore plus avancées, telles que les filtres auteur ou étiquette, pour trouver le contenu à modifier. La recherche fonctionne aussi avec tous les auteurs (à moins bien sûr que vous désiriez le contenu d’un auteur particulier).
+- Balayez pour voir, partager ou supprimer des publications et des pages. Pas mal.
+- Le menu contextuel vous permet désormais d’accéder aux commentaires, aux réglages et à d’autres actions relatives à un article ou une page.
+- Nous avons corrigé des problèmes d’actualisation et de visibilité de la page, ainsi que quelques autres incidents.
 
-- Vous ne devriez pas rencontrer de problèmes de connexion si vous saisissez une mauvaise adresse de site la première fois.
-- Les balises HTML incorrectes n’apparaîtront pas dans les titres de vos publications : vous ne verrez que du texte.
-- Au moment de l’authentification à deux facteurs, un message d’erreur bien plus descriptif apparaîtra si vous saisissez le mauvais code lors de la connexion.
-- Nous avons supprimé des contrôles supplémentaires lors du processus d’authentification à deux facteurs qui ajoutaient des mesures de sécurité inutiles. La connexion est toujours sécurisée, mais elle se fait avec moins de prises de tête.
+Enfin, nous avons corrigé quelques problèmes casse-pieds dans l’application.
+
+- L’application sait désormais quand vous avez terminé de charger un GIF. (monty-burns-excellent.gif)
+- Les publications « cachées » ont une meilleure description pour leur confidentialité.
+- Le lecteur défile désormais vers le haut lorsque vous appuyez sur la barre d’état. Toujours plus haut, toujours plus loin.
+- L’écran Menus crée des éléments de menu en fonction des pages de premier niveau.
+- Nous avons corrigé un incident lié à des couleurs de texte dans les anciens thèmes de site.
+- Vous ne devriez pas rencontrer d’erreurs lorsque vous collez du contenu profondément imbriqué. Comme les oignons, les ogres, les gâteaux ou les clafoutis, votre contenu peut avoir de nombreuses couches. Exquis non ?

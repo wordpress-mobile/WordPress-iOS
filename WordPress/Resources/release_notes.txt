@@ -1,13 +1,15 @@
-When you move a post to the trash, you’ll now see a confirmation message appear at the bottom of the screen.
-
-We made some changes to the block editor.
-
-- Inactive social icons and Synced Pattern titles are no longer invisible in block-based themes using dark mode. Good try, fellas, but you’re not as ninja as you think.
-- In the Classic editor, you can now convert your content into blocks with the click of a button.
-
-Finally, we squashed a mini-swarm of bugs.
-
-- You shouldn’t run into any login issues if you enter the wrong site address on the first try.
-- Incorrect HTML tags won’t show up in your post titles—you’ll only see plain text.
-- During two-factor authentication, you’ll get a much more descriptive error message if you enter the wrong code while logging in.
-- We removed extra controls in the two-factor authentication process that added unnecessary security measures. Logging in is still safe, but now it comes with fewer headaches.
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
+* [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
+* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
+* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
+* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
+* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
+* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
+* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
+* [**] Refactor deleting media [#21748]

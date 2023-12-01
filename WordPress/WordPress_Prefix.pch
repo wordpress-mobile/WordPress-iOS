@@ -17,7 +17,6 @@
     @import WordPressShared.WPMapFilterReduce;
 
 	// Project-specific
-    #import "WPStyleGuide+ReadableMargins.h"
     #import "WPError.h"
 
 #ifndef IS_IPAD

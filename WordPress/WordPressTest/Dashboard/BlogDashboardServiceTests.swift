@@ -18,15 +18,44 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        // Simulate the app is signed in with a WP.com account
+        contextManager.useAsSharedInstance(untilTestFinished: self)
+        let accountService = AccountService(coreDataStack: contextManager)
+        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token")
+
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
-        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
+        service = BlogDashboardService(
+            managedObjectContext: mainContext,
+            // Notice these three boolean make the test run as if the app was Jetpack.
+            //
+            // What would be the additional effor to test the remaining 5 configurations?
+            // Is there something we can do to reduce the combinatorial space?
+            //
+            // See also https://github.com/wordpress-mobile/WordPress-iOS/pull/21740
+            isJetpack: true,
+            isDotComAvailable: true,
+            shouldShowJetpackFeatures: true,
+            remoteService: remoteServiceMock,
+            persistence: persistenceMock,
+            repository: repositoryMock,
+            postsParser: postsParserMock
+        )
 
+        // The state of the world these tests assume relies on certain feature flags.
+        //
+        // Similarly to the isJetpack, isDotComAvailable, etc above, it would be ideal to inject these at call site to:
+        // 1. Make the dependency on that bit of information explicit
+        // 2. Allow for testing all combinations
+        //
+        // At the time of writing, the priority was getting some tests for new code to pass under the important Jetpac user path.
+        // As such, here are a bunch of global-state feature flags overrides.
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
+        try? featureFlags.override(FeatureFlag.domainFocus, withValue: false)
     }
 
     override func tearDown() {
@@ -36,6 +65,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
+        try? featureFlags.override(FeatureFlag.domainFocus, withValue: FeatureFlag.domainFocus.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -113,16 +143,38 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testActivityLog() {
         let expect = expectation(description: "Parse activities")
 
+        // Will fail with logged in user.
+        //
+        // It happens because for some reason the logic that should add activity as one of the type of cards to fetch doesn't do that.
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let activityCardItem = cards.first(where: {$0.cardType == .activityLog})
+            guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
 
-            // Activity section exists
-            XCTAssertNotNil(activityCardItem)
+            guard let apiResponse = activityCardItem.apiResponse else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let activity = apiResponse.activity else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let value = activity.value else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let current = value.current else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
+
+            guard let orderedItems = current.orderedItems else {
+                return XCTFail("Unexpectedly found nil Optional")
+            }
 
             // 2 activity items
-            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.value!.current!.orderedItems!.count, 2)
+            XCTAssertEqual(orderedItems.count, 2)
 
             expect.fulfill()
         }
@@ -369,6 +421,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
+        blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: context)
         blog.dotComID = id as NSNumber
         blog.isAdmin = isAdmin
         return blog

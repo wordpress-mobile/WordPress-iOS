@@ -1,13 +1,23 @@
-Wenn du einen Beitrag in den Papierkorb verschiebst, siehst du jetzt eine Bestätigungsmeldung am unteren Rand des Bildschirms.
+Schnall dich an, dieses Update ist der Hammer. Wir beginnen mit Websitemedien.
 
-Wir haben einige Änderungen am Block-Editor vorgenommen.
+- Wir haben das Design des Bildschirms „Site Media“ (Websitemedien) mit verbesserten Menüs, Auswählen und Teilen von Dateien sowie vielem mehr aktualisiert. Es ist sogar schneller! Keine ruckeligen GIFs oder eingefrorenen Videos mehr.
+- Mit einer Schwenkbewegung kannst du mehrere Mediendateien gleichzeitig auswählen. Es ist jetzt auch einfacher, von einem Foto zu einem anderen zu wischen, Metadaten zu ändern und Elemente zu löschen.
+- Auf dem iPad kannst du zwischen einer quadratischen Bildvorschau und einer Vorschau mit Seitenverhältnis wechseln.
+- Wir haben Probleme mit leeren Platzhalterbildern, falschen Benachrichtigungen, dem Teilen von Dokumenten und gelegentlichen Abstürzen behoben.
 
-- Inaktive Social Icons und synchronisierte Vorlagentitel sind in blockbasierten Themen im dunklen Modus nicht mehr unsichtbar. Guter Versuch, Freunde, aber ihr seid nicht so ninja, wie ihr denkt.
-- Im klassischen Editor kannst du deine Inhalte jetzt mit einem Klick auf einen Button in Blöcke umwandeln.
+Wir sind noch nicht fertig. Wir haben auch grundlegende Änderungen an dem Bildschirm „Beiträge & Seiten“ vorgenommen.
 
-Schließlich haben wir einen kleinen Schwarm von Bugs beseitigt.
+- Der Bildschirm „Beiträge & Seiten“ wurde umfassend überarbeitet und enthält nun schlichte, einfache Anzeigeoptionen.
+- Du kannst erweiterte Suchfunktionen verwenden, wie z. B. Filter für Autoren und Schlagwörter, um die Inhalte zu finden, die du bearbeiten möchtest. Die Suche funktioniert für alle Autoren (es sei denn natürlich, du suchst nach Inhalten von einer bestimmten Person).
+- Mit Wischbewegungen kannst du Beiträge und Seiten anzeigen, teilen oder löschen. Das ist doch super.
+- Im Kontextmenü kannst du jetzt auf Kommentare, Einstellungen und andere Aktionen für einen Beitrag oder eine Seite zugreifen.
+- Wir haben Probleme mit dem Aktualisieren und der Sichtbarkeit von Seiten sowie mit einigen Abstürzen behoben.
 
-- Wenn du beim ersten Versuch die falsche Website-Adresse eingibst, sollte es keine Probleme beim Anmelden geben.
-- Falsche HTML-Tags werden in deinen Beitragstiteln nicht mehr angezeigt – du siehst nur noch einfachen Text.
-- Bei der Zwei-Faktor-Authentifizierung erhältst du eine viel aussagekräftigere Fehlermeldung, wenn du beim Anmelden einen falschen Code eingibst.
-- Wir haben zusätzliche Kontrollen bei der Zwei-Faktor-Authentifizierung entfernt, die unnötige Sicherheitsmaßnahmen mit sich brachten. Das Anmelden ist immer noch sicher, aber es bereitet jetzt weniger Kopfschmerzen.
+Abschließend haben wir noch ein paar lästige Probleme in der App behoben.
+
+- Die App erkennt jetzt, wenn du eine GIF-Datei fertig hochgeladen hast. (monty-burns-excellent.gif)
+- „Versteckte“ Beiträge haben jetzt eine bessere Beschreibung für ihren Datenschutzstatus.
+- Der Reader scrollt jetzt ans obere Ende, wenn du auf die Statusleiste tippst. Auf, auf und davon.
+- Im Bildschirm „Menüs“ werden jetzt Menüelemente basierend auf Seiten der ersten Ebene ordnungsgemäß erstellt.
+- Wir haben einen Absturz behoben, der mit dem Verwenden von Textfarben in älteren Website-Themes zusammenhing.
+- Es sollten keine Fehler auftreten, wenn du tief verschachtelte Inhalte einfügst. Genauso wie Zwiebeln, Oger, Kuchen oder Parfaits – deine Inhalte können viele Schichten haben.
