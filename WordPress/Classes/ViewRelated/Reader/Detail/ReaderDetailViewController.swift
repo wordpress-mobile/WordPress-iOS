@@ -758,6 +758,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return controller
     }
 
+    class func controllerWithXPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false, fallbackURL: URL? = nil) -> ReaderDetailViewController {
+        let controller = ReaderDetailViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.set(postID: postID, siteID: siteID, isFeed: isFeed)
+        coordinator.postURL = fallbackURL
+        controller.coordinator = coordinator
+
+        return controller
+    }
+
     /// A View Controller that displays a Post content.
     ///
     /// Use this method to present content for the user.
@@ -804,7 +814,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             post.sourceAttribution.blogID != nil {
             return ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
         } else if post.isCross() {
-            return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            var fallbackURL: URL?
+            if let permalink = post.permaLink {
+                fallbackURL = URL(string: permalink)
+            }
+            return ReaderDetailViewController.controllerWithXPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID, fallbackURL: fallbackURL)
         } else {
             let controller = ReaderDetailViewController.loadFromStoryboard()
             let coordinator = ReaderDetailCoordinator(view: controller)
