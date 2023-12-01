@@ -156,8 +156,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Dziennik aktywności";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Dodaj";
 
 /* No comment provided by engineer. */
@@ -288,9 +287,6 @@
 
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Czy na pewno chcesz usunąć tag?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Czy na pewno usunąć wybrane elementy?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Czy na pewno chcesz przenieść ten wpis do kosza?";
@@ -512,9 +508,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Zmiana hasła";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Zmień ustawienia";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Zmiana nie powiodła się";
@@ -862,7 +855,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Usuń";
@@ -1004,8 +996,7 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Powiel blok";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1725,9 +1716,7 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -2097,9 +2086,6 @@
 
 /* Photography site intent topic */
 "Photography" = "Fotografia";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Zdjęcia";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -2510,9 +2496,6 @@
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Wybierz %@, aby ustawić nowy tytuł.";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Wybierz więcej";
 
 /* Blog Picker's Title */
 "Select Site" = "Wybierz witrynę";
@@ -2981,8 +2964,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kosz";
@@ -3680,9 +3662,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "oznaczono jako spam";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Odrzuć";
-
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Odrzuć";
 
@@ -3697,9 +3676,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPressa na swoim urządzeniu";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Koniec";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "odinstalowanie aplikacji WordPressa";

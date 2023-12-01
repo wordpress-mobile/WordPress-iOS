@@ -61,7 +61,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    commit_version_bump
+    commit_version_and_build_files
 
     new_version = release_version_current
 
@@ -172,19 +172,7 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     lint_localizations
 
-    # Bump the build code
-    UI.message 'Bumping build code...'
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
-    UI.success "Done! New Build Code: #{build_code_current}"
-
-    # Bump the internal build code
-    UI.message 'Bumping internal build code...'
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next_internal)
-    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
-
-    commit_version_bump
+    bump_build_codes
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
@@ -213,6 +201,7 @@ platform :ios do
 
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
     build_code_hotfix = build_code_hotfix(release_version: new_version)
+    build_code_hotfix_internal = build_code_hotfix_internal(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -226,7 +215,7 @@ platform :ios do
       • New release version and build code: #{new_version} (#{build_code_hotfix}).
 
       • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
-      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal(release_version: new_version)}).
+      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal}).
 
       Branching from tag: #{previous_version}
     MESSAGE
@@ -259,7 +248,7 @@ platform :ios do
     )
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
-    commit_version_bump
+    commit_version_and_build_files
   end
 
   # Finalizes a hotfix, by triggering a release build on CI
@@ -267,7 +256,7 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
-  lane :finalize_hotfix_release do
+  lane :finalize_hotfix_release do |options|
     # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
     ensure_git_branch(branch: '^release/')
 
@@ -312,16 +301,7 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     lint_localizations
 
-    # Bump the build code
-    UI.message 'Bumping build code...'
-    PUBLIC_VERSION_FILE.write(version_long: build_code_next)
-    UI.success "Done! New Build Code: #{build_code_current}"
-
-    # Bump the internal build code
-    UI.message 'Bumping internal build code...'
-    INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
-    commit_version_bump
-    UI.success "Done! New Internal Build Code: #{build_code_current_internal}"
+    bump_build_codes
 
     # Wrap up
     version = release_version_current
@@ -466,7 +446,25 @@ def release_branch_name
   "release/#{release_version_current}"
 end
 
-def commit_version_bump
+def bump_build_codes
+  bump_production_build_code
+  bump_internal_build_code
+  commit_version_and_build_files
+end
+
+def bump_production_build_code
+  UI.message 'Bumping build code...'
+  PUBLIC_VERSION_FILE.write(version_long: build_code_next)
+  UI.success "Done. New Build Code: #{build_code_current}"
+end
+
+def bump_internal_build_code
+  UI.message 'Bumping internal build code...'
+  INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
+  UI.success "Done. New Internal Build Code: #{build_code_current_internal}"
+end
+
+def commit_version_and_build_files
   git_commit(
     path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
     message: 'Bump version number',
