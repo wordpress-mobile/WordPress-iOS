@@ -78,6 +78,8 @@ class SotWCardView: UIView {
         didTapButton?()
     }
 
+    // NOTE: These strings are purposely not going to be localized because we are specifically
+    // targeting `en` audiences only.
     struct Strings {
         static let title = "State of the Word 2023"
         static let body = "Check out WordPress co-founder Matt Mullenweg's annual keynote to stay on top of what's coming in 2024 and beyond."
