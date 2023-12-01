@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
-    case bloganuaryCardDebugOverride // TODO: Remove before shipping the feature.
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -41,8 +40,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .domainFocus:
             return true
-        case .bloganuaryCardDebugOverride:
-            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -85,8 +82,6 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
-        case .bloganuaryCardDebugOverride:
-            return "Always Show Bloganuary Card (Debug)"
         }
     }
 }
