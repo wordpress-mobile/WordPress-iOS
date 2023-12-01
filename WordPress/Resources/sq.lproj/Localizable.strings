@@ -207,9 +207,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d vjet";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i fushë menuje në këtë skemë";
 
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Lloj Veprimtarie (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Shtoje";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Shtoni element menuje te pjellat";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Shtoni media të re";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Shtoni menu të re";
@@ -732,12 +725,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Ndryshe, mund ta shndërroni lëndën në blloqe.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shkëputi modelet”.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Ndryshe, mund ta shkëputni dhe përpunoni ndarazi këtë bllok, duke prekur “Shkëpute modelin”.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
 
@@ -884,9 +871,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Jeni i sigurt se doni të shkëputet Jetpack-u nga sajti?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Jeni i sigurt që doni të fshihen përgjithmonë këto objekte?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Jeni i sigurt që doni të fshihet përgjithmonë ky objekt?";
@@ -1171,12 +1155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks menu" = "Menu blloqesh";
 
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blloqe brenda të tjerësh më thellë se %d shkallë mund të mos vizatohen si duhet në përpunuesin për celular. Për këtë arsye, rekomandojmë sheshimin e lëndë duke hequr grupin e bllokut, ose përpunimin e bllokut duke përdorur përpunuesin web.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blloqe brenda të tjerësh më thellë se %d shkallë mund të mos vizatohen si duhet në përpunuesin për celular. Për këtë arsye, rekomandojmë sheshimin e lëndë duke hequr grupin e bllokut, ose përpunimin e bllokut duke përdorur shfletuesin tuaj.";
-
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
@@ -1341,9 +1319,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anuloje";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Anuloje Ngarkimin";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1401,9 +1376,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Ndryshoni Fjalëkalimin";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Ndryshoni Rregullimet";
 
 /* Change Username title. */
 "Change Username" = "Ndryshoni Emër Përdoruesi";
@@ -2290,7 +2262,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Fshije";
@@ -2626,8 +2597,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Çdo bllok ka rregullimet e veta. Për t’i gjetur, klikoni mbi një bllok. Rregullimet e tij do të shfaqen te paneli në fund të ekranit.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2831,9 +2801,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Jepni më sipër fjalë të ndryshme dhe do të kërkojmë për një adresë që ka të tilla.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Që të aktivizoni përzgjedhje të shumëfishtë për fshirje, kaloni nën mënyrën përpunim";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3057,9 +3024,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Dështoi";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Eksportimi i Medias Dështoi";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "S’u arrit t’u vihej shenjë Njoftimeve si të lexuara";
@@ -4419,9 +4383,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Unë";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -5132,9 +5094,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Shfaq vetëm copëz";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Mund të përdoren vetëm foto për të cilat keni lejuar përdorim.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5384,9 +5343,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografi";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Foto";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foto të furnizuara nga Pexels";
@@ -5696,9 +5652,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "S’bëhet dot Paraparje";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Bëni paraparje të medias";
 
 /* No comment provided by engineer. */
 "Preview page" = "Parashihni faqen";
@@ -6181,9 +6134,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Riprovo Skanim";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Riprovo Ngarkimin";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Riprovoji krejt";
 
@@ -6459,9 +6409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Përzgjidhni Vend";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Përzgjidhni Më Tepër";
 
 /* Blog Picker's Title */
 "Select Site" = "Përzgjidhni Sajt";
@@ -7273,9 +7220,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Prekeni që të kalohet te një sajt tjetër, ose për të shtuar një sajt të ri";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Prekni që të shihni median sa krejt ekrani";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Prekeni që të shihni më tepër hollësi.";
 
@@ -7551,9 +7495,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Pati një problem me shfaqjen e këtij postimi.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Pati një problem me ngarkimin e objektit media.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Pati një problem me ngarkimin e të dhënave tuaja, rifreskoni faqen tuaj që të riprovoni.";
@@ -7887,14 +7828,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Shndërro bllokun…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Në hedhurina";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Shpjere te hedhurinat median e përzgjedhur";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Të shpihet ky postim te hedhurinat?";
@@ -8027,9 +7964,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "S’arrihet të krijohen lidhje të reja ftese.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "S’arrihet të fshihen krejt objektet media.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "S’arrihet të fshihet objekt media.";
@@ -9324,9 +9258,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Adresa juaj falas WordPress.com është";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media juaj s’u eksportua dot. Nëse problemi vazhdon, mund të lidheni me ne që nga skena Unë > Ndihmë & Asistencë.";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Përkatësia juaj e re %@ po ujdiset. Mund të duhen deri në 30 minuta që përkatësia juaj të fillojë të funksionojë.";
 
@@ -10301,9 +10232,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Ngarkimi i videove më të gjata se 5 minuta lyp një plan me pagesë.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Hidhe tej";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Shtoni media të re";
 
@@ -10426,9 +10354,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "S’ju duhet më aplikacioni WordPress në pajisjen tuaj";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Përfundoje";
 
 /* Footer for the migration done screen. */
 "migration.done.footer" = "Rekomandojmë çinstalimin e aplikacionit WordPress në pajisjen tuaj, për të shmangur përplasje të dhënash.";
@@ -10703,13 +10628,13 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Shpjere te hedhurinat";
 
-/* Swipe action title */
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Ndajeni";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Shiheni";
 
 /* User action to dismiss featured media options. */

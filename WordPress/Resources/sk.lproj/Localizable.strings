@@ -81,9 +81,6 @@
 /* Age between dates over one year. */
 "%d years" = "Počet rokov: %d";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i oblasť pre menu v téme";
 
@@ -204,8 +201,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Záznamy o činnosti";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Pridať";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -399,9 +395,6 @@
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Určite chcete odpojiť Jetpack z webovej stránky?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Naozaj chcete tieto položky natrvalo odstrániť?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Naozaj chcete túto položku natrvalo odstrániť?";
@@ -621,9 +614,6 @@
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušiť";
-
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Zrušiť nahrávanie";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -1063,7 +1053,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Odstrániť";
@@ -1202,8 +1191,7 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2098,9 +2086,7 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Súbory";
@@ -2635,9 +2621,6 @@
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knižnica fotografií";
 
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotky";
-
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotografie poskytnuté službou Pexels";
 
@@ -3083,9 +3066,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Obnoviť";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Nahrať znova";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "Zopakovať všetko";
@@ -3835,9 +3815,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Došlo k chybe pri zobrazení tohto príspevku.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Pri načítavaní mediálneho súboru sa vyskytol problém.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Nastal problém pri odstraňovaní bloku z určenej webovej stránky,";
 
@@ -4011,8 +3988,7 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Prenos";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
@@ -4082,9 +4058,6 @@
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nie je možné synchronizovať";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Nedajú sa zmazať všetky mediálne súbory.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nedá sa zmazať mediálny súbor.";

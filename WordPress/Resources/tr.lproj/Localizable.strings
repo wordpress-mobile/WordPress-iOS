@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-11-29 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -206,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d yıl";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "Bu temadaki %i menü alanı";
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Etkinlik Türü (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Ekle";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Alt öğelere menü öğesi ekle";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Yeni ortam ekle";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Yeni menü ekle";
@@ -733,10 +726,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "Alternatif olarak, içeriği bloklara dönüştürebilirsiniz.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatif olarak, \"Desenleri ayır\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Alternatif olarak \"Ayır\" seçeneğine dokunarak bu bloku ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Alternatif olarak, \"Deseni ayır\" seçeneğine dokunarak bu bloku ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatif olarak bloku gruplamadan çıkararak içeriği düzleştirebilirsiniz.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatif olarak, bu hesabın şifresini girebilirsiniz.";
@@ -884,9 +877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Jetpack ile site bağlantısını kesmek istediğinizden emin misiniz?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Seçili öğeleri kalıcı olarak silmek istediğinizden emin misiniz?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
@@ -1175,10 +1165,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "Bloklar menüsü";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web düzenleyicisini kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir. Bu nedenle, bloku gruplamadan çıkararak veya web tarayıcınızı kullanarak bloku düzenleme yoluyla içeriği düzleştirmenizi öneririz.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1344,9 +1331,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "İptal";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Karşıya yüklemeyi iptal et";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Parola değiştir";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Ayarları değiştir";
 
 /* Change Username title. */
 "Change Username" = "Kullanıcı adını değiştir";
@@ -2296,7 +2277,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Sil";
@@ -2635,8 +2615,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Her blokun kendi ayarları vardır. Onları bulmak için bir bloka dokunun. Ayarları, ekranın altındaki araç çubuğunda görünür.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Yukarıya farklı sözcükler girin, girdiğiniz sözcüklerle eşleşen adres olup olmadığını arayalım.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Silmek için çoklu seçimi etkinleştirmek için düzenleme moduna girin";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3067,9 +3043,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "Başarısız";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Medya Dışa Aktarılamadı";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Bildirim okundu olarak işaretlenirken hata oluştu";
 
@@ -3270,6 +3243,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Futbol";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "Bu nedenle, bloku web düzenleyicinizi kullanarak düzenlemenizi öneririz.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Bu nedenle, bloku web tarayıcınızı kullanarak düzenlemenizi öneririz.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Size kolaylık olması için, WordPress.com iletişim bilgilerinizi önceden doldurduk. Lütfen bu bilgilerin bu alan adında kullanmak istediğiniz doğru bilgiler olduğundan emin olmak için gözden geçirin.";
@@ -4431,9 +4410,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Ben";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Ortam";
@@ -5144,9 +5121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Sadece özeti göster";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Yalnızca erişim izni verdiğiniz seçili fotoğraflar kullanılabilir.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotoğrafçılık";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotoğraflar";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotoğraflar Pexels tarafından sağlandı";
@@ -5711,9 +5682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "Önizleme kullanılamıyor";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Ortam dosyasını önizleme";
 
 /* No comment provided by engineer. */
 "Preview page" = "Sayfa önizleme";
@@ -6196,9 +6164,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Taramayı yeniden dene";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Yüklemeyi yeniden dene";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Hepsini tekrar dene";
 
@@ -6474,9 +6439,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Ülke seçin";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Daha fazla seç";
 
 /* Blog Picker's Title */
 "Select Site" = "Site seçin";
@@ -7291,9 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Başka bir siteye geçmek için dokunun veya yeni bir site ekleyin";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Ortam dosyasını tam ekran görmek için dokunun";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Daha fazla ayrıntı görüntülemek için dokunun.";
 
@@ -7569,9 +7528,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Bu yazıyı görüntülerken bir problem oluştu.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Ortam ögesi yüklenirken bir sorun oluştu.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Verileriniz yüklenirken bir sorun oluştu, sayfanızı yenileyip tekrar deneyin.";
@@ -7905,14 +7861,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Bloku dönüştür…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Çöp kutusu";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Seçilen ortamı çöpe at";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Bu yazı silinsin mi?";
@@ -8045,9 +7997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Yeni davet bağlantıları oluşturulamıyor.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Tüm ortam dosyaları silinemiyor.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Ortam dosyası silinemiyor.";
@@ -9342,9 +9291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Ücretsiz WordPress.com adresiniz";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Medyanız dışa aktarılamadı. If the problem persists you can contact us via the Me > Yardım ve Destek ekranı.";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Yeni alan adınız %@ ayarlanıyor. Alan adınızın çalışmaya başlaması 30 dakika kadar sürebilir.";
 
@@ -9467,6 +9413,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "WordPress hakkında ne düşünüyorsunuz?";
+
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Görselleri İyileştir";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "Yüksek";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Düşük";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maksimum";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Orta";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Kalite";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Görsel Kalitesi";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Görsel iyileştirme özelliği, daha hızlı yüklenmeleri için görselleri küçültür.\n\nBu seçenek varsayılan olarak etkindir, ancak dilediğiniz zaman uygulama ayarlarından değiştirebilirsiniz.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Görseller iyileştirilmeye devam edilsin mi?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "Hayır, kapat";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Evet, açık kalsın";
 
 /* Label displayed on audio media items. */
 "audio" = "ses";
@@ -10328,9 +10307,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "5 dakikadan uzun video yüklemek için ücretli bir paket gerekir.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Kapat";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Yeni ortam ekle";
 
@@ -10409,6 +10385,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Ortamınız dışa aktarılamadı. Sorun tekrar ederse lütfen Ben > Yardım ve Destek ekranından bizimle iletişim kurun.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Ortam Dışa Aktarılamadı";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Bu uygulama yeni görsel yakalamak için Kamera’ya erişim izni istiyor, buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
 
@@ -10442,6 +10424,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video Çek";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d piksel";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Görünüşe göre WordPress uygulaması hala yüklü.";
 
@@ -10454,9 +10439,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Artık cihazınızda WordPress uygulamasına ihtiyacınız yok";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Bitir";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "Veri çakışmalarını önlemek için cihazınızdan WordPress uygulamasını kaldırmanızı öneririz.";
 
@@ -10465,6 +10447,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Tüm verilerinizi ve ayarlarınızı aktardık. Her şey bıraktığınız yerde.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "Jetpack uygulamasındaki WordPress yolculuğunuza devam etme vakti.";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack'e geçtiğiniz için teşekkürler!";
@@ -10513,6 +10498,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack'e hoş geldiniz.";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Haydi başlayalım";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Jetpack uygulaması, WordPress uygulamasının tüm işlevlerine ve artık İstatistikler, Okuyucu, Bildirimler ve daha fazlasına özel erişime sahiptir.";
@@ -10733,13 +10721,16 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Sil";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Sil";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Paylaş";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Görüntüle";
 
 /* User action to dismiss featured media options. */
@@ -11158,6 +11149,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Ortam dosyası seçin.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Ortamı tam ekranda görüntülemek için dokunun";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Ortamı önizle";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Seçimi kaldır";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Seç";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Ortam";

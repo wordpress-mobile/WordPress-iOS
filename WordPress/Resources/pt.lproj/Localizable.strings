@@ -54,9 +54,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d anos";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i área de menu neste tema";
 
@@ -147,8 +144,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Relatórios de actividade";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Adicionar";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -305,9 +301,6 @@
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Tem a certeza que quer desligar o Jetpack do site?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Tem a certeza que pretende eliminar permanentemente estes itens?";
-
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Tem a certeza que pretende mover este artigo para o lixo?";
 
@@ -452,9 +445,6 @@
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancelar";
-
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Cancelar carregamento";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -793,7 +783,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Eliminar";
@@ -914,8 +903,7 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Rascunhos";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1554,9 +1542,7 @@
 "Me" = "Eu";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Multimédia";
@@ -2275,9 +2261,6 @@
    User action to retry media upload. */
 "Retry" = "Tentar de novo";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Tentar carregar de novo";
-
 /* No comment provided by engineer. */
 "Retry?" = "Tentar de novo?";
 
@@ -2725,9 +2708,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Ocorreu um problema ao mostrar este artigo.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Ocorreu um erro ao carregar o item multimédia.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Ocorreu um problema ao remover o bloco do site especificado.";
 
@@ -2838,8 +2818,7 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfego";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Lixo";
@@ -2900,9 +2879,6 @@
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Não é possível sincronizar";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Não é possível eliminar todos os itens multimédia.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Não é possível eliminar o item multimédia.";
