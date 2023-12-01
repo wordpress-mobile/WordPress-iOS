@@ -53,8 +53,8 @@ def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
   # pod 'WordPressKit', '~> 8.10'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '01f768cda3a0f7094d4db51c4966a729f72d12fb'
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
 
@@ -149,7 +149,7 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   # pod 'WordPressAuthenticator', '~> 7.3'
-  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'a27ac06167677a7303a4d84d633c0daa6b82fb45'
+  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: '84e51146f8c77261ee76d4563b0bc13aebecb8ba'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
