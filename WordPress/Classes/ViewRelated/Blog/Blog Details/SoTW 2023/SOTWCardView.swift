@@ -125,7 +125,26 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowSotW2023Card() -> Bool {
-        return true
+        guard AppConfiguration.isWordPress && RemoteFeatureFlag.wordPressSotWCard.enabled() else {
+            return false
+        }
+
+        // ensure that the device language is in English.
+        let usesEnglish = WordPressComLanguageDatabase().deviceLanguageSlugString() == "en"
+
+        // ensure that the card is not displayed before Dec. 11, 2023 where the event takes place.
+        let dateComponents = Date().dateAndTimeComponents()
+        let isPostEvent = {
+            guard let day = dateComponents.day,
+                  let month = dateComponents.month,
+                  let year = dateComponents.year,
+                  year < 2024 else {
+                return true
+            }
+            return month == 12 && day > 11
+        }()
+
+        return usesEnglish && isPostEvent
     }
 
 }
