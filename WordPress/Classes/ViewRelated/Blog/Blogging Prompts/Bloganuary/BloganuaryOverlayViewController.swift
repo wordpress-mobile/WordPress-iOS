@@ -16,6 +16,9 @@ class BloganuaryOverlayViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupNavigationBar()
+
+        // Make sure we only track this once, regardless of redraws from orientation change, etc.
+        BloganuaryTracker.trackModalShown(promptsEnabled: promptsEnabled)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -47,7 +50,7 @@ class BloganuaryOverlayViewController: UIViewController {
                 return
             }
 
-            // TODO: Tracks.
+            BloganuaryTracker.trackModalActionTapped(self.promptsEnabled ? .dismiss : .turnPromptsOn)
 
             self.dismiss(completion: {
                 if self.promptsEnabled {
@@ -75,6 +78,7 @@ class BloganuaryOverlayViewController: UIViewController {
 
         // Set up the close button in the navigation bar.
         let dismissAction = UIAction { [weak self] _ in
+            BloganuaryTracker.trackModalDismissed()
             self?.dismiss()
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: dismissAction)

@@ -439,6 +439,12 @@ import Foundation
     case promptsOtherAnswersTapped
     case promptsSettingsShowPromptsTapped
 
+    // Bloganuary Nudges
+    case bloganuaryNudgeCardLearnMoreTapped
+    case bloganuaryNudgeModalShown
+    case bloganuaryNudgeModalDismissed
+    case bloganuaryNudgeModalActionTapped
+
     // Jetpack branding
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
@@ -1293,6 +1299,16 @@ import Foundation
             return "blogging_prompts_my_site_card_view_answers_tapped"
         case .promptsSettingsShowPromptsTapped:
             return "blogging_prompts_settings_show_prompts_tapped"
+
+        // Bloganuary Nudges
+        case .bloganuaryNudgeCardLearnMoreTapped:
+            return "bloganuary_nudge_my_site_card_learn_more_tapped"
+        case .bloganuaryNudgeModalShown:
+            return "bloganuary_nudge_learn_more_modal_shown"
+        case .bloganuaryNudgeModalDismissed:
+            return "bloganuary_nudge_learn_more_modal_dismissed"
+        case .bloganuaryNudgeModalActionTapped:
+            return "bloganuary_nudge_learn_more_modal_action_tapped"
 
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:

@@ -54,7 +54,11 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.presenterViewController = viewController
 
-        // TODO: Tracks for card shown. No extra properties needed.
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown,
+                                            properties: [
+                                                "type": DashboardCard.bloganuaryNudge.rawValue,
+                                                "subtype": DashboardCard.bloganuaryNudge.rawValue
+                                            ])
     }
 
     // MARK: Private methods
@@ -79,6 +83,8 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
                 sheet.prefersGrabberVisible = WPDeviceIdentification.isiPhone()
             }
 
+            BloganuaryTracker.trackCardLearnMoreTapped(promptsEnabled: promptsCardEnabled)
+
             self?.presenterViewController?.present(navigationController, animated: true)
         })
 
@@ -100,7 +106,9 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         frameView.hideHeader()
 
         if let blog {
-            frameView.onEllipsisButtonTap = { }
+            frameView.onEllipsisButtonTap = {
+                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .bloganuaryNudge)
+            }
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
             let action = BlogDashboardHelpers.makeHideCardAction(for: .bloganuaryNudge, blog: blog)
             frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [action])
