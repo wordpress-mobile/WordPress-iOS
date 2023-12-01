@@ -21,6 +21,7 @@
 * [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
 * [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
 * [**] Refactor deleting media [#21748]
+* [*] [Jetpack-only] Add a dashboard card for Bloganuary. [https://github.com/wordpress-mobile/WordPress-iOS/pull/22136]
 
 23.7
 -----
