@@ -70,7 +70,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .bloganuaryDashboardNudge:
             return false
         case .wordPressSotWCard:
-            return false
+            return true
         }
     }
 
