@@ -105,4 +105,13 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @end
 
+// TODO: Remove it; it was added for compatibility during the WPMediaPicker removal
+typedef NS_OPTIONS(NSInteger, WPMediaType){
+    WPMediaTypeImage = 1,
+    WPMediaTypeVideo = 1 << 1,
+    WPMediaTypeAudio = 1 << 2,
+    WPMediaTypeOther = 1 << 3,
+    WPMediaTypeAll= 0XFF
+};
+
 NS_ASSUME_NONNULL_END

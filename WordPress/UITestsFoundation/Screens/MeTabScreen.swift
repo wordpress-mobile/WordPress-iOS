@@ -96,4 +96,10 @@ public class MeTabScreen: ScreenObject {
 
         return try MySiteScreen()
     }
+
+    public func goToAppSettings() throws -> AppSettingsScreen {
+        appSettingsButton.tap()
+
+        return try AppSettingsScreen()
+    }
 }
