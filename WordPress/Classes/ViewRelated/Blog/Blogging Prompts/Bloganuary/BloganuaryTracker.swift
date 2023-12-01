@@ -13,7 +13,7 @@ struct BloganuaryTracker {
         WPAnalytics.track(.bloganuaryNudgeModalShown, properties: ["prompts_enabled": promptsEnabled])
     }
 
-    static func trackModalDismissed(promptsEnabled: Bool) {
+    static func trackModalDismissed() {
         WPAnalytics.track(.bloganuaryNudgeModalDismissed)
     }
 
