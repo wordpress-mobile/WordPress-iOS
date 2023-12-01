@@ -38,7 +38,7 @@ public class EditorPostSettings: ScreenObject {
     private let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Next Month"]
     }
-    
+
     private let monthLabelGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Month"]
     }
