@@ -188,7 +188,7 @@ final class AllDomainsListViewController: UIViewController {
             domain: domain.domain,
             siteSlug: domain.siteSlug,
             type: domain.type,
-            analyticsSource: "all-domains"
+            analyticsSource: Constants.analyticsSource
         )
         destination.configureSandboxStore {
             navigationController.pushViewController(destination, animated: true)
