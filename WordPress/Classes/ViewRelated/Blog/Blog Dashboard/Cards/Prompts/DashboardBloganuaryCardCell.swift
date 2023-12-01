@@ -21,11 +21,6 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
     ///   - date: The date to check. Defaults to today.
     /// - Returns: `true` if the Bloganuary card should be shown. `false` otherwise.
     static func shouldShowCard(for blog: Blog, date: Date = Date()) -> Bool {
-        // TODO: Remove before this feature is shipped.
-        if FeatureFlag.bloganuaryCardDebugOverride.enabled {
-            return true
-        }
-
         guard RemoteFeatureFlag.bloganuaryDashboardNudge.enabled(),
               let context = blog.managedObjectContext else {
             return false
