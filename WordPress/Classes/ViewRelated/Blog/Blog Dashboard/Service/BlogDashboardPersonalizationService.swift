@@ -98,6 +98,8 @@ private func makeKey(for card: DashboardCard) -> String? {
         return "scheduled-posts-card-enabled-site-settings"
     case .blaze:
         return "blaze-card-enabled-site-settings"
+    case .bloganuaryNudge:
+        return "bloganuary-nudge-card-enabled-site-settings"
     case .prompts:
         // Warning: there is an irregularity with the prompts key that doesn't
         // have a "-card" component in the key name. Keeping it like this to
