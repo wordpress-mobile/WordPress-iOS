@@ -244,7 +244,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     @objc private func didRecognizePanGesture(_ gesture: UIPanGestureRecognizer) {
-        guard isEditing else { return }
+        guard isEditing, allowsMultipleSelection else { return }
 
         switch gesture.state {
         case .began:

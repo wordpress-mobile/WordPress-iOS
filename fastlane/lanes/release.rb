@@ -201,6 +201,7 @@ platform :ios do
 
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
     build_code_hotfix = build_code_hotfix(release_version: new_version)
+    build_code_hotfix_internal = build_code_hotfix_internal(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -214,7 +215,7 @@ platform :ios do
       • New release version and build code: #{new_version} (#{build_code_hotfix}).
 
       • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
-      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal(release_version: new_version)}).
+      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal}).
 
       Branching from tag: #{previous_version}
     MESSAGE
@@ -255,7 +256,7 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
-  lane :finalize_hotfix_release do
+  lane :finalize_hotfix_release do |options|
     # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
     ensure_git_branch(branch: '^release/')
 
