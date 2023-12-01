@@ -68,7 +68,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerImprovements:
             return true
         case .bloganuaryDashboardNudge:
-            return false
+            return AppConfiguration.isJetpack
         case .wordPressSotWCard:
             return true
         }
