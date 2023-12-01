@@ -54,9 +54,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d ár";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i valmyndarsvæði í þessu þema";
 
@@ -112,8 +109,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aðgerðaskrá";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Bæta við";
 
 /* The title on the add category screen */
@@ -235,9 +231,6 @@
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Ertu viss um að þú viljir eyða valmyndinni?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Ertu viss um að þú viljir eyða þessum hlutum varanlega?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Ertu viss um að þú viljir eyða þessum hlut varanlega?";
@@ -670,7 +663,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Eyða";
@@ -785,8 +777,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Drög";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1339,9 +1330,7 @@
 "Me" = "Ég";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Skrár";
@@ -1979,9 +1968,6 @@
    User action to retry media upload. */
 "Retry" = "Reyna aftur";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Reyna upphal aftur";
-
 /* No comment provided by engineer. */
 "Retry?" = "Reyna aftur?";
 
@@ -2448,9 +2434,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Það kom upp vandamál við að sýna þessa færslu.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Það kom upp vandamál með að hlaða skrána.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Það kom upp vandamál við að fjarlægja lokun fyrir þennan vef.";
 
@@ -2543,8 +2526,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Heildarfjöldi WordPress.com fylgjenda: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Rusl";
@@ -2586,9 +2568,6 @@
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Gat ekki samstillt";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Gat ekki eytt öllum skrám.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Gat ekki eytt skrá.";

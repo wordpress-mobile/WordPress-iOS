@@ -223,6 +223,7 @@ class MeViewController: UITableViewController {
                     accessoryType: accessoryType,
                     action: { action in
                         self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+                        WPAnalytics.track(.meDomainsTapped)
                     },
                     accessibilityIdentifier: "myDomains"
                 )

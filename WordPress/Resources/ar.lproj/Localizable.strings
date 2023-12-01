@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 20:54:10+0000 */
+/* Translation-Revision-Date: 2023-11-29 17:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -206,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d من السنوات";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$d×%2$d بكسل";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i من مكان القائمة في هذا القالب";
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "نوع النشاط (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "إضافة";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "إضافة عنصر قائمة للعناصر الفرعية";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "إضافة وسائط جديدة";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "إضافة قائمة جديدة";
@@ -733,10 +726,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "بدلاً من ذلك، يمكنك تحويل المحتوى إلى مكوّنات.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"فصل الأنماط\".";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "بدلاً من ذلك، يمكنك فصل هذا المكوّن وتحريره على حدة عن طريق النقر على \"فصل\".";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "وبدلاً من ذلك، يمكنك فصل هذا المكوّن وتحريره على حدة عن طريق النقر على \"فصل النمط\".";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "بدلاً من ذلك، يمكنك تمهيد المحتوى عن طريق فك تجميع المكوّن.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "بدلاً من ذلك، قد تقوم بإدخال كلمة مرور هذا الحساب.";
@@ -884,9 +877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "هل تريد بالتأكيد قطع اتصال Jetpack عن هذا الموقع؟";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "هل تريد بالتأكيد حذف هذه العناصر نهائيًّا؟";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "هل تريد بالتأكيد حذف هذا العنصر نهائيًا؟";
@@ -1175,10 +1165,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "قائمة المكوّنات";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام محرر الويب.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول. لهذا السبب، نوصي بتهيئة المحتوى عن طريق إلغاء تجميع المكوّن أو تحرير المكوّن باستخدام متصفح الويب لديك.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "قد لا تظهر المكوّنات المتداخلة بشكل أكثر عمقًا من %d من المستويات بشكل صحيح في محرر الهاتف المحمول.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "مدونة";
@@ -1344,9 +1331,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "إلغاء";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "إلغاء الرفع";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "تغيير كلمة المرور";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "تغيير الإعدادات";
 
 /* Change Username title. */
 "Change Username" = "تغيير اسم المستخدم";
@@ -2296,7 +2277,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "حذف";
@@ -2635,8 +2615,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "لكل مكوِّن الإعدادات الخاصة به. للعثور عليها، أنقر على مكوِّن. ستظهر إعداداته على شريط الأدوات في الجزء السفلي من الشاشة.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "أدخل كلمات مختلفة أعلاه وسنبحث عن عنوان يطابقها.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "دخول وضع التحرير لتمكين التحديد المتعدد للحذف";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3067,9 +3043,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "فشل";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "فشل تصدير الوسائط";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "فشل وضع علامة على التنبيهات بأنها مقروءة";
 
@@ -3270,6 +3243,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "كرة القدم";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "لهذا السبب، نوصي بتحرير المكوّن باستخدام محرر الويب.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "لهذا السبب، نوصي بتحرير المكوّن باستخدام متصفح الويب لديك.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "قمنا بتعبئة معلومات جهات الاتصال الخاصة بك مسبقًا على حسابك في WordPress.com من أجل راحتك. يرجى المراجعة للتأكد من صحة المعلومات التي ترغب في استخدامها لهذا النطاق.";
@@ -4431,9 +4410,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "أنا";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "وسائط";
@@ -5144,9 +5121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "إظهار المقتطف فقط";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "تتوافر فقط الصور المُحدَّدة التي منحت حق الوصول إليها.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "التصوير الفوتوغرافي";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "الصور";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "الصور مقدمة من Pexels";
@@ -5711,9 +5682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "المعاينة غير متوفرة";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "معاينة الوسائط";
 
 /* No comment provided by engineer. */
 "Preview page" = "معاينة الصفحة";
@@ -6196,9 +6164,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "إعادة محاولة الفحص";
 
-/* User action to retry media upload. */
-"Retry Upload" = "إعادة محاولة الرفع";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "محاولة الجميع مرة أخرى";
 
@@ -6474,9 +6439,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "تحديد البلد";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "تحديد مزيد";
 
 /* Blog Picker's Title */
 "Select Site" = "تحديد موقع";
@@ -7291,9 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "أنقر للتبديل إلى موقع آخر، أو إضافة موقع جديد";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "النقر لعرض الوسائط في وضع الشاشة الكاملة";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "اضغط لعرض مزيد من التفاصيل.";
 
@@ -7569,9 +7528,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "حدثت مشكلة أثناء عرض هذه المقالة.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "حدثت مشكلة أثناء تحميل عنصر الوسائط.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "حدثت مشكلة أثناء تحميل بياناتك، يمكنك تحديث صفحتك للمحاولة مجددًا.";
@@ -7905,14 +7861,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "تحويل المكوِّن…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "سلة المهملات";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "نقل الوسائط المُحدَّدة إلى سلة المهملات";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "هل تريد نقل هذه المقالة إلى سلة المهملات؟";
@@ -8045,9 +7997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "تعذر إنشاء روابط دعوة جديدة.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "يتعذر حذف جميع عناصر الوسائط.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "يتعذر حذف عنصر الوسائط.";
@@ -9339,9 +9288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "عنوان ووردبريس.كوم المجاني الخاص بك هو";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "جاري الآن إعداد نطاقك الجديد %@. قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك بالعمل.";
 
@@ -9464,6 +9410,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "ما هو رأيك في ووردبريس؟";
+
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "تحسين الصور";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "مرتفع";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "منخفض";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "الحد الأقصى";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "متوسط";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "الجودة";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "جودة الصورة";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "يؤدي تحسين الصورة إلى تقليل حجم الصور المطلوب رفعها بسرعة.\n\nتم تمكين هذا الخيار افتراضيًا، لكن يمكنك تغييره ضمن إعدادات التطبيق في أي وقت.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "هل تريد الاستمرار في تحسين الصور؟";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "لا، توقف عن الاستخدام";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "نعم، واصل الاستخدام";
 
 /* Label displayed on audio media items. */
 "audio" = "صوت";
@@ -10322,9 +10301,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "يتطلب رفع مقاطع فيديو تزيد على 5 دقائق خطة مدفوعة.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "تجاهُل";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "إضافة وسائط جديدة";
 
@@ -10403,6 +10379,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "يتعذر تصدير وسائطك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "فشل تصدير الوسائط";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "يلزم هذا التطبيق إذن بالوصول إلى الكاميرا لالتقاط صورة جديدة، يُرجى تغيير إعدادا الخصوصية إذا كنت ترغب في السماح بهذا.";
 
@@ -10436,6 +10418,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "تسجيل فيديو";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × ⁦%2$d⁩ بكسل";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "يبدو أن تطبيق ووردبريس لا يزال مثبتًا لديك.";
 
@@ -10448,9 +10433,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "لن تحتاج إلى تطبيق ووردبريس على جهازك بعد الآن";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "إنهاء";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "نوصي بأن تحذف تطبيق ووردبريس لتفادي تعارضات البيانات.";
 
@@ -10459,6 +10441,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "لقد نقلنا كل بياناتك وإعداداتك. يصبح كل شيء صحيحًا عندما تتركه.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "حان الوقت لمواصلة رحلتك في ووردبريس.كوم على تطبيق Jetpack!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "شكرًا على التبديل إلى Jetpack!";
@@ -10507,6 +10492,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "مرحبًا بك في Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "لنبدأ";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "يحتوي تطبيق Jetpack على كل وظائف تطبيق ووردبريس، إلى جانب وصول حصري الآن إلى ميزات Stats وReader وNotifications والمزيد.";
@@ -10727,13 +10715,16 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@، %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "سلة المهملات";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "حذف";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "مشاركة";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "عرض";
 
 /* User action to dismiss featured media options. */
@@ -11102,6 +11093,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "حدِّد الوسائط.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "النقر لعرض الوسائط في وضع الشاشة الكاملة";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "معاينة الوسائط";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "إلغاء التحديد";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "تحديد";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "الوسائط";

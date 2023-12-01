@@ -233,6 +233,7 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         let title = AllDomainsListViewController.Strings.title
         let action = UIAction { [weak self] _ in
             self?.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+            WPAnalytics.track(.domainsDashboardAllDomainsTapped)
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
 #endif
