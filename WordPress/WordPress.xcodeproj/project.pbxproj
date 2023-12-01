@@ -5578,6 +5578,7 @@
 		FE50965D2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
 		FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
 		FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
+		FE6AFE472B1A351F00F76520 /* SOTWCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */; };
 		FE6BB143293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB1462932289B001E5F7A /* ContentMigrationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */; };
@@ -9447,6 +9448,7 @@
 		FE59DA9527D1FD0700624D26 /* WordPress 138.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 138.xcdatamodel"; sourceTree = "<group>"; };
 		FE5F52D82AF9461200371A3A /* WordPress 153.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 153.xcdatamodel"; sourceTree = "<group>"; };
 		FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloganuaryTracker.swift; sourceTree = "<group>"; };
+		FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOTWCardView.swift; sourceTree = "<group>"; };
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsViewController.swift; sourceTree = "<group>"; };
@@ -11520,6 +11522,7 @@
 		3F43603423F368BF001DEE70 /* Blog Details */ = {
 			isa = PBXGroup;
 			children = (
+				FE6AFE452B1A343A00F76520 /* SoTW 2023 */,
 				462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */,
 				462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */,
 				74989B8B2088E3650054290B /* BlogDetailsViewController+Activity.swift */,
@@ -18455,6 +18458,14 @@
 			path = Migration;
 			sourceTree = "<group>";
 		};
+		FE6AFE452B1A343A00F76520 /* SoTW 2023 */ = {
+			isa = PBXGroup;
+			children = (
+				FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */,
+			);
+			path = "SoTW 2023";
+			sourceTree = "<group>";
+		};
 		FE6BB14129322798001E5F7A /* Migration */ = {
 			isa = PBXGroup;
 			children = (
@@ -22309,6 +22320,7 @@
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
+				FE6AFE472B1A351F00F76520 /* SOTWCardView.swift in Sources */,
 				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,

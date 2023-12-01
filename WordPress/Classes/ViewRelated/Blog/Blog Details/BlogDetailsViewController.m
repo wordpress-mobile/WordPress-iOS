@@ -1015,7 +1015,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
-    
+
+    // TODO: Add the SoTW card here.
+
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addNullableObject:[self migrationSuccessSectionViewModel]];
     }
