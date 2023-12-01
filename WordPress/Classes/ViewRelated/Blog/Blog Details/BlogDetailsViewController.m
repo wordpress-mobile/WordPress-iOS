@@ -1587,6 +1587,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (section.category == BlogDetailsSectionCategorySotW2023Card) {
         SotWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsSotWCardCellIdentifier];
+        __weak __typeof(self) weakSelf = self;
+        [cell configureOnCardHidden:^{
+            [weakSelf configureTableViewData];
+            [weakSelf reloadTableViewPreservingSelection];
+        }];
+
         return cell;
     }
 

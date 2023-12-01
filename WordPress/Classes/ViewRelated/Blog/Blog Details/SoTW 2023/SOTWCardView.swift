@@ -2,6 +2,11 @@
 ///
 class SotWCardView: UIView {
 
+    var didHideCard: (() -> Void)?
+    var didTapButton: (() -> Void)?
+
+    private let repository = UserPersistentStoreFactory.instance()
+
     // MARK: - Views
 
     private lazy var bodyLabel: UILabel = {
@@ -40,7 +45,12 @@ class SotWCardView: UIView {
         frameView.setTitle(Strings.title)
         frameView.onEllipsisButtonTap = {}
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        frameView.ellipsisButton.menu = nil // TODO.
+        let hideAction = BlogDashboardHelpers.makeHideCardAction { [weak self] in
+            WPAnalytics.track(.sotw2023NudgePostEventCardHideTapped)
+            self?.repository.set(true, forKey: SotWConstants.hideCardPreferenceKey)
+            self?.didHideCard?()
+        }
+        frameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [hideAction])
         frameView.add(subview: contentStackView)
 
         return frameView
@@ -64,14 +74,8 @@ class SotWCardView: UIView {
         pinSubviewToAllEdges(cardFrameView)
     }
 
-}
-
-// MARK: - Private Helpers
-
-private extension SotWCardView {
-
     @objc func onButtonTap() {
-        // TODO: Redirect to livestream landing page.
+        didTapButton?()
     }
 
     struct Strings {
@@ -79,6 +83,14 @@ private extension SotWCardView {
         static let body = "Check out WordPress co-founder Matt Mullenweg's annual keynote to stay on top of what's coming in 2024 and beyond."
         static let button = "Watch now"
     }
+
+}
+
+// MARK: - Constants
+
+private struct SotWConstants {
+    static let hideCardPreferenceKey = "wp_sotw_2023_card_hidden_settings"
+    static let livestreamURLString = "https://wordpress.org/state-of-the-word/?utm_source=mobile&utm_medium=appnudge&utm_campaign=sotw2023"
 }
 
 // MARK: - UITableViewCell Wrapper
@@ -88,6 +100,14 @@ class SotWTableViewCell: UITableViewCell {
     private lazy var cardView: SotWCardView = {
         let cardView = SotWCardView()
         cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.didTapButton = {
+            WPAnalytics.track(.sotw2023NudgePostEventCardCTATapped)
+            guard let destinationURL = URL(string: SotWConstants.livestreamURLString) else {
+                return
+            }
+            UIApplication.shared.open(destinationURL)
+        }
+
         return cardView
     }()
 
@@ -101,16 +121,17 @@ class SotWTableViewCell: UITableViewCell {
     }
 
     private func setupView() {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setText("Hello, world!")
         contentView.addSubview(cardView)
         contentView.pinSubviewToAllEdges(cardView, priority: .defaultHigh)
+        WPAnalytics.track(.sotw2023NudgePostEventCardShown)
     }
 
+    @objc func configure(onCardHidden: (() -> Void)?) {
+        cardView.didHideCard = onCardHidden
+    }
 }
 
-// MARK: - BlogDetailsViewController Registration
+// MARK: - BlogDetailsViewController Section
 
 extension BlogDetailsViewController {
 
@@ -129,6 +150,10 @@ extension BlogDetailsViewController {
             return false
         }
 
+        // ensure that the card is not hidden.
+        let repository = UserPersistentStoreFactory.instance()
+        let cardIsHidden = repository.bool(forKey: SotWConstants.hideCardPreferenceKey)
+
         // ensure that the device language is in English.
         let usesEnglish = WordPressComLanguageDatabase().deviceLanguageSlugString() == "en"
 
@@ -137,14 +162,13 @@ extension BlogDetailsViewController {
         let isPostEvent = {
             guard let day = dateComponents.day,
                   let month = dateComponents.month,
-                  let year = dateComponents.year,
-                  year < 2024 else {
-                return true
+                  let year = dateComponents.year else {
+                return false
             }
-            return month == 12 && day > 11
+            return year >= 2024 || (year < 2024 && month == 12 && day > 11)
         }()
 
-        return usesEnglish && isPostEvent
+        return !cardIsHidden && usesEnglish && isPostEvent
     }
 
 }
