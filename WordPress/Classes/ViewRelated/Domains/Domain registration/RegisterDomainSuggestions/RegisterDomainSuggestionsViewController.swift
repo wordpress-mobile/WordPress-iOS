@@ -212,8 +212,6 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     /// Shows the domain picking button
     ///
     /// - Parameters:
-    ///
-    /// g
     ///     - animated: whether the transition is animated.
     ///
     private func showButton(animated: Bool) {

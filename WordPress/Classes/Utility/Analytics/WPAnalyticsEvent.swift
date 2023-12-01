@@ -241,6 +241,7 @@ import Foundation
 
     // Domain Management
     case meDomainsTapped
+    case allDomainsDomainDetailsWebViewShown
     case domainsDashboardAllDomainsTapped
     case domainsDashboardDomainsSearchShown
     case domainsListShown
@@ -961,12 +962,14 @@ import Foundation
         // Domain Management
         case .meDomainsTapped:
             return "me_all_domains_tapped"
+        case .allDomainsDomainDetailsWebViewShown:
+            return "all_domains_domain_details_web_view_shown"
         case .domainsDashboardAllDomainsTapped:
             return "domains_dashboard_all_domains_tapped"
         case .domainsDashboardDomainsSearchShown:
             return "domains_dashboard_domains_search_shown"
         case .domainsListShown:
-            return "all_domains_domains_list_shown"
+            return "all_domains_list_shown"
         case .allDomainsFindDomainTapped:
             return "domain_management_all_domains_find_domain_tapped"
         case .addDomainTapped:
