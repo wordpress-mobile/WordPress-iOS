@@ -28,6 +28,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
     private var navBarTitle: String = TextContent.title
+    private var analyticsSource: String? {
+        return coordinator?.analyticsSource
+    }
 
     @IBOutlet private var buttonViewContainer: UIView! {
         didSet {
@@ -52,8 +55,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private lazy var transferFooterView: RegisterDomainTransferFooterView = {
         let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
-            let destination = TransferDomainsWebViewController(source: "register_domain")
-            self?.present(UINavigationController(rootViewController: destination), animated: true)
+            guard let self else {
+                return
+            }
+            let destination = TransferDomainsWebViewController(source: self.analyticsSource)
+            self.present(UINavigationController(rootViewController: destination), animated: true)
         }
         return .init(configuration: configuration)
     }()
@@ -110,11 +116,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         configure()
         hideButton()
         setupTransferFooterView()
-        WPAnalytics.track(
-            .domainsDashboardDomainsSearchShown,
-            properties: [WPAppAnalyticsKeySource: "all_domains"]
-        )
-
+        track(.domainsDashboardDomainsSearchShown)
     }
 
     override func viewDidLayoutSubviews() {
@@ -291,6 +293,19 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         supportVC.showFromTabBar()
     }
 
+    // MARK: - Tracks
+
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
+        var properties = properties
+        if let analyticsSource {
+            properties[WPAppAnalyticsKeySource] = analyticsSource
+        }
+        if let blog {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
+        }
+    }
 }
 
 // MARK: - DomainSuggestionsTableViewControllerDelegate
@@ -323,25 +338,16 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let coordinator else {
             return
         }
+
         let domainPropertyTitle = "domain_name"
         let domainName = self.coordinator?.domain?.domainName ?? ""
         if let site = coordinator.site {
             var properties = WPAnalytics.domainsProperties(for: site)
-            properties[WPAppAnalyticsKeySource] = "all_domains"
             properties[domainPropertyTitle] = domainName
-            WPAnalytics.track(
-                .domainsSearchSelectDomainTapped,
-                properties: properties,
-                blog: site
-            )
+            self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: site)
         } else {
-            WPAnalytics.track(
-                .domainsSearchSelectDomainTapped,
-                properties: [
-                    WPAppAnalyticsKeySource: "all_domains",
-                    domainPropertyTitle: domainName
-                ]
-            )
+            let properties = [domainPropertyTitle: domainName]
+            self.track(.domainsSearchSelectDomainTapped, properties: properties)
         }
 
         let onFailure: () -> () = { [weak self] in

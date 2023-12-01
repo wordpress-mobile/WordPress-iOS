@@ -15,7 +15,8 @@ class RegisterDomainCoordinator {
     // MARK: Variables
 
     private let crashLogger: CrashLogging
-    private let analyticsSource: String?
+
+    let analyticsSource: String?
 
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
