@@ -2120,6 +2120,7 @@
 		8332DD2429259AE300802F7D /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2329259AE300802F7D /* DataMigrator.swift */; };
 		8332DD2529259AE300802F7D /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2329259AE300802F7D /* DataMigrator.swift */; };
 		8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2729259BEB00802F7D /* DataMigratorTests.swift */; };
+		833441C82B1AA9DF00B1FD44 /* SOTWCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */; };
 		834A49D22A0C23A90042ED3D /* TemplatePageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834A49D12A0C23A90042ED3D /* TemplatePageTableViewCell.swift */; };
 		834A49D32A0C23A90042ED3D /* TemplatePageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834A49D12A0C23A90042ED3D /* TemplatePageTableViewCell.swift */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
@@ -5536,6 +5537,11 @@
 		FE32F007275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */; };
 		FE341705275FA157005D5CA7 /* RichCommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE341704275FA157005D5CA7 /* RichCommentContentRenderer.swift */; };
 		FE341706275FA157005D5CA7 /* RichCommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE341704275FA157005D5CA7 /* RichCommentContentRenderer.swift */; };
+		FE34ACCF2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACCE2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift */; };
+		FE34ACD02B1661EB00108B3C /* DashboardBloganuaryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACCE2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift */; };
+		FE34ACD22B174AE700108B3C /* DashboardBloganuaryCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACD12B174AE700108B3C /* DashboardBloganuaryCardCellTests.swift */; };
+		FE34ACDB2B17AA9300108B3C /* BloganuaryOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */; };
+		FE34ACDC2B17AA9400108B3C /* BloganuaryOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */; };
 		FE39C135269C37C900EFB827 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
@@ -5561,6 +5567,9 @@
 		FE50965A2A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5096582A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift */; };
 		FE50965C2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
 		FE50965D2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
+		FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
+		FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
+		FE6AFE472B1A351F00F76520 /* SOTWCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */; };
 		FE6BB143293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB1462932289B001E5F7A /* ContentMigrationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */; };
@@ -9401,6 +9410,9 @@
 		FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentRenderer.swift; sourceTree = "<group>"; };
 		FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommentContentRenderer.swift; sourceTree = "<group>"; };
 		FE341704275FA157005D5CA7 /* RichCommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichCommentContentRenderer.swift; sourceTree = "<group>"; };
+		FE34ACCE2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBloganuaryCardCell.swift; sourceTree = "<group>"; };
+		FE34ACD12B174AE700108B3C /* DashboardBloganuaryCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBloganuaryCardCellTests.swift; sourceTree = "<group>"; };
+		FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloganuaryOverlayViewController.swift; sourceTree = "<group>"; };
 		FE39C133269C37C900EFB827 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
@@ -9417,6 +9429,8 @@
 		FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableHeaderView.swift; sourceTree = "<group>"; };
 		FE59DA9527D1FD0700624D26 /* WordPress 138.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 138.xcdatamodel"; sourceTree = "<group>"; };
 		FE5F52D82AF9461200371A3A /* WordPress 153.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 153.xcdatamodel"; sourceTree = "<group>"; };
+		FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloganuaryTracker.swift; sourceTree = "<group>"; };
+		FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOTWCardView.swift; sourceTree = "<group>"; };
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsViewController.swift; sourceTree = "<group>"; };
@@ -11521,6 +11535,7 @@
 		3F43603423F368BF001DEE70 /* Blog Details */ = {
 			isa = PBXGroup;
 			children = (
+				FE6AFE452B1A343A00F76520 /* SoTW 2023 */,
 				462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */,
 				462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */,
 				74989B8B2088E3650054290B /* BlogDetailsViewController+Activity.swift */,
@@ -13576,6 +13591,7 @@
 			isa = PBXGroup;
 			children = (
 				83BFAE4F2A6EBF9900C7B683 /* DashboardJetpackSocialCardCellTests.swift */,
+				FE34ACD12B174AE700108B3C /* DashboardBloganuaryCardCellTests.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -14567,6 +14583,7 @@
 		98A047702821BFB6001B4E2D /* Blogging Prompts */ = {
 			isa = PBXGroup;
 			children = (
+				FE34ACD82B17A7CA00108B3C /* Bloganuary */,
 				98A047712821CEBF001B4E2D /* BloggingPromptsViewController.swift */,
 				98A047742821D069001B4E2D /* BloggingPromptsViewController.storyboard */,
 				98517E5828220411001FFD45 /* BloggingPromptTableViewCell.swift */,
@@ -18387,6 +18404,7 @@
 				FEAC916D28001FC4005026E7 /* AvatarTrainView.swift */,
 				83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */,
 				FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */,
+				FE34ACCE2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift */,
 			);
 			path = Prompts;
 			sourceTree = "<group>";
@@ -18410,6 +18428,15 @@
 			path = ContentRenderer;
 			sourceTree = "<group>";
 		};
+		FE34ACD82B17A7CA00108B3C /* Bloganuary */ = {
+			isa = PBXGroup;
+			children = (
+				FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */,
+				FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */,
+			);
+			path = Bloganuary;
+			sourceTree = "<group>";
+		};
 		FE3D057C26C3D5A1002A51B0 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
@@ -18427,6 +18454,14 @@
 				FE29EFCC29A91160007CE034 /* WPAdminConvertibleRouter.swift */,
 			);
 			path = Migration;
+			sourceTree = "<group>";
+		};
+		FE6AFE452B1A343A00F76520 /* SoTW 2023 */ = {
+			isa = PBXGroup;
+			children = (
+				FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */,
+			);
+			path = "SoTW 2023";
 			sourceTree = "<group>";
 		};
 		FE6BB14129322798001E5F7A /* Migration */ = {
@@ -21227,6 +21262,7 @@
 				F5A34BCB25DF244F00C9654B /* KanvasCameraAnalyticsHandler.swift in Sources */,
 				8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */,
 				839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */,
+				FE34ACCF2B1661EB00108B3C /* DashboardBloganuaryCardCell.swift in Sources */,
 				17F52DB72315233300164966 /* WPStyleGuide+FilterTabBar.swift in Sources */,
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
@@ -22270,6 +22306,7 @@
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
+				FE6AFE472B1A351F00F76520 /* SOTWCardView.swift in Sources */,
 				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
@@ -22407,6 +22444,7 @@
 				46183CF5251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
 				FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */,
 				981D464825B0D4E7000AA65C /* ReaderSeenAction.swift in Sources */,
+				FE34ACDC2B17AA9400108B3C /* BloganuaryOverlayViewController.swift in Sources */,
 				F57402A7235FF9C300374346 /* SchedulingDate+Helpers.swift in Sources */,
 				4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */,
 				57C2331822FE0EC900A3863B /* PostAutoUploadInteractor.swift in Sources */,
@@ -22691,6 +22729,7 @@
 				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				83BFAE482A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* MessageAnimator.swift in Sources */,
+				FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */,
 				C77FC90F2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */,
 				FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */,
 				F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */,
@@ -23808,6 +23847,7 @@
 				0C896DE72A3A832B00D7D4E7 /* SiteVisibilityTests.swift in Sources */,
 				E1B921BC1C0ED5A3003EA3CB /* MediaSizeSliderCellTest.swift in Sources */,
 				C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */,
+				FE34ACD22B174AE700108B3C /* DashboardBloganuaryCardCellTests.swift in Sources */,
 				3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */,
 				0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */,
 				D848CBF920FEF82100A9038F /* NotificationsContentFactoryTests.swift in Sources */,
@@ -23875,6 +23915,7 @@
 				FABB20D22602FC2C00C8785C /* AztecNavigationController.swift in Sources */,
 				FABB20D32602FC2C00C8785C /* Notification+Interface.swift in Sources */,
 				B07F133F2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */,
+				FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */,
 				FABB20D42602FC2C00C8785C /* ReaderSaveForLater+Analytics.swift in Sources */,
 				FABB20D62602FC2C00C8785C /* RevisionOperation.swift in Sources */,
 				FABB20D72602FC2C00C8785C /* ZendeskUtils.swift in Sources */,
@@ -24485,6 +24526,7 @@
 				FABB228B2602FC2C00C8785C /* FancyAlerts+VerificationPrompt.swift in Sources */,
 				FABB228C2602FC2C00C8785C /* ReaderSiteStreamHeader.swift in Sources */,
 				FABB228D2602FC2C00C8785C /* VideoUploadProcessor.swift in Sources */,
+				FE34ACD02B1661EB00108B3C /* DashboardBloganuaryCardCell.swift in Sources */,
 				FABB228E2602FC2C00C8785C /* PeopleCellViewModel.swift in Sources */,
 				FABB228F2602FC2C00C8785C /* TableViewOffsetCoordinator.swift in Sources */,
 				FABB22902602FC2C00C8785C /* RegisterDomainDetailsViewController.swift in Sources */,
@@ -25652,12 +25694,14 @@
 				FABB25D02602FC2C00C8785C /* SiteCreationWizardLauncher.swift in Sources */,
 				FABB25D12602FC2C00C8785C /* ReaderSitesCardCell.swift in Sources */,
 				46F583B02624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
+				833441C82B1AA9DF00B1FD44 /* SOTWCardView.swift in Sources */,
 				FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */,
 				FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				FEC26034283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
 				FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */,
 				9856A3E5261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				FABB25D62602FC2C00C8785C /* ActivityListSectionHeaderView.swift in Sources */,
+				FE34ACDB2B17AA9300108B3C /* BloganuaryOverlayViewController.swift in Sources */,
 				FABB25D72602FC2C00C8785C /* WPAccount+RestApi.swift in Sources */,
 				FABB25D82602FC2C00C8785C /* ImageCropOverlayView.swift in Sources */,
 				FABB25D92602FC2C00C8785C /* UIView+SpringAnimations.swift in Sources */,
