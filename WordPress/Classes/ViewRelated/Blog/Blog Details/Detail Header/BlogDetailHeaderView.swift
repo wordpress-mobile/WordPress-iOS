@@ -3,6 +3,7 @@ import UIKit
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
+    func makeSiteActionsMenu() -> UIMenu?
     func didShowSiteIconMenu()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
@@ -116,8 +117,13 @@ class BlogDetailHeaderView: UIView {
     private func setupChildViews(items: [ActionRow.Item]) {
         assert(delegate != nil)
 
-        if let menu = delegate?.makeSiteIconMenu() {
-            titleView.siteIconView.setMenu(menu) { [weak self] in
+        if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
+            titleView.siteActionButton.showsMenuAsPrimaryAction = true
+            titleView.siteActionButton.menu = siteActionsMenu
+        }
+
+        if let siteIconMenu = delegate?.makeSiteIconMenu() {
+            titleView.siteIconView.setMenu(siteIconMenu) { [weak self] in
                 self?.delegate?.didShowSiteIconMenu()
                 WPAnalytics.track(.siteSettingsSiteIconTapped)
                 self?.titleView.siteIconView.spotlightIsShown = false
@@ -130,7 +136,6 @@ class BlogDetailHeaderView: UIView {
 
         titleView.subtitleButton.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
         titleView.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
-        titleView.siteActionButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
         titleView.translatesAutoresizingMaskIntoConstraints = false
 

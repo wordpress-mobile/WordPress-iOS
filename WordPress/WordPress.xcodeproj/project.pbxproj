@@ -3992,6 +3992,8 @@
 		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE42726159B1300BF29FE /* AppConstants.swift */; };
+		FAAEFAE02B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */; };
+		FAAEFAE12B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */; };
 		FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
 		FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
@@ -9315,6 +9317,7 @@
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SitePickerViewController+SiteActions.swift"; sourceTree = "<group>"; };
 		FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsNudgeView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
@@ -18175,6 +18178,7 @@
 			isa = PBXGroup;
 			children = (
 				FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */,
+				FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */,
 				FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */,
 				FA73D7EB27987E4500DF24B3 /* SitePickerViewController+QuickStart.swift */,
 				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
@@ -21209,6 +21213,7 @@
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
 				F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */,
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
+				FAAEFAE02B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				FEFC0F892731182C001F7F1D /* CommentService+Replies.swift in Sources */,
 				803BB98F29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
@@ -24061,6 +24066,7 @@
 				FABB21332602FC2C00C8785C /* TwoColumnCell.swift in Sources */,
 				C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */,
 				FABB21342602FC2C00C8785C /* PostSettingsViewController.m in Sources */,
+				FAAEFAE12B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */,
 				FACF66CB2ADD4703008C3E13 /* PostListCell.swift in Sources */,
 				FABB21352602FC2C00C8785C /* MenuItem.m in Sources */,
 				FABB21362602FC2C00C8785C /* WPRichTextFormatter.swift in Sources */,
