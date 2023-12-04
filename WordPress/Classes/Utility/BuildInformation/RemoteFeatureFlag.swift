@@ -22,6 +22,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case domainManagement
     case plansInSiteCreation
     case readerImprovements // pcdRpT-3Eb-p2
+    case bloganuaryDashboardNudge // pcdRpT-4FE-p2
+    case wordPressSotWCard
 
     var defaultValue: Bool {
         switch self {
@@ -64,6 +66,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .plansInSiteCreation:
             return false
         case .readerImprovements:
+            return true
+        case .bloganuaryDashboardNudge:
+            return AppConfiguration.isJetpack
+        case .wordPressSotWCard:
             return true
         }
     }
@@ -111,6 +117,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "plans_in_site_creation"
         case .readerImprovements:
             return "reader_improvements"
+        case .bloganuaryDashboardNudge:
+            return "bloganuary_dashboard_nudge"
+        case .wordPressSotWCard:
+            return "wp_sotw_2023_nudge"
         }
     }
 
@@ -156,6 +166,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Plans in Site Creation"
         case .readerImprovements:
             return "Reader Improvements v1"
+        case .bloganuaryDashboardNudge:
+            return "Bloganuary Dashboard Nudge"
+        case .wordPressSotWCard:
+            return "SoTW Nudge Card for WordPress App"
         }
     }
 
