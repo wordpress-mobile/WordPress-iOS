@@ -130,7 +130,7 @@ class BlogDetailHeaderView: UIView {
 
         titleView.subtitleButton.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
         titleView.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
-        titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
+        titleView.siteActionButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
         titleView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -207,7 +207,7 @@ fileprivate extension BlogDetailHeaderView {
             let stackView = UIStackView(arrangedSubviews: [
                 siteIconView,
                 titleStackView,
-                siteSwitcherButton
+                siteActionButton
             ])
 
             stackView.alignment = .center
@@ -273,7 +273,7 @@ fileprivate extension BlogDetailHeaderView {
             return button
         }()
 
-        let siteSwitcherButton: UIButton = {
+        let siteActionButton: UIButton = {
             let button = UIButton(frame: .zero)
             let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
 
@@ -281,8 +281,8 @@ fileprivate extension BlogDetailHeaderView {
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tintColor = .secondaryLabel
-            button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
-            button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
+            button.accessibilityLabel = NSLocalizedString("mySite.siteActions.button", value: "Site Actions", comment: "Button that reveals more site actions")
+            button.accessibilityHint = NSLocalizedString("mySite.siteActions.hint", value: "Tap to show more site actions", comment: "Accessibility hint for button used to show more site actions")
             button.accessibilityIdentifier = .switchSiteAccessibilityId
 
             return button
@@ -352,8 +352,8 @@ fileprivate extension BlogDetailHeaderView {
 
         private func setupConstraintsForSiteSwitcher() {
             NSLayoutConstraint.activate([
-                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
-                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
+                siteActionButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteActionButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
             ])
         }
     }
