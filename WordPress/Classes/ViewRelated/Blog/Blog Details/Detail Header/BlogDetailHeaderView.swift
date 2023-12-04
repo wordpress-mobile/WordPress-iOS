@@ -275,7 +275,7 @@ fileprivate extension BlogDetailHeaderView {
 
         let siteActionButton: UIButton = {
             let button = UIButton(frame: .zero)
-            let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
+            let image = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
 
             button.setImage(image, for: .normal)
             button.contentMode = .center
