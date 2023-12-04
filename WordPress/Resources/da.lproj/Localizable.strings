@@ -32,8 +32,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogs";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Tilføj";
 
 /* The title on the add category screen */
@@ -327,7 +326,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Slet";
@@ -401,8 +399,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Kladde";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -717,9 +714,7 @@
 "Me" = "Mig";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Medier";
@@ -942,9 +937,6 @@
 
 /* Label for date periods. */
 "Period" = "Periode";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Foto";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "Indtast venligst en webstedsadresse.";
@@ -1411,8 +1403,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Antal følgere på WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slet";

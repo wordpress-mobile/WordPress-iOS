@@ -207,9 +207,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d ans";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$d x %2$d px";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i zone de menu dans ce thème";
 
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Type d’activité (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Ajouter";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Ajouter un élément de menu au sous-élément";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Ajouter un nouveau média";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Ajouter un nouveau menu";
@@ -732,12 +725,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Vous pouvez également convertir le contenu en blocs.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Vous pouvez également détacher et modifier ces blocs séparément en appuyant sur « Détacher les compositions ».";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Vous pouvez également détacher et modifier ce bloc séparément en appuyant sur « Détacher la composition ».";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Vous pouvez également saisir le mot de passe de ce compte.";
 
@@ -884,9 +871,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Confirmez-vous vouloir déconnecter Jetpack de votre site ?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Êtes-vous sûr de vouloir supprimer définitivement les éléments sélectionnés ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Confirmez-vous vouloir supprimer définitivement cet élément ?";
@@ -1174,12 +1158,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks menu" = "Menu Blocs";
 
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Les blocs imbriqués à un niveau supérieur à %d peuvent ne pas s’afficher correctement dans l’éditeur mobile. Pour cette raison, nous vous recommandons d’aplatir le contenu en dégroupant le bloc ou en le modifiant à l’aide de l’éditeur web.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Les blocs imbriqués à un niveau supérieur à %d peuvent ne pas s’afficher correctement dans l’éditeur mobile. Pour cette raison, nous vous recommandons d’aplatir le contenu en dégroupant le bloc ou en le modifiant à l’aide de votre navigateur web.";
-
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
@@ -1344,9 +1322,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Annuler";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Annuler le téléversement";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1379,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Changer le mot de passe";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Modifier les réglages";
 
 /* Change Username title. */
 "Change Username" = "Modifier l'identifiant";
@@ -2296,7 +2268,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Effacer";
@@ -2635,8 +2606,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Chaque bloc possède ses propres réglages. Pour les trouver, appuyez sur un bloc. Ses réglages apparaissent sur la barre d’outils en bas de l’écran.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2810,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Saisissez des mots différents ci-dessus et nous regarderons si une adresse correspond.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Passez en mode d’édition pour activer la suppression multiple";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3066,9 +3033,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Échec";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Échec de l’exportation du média";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Impossible de marquer les notifications comme lues";
@@ -4431,9 +4395,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Moi";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Média";
@@ -5144,9 +5106,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "N’afficher que l’extrait";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Seules les photos sélectionnées auxquelles vous avez donné accès sont disponibles.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5358,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Photographie";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Photos mises à disposition par Pexels";
@@ -5711,9 +5667,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "Aperçu non disponible";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Prévisualiser le média";
 
 /* No comment provided by engineer. */
 "Preview page" = "Prévisualiser la page";
@@ -6196,9 +6149,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Relancer l’analyse";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Téléverser à nouveau";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Tout réessayez ";
 
@@ -6474,9 +6424,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Choisir le pays";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "En sélectionner plus";
 
 /* Blog Picker's Title */
 "Select Site" = "Sélectionner le site";
@@ -7291,9 +7238,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Appuyer pour passer à un autre site, ou ajouter un nouveau site";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Appuyer pour voir le média en plein écran";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Appuyez pour afficher plus de détails.";
 
@@ -7569,9 +7513,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Un problème est survenu lors de l’affichage de cet article.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Il y a eu un problème de chargement de l’élément multimédia.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Un problème a eu lieu lors du chargement des données. Rafraichissez votre page pour réessayer.";
@@ -7905,14 +7846,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformer le bloc…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Déplacer vers la corbeille";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Mettre à la corbeille le fichier média sélectionné";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Mettre à la corbeille cet article ?";
@@ -8045,9 +7982,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Impossible de créer de nouveaux liens d’invitation.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Impossible de supprimer tous les médias.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Impossible de supprimer le média.";
@@ -9339,9 +9273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Votre adresse gratuite WordPress.com est";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Votre média n’a pas pu être exporté. If the problem persists you can contact us via the Me > écran Aide & Support.";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Votre nouveau domaine %@ est en cours de configuration. Un délai de 30 minutes peut être nécessaire pour que votre domaine soit opérationnel.";
 
@@ -10319,9 +10250,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "La mise en ligne de vidéos de plus de 5 minutes requiert un plan payant.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Ignorer";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Ajouter un nouveau média";
 
@@ -10441,9 +10369,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Vous n’avez plus besoin de l’application WordPress sur votre appareil";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Terminer";
 
 /* Footer for the migration done screen. */
 "migration.done.footer" = "Nous vous recommandons de désinstaller l’application WordPress sur votre appareil pour éviter les conflits de données.";
@@ -10718,13 +10643,13 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a sticky post in the post list. */
 "postList.a11y.sticky" = "Épinglé.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Corbeille";
 
-/* Swipe action title */
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Partager";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Voir";
 
 /* User action to dismiss featured media options. */
