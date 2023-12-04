@@ -59,6 +59,14 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         prepareActionButtonsForVoiceOver()
     }
 
+    func viewWillAppear() {
+        subscribePostChanges()
+    }
+
+    func viewWillDisappear() {
+        unsubscribePostChanges()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -71,35 +79,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.post = post
         self.viewController = viewController
 
-        likeCountObserver = post.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
-            // ensure that we only update the like button when there's actual change.
-            let oldValue = change.oldValue??.intValue ?? 0
-            let newValue = change.newValue??.intValue ?? 0
-            guard oldValue != newValue else {
-                return
-            }
-
-            self?.configureLikeActionButton(true)
-            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
-        }
-
-        commentCountObserver = post.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
-            // ensure that we only update the like button when there's actual change.
-            let oldValue = change.oldValue??.intValue ?? 0
-            let newValue = change.newValue??.intValue ?? 0
-            guard oldValue != newValue else {
-                return
-            }
-
-            self?.configureCommentActionButton()
-        }
-
+        subscribePostChanges()
         configureActionButtons()
-    }
-
-    deinit {
-        likeCountObserver?.invalidate()
-        commentCountObserver?.invalidate()
     }
 
     // MARK: - Actions
@@ -577,5 +558,39 @@ private extension ReaderDetailToolbar {
                 Note: Since the display space is limited, a short or concise translation is preferred.
                 """
         )
+    }
+}
+
+// MARK: - Observe Post
+
+private extension ReaderDetailToolbar {
+    func subscribePostChanges() {
+        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
+            self?.configureLikeActionButton(true)
+            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
+        }
+
+        commentCountObserver = post?.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
+            self?.configureCommentActionButton()
+        }
+    }
+
+    func unsubscribePostChanges() {
+        likeCountObserver?.invalidate()
+        commentCountObserver?.invalidate()
     }
 }
