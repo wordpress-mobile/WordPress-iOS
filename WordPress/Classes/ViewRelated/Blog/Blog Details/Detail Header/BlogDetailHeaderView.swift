@@ -342,8 +342,8 @@ fileprivate extension BlogDetailHeaderView {
             NSLayoutConstraint.activate([
                 mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
                 mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-                mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+                mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
             ])
 
             setupConstraintsForSiteSwitcher()
