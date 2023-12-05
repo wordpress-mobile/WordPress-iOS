@@ -244,7 +244,7 @@ fileprivate extension BlogDetailHeaderView {
             button.configuration = configuration
 
             button.menu = UIMenu(children: [
-                UIAction(title: Strings.openInBrowser, image: UIImage(systemName: "link"), handler: { [weak button] _ in
+                UIAction(title: Strings.visitSite, image: UIImage(systemName: "safari"), handler: { [weak button] _ in
                     button?.sendActions(for: .touchUpInside)
                 }),
                 UIAction(title: Strings.actionCopyURL, image: UIImage(systemName: "doc.on.doc"), handler: { [weak button] _ in
@@ -372,7 +372,7 @@ private extension String {
 }
 
 private enum Strings {
-    static let openInBrowser = NSLocalizedString("blogHeader.actionOpenInBrowser", value: "Open in Browser", comment: "Context menu button title")
+    static let visitSite = NSLocalizedString("blogHeader.actionVisitSite", value: "Visit site", comment: "Context menu button title")
     static let actionCopyURL = NSLocalizedString("blogHeader.actionCopyURL", value: "Copy URL", comment: "Context menu button title")
 
 }
