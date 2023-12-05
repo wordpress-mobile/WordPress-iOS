@@ -297,9 +297,20 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
         var properties = properties
-        if let analyticsSource {
-            properties[WPAppAnalyticsKeySource] = analyticsSource
+
+        let defaultProperties = { () -> [AnyHashable: Any]? in
+            guard let blog else {
+                return nil
+            }
+            return WPAnalytics.domainsProperties(for: blog, origin: .allDomains)
+        }()
+
+        if let defaultProperties {
+            properties = properties.merging(defaultProperties) { current, _ in
+                return current
+            }
         }
+
         if let blog {
             WPAnalytics.track(event, properties: properties, blog: blog)
         } else {
@@ -339,16 +350,14 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
 
-        let domainPropertyTitle = "domain_name"
-        let domainName = self.coordinator?.domain?.domainName ?? ""
-        if let site = coordinator.site {
-            var properties = WPAnalytics.domainsProperties(for: site)
-            properties[domainPropertyTitle] = domainName
-            self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: site)
-        } else {
-            let properties = [domainPropertyTitle: domainName]
-            self.track(.domainsSearchSelectDomainTapped, properties: properties)
-        }
+        let properties: [AnyHashable: Any] = {
+            guard let domainName = self.coordinator?.domain?.domainName else {
+                return [:]
+            }
+            return ["domain_name": domainName]
+        }()
+
+        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator.site)
 
         let onFailure: () -> () = { [weak self] in
             self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
