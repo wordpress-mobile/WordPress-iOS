@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-05 13:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
@@ -2685,7 +2685,7 @@ translators: Block name. %s: The localized block name */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
 
 /* Title for the editor settings section */
-"Editor" = "Redigeringsverktyg";
+"Editor" = "Redigerare";
 
 /* Edit Action Spoken hint. */
 "Edits a comment" = "Redigerar kommentaren";
@@ -2907,7 +2907,7 @@ translators: Block name. %s: The localized block name */
 "Error loading plugins" = "Fel vid laddning av tilläggen";
 
 /* Text displayed when there is a failure loading a blogging prompt. */
-"Error loading prompt" = "Kunde inte ladda uppmaningen";
+"Error loading prompt" = "Kunde inte hämta förslag";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Fel när kommentar markerades som skräppost.";
@@ -4102,7 +4102,7 @@ translators: Block name. %s: The localized block name */
 "Likes the Comment." = "Gillar kommentaren.";
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Gräns nådd. Du kan försöka igen om 1 minut. Att försöka igen innan kommer bara öka tiden du måste vänta innan förbudet är upphävt. Vänligen kontakta support om du tror detta är ett fel.";
+"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Gränsen är nådd. Du kan försöka igen om 1 minut. Att försöka igen innan dess kommer bara att öka den tid du måste vänta innan förbudet upphävs. Om du tror att detta är felaktigt, kontakta supporten.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Linjediagram som visar antalet visningar för Insikter.";
@@ -4192,7 +4192,7 @@ translators: Block name. %s: The localized block name */
 "Loading Plugins..." = "Läser in tillägg…";
 
 /* Text displayed while loading the scan history for a site */
-"Loading Scan History..." = "Laddar in genomsökningshistoriken ...";
+"Loading Scan History..." = "Läser in genomsökningshistoriken …";
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Laddar in genomsökningen …";
@@ -4213,7 +4213,7 @@ translators: Block name. %s: The localized block name */
 "Loading plugins..." = "Laddar tillägg…";
 
 /* Displayed while blogging prompts are being loaded. */
-"Loading prompts..." = "Laddar uppmaningar...";
+"Loading prompts..." = "Laddar förslag …";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Laddar in ström …";
@@ -4907,7 +4907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No primary site address found" = "Ingen primär webbplatsadress hittades";
 
 /* Title displayed when there are no blogging prompts to display. */
-"No prompts yet" = "Inga uppmaningar än";
+"No prompts yet" = "Inga förslag än";
 
 /* A message title */
 "No recent posts" = "Inga nya inlägg";
@@ -5757,7 +5757,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Projekt";
 
 /* Title of the notification presented when a prompt is skipped */
-"Prompt skipped" = "Påminnelsen hoppades över";
+"Prompt skipped" = "Förslaget hoppades över";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
    Title label for the Prompts card in My Sites tab.
@@ -7230,7 +7230,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to hide the keyboard" = "Tryck för att dölja tangentbordet";
 
 /* Title for a push notification with fixed content that invites the user to load today's blogging prompt. */
-"Tap to load today's prompt..." = "Tryck för att hämta dagens tips …";
+"Tap to load today's prompt..." = "Tryck för att hämta dagens förslag …";
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as not spam." = "Tryck för att märka den länkande sidan som ej skräp.";
@@ -7366,7 +7366,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Det bästa sättet att bli en bättre skribent är att börja skriva regelbundet och visa för andra – och det är här bloggningspåminnelserna kommer in i bilden!";
 
 /* No comment provided by engineer. */
-"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikatet för den här servern är inte giltigt. Det kan hända att du ansluter till en server som påstår sig vara \"%@\", vilket kan försätta din sekretessbelagda information i fara.\n\nVill du lita på certifikatet i alla fall?";
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikatet för denna server är ogiltigt. Du kanske ansluter till en server som utger sig för att vara ”%@”, vilket kan försätta din konfidentiella information i fara.\n\nVill du lita på certifikatet ändå?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Innehållet på sidan med dina senaste inlägg genereras automatiskt och kan inte redigeras.";
@@ -7561,7 +7561,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "Ett fel inträffade när tilläggen lästes in";
 
 /* Text displayed when there is a failure loading blogging prompts. */
-"There was an error loading prompts." = "Ett fel uppstod vid laddningen av uppmaningarna.";
+"There was an error loading prompts." = "Ett fel uppstod när förslagen skulle hämtas.";
 
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Det gick inte att läsa in kommentaren.";
@@ -7786,7 +7786,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Today" = "Idag";
 
 /* Title for a push notification showing today's blogging prompt. */
-"Today's Prompt 💡" = "Dagens tips 💡";
+"Today's Prompt 💡" = "Dagens förslag 💡";
 
 /* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Dagens statistik";
@@ -7864,7 +7864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
-"Trash" = "Kastas";
+"Trash" = "Släng";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Ska detta inlägg kastas i papperskorgen?";
@@ -8765,7 +8765,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We're creating a downloadable backup of your site from %1$@." = "Vi håller på att skapa en nedladdningsbar säkerhetskopia av din webbplats från %1$@.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
-"We're doing the final setup—almost done…" = "Vi konfigurerar det sista – nästan klart nu...";
+"We're doing the final setup—almost done…" = "Vi konfigurerar det sista – nästan klart nu …";
 
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Vi arbetar intensivt med att rätta dessa hot i bakgrunden. Under tiden kan du fortsätta att använda din webbplats som vanligt. Du kan när som helst kolla hur arbetet fortskrider.";
@@ -9563,6 +9563,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Öppna i webbläsare";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Läs mer";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "För månaden januari kommer bloggningsförslagen att komma från Bloganuary – vår communityutmaning avsedd att bygga upp en bloggvana för det nya året.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary är på väg!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Aktivera bloggningsförslag";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Nu kör vi!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publicera ditt svar.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Läs andra bloggares svar för att få inspiration och skapa nya kontakter.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Få ett nytt förslag som inspirerar dig varje dag.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "För att gå med i Bloganuary behöver du aktivera bloggningsförslag.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary använder dagliga bloggningsförslag för att skicka dig ämnena för januari månad.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Gå med i vår månadslånga skrivutmaning";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Avfärda";
@@ -10386,7 +10420,7 @@ Example: Reply to Pamela Nguyen */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Avfärda";
 
 /* Error message when picked media cannot be imported into stories. */
-"mediaPicker.failedMediaExportAlert.message" = "Det gick inte att exportera din media. Om problemet kvarstår kan du kontakta oss via skärmen Jag > Hjälp & support.";
+"mediaPicker.failedMediaExportAlert.message" = "Det gick inte att exportera din media. Om problemet kvarstår kan du kontakta oss via skärmen Jag > Hjälp och support.";
 
 /* Error title when picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.title" = "Export av media misslyckades";
@@ -10671,7 +10705,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.pages" = "Sidor";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.prompts" = "Bloggningsprompter";
+"personalizeHome.dashboardCard.prompts" = "Bloggningsförslag";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.scheduledPosts" = "Schemalagda inlägg";
