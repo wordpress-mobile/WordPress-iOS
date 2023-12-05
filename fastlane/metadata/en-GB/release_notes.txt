@@ -1,4 +1,4 @@
-We added an Optimize Images setting so newly uploaded images are optimal size and quality by default. You can also delete images, videos, and other media in the Media screen in My Sites.
+We added an Optimise Images setting so newly uploaded images are optimal size and quality by default. You can also delete images, videos, and other media in the Media screen in My Sites.
 
 Still want more media support? You’re in luck: thumbnails and original images now load faster in the Site Media screen, and GIF thumbnails are properly animated. We also added buttons so you can select and deselect your media files in preview mode.
 
