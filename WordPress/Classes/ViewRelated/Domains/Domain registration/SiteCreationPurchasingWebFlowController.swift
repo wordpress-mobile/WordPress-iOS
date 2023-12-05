@@ -27,7 +27,7 @@ final class SiteCreationPurchasingWebFlowController {
 
     /// The domain purchasing web view can be presented from multiple sources.
     /// This property represents this source, and it's used mostly for analytics.
-    private let origin: SiteCreationWebViewViewOrigin?
+    private let origin: DomainsAnalyticsWebViewOrigin?
 
     // MARK: - Execution Variables
 
@@ -42,7 +42,7 @@ final class SiteCreationPurchasingWebFlowController {
     init(viewController: UIViewController,
          shoppingCartService: ShoppingCartServiceProtocol = ShoppingCartService(),
          crashLogger: CrashLogging = .main,
-         origin: SiteCreationWebViewViewOrigin? = nil) {
+         origin: DomainsAnalyticsWebViewOrigin? = nil) {
         self.presentingViewController = viewController
         self.shoppingCartService = shoppingCartService
         self.crashLogger = crashLogger
