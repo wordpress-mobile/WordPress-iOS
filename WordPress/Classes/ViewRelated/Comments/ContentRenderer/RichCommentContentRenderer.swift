@@ -4,6 +4,7 @@ class RichCommentContentRenderer: NSObject, CommentContentRenderer {
     weak var delegate: CommentContentRendererDelegate?
 
     weak var richContentDelegate: WPRichContentViewDelegate? = nil
+    var attributedText: NSAttributedString?
 
     private let comment: Comment
 
@@ -13,7 +14,7 @@ class RichCommentContentRenderer: NSObject, CommentContentRenderer {
 
     func render() -> UIView {
         let textView = newRichContentView()
-        textView.attributedText = WPRichContentView.formattedAttributedStringForString(comment.content)
+        textView.attributedText = attributedText
         textView.delegate = self
 
         return textView
