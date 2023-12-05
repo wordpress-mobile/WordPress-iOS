@@ -65,19 +65,19 @@ private enum MenuItem {
 
     var title: String {
         switch self {
-        case .visitSite: Strings.visitSite
-        case .switchSite: Strings.switchSite
-        case .siteTitle: Strings.siteTitle
-        case .personalizeHome: Strings.personalizeHome
+        case .visitSite: return Strings.visitSite
+        case .switchSite: return Strings.switchSite
+        case .siteTitle: return Strings.siteTitle
+        case .personalizeHome: return Strings.personalizeHome
         }
     }
 
     var icon: UIImage? {
         switch self {
-        case .visitSite: UIImage(systemName: "safari")
-        case .switchSite: UIImage(systemName: "arrow.triangle.swap")
-        case .siteTitle: UIImage(systemName: "character")
-        case .personalizeHome: UIImage(systemName: "slider.horizontal.3")
+        case .visitSite: return UIImage(systemName: "safari")
+        case .switchSite: return UIImage(systemName: "arrow.triangle.swap")
+        case .siteTitle: return UIImage(systemName: "character")
+        case .personalizeHome: return UIImage(systemName: "slider.horizontal.3")
         }
     }
 
