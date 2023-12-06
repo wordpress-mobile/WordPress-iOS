@@ -454,3 +454,18 @@ def commit_version_and_build_files
     allow_nothing_to_commit: false
   )
 end
+
+def create_release_management_pull_request(base_branch:, title:)
+  token = ENV.fetch('GITHUB_TOKEN', nil)
+
+  UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
+
+  create_pull_request(
+    api_token: token,
+    repo: 'wordpress-mobile/WordPress-iOS',
+    title:,
+    head: Fastlane::Helper::GitHelper.current_git_branch,
+    base: base_branch,
+    labels: 'Releases'
+  )
+end
