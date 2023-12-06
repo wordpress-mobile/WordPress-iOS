@@ -355,8 +355,8 @@ end
 #
 def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
-    buildkite_organization: 'automattic',
-    buildkite_pipeline: 'wordpress-ios',
+    buildkite_organization: BUILDKITE_ORGANIZATION,
+    buildkite_pipeline: BUILDKITE_PIPELINE,
     branch:,
     environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml',
