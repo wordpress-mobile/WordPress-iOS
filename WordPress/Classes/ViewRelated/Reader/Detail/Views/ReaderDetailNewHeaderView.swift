@@ -112,9 +112,28 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     @Published var relativePostTime = String()
     @Published var siteName = String()
     @Published var postTitle: String? = nil // post title can be empty.
+    @Published var likeCount: Int? = nil
+    @Published var commentCount: Int? = nil
     @Published var tags: [String] = []
 
     @Published var showsAuthorName: Bool = true
+
+    var postCounts: String? {
+        let likeCountString: String? = {
+            guard let count = likeCount, count > 0 else {
+                return nil
+            }
+            return WPStyleGuide.likeCountForDisplay(count)
+        }()
+        let commentCountString: String? = {
+            guard let count = commentCount, count > 0 else {
+                return nil
+            }
+            return WPStyleGuide.commentCountForDisplay(count)
+        }()
+        let countStrings = [likeCountString, commentCountString].compactMap { $0 }
+        return countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
+    }
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
@@ -150,6 +169,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
             self.postTitle = post.titleForDisplay() ?? nil
+            self.likeCount = post.likeCount?.intValue
+            self.commentCount = post.commentCount?.intValue
             self.tags = post.tagsForDisplay() ?? []
         }
 
@@ -225,6 +246,11 @@ struct ReaderDetailNewHeaderView: View {
                     .fontWeight(.bold)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+            }
+            if let postCounts = viewModel.postCounts {
+                Text(postCounts)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
             if !viewModel.tags.isEmpty {
                 tagsView
