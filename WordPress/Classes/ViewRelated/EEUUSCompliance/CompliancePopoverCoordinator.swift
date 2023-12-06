@@ -59,6 +59,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     private func dismiss(completion: (() -> Void)? = nil) {
         self.presentingViewController.dismiss(animated: true) {
             self.removeWindow()
+            completion?()
         }
     }
 
