@@ -296,19 +296,16 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     // MARK: - Tracks
 
     private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
-        var properties = properties
-
-        let defaultProperties = { () -> [AnyHashable: Any]? in
-            guard let blog else {
-                return nil
+        let defaultProperties = { () -> [AnyHashable: Any] in
+            if let blog {
+                return WPAnalytics.domainsProperties(for: blog, origin: self.analyticsSource)
+            } else {
+                return WPAnalytics.domainsProperties(origin: self.analyticsSource)
             }
-            return WPAnalytics.domainsProperties(for: blog, origin: .allDomains)
         }()
 
-        if let defaultProperties {
-            properties = properties.merging(defaultProperties) { current, _ in
-                return current
-            }
+        let properties = properties.merging(defaultProperties) { current, _ in
+            return current
         }
 
         if let blog {

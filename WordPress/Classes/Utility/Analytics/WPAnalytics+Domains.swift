@@ -14,7 +14,7 @@ extension WPAnalytics {
 
     static func domainsProperties(
         usingCredit: Bool? = nil,
-        origin: DomainsAnalyticsWebViewOrigin? = nil,
+        origin: String? = nil,
         domainOnly: Bool? = nil
     ) -> [AnyHashable: Any] {
         var dict: [AnyHashable: Any] = [:]
@@ -22,7 +22,7 @@ extension WPAnalytics {
             dict["using_credit"] = usingCredit.stringLiteral
         }
         if Self.domainPurchasingEnabled, let origin = origin {
-            dict["origin"] = origin.rawValue
+            dict["origin"] = origin
         }
         if let domainOnly, Self.domainManagementEnabled {
             dict["domain_only"] = domainOnly.stringLiteral
@@ -32,7 +32,7 @@ extension WPAnalytics {
 
     static func domainsProperties(
         for blog: Blog,
-        origin: DomainsAnalyticsWebViewOrigin? = .menu
+        origin: String?
     ) -> [AnyHashable: Any] {
         Self.domainsProperties(
             usingCredit: blog.canRegisterDomainWithPaidPlan,
@@ -40,10 +40,16 @@ extension WPAnalytics {
             domainOnly: nil
         )
     }
+
+    static func domainsProperties(
+        for blog: Blog,
+        origin: DomainsAnalyticsWebViewOrigin? = .menu
+    ) -> [AnyHashable: Any] {
+        Self.domainsProperties(for: blog, origin: origin?.rawValue)
+    }
 }
 
 enum DomainsAnalyticsWebViewOrigin: String {
     case siteCreation = "site_creation"
     case menu
-    case allDomains = "all_domains"
 }
