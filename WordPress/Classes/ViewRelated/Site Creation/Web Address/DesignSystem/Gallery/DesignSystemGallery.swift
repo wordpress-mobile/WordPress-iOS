@@ -14,7 +14,6 @@ struct DesignSystemGallery: View {
             NavigationLink("Colors", destination: ColorGallery())
             NavigationLink("Fonts", destination: FontGallery())
             NavigationLink("Lengths", destination: LengthGallery())
-            NavigationLink("Icons", destination: IconGallery())
         }
         .navigationTitle("Foundation")
     }
