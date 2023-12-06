@@ -425,7 +425,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
         var domainSuggestionProperties: [String: Any] = [
             "chosen_domain": domainSuggestion.domainName as AnyObject,
-            "search_term": lastSearchQuery as AnyObject
+            "search_term": lastSearchQuery as AnyObject,
+            "is_free": domainSuggestion.isFree.stringLiteral
         ]
 
         if domainPurchasingEnabled {
