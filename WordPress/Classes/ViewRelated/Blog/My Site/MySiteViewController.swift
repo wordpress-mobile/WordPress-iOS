@@ -121,11 +121,17 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
             account: viewModel.defaultAccount
         )
+        let launchSiteCreation: () -> Void = { [weak self] in
+            self?.launchSiteCreationFromNoSites()
+        }
+        let launchLoginForSelfHostedSite: () -> Void = { [weak self] in
+            self?.launchLoginForSelfHostedSite()
+        }
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
-            launchSiteCreation: self.launchSiteCreationFromNoSites,
-            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+            launchSiteCreation: launchSiteCreation,
+            launchLoginForSelfHostedSite: launchLoginForSelfHostedSite
         )
         let noSiteView = NoSitesView(
             viewModel: noSitesViewModel,
