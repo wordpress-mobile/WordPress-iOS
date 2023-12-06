@@ -6,10 +6,14 @@ extension MySiteViewController {
     }
 
     @objc func onboardingPromptWasDismissed(_ notification: NSNotification) {
+        DDLogVerbose("\(self) received 'onboardingPromptWasDismissed' notification.")
+
         guard
+            isViewOnScreen(),
             let userInfo = notification.userInfo,
             let option = userInfo["option"] as? OnboardingOption
         else {
+            DDLogVerbose("\(self) failed to handle 'onboardingPromptWasDismissed' notification.")
             return
         }
 
