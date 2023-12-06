@@ -26,9 +26,6 @@ SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
 PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
 APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
 
-# Other defines used across multiple lanes
-REPOSITORY_NAME = 'WordPress-iOS'
-
 WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
