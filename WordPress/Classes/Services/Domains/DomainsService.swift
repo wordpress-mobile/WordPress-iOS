@@ -225,8 +225,9 @@ struct DomainsService {
 }
 
 extension DomainsService {
-    init(coreDataStack: CoreDataStack, account: WPAccount) {
-        self.init(coreDataStack: coreDataStack, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
+    init?(coreDataStack: CoreDataStack, account: WPAccount) {
+        guard let wordPressComRestApi = account.wordPressComRestApi else { return nil }
+        self.init(coreDataStack: coreDataStack, remote: DomainsServiceRemote(wordPressComRestApi: wordPressComRestApi))
     }
 }
 
