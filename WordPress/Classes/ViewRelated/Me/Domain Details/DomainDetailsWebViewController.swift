@@ -38,6 +38,7 @@ final class DomainDetailsWebViewController: WebKitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.observeURL()
+        self.trackWebViewShownEvent(url: url)
     }
 
     // MARK: - Handling URL Changes
@@ -74,6 +75,11 @@ final class DomainDetailsWebViewController: WebKitViewController {
     }
 
     // MARK: - Helpers
+
+    private func trackWebViewShownEvent(url: URL?) {
+        let properties = ["url": url?.absoluteString ?? ""]
+        WPAnalytics.track(.allDomainsDomainDetailsWebViewShown, properties: properties)
+    }
 
     private func shouldAllowNavigation(for url: URL) -> Bool {
         return url.absoluteString == self.url?.absoluteString
