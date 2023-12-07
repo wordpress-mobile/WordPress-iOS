@@ -283,6 +283,11 @@ before_all do |lane|
   # rubocop:enable Style/IfUnlessModifier
 end
 
+def ensure_git_branch_is_release_branch
+  # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+  ensure_git_branch(branch: '^release/')
+end
+
 # TODO: Isolate to release files once out of testing state
 def create_release_management_pull_request(base_branch:, title:)
   token = ENV.fetch('GITHUB_TOKEN', nil)

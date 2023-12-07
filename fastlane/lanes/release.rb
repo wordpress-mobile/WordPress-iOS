@@ -122,8 +122,7 @@ platform :ios do
   #
   desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |options|
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
+    ensure_git_branch_is_release_branch
 
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
@@ -156,11 +155,10 @@ platform :ios do
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
+    ensure_git_branch_is_release_branch
+
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
-
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
 
     git_pull
 
@@ -265,8 +263,7 @@ platform :ios do
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
+    ensure_git_branch_is_release_branch
 
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
@@ -293,8 +290,7 @@ platform :ios do
   lane :finalize_release do |options|
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
-    # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-    ensure_git_branch(branch: '^release/')
+    ensure_git_branch_is_release_branch
 
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
