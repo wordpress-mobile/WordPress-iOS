@@ -28,6 +28,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
     private var navBarTitle: String = TextContent.title
+    private var analyticsSource: String? {
+        return coordinator?.analyticsSource
+    }
 
     @IBOutlet private var buttonViewContainer: UIView! {
         didSet {
@@ -52,8 +55,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private lazy var transferFooterView: RegisterDomainTransferFooterView = {
         let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
-            let destination = TransferDomainsWebViewController(source: "register_domain")
-            self?.present(UINavigationController(rootViewController: destination), animated: true)
+            guard let self else {
+                return
+            }
+            let destination = TransferDomainsWebViewController(source: self.analyticsSource)
+            self.present(UINavigationController(rootViewController: destination), animated: true)
         }
         return .init(configuration: configuration)
     }()
@@ -110,11 +116,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         configure()
         hideButton()
         setupTransferFooterView()
-        WPAnalytics.track(
-            .domainsDashboardDomainsSearchShown,
-            properties: [WPAppAnalyticsKeySource: "all_domains"]
-        )
-
+        track(.domainsDashboardDomainsSearchShown)
     }
 
     override func viewDidLayoutSubviews() {
@@ -212,8 +214,6 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     /// Shows the domain picking button
     ///
     /// - Parameters:
-    ///
-    /// g
     ///     - animated: whether the transition is animated.
     ///
     private func showButton(animated: Bool) {
@@ -293,6 +293,27 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         supportVC.showFromTabBar()
     }
 
+    // MARK: - Tracks
+
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
+        let defaultProperties = { () -> [AnyHashable: Any] in
+            if let blog {
+                return WPAnalytics.domainsProperties(for: blog, origin: self.analyticsSource)
+            } else {
+                return WPAnalytics.domainsProperties(origin: self.analyticsSource)
+            }
+        }()
+
+        let properties = properties.merging(defaultProperties) { current, _ in
+            return current
+        }
+
+        if let blog {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
+        }
+    }
 }
 
 // MARK: - DomainSuggestionsTableViewControllerDelegate
@@ -325,26 +346,15 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let coordinator else {
             return
         }
-        let domainPropertyTitle = "domain_name"
-        let domainName = self.coordinator?.domain?.domainName ?? ""
-        if let site = coordinator.site {
-            var properties = WPAnalytics.domainsProperties(for: site)
-            properties[WPAppAnalyticsKeySource] = "all_domains"
-            properties[domainPropertyTitle] = domainName
-            WPAnalytics.track(
-                .domainsSearchSelectDomainTapped,
-                properties: properties,
-                blog: site
-            )
-        } else {
-            WPAnalytics.track(
-                .domainsSearchSelectDomainTapped,
-                properties: [
-                    WPAppAnalyticsKeySource: "all_domains",
-                    domainPropertyTitle: domainName
-                ]
-            )
-        }
+
+        let properties: [AnyHashable: Any] = {
+            guard let domainName = self.coordinator?.domain?.domainName else {
+                return [:]
+            }
+            return ["domain_name": domainName]
+        }()
+
+        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator.site)
 
         let onFailure: () -> () = { [weak self] in
             self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
@@ -397,11 +407,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
-            guard let self = self else {
+            guard let self = self, let coordinator else {
                 return
             }
-
-            self.coordinator?.domainPurchasedCallback?(self, name)
+            coordinator.domainPurchasedCallback?(self, name)
+            coordinator.trackDomainPurchasingCompleted()
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }

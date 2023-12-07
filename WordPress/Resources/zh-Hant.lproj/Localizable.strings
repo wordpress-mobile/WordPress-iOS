@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 11:54:10+0000 */
+/* Translation-Revision-Date: 2023-12-05 15:54:36+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -9554,6 +9554,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "在瀏覽器中開啟";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "深入瞭解";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示；這個社群挑戰的目的是協助你在新的一年養成寫網誌習慣。";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary 挑戰即將來臨！";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "開啟網誌提示";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "開始行動！";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "張貼回覆。";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "閱讀其他部落客的回覆，汲取靈感並建立新人脈。";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "每天接收新提示，激發靈感。";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "需啟用「網誌提示」才能參加 Bloganuary。";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary 會透過「每日網誌提示」傳送 1 月的主題。";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "參加為期一個月的寫作挑戰";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "關閉";

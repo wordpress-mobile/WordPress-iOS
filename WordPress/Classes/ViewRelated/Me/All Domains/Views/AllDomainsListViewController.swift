@@ -72,10 +72,6 @@ final class AllDomainsListViewController: UIViewController {
         self.setupSubviews()
         self.observeState()
         self.viewModel.loadData()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         WPAnalytics.track(.domainsListShown)
     }
 
@@ -192,7 +188,7 @@ final class AllDomainsListViewController: UIViewController {
             domain: domain.domain,
             siteSlug: domain.siteSlug,
             type: domain.type,
-            analyticsSource: "all-domains"
+            analyticsSource: Constants.analyticsSource
         )
         destination.configureSandboxStore {
             navigationController.pushViewController(destination, animated: true)

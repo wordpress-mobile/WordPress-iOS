@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-12-05 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -9560,6 +9560,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "브라우저에서 열기";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "1월 한 달 동안 새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "블로깅 프롬프트 켜기";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "지금 시작하세요!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "응답을 공개하세요.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "다른 블로거의 응답을 읽으며 영감을 얻고 새로운 연결 고리를 만드세요.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "영감을 주는 새로운 프롬프트를 매일 받아보세요.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Bloganuary에 참여하려면 블로깅 프롬프트를 활성화해야 합니다.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary에서 일일 블로깅 프롬프트를 사용하여 1월 한 달 동안의 게시글을 보내드립니다.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "한 달 동안 진행되는 글쓰기 챌린지 참여";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "무시";

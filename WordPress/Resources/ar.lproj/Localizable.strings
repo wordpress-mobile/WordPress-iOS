@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 17:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-05 16:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -9557,6 +9557,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "فتح في متصفح";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "معرفة المزيد";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "بالنسبة إلى شهر يناير، ستأتي موجّهات التدوين من Bloganuary - تحدٍّ مجتمعي لدينا لإنشاء عادة التدوين الخاصة بالعام الجديد.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary قادمة!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "تشغيل موجّهات التدوين";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "هيا بنا!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "انشر ردك.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "اقرأ ردود المدونين الأخرى للحصول على الإلهام وإقامة اتصالات جديدة.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "استقبل موجّهًا جديدًا لإلهامك في كل يوم.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "للانضمام إلى Bloganuary، يتعين عليك تمكين موجّهات التدوين.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "ستستخدم Bloganuary موجّهات التدوين اليومية لإرسال الموضوعات الخاصة بشهر يناير إليك.";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "تجاهُل";

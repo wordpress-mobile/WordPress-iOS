@@ -1,0 +1,9 @@
+Vi har lagt till inställningen Optimera bilder som ger nyligen uppladdade bilder optimal storlek och kvalitet som standard. Du kan också ta bort bilder, videoklipp och andra mediafiler på skärmen Media i Mina webbplatser.
+
+Vill du fortfarande ha mer mediastöd? Du har tur: Miniatyrer och originalbilder laddas nu snabbare på skärmen Webbplatsmedia och GIF-miniatyrer är korrekt animerade. Vi har också lagt till knappar så att du kan markera och avmarkera dina mediafiler i förhandsgranskningsläget.
+
+I blockredigeraren visas alternativet "avgruppera" endast för inbäddade block om blocken stöder detta. Vi har också lagt till en inbyggd fotoväljare till berättelseredigeraren.
+
+Vi har åtgärdat informationsskärmen för medieobjekt för iPad-användare och korrigerat en bugg på skärmen Statistik, så nu öppnas webbplatser när du klickar på deras URL:er. Vi har också löst ett migreringsproblem för WordPress-användare vars konton inte har några webbplatser. Uppmaningen "Avinstallera WordPress" finns nu också i din adminpanel.
+
+Slutligen, din lista över webbplatssidor läses nu in snabbare. Ja, det gäller även om din webbplats har hundratals sidor. Och ja, vi är faktiskt så bra.

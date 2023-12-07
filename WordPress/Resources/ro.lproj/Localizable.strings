@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-28 08:51:36+0000 */
+/* Translation-Revision-Date: 2023-12-05 17:05:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
@@ -9563,6 +9563,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Deschide în navigator";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Află mai multe";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Refuză";

@@ -1,0 +1,9 @@
+Yeni yüklenen görsellerin varsayılan olarak ideal boyut ve kalitede olması için bir Görselleri İyileştirme ayarı ekledik. Ayrıca Sitelerim bölümündeki Ortam ekranında görselleri, videoları ve diğer ortamları silebilirsiniz.
+
+Daha fazla ortam desteğine mi ihtiyacınız var? Şanslısınız: Artık Site Ortamları ekranındaki poster görselleri ve orijinal görseller daha hızlı yükleniyor ve GIF poster görsellerinin animasyonları düzgün çalışıyor. Ayrıca önizleme modunda ortam dosyalarını seçebileceğiniz ve bunların seçimlerini kaldırabileceğiniz düğmeler ekledik.
+
+Bloklar gerçekten destekliyorsa blok düzenleyicide iç içe geçmiş bloklar için "grubu ayır" seçeneği görürsünüz. Öykü düzenleyiciye de bir yerel fotoğraf seçici ekledik.
+
+iPad kullanıcıları için ortam öğesi ayrıntı ekranını düzelttik. İstatistik ekranındaki bir hatayı da düzelttik, artık siteler URL'lerine tıkladığınızda açılacak.
+
+Son olarak, artık site sayfaları listeniz daha hızlı yükleniyor. Evet, sitenizde yüzlerce sayfa olsa bile. Ve evet, gerçekten de bu kadar iyiyiz.

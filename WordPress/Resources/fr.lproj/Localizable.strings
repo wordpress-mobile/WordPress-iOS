@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 09:54:11+0000 */
+/* Translation-Revision-Date: 2023-12-05 15:54:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: fr */
@@ -9512,6 +9512,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Ouvrir dans le navigateur";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Lire la suite";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Pendant le mois de janvier, vous recevrez des invites à bloguer de Bloganuary, notre défi commun pour ancrer l’habitude de bloguer à l’occasion de la nouvelle année.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "C’est bientôt Bloganuary !";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Activer les invites à bloguer";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "C’est parti !";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publiez votre réponse.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Lisez les réponses d’autres blogueurs pour trouver de l’inspiration et faire de nouvelles rencontres.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Recevez chaque jour une invite pour vous inspirer.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Pour participer au Bloganuary, vous devez activer les invites à bloguer.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary utilisera des invites quotidiennes à bloguer pour vous envoyer des thèmes de publications tout au long du mois de janvier.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Participer à notre défi d’écriture d’un mois";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Ignorer";
