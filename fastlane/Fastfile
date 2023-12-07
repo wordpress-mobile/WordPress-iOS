@@ -67,7 +67,7 @@ PUBLIC_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.ne
 INTERNAL_BUILD_CODE_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::DateBuildCodeCalculator.new
 INTERNAL_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.new(xcconfig_path: INTERNAL_CONFIG_FILE)
 
-BUILDKITE_ORG = 'automattic'
+BUILDKITE_ORGANIZATION = 'automattic'
 BUILDKITE_PIPELINE = 'wordpress-ios'
 
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
@@ -254,6 +254,7 @@ import 'lanes/codesign.rb'
 import 'lanes/localization.rb'
 import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
+import 'lanes/release_management_in_ci.rb'
 
 ########################################################################
 
