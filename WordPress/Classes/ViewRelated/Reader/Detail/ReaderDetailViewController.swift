@@ -714,9 +714,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
                                                object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userBlocked(_:)),
+                                               name: .ReaderUserBlockingDidEnd,
+                                               object: nil)
+    }
+
+    @objc private func userBlocked(_ notification: Foundation.Notification) {
+        dismiss()
     }
 
     @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        dismiss()
+    }
+
+    private func dismiss() {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
