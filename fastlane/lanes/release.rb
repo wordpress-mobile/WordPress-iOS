@@ -105,7 +105,7 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    setbranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
