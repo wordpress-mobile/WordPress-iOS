@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
+    case newTabIcons
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +41,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .domainFocus:
             return true
+        case .newTabIcons:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -82,6 +85,8 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
+        case .newTabIcons:
+            return "New Tab Icons"
         }
     }
 }
