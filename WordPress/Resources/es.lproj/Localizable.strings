@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 08:05:21+0000 */
+/* Translation-Revision-Date: 2023-12-07 10:50:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -5904,7 +5904,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Redo" = "Rehacer";
 
 /* Label for link title in Referrers stat. */
-"Referrer" = "Referencia";
+"Referrer" = "Remitente";
 
 /* Period Stats 'Referrers' header */
 "Referrers" = "Referencias";
@@ -9563,6 +9563,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Abrir en el navegador";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Más información";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Durante el mes de enero, recibirás sugerencias de publicación de Bloganuary, nuestro reto de la comunidad para que crees un hábito de publicación sólido para el nuevo año.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "¡Bloganuary está a la vuelta de la esquina!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Activa las sugerencias de publicación";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "¡Vamos allá!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publica tu respuesta.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Lee las respuestas de otros blogueros para conseguir inspiración y hacer nuevas conexiones.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Recibe una sugerencia nueva para inspirarte cada día.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Para unirte a Bloganuary tienes que habilitar las sugerencias de publicación.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary utilizará las sugerencias de publicación diarias para enviarte temas durante el mes de enero.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Únete a nuestro reto de escritura de un mes";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Descartar";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 11:54:12+0000 */
+/* Translation-Revision-Date: 2023-12-06 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: he_IL */
@@ -725,6 +725,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "לחלופין, אפשר להמיר את התוכן לבלוקים.";
 
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
+
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "לחלופין, ניתן להזין את הסיסמה של החשבון.";
 
@@ -1157,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "תפריט בלוקים";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "בעורך לנייד ייתכן עיבוד לא תקין של בלוקים בקינון עמוק מ-%d רמות.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "אתר";
@@ -3234,6 +3240,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "פוטבול";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת עורך האינטרנט.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת דפדפן האינטרנט.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "לנוחותך, מילאנו מראש את הפרטים ליצירת קשר עמך ב-WordPress.com. יש לבדוק את הפרטים ולוודא שהמידע נכון לדומיין שבו ברצונך להשתמש.";
@@ -9396,6 +9408,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "מה דעתך על WordPress?";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "מיטוב תמונות";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "High";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "נמוכים";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "מקסימום";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "בינוני";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "איכות";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "איכות תמונה";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "מיטוב התמונות מכווץ כעת תמונות להעלאה מהירה יותר.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
+
 /* Label displayed on audio media items. */
 "audio" = "אודיו";
 
@@ -9509,6 +9554,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "לפתוח בדפדפן";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "למידע נוסף";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "לאורך כל חודש ינואר, יתקבלו מ-Bloganuary הנחיות יומיות לפרסום בבלוג. זהו האתגר הקהילתי שלנו לביסוס הרגלי פרסום בבלוג לשנה החדשה.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary מתקרב!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "להפעיל הנחיות לפרסום בבלוג";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "קדימה!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "מזמינים אותם לפרסם את תשובתך.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "אפשר לקרוא תשובות של בלוגרים אחרים כדי לקבל השראה וליצור חיבורים חדשים.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "כך תגיע אליך מדי יום הנחיה חדשה שתיתן לך השראה.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "כדי להצטרף ל-Bloganuary עליך להפעיל את 'הנחיות פרסום בבלוג'.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "במסגרת Bloganuary נזכיר לך בעזרת 'הנחיות פרסום בבלוג' יומיות לשלוח לנו את הנושאים שלך לחודש ינואר.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "אנו מזמינים אותך להצטרף לאתגר הכתיבה שלנו שיימשך חודש שלם";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "ביטול";
@@ -10331,6 +10410,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "לא ניתן היה לייצא את המדיה שלך מסך 'עזרה ותמיכה'. אם הבעיה נמשכת, אפשר ליצור איתנו קשר באמצעות המסך 'עזרה ותמיכה' תחת 'אני'.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "ייצוא המדיה נכשל";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "אפליקציה זו זקוקה להרשאה כדי לגשת למצלמה ולצלם מדיה חדשה, יש לשנות את הגדרות הפרטיות אם ברצונך לאפשר זאת.";
 
@@ -10364,6 +10449,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "צילום וידאו";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "פיקסלים.⁦%1$d⁩%2$d";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "נראה שהאפליקציה של WordPress עדיין מותקנת אצלך.";
 
@@ -10384,6 +10472,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "העברנו את כל הנתונים וההגדרות שלך. השארנו הכול במקום.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "תודה שעברת אל Jetpack!";
@@ -10432,6 +10523,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "ברוך בואך אל Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "קדימה";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "באפליקציה של Jetpack יש את כל הפונקציונליות של האפליקציה של WordPress ועכשיו גם גישה בלעדית לנתונים סטטיסטיים, ל-Reader, להודעות ועוד.";
@@ -10586,6 +10680,9 @@ Example: Reply to Pamela Nguyen */
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "הכרטיסים עשויים להציג תוכן שונה בהתאם לפעילות באתר שלך. אנחנו עובדים על הוספה של כרטיסים ופקדים נוספים.";
 
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "להציג או להסתיר כרטיסים";
+
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "פעילות אחרונה";
 
@@ -10642,6 +10739,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "פח";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "למחוק";
 
 /* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "לשתף";
@@ -11065,6 +11165,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "יש לבחור מדיה.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "יש להקיש כדי להציג מדיה במסך מלא";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "תצוגה מקדימה של מדיה";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "ביטול בחירה";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "לבחור";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "מדיה";

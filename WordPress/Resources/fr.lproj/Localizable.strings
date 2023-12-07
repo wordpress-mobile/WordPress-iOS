@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 09:54:11+0000 */
+/* Translation-Revision-Date: 2023-12-07 19:48:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: fr */
@@ -724,6 +724,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Vous pouvez également convertir le contenu en blocs.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Vous pouvez également détacher et modifier ce bloc séparément en appuyant sur « Détacher ».";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Vous pouvez également saisir le mot de passe de ce compte.";
@@ -9396,6 +9399,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "Que pensez-vous de WordPress ?";
 
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "Élevée";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Faible";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximale";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Moyenne";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Oui, laisser activé";
+
 /* Label displayed on audio media items. */
 "audio" = "Audio";
 
@@ -9512,6 +9530,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Ouvrir dans le navigateur";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Lire la suite";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Pendant le mois de janvier, vous recevrez des invites à bloguer de Bloganuary, notre défi commun pour ancrer l’habitude de bloguer à l’occasion de la nouvelle année.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "C’est bientôt Bloganuary !";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Activer les invites à bloguer";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "C’est parti !";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publiez votre réponse.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Lisez les réponses d’autres blogueurs pour trouver de l’inspiration et faire de nouvelles rencontres.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Recevez chaque jour une invite pour vous inspirer.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Pour participer au Bloganuary, vous devez activer les invites à bloguer.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary utilisera des invites quotidiennes à bloguer pour vous envoyer des thèmes de publications tout au long du mois de janvier.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Participer à notre défi d’écriture d’un mois";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Ignorer";
@@ -10325,6 +10377,9 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Ignorer";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Votre média n’a pas pu être exporté. Si le problème persiste, vous pouvez nous contacter via l’écran Moi > Aide & Support.";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Cette application nécessite une autorisation pour accéder à l’appareil photo et capturer de nouveaux médias. Pour ce faire, veuillez modifier les réglages de confidentialité.";
 
@@ -10358,6 +10413,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Prendre une vidéo";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d x %2$d px";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Il semblerait que l'application WordPress soit toujours installée.";
 
@@ -10378,6 +10436,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Nous avons transféré tous vos réglages et données. Tout se trouve au même endroit qu’avant.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "Il est temps de poursuivre votre aventure WordPress sur l’application Jetpack !";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Merci d’être passé à Jetpack !";
@@ -11059,6 +11120,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Sélectionnez un média.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Appuyer pour voir le média en plein écran";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Médias";
