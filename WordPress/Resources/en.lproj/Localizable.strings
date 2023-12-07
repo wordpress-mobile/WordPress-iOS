@@ -188,9 +188,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d years";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i menu area in this theme";
 
@@ -500,8 +497,7 @@
 /* Dismiss button title */
 "activityList.dismiss.title" = "Dismiss";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Add";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -596,9 +592,6 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Add menu item to children";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Add new menu";
@@ -764,10 +757,10 @@
 "Alternatively, you can convert the content to blocks." = "Alternatively, you can convert the content to blocks.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Alternatively, you can detach and edit this block separately by tapping “Detach”.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Alternatively, you can detach and edit this block separately by tapping “Detach pattern”.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
@@ -907,6 +900,39 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Approves the Comment.";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Optimize Images";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "High";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Low";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximum";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Medium";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Quality";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Image Quality";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Image optimization shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
+
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Are you sure you want to cancel and discard changes?";
 
@@ -924,9 +950,6 @@
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Are you sure you want to disconnect Jetpack from the site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Are you sure you want to permanently delete these items?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
@@ -1320,10 +1343,7 @@
 "Blocks menu" = "Blocks menu";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Blocks nested deeper than %d levels may not render properly in the mobile editor.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1342,6 +1362,40 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's Viewer";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Learn more";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "For the month of January, blogging prompts will come from Bloganuary - our community challenge to build a blogging habit for the new year.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary is coming!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Turn on blogging prompts";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Let’s go!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publish your response.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Read other bloggers’ responses to get inspiration and make new connections.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Receive a new prompt to inspire you each day.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "To join Bloganuary you need to enable Blogging Prompts.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary will use Daily Blogging Prompts to send you topics for the month of January.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Join our month-long writing challenge";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Hide this";
@@ -1517,9 +1571,6 @@
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Cancel sharing";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Cancel Upload";
-
 /* The action was canceled */
 "Canceled" = "Canceled";
 
@@ -1569,9 +1620,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Change Password";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Change the device type used for preview";
@@ -2627,7 +2675,6 @@ Example: Reply to Pamela Nguyen */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Delete";
@@ -3101,8 +3148,7 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -3312,9 +3358,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Enter different words above and we'll look for an address that matches it.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Enter Full Screen";
@@ -3550,9 +3593,6 @@ Example: Reply to Pamela Nguyen */
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Failed marking Notifications as read";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
-
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
 
@@ -3759,6 +3799,12 @@ Example: Reply to Pamela Nguyen */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Football";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "For this reason, we recommend editing the block using the web editor.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "For this reason, we recommend editing the block using your web browser.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain.";
@@ -5284,9 +5330,7 @@ Please install the %3$@ to use the app with this site.";
 "me.products.header" = "Products";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -5347,9 +5391,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Uploading videos longer than 5 minutes requires a paid plan.";
-
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Dismiss";
 
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Add new media";
@@ -5429,6 +5470,12 @@ Please install the %3$@ to use the app with this site.";
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Failed Media Export";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.";
 
@@ -5461,6 +5508,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Take Video";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -5508,9 +5558,6 @@ Please install the %3$@ to use the app with this site.";
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "You no longer need the WordPress app on your device";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Finish";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "We recommend uninstalling the WordPress app on your device to avoid data conflicts.";
 
@@ -5519,6 +5566,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Thanks for switching to Jetpack!";
@@ -5567,6 +5617,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welcome to Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Let's go";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Miscellaneous vulnerability";
@@ -6284,9 +6337,6 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "Only show excerpt" = "Only show excerpt";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -6633,9 +6683,6 @@ Please install the %3$@ to use the app with this site.";
 /* Photography site intent topic */
 "Photography" = "Photography";
 
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
-
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Photos provided by Pexels";
 
@@ -6924,13 +6971,16 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Trash";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Delete";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Share";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
 
 /* All Time Stats 'Posts' label
@@ -7150,9 +7200,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for web preview device switching button */
 "Preview Device" = "Preview Device";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
 
 /* No comment provided by engineer. */
 "Preview page" = "Preview page";
@@ -7841,9 +7888,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title that triggers a scan */
 "Retry Scan" = "Retry Scan";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Retry Upload";
-
 /* No comment provided by engineer. */
 "Retry?" = "Retry?";
 
@@ -8128,9 +8172,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Select media.";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Select paragraph style";
@@ -8555,6 +8596,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Select media.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Tap to view media in full screen";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Preview media";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Deselect";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Select";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
@@ -9303,9 +9356,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Tap to view more details.";
 
@@ -9581,9 +9631,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "There was a problem displaying this post.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "There was a problem loading the media item.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "There was a problem loading your data, refresh your page to try again.";
@@ -9923,14 +9970,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "Transform block…" = "Transform block…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Trash";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Trash this post?";
@@ -10051,9 +10094,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "Unable to Create Stories Editor";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Unable to delete all media items.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Unable to delete media item.";
@@ -11524,9 +11564,6 @@ from anywhere.";
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Your free WordPress.com address is";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";

@@ -67,7 +67,7 @@ final class MemoryCache: MemoryCacheProtocol {
 private extension UIImage {
     /// Returns a rought estimation of how much space the image takes in memory.
     var cost: Int {
-        let dataCost = (self as? AnimatedImageWrapper)?.gifData?.count ?? 0
+        let dataCost = (self as? AnimatedImage)?.gifData?.count ?? 0
         let imageCost = cgImage.map { $0.bytesPerRow * $0.height } ?? 0
         return dataCost + imageCost
     }

@@ -239,6 +239,23 @@ import Foundation
     case domainTransferMoreTapped
     case domainTransferButtonTapped
 
+    // Domain Management
+    case meDomainsTapped
+    case allDomainsDomainDetailsWebViewShown
+    case domainsDashboardAllDomainsTapped
+    case domainsDashboardDomainsSearchShown
+    case domainsListShown
+    case allDomainsFindDomainTapped
+    case addDomainTapped
+    case domainsSearchTransferDomainTapped
+    case domainsSearchRowSelected
+    case siteSwitcherDomainSiteSelected
+    case purchaseDomainScreenShown
+    case purchaseDomainGetDomainTapped
+    case purchaseDomainChooseSiteTapped
+    case purchaseDomainCompleted
+    case myDomainsSearchDomainTapped
+
     // My Site
     case mySitePullToRefresh
 
@@ -423,6 +440,12 @@ import Foundation
     case promptsOtherAnswersTapped
     case promptsSettingsShowPromptsTapped
 
+    // Bloganuary Nudges
+    case bloganuaryNudgeCardLearnMoreTapped
+    case bloganuaryNudgeModalShown
+    case bloganuaryNudgeModalDismissed
+    case bloganuaryNudgeModalActionTapped
+
     // Jetpack branding
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
@@ -518,6 +541,11 @@ import Foundation
     case freeToPaidPlansDashboardCardTapped
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
+
+    // SoTW 2023 Nudge
+    case sotw2023NudgePostEventCardShown
+    case sotw2023NudgePostEventCardCTATapped
+    case sotw2023NudgePostEventCardHideTapped
 
     // Widgets
     case widgetsLoadedOnApplicationOpened
@@ -942,6 +970,38 @@ import Foundation
         case .domainTransferButtonTapped:
             return "dashboard_card_domain_transfer_button_tapped"
 
+        // Domain Management
+        case .meDomainsTapped:
+            return "me_all_domains_tapped"
+        case .allDomainsDomainDetailsWebViewShown:
+            return "all_domains_domain_details_web_view_shown"
+        case .domainsDashboardAllDomainsTapped:
+            return "domains_dashboard_all_domains_tapped"
+        case .domainsDashboardDomainsSearchShown:
+            return "domains_dashboard_domains_search_shown"
+        case .domainsListShown:
+            return "all_domains_list_shown"
+        case .allDomainsFindDomainTapped:
+            return "domain_management_all_domains_find_domain_tapped"
+        case .addDomainTapped:
+            return "all_domains_add_domain_tapped"
+        case .domainsSearchTransferDomainTapped:
+            return "domains_dashboard_domains_search_transfer_domain_tapped"
+        case .domainsSearchRowSelected:
+            return "domain_management_domains_search_row_selected"
+        case .siteSwitcherDomainSiteSelected:
+            return "site_switcher_domain_site_selected"
+        case .purchaseDomainScreenShown:
+            return "domain_management_purchase_domain_screen_shown"
+        case .purchaseDomainGetDomainTapped:
+            return "domain_management_purchase_domain_get_domain_tapped"
+        case .purchaseDomainChooseSiteTapped:
+            return "domain_management_purchase_domain_choose_site_tapped"
+        case .purchaseDomainCompleted:
+            return "domain_management_purchase_domain_completed"
+        case .myDomainsSearchDomainTapped:
+            return "domain_management_my_domains_search_domain_tapped"
+
         // My Site
         case .mySitePullToRefresh:
             return "my_site_pull_to_refresh"
@@ -1248,6 +1308,16 @@ import Foundation
         case .promptsSettingsShowPromptsTapped:
             return "blogging_prompts_settings_show_prompts_tapped"
 
+        // Bloganuary Nudges
+        case .bloganuaryNudgeCardLearnMoreTapped:
+            return "bloganuary_nudge_my_site_card_learn_more_tapped"
+        case .bloganuaryNudgeModalShown:
+            return "bloganuary_nudge_learn_more_modal_shown"
+        case .bloganuaryNudgeModalDismissed:
+            return "bloganuary_nudge_learn_more_modal_dismissed"
+        case .bloganuaryNudgeModalActionTapped:
+            return "bloganuary_nudge_learn_more_modal_action_tapped"
+
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:
             return "jetpack_powered_badge_tapped"
@@ -1417,6 +1487,14 @@ import Foundation
             return "free_to_paid_plan_dashboard_card_tapped"
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // SoTW 2023 Nudge
+        case .sotw2023NudgePostEventCardShown:
+            return "sotw_2023_nudge_post_event_card_shown"
+        case .sotw2023NudgePostEventCardCTATapped:
+            return "sotw_2023_nudge_post_event_card_cta_tapped"
+        case .sotw2023NudgePostEventCardHideTapped:
+            return "sotw_2023_nudge_post_event_card_hide_tapped"
 
         // Widgets
         case .widgetsLoadedOnApplicationOpened:

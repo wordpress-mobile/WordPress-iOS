@@ -194,6 +194,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         super.viewWillAppear(animated)
         setupFeaturedImage()
         updateFollowButtonState()
+        toolbar.viewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -204,6 +205,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         featuredImage.viewWillDisappear()
+        toolbar.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -703,9 +705,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
                                                object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userBlocked(_:)),
+                                               name: .ReaderUserBlockingDidEnd,
+                                               object: nil)
+    }
+
+    @objc private func userBlocked(_ notification: Foundation.Notification) {
+        dismiss()
     }
 
     @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        dismiss()
+    }
+
+    private func dismiss() {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }

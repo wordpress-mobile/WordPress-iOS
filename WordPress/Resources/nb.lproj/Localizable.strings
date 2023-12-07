@@ -147,9 +147,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d år";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i menyområde i dette temaet";
 
@@ -322,8 +319,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogger";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Legg til";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -613,9 +609,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Er du sikker på at du vil koble fra Jetpack fra denne siden?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Er du sikker på at du vil slette disse objektene permanent?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Er du sikker på at du vil slette dette objektet permanent?";
@@ -945,9 +938,6 @@ translators: Block name. %s: The localized block name */
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Avbryt";
-
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Avbryt opplastning";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -1555,7 +1545,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Slett";
@@ -1776,8 +1765,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliser blokk";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2935,9 +2923,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Meg";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -3655,9 +3641,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Bildebibliotek";
 
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotografier";
-
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Bilder levert av Pexels";
 
@@ -4275,9 +4258,6 @@ translators: Block name. %s: The localized block name */
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Prøv igjen";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Prøv opplasting igjen";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "Prøv alle igjen";
@@ -5282,9 +5262,6 @@ translators: Block name. %s: The localized block name */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Det oppstod et problem under visning av innlegget.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Det oppstod et problem under lasting av medieobjektet.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Det oppstod et problem med lasting av dine data, last inn siden på nytt og prøv igjen.";
 
@@ -5515,8 +5492,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Transform block…" = "Omform blokk...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
@@ -5598,9 +5574,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Synkronosering feilet";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Kunne ikke slette alle medieobjekter.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Kunne ikke slette medieobjekt.";

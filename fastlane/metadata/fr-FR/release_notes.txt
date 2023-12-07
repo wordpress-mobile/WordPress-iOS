@@ -1,23 +1,9 @@
-Accrochez-vous, cette mise à jour, c’est quelque chose ! Commençons avec les Médias du site.
+Nous avons ajouté un réglage Optimiser les images pour que les nouvelles images mises en ligne aient par défaut la taille et la qualité optimales. Par ailleurs, vous pouvez supprimer les images, les vidéos et autres médias via l’écran Médias dans Mes sites.
 
-- Nous avons mis à jour les menus, la sélection de fichiers, le partage, etc. Le design de tous ces éléments sur l’écran Médias du site a été amélioré. Le chargement est encore plus rapide : finis les GIF et vidéos saccadés.
-- Vous pouvez faire un geste panoramique pour sélectionner plusieurs fichiers médias à la fois. Par ailleurs, il est plus facile de passer d’une photo à l’autre, de modifier les métadonnées et de supprimer des éléments.
-- Sur iPad, vous pouvez basculer entre des aperçus d’image carrés et les proportions.
-- Nous avons corrigé des erreurs relatives à des images de substitution vides, des messages incorrects, au partage de documents et à des incidents occasionnels.
+Vous désirez une assistance supplémentaire pour les médias ? Vous avez de la chance : les miniatures et images originales se chargent désormais plus rapidement sur l’écran Médias du site, et les miniatures GIF s’animent correctement. Nous avons également ajouté des boutons pour que vous puissiez sélectionner et désélectionner les fichiers médias dans le mode Aperçu.
 
-C’est pas fini. La section Articles et Pages a subi une refonte.
+L’éditeur de blocs affiche l’option « Dégrouper » pour les blocs imbriqués uniquement si ces derniers la prennent en charge. Ah oui, nous avons aussi ajouté un sélecteur de photo natif pour l’éditeur de Story.
 
-- L’écran Articles et Pages a bénéficié d’un lifting et dispose désormais d’options d’affichage épurées et simples.
-- Utilisez des fonctionnalités de recherche encore plus avancées, telles que les filtres auteur ou étiquette, pour trouver le contenu à modifier. La recherche fonctionne aussi avec tous les auteurs (à moins bien sûr que vous désiriez le contenu d’un auteur particulier).
-- Balayez pour voir, partager ou supprimer des publications et des pages. Pas mal.
-- Le menu contextuel vous permet désormais d’accéder aux commentaires, aux réglages et à d’autres actions relatives à un article ou une page.
-- Nous avons corrigé des problèmes d’actualisation et de visibilité de la page, ainsi que quelques autres incidents.
+Nous avons corrigé l’écran des détails de l’élément multimédia pour les utilisateurs d’iPad. Nous avons éliminé un bug sur l’écran Statistiques, de sorte que les sites s’ouvrent désormais lorsque vous cliquez sur leur URL.
 
-Enfin, nous avons corrigé quelques problèmes casse-pieds dans l’application.
-
-- L’application sait désormais quand vous avez terminé de charger un GIF. (monty-burns-excellent.gif)
-- Les publications « cachées » ont une meilleure description pour leur confidentialité.
-- Le lecteur défile désormais vers le haut lorsque vous appuyez sur la barre d’état. Toujours plus haut, toujours plus loin.
-- L’écran Menus crée des éléments de menu en fonction des pages de premier niveau.
-- Nous avons corrigé un incident lié à des couleurs de texte dans les anciens thèmes de site.
-- Vous ne devriez pas rencontrer d’erreurs lorsque vous collez du contenu profondément imbriqué. Comme les oignons, les ogres, les gâteaux ou les clafoutis, votre contenu peut avoir de nombreuses couches. Exquis non ?
+Enfin, la liste des pages de votre site se charge désormais plus rapidement. Oui, même si celui-ci comporte des centaines de pages. Et oui, nous sommes doués à ce point-là.

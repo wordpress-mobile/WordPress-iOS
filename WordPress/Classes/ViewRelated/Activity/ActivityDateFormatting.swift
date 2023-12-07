@@ -29,6 +29,6 @@ struct ActivityDateFormatting {
             return TimeZone(secondsFromGMT: 0)!
         }
 
-        return blog.timeZone
+        return blog.timeZone ?? TimeZone.current
     }
 }

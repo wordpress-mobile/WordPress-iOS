@@ -97,7 +97,7 @@ class MediaImageServiceTests: CoreDataTestCase {
         // THEN
         let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
         XCTAssertEqual(thumbnail.size, expectedSize)
-        let gif = try XCTUnwrap(thumbnail as? AnimatedImageWrapper)
+        let gif = try XCTUnwrap(thumbnail as? AnimatedImage)
         let data = await gif.gifData ?? Data()
         let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
         XCTAssertEqual(CGImageSourceGetCount(source), 20)

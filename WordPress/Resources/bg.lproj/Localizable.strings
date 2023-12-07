@@ -51,9 +51,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d години";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i място за меню в тази тема";
 
@@ -133,8 +130,7 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "История на активността";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Добавяне";
 
 /* The title on the add category screen */
@@ -260,9 +256,6 @@
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Сигурни ли сте, че искате да прекратите връзката на Jetpack със сайта?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Сигурен ли сте, че желаете безвъзвратно да изтриете избраните елементи?";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Аудио, %@";
@@ -700,7 +693,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Изтриване";
@@ -818,8 +810,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Чернова";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1415,9 +1406,7 @@
 "Me" = "Аз";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Файлове";
@@ -2060,9 +2049,6 @@
    User action to retry media upload. */
 "Retry" = "Отново";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Нов опит за качване";
-
 /* No comment provided by engineer. */
 "Retry?" = "Отново?";
 
@@ -2613,8 +2599,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Общо абонати в WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Кошче";

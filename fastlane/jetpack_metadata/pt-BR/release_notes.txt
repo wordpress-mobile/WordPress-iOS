@@ -1,27 +1,9 @@
-Prepare-se porque vem aí uma grande atualização.
+Adicionamos uma configuração de otimização de imagens para que imagens recém-enviadas tenham qualidade e tamanho otimizados por padrão. Você também pode excluir imagens, vídeos e outras mídias na tela Mídia em Meus sites.
 
-Primeiro, adicionamos a tela Todos os domínios para você gerenciar todos eles em um só lugar no app. Lar, doce lar.
+Quer ainda mais compatibilidade de mídia? Boas notícias: agora imagens originais e miniaturas carregam mais rápido na tela Mídia do site, e miniaturas em GIF são animadas de maneira adequada. Também adicionamos botões para você selecionar e remover a seleção dos seus arquivos de mídia no modo de visualização.
 
-Depois, fizemos atualizações em Mídia do site.
+No editor de blocos, você só verá a opção "Desagrupar" para blocos aninhados se eles forem compatíveis com essa função. Ah, e adicionamos um seletor de foto nativo ao editor de stories.
 
-- O design da tela Mídia do site conta com menus melhorados, compartilhamento e seleção de arquivos e muito mais. Está até mais rápido, sem GIFs ou vídeos que travam inesperadamente.
-- Você pode usar o gesto de arrastar para selecionar vários arquivos de mídia de uma vez. Além disso, está mais fácil de deslizar de uma foto para outra, alterar metadados e excluir itens.
-- No iPad, você pode alternar entre as visualizações de imagem em formato quadrado e outras proporções de tela.
-- Corrigimos problemas nas imagens de espaços reservados em branco, mensagens incorretas, compartilhamento de documentos e travamentos ocasionais.
+Corrigimos a tela de detalhes de itens de mídia para usuários de iPad e eliminamos um bug na tela de Estatísticas, então os sites agora abrem quando você clica na URL deles. Além disso, resolvemos um problema de migração para usuários do WordPress cujas contas não estão vinculadas a nenhum site. A opção "Desinstalar WordPress" agora está presente no painel também.
 
-Não para por aí. Fizemos também grandes mudanças em Posts e páginas.
-
-- A tela Posts e páginas foi reformulada com opções de exibição claras e simples.
-- Use funcionalidades de pesquisa mais avançadas, como filtros de tags e autores, para encontrar o conteúdo que deseja editar. A pesquisa também funciona com todos os autores (a menos que queira conteúdo de uma pessoa em específico).
-- Use as ações de deslizar para visualizar, compartilhar ou excluir posts e páginas. Maneiro.
-- O menu de contexto agora permite acessar comentários, configurações e outras ações de um post ou página.
-- Corrigimos alguns problemas nas atualizações e visibilidade da página, bem como algumas falhas.
-
-Por fim, corrigimos alguns problemas chatinhos em todo o app.
-
-- O app agora reconhece quando você termina de fazer upload de um GIF (monty-burns-excelente.gif).
-- Posts "ocultos" agora contam com uma descrição melhor do seu status de privacidade.
-- O Leitor agora rola para a parte superior quando você toca na barra de status. Para o alto e avante!
-- A tela Menus cria corretamente itens de menu com base nas páginas de nível superior.
-- Corrigimos um travamento no editor de blocos relacionado ao uso de cores de texto em temas de sites mais antigos.
-- É improvável que você encontre qualquer erro ao colar conteúdo bastante aninhado no editor de blocos. Assim como cebolas, bolos, suflês e ogros, seu conteúdo pode ter muitas camadas.
+Por fim, sua lista de páginas do site será carregada mais rapidamente. Sim, mesmo se o site tiver centenas de páginas. E, sim, somos muito bons.

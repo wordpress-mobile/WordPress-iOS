@@ -1,23 +1,9 @@
-Sıkı tutunun, bu güncelleme her zamankinden farklı. Site Ortamı ile başlayalım.
+Yeni yüklenen görsellerin varsayılan olarak ideal boyut ve kalitede olması için bir Görselleri İyileştirme ayarı ekledik. Ayrıca Sitelerim bölümündeki Ortam ekranında görselleri, videoları ve diğer ortamları silebilirsiniz.
 
-- Site Ortamı ekranı tasarımını daha iyi menüler, dosya seçimi ile paylaşımı ve daha fazlasıyla güncelledik. Ayrıca daha da hızlı çalıştığından artık sarsıntılı GIF'ler veya donan videolar yok.
-- Aynı anda birden fazla ortam dosyası seçmek için kaydırma hareketini kullanın. Ayrıca bir fotoğraftan diğerine kaydırmak, meta verileri değiştirmek ve öğeleri silmek daha kolaydır.
-- iPad'de kare görsel önizlemeleri ve en boy oranı arasında geçiş yapabilirsiniz.
-- Boş yer tutucu görselleri, yanlış mesajlar, belge paylaşımı ve ara sıra meydana gelen çökmelerle ilgili sorunları düzelttik.
+Daha fazla ortam desteğine mi ihtiyacınız var? Şanslısınız: Artık Site Ortamları ekranındaki poster görselleri ve orijinal görseller daha hızlı yükleniyor ve GIF poster görsellerinin animasyonları düzgün çalışıyor. Ayrıca önizleme modunda ortam dosyalarını seçebileceğiniz ve bunların seçimlerini kaldırabileceğiniz düğmeler ekledik.
 
-Henüz işimiz bitmedi. Ayrıca Gönderiler ve Sayfalarda da büyük değişiklikler yaptık.
+Bloklar gerçekten destekliyorsa blok düzenleyicide iç içe geçmiş bloklar için "grubu ayır" seçeneği görürsünüz. Öykü düzenleyiciye de bir yerel fotoğraf seçici ekledik.
 
-- Gönderiler ve Sayfalar ekranı, temiz ve basit görüntüleme seçenekleriyle büyük bir görsel gelişim yaşadı.
-- Düzenlemek istediğiniz içerikleri bulmak için yazar ve etiket filtreleri gibi daha gelişmiş arama özelliklerini kullanın. Arama ayrıca tüm yazarlar genelinde çalışır (tabii belirli bir kişinin içeriklerini istemiyorsanız).
-- Gönderileri ve sayfaları görüntülemek, paylaşmak veya silmek için kaydırma hareketlerini kullanın. Çok hoş.
-- Bağlam menüsü artık bir gönderinin veya sayfanın yorumlarına, ayarlarına ve diğer işlemlerine erişmenizi sağlar.
-- Birkaç çökmenin yanı sıra sayfa yenilemeleri ve görünürlüğü ile ilgili sorunları düzelttik.
+iPad kullanıcıları için ortam öğesi ayrıntı ekranını düzelttik. İstatistik ekranındaki bir hatayı da düzelttik, artık siteler URL'lerine tıkladığınızda açılacak.
 
-Son olarak uygulama genelindeki birkaç sinir bozucu sorunu düzelttik.
-
-- Uygulama artık bir GIF yüklemeyi bitirdiğinizi algılıyor. (monty-burns-excellent.gif)
-- “Gizli” uygulamaların artık gizlilik durumu için daha iyi bir açıklaması var.
-- Okuyucu artık durum çubuğuna bastığınızda en üste kaydırıyor. Uçma zamanı.
-- Menüler ekranı, üst düzey sayfalara göre menü öğelerini uygun şekilde oluşturuyor.
-- Daha eski site temalarında metin renkleri kullanmakla ilgili bir çökmeyi düzelttik.
-- Derin şekilde iç içe geçmiş içerik yapıştırırken herhangi bir hatayla karşılaşmamalısınız. Tıpkı soğanlar, devler, kekler veya parfelerde olduğu gibi içeriklerinizde de birden fazla katman olabilir.
+Son olarak, artık site sayfaları listeniz daha hızlı yükleniyor. Evet, sitenizde yüzlerce sayfa olsa bile. Ve evet, gerçekten de bu kadar iyiyiz.

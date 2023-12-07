@@ -1,27 +1,9 @@
-Buckle up, this update’s a doozy.
+We hebben de instelling Afbeeldingen optimaliseren toegevoegd, zodat afbeeldingen die worden geüpload standaard de optimale afmetingen en kwaliteit krijgen. Je kan ook afbeeldingen, video's en andere media verwijderen op het Media-scherm in Mijn sites.
 
-First off, we added the All Domains screen so you can manage all your domains in one place within the app. There’s no place like home.
+Wil je nog meer media-ondersteuning? Dan heb je mazzel: miniaturen en originele afbeeldingen worden nu sneller geladen in het scherm Sitemedia en gif-miniaturen worden juist geanimeerd. We hebben ook knoppen toegevoegd waarmee je je mediabestanden in de voorbeeldweergave kan selecteren en deselecteren.
 
-Next, we made updates to Site Media.
+Je ziet in de blokeditor nu alleen de optie 'Groepering opheffen' voor geneste blokken als deze blokken de functie daadwerkelijk ondersteunen. O ja, we hebben ook een native fotokiezer toegevoegd aan de verhaaleditor.
 
-- The Site Media screen design has better menus, file selection and sharing, and more. It even runs faster—no more jerky GIFs or stalled-out videos.
-- You can use the pan gesture to select multiple media files at once. It’s also easier to swipe from one photo to another, change metadata, and delete items.
-- On iPad, you can switch between square image previews and aspect ratio.
-- We fixed issues with blank placeholder images, incorrect messages, document sharing, and occasional crashes.
+We hebben het scherm met details over media-items gefixt voor iPad-gebruikers en hebben een bug opgelost met het scherm Statistieken. Nu worden sites weer geopend wanneer je op de URL's klikt. We hebben ook een migratieprobleempje opgelost voor WordPress-gebruikers met accounts zonder sites. De prompt 'WordPress deïnstalleren' heeft nu ook een plek op je dashboard.
 
-We’re not done yet. We also made big changes to Posts & Pages.
-
-- The Posts & Pages screen got a facelift with clean, simple display options.
-- Use more advanced search features, like author and tag filters, to find the content you’d like to edit. Search also works across all authors (unless, of course, you want content from one specific person.)
-- Use swipe actions to view, share, or delete posts and pages. Handig, toch?
-- The context menu now lets you access comments, settings, and other actions for a post or page.
-- We fixed issues with page refreshes and visibility, as well as a handful of crashes.
-
-Finally, we fixed a handful of pesky problems across the app.
-
-- The app now recognizes when you’ve finished uploading a GIF. (monty-burns-excellent.gif)
-- “Hidden” posts now have a better description for their privacy status.
-- The reader now scrolls to the top when you tap the status bar. Daar gaan we.
-- The Menus screen properly creates menu items based on top-level pages.
-- We fixed a block editor crash related to using text colors in older site themes.
-- You shouldn’t run into any errors when you paste deeply nested content in the block editor. Much like onions, ogres, cakes, or parfaits, your content can have many layers.
+Daarnaast wordt je lijst met sitepagina's nu sneller geladen. Jazeker, zelfs als je site honderden pagina's heeft! En ja, zo goed zijn we nou eenmaal.

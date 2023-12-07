@@ -142,12 +142,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.10'
-  ## while PR is in review:
-  # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
-  # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
-
-  pod 'WordPressAuthenticator', '~> 7.3'
+  pod 'WordPressAuthenticator', '~> 7.3', '>= 7.3.1'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
