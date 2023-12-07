@@ -260,6 +260,7 @@ import 'lanes/codesign.rb'
 import 'lanes/localization.rb'
 import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
+import 'lanes/release_management_in_ci.rb'
 
 ########################################################################
 
