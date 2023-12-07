@@ -156,11 +156,11 @@ platform :ios do
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
-    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
-
     ensure_git_status_clean
 
-    release_version = current_release_version
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    release_version = release_version_current
 
     # Check branch
     unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
@@ -168,9 +168,6 @@ platform :ios do
     end
 
     ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
-    ensure_git_status_clean
 
     git_pull
 
