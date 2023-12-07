@@ -191,7 +191,7 @@ platform :ios do
     end
 
     # generate_strings_file_for_glotpress
-    download_localized_strings_and_metadata(options)
+    # download_localized_strings_and_metadata(options)
     lint_localizations(allow_retry: skip_user_confirmation == false)
 
     bump_build_codes
