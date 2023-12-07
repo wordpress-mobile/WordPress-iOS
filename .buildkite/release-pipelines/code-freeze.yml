@@ -12,5 +12,6 @@ steps:
       .buildkite/commands/configure-git-for-release-management.sh
 
       install_gems
+      bundle exec fastlane run configure_apply
 
       bundle exec fastlane code_freeze skip_confirm:true
