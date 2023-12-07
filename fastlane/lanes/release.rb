@@ -43,7 +43,7 @@ platform :ios do
 
     # Create the release branch
     UI.message 'Creating release branch...'
-    Fastlane::Helper::GitHelper.create_branch("release/#{release_version_next}", from: DEFAULT_BRANCH)
+    Fastlane::Helper::GitHelper.create_branch("test-release/#{release_version_next}", from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
 
     # Bump the release version and build code and write it to the `xcconfig` file
