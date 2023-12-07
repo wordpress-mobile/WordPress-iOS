@@ -125,7 +125,9 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    UI.important("Completing code freeze for: #{release_version_current}")
+    version = release_version_current
+
+    UI.important("Completing code freeze for: #{version}")
 
     skip_user_confirmation = options[:skip_confirm]
 
@@ -139,7 +141,13 @@ platform :ios do
     end
 
     push_to_git_remote(tags: false)
+
     trigger_beta_build
+
+    create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} code freeze"
+    )
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
