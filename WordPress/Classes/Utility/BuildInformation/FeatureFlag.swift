@@ -11,6 +11,7 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
+    case newTabIcons
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,6 +38,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .googleDomainsCard:
             return false
+        case .newTabIcons:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -77,6 +80,8 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .googleDomainsCard:
             return "Google Domains Promotional Card"
+        case .newTabIcons:
+            return "New Tab Icons"
         }
     }
 }
