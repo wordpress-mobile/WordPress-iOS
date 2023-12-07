@@ -5,6 +5,9 @@ common_params:
 steps:
   - label: Code Freeze
     plugins: *common_plugins
+    # TODO: The first client to implement releases in CI was Android so the automation works in that queue. We might want to move it to a leaner one in the future.
+    agents:
+        queue: android
     command: |
       .buildkite/commands/configure-git-for-release-management.sh
 
