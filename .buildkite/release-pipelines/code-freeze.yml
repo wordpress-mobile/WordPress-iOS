@@ -1,10 +1,7 @@
-common_params:
-  - &common_plugins
-    - automattic/a8c-ci-toolkit#2.18.2
-
 steps:
   - label: Code Freeze
-    plugins: *common_plugins
+    plugins:
+      - automattic/a8c-ci-toolkit#2.18.2
     # The first client to implement releases in CI was Android so the automation works in that queue.
     # We might want to move it to a leaner one in the future.
     agents:
