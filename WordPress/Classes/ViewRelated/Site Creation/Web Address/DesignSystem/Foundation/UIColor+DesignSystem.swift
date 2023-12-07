@@ -18,12 +18,8 @@ public extension UIColor {
             public static let warning = UIColor(named: DesignSystemColorNames.Foreground.warning)
             public static let error = UIColor(named: DesignSystemColorNames.Foreground.error)
 
-            public static var brand: UIColor? {
-                if AppConfiguration.isJetpack {
-                    return jetpack
-                } else {
-                    return wordPress
-                }
+            public static func brand(isJetpack: Bool) -> UIColor? {
+                isJetpack ? jetpack : wordPress
             }
 
             private static let jetpack = UIColor(named: DesignSystemColorNames.Foreground.jetpack)
@@ -36,12 +32,8 @@ public extension UIColor {
             public static let tertiary = UIColor(named: DesignSystemColorNames.Background.tertiary)
             public static let quaternary = UIColor(named: DesignSystemColorNames.Background.quaternary)
 
-            public static var brand: UIColor? {
-                if AppConfiguration.isJetpack {
-                    return jetpack
-                } else {
-                    return jetpack // FIXME: WordPress colors
-                }
+            public static func brand(isJetpack: Bool) -> UIColor? {
+                isJetpack ? jetpack : wordPress
             }
 
             private static let jetpack = UIColor(named: DesignSystemColorNames.Background.jetpack)

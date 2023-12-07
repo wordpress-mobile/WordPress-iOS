@@ -26,7 +26,7 @@ extension DSButtonStyle {
         case .secondary:
             return .DS.Foreground.primary
         case .tertiary:
-            return .DS.Foreground.brand
+            return .DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack)
         }
     }
 

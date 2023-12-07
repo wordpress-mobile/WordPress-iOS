@@ -13,12 +13,8 @@ public extension Color {
             public static let warning = Color(DesignSystemColorNames.Foreground.warning)
             public static let error = Color(DesignSystemColorNames.Foreground.error)
 
-            public static var brand: Color {
-                if AppConfiguration.isJetpack {
-                    return jetpack
-                } else {
-                    return wordPress
-                }
+            public static func brand(isJetpack: Bool) -> Color {
+                return isJetpack ? jetpack : wordPress
             }
 
             private static let jetpack = Color(DesignSystemColorNames.Foreground.jetpack)
@@ -31,12 +27,8 @@ public extension Color {
             public static let tertiary = Color(DesignSystemColorNames.Background.tertiary)
             public static let quaternary = Color(DesignSystemColorNames.Background.quaternary)
 
-            public static var brand: Color {
-                if AppConfiguration.isJetpack {
-                    return jetpack
-                } else {
-                    return wordPress
-                }
+            public static func brand(isJetpack: Bool) -> Color {
+                return isJetpack ? jetpack : wordPress
             }
 
             private static let jetpack = Color(DesignSystemColorNames.Background.jetpack)

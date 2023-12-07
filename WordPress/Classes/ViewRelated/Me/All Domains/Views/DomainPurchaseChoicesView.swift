@@ -70,7 +70,7 @@ struct DomainPurchaseChoicesView: View {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundStyle(Color.DS.Background.brand)
+                    .foregroundStyle(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                     .frame(width: Constants.imageLength, height: Constants.imageLength)
                     .padding(.top, Length.Padding.double)
                 VStack(alignment: .leading, spacing: Length.Padding.single) {
@@ -80,7 +80,7 @@ struct DomainPurchaseChoicesView: View {
                         .foregroundStyle(Color.DS.Foreground.secondary)
                     if let footer {
                         Text(footer)
-                            .foregroundStyle(Color.DS.Foreground.brand)
+                            .foregroundStyle(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
                             .font(.body.bold())
                     }
                 }
@@ -107,7 +107,7 @@ struct DomainPurchaseChoicesView: View {
             Text(Strings.chooseSiteSubtitle)
                 .foregroundStyle(Color.DS.Foreground.secondary)
             Text(Strings.chooseSiteFooter)
-                .foregroundStyle(Color.DS.Foreground.brand)
+                .foregroundStyle(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
         }
     }
 }

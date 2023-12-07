@@ -38,13 +38,13 @@ struct ColorGallery: View {
             )
             listItem(
                 with: "Brand",
-                hexString: hexString(for: .DS.Foreground.brand),
-                color: Color.DS.Foreground.brand
+                hexString: hexString(for: .DS.Foreground.brand(isJetpack: true)),
+                color: Color.DS.Foreground.brand(isJetpack: true)
             )
             listItem(
                 with: "Success",
                 hexString: hexString(for: .DS.Foreground.success),
-                color: Color.DS.Foreground.brand
+                color: Color.DS.Foreground.brand(isJetpack: true)
             )
             listItem(
                 with: "Warning",
@@ -83,8 +83,8 @@ struct ColorGallery: View {
             )
             listItem(
                 with: "Brand",
-                hexString: hexString(for: .DS.Background.brand),
-                color: Color.DS.Background.brand
+                hexString: hexString(for: .DS.Background.brand(isJetpack: true)),
+                color: Color.DS.Background.brand(isJetpack: true)
             )
         }
     }
