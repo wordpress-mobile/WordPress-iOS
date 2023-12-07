@@ -22,8 +22,9 @@ platform :ios do
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
+    skip_user_confirmation = options[:skip_confirm]
 
-    unless options[:skip_confirm]
+    unless skip_user_confirmation
       # The `release_version_next` is used as the `new internal release version` value because the external and internal
       # release versions are always the same.
       message = <<-MESSAGE
@@ -96,15 +97,9 @@ platform :ios do
       release_notes_file_path: release_notes_source_path
     )
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
-    )
-      push_to_git_remote(tags: false)
-    else
-      UI.message('Aborting code completion. See you later.')
-      next
-    end
+    UI.user_error!('Aborting code freeze completion as requested.') unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
+
+    push_to_git_remote(tags: false)
 
     setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
