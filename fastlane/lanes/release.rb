@@ -43,8 +43,9 @@ platform :ios do
     end
 
     # Create the release branch
+    release_branch_name = "release/#{release_version_next}"
     UI.message 'Creating release branch...'
-    Fastlane::Helper::GitHelper.create_branch("release/#{release_version_next}", from: DEFAULT_BRANCH)
+    Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
 
     # Bump the release version and build code and write it to the `xcconfig` file
@@ -97,11 +98,13 @@ platform :ios do
       release_notes_file_path: release_notes_source_path
     )
 
-    UI.user_error!('Aborting code freeze completion as requested.') unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
+      UI.user_error!('Aborting code freeze completion as requested.')
+    end
 
     push_to_git_remote(tags: false)
 
-    setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
+    setbranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
