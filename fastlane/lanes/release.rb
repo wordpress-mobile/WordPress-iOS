@@ -99,7 +99,8 @@ platform :ios do
     )
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
-      UI.user_error!('Aborting code freeze completion as requested.')
+      UI.message('Aborting code freeze as requested.')
+      next
     end
 
     push_to_git_remote(tags: false)
