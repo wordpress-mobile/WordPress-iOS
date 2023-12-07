@@ -1,0 +1,13 @@
+common_params:
+  - &common_plugins
+    - automattic/a8c-ci-toolkit#2.18.2
+
+steps:
+  - label: Code Freeze
+    plugins: *common_plugins
+    command: |
+      .buildkite/commands/configure-git-for-release-management.sh
+
+      install_gems
+
+      bundle exec fastlane code_freeze skip_confirm:true
