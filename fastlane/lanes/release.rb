@@ -333,7 +333,7 @@ platform :ios do
   #
   lane :trigger_beta_build do |options|
     branch = compute_release_branch_name(options:)
-    trigger_buildkite_release_build(branch:, beta: true)
+    trigger_buildkite_release_build(branch: 'release/23.8', beta: true)
   end
 
   # Triggers a stable release build on CI
