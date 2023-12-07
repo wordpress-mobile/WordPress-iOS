@@ -161,6 +161,8 @@ platform :ios do
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
     release_version = release_version_current
+    # TODO: just for testing
+    release_version = '23.9'
 
     # Check branch
     unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
