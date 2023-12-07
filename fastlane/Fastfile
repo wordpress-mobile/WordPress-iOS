@@ -296,12 +296,12 @@ def compute_release_branch_name(options:, version: release_version_current)
 end
 
 def release_branch_name(version: release_version_current)
-  "release/#{version}"
+  "test-release/#{version}"
 end
 
 def ensure_git_branch_is_release_branch
   # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
-  ensure_git_branch(branch: '^release/')
+  ensure_git_branch(branch: '^test-release/')
 end
 
 # TODO: Isolate to release files once out of testing state
