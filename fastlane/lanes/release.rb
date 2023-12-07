@@ -160,7 +160,7 @@ platform :ios do
 
     ensure_git_status_clean
 
-    release_version = current_release_version
+    release_version = release_version_current
 
     # Check branch
     unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))

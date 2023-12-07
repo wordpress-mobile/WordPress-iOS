@@ -1,5 +1,5 @@
 steps:
-  - label: Complete Code Freeze
+  - label: New Beta Deployment
     plugins:
       - automattic/a8c-ci-toolkit#2.18.2
     # The beta needs to run on macOS because it uses genstrings under the hood
@@ -13,6 +13,9 @@ steps:
 
       echo '--- :ruby: Setup Ruby tools'
       install_gems
+
+      echo '--- :closed_lock_with_key: Access secrets'
+      bundle exec fastlane run configure_apply
 
       echo '--- :shipit: Deploy new beta'
       bundle exec fastlane new_beta_release skip_confirm:true
