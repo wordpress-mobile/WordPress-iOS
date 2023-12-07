@@ -20,7 +20,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: "release/#{release_version}",
+      branch: compute_release_branch_name(options:, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'complete-code-freeze.yml'),
       message: 'Complete Code Freeze',
       environment: { RELEASE_VERSION: release_version }

@@ -283,6 +283,22 @@ before_all do |lane|
   # rubocop:enable Style/IfUnlessModifier
 end
 
+def compute_release_branch_name(options:, version: release_version_current)
+  branch_option = :branch
+  branch_name = options[branch_option]
+
+  if branch_name.nil?
+    branch_name = release_branch_name(version:)
+    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
+  end
+
+  branch_name
+end
+
+def release_branch_name(version: release_version_current)
+  "release/#{version}"
+end
+
 def ensure_git_branch_is_release_branch
   # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
   ensure_git_branch(branch: '^release/')

@@ -24,12 +24,14 @@ platform :ios do
 
     skip_user_confirmation = options[:skip_confirm]
 
+    release_branch_name = compute_release_branch_name(options:, version: release_version_next)
+
     unless skip_user_confirmation
       # The `release_version_next` is used as the `new internal release version` value because the external and internal
       # release versions are always the same.
       message = <<-MESSAGE
         Code Freeze:
-        • New release branch from #{DEFAULT_BRANCH}: release/#{release_version_next}
+        • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
 
         • Current release version and build code: #{release_version_current} (#{build_code_current}).
         • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
@@ -43,7 +45,6 @@ platform :ios do
     end
 
     # Create the release branch
-    release_branch_name = "test-release/#{release_version_next}"
     UI.message 'Creating release branch...'
     Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
@@ -235,7 +236,7 @@ platform :ios do
 
     # Create the hotfix branch
     UI.message 'Creating hotfix branch...'
-    Fastlane::Helper::GitHelper.create_branch("release/#{new_version}", from: previous_version)
+    Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options:, version: new_version), from: previous_version)
     UI.success "Done! New hotfix branch is: #{git_branch}"
 
     # Bump the hotfix version and build code and write it to the `xcconfig` file
@@ -432,22 +433,6 @@ def prompt_for_confirmation(message:, bypass:)
   return true if bypass
 
   UI.confirm(message)
-end
-
-def compute_release_branch_name(options:)
-  branch_option = :branch
-  branch_name = options[branch_option]
-
-  if branch_name.nil?
-    branch_name = release_branch_name
-    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
-  end
-
-  branch_name
-end
-
-def release_branch_name
-  "release/#{release_version_current}"
 end
 
 def bump_build_codes
