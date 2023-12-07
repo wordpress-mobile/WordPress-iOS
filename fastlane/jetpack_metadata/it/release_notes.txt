@@ -1,0 +1,9 @@
+Abbiamo aggiunto un'impostazione Ottimizza le immagini in modo che le immagini appena caricate abbiano per impostazione predefinita dimensioni e qualità ottimali. Puoi anche eliminare immagini, video e altri elementi multimediali nella schermata Media nella pagina I miei siti.
+
+Desideri ulteriore supporto per elementi multimediali? Che fortuna! Le miniature e le immagini originali ora si caricano più rapidamente nella schermata Media sito e le miniature GIF sono animate correttamente. Abbiamo anche aggiunto dei pulsanti per consentirti di selezionare e deselezionare file multimediali nella modalità di visualizzazione in anteprima.
+
+Nell'editor a blocchi, visualizzerai l'opzione "Non raggruppare" solo per i blocchi nidificati che attualmente supportano tale opzione. Ah! Abbiamo anche aggiunto un selezionatore di foto locali all'editor delle storie.
+
+Abbiamo corretto la schermata dei dettagli degli elementi multimediali per gli utenti iPad e risolto un bug sulla schermata Statistiche: ora i siti si aprono quando fai clic sui relativi URL. Abbiamo anche risolto un problema di migrazione per gli utenti WordPress i cui account non dispongono di alcun sito. Ora la richiesta "Disinstalla WordPress" è presente anche nella tua bacheca.
+
+Infine, l'elenco delle pagine del sito ora si carica più rapidamente. Ebbene si, questo avviene anche quando il sito ha centinaia di pagine. Si, siamo proprio in gamba.

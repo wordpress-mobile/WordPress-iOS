@@ -1,0 +1,9 @@
+Hemos añadido un ajuste Optimizar imágenes para que las nuevas imágenes que se carguen tengan un tamaño y una calidad óptimas por defecto. También puedes eliminar imágenes, vídeos y otros medios en la pantalla Medios de Mis sitios.
+
+¿Quieres todavía más soporte para medios? Tienes suerte: las imágenes de póster y las imágenes originales ahora se cargan más rápido en la pantalla Medios del sitio y las imágenes de póster GIF se animan correctamente. También hemos añadido botones para que puedas seleccionar y anular la selección de los archivos de medios en el modo de vista previa.
+
+En el editor de bloques, solo verás la opción "desagrupar" para los bloques anidados si dichos bloques lo soportan. Ah, también hemos añadido un selector de fotos nativo al editor de historias.
+
+Hemos arreglado la pantalla de detalles de los elementos de medios para los usuarios de iPad y solucionado un error en la pantalla Estadísticas, así que ahora los sitios se abren al hacer clic en su URL. También hemos solucionado un problema de migración para los usuarios de WordPress cuyas cuentas no tienen ningún sitio. Ahora puedes encontrar también en el panel de administración el mensaje "Desinstalar WordPress".
+
+Por último, tu lista de las páginas del sitio se carga ahora más rápido. Sí, incluso si tu sitio cuenta con cientos de páginas. Efectivamente, somos así de buenos.

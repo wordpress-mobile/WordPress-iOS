@@ -7,6 +7,7 @@
 * [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
 * [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
 * [*] [internal] Fix an occasional crash when changing Reader comment status [#22155]
+* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
 
 23.8
 -----

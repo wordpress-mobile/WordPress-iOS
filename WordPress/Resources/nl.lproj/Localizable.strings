@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-28 15:54:09+0000 */
+/* Translation-Revision-Date: 2023-12-05 15:54:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -719,6 +719,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Je kan ook de inhoud naar blokken omzetten.";
 
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
+
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
 
@@ -1151,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Blokkenmenu";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -3228,6 +3234,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "We hebben je contactgegevens van WordPress.com alvast ingevuld om je op weg te helpen. Controleer of dit de juiste gegevens zijn die je voor dit domein wilt gebruiken.";
@@ -9380,6 +9392,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "Wat vind je van WordPress?";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Afbeeldingen optimaliseren";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximaal";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Afbeeldingoptimalisatie maakt afbeeldingen kleiner, zodat ze sneller geüpload kunnen worden.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9493,6 +9523,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Openen in browser";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Meer informatie";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Alle blogmeldingen komen in de maand januari van Bloganuary: onze community-challenge om in het nieuwe jaar betere bloggewoonten op te bouwen.";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Blogmeldingen inschakelen";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Aan de slag.";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Je antwoord publiceren.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Lees de antwoorden van andere bloggers ter inspiratie en om nieuwe contacten te leggen.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Krijg elke dag een nieuwe melding als bron van inspiratie.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Je moet Blogmeldingen inschakelen om je aan te kunnen melden voor Bloganuary.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary gebruikt Dagelijkse blogmeldingen om je in de maand januari onderwerpen toe te sturen.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Doe mee aan onze schrijfchallenge van een maand.";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Negeren";
@@ -10219,6 +10280,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Je media kon niet worden geëxporteerd Help & Support-scherm. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik > Help & ondersteuning.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Media export mislukt";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Deze app heeft toestemming nodig om de camera te openen voor het registreren van nieuwe media; wijzig de privacyinstellingen als je dit wilt toestaan.";
 
@@ -10236,6 +10303,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video maken";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "px.%1$d%2$d";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Het lijkt erop dat je de WordPress app nog steeds geïnstalleerd hebt.";
@@ -10257,6 +10327,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We hebben al je gegevens en instellingen overgedragen. Alles staat precies waar je het gelaten hebt.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Bedankt dat je bent overgestapt naar Jetpack!";
@@ -10305,6 +10378,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welkom bij Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Aan de slag";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "De Jetpack-app heeft alle functies van de WordPress-app, en nu ook exclusieve toegang tot Statistieken, Reader, Meldingen en meer.";
@@ -10748,6 +10824,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "JouwSitenaam.com";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Klik om media op volledig scherm te bekijken";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Een voorbeeld van de media bekijken";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Deselecteren";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Selecteer";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
