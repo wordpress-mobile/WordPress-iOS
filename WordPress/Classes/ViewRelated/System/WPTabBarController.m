@@ -237,7 +237,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
+        if ([Feature enabled:FeatureFlagNewTabIcons]) {
+            [self configureMeTabImageWithUnselectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-unselected"]
+                                           selectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-selected"]];
+        } else {
+            [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
+        }
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";

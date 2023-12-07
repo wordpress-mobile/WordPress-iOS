@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "tab-bar-me-unselected.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
