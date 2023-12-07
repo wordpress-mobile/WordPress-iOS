@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-29 13:54:09+0000 */
+/* Translation-Revision-Date: 2023-12-05 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -9557,6 +9557,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "ブラウザーで開く";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "さらに詳しく";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "1月のブログ作成のプロンプトは Bloganuary より、新年にブログ投稿を習慣付けるためのコミュニティの課題が提示されます。";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "まもなく Bloganuary です !";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "ブログ作成のプロンプトをオンにする";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "スタート";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "回答を公開します。";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "他のブロガーの回答を読んでインスピレーションを得て、新しいつながりを作りましょう。";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "毎日インスピレーションを与える新しいプロンプトを受け取ることができます。";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Bloganuary に参加するには「ブログ作成のプロンプト」を有効にする必要があります。";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary は毎日のブログ作成のプロンプトから1月のトピックを送信します。";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "1か月間のライティングチャレンジにご参加ください";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "削除";
