@@ -5,7 +5,8 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: 'trunk',
+      # branch: 'trunk', # FIXME: Using current branch while in development
+      branch: git_branch,
       pipeline_file: 'release-pipelines/code-freeze.yml',
       message: 'Code Freeze'
     )
