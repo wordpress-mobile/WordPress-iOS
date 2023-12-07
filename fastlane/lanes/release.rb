@@ -129,20 +129,20 @@ platform :ios do
     ensure_git_status_clean
 
     UI.important("Completing code freeze for: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+
+    skip_user_confirmation = options[:skip_confirm]
+
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
-    )
-      push_to_git_remote(tags: false)
-      trigger_beta_build
-    else
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
       UI.message('Aborting code freeze completion. See you later.')
       next
     end
+
+    push_to_git_remote(tags: false)
+    trigger_beta_build
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
