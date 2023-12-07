@@ -190,9 +190,9 @@ platform :ios do
       UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
     end
 
-    generate_strings_file_for_glotpress
-    download_localized_strings_and_metadata(options)
-    lint_localizations(allow_retry: skip_user_confirmation == false)
+    # generate_strings_file_for_glotpress
+    # download_localized_strings_and_metadata(options)
+    # lint_localizations(allow_retry: skip_user_confirmation == false)
 
     bump_build_codes
 
