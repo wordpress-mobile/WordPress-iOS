@@ -29,4 +29,20 @@ platform :ios do
       environment: { RELEASE_VERSION: release_version }
     )
   end
+
+  lane :trigger_new_beta_release_in_ci do |options|
+    release_version_key = :release_version
+    release_version = options[release_version_key]
+
+    UI.user_error!("Please specify a release version by calling this lane with a  #{release_version_key} parameter") unless release_version
+
+    buildkite_trigger_build(
+      buildkite_organization: BUILDKITE_ORGANIZATION,
+      buildkite_pipeline: BUILDKITE_PIPELINE,
+      branch: compute_release_branch_name(options:, version: release_version),
+      pipeline_file: File.join(PIPELINES_ROOT, 'new-beta-release.yml'),
+      message: 'New Beta Release',
+      environment: { RELEASE_VERSION: release_version }
+    )
+  end
 end
