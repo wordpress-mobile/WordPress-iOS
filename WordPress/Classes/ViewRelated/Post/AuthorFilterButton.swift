@@ -34,7 +34,8 @@ final class AuthorFilterButton: UIControl {
         didSet {
             switch filterType {
             case .everyone:
-                authorImageView.image = UIImage(named: "icon-people")
+                authorImageView.image = UIImage(named: "icon-people")?.withRenderingMode(.alwaysTemplate)
+                authorImageView.tintColor = .text
                 authorImageView.contentMode = .center
             case .user(let email):
                 authorImageView.contentMode = .scaleAspectFill
