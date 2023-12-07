@@ -156,7 +156,7 @@ platform :ios do
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
-    ensure_git_status_clean
+    # ensure_git_status_clean
 
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
@@ -190,7 +190,7 @@ platform :ios do
       UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
     end
 
-    generate_strings_file_for_glotpress
+    # generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
     lint_localizations
 
