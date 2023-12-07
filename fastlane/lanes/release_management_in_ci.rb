@@ -15,7 +15,10 @@ platform :ios do
   end
 
   lane :trigger_complete_code_freeze_in_ci do |options|
-    release_version = options[:release_version]
+    release_version_key = :release_version
+    release_version = options[release_version_key]
+
+    UI.user_error!("Please specify a release version by calling this lane with a  #{release_version_key} parameter") unless release_version
 
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
