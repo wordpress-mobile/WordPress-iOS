@@ -193,6 +193,8 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     trigger_beta_build
+
+    create_release_management_pull_request(base_branch: DEFAULT_BRANCH, title: "Merge changes from #{build_code_current}")
   end
 
   # Sets the stage to start working on a hotfix
