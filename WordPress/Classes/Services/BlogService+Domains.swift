@@ -18,17 +18,15 @@ extension BlogService {
             return
         }
 
-        guard account.wordPressComRestApi != nil else {
-            failure?(BlogServiceDomainError.noWordPressComRestApi(blog: blog))
-            return
-        }
-
         guard let siteID = blog.dotComID?.intValue else {
             failure?(BlogServiceDomainError.noSiteIDForSpecifiedBlog(blog: blog))
             return
         }
 
-        let service = DomainsService(coreDataStack: coreDataStack, account: account)
+        guard let service = DomainsService(coreDataStack: coreDataStack, account: account) else {
+            failure?(BlogServiceDomainError.noWordPressComRestApi(blog: blog))
+            return
+        }
 
         service.refreshDomains(siteID: siteID) { result in
             switch result {
