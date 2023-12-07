@@ -1,0 +1,23 @@
+common_params:
+  - &common_plugins
+    - automattic/a8c-ci-toolkit#2.18.2
+
+steps:
+  - label: Code Freeze
+    plugins: *common_plugins
+    # The first client to implement releases in CI was Android so the automation works in that queue.
+    # We might want to move it to a leaner one in the future.
+    agents:
+        queue: android
+    command: |
+      echo '--- :git: Configure Git for release management'
+      .buildkite/commands/configure-git-for-release-management.sh
+
+      echo '--- :ruby: Setup Ruby tools'
+      install_gems
+
+      echo '--- :closed_lock_with_key: Access secrets'
+      bundle exec fastlane run configure_apply
+
+      echo '--- :shipit: Run code freeze'
+      bundle exec fastlane code_freeze skip_confirm:true
