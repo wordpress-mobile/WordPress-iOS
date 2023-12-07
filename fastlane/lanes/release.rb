@@ -105,7 +105,8 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     setbranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
-    setfrozentag(repository: GITHUB_REPO, milestone: new_version)
+    # FIXME: Disabled while developing new flow
+    # setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
