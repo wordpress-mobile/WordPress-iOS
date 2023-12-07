@@ -22,21 +22,24 @@ platform :ios do
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
-    # The `release_version_next` is used as the `new internal release version` value because the external and internal
-    # release versions are always the same.
-    message = <<-MESSAGE
-      Code Freeze:
-      • New release branch from #{DEFAULT_BRANCH}: release/#{release_version_next}
 
-      • Current release version and build code: #{release_version_current} (#{build_code_current}).
-      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+    unless options[:skip_confirm]
+      # The `release_version_next` is used as the `new internal release version` value because the external and internal
+      # release versions are always the same.
+      message = <<-MESSAGE
+        Code Freeze:
+        • New release branch from #{DEFAULT_BRANCH}: release/#{release_version_next}
 
-      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
-      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
-    MESSAGE
+        • Current release version and build code: #{release_version_current} (#{build_code_current}).
+        • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
 
-    UI.important(message)
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+        • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+        • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
+      MESSAGE
+
+      UI.important(message)
+      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
+    end
 
     # Create the release branch
     UI.message 'Creating release branch...'
