@@ -186,6 +186,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         coordinator?.start()
 
+        startObservingPost()
+
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
@@ -812,6 +814,31 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         static let toolbarHeight: CGFloat = 50
         static let delay: Double = 50
         static let preferredToolbarHeight: CGFloat = 58.0
+    }
+
+    // MARK: - Managed object observer
+
+    func startObservingPost() {
+        guard let post else {
+            return
+        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleObjectsChange(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                               object: post.managedObjectContext)
+    }
+
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let post else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(post) || refreshed.contains(post) {
+            header.configure(for: post)
+        }
     }
 }
 
