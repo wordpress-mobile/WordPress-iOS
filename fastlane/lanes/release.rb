@@ -105,7 +105,7 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    setbranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     # FIXME: Disabled while developing new flow
     # setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
