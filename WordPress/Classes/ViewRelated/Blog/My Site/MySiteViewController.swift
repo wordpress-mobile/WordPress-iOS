@@ -159,13 +159,13 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        configureNavBarAppearance(animated: false)
+        configureNavBarAppearance(animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        resetNavBarAppearance()
+        resetNavBarAppearance(animated: animated)
         createButtonCoordinator?.hideCreateButton()
     }
 
@@ -190,7 +190,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         fetchPrompt(for: blog)
 
         complianceCoordinator = CompliancePopoverCoordinator()
-        complianceCoordinator?.presentIfNeeded(on: self)
+        complianceCoordinator?.presentIfNeeded()
     }
 
     override func viewDidLayoutSubviews() {
@@ -301,8 +301,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
     }
 
-    private func resetNavBarAppearance() {
-        navigationController?.setNavigationBarHidden(false, animated: false)
+    private func resetNavBarAppearance(animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         isNavigationBarHidden = false
     }
 
