@@ -207,11 +207,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-    NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
-    self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
+    if ([Feature enabled:FeatureFlagNewTabIcons]) {
+        self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications-unselected"];
+        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-jp";
+        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
+        _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-notifications-selected"];
+    } else {
+        self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
+        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
+        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
+        _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
+    }
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");

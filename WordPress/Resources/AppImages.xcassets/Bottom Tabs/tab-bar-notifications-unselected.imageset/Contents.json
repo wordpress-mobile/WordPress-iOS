@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "tab-bar-notifications-unselected.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
