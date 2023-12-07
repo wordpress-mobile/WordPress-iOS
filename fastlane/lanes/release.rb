@@ -22,9 +22,9 @@ platform :ios do
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
-    skip_user_confirmation = options[:skip_confirm]
-
     release_branch_name = compute_release_branch_name(options:, version: release_version_next)
+
+    skip_user_confirmation = options[:skip_confirm]
 
     unless skip_user_confirmation
       # The `release_version_next` is used as the `new internal release version` value because the external and internal
@@ -163,17 +163,22 @@ platform :ios do
 
     git_pull
 
-    # Check versions
-    message = <<-MESSAGE
-      • Current build code: #{build_code_current}
-      • New build code: #{build_code_next}
+    skip_user_confirmation = options[:skip_confirm]
 
-      • Current internal build code: #{build_code_current_internal}
-      • New internal build code: #{build_code_next_internal}
-    MESSAGE
+    unless skip_user_confirmation
+      # The `release_version_next` is used as the `new internal release version` value because the external and internal
+      # release versions are always the same.
+      message = <<-MESSAGE
+        • Current build code: #{build_code_current}
+        • New build code: #{build_code_next}
 
-    UI.important(message)
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+        • Current internal build code: #{build_code_current_internal}
+        • New internal build code: #{build_code_next_internal}
+      MESSAGE
+
+      UI.important(message)
+      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
+    end
 
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
@@ -181,16 +186,14 @@ platform :ios do
 
     bump_build_codes
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
-    )
-      push_to_git_remote(tags: false)
-      trigger_beta_build
-    else
-      UI.message('Aborting beta deployment. See you later.')
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
+      UI.message('Aborting beta deployment.')
       next
     end
+
+    push_to_git_remote(tags: false)
+
+    trigger_beta_build
   end
 
   # Sets the stage to start working on a hotfix
