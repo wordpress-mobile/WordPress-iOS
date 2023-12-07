@@ -10,7 +10,7 @@ steps:
     command: |
       echo '--- :git: Configure Git for release management'
       .buildkite/commands/configure-git-for-release-management.sh
-      .buildkite/commands/checkout-release-branch.sh
+      RELEASE_VERSION=$$RELEASE_VERSION .buildkite/commands/checkout-release-branch.sh
 
       echo '--- :ruby: Setup Ruby tools'
       install_gems
