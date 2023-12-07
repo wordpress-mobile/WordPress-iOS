@@ -7,4 +7,4 @@ steps:
         queue: mac
     env:
       IMAGE_ID: xcode-14.3.1
-    command: .buildkite/commands/complete-code-freeze.sh
+    command: ".buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION"
