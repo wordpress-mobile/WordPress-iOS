@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-14 11:36:40+0000 */
+/* Translation-Revision-Date: 2023-12-06 17:14:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sq_AL */
@@ -724,6 +724,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Ndryshe, mund ta shndërroni lëndën në blloqe.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Ndryshe, mund ta shkëputni dhe përpunoni ndarazi këtë bllok, duke prekur “Shkëpute”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
