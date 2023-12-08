@@ -212,6 +212,8 @@ platform :ios do
     ensure_git_status_clean
 
     release_version = release_version_current
+    # TODO: just for testing
+    release_version = '23.9'
 
     unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
