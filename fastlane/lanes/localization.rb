@@ -205,10 +205,15 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    create_release_management_pull_request(
+    pr_url = create_release_management_pull_request(
       base_branch: compute_release_branch_name(options:, version: release_version),
       title: "Merge editorialized release notes in #{release_version}"
     )
+
+    message = <<~MESSAGE
+      Release notes and metadata localization sources successfully generated. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'editorialization-completed', style: 'success', message:) if is_ci
   end
 
   # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources

@@ -109,6 +109,17 @@ platform :ios do
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
+
+    message = <<~MESSAGE
+      Code freeze started successfully.
+
+      Next steps:
+
+      - Checkout `#{release_branch_name}` branch locally
+      - Update pods and release notes
+      - Finalize the code freeze
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message:) if is_ci
   end
 
   # Executes the final steps for the code freeze
@@ -144,10 +155,15 @@ platform :ios do
 
     trigger_beta_build
 
-    create_release_management_pull_request(
+    pr_url = create_release_management_pull_request(
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} code freeze"
     )
+
+    message = <<~MESSAGE
+      Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message:) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -200,7 +216,15 @@ platform :ios do
 
     trigger_beta_build
 
-    create_release_management_pull_request(base_branch: DEFAULT_BRANCH, title: "Merge changes from #{build_code_current}")
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge changes from #{build_code_current}"
+    )
+
+    message = <<~MESSAGE
+      Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'beta-completed', style: 'success', message:) if is_ci
   end
 
   lane :create_editorial_branch do |options|
@@ -360,10 +384,15 @@ platform :ios do
 
     trigger_release_build
 
-    create_release_management_pull_request(
+    pr_url = create_release_management_pull_request(
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} release finalization"
     )
+
+    message = <<~MESSAGE
+      Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'finalization-completed', style: 'success', message:) if is_ci
   end
 
   # Triggers a beta build on CI
