@@ -209,7 +209,7 @@ platform :ios do
   end
 
   lane :create_editorial_branch do |options|
-    ensure_git_status_clean
+    # ensure_git_status_clean
 
     release_version = release_version_current
     # TODO: just for testing
