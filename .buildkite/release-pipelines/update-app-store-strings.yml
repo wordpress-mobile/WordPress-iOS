@@ -15,5 +15,5 @@ steps:
       echo '--- :closed_lock_with_key: Access secrets'
       bundle exec fastlane run configure_apply
 
-      echo '--- :shipit: Deploy new beta'
+      echo '--- :shipit: Update relaese notes and other App Store metadata'
       bundle exec fastlane update_appstore_strings skip_confirm:true
