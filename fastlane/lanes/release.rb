@@ -169,9 +169,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch
-
-    git_pull
+    ensure_git_branch_is_release_branch # This check is mostly redundant
 
     skip_user_confirmation = options[:skip_confirm]
 
