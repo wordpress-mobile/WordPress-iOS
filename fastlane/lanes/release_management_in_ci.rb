@@ -59,4 +59,20 @@ platform :ios do
       message: "Update Editorialized Release Notes and App Store Metadata for #{release_version}"
     )
   end
+
+  lane :trigger_finalize_release_in_ci do |options|
+    release_version_key = :release_version
+    release_version = options[release_version_key]
+
+    UI.user_error!("You must specify a release version by calling this lane with a  #{release_version_key} parameter") unless release_version
+
+    buildkite_trigger_build(
+      buildkite_organization: BUILDKITE_ORGANIZATION,
+      buildkite_pipeline: BUILDKITE_PIPELINE,
+      branch: compute_release_branch_name(options:, version: release_version),
+      pipeline_file: File.join(PIPELINES_ROOT, 'finalize-release.yml'),
+      message: "Finalize Release #{release_version}",
+      environment: { RELEASE_VERSION: release_version }
+    )
+  end
 end
