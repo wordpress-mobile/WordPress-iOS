@@ -333,35 +333,39 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
+    skip_user_confirmation = options[:skip_confirm]
+
     UI.important("Finalizing release: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     git_pull
 
-    check_all_translations(interactive: true)
+    check_all_translations(interactive: skip_user_confirmation == false)
 
     download_localized_strings_and_metadata(options)
-    lint_localizations
+    lint_localizations(allow_retry: skip_user_confirmation == false)
 
     bump_build_codes
 
-    # Wrap up
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the release build?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+
     version = release_version_current
     remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
+    trigger_release_build
+
+    create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} release finalization"
     )
-      push_to_git_remote(tags: false)
-      trigger_release_build
-    else
-      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-      next
-    end
   end
 
   # Triggers a beta build on CI
