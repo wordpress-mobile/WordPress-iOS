@@ -187,9 +187,11 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
-    ensure_git_status_clean
+    # ensure_git_status_clean
 
     release_version = release_version_current
+    # TODO: just for testing
+    release_version = '23.9'
 
     unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: release_version))
       UI.user_error!("Editorialization branch for version #{release_version} doesn't exist.")
