@@ -230,7 +230,7 @@ platform :ios do
       next
     end
 
-    push_to_git_remote(tags: false)
+    push_to_git_remote(tags: false, set_upstream: true)
   end
 
   # Sets the stage to start working on a hotfix
