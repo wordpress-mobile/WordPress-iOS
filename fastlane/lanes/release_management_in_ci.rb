@@ -2,6 +2,9 @@
 
 PIPELINES_ROOT = 'release-pipelines'
 
+# Override DEFAULT_BRANCH to allow testing
+DEFAULT_BRANCH = git_branch
+
 platform :ios do
   lane :trigger_code_freeze_in_ci do
     buildkite_trigger_build(
