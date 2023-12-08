@@ -1,18 +1,10 @@
-# Nodes with values to reuse in the pipeline.
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &common_plugins
-    - automattic/a8c-ci-toolkit#2.17.0
-
 steps:
-  - label: "Finalize release"
-    plugins: *common_plugins
-    command: |
-      .buildkite/commands/configure-git-for-release-management.sh
-      .buildkite/commands/checkout-release-branch.sh
-
-      install_gems
-
-      cp gradle.properties-example gradle.properties
-
-      bundle exec fastlane finalize_release skip_confirm:true
+  - label: Finalize Release
+    plugins:
+      - automattic/a8c-ci-toolkit#2.18.2
+    # The finalization needs to run on macOS because of localization linting
+    agents:
+        queue: mac
+    env:
+      IMAGE_ID: xcode-14.3.1
+    command: ".buildkite/commands/finalize-release.sh $RELEASE_VERSION"
