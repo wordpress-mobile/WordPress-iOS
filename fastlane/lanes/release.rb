@@ -158,7 +158,15 @@ platform :ios do
 
     trigger_beta_build
 
-    create_release_management_pull_request(base_branch: 'trunk', title: "Merge #{version} code freeze")
+    pr_url = create_release_management_pull_request(
+      base_branch: 'trunk',
+      title: "Merge #{version} code freeze"
+    )
+
+    message = <<~MESSAGE
+      Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message:) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -214,7 +222,15 @@ platform :ios do
 
     trigger_beta_build
 
-    create_release_management_pull_request(base_branch: 'trunk', title: "Merge changes from #{build_code_current}")
+    pr_url = create_release_management_pull_request(
+      base_branch: 'trunk',
+      title: "Merge changes from #{build_code_current}"
+    )
+
+    message = <<~MESSAGE
+      Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'beta-completed', style: 'success', message:) if is_ci
   end
 
   lane :create_editorial_branch do |options|
@@ -372,10 +388,15 @@ platform :ios do
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    create_release_management_pull_request(
+    pr_url = create_release_management_pull_request(
       base_branch: 'trunk',
       title: "Merge #{version} release finalization"
     )
+
+    message = <<~MESSAGE
+      Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'finalization-completed', style: 'success', message:) if is_ci
   end
 
   # Triggers a beta build on CI
