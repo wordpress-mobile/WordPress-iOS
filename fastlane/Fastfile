@@ -299,6 +299,10 @@ def release_branch_name(version: release_version_current)
   "release/#{version}"
 end
 
+def editorial_branch_name(version: release_version_current)
+  "release_notes/#{version}"
+end
+
 def ensure_git_branch_is_release_branch
   # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
   ensure_git_branch(branch: '^release/')
