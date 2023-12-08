@@ -11,8 +11,7 @@ echo '--- :git: Configure Git for release management'
 .buildkite/commands/configure-git-for-release-management.sh
 
 echo '--- :git: Checkout release branch'
-# FIXME: Don't forget to revert to "release/" only
-.buildkite/commands/checkout-release-branch.sh "test-release/$RELEASE_NUMBER"
+.buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
 
 echo '--- :ruby: Setup Ruby tools'
 install_gems
