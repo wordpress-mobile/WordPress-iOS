@@ -25,7 +25,7 @@ platform :ios do
       buildkite_pipeline: BUILDKITE_PIPELINE,
       branch: compute_release_branch_name(options:, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'complete-code-freeze.yml'),
-      message: 'Complete Code Freeze',
+      message: "Complete Code Freeze for #{release_version}",
       environment: { RELEASE_VERSION: release_version }
     )
   end
@@ -41,7 +41,7 @@ platform :ios do
       buildkite_pipeline: BUILDKITE_PIPELINE,
       branch: compute_release_branch_name(options:, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'new-beta-release.yml'),
-      message: 'New Beta Release',
+      message: "New Beta Release for #{release_version}",
       environment: { RELEASE_VERSION: release_version }
     )
   end
@@ -57,7 +57,7 @@ platform :ios do
       buildkite_pipeline: BUILDKITE_PIPELINE,
       branch: editorial_branch_name(version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'update-app-store-strings.yml'),
-      message: 'Update Editorialized Release Notes and App Store Metadata'
+      message: "Update Editorialized Release Notes and App Store Metadata for #{release_version}"
     )
   end
 end
