@@ -225,7 +225,9 @@ platform :ios do
       next
     end
 
-    push_to_git_remote(tags: false)
+    # We need to also set upstream so the branch created in our local tracks the remote counterpart.
+    # Otherwise, when the next automation step will run and try to push changes made on that branch, it will fail.
+    push_to_git_remote(tags: false, set_upstream: true)
   end
 
   # Sets the stage to start working on a hotfix
