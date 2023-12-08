@@ -49,7 +49,7 @@ class AllDomainsListViewModel {
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         if let account = defaultAccount(with: coreDataStack) {
-            self.domainsService = .init(coreDataStack: coreDataStack, account: account)
+            self.domainsService = .init(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi)
         }
     }
 
