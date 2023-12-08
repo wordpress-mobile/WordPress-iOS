@@ -112,6 +112,17 @@ platform :ios do
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
+
+    message = <<~MESSAGE
+      Code freeze started successfully.
+
+      Next steps:
+
+      - Checkout `#{release_branch_name}` branch locally
+      - Update pods and release notes
+      - Finalize the code freeze
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message:) if is_ci
   end
 
   # Executes the final steps for the code freeze
