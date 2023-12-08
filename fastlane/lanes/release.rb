@@ -104,7 +104,22 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+    attempts = 0
+    begin
+      attempts += 1
+      set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+    rescue StandardError => e
+      if attempts < 2
+        sleep_time = 5
+        UI.message("Failed to set branch protection on GitHub. Retrying in #{sleep_time} seconds in case it was because the API hadn't noticed the new branch yet.")
+        sleep(sleep_time)
+        retry
+      else
+        UI.error("Failed to set branch protection on GitHub after #{attempts} attempts")
+        raise e
+      end
+    end
+
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
