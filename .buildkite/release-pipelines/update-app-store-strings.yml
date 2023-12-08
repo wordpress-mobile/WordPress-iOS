@@ -16,4 +16,4 @@ steps:
       bundle exec fastlane run configure_apply
 
       echo '--- :shipit: Deploy new beta'
-      bundle exec fastlane update_appstore_strings
+      bundle exec fastlane update_appstore_strings skip_confirm:true
