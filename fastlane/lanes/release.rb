@@ -205,6 +205,29 @@ platform :ios do
     create_release_management_pull_request(base_branch: DEFAULT_BRANCH, title: "Merge changes from #{build_code_current}")
   end
 
+  lane :create_editorial_branch do |options|
+    ensure_git_status_clean
+
+    release_version = release_version_current
+
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+      UI.user_error!("Release branch for version #{release_version} doesn't exist.")
+    end
+
+    ensure_git_branch_is_release_branch
+
+    git_pull
+
+    Fastlane::Helper::GitHelper.create_branch(editorial_branch_name(version: release_version))
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push editorial branch to remote?')
+      UI.message("Aborting as requested. Don't forget to push the branch to the remote manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+  end
+
   # Sets the stage to start working on a hotfix
   #
   # - Cuts a new `release/x.y.z` branch from the tag from the latest (`x.y`) version
