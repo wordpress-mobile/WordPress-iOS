@@ -2723,6 +2723,8 @@
 		B0B89DC12A1E882F003D5295 /* DomainResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */; };
 		B0CD27CF286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
 		B0CD27D0286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
+		B0DE91B52AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE91B42AF9778200D51A02 /* DomainSetupNoticeView.swift */; };
+		B0DE91B62AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE91B42AF9778200D51A02 /* DomainSetupNoticeView.swift */; };
 		B0F2EFBF259378E600C7EB6D /* SiteSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */; };
 		B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */; };
 		B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
@@ -8053,6 +8055,7 @@
 		B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainResultView.swift; sourceTree = "<group>"; };
 		B0CD27CE286F8858009500BF /* JetpackBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerView.swift; sourceTree = "<group>"; };
 		B0DDC2EB252F7C4F002BAFB3 /* WordPress 100.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 100.xcdatamodel"; sourceTree = "<group>"; };
+		B0DE91B42AF9778200D51A02 /* DomainSetupNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainSetupNoticeView.swift; sourceTree = "<group>"; };
 		B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSuggestionService.swift; sourceTree = "<group>"; };
 		B124AFFFB3F0204107FD33D0 /* Pods-JetpackIntents.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackIntents.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackIntents/Pods-JetpackIntents.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B3694C30079615C927D26E9F /* Pods-JetpackStatsWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackStatsWidgets.release.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackStatsWidgets/Pods-JetpackStatsWidgets.release.xcconfig"; sourceTree = "<group>"; };
@@ -11692,6 +11695,7 @@
 				3FA62FD226FE2E4B0020793A /* ShapeWithTextView.swift */,
 				011896A429D5B72500D34BA9 /* DomainsDashboardCoordinator.swift */,
 				011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */,
+				B0DE91B42AF9778200D51A02 /* DomainSetupNoticeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -22223,6 +22227,7 @@
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
 				0C23F3362AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */,
 				401AC82722DD2387006D78D4 /* Blog+Plans.swift in Sources */,
+				B0DE91B52AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */,
 				08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */,
 				FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */,
 				59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */,
@@ -24686,6 +24691,7 @@
 				3F46EEC728BC4935004F02B2 /* JetpackPrompt.swift in Sources */,
 				175CC1712720548700622FB4 /* DomainExpiryDateFormatter.swift in Sources */,
 				FABB22F42602FC2C00C8785C /* ReaderStreamViewController+Sharing.swift in Sources */,
+				B0DE91B62AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */,
 				FABB22F52602FC2C00C8785C /* FilterTabBar.swift in Sources */,
 				FABB22F72602FC2C00C8785C /* EditComment.swift in Sources */,
 				FABB22F82602FC2C00C8785C /* UnknownEditorViewController.swift in Sources */,
