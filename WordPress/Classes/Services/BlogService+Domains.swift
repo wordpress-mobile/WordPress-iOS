@@ -23,7 +23,7 @@ extension BlogService {
             return
         }
 
-        guard let service = DomainsService(coreDataStack: coreDataStack, account: account) else {
+        guard let service = DomainsService(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi) else {
             failure?(BlogServiceDomainError.noWordPressComRestApi(blog: blog))
             return
         }
