@@ -187,8 +187,28 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
+    ensure_git_status_clean
+
+    release_version = release_version_current
+
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: release_version))
+      UI.user_error!("Editorialization branch for version #{release_version} doesn't exist.")
+    end
+
     update_wordpress_appstore_strings(options)
     update_jetpack_appstore_strings(options)
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push changes to remote and continue with the editorialization process?')
+      UI.message("Aborting as requested. Don't forget to push the changes and create the integration PR manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+
+    create_release_management_pull_request(
+      base_branch: compute_release_branch_name(options:, version: release_version),
+      title: "Merge editorialized release notes in #{release_version}"
+    )
   end
 
   # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources
