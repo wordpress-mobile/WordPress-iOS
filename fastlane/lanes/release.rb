@@ -17,7 +17,9 @@ platform :ios do
     ensure_git_status_clean
 
     # Check out the up-to-date default branch, the designated starting point for the code freeze
-    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+    #
+    # disabled for testing
+    # Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
@@ -47,7 +49,7 @@ platform :ios do
     # Create the release branch
     release_branch_name = compute_release_branch_name(options:, version: release_version_next)
     UI.message 'Creating release branch...'
-    Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
+    Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: git_branch)
     UI.success "Done! New release branch is: #{git_branch}"
 
     # Bump the release version and build code and write it to the `xcconfig` file
