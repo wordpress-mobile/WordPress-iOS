@@ -1,5 +1,7 @@
 # WordPress for iOS #
 
+Dummy edit just to see something custom in the diff
+
 ## Build Instructions
 
 Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line inside the repository.
