@@ -9,6 +9,6 @@ fi
 
 # Buildkite, by default, checks out a specific commit.
 # For many release actions, we need to be on a release branch instead.
-BRANCH_NAME="test-release/${RELEASE_NUMBER}"
+BRANCH_NAME="release/${RELEASE_NUMBER}-test"
 git fetch origin "$BRANCH_NAME"
 git checkout "$BRANCH_NAME"

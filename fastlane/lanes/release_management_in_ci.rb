@@ -7,7 +7,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: DEFAULT_BRANCH,
+      branch: git_branch,
       pipeline_file: File.join(PIPELINES_ROOT, 'code-freeze.yml'),
       message: 'Code Freeze'
     )
