@@ -167,9 +167,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch
-
-    git_pull
+    ensure_git_branch_is_release_branch # This check is mostly redundant
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -214,7 +212,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch
+    ensure_git_branch_is_release_branch # This check is mostly redundant
 
     git_pull
 
