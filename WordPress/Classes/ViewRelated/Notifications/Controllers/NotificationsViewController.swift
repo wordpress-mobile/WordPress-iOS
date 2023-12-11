@@ -175,6 +175,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
+
+        extendedLayoutIncludesOpaqueBars = true
+        edgesForExtendedLayout = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {

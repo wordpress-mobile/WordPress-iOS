@@ -66,9 +66,6 @@ extension WPStyleGuide {
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
 
         let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
-
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }

@@ -18,6 +18,7 @@ class ReaderTabViewController: UIViewController {
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
 
+        extendedLayoutIncludesOpaqueBars = true
         title = ReaderTabConstants.title
         setupNavigationButtons()
 
