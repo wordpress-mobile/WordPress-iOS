@@ -5,7 +5,7 @@ import PackageDescription
 let jetpackStatsWidgetsCoreName = "JetpackStatsWidgetsCore"
 
 let package = Package(
-    name: jetpackStatsWidgetsCoreName,
+    name: "Modules",
     products: [
         .library(name: jetpackStatsWidgetsCoreName, targets: [jetpackStatsWidgetsCoreName]),
     ],
