@@ -168,7 +168,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .domainManagement:
             return "Domain Management"
         case .dynamicDashboardCards:
-            "Dynamic Dashboard Cards"
+            return "Dynamic Dashboard Cards"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
         case .readerImprovements:
