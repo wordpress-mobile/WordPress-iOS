@@ -28,7 +28,7 @@
                                 <rect key="frame" x="16" y="12" width="288" height="56.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="31R-gx-fKg">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="56.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="36" height="56.5"/>
                                         <subviews>
                                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="WUC-gY-tp6" userLabel="First" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="18.5" width="20" height="20"/>
@@ -39,7 +39,7 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JOq-VL-EJD" userLabel="Second" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="18.5" width="20" height="20"/>
+                                                <rect key="frame" x="16" y="18.5" width="20" height="20"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="Wly-6B-Yyx"/>
@@ -53,11 +53,10 @@
                                             <constraint firstItem="JOq-VL-EJD" firstAttribute="leading" secondItem="WUC-gY-tp6" secondAttribute="trailing" priority="750" constant="-4" id="MKI-vh-ILf"/>
                                             <constraint firstItem="WUC-gY-tp6" firstAttribute="leading" secondItem="31R-gx-fKg" secondAttribute="leading" id="bTR-cF-WMZ"/>
                                             <constraint firstAttribute="trailing" secondItem="JOq-VL-EJD" secondAttribute="trailing" id="nXv-EE-H7w"/>
-                                            <constraint firstItem="JOq-VL-EJD" firstAttribute="leading" secondItem="WUC-gY-tp6" secondAttribute="centerX" id="tdQ-IG-5vq"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="andrei cross-posted from designomatticp2 to teamxthings" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5MU-iV-oPy">
-                                        <rect key="frame" x="40" y="0.0" width="248" height="56.5"/>
+                                        <rect key="frame" x="46" y="0.0" width="242" height="56.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -101,7 +100,6 @@
                 <outlet property="avatarImageView" destination="JOq-VL-EJD" id="qv3-Of-zZc"/>
                 <outlet property="blavatarImageView" destination="WUC-gY-tp6" id="U2a-iV-k1I"/>
                 <outlet property="borderView" destination="Phn-de-LXH" id="ZGz-sk-ljb"/>
-                <outlet property="centeredImageViewConstraint" destination="tdQ-IG-5vq" id="9Br-Hm-9ie"/>
                 <outlet property="imageSpacingConstraint" destination="MKI-vh-ILf" id="1eX-0w-Loe"/>
                 <outlet property="label" destination="5MU-iV-oPy" id="9OI-1R-pcP"/>
                 <outlet property="separatorViewHeightConstraint" destination="83K-DW-Kad" id="yOD-bY-Wa6"/>

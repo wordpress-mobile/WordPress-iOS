@@ -39,7 +39,7 @@ extension ReaderStreamViewController {
                 return nil
             }
 
-            return RemoteFeatureFlag.readerImprovements.enabled() ? nibViews.last : nibViews.first
+            return nibViews.first
         }
 
         if ReaderHelpers.isTopicList(topic) {
@@ -47,11 +47,7 @@ extension ReaderStreamViewController {
         }
 
         if ReaderHelpers.isTopicSite(topic) && !isContentFiltered {
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                return ReaderSiteHeaderView()
-            } else {
-                return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
-            }
+            return ReaderSiteHeaderView()
         }
 
         return nil

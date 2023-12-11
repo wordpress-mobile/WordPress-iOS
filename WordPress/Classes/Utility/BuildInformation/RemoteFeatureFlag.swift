@@ -21,7 +21,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackSocialImprovements
     case domainManagement
     case plansInSiteCreation
-    case readerImprovements // pcdRpT-3Eb-p2
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case wordPressSotWCard
 
@@ -65,8 +64,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .plansInSiteCreation:
             return false
-        case .readerImprovements:
-            return true
         case .bloganuaryDashboardNudge:
             return AppConfiguration.isJetpack
         case .wordPressSotWCard:
@@ -115,8 +112,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "domain_management"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
-        case .readerImprovements:
-            return "reader_improvements"
         case .bloganuaryDashboardNudge:
             return "bloganuary_dashboard_nudge"
         case .wordPressSotWCard:
@@ -164,8 +159,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Domain Management"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
-        case .readerImprovements:
-            return "Reader Improvements v1"
         case .bloganuaryDashboardNudge:
             return "Bloganuary Dashboard Nudge"
         case .wordPressSotWCard:
