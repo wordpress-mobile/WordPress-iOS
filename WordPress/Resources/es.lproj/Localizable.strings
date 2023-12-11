@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-04 22:54:30+0000 */
+/* Translation-Revision-Date: 2023-12-07 10:50:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -5904,7 +5904,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Redo" = "Rehacer";
 
 /* Label for link title in Referrers stat. */
-"Referrer" = "Referencia";
+"Referrer" = "Remitente";
 
 /* Period Stats 'Referrers' header */
 "Referrers" = "Referencias";

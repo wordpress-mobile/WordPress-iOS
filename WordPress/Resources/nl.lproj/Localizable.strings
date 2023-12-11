@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 15:54:32+0000 */
+/* Translation-Revision-Date: 2023-12-06 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -261,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s social pictogram";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Het blok '%s' is omgezet naar blokken";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' wordt niet volledig ondersteund";

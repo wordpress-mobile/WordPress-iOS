@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 15:54:34+0000 */
+/* Translation-Revision-Date: 2023-12-06 08:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ru */
@@ -9568,7 +9568,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "bloganuary.dashboard.card.button.learnMore" = "Подробнее";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "В январе подсказки по ведению блога будут рассылаться через Bloganuary — челлендж сообщества, призванный выработать привычку ежедневно вести блог в новом году.";
+"bloganuary.dashboard.card.description" = "В январе подсказки по ведению блога будут рассылаться через Bloganuary — челлендж сообщества, призванный выработать привычку ежедневно вести блог в новом году.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary уже на пороге!";
@@ -9584,7 +9584,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "bloganuary.learnMore.modal.description.second" = "Публикуйте свои ответы.";
 
 /* The third line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.third" = "Читайте ответы других блоггеров, вдохновляйтесь и заводите новые знакомства.";
+"bloganuary.learnMore.modal.description.third" = "Читайте ответы других блогеров, вдохновляйтесь и заводите новые знакомства.";
 
 /* The first line of the description shown in the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.descriptions.first" = "Ежедневно вы будете получать подсказку с идеей для публикации.";

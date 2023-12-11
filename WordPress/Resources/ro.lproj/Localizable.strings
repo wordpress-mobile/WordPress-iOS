@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 17:05:08+0000 */
+/* Translation-Revision-Date: 2023-12-06 17:33:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
@@ -9566,6 +9566,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Află mai multe";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "În luna ianuarie, îndemnurile de a scrie vor veni de la Bloganuary - provocarea comunității noastre de a crea un obicei de a scrie pe bloguri în noul an.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary vine în curând!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Activează îndemnurile de a scrie";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Să începem!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publică răspunsul tău.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Citești răspunsurile altor bloggeri ca să găsești inspirație și să faci conexiuni noi.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Primești în fiecare zi un îndemn nou, ca să te inspire.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Ca să te alături la Bloganuary, trebuie să activezi Îndemnuri de a scrie.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary va folosi îndemnuri zilnice de a scrie ca să-ți trimită subiecte în luna ianuarie.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Alătură-te provocării noastre de a scrie timp de o lună";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Refuză";
