@@ -5,5 +5,3 @@
 * [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
 * [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
 * [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
-* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
-
