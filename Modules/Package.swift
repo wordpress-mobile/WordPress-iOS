@@ -2,6 +2,13 @@
 
 import PackageDescription
 
+let package = Package(name: "Modules")
+    .with([
+        LibraryModule(name: "JetpackStatsWidgetsCore")
+    ])
+
+// MARK: -
+
 extension Package {
 
     func with(_ libraries: [LibraryModule]) -> Package {
@@ -53,7 +60,7 @@ struct LibraryModule {
         }
     }
 
-    var targets: [Target]  {
+    var targets: [Target] {
         [target, testTarget].compactMap { $0 }
     }
 
@@ -68,7 +75,3 @@ struct LibraryModule {
     }
 }
 
-let package = Package(name: "Modules")
-    .with([
-        LibraryModule(name: "JetpackStatsWidgetsCore")
-    ])
