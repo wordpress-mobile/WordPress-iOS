@@ -2,6 +2,21 @@
 
 import PackageDescription
 
+extension Package {
+
+    func with(_ libraries: [LibraryModule]) -> Package {
+        return Package(
+            name: name,
+            products: libraries.map { $0.product },
+            targets: libraries.flatMap { $0.targets }
+        )
+    }
+}
+
+/// Abstraction to describe the a standard library sub-package.
+/// That is, a library with both a production and test target, each located in the folder expected by SPM, <root>/Sources/LibraryName and <root>/Tests/LibrayNameTests respectively.
+///
+/// To describe such library, one can simply instantiate `LibrayModule(name: "LibraryName")`.
 struct LibraryModule {
 
     enum UnitTests {
@@ -53,12 +68,7 @@ struct LibraryModule {
     }
 }
 
-let jetpackStatsWidgetsCore = LibraryModule(name: "JetpackStatsWidgetsCore")
-
-let package = Package(
-    name: "Modules",
-    products: [
-        jetpackStatsWidgetsCore.product
-    ],
-    targets: jetpackStatsWidgetsCore.targets
-)
+let package = Package(name: "Modules")
+    .with([
+        LibraryModule(name: "JetpackStatsWidgetsCore")
+    ])
