@@ -20,6 +20,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case contactSupportChatbot
     case jetpackSocialImprovements
     case domainManagement
+    case dynamicDashboardCards
     case plansInSiteCreation
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case wordPressSotWCard
@@ -61,6 +62,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackSocialImprovements:
             return AppConfiguration.isJetpack
         case .domainManagement:
+            return false
+        case .dynamicDashboardCards:
             return false
         case .plansInSiteCreation:
             return false
@@ -110,6 +113,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "jetpack_social_improvements_v1"
         case .domainManagement:
             return "domain_management"
+        case .dynamicDashboardCards:
+            return "dynamic_dashboard_cards"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
         case .bloganuaryDashboardNudge:
@@ -157,6 +162,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Social Improvements v1"
         case .domainManagement:
             return "Domain Management"
+        case .dynamicDashboardCards:
+            return "Dynamic Dashboard Cards"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
         case .bloganuaryDashboardNudge:
