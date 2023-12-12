@@ -308,7 +308,7 @@ platform :ios do
 
     # Wrap up
     version = release_version_current
-    removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
