@@ -475,12 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Jenis Aktivitas (%1$d)";
 
-/* Remove asset from media picker list */
-"Add" = "Tambah";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Tambahkan %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Tambahkan Blok Setelah";
 
@@ -635,9 +629,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Album";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -946,9 +937,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Keterangan audio. Kosong";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Mengotentikasi";
 
@@ -1256,8 +1244,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Menghitung...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Kamera";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1521,9 +1508,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Pilih berkas";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Pilih dari Perangkat Saya";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Pilih dari halaman beranda yang menampilkan pos terbaru Anda (blog klasik) atau halaman tetap\/statis.";
@@ -2018,9 +2002,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Tidak dapat menutup akun secara otomatis";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Menghitung item media...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Negara";
 
@@ -2401,7 +2382,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Hentikan";
 
@@ -2418,12 +2398,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nama Tampilan";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokumen, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokumen: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Lega rasanya saat satu pekerjaan terselesaikan!";
@@ -2618,9 +2592,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Sunting tombol \"Lagi\"";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Sunting %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edit Daftar Blokir Kata";
@@ -3658,9 +3629,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image title on image settings. */
 "Image title" = "Judul gambar";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Gambar, %@";
-
 /* Undated post time label */
 "Immediately" = "Segera";
 
@@ -4161,17 +4129,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Memuat Cadangan…";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Memuat GIF...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Memuat Menu...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Memuat Orang-orang...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Memuat Foto...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Memuat Paket...";
@@ -4416,13 +4378,6 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Ukuran Cache Media";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Tangkapan Media";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Pustaka Media";
-
 /* Title for action sheet with media options. */
 "Media Options" = "Opsi Media";
 
@@ -4444,9 +4399,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Pilihan media";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Pratinjau media gagal.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Media diunggah (%ld file)";
@@ -4850,9 +4802,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Tidak ditemukan acara yang cocok.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Tidak ada media yang cocok dengan pencarian Anda";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4991,9 +4941,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Belum ada yang menyukai";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Tidak ada yang bisa ditampilkan";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabel Detail Pemberitahuan";
 
@@ -5053,7 +5000,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5148,9 +5094,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Buka Pengaturan";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Buka pemilih media penuh";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Buka di Safari";
@@ -5367,9 +5310,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografi";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Foto disediakan oleh Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pilih nama pengguna";
@@ -5647,9 +5587,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Postingan yang Anda sukai akan muncul di sini.";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Didukung oleh Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5667,9 +5604,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Pratampil";
-
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Pratinjau %@";
 
 /* Title for web preview device switching button */
 "Preview Device" = "Pratinjau Perangkat";
@@ -5936,8 +5870,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Pengingat dihapus";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6358,12 +6291,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "Pengaturan pencarian";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Pencarian...";
 
@@ -6454,9 +6381,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Pilih domain";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Pilih media.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Pilih gaya paragraf";
@@ -7082,8 +7006,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Dukungan";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Pindah Situs";
 
 /* Switches the Editor to HTML Mode */
@@ -7171,9 +7094,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Tag membantu memberi tahu para pembaca tentang isi sebuah pos. Pisahkan tag yang berbeda dengan koma.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Memotret atau Merekam Video";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Ambil Foto";
 
@@ -7243,9 +7163,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Ketuk untuk memilih periode sebelumnya";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Ketuk untuk beralih ke situs lain, atau menambahkan situs baru";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Ketuk untuk melihat detail selengkapnya.";
@@ -7324,9 +7241,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Koneksi Facebook tidak dapat menemukan Halaman apa pun. Publikasikan tidak dapat terhubung ke Profil Facebook, hanya Halaman yang dipublikasikan.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF tidak bisa ditambahkan ke Pustaka Media.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Akun Google \"%@\" tidak cocok dengan akun apa pun di WordPress.com";
@@ -7535,9 +7449,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ada masalah saat mencoba mengakses lokasi Anda. Harap coba lagi nanti.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Ada masalah saat mencoba mengakses media Anda. Harap coba lagi nanti.";
-
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Terjadi masalah dengan editor Cerita.  Jika masalah berlanjut, Anda dapat menghubungi kami melalui layar Saya > Bantuan & Dukungan.";
 
@@ -7607,9 +7518,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Aplikasi ini memerlukan akses ke Kamera untuk memindai kode login. Ketuk tombol Buka Pengaturan untuk mengaktifkannya.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Aplikasi ini memerlukan izin untuk mengakses pustaka perangkat Anda untuk menambahkan foto dan\/atau video ke pos Anda. Harap ubah pengaturan privasi jika Anda ingin mengizinkan ini.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Kombinasi warna ini mungkin sulit dibaca. Coba gunakan warna latar belakang yang lebih terang dan\/atau warna teks yang lebih gelap.";
@@ -8166,9 +8074,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML Tidak Dikenal";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Tanggal pembuatan tidak diketahui";
-
 /* No comment provided by engineer. */
 "Unknown error" = "Galat tak diketahui";
 
@@ -8411,9 +8316,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Video tidak terunggah";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Video";
@@ -8944,9 +8846,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Bantuan WordPress";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "Media WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Pustaka Media WordPress";
 
@@ -9261,9 +9160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Akun Anda tidak memiliki izin untuk mengunggah media ke situs ini. Administrator Situs dapat mengubah izin ini.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Aplikasi Anda tidak memiliki izin akses pustaka media karena adanya pembatasan aktif seperti kontrol orang tua. Harap periksa pengaturan kontrol orang tua di perangkat ini.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Cadangan Anda sudah dapat diunduh";
 
@@ -9438,9 +9334,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
 "appSettings.optimizeImagesPopup.turnOn" = "Ya, biarkan";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
 
@@ -9551,9 +9444,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Salin URL";
-
-/* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "Buka di Browser";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
@@ -10010,9 +9900,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/alamat-situs-saya (URL)";
-
-/* Label displayed on image media items. */
-"image" = "gambar";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Untuk mengambil foto atau video agar dapat digunakan di artikel Anda.";
@@ -10613,12 +10500,6 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "dari";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "lainnya";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Beranda";
@@ -11513,9 +11394,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "belum dibaca";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "kunjungi halaman dokumentasi kami";
