@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 14:46:02+0000 */
+/* Translation-Revision-Date: 2023-12-06 17:33:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ro */
@@ -206,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d ani";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i zonă meniu în această temă";
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Tip de activitate (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Adaugă";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Adaugă element meniu la copil";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Adaugă element media nou";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Adaugă meniu nou";
@@ -733,10 +726,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "Ca alternativă, poți să convertești conținutul în blocuri.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ca alternativă, poți să detașezi și să editezi separat aceste blocuri atingând „Detașează modulele”.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Ca alternativă, poți să detașezi și să editezi separat acest bloc atingând „Detașează”.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Ca alternativă, poți să detașezi și să editezi separat acest bloc atingând „Detașează modulele”.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Ca alternativă, poți să aplatizezi conținutul prin anularea grupării blocurilor.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ca alternativă, poți să introduci parola pentru acest cont.";
@@ -884,9 +877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Sigur vrei să deconectezi Jetpack de pe site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Sigur vrei să ștergi definitiv aceste elemente?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Sigur vrei să ștergi definitiv acest element?";
@@ -1175,10 +1165,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "Meniu blocuri";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blocurile imbricate în adâncime pe mai mult de %d niveluri pot să nu fie randate corect în editorul pentru dispozitive mobile. Din acest motiv, recomandăm aplatizarea conținutului prin anularea grupării blocului sau prin editarea blocului folosind editorul web.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blocurile imbricate în adâncime pe mai mult de %d niveluri pot să nu fie randate corect în editorul pentru dispozitive mobile. Din acest motiv, recomandăm aplatizarea conținutului prin anularea grupării blocului sau prin editarea blocului folosind navigatorul tău web.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Este posibil ca blocurile imbricate mai adânc de %d niveluri să nu fie randate corect în editorul aplicației pentru mobil.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1344,9 +1331,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anulare";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Anulează încărcarea";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Schimbă parola";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Modifică setările";
 
 /* Change Username title. */
 "Change Username" = "Schimbă numele de utilizator";
@@ -2296,7 +2277,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Ștergre";
@@ -2635,8 +2615,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, atinge un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Introdu cuvinte diferite mai sus și vom căuta o adresă care se potrivește cu ele.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Intră în modul editare pentru a activa selectarea mai multor elemente pentru ștergere";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3067,9 +3043,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "Eșuat";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Exportul media a eșuat";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Marcarea notificărilor ca citite a eșuat";
 
@@ -3270,6 +3243,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Fotbal";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "Din acest motiv, recomandăm să editezi blocul folosind editorul web.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Din acest motiv, recomandăm să editezi blocul folosind navigatorul web.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Pentru comoditate, ți-am completat informațiile de contact din WordPress.com. Te rog să le verifici pentru a te asigura că sunt informațiile corecte pe care vrei să le folosești pentru acest domeniu.";
@@ -4431,9 +4410,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Eu";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -5144,9 +5121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Arată numai rezumatul";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Sunt disponibile numai fotografiile selectate pentru care ai dat acces.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografie";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotografii";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotografii oferite de Pexels";
@@ -5711,9 +5682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "Previzualizarea nu este disponibilă";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Previzualizează elementul media";
 
 /* No comment provided by engineer. */
 "Preview page" = "Previzualizează pagina";
@@ -6196,9 +6164,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Încearcă scanarea din nou";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Reîncearcă încărcarea";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Reîncearcă-le pe toate";
 
@@ -6474,9 +6439,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selectează țara";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Selectează mai multe";
 
 /* Blog Picker's Title */
 "Select Site" = "Selectează site-ul";
@@ -7291,9 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Atinge pentru a comuta la un alt site sau pentru a adăuga unul nou";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Atinge pentru a vizualiza elementul media pe ecran complet";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Atinge pentru a vedea mai multe detalii.";
 
@@ -7569,9 +7528,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "A fost o problemă la afișarea acestui articol.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "A fost o problemă la încărcarea elementului media.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "A fost o problemă la încărcarea datelor tale, reîmprospătează pagina pentru a încerca din nou.";
@@ -7905,14 +7861,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformă blocul...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Coș de gunoi";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Aruncă la gunoi elementele media selectate";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Arunci la gunoi acest articol?";
@@ -8045,9 +7997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Nu pot să creez legături noi la invitații.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Nu pot să șterg toate elementele media.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nu pot șterge elementul media.";
@@ -9342,9 +9291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Adresa ta gratuită pentru WordPress.com este";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Elementul media nu a putut fi exportat. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Noul tău domeniu %@ este în curs de inițializare. Poate dura până la 30 de minute înainte ca domeniul tău să fie funcțional.";
 
@@ -9468,6 +9414,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "Ce părere ai despre WordPress?";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Optimizează imaginile";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "Mare";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Mică";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximă";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Medie";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Calitate";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Calitate imagini";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Optimizarea imaginilor micșorează imaginile pentru o încărcare mai rapidă.\n\nAceastă opțiune este activată implicit, dar poți să o modifici oricând în setările aplicației.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Continui optimizarea imaginilor?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "Nu, oprește";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Da, lasă în continuare";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9584,6 +9563,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "Deschide în navigator";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Află mai multe";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "În luna ianuarie, îndemnurile de a scrie vor veni de la Bloganuary - provocarea comunității noastre de a crea un obicei de a scrie pe bloguri în noul an.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary vine în curând!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Activează îndemnurile de a scrie";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Să începem!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publică răspunsul tău.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Citești răspunsurile altor bloggeri ca să găsești inspirație și să faci conexiuni noi.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Primești în fiecare zi un îndemn nou, ca să te inspire.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Ca să te alături la Bloganuary, trebuie să activezi Îndemnuri de a scrie.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary va folosi îndemnuri zilnice de a scrie ca să-ți trimită subiecte în luna ianuarie.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Alătură-te provocării noastre de a scrie timp de o lună";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Refuză";
@@ -10328,9 +10341,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Pentru a încărca videouri mai lungi de 5 minute, trebuie să ai un plan plătit.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Refuză";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Adaugă element media nou";
 
@@ -10409,6 +10419,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Refuză";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Elementul media nu a putut fi exportat. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Exportul media a eșuat";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Această aplicație are nevoie de permisiunea de a accesa Camera pentru a captura elemente media noi, te rog schimbă setările de confidențialitate dacă dorești să permiți asta.";
 
@@ -10442,6 +10458,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Fă un video";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Se pare că încă ai instalată aplicația WordPress.";
 
@@ -10454,9 +10473,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Nu mai ai nevoie de aplicația WordPress pe dispozitivul tău";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Finalizează";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "Recomandăm să dezinstalezi aplicația WordPress pe dispozitivul tău ca să eviți conflictele.";
 
@@ -10465,6 +10481,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Am transferat toate datele și setările tale. Toate sunt acolo, exact unde erau.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "Este timpul să-ți continui călătoria WordPress în aplicația Jetpack!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Îți mulțumim că ai comutat la Jetpack!";
@@ -10513,6 +10532,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Bine ai venit la Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Să-i dăm drumul";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Aplicația Jetpack are toate funcționalitățile aplicației WordPress, cu acces exclusiv la Statistici, Cititor, Notificări și altele.";
@@ -10733,13 +10755,16 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Aruncă la gunoi";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Șterge";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Partajează";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Vizualizează";
 
 /* User action to dismiss featured media options. */
@@ -11158,6 +11183,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Selectează media.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Atinge pentru a vizualiza elementul media pe ecran complet";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Previzualizează elementul media";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Anulează selecția";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Selectează";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";

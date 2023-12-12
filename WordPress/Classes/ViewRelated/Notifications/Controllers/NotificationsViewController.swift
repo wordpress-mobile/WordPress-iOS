@@ -439,7 +439,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
               deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
@@ -466,7 +466,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
             deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
@@ -890,7 +890,7 @@ extension NotificationsViewController {
         }
 
         let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
-            return note == tableViewHandler.resultsController?.object(at: indexPath) as? Notification
+            return note == tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification
         }
 
         guard noteIndexPath == nil else {
@@ -1408,7 +1408,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
               let cell = cell as? ListTableViewCell else {
             return
         }

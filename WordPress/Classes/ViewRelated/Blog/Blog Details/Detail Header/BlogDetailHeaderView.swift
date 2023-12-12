@@ -3,6 +3,7 @@ import UIKit
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
+    func makeSiteActionsMenu() -> UIMenu?
     func didShowSiteIconMenu()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
@@ -116,8 +117,13 @@ class BlogDetailHeaderView: UIView {
     private func setupChildViews(items: [ActionRow.Item]) {
         assert(delegate != nil)
 
-        if let menu = delegate?.makeSiteIconMenu() {
-            titleView.siteIconView.setMenu(menu) { [weak self] in
+        if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
+            titleView.siteActionButton.showsMenuAsPrimaryAction = true
+            titleView.siteActionButton.menu = siteActionsMenu
+        }
+
+        if let siteIconMenu = delegate?.makeSiteIconMenu() {
+            titleView.siteIconView.setMenu(siteIconMenu) { [weak self] in
                 self?.delegate?.didShowSiteIconMenu()
                 WPAnalytics.track(.siteSettingsSiteIconTapped)
                 self?.titleView.siteIconView.spotlightIsShown = false
@@ -130,7 +136,6 @@ class BlogDetailHeaderView: UIView {
 
         titleView.subtitleButton.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
         titleView.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
-        titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
         titleView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -207,7 +212,7 @@ fileprivate extension BlogDetailHeaderView {
             let stackView = UIStackView(arrangedSubviews: [
                 siteIconView,
                 titleStackView,
-                siteSwitcherButton
+                siteActionButton
             ])
 
             stackView.alignment = .center
@@ -239,7 +244,7 @@ fileprivate extension BlogDetailHeaderView {
             button.configuration = configuration
 
             button.menu = UIMenu(children: [
-                UIAction(title: Strings.openInBrowser, image: UIImage(systemName: "link"), handler: { [weak button] _ in
+                UIAction(title: Strings.visitSite, image: UIImage(systemName: "safari"), handler: { [weak button] _ in
                     button?.sendActions(for: .touchUpInside)
                 }),
                 UIAction(title: Strings.actionCopyURL, image: UIImage(systemName: "doc.on.doc"), handler: { [weak button] _ in
@@ -273,17 +278,17 @@ fileprivate extension BlogDetailHeaderView {
             return button
         }()
 
-        let siteSwitcherButton: UIButton = {
+        let siteActionButton: UIButton = {
             let button = UIButton(frame: .zero)
-            let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
+            let image = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
 
             button.setImage(image, for: .normal)
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tintColor = .secondaryLabel
-            button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
-            button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
-            button.accessibilityIdentifier = .switchSiteAccessibilityId
+            button.accessibilityLabel = NSLocalizedString("mySite.siteActions.button", value: "Site Actions", comment: "Button that reveals more site actions")
+            button.accessibilityHint = NSLocalizedString("mySite.siteActions.hint", value: "Tap to show more site actions", comment: "Accessibility hint for button used to show more site actions")
+            button.accessibilityIdentifier = .siteActionAccessibilityId
 
             return button
         }()
@@ -337,8 +342,8 @@ fileprivate extension BlogDetailHeaderView {
             NSLayoutConstraint.activate([
                 mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
                 mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-                mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+                mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
             ])
 
             setupConstraintsForSiteSwitcher()
@@ -352,8 +357,8 @@ fileprivate extension BlogDetailHeaderView {
 
         private func setupConstraintsForSiteSwitcher() {
             NSLayoutConstraint.activate([
-                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
-                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
+                siteActionButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteActionButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
             ])
         }
     }
@@ -363,11 +368,11 @@ private extension String {
     // MARK: Accessibility Identifiers
     static let siteTitleAccessibilityId = "site-title-button"
     static let siteUrlAccessibilityId = "site-url-button"
-    static let switchSiteAccessibilityId = "switch-site-button"
+    static let siteActionAccessibilityId = "site-action-button"
 }
 
 private enum Strings {
-    static let openInBrowser = NSLocalizedString("blogHeader.actionOpenInBrowser", value: "Open in Browser", comment: "Context menu button title")
+    static let visitSite = NSLocalizedString("blogHeader.actionVisitSite", value: "Visit site", comment: "Context menu button title")
     static let actionCopyURL = NSLocalizedString("blogHeader.actionCopyURL", value: "Copy URL", comment: "Context menu button title")
 
 }

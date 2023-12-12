@@ -23,8 +23,7 @@
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(bez naslova)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Dodaj";
 
 /* The title on the add category screen */
@@ -216,7 +215,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Obriši";
@@ -275,8 +273,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Skica";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -450,9 +447,7 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -589,9 +584,6 @@
 
 /* Label for date periods. */
 "Period" = "Vremensko razdoblje";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Slike";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Molimo unesite vaše podatke";

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "logo-bloganuary-large.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

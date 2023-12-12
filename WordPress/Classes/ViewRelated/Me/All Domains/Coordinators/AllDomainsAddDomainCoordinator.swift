@@ -19,9 +19,11 @@ import Foundation
 
         let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
             customTitle: RegisterDomainCoordinator.TextContent.checkoutTitle,
-            analyticsSource: analyticsSource,
-            purchaseCallback: domainPurchasedCallback
-        )
+            analyticsSource: analyticsSource
+        ) { [weak coordinator] controller, domain in
+            domainPurchasedCallback(controller, domain)
+            coordinator?.trackDomainPurchasingCompleted()
+        }
 
         coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
         coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart // For existing site flow (plans)

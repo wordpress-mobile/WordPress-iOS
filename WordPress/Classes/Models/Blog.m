@@ -326,7 +326,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return self.icon.length > 0 ? [NSURL URLWithString:self.icon].pathComponents.count > 1 : NO;
 }
 
-- (NSTimeZone *)timeZone
+- (nullable NSTimeZone *)timeZone
 {
     CGFloat const OneHourInSeconds = 60.0 * 60.0;
 

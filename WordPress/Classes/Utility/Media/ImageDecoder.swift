@@ -2,14 +2,14 @@ import Foundation
 
 enum ImageDecoder {
     /// Returns an image created from the given URL. The image is decompressed.
-    /// Returns ``AnimatedImageWrapper`` the image is a GIF.
+    /// Returns ``AnimatedImage`` the image is a GIF.
     static func makeImage(from fileURL: URL) async throws -> UIImage {
         let data = try Data(contentsOf: fileURL)
         return try _makeImage(from: data, size: nil)
     }
 
     /// Returns an image created from the given data. The image is decompressed.
-    /// Returns ``AnimatedImageWrapper`` the image is a GIF.
+    /// Returns ``AnimatedImage`` the image is a GIF.
     ///
     /// - parameter size: The desired size of the thumbnail in pixels.
     static func makeImage(from data: Data, size: CGSize? = nil) async throws -> UIImage {
@@ -24,7 +24,7 @@ private func _makeImage(from data: Data, size: CGSize?) throws -> UIImage {
         throw URLError(.cannotDecodeContentData)
     }
     if data.isMatchingMagicNumbers(Data.gifMagicNumbers) {
-        return AnimatedImageWrapper(gifData: data) ?? image
+        return AnimatedImage(gifData: data) ?? image
     }
     if let size {
         let size = aspectFillSize(imageSize: image.size.scaled(by: image.scale), targetSize: size)

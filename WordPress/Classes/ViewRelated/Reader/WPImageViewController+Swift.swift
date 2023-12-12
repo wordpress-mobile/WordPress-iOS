@@ -13,7 +13,7 @@ extension WPImageViewController {
     }
 
     @objc func startAnimationIfNeeded(for image: UIImage, in imageView: CachedAnimatedImageView?) {
-        if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+        if let gif = image as? AnimatedImage, let data = gif.gifData {
             imageView?.animate(withGIFData: data)
         }
     }

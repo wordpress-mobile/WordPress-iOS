@@ -51,9 +51,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d blwyddyn";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i un ardal dewislen yn y thema hon";
 
@@ -639,7 +636,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Dileu";
@@ -743,8 +739,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Drafft";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1222,9 +1217,7 @@
 "Me" = "Fi";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Cyfrwng";
@@ -1829,9 +1822,6 @@
    User action to retry media upload. */
 "Retry" = "Ceisiwch eto";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Ailgynnig llwytho";
-
 /* No comment provided by engineer. */
 "Retry?" = "Ceisio eto?";
 
@@ -2349,8 +2339,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Cyfanswm Dilynwyr WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Dileu";

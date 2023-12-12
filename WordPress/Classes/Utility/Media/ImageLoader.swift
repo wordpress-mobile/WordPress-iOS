@@ -59,7 +59,7 @@ import AutomatticTracks
             self.loadingIndicator = loadingIndicator
         } else {
             let loadingIndicator = CircularProgressView(style: .primary)
-            WPStyleGuide.styleProgressViewWhite(loadingIndicator)
+            loadingIndicator.backgroundColor = .clear
             self.loadingIndicator = loadingIndicator
         }
 

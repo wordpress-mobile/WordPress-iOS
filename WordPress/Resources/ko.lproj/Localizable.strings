@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 09:54:12+0000 */
+/* Translation-Revision-Date: 2023-12-05 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -206,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d 년";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$d픽셀";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i 이 테마의 메뉴 영역";
@@ -478,8 +475,7 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "활동 유형 (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "추가";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -580,9 +576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "메뉴 항목을 하위 항목에 추가";
-
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "새 미디어 추가";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "새 메뉴 추가하기";
@@ -733,10 +726,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "콘텐츠를 블록으로 변환할 수도 있습니다.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "그 대신에 \"분리\"를 눌러 이 블록을 분리하고 따로 편집하실 수 있습니다.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "또는 \"일반 블록으로 변환\"을 눌러 이 블록을 분리하고 따로 편집할 수 있습니다.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "그 대신에 블록 그룹 해제를 통해 콘텐츠를 평평하게 하실 수 있습니다.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "또는 이 계정에 대한 비밀번호를 입력하셔도 됩니다.";
@@ -884,9 +877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "사이트에서 젯팩 연결을 해제하시겠어요?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "선택한 항목을 영구 삭제하시겠습니까?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "이 항목을 영구적으로 삭제하시겠습니까?";
@@ -1175,10 +1165,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "블록 메뉴";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "%d 레벨보다 깊숙이 중첩된 블록은 모바일 편집기에서 올바르게 렌더링되지 않을 수 있습니다. 따라서 블록 그룹 해제를 통해 콘텐츠를 평평하게 하거나 웹 편집기를 사용하여 블록을 편집하는 것이 좋습니다.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "%d 레벨보다 깊숙이 중첩된 블록은 모바일 편집기에서 올바르게 렌더링되지 않을 수 있습니다. 따라서 블록 그룹 해제를 통해 콘텐츠를 평평하게 하거나 웹 브라우저를 사용하여 블록을 편집하는 것이 좋습니다.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "%d 레벨보다 깊숙이 중첩된 블록은 모바일 편집기에서 올바르게 렌더링되지 않을 수 있습니다.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "블로그";
@@ -1344,9 +1331,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "취소";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "업로드 취소";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1404,9 +1388,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "비밀번호 변경";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "설정 변경";
 
 /* Change Username title. */
 "Change Username" = "사용자 이름 변경";
@@ -2296,7 +2277,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "삭제";
@@ -2635,8 +2615,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "각 블록에는 자체 설정이 있습니다. 설정을 찾으려면 블록을 누르세요. 화면 하단의 도구 모음에 해당 설정이 표시됩니다.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2840,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "위에 다른 단어를 입력하면 일치하는 주소를 찾겠습니다.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "편집 모드로 전환하여 삭제할 다중 선택 활성화하기";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3067,9 +3043,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "실패함";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "미디어 내보내기 실패";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "알림을 읽음으로 표시 실패";
 
@@ -3270,6 +3243,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "축구";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "따라서 웹 편집기를 사용하여 블록을 편집하는 것이 좋습니다.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "따라서 웹 브라우저를 사용하여 블록을 편집하는 것이 좋습니다.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "편의를 위해 워드프레스닷컴 연락처 정보를 미리 채웠습니다. 이 도메인에 사용하려는 정보가 정확한지 검토하여 확인하세요.";
@@ -4431,9 +4410,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "나";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "미디어";
@@ -5144,9 +5121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "요악문만 표시";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "접근 권한을 부여한 선택한 사진만 사용할 수 있습니다.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5399,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "사진";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "사진";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Pexels 제공 사진";
@@ -5711,9 +5682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title on display preview error */
 "Preview Unavailable" = "미리보기를 사용할 수 없음";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "미디어 미리보기";
 
 /* No comment provided by engineer. */
 "Preview page" = "페이지 미리 보기";
@@ -6196,9 +6164,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "검사하기 다시 시도하기";
 
-/* User action to retry media upload. */
-"Retry Upload" = "다시 업로드";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "모두 재시도";
 
@@ -6474,9 +6439,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "국가 선택";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "더 많이 선택";
 
 /* Blog Picker's Title */
 "Select Site" = "사이트 선택";
@@ -7291,9 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "눌러서 다른 사이트로 전환하거나 새 사이트 추가하기";
 
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "미디어를 눌러 전체 화면에서 보기";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "추가 상세 정보를 보려면 누르세요.";
 
@@ -7569,9 +7528,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "글을 표시하는 데 문제가 있습니다.";
-
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "미디어 항목을 로드하는 데 문제가 발생했습니다.";
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "데이터 로드 중에 문제가 발생했습니다. 페이지를 새로 고치고 다시 시도하세요.";
@@ -7905,14 +7861,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "블록 변형…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "휴지통";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "선택한 미디어 삭제";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "이 글을 휴지통에 버릴까요?";
@@ -8045,9 +7997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "새 초대 링크를 만들 수 없습니다.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "모든 미디어 항목을 삭제할 수 없습니다.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "미디어 항목을 삭제할 수 없습니다.";
@@ -9339,9 +9288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "무료 워드프레스닷컴 주소:";
 
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "미디어를 내보낼 수 없음. If the problem persists you can contact us via the Me > 도움 및 지원 화면입니다.";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "새 도메인(%@)을 설정하는 중입니다. 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
 
@@ -9465,6 +9411,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "워드프레스를 어떻게 생각하시나요?";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "이미지 최적화";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "높음";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "낮음";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "최대";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "중간";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "품질";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "이미지 품질";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "이미지 최적화에서는 더 빠른 업로드를 위해 이미지가 축소됩니다.\n\n이 옵션은 기본적으로 활성화되어 있지만, 언제든지 앱 설정에서 변경하실 수 있습니다.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "이미지를 계속 최적화하시겠어요?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "아니요. 끄기";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "예. 그대로 두기";
+
 /* Label displayed on audio media items. */
 "audio" = "오디오";
 
@@ -9581,6 +9560,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionOpenInBrowser" = "브라우저에서 열기";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "1월 한 달 동안 새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "블로깅 프롬프트 켜기";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "지금 시작하세요!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "응답을 공개하세요.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "다른 블로거의 응답을 읽으며 영감을 얻고 새로운 연결 고리를 만드세요.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "영감을 주는 새로운 프롬프트를 매일 받아보세요.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Bloganuary에 참여하려면 블로깅 프롬프트를 활성화해야 합니다.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary에서 일일 블로깅 프롬프트를 사용하여 1월 한 달 동안의 게시글을 보내드립니다.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "한 달 동안 진행되는 글쓰기 챌린지 참여";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "무시";
@@ -10325,9 +10338,6 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "5분을 초과하는 비디오를 업로드하려면 유료 요금제가 필요합니다.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "무시";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "새 미디어 추가";
 
@@ -10406,6 +10416,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "미디어를 내보낼 수 없습니다. 문제가 지속될 경우 내 계정 > 도움말 및 지원 화면을 통해 문의하실 수 있습니다.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "미디어 내보내기 실패";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "새 미디어를 캡처하려면 카메라에 접근하는 권한이 이 앱에 필요합니다. 접근을 허용하려면 프라이버시 설정을 변경하세요.";
 
@@ -10439,6 +10455,9 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "비디오 촬영";
 
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d×%2$dpx";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다.";
 
@@ -10451,9 +10470,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "더는 기기에 워드프레스 앱이 필요하지 않습니다.";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "마침";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "데이터가 충돌하지 않도록 기기에서 워드프레스 앱을 제거하는 것이 좋습니다.";
 
@@ -10462,6 +10478,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "모든 데이터와 설정을 이전하겠습니다. 모든 것이 그대로 다 남아 있습니다.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "젯팩 앱에서 워드프레스 여정을 계속하실 때가 되었습니다!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "젯팩으로 전환해 주셔서 감사합니다!";
@@ -10510,6 +10529,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "젯팩에 오신 것을 환영합니다!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "지금 시작";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "젯팩 앱에서는 워드프레스 앱의 모든 기능을 보유하며, 이제 통계, 리더, 알림 등에 독점적으로 접근할 수 있습니다.";
@@ -10730,13 +10752,16 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
-/* Swipe action title */
+/* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "휴지통";
 
-/* Swipe action title */
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "삭제";
+
+/* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "공유";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "보기";
 
 /* User action to dismiss featured media options. */
@@ -11155,6 +11180,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "미디어를 선택합니다.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "미디어를 눌러 전체 화면에서 보기";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "미디어 미리보기";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "선택 해제";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "선택";
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "미디어";
