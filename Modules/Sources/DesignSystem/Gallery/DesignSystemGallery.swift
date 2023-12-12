@@ -1,13 +1,15 @@
 import SwiftUI
 
-struct DesignSystemGallery: View {
-    var body: some View {
+public struct DesignSystemGallery: View {
+    public var body: some View {
         List {
             NavigationLink("Foundation", destination: foundationList)
             NavigationLink("Components", destination: componentsList)
         }
         .navigationTitle("Design System")
     }
+
+    public init() { }
 
     private var foundationList: some View {
         List {

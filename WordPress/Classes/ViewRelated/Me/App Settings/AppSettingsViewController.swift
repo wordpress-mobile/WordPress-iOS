@@ -5,6 +5,7 @@ import Gridicons
 import WordPressShared
 import SVProgressHUD
 import WordPressFlux
+import DesignSystem
 
 class AppSettingsViewController: UITableViewController {
     enum Sections: Int {

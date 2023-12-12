@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 struct DomainPurchaseChoicesView: View {
     private enum Constants {
@@ -87,7 +88,7 @@ struct DomainPurchaseChoicesView: View {
                 .padding(.bottom, Length.Padding.single)
                 DSButton(
                     title: buttonTitle,
-                    style: .init(emphasis: .primary, size: .large),
+                    style: .init(emphasis: .primary, size: .large, isJetpack: AppConfiguration.isJetpack),
                     isLoading: isProgressViewActive ? $viewModel.isGetDomainLoading : .constant(false),
                     action: action
                 )

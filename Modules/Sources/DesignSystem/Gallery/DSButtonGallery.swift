@@ -9,10 +9,24 @@ struct DSButtonGallery: View {
                         Spacer()
                         VStack(spacing: Length.Padding.medium) {
                             ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
-                                DSButton(title: emphasis.title, style: .init(emphasis: emphasis, size: size)) { () }
+                                DSButton(
+                                    title: emphasis.title,
+                                    style: .init(
+                                        emphasis: emphasis,
+                                        size: size,
+                                        isJetpack: true
+                                    )
+                                ) {()}
                             }
                             ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
-                                DSButton(title: emphasis.title + " Disabled", style: .init(emphasis: emphasis, size: size)) { () }
+                                DSButton(
+                                    title: emphasis.title + " Disabled",
+                                    style: .init(
+                                        emphasis: emphasis,
+                                        size: size,
+                                        isJetpack: true
+                                    )
+                                ) {()}
                                     .disabled(true)
                             }
                         }

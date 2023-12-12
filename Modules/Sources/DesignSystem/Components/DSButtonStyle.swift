@@ -15,6 +15,13 @@ public struct DSButtonStyle {
 
     public let emphasis: Emphasis
     public let size: Size
+    public let isJetpack: Bool
+
+    public init(emphasis: Emphasis, size: Size, isJetpack: Bool) {
+        self.emphasis = emphasis
+        self.size = size
+        self.isJetpack = isJetpack
+    }
 }
 
 // MARK: - SwiftUI.Button DSButtonStyle helpers
@@ -26,7 +33,7 @@ extension DSButtonStyle {
         case .secondary:
             return .DS.Foreground.primary
         case .tertiary:
-            return .DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack)
+            return .DS.Foreground.brand(isJetpack: isJetpack)
         }
     }
 

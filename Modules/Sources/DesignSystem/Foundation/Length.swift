@@ -1,3 +1,5 @@
+import Foundation
+
 public enum Length {
     public enum Padding {
         public static let half: CGFloat = 4

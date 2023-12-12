@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import DesignSystem
 
 final class AllDomainsListEmptyView: UIView {
 

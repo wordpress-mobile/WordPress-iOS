@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 protocol NoSitesViewDelegate: AnyObject {
     func didTapAccountAndSettingsButton()

@@ -1,4 +1,6 @@
 import SwiftUI
+import JetpackStatsWidgetsCore
+import DesignSystem
 
 struct CompliancePopover: View {
     private enum Constants {

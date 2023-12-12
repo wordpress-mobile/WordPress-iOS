@@ -142,7 +142,7 @@ struct DSButton_Previews: PreviewProvider {
                 .ignoresSafeArea()
             DSButton(
                 title: "Get Domain",
-                style: .init(emphasis: .primary, size: .large),
+                style: .init(emphasis: .primary, size: .large, isJetpack: true),
                 action: {
                     ()
                 }

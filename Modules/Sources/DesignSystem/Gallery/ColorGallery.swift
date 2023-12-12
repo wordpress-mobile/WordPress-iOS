@@ -133,3 +133,34 @@ struct ColorGallery: View {
         }
     }
 }
+
+// MARK: - Helpers for Color Gallery
+private extension UIColor {
+    func color(for trait: UITraitCollection?) -> UIColor {
+        if let trait = trait {
+            return resolvedColor(with: trait)
+        }
+        return self
+    }
+
+    func lightVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .light))
+    }
+
+    func darkVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .dark))
+    }
+
+    func hexString() -> String? {
+        guard let components = cgColor.components, components.count >= 3 else {
+            return nil
+        }
+
+        let r = Float(components[0])
+        let g = Float(components[1])
+        let b = Float(components[2])
+
+        return String(format: "%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
+    }
+}
+
