@@ -1,6 +1,6 @@
 24.0
 -----
-
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
 
 23.9
 -----
