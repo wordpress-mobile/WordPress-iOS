@@ -39,7 +39,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .googleDomainsCard:
-            return true
+            return false
         }
     }
 
