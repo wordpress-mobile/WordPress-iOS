@@ -30,7 +30,7 @@ class AppRatingUtility: NSObject {
     private let featureFlagStore: RemoteFeatureFlagStore
     private var sections = [String: Section]()
     private var promptingDisabledRemote: Bool {
-        RemoteFeatureFlag.inAppRating.enabled(using: featureFlagStore)
+        RemoteFeatureFlag.inAppRating.enabled(using: featureFlagStore) == false
     }
 
     /// Don't prompt for reviews for internal builds

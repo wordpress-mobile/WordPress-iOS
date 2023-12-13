@@ -5,15 +5,17 @@ import OHHTTPStubs
 class AppRatingUtilityTests: XCTestCase {
     fileprivate var defaults: UserDefaults!
     fileprivate var utility: AppRatingUtility!
+    private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
 
 
     override func setUp() {
         let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)
         self.defaults = UserDefaults()
-        self.utility = AppRatingUtility(defaults: self.defaults)
+        self.utility = AppRatingUtility(defaults: self.defaults, featureFlagStore: remoteFeatureFlagsStore)
         self.utility.setVersion("1.0")
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
+        remoteFeatureFlagsStore.inAppRating = true
         super.setUp()
     }
 
