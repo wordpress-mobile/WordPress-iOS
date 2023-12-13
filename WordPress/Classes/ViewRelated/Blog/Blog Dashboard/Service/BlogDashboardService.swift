@@ -96,12 +96,11 @@ final class BlogDashboardService {
 private extension BlogDashboardService {
 
     func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
-        //
         let personalizationService = BlogDashboardPersonalizationService(repository: repository, siteID: dotComID)
 
-        //
+        // Map `DashboardCard` instances to `DashboardCardModel`
         var allCards: [DashboardCardModel] = DashboardCard.allCases.compactMap { card -> DashboardCardModel? in
-            guard ![.dynamic, .personalize].contains(card) else {
+            guard card != .dynamic else {
                 return nil
             }
             return self.dashboardCardModel(
@@ -113,29 +112,27 @@ private extension BlogDashboardService {
             )
         }
 
-        //
+        // Maps dynamic cards to `DashboardCardModel`.
         if let dynamic = entity?.dynamic?.value {
             let cards = dynamic.map { model in
                 return self.dashboardDynamicCardModel(model: model, dotComID: dotComID)
             }
-            let cardsByOrder = Dictionary(grouping: cards) { $0.model.order ?? .bottom }
+            let cardsByOrder = Dictionary(grouping: cards) { $0.payload.order ?? .bottom }
             let topCards = cardsByOrder[.top, default: []].map { DashboardCardModel.dynamic($0) }
             let bottomCards = cardsByOrder[.bottom, default: []].map { DashboardCardModel.dynamic($0) }
-            allCards = topCards + allCards + bottomCards
+
+            // Adds "top" cards at the beginning of the list.
+            allCards = topCards + allCards
+
+            // Adds "bottom" cards at the bottom of the list just before "personalize" card.
+            if allCards.last?.cardType == .personalize {
+                allCards.insert(contentsOf: bottomCards, at: allCards.endIndex - 1)
+            } else {
+                allCards = allCards + bottomCards
+            }
         }
 
-        // Add personalize card
-        if let personalizeCard = dashboardCardModel(
-            from: .personalize,
-            entity: entity,
-            blog: blog,
-            dotComID: dotComID,
-            personalizationService: personalizationService
-        ) {
-            allCards.append(personalizeCard)
-        }
-
-        //
+        // Add "empty" card if the list of cards is empty.
         if allCards.isEmpty || allCards.map(\.cardType) == [.personalize] {
             let model = DashboardCardModel.default(.init(cardType: .empty, dotComID: dotComID))
             allCards.insert(model, at: 0)
@@ -169,10 +166,10 @@ private extension BlogDashboardService {
     }
 
     func dashboardDynamicCardModel(
-        model: DashboardCardDynamicModel.Model,
+        model: DashboardCardDynamicModel.Payload,
         dotComID: Int
     ) -> DashboardCardDynamicModel {
-        return .init(model: model, dotComID: dotComID)
+        return .init(payload: model, dotComID: dotComID)
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {

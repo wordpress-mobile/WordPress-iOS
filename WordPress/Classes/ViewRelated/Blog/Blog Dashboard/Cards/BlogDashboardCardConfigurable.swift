@@ -1,8 +1,8 @@
 import Foundation
 
 protocol BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel)
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?)
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel)
     var row: Int { get set }
 }
 
@@ -12,10 +12,12 @@ extension BlogDashboardCardConfigurable {
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel) {
-        guard case .default(let model) = model else {
-            return
+        switch model {
+        case .default(let model):
+            self.configure(blog: blog, viewController: viewController, apiResponse: model.apiResponse)
+        default:
+            self.configure(blog: blog, viewController: viewController, apiResponse: nil)
         }
-        self.configure(blog: blog, viewController: viewController, apiResponse: model.apiResponse)
     }
 }
 

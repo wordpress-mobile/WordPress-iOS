@@ -52,8 +52,8 @@ struct DashboardCardDefaultModel: Hashable {
 
 struct DashboardCardDynamicModel: Hashable {
 
-    typealias Model = BlogDashboardRemoteEntity.BlogDashboardDynamic
+    typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
 
-    let model: Model
+    let payload: Payload
     let dotComID: Int
 }

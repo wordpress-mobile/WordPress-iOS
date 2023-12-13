@@ -21,32 +21,32 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
         self.configureMoreButton(with: blog)
 
-        if let title = model.model.title {
-            self.frameView.setTitle(model.model.title)
+        if let title = model.payload.title {
+            self.frameView.setTitle(title)
         }
     }
 
     private func setupFrameView() {
-        self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        self.frameView.onEllipsisButtonTap = { }
-        self.frameView.onViewTap = { }
+//        self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+//        self.frameView.onEllipsisButtonTap = { }
+//        self.frameView.onViewTap = { }
         self.frameView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(frameView)
         self.contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
     }
 
     private func configureMoreButton(with blog: Blog) {
-        self.frameView.addMoreMenu(
-            items:
-                [
-                    UIMenu(
-                        options: .displayInline,
-                        children: [
-                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
-                        ]
-                    )
-                ],
-            card: .googleDomains
-        )
+//        self.frameView.addMoreMenu(
+//            items:
+//                [
+//                    UIMenu(
+//                        options: .displayInline,
+//                        children: [
+//                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
+//                        ]
+//                    )
+//                ],
+//            card: .googleDomains
+//        )
     }
 }
