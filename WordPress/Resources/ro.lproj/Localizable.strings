@@ -9568,7 +9568,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "bloganuary.dashboard.card.button.learnMore" = "Află mai multe";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "În luna ianuarie, îndemnurile de a scrie vor veni de la Bloganuary - provocarea comunității noastre de a crea un obicei de a scrie pe bloguri în noul an.";
+"bloganuary.dashboard.card.description" = "În luna ianuarie, îndemnurile de a scrie vor veni de la Bloganuary — provocarea comunității noastre de a crea un obicei de a scrie pe bloguri în noul an.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary vine în curând!";
