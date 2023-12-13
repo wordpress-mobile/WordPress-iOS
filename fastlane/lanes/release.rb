@@ -99,7 +99,7 @@ platform :ios do
     )
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
-      UI.message('Aborting code freeze as requested.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -135,7 +135,7 @@ platform :ios do
     generate_strings_file_for_glotpress
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message('Aborting code freeze completion.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -180,7 +180,7 @@ platform :ios do
     bump_build_codes
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message('Aborting beta deployment.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -318,7 +318,7 @@ platform :ios do
       push_to_git_remote(tags: false)
       trigger_release_build
     else
-      UI.message('Aborting release finalization.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
   end
