@@ -9562,7 +9562,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "bloganuary.dashboard.card.button.learnMore" = "معرفة المزيد";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "بالنسبة إلى شهر يناير، ستأتي موجّهات التدوين من Bloganuary - تحدٍّ مجتمعي لدينا لإنشاء عادة التدوين الخاصة بالعام الجديد.";
+"bloganuary.dashboard.card.description" = "بالنسبة إلى شهر يناير، ستأتي موجّهات التدوين من Bloganuary — تحدٍّ مجتمعي لدينا لإنشاء عادة التدوين الخاصة بالعام الجديد.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary قادمة!";
