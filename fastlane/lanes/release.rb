@@ -135,7 +135,7 @@ platform :ios do
     generate_strings_file_for_glotpress
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message('Aborting code freeze completion. See you later.')
+      UI.message('Aborting code freeze completion.')
       next
     end
 
@@ -318,7 +318,7 @@ platform :ios do
       push_to_git_remote(tags: false)
       trigger_release_build
     else
-      UI.message('Aborting release finalization. See you later.')
+      UI.message('Aborting release finalization.')
       next
     end
   end
