@@ -1,8 +1,5 @@
-* [**] Add media fitlers to the Site Media screen [#22096]
-* [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
-* [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
-* [**] [internal] Remove WPMediaPicker dependency [#22103]
-* [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
-* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
-* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
-* [*] Fix an occassional crash when logging out after interacting with Reader [#22147]
+We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
+
+Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
+
+Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. We also fixed a rare crash that happened while logging out. Sweet.
