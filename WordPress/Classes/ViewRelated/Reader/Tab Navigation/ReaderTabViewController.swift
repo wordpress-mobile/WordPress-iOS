@@ -11,15 +11,12 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    private let settingsButton: SpotlightableButton = SpotlightableButton(type: .custom)
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-        setupNavigationButtons()
 
         ReaderTabViewController.configureRestoration(on: self)
 
@@ -70,8 +67,9 @@ class ReaderTabViewController: UIViewController {
                 viewModel.showTab(at: ReaderTabConstants.discoverIndex)
             }
 
-            settingsButton.shouldShowSpotlight = true
+            // TODO: Revisit Reader spotlight
         }
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,27 +78,7 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.stop(.main)
 
         QuickStartTourGuide.shared.endCurrentTour()
-    }
-
-    func setupNavigationButtons() {
-        // Search Button
-        let searchButton = UIBarButtonItem(image: UIImage.gridicon(.search),
-                                           style: .plain,
-                                           target: self,
-                                           action: #selector(didTapSearchButton))
-        searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        searchButton.accessibilityLabel = ReaderTabConstants.searchButtonAccessibilityLabel
-
-        // Settings Button
-        settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
-        settingsButton.contentEdgeInsets = ReaderTabConstants.settingsButtonContentEdgeInsets
-        settingsButton.setImage(.gridicon(.readerFollowing), for: .normal)
-        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
-        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
-        settingsButton.accessibilityLabel = ReaderTabConstants.settingsButtonAccessibilityLabel
-        let settingsButton = UIBarButtonItem(customView: settingsButton)
-
-        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func loadView() {
@@ -128,10 +106,6 @@ class ReaderTabViewController: UIViewController {
 
 // MARK: - Navigation Buttons
 extension ReaderTabViewController {
-    @objc private func didTapSettingsButton() {
-        viewModel.presentManage(from: self)
-    }
-
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
     }
@@ -144,10 +118,10 @@ extension ReaderTabViewController {
     }
 
     @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-        if let info = notification.userInfo,
-           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-            settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
-        }
+        // TODO: Revisit Reader spotlight
+//        if let info = notification.userInfo,
+//           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+//        }
     }
 }
 
