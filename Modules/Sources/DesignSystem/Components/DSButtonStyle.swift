@@ -66,6 +66,6 @@ public struct ScalingButtonStyle: ButtonStyle {
             .brightness(
                 (configuration.isPressed && style.emphasis != .secondary) ? pressedStateBrightness : 0
             )
-            .animation(.easeIn(duration: 0.15), value: configuration.isPressed)
+            .animation(.linear(duration: 0.15), value: configuration.isPressed)
     }
 }

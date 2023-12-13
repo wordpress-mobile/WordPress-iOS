@@ -10,36 +10,40 @@ import UIKit
 public extension UIColor {
     enum DS {
         public enum Foreground {
-            public static let primary = UIColor(named: DesignSystemColorNames.Foreground.primary)
-            public static let secondary = UIColor(named: DesignSystemColorNames.Foreground.secondary)
-            public static let tertiary = UIColor(named: DesignSystemColorNames.Foreground.tertiary)
-            public static let quaternary = UIColor(named: DesignSystemColorNames.Foreground.quaternary)
-            public static let success = UIColor(named: DesignSystemColorNames.Foreground.success)
-            public static let warning = UIColor(named: DesignSystemColorNames.Foreground.warning)
-            public static let error = UIColor(named: DesignSystemColorNames.Foreground.error)
+            public static let primary = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.primary)
+            public static let secondary = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.secondary)
+            public static let tertiary = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.tertiary)
+            public static let quaternary = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.quaternary)
+            public static let success = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.success)
+            public static let warning = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.warning)
+            public static let error = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.error)
 
             public static func brand(isJetpack: Bool) -> UIColor? {
                 isJetpack ? jetpack : wordPress
             }
 
-            private static let jetpack = UIColor(named: DesignSystemColorNames.Foreground.jetpack)
-            private static let wordPress = UIColor(named: DesignSystemColorNames.Foreground.wordPress)
+            private static let jetpack = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.jetpack)
+            private static let wordPress = colorWithModuleBundle(colorName: DesignSystemColorNames.Foreground.wordPress)
         }
 
         public enum Background {
-            public static let primary = UIColor(named: DesignSystemColorNames.Background.primary)
-            public static let secondary = UIColor(named: DesignSystemColorNames.Background.secondary)
-            public static let tertiary = UIColor(named: DesignSystemColorNames.Background.tertiary)
-            public static let quaternary = UIColor(named: DesignSystemColorNames.Background.quaternary)
+            public static let primary = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.primary)
+            public static let secondary = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.secondary)
+            public static let tertiary = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.tertiary)
+            public static let quaternary = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.quaternary)
 
             public static func brand(isJetpack: Bool) -> UIColor? {
                 isJetpack ? jetpack : wordPress
             }
 
-            private static let jetpack = UIColor(named: DesignSystemColorNames.Background.jetpack)
-            private static let wordPress = UIColor(named: DesignSystemColorNames.Background.wordPress)
+            private static let jetpack = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.jetpack)
+            private static let wordPress = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.wordPress)
         }
 
-        public static let divider = UIColor(named: DesignSystemColorNames.divider)
+        public static let divider = colorWithModuleBundle(colorName: DesignSystemColorNames.divider)
+
+        private static func colorWithModuleBundle(colorName: String) -> UIColor? {
+            UIColor(named: colorName, in: .module, compatibleWith: .current)
+        }
     }
 }
