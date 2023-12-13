@@ -41,11 +41,18 @@ final class BlogDashboardViewModel {
     }()
 
     private lazy var service: BlogDashboardService = {
+        let service = DashboardServiceRemoteFake(
+            wordPressComRestApi: WordPressComRestApi.defaultApi(
+                in: managedObjectContext,
+                localeKey: WordPressComRestApi.LocaleKeyV2
+            )
+        )
         return BlogDashboardService(
             managedObjectContext: managedObjectContext,
             isJetpack: AppConfiguration.isJetpack,
             isDotComAvailable: AccountHelper.isDotcomAvailable(),
-            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
+            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(),
+            remoteService: service
         )
     }()
 

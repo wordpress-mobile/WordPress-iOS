@@ -191,6 +191,7 @@ enum DashboardCard: String, CaseIterable {
         case posts
         case pages
         case activity
+        case dynamic
 
         func supported(by blog: Blog) -> Bool {
             switch self {
@@ -202,6 +203,8 @@ enum DashboardCard: String, CaseIterable {
                 return DashboardPagesListCardCell.shouldShowCard(for: blog)
             case .activity:
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
+            case .dynamic:
+                return false
             }
         }
     }

@@ -3579,6 +3579,10 @@
 		F1F083F6241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F083F5241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift */; };
 		F4026B1D2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */; };
 		F4026B1E2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */; };
+		F413F7712B28DE8200A64A94 /* dashboard_cards_data.json in Resources */ = {isa = PBXBuildFile; fileRef = F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */; };
+		F413F7722B28DE8200A64A94 /* dashboard_cards_data.json in Resources */ = {isa = PBXBuildFile; fileRef = F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */; };
+		F413F7742B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */; };
+		F413F7752B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */; };
 		F4141EE42AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */; };
 		F4141EE62AE71AF0000D2AAE /* AllDomainsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */; };
 		F4141EE82AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */; };
@@ -8962,6 +8966,8 @@
 		F373612EEEEF10E500093FF3 /* Pods-Apps-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainRegistrationCardCell.swift; sourceTree = "<group>"; };
 		F40CC35C2954991C00D75A95 /* WordPress 146.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 146.xcdatamodel"; sourceTree = "<group>"; };
+		F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dashboard_cards_data.json; sourceTree = "<group>"; };
+		F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardServiceRemoteFake.swift; sourceTree = "<group>"; };
 		F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewController+Strings.swift"; sourceTree = "<group>"; };
 		F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListViewModel.swift; sourceTree = "<group>"; };
 		F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListTableViewCell.swift; sourceTree = "<group>"; };
@@ -13930,6 +13936,8 @@
 				0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */,
 				8BAC9D9D27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift */,
 				8B15CDAA27EB89AC00A75749 /* BlogDashboardPostsParser.swift */,
+				F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */,
+				F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -19488,6 +19496,7 @@
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
 				9A09F91C230C49FD00F42AB7 /* StatsStackViewCell.xib in Resources */,
+				F413F7712B28DE8200A64A94 /* dashboard_cards_data.json in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				F5A34D1025DF2F7F00C9654B /* Shrikhand-Regular.ttf in Resources */,
@@ -20035,6 +20044,7 @@
 				FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */,
 				F41E4ED928F2424B001880C6 /* dark-glow-icon-app-60@2x.png in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
+				F413F7722B28DE8200A64A94 /* dashboard_cards_data.json in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
 				0186358E2A810ABA00915532 /* support_chat_widget.js in Resources */,
 				F465977C28E6598900D5F49A /* black-on-white-icon-app-60@2x.png in Resources */,
@@ -21987,6 +21997,7 @@
 				931F312C2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */,
+				F413F7742B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */,
 				803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
@@ -24718,6 +24729,7 @@
 				FABB231F2602FC2C00C8785C /* SignupUsernameTableViewController.swift in Sources */,
 				FABB23202602FC2C00C8785C /* Blog+Editor.swift in Sources */,
 				FABB23212602FC2C00C8785C /* ReaderCardService.swift in Sources */,
+				F413F7752B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */,
 				FABB23222602FC2C00C8785C /* UITableViewCell+Stats.swift in Sources */,
 				FABB23232602FC2C00C8785C /* Delay.swift in Sources */,
 				FABB23242602FC2C00C8785C /* Pageable.swift in Sources */,
