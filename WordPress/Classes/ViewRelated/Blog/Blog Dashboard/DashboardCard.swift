@@ -7,6 +7,7 @@ import Foundation
 ///
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable {
+    case dynamic
     case jetpackInstall
     case quickStart
     case bloganuaryNudge = "bloganuary_nudge"
@@ -32,6 +33,8 @@ enum DashboardCard: String, CaseIterable {
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
+        case .dynamic:
+            return DashboardJetpackInstallCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .quickStart:
@@ -110,6 +113,8 @@ enum DashboardCard: String, CaseIterable {
         shouldShowJetpackFeatures: Bool = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
     ) -> Bool {
         switch self {
+        case .dynamic:
+            return true
         case .jetpackInstall:
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
         case .quickStart:
