@@ -89,32 +89,6 @@ class MediaTests: CoreDataTestCase {
         XCTAssertEqual(media.autoUploadFailureCount, 0)
     }
 
-    func testMediaCount() {
-        let blog = BlogBuilder(mainContext).build()
-        let addMedia: (MediaType, Int) -> Void = { type, count in
-            for _ in 1...count {
-                let media = self.newTestMedia()
-                media.mediaType = type
-                media.blog = blog
-            }
-        }
-        addMedia(.image, 1)
-        addMedia(.video, 2)
-        addMedia(.document, 3)
-        addMedia(.powerpoint, 4)
-        addMedia(.audio, 5)
-        contextManager.saveContextAndWait(mainContext)
-
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.image.rawValue]), 1)
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.video.rawValue]), 2)
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.document.rawValue]), 3)
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.powerpoint.rawValue]), 4)
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.audio.rawValue]), 5)
-
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.image.rawValue, MediaType.video.rawValue]), 3)
-        XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.audio.rawValue, MediaType.powerpoint.rawValue]), 9)
-    }
-
     // MARK: - Media Type
 
     func testMimeType() {

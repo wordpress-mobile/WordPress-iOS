@@ -167,7 +167,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
     }
 
     private func setImage(_ image: UIImage) {
-        if let gif = image as? AnimatedImageWrapper, let data = gif.gifData {
+        if let gif = image as? AnimatedImage, let data = gif.gifData {
             imageView.animate(withGIFData: data)
         } else {
             imageView.image = image

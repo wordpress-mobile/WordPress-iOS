@@ -24,7 +24,7 @@ final class MockStockPhotosService: StockPhotosService {
 
     private func crateStockPhotosMedia(id: String) -> StockPhotosMedia {
         let url = "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940".toURL()!
-        let thumbs = ThumbnailCollection(
+        let thumbs = StockPhotosMedia.ThumbnailCollection(
             largeURL: "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940".toURL()!,
             mediumURL: "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=350".toURL()!,
             postThumbnailURL: "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=130".toURL()!,

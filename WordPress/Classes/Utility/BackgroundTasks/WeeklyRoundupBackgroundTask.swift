@@ -14,6 +14,7 @@ private class WeeklyRoundupDataProvider {
         case authTokenNotFound
         case failedToMakePeriodEndDate
         case dotComSiteWithoutDotComID(_ site: NSManagedObjectID)
+        case timezoneError
         case siteFetchingError(_ error: Error)
         case unknownErrorRetrievingStats(_ site: NSManagedObjectID)
         case errorRetrievingStats(_ blogID: Int?, error: Error)
@@ -253,8 +254,11 @@ private class WeeklyRoundupDataProvider {
         guard let dotComID = site.dotComID else {
             throw DataRequestError.dotComSiteWithoutDotComID(site.managedObjectID)
         }
+        guard let siteTimezone = site.timeZone else {
+            throw DataRequestError.timezoneError
+        }
         let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
-        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: siteTimezone)
     }
 
     // MARK: - Types
@@ -264,7 +268,7 @@ private class WeeklyRoundupDataProvider {
         let managedObjectID: NSManagedObjectID
         let authToken: String?
         let dotComID: Int?
-        let timeZone: TimeZone
+        let timeZone: TimeZone?
         let isAdmin: Bool
         let isAutomatticP2: Bool
 

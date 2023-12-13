@@ -76,7 +76,7 @@
             return NO;
         } else if (![remoteMedia.mediumURL isEqual:[NSURL URLWithString:media.remoteMediumURL]]) {
             return NO;
-        } else if (![remoteMedia.date isEqualToDate:media.date]) {
+        } else if (![remoteMedia.date isEqualToDate:media.creationDate]) {
             return NO;
         } else if (![remoteMedia.file isEqualToString:media.filename]) {
             return NO;
@@ -132,7 +132,7 @@
             return NO;
         } else if (![remoteMedia.mediumURL isEqual:[NSURL URLWithString:media.remoteMediumURL]]) {
             return NO;
-        } else if (![remoteMedia.date isEqualToDate:media.date]) {
+        } else if (![remoteMedia.date isEqualToDate:media.creationDate]) {
             return NO;
         } else if (![remoteMedia.file isEqualToString:media.filename]) {
             return NO;

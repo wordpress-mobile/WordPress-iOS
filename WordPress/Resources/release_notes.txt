@@ -1,9 +1,7 @@
-We added an Optimize Images setting so newly uploaded images are optimal size and quality by default. You can also delete images, videos, and other media in the Media screen in My Sites.
-
-Still want more media support? You’re in luck: thumbnails and original images now load faster in the Site Media screen, and GIF thumbnails are properly animated. We also added buttons so you can select and deselect your media files in preview mode.
-
-In the block editor, you’ll only see the “ungroup” option for nested blocks if those blocks actually support it. Oh, and we added a native photo picker to the story editor.
-
-We fixed the media item details screen for iPad users. We also squashed a bug on the Stats screen, so sites now open when you click their URLs.
-
-Finally, your list of site pages now loads faster. Yes, even when your site has hundreds of pages. And yes, we’re just that good.
+* [**] Add media fitlers to the Site Media screen [#22096]
+* [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
+* [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+* [**] [internal] Remove WPMediaPicker dependency [#22103]
+* [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]

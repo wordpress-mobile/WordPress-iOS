@@ -2,7 +2,11 @@ import Foundation
 import AlamofireImage
 import WordPressUI
 
-final class MemoryCache {
+protocol MemoryCacheProtocol: AnyObject {
+    subscript(key: String) -> UIImage? { get set }
+}
+
+final class MemoryCache: MemoryCacheProtocol {
     /// A shared image cache used by the entire system.
     static let shared = MemoryCache()
 
@@ -19,6 +23,19 @@ final class MemoryCache {
     }
 
     // MARK: - UIImage
+
+    subscript(key: String) -> UIImage? {
+        get {
+            getImage(forKey: key)
+        }
+        set {
+            if let newValue {
+                setImage(newValue, forKey: key)
+            } else {
+                removeImage(forKey: key)
+            }
+        }
+    }
 
     func setImage(_ image: UIImage, forKey key: String) {
         cache.setObject(image, forKey: key as NSString, cost: image.cost)
@@ -50,7 +67,7 @@ final class MemoryCache {
 private extension UIImage {
     /// Returns a rought estimation of how much space the image takes in memory.
     var cost: Int {
-        let dataCost = (self as? AnimatedImageWrapper)?.gifData?.count ?? 0
+        let dataCost = (self as? AnimatedImage)?.gifData?.count ?? 0
         let imageCost = cgImage.map { $0.bytesPerRow * $0.height } ?? 0
         return dataCost + imageCost
     }

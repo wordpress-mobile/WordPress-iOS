@@ -186,6 +186,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         coordinator?.start()
 
+        startObservingPost()
+
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
@@ -197,6 +199,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         super.viewWillAppear(animated)
         setupFeaturedImage()
         updateFollowButtonState()
+        toolbar.viewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -207,6 +210,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         featuredImage.viewWillDisappear()
+        toolbar.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -712,9 +716,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
                                                object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userBlocked(_:)),
+                                               name: .ReaderUserBlockingDidEnd,
+                                               object: nil)
+    }
+
+    @objc private func userBlocked(_ notification: Foundation.Notification) {
+        dismiss()
     }
 
     @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        dismiss()
+    }
+
+    private func dismiss() {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
@@ -812,6 +829,31 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         static let toolbarHeight: CGFloat = 50
         static let delay: Double = 50
         static let preferredToolbarHeight: CGFloat = 58.0
+    }
+
+    // MARK: - Managed object observer
+
+    func startObservingPost() {
+        guard let post else {
+            return
+        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleObjectsChange(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                               object: post.managedObjectContext)
+    }
+
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let post else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(post) || refreshed.contains(post) {
+            header.configure(for: post)
+        }
     }
 }
 
