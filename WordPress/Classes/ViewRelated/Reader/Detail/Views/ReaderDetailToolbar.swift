@@ -46,7 +46,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private var likeCount: Int {
-        post?.likeCount.intValue ?? 0
+        post?.likeCount?.intValue ?? 0
     }
 
     override func awakeFromNib() {
