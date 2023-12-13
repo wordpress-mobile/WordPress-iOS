@@ -62,6 +62,7 @@ final class BlogDashboardViewModel {
         }
 
         return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self, unowned viewController] collectionView, indexPath, item in
+
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
             var apiResponse: BlogDashboardRemoteEntity?
@@ -74,14 +75,11 @@ final class BlogDashboardViewModel {
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
-                if let blazeCell = cell as? DashboardBlazeCardCell {
-                    blazeCell.configure(blazeViewModel)
-                } else if case let .default(model) = cardModel, var cellConfigurable = cell as? BlogDashboardCardConfigurable {
+                if var cellConfigurable = cell as? BlogDashboardCardConfigurable {
                     cellConfigurable.row = indexPath.row
-                    cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: model.apiResponse)
-                } else if case let .dynamic(model) = cardModel {
-                    print("Configure Dynamic Cell")
+                    cellConfigurable.configure(blog: blog, viewController: viewController, model: cardModel)
                 }
+                (cell as? DashboardBlazeCardCell)?.configure(blazeViewModel)
                 return cell
             case .migrationSuccess:
                 let cellType = DashboardMigrationSuccessCell.self

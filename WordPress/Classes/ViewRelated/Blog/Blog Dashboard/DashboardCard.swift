@@ -34,7 +34,7 @@ enum DashboardCard: String, CaseIterable {
     var cell: DashboardCollectionViewCell.Type {
         switch self {
         case .dynamic:
-            return DashboardJetpackInstallCardCell.self
+            return BlogDashboardDynamicCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .quickStart:

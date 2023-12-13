@@ -3583,6 +3583,8 @@
 		F413F7722B28DE8200A64A94 /* dashboard_cards_data.json in Resources */ = {isa = PBXBuildFile; fileRef = F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */; };
 		F413F7742B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */; };
 		F413F7752B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */; };
+		F413F77A2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */; };
+		F413F77B2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */; };
 		F4141EE42AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */; };
 		F4141EE62AE71AF0000D2AAE /* AllDomainsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */; };
 		F4141EE82AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */; };
@@ -8968,6 +8970,7 @@
 		F40CC35C2954991C00D75A95 /* WordPress 146.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 146.xcdatamodel"; sourceTree = "<group>"; };
 		F413F7702B28DE8200A64A94 /* dashboard_cards_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dashboard_cards_data.json; sourceTree = "<group>"; };
 		F413F7732B28DE8F00A64A94 /* DashboardServiceRemoteFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardServiceRemoteFake.swift; sourceTree = "<group>"; };
+		F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardDynamicCardCell.swift; sourceTree = "<group>"; };
 		F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewController+Strings.swift"; sourceTree = "<group>"; };
 		F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListViewModel.swift; sourceTree = "<group>"; };
 		F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListTableViewCell.swift; sourceTree = "<group>"; };
@@ -13913,6 +13916,7 @@
 				F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */,
 				83796698299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift */,
 				83BFAE472A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift */,
+				F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -21911,6 +21915,7 @@
 				E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */,
 				C81CCD7C243BF7A600A83E27 /* TenorPageable.swift in Sources */,
 				E6C0ED3B231DA23400A08B57 /* AccountService+MergeDuplicates.swift in Sources */,
+				F413F77A2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */,
 				0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */,
 				17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */,
 				E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */,
@@ -24734,6 +24739,7 @@
 				FABB23232602FC2C00C8785C /* Delay.swift in Sources */,
 				FABB23242602FC2C00C8785C /* Pageable.swift in Sources */,
 				FABB23252602FC2C00C8785C /* AppIconViewController.swift in Sources */,
+				F413F77B2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */,
 				FABB23262602FC2C00C8785C /* ThemeBrowserCell.swift in Sources */,
 				FA8E2FE627C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */,
 				FABB23272602FC2C00C8785C /* ImageCropViewController.swift in Sources */,

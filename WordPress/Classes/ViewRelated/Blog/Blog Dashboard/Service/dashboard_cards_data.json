@@ -2,12 +2,54 @@
     "dynamic": [
         {
           "id": "year_in_review_2023",
-          "title": "News",
+          "title": "Year In Review 2023",
           "remote_feature_flag": "dynamic_dashboard_cards",
           "featured_image": "https://path/to/image",
           "url": "https://wordpress.com",
           "action": "Call to action",
           "order": "top",
+          "rows": [
+            {
+              "icon": "https://path/to/image",
+              "title": "xyz",
+              "description": "xyz"
+            },
+            {
+              "icon": "https://path/to/image",
+              "title": "xyz",
+              "description": "xyz"
+            }
+          ]
+        },
+        {
+          "id": "domain_management",
+          "title": "New: Domain Management",
+          "remote_feature_flag": "dynamic_dashboard_cards",
+          "featured_image": "https://path/to/image",
+          "url": "https://wordpress.com",
+          "action": "Call to action",
+          "order": "top",
+          "rows": [
+            {
+              "icon": "https://path/to/image",
+              "title": "xyz",
+              "description": "xyz"
+            },
+            {
+              "icon": "https://path/to/image",
+              "title": "xyz",
+              "description": "xyz"
+            }
+          ]
+        },
+        {
+          "id": "state_of_the_word",
+          "title": "State of the Word",
+          "remote_feature_flag": "dynamic_dashboard_cards",
+          "featured_image": "https://path/to/image",
+          "url": "https://wordpress.com",
+          "action": "Call to action",
+          "order": "bottom",
           "rows": [
             {
               "icon": "https://path/to/image",
