@@ -29,7 +29,7 @@ platform :ios do
     unless skip_user_confirmation
       # The `release_version_next` is used as the `new internal release version` value because the external and internal
       # release versions are always the same.
-      message = <<-MESSAGE
+      message = <<~MESSAGE
         Code Freeze:
         • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
 
@@ -161,7 +161,7 @@ platform :ios do
     unless skip_user_confirmation
       # The `release_version_next` is used as the `new internal release version` value because the external and internal
       # release versions are always the same.
-      message = <<-MESSAGE
+      message = <<~MESSAGE
         • Current build code: #{build_code_current}
         • New build code: #{build_code_next}
 
@@ -211,7 +211,7 @@ platform :ios do
     previous_version = VERSION_FORMATTER.release_version(VERSION_CALCULATOR.previous_patch_version(version: parsed_version))
 
     # Check versions
-    message = <<-MESSAGE
+    message = <<~MESSAGE
       New Hotfix:
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
