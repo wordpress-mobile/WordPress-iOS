@@ -3,7 +3,6 @@ import UIKit
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
-    private let tabBar: FilterTabBar
     private let containerView: UIView
 
     private let viewModel: ReaderTabViewModel
@@ -12,34 +11,27 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
+        return 1 // TODO: Discover index
     }
 
     private var p2Index: Int? {
-        return tabBar.items.firstIndex(where: { (($0 as? ReaderTabItem)?.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
+        return 2 // TODO: P2 index
     }
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
-        tabBar = FilterTabBar()
         containerView = UIView()
 
         self.viewModel = viewModel
 
         super.init(frame: .zero)
 
-        viewModel.didSelectIndex = { [weak self] index in
-            self?.tabBar.setSelectedIndex(index)
-        }
-
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
-            self?.tabBar.items = tabItems
-            self?.tabBar.setSelectedIndex(index)
-            self?.configureTabBarElements()
             self?.addContentToContainerView()
         }
 
         setupViewElements()
+        viewModel.fetchReaderMenu() // TODO: Temporary, remove later
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
@@ -58,7 +50,6 @@ extension ReaderTabView {
     private func setupViewElements() {
         backgroundColor = .filterBarBackground
         setupMainStackView()
-        setupTabBar()
         activateConstraints()
     }
 
@@ -66,19 +57,7 @@ extension ReaderTabView {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
         addSubview(mainStackView)
-        mainStackView.addArrangedSubview(tabBar)
         mainStackView.addArrangedSubview(containerView)
-    }
-
-    private func setupTabBar() {
-        tabBar.tabBarHeight = Appearance.barHeight
-        WPStyleGuide.configureFilterTabBar(tabBar)
-        tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-        viewModel.fetchReaderMenu()
-    }
-
-    private func configureTabBarElements() {
-        previouslySelectedIndex = tabBar.selectedIndex
     }
 
     private func setupHorizontalDivider(_ divider: UIView) {
@@ -88,7 +67,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildContentViewController(at: tabBar.selectedIndex) else {
+            let childController = viewModel.makeChildContentViewController(at: 0) else { // TODO: Replace `0` with selected index
                 return
         }
 
@@ -116,7 +95,7 @@ extension ReaderTabView {
             return
         }
 
-        let selectedIndex = self.tabBar.selectedIndex
+        let selectedIndex = 0 // TODO: Selected index according to selection
 
         // Remove any filters for selected index, then add new filter to array.
         self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
