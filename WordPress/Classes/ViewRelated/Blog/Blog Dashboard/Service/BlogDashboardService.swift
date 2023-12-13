@@ -112,10 +112,10 @@ private extension BlogDashboardService {
             )
         }
 
-        // Maps dynamic cards to `DashboardCardModel`.
+        // Maps dynamic cards to `DashboardCardModel`.k
         if let dynamic = entity?.dynamic?.value {
-            let cards = dynamic.map { model in
-                return self.dashboardDynamicCardModel(model: model, dotComID: dotComID)
+            let cards = dynamic.compactMap { payload in
+                return self.dashboardDynamicCardModel(for: blog, payload: payload, dotComID: dotComID)
             }
             let cardsByOrder = Dictionary(grouping: cards) { $0.payload.order ?? .bottom }
             let topCards = cardsByOrder[.top, default: []].map { DashboardCardModel.dynamic($0) }
@@ -166,10 +166,14 @@ private extension BlogDashboardService {
     }
 
     func dashboardDynamicCardModel(
-        model: DashboardCardDynamicModel.Payload,
+        for blog: Blog,
+        payload: DashboardCardDynamicModel.Payload,
         dotComID: Int
-    ) -> DashboardCardDynamicModel {
-        return .init(payload: model, dotComID: dotComID)
+    ) -> DashboardCardDynamicModel? {
+        guard DashboardCard.dynamic.shouldShow(for: blog, dynamicCardPayload: payload) else {
+            return nil
+        }
+        return .init(payload: payload, dotComID: dotComID)
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {

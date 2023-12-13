@@ -113,8 +113,6 @@ enum DashboardCard: String, CaseIterable {
         shouldShowJetpackFeatures: Bool = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
     ) -> Bool {
         switch self {
-        case .dynamic:
-            return true
         case .jetpackInstall:
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
         case .quickStart:
@@ -155,7 +153,20 @@ enum DashboardCard: String, CaseIterable {
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
             return FeatureFlag.googleDomainsCard.enabled && isJetpack
+        case .dynamic:
+            return false
         }
+    }
+
+    func shouldShow(
+        for blog: Blog,
+        dynamicCardPayload: DashboardCardDynamicModel.Payload,
+        isJetpack: Bool = AppConfiguration.isJetpack
+    ) -> Bool {
+        return self == .dynamic
+        && isJetpack
+        && RemoteDashboardCard.dynamic.supported(by: blog)
+        /* && Check if the current user has `dynamicCardPayload.remoteFeatureFlag` */
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
@@ -209,7 +220,7 @@ enum DashboardCard: String, CaseIterable {
             case .activity:
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
             case .dynamic:
-                return false
+                return RemoteFeatureFlag.dynamicDashboardCards.enabled()
             }
         }
     }
