@@ -44,8 +44,6 @@ platform :ios do
       UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
     end
 
-    # Create the release branch
-    release_branch_name = compute_release_branch_name(options:, version: release_version_next)
     UI.message 'Creating release branch...'
     Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
