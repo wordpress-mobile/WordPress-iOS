@@ -24,25 +24,24 @@ platform :ios do
 
     release_branch_name = compute_release_branch_name(options:, version: release_version_next)
 
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      Code Freeze:
+      • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
+
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
+    MESSAGE
+
+    UI.important(message)
+
     skip_user_confirmation = options[:skip_confirm]
 
-    unless skip_user_confirmation
-      # The `release_version_next` is used as the `new internal release version` value because the external and internal
-      # release versions are always the same.
-      message = <<~MESSAGE
-        Code Freeze:
-        • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
-
-        • Current release version and build code: #{release_version_current} (#{build_code_current}).
-        • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
-
-        • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
-        • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
-      MESSAGE
-
-      UI.important(message)
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     UI.message 'Creating release branch...'
     Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
@@ -156,22 +155,21 @@ platform :ios do
 
     git_pull
 
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      • Current build code: #{build_code_current}
+      • New build code: #{build_code_next}
+
+      • Current internal build code: #{build_code_current_internal}
+      • New internal build code: #{build_code_next_internal}
+    MESSAGE
+
+    UI.important(message)
+
     skip_user_confirmation = options[:skip_confirm]
 
-    unless skip_user_confirmation
-      # The `release_version_next` is used as the `new internal release version` value because the external and internal
-      # release versions are always the same.
-      message = <<~MESSAGE
-        • Current build code: #{build_code_current}
-        • New build code: #{build_code_next}
-
-        • Current internal build code: #{build_code_current_internal}
-        • New internal build code: #{build_code_next_internal}
-      MESSAGE
-
-      UI.important(message)
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
