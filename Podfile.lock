@@ -49,12 +49,12 @@ PODS:
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Sentry (8.17.0):
-    - Sentry/Core (= 8.17.0)
-    - SentryPrivate (= 8.17.0)
-  - Sentry/Core (8.17.0):
-    - SentryPrivate (= 8.17.0)
-  - SentryPrivate (8.17.0)
+  - Sentry (8.15.2):
+    - Sentry/Core (= 8.15.2)
+    - SentryPrivate (= 8.15.2)
+  - Sentry/Core (8.15.2):
+    - SentryPrivate (= 8.15.2)
+  - SentryPrivate (8.15.2)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -204,8 +204,8 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Sentry: 08c4200e02bd1dc235c57c904b948e65f8f3ceb4
-  SentryPrivate: 1986fdf51e44758f7e191ee8fa8bf072e391d461
+  Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
+  SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
