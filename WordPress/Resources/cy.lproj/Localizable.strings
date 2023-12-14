@@ -131,9 +131,6 @@
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Uwch";
 
-/* Description of albums in the photo libraries */
-"Albums" = "Albumau";
-
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Aliniad";
@@ -223,9 +220,6 @@
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Ydych chi'n siŵr eich bod eisiau dileu'r ddewislen?";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Sain, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Dilysu";
 
@@ -299,8 +293,7 @@
 /* Title for a list of different button styles. */
 "Button Style" = "Arddull Botwm";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
 /* Title of an alert letting the user know */
@@ -573,9 +566,6 @@
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Methu Cysylltu";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Cyfrif eitemau cyfrwng...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Gwledydd";
 
@@ -703,7 +693,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Cau";
 
@@ -711,9 +700,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Enw Dangos";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dogfen: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Parthau";
@@ -979,9 +965,6 @@
 /* Hint for image title on image settings. */
 "Image title" = "Teitl delwedd";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Delwedd, %@";
-
 /* Undated post time label */
 "Immediately" = "Ar unwaith";
 
@@ -1222,13 +1205,6 @@
    Title label for the media settings section in the app settings */
 "Media" = "Cyfrwng";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Cipio Cyfrwng";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Llyfrgell Cyfrwng";
-
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Llwytho Cyfryngau";
 
@@ -1405,7 +1381,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1740,8 +1715,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Cofnodion sy'n Perthyn";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -1885,9 +1859,6 @@
 
 /* Blog Picker's Title */
 "Select Site" = "Dewiswch wefan";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Dewis cyfrwng";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Dewiswch y cyfrif yr hoffech ei awdurdodi. Sylwch y bydd eich cofnodion yn cael eu rhannu yn awtomatig i'r cyfrif penodol.";
@@ -2109,8 +2080,7 @@
    Theme Support action title */
 "Support" = "Cefnogaeth";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Newid Gwefan";
 
 /* Menu item label for linking a specific tag.
@@ -2265,9 +2235,6 @@
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Bu anhawster wrth geisio cael mynediad i'ch lleoliad. Ceisiwch eto.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Bu anhawster wrth geisio cael mynediad i'ch cyfrwng. Ceisiwch eto.";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Bu gwall wrth lwytho'r cynlluniau";
 
@@ -2276,9 +2243,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad at y Camera i gipio cyfryngau newydd, newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad i lyfrgell cyfryngau eich dyfais er mwyn ychwanegu lluniau a\/neu fideo i'ch cofnodion. Newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Mae'r eitem cyfrwng hwn wedi ei ddileu.";
@@ -2420,9 +2384,6 @@
    Unknown Tag Name */
 "Unknown" = "Anhysbys";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Dyddiad creu anhysbys";
-
 /* No comment provided by engineer. */
 "Unknown error" = "Gwall anhysbys";
 
@@ -2504,9 +2465,6 @@
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Fideo, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Fideos";
