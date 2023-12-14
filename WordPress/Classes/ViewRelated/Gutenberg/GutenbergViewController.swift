@@ -16,15 +16,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case continueFromHomepageEditing
     }
 
-    private lazy var stockPhotos: GutenbergStockPhotos = {
-        return GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-    }()
-    private lazy var filesAppMediaPicker: GutenbergFilesAppMediaSource = {
-        return GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-    }()
-    private lazy var tenorMediaPicker: GutenbergTenorMediaPicker = {
-        return GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-    }()
+    private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    private lazy var externalMediaPicker = GutenbergExternalMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
 
     lazy var gutenbergSettings: GutenbergSettings = {
         return GutenbergSettings()
@@ -206,9 +199,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
             featuredImageHelper = GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
-            stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-            tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            externalMediaPicker = GutenbergExternalMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             gutenbergImageLoader.post = post
             refreshInterface()
         }
@@ -618,14 +610,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
-
         case .stockPhotos:
-            stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+            externalMediaPicker.presentStockPhotoPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         case .tenor:
-            tenorMediaPicker.presentPicker(origin: self,
-                                           post: post,
-                                           multipleSelection: allowMultipleSelection,
-                                           callback: callback)
+            externalMediaPicker.presentTenorPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         case .otherApps, .allFiles:
             filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
@@ -655,31 +643,22 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: filter,
-                                                       dataSourceType: .mediaLibrary,
-                                                       allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { [weak self] assets in
+        mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
                 return
             }
             self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
-        })
+        }
     }
 
     func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: filter,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { [weak self] assets in
+        mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
             }
             self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
-        })
+        }
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -687,9 +666,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             guard let self, let asset = assets?.first else {
                 return callback(nil)
             }
-            if let asset = asset as? PHAsset {
-                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
-            } else if let image = asset as? UIImage {
+            if let image = asset as? UIImage {
                 self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
             } else if let url = asset as? URL {
                 self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)

@@ -25,10 +25,6 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
-    private var readerImprovements: Bool {
-        RemoteFeatureFlag.readerImprovements.enabled()
-    }
-
     // Subclasses should configure these properties
     var headerTitle: String?
 
@@ -58,10 +54,10 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     func setupTableView() {
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToSafeArea(containerView, insets: readerImprovements ? Constants.newContainerInsets : Constants.containerInsets)
+        pinSubviewToSafeArea(containerView, insets: Constants.containerInsets)
         containerView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        let tableViewMargin = readerImprovements ? 16.0 : 0.0
+        let tableViewMargin = 16.0
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: tableViewMargin),
             tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -tableViewMargin)
@@ -85,10 +81,10 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     private func applyStyles() {
-        containerView.backgroundColor = readerImprovements ? .systemBackground : .listForeground
-        tableView.backgroundColor = readerImprovements ? .secondarySystemBackground : .listForeground
-        tableView.layer.cornerRadius = readerImprovements ? 10.0 : 0.0
-        tableView.separatorColor = readerImprovements ? .clear : .placeholderElement
+        containerView.backgroundColor = .systemBackground
+        tableView.backgroundColor = .secondarySystemBackground
+        tableView.layer.cornerRadius = 10.0
+        tableView.separatorColor = .clear
 
         backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -109,10 +105,8 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     private enum Constants {
-        static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-        static let newContainerInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        static let headerInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0)
-        static let newHeaderInsets = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 0)
+        static let containerInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let headerInsets = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 0)
         static let tableFooterHeight: CGFloat = 8.0
     }
 }
@@ -136,7 +130,7 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return readerImprovements ? Constants.tableFooterHeight : 0
+        return Constants.tableFooterHeight
     }
 }
 
@@ -150,10 +144,9 @@ extension ReaderTopicsTableCardCell: UITableViewDelegate {
         headerTitle.text = title
         header.addSubview(headerTitle)
         headerTitle.translatesAutoresizingMaskIntoConstraints = false
-        header.pinSubviewToAllEdges(headerTitle,
-                                    insets: readerImprovements ? Constants.newHeaderInsets : Constants.headerInsets)
-        headerTitle.font = readerImprovements ? WPStyleGuide.fontForTextStyle(.footnote) : WPStyleGuide.serifFontForTextStyle(.title2)
-        headerTitle.textColor = readerImprovements ? .secondaryLabel : .label
+        header.pinSubviewToAllEdges(headerTitle, insets: Constants.headerInsets)
+        headerTitle.font = WPStyleGuide.fontForTextStyle(.footnote)
+        headerTitle.textColor = .secondaryLabel
         return header
     }
 

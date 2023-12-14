@@ -1,14 +1,40 @@
+24.0
+-----
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+
+23.9
+-----
+* [**] Add media fitlers to the Site Media screen [#22096]
+* [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
+* [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+* [**] [internal] Remove WPMediaPicker dependency [#22103]
+* [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
+* [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
+* [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+
 23.8
 -----
 * [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
 * [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
 * [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
 * [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
 * [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
 * [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
 * [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
 * [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
 * [*] [internal] Add workarounds for large emoji on P2. [#22080]
+* [*] [Jetpack-only] Block Editor: Ensure text is always visible within Contact Info block [https://github.com/Automattic/jetpack/pull/33873]
+* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
+* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
+* [**] Refactor deleting media [#21748]
+* [*] [Jetpack-only] Add a dashboard card for Bloganuary. [https://github.com/wordpress-mobile/WordPress-iOS/pull/22136]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
 
 23.7
 -----

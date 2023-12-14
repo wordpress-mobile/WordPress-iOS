@@ -709,6 +709,17 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didSelectTopic(_ topic: String) {
         showTopic(topic)
     }
+
+    func didTapLikes() {
+        showLikesList()
+    }
+
+    func didTapComments() {
+        guard let post, let viewController else {
+            return
+        }
+        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
+    }
 }
 
 // MARK: - ReaderDetailFeaturedImageViewDelegate

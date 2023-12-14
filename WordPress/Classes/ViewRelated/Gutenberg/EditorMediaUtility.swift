@@ -240,7 +240,7 @@ class EditorMediaUtility {
             return
         }
 
-        let remote = MediaServiceRemoteFactory().remote(for: post.blog)
+        let remote = try? MediaServiceRemoteFactory().remote(for: post.blog)
         remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate(), success: { metadata in
             completion(.success(metadata!))
         }, failure: { error in

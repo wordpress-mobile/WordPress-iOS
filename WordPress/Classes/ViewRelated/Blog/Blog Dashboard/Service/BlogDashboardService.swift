@@ -75,7 +75,7 @@ final class BlogDashboardService {
     /// Fetch cards from local
     func fetchLocal(blog: Blog) -> [DashboardCardModel] {
 
-        guard let dotComID = blog.dotComID?.intValue else {
+        guard AccountHelper.isDotcomAvailable(), let dotComID = blog.dotComID?.intValue else {
             return []
         }
 

@@ -2,12 +2,18 @@ final class PageTree {
 
     // A node in a tree, which of course is also a tree itself.
     private class TreeNode {
-        let page: Page
+        struct PageData {
+            var postID: NSNumber?
+            var parentID: NSNumber?
+        }
+        let pageID: TaggedManagedObjectID<Page>
+        let pageData: PageData
         var children = [TreeNode]()
         var parentNode: TreeNode?
 
         init(page: Page, children: [TreeNode] = [], parentNode: TreeNode? = nil) {
-            self.page = page
+            self.pageID = TaggedManagedObjectID(page)
+            self.pageData = PageData(postID: page.postID, parentID: page.parentID)
             self.children = children
             self.parentNode = parentNode
         }
@@ -15,15 +21,16 @@ final class PageTree {
         // The `PageTree` type is used to loaded
         // Some page There are pages  They are pages that doesn't belong to the root level, but their parent pages haven't been loaded yet.
         var isOrphan: Bool {
-            (page.parentID?.int64Value ?? 0) > 0 && parentNode == nil
+            (pageData.parentID?.int64Value ?? 0) > 0 && parentNode == nil
         }
 
-        func dfsList() -> [Page] {
+        func dfsList(in context: NSManagedObjectContext) throws -> [Page] {
             var pages = [Page]()
-            _ = depthFirstSearch { level, node in
-                node.page.hierarchyIndex = level
-                node.page.hasVisibleParent = node.parentNode != nil
-                pages.append(node.page)
+            _ = try depthFirstSearch { level, node in
+                let page = try context.existingObject(with: node.pageID)
+                page.hierarchyIndex = level
+                page.hasVisibleParent = node.parentNode != nil
+                pages.append(page)
                 return false
             }
             return pages
@@ -35,18 +42,18 @@ final class PageTree {
         ///     a boolean value indicate whether the search should be stopped.
         /// - Returns: `true` if search has been stopped by the closure.
         @discardableResult
-        func depthFirstSearch(using closure: (Int, TreeNode) -> Bool) -> Bool {
-            depthFirstSearch(level: 0, using: closure)
+        func depthFirstSearch(using closure: (Int, TreeNode) throws -> Bool) rethrows -> Bool {
+            try depthFirstSearch(level: 0, using: closure)
         }
 
-        private func depthFirstSearch(level: Int, using closure: (Int, TreeNode) -> Bool) -> Bool {
-            let shouldStop = closure(level, self)
+        private func depthFirstSearch(level: Int, using closure: (Int, TreeNode) throws -> Bool) rethrows -> Bool {
+            let shouldStop = try closure(level, self)
             if shouldStop {
                 return true
             }
 
             for child in children {
-                let shouldStop = child.depthFirstSearch(level: level + 1, using: closure)
+                let shouldStop = try child.depthFirstSearch(level: level + 1, using: closure)
                 if shouldStop {
                     return true
                 }
@@ -77,7 +84,7 @@ final class PageTree {
             assert(parentID != 0)
 
             return depthFirstSearch { _, node in
-                if node.page.postID == parentID {
+                if node.pageData.postID == parentID {
                     node.children.append(contentsOf: newNodes)
                     newNodes.forEach { $0.parentNode = node }
                     return true
@@ -136,7 +143,7 @@ final class PageTree {
             nodes.remove(atOffsets: relocated)
             orphanNodes = nodes.enumerated().reduce(into: [:]) { indexes, node in
                 if node.element.isOrphan {
-                    let parentID = node.element.page.parentID ?? 0
+                    let parentID = node.element.pageData.parentID ?? 0
                     indexes[parentID, default: []].append(node.offset)
                 }
             }
@@ -145,7 +152,7 @@ final class PageTree {
 
     private func add(_ newNodes: [TreeNode]) {
         newNodes.forEach { newNode in
-            let parentID = newNode.page.parentID ?? 0
+            let parentID = newNode.pageData.parentID ?? 0
 
             // If the new node is at the root level, then simply add it as a child.
             if parentID == 0 {
@@ -170,14 +177,14 @@ final class PageTree {
 
     /// Move all the nodes in the given argument to the current page tree.
     private func merge(subtree: PageTree) {
-        var parentIDs = subtree.nodes.reduce(into: Set()) { $0.insert($1.page.parentID ?? 0) }
+        var parentIDs = subtree.nodes.reduce(into: Set()) { $0.insert($1.pageData.parentID ?? 0) }
         // No need to look for root level
         parentIDs.remove(0)
         // Look up parent nodes upfront, to avoid repeated iteration for each node in `subtree`.
         let parentNodes = findNodes(postIDs: parentIDs)
 
         subtree.nodes.forEach { newNode in
-            let parentID = newNode.page.parentID ?? 0
+            let parentID = newNode.pageData.parentID ?? 0
 
             // If the new node is at the root level, then simply add it as a child
             if parentID == 0 {
@@ -214,7 +221,7 @@ final class PageTree {
 
             // Using BFS under the assumption that page tree in most sites is a shallow tree, where most pages are in top layers.
             child.breadthFirstSearch { node in
-                let postID = node.page.postID ?? 0
+                let postID = node.pageData.postID ?? 0
                 let foundIndex = ids.firstIndex(of: postID)
                 if let foundIndex {
                     ids.remove(at: foundIndex)
@@ -227,15 +234,19 @@ final class PageTree {
         return result
     }
 
-    func hierarchyList() -> [Page] {
-        nodes.reduce(into: []) {
-            $0.append(contentsOf: $1.dfsList())
+    func hierarchyList(in context: NSManagedObjectContext) throws -> [Page] {
+        try nodes.reduce(into: []) {
+            try $0.append(contentsOf: $1.dfsList(in: context))
         }
     }
 
-    static func hierarchyList(of pages: [Page]) -> [Page] {
+    static func hierarchyList(of pages: [Page]) throws -> [Page] {
+        guard let context = pages.first?.managedObjectContext else {
+            return []
+        }
+
         let tree = PageTree()
         tree.add(pages)
-        return tree.hierarchyList()
+        return try tree.hierarchyList(in: context)
     }
 }

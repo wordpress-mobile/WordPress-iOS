@@ -1101,7 +1101,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
-    [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+    [self configureContentCell:cell comment:comment attributedText:[self cacheContentForComment:comment] indexPath:indexPath handler:self.tableViewHandler];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);

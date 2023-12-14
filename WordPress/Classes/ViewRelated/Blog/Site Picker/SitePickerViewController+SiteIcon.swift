@@ -9,7 +9,7 @@ import PhotosUI
 extension SitePickerViewController {
 
     func makeSiteIconMenu() -> UIMenu? {
-        return UIMenu(children: [
+        UIMenu(options: .displayInline, children: [
             UIDeferredMenuElement.uncached { [weak self] in
                 $0(self?.makeUpdateSiteIconActions() ?? [])
             }

@@ -1,3 +1,4 @@
+import JetpackStatsWidgetsCore
 import WidgetKit
 import WordPressAuthenticator
 
@@ -95,7 +96,7 @@ class StatsWidgetsStore {
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
                                                                    url: blog.url ?? oldData.url,
-                                                                   timeZone: blog.timeZone,
+                                                                   timeZone: blog.timeZone ?? TimeZone.current,
                                                                    date: Date(),
                                                                    stats: stats) as? T
 
@@ -106,7 +107,7 @@ class StatsWidgetsStore {
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
                                                                      url: blog.url ?? oldData.url,
-                                                                     timeZone: blog.timeZone,
+                                                                     timeZone: blog.timeZone ?? TimeZone.current,
                                                                      date: Date(),
                                                                      stats: stats) as? T
 
@@ -116,7 +117,7 @@ class StatsWidgetsStore {
             homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(siteID: siteID.intValue,
                                                                       siteName: blog.title ?? oldData.siteName,
                                                                       url: blog.url ?? oldData.url,
-                                                                      timeZone: blog.timeZone,
+                                                                      timeZone: blog.timeZone ?? TimeZone.current,
                                                                       date: Date(),
                                                                       stats: stats) as? T
         }
@@ -162,7 +163,7 @@ private extension StatsWidgetsStore {
             var timeZone = existingSite?.timeZone ?? TimeZone.current
 
             if let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) {
-                timeZone = blog.timeZone
+                timeZone = blog.timeZone ?? TimeZone.current
             }
 
             let date = existingSite?.date ?? Date()
@@ -216,21 +217,21 @@ private extension StatsWidgetsStore {
                     result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
                                                                   url: url,
-                                                                  timeZone: timeZone,
+                                                                  timeZone: timeZone ?? TimeZone.current,
                                                                   date: Date(timeIntervalSinceReferenceDate: 0),
                                                                   stats: TodayWidgetStats()) as? T
                 } else if type == HomeWidgetAllTimeData.self {
                     result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
                                                                     siteName: title,
                                                                     url: url,
-                                                                    timeZone: timeZone,
+                                                                    timeZone: timeZone ?? TimeZone.current,
                                                                     date: Date(timeIntervalSinceReferenceDate: 0),
                                                                     stats: AllTimeWidgetStats()) as? T
                 } else if type == HomeWidgetThisWeekData.self {
                     result[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
                                                                      siteName: title,
                                                                      url: url,
-                                                                     timeZone: timeZone,
+                                                                     timeZone: timeZone ?? TimeZone.current,
                                                                      date: Date(timeIntervalSinceReferenceDate: 0),
                                                                      stats: ThisWeekWidgetStats(days: initializedWeekdays)) as? T
                 }
