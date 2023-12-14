@@ -231,6 +231,10 @@ platform :ios do
 
     trigger_beta_build
 
+    # Create an intermediate branch to avoid conflicts when integrating the changes
+    Fastlane::Helper::GitHelper.create_branch("new_beta/#{release_version}")
+    push_to_git_remote(tags: false)
+
     pr_url = create_release_management_pull_request(
       base_branch: DEFAULT_BRANCH,
       title: "Merge changes from #{build_code_current}"
