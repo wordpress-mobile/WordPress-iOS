@@ -12,9 +12,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Tevékenységi napló";
 
-/* Remove asset from media picker list */
-"Add" = "Hozzáadás";
-
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Haladó";
 
@@ -189,7 +186,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Elutasítás";
 
@@ -478,7 +474,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -633,8 +628,7 @@
 /* Period Stats 'Referrers' header */
 "Referrers" = "Hivatkozó oldalak";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -997,9 +991,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/azoldalamcíme (URL)";
-
-/* Label displayed on image media items. */
-"image" = "kép";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
