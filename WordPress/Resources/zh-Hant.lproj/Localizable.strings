@@ -9448,9 +9448,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "深入瞭解";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示；這個社群挑戰的目的是協助你在新的一年養成寫網誌習慣。";
-
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary 挑戰即將來臨！";
 

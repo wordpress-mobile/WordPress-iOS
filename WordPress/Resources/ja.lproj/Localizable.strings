@@ -9451,9 +9451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "さらに詳しく";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "1月のブログ作成のプロンプトは Bloganuary より、新年にブログ投稿を習慣付けるためのコミュニティの課題が提示されます。";
-
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "まもなく Bloganuary です !";
 

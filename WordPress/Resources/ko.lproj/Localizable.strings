@@ -9454,9 +9454,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "1월 한 달 동안 새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
-
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
 
