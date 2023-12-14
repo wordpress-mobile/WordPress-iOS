@@ -24,7 +24,7 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardDynamicCardModel) {
         self.presentingViewController = viewController
-        self.configureMoreButton(with: blog)
+        self.configureMoreButton(for: model, blog: blog)
 
         self.frameView.setTitle(model.payload.title)
         self.frameView.onViewTap = { [weak self] in
@@ -58,26 +58,26 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     }
 
     private func setupFrameView() {
-//        self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
 //        self.frameView.onEllipsisButtonTap = { }
         self.frameView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(frameView)
         self.contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
     }
 
-    private func configureMoreButton(with blog: Blog) {
-//        self.frameView.addMoreMenu(
-//            items:
-//                [
-//                    UIMenu(
-//                        options: .displayInline,
-//                        children: [
-//                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
-//                        ]
-//                    )
-//                ],
-//            card: .googleDomains
-//        )
+    private func configureMoreButton(for card: DashboardDynamicCardModel, blog: Blog) {
+        self.frameView.addMoreMenu(
+            items:
+                [
+                    UIMenu(
+                        options: .displayInline,
+                        children: [
+                            BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+                        ]
+                    )
+                ],
+            card: card.cardType
+        )
     }
 
     // MARK: - User Interaction
