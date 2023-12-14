@@ -11,6 +11,20 @@ enum DashboardCardModel: Hashable {
         case .dynamic: return .dynamic
         }
     }
+
+    func `default`() -> DashboardCardDefaultModel? {
+        guard case .default(let model) = self else {
+            return nil
+        }
+        return model
+    }
+
+    func dynamic() -> DashboardCardDynamicModel? {
+        guard case .dynamic(let model) = self else {
+            return nil
+        }
+        return model
+    }
 }
 
 /// Represents a card in the dashboard collection view
