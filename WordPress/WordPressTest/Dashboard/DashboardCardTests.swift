@@ -248,7 +248,7 @@ class DashboardCardTests: CoreDataTestCase {
         let identifiers = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
 
         // Then
-        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages", "activity"])
+        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages", "activity", "dynamic"])
     }
 
     // MARK: Helpers
