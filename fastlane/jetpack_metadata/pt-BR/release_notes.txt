@@ -1,9 +1,0 @@
-Adicionamos uma configuração de otimização de imagens para que imagens recém-enviadas tenham qualidade e tamanho otimizados por padrão. Você também pode excluir imagens, vídeos e outras mídias na tela Mídia em Meus sites.
-
-Quer ainda mais compatibilidade de mídia? Boas notícias: agora imagens originais e miniaturas carregam mais rápido na tela Mídia do site, e miniaturas em GIF são animadas de maneira adequada. Também adicionamos botões para você selecionar e remover a seleção dos seus arquivos de mídia no modo de visualização.
-
-No editor de blocos, você só verá a opção "Desagrupar" para blocos aninhados se eles forem compatíveis com essa função. Ah, e adicionamos um seletor de foto nativo ao editor de stories.
-
-Corrigimos a tela de detalhes de itens de mídia para usuários de iPad e eliminamos um bug na tela de Estatísticas, então os sites agora abrem quando você clica na URL deles. Além disso, resolvemos um problema de migração para usuários do WordPress cujas contas não estão vinculadas a nenhum site. A opção "Desinstalar WordPress" agora está presente no painel também.
-
-Por fim, sua lista de páginas do site será carregada mais rapidamente. Sim, mesmo se o site tiver centenas de páginas. E, sim, somos muito bons.
