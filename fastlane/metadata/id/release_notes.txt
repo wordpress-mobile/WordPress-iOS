@@ -1,9 +1,0 @@
-Kami menambahkan pengaturan Optimalkan Gambar supaya gambar yang baru diunggah berukuran dan berkualitas optimal secara default. Anda juga dapat menghapus gambar, video, dan media lainnya pada layar Media di Situs Saya.
-
-Butuh lebih banyak dukungan media? Anda beruntung: thumbnail dan gambar aslinya kini dimuat lebih cepat pada layar Media Situs, dan thumbnail GIF bergerak sebagaimana mestinya. Kami juga menambahkan tombol untuk memilih dan membatalkan pilihan berkas media dalam mode pratinjau.
-
-Di editor blok, Anda hanya akan melihat pilihan “batalkan pengelompokan” untuk blok bertingkat yang benar-benar mendukung pilihan tersebut. Oh, kami juga menambahkan pemilih foto bawaan ke editor cerita.
-
-Kami memperbaiki layar detail item media bagi pengguna iPad. Kami juga membasmi bug pada layar Statistik sehingga situs kini terbuka saat Anda mengeklik URL-nya.
-
-Terakhir, daftar halaman situs kini dimuat lebih cepat. Ya, bahkan jika situs memiliki ratusan halaman. Dan ya, kami memang sehebat itu.

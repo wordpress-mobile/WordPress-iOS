@@ -1,9 +1,0 @@
-We hebben de instelling Afbeeldingen optimaliseren toegevoegd, zodat afbeeldingen die worden geüpload standaard de optimale afmetingen en kwaliteit krijgen. Je kan ook afbeeldingen, video's en andere media verwijderen op het Media-scherm in Mijn sites.
-
-Wil je nog meer media-ondersteuning? Dan heb je mazzel: miniaturen en originele afbeeldingen worden nu sneller geladen in het scherm Sitemedia en gif-miniaturen worden juist geanimeerd. We hebben ook knoppen toegevoegd waarmee je je mediabestanden in de voorbeeldweergave kan selecteren en deselecteren.
-
-Je ziet in de blokeditor nu alleen de optie 'Groepering opheffen' voor geneste blokken als deze blokken de functie daadwerkelijk ondersteunen. O ja, we hebben ook een native fotokiezer toegevoegd aan de verhaaleditor.
-
-We hebben het scherm met detail van media-items gefixt voor iPad-gebruikers. We hebben ook een bug opgelost op het statistiekenscherm, zodat sites nu openen wanneer je op de URL's klikt.
-
-Daarnaast wordt je lijst met sitepagina's nu sneller geladen. Jazeker, zelfs als je site honderden pagina's heeft! En ja, zo goed zijn we nou eenmaal.
