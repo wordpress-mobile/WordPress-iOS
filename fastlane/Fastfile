@@ -57,6 +57,12 @@ ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
+# Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.
+# That means if we change the branch as part of an action, it'll return the incorrect branch.
+# This environment variable disables that behavior.
+# See https://github.com/fastlane/fastlane/pull/21597
+ENV['FL_GIT_BRANCH_DONT_USE_ENV_VARS'] = 'true'
+
 # Instanstiate versioning classes
 VERSION_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::MarketingVersionCalculator.new
 VERSION_FORMATTER = Fastlane::Wpmreleasetoolkit::Versioning::FourPartVersionFormatter.new
