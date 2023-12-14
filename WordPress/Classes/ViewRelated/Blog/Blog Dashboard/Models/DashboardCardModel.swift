@@ -27,6 +27,35 @@ enum DashboardCardModel: Hashable {
     }
 }
 
+extension DashboardCardModel: BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+        var properties = cardType.blogDashboardAnalyticProperties
+        if case let .dynamic(model) = self {
+            let extra: [AnyHashable: Any] = ["id": model.payload.id]
+            properties = properties.merging(extra, uniquingKeysWith: { first, second in
+                return first
+            })
+        }
+        return properties
+    }
+}
+
+extension DashboardCardModel: BlogDashboardPersonalizable {
+
+    var blogDashboardPersonalizationKey: String? {
+        switch self {
+        case .default(let card): return card.cardType.blogDashboardPersonalizationKey
+        case .dynamic(let card): return "dynamic_card_\(card.payload.id)"
+        }
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return cardType.blogDashboardPersonalizationSettingsScope
+    }
+}
+
+
 /// Represents a card in the dashboard collection view
 struct DashboardNormalCardModel: Hashable {
     let cardType: DashboardCard
