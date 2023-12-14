@@ -1,12 +1,23 @@
 import Foundation
 
+protocol BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardAnalyticProperties: [AnyHashable: Any] { get }
+}
+
 struct BlogDashboardHelpers {
-    static func makeHideCardAction(for card: DashboardCard, blog: Blog) -> UIAction {
-        makeHideCardAction {
+    typealias Card = BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding
+
+    static func makeHideCardAction(for card: Card, blog: Blog) -> UIAction {
+        let service = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
+        return Self.makeHideCardAction {
             BlogDashboardAnalytics.trackHideTapped(for: card)
-            BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
-                .setEnabled(false, for: card)
+            service.setEnabled(false, for: card)
         }
+    }
+
+    static func makeHideCardAction(for card: DashboardCard, blog: Blog) -> UIAction {
+        return Self.makeHideCardAction(for: card as Card, blog: blog)
     }
 
     static func makeHideCardAction(_ handler: @escaping () -> Void) -> UIAction {
