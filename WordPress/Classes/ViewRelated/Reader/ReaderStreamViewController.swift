@@ -137,9 +137,6 @@ import Combine
     private var tagSlug: String? {
         didSet {
             if tagSlug != nil {
-                // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = NSLocalizedString("Topic", comment: "Topic page title")
-
                 fetchTagTopic()
             }
         }
@@ -598,7 +595,7 @@ import Combine
             return
         }
 
-        let isNewHeader = RemoteFeatureFlag.readerImprovements.enabled() && !isContentFiltered
+        let isNewHeader = !isContentFiltered
         let isNewSiteHeader = isNewHeader && ReaderHelpers.isTopicSite(topic)
 
         let headerView = {
@@ -734,13 +731,7 @@ import Combine
             return
         }
 
-        if ReaderHelpers.isTopicTag(topic) {
-            // don't display any title for the tag stream for the new design.
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                return
-            }
-            title = NSLocalizedString("Topic", comment: "Topic page title")
-        } else if RemoteFeatureFlag.readerImprovements.enabled() && ReaderHelpers.topicType(topic) == .site {
+        if ReaderHelpers.isTopicTag(topic) || ReaderHelpers.isTopicSite(topic) {
             title = ""
         } else {
             title = topic.title
@@ -823,8 +814,7 @@ import Combine
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard RemoteFeatureFlag.readerImprovements.enabled(),
-              tableView.numberOfRows(inSection: .zero) > 0 else {
+        guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
             return
         }
@@ -1673,28 +1663,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            let cell = tableConfiguration.postCardCell(tableView)
-            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
-                                                        isLoggedIn: isLoggedIn,
-                                                        showsSeparator: showsSeparator,
-                                                        parentViewController: self)
-            cell.configure(with: viewModel)
-            return cell
-        }
-
-        let cell = tableConfiguration.oldPostCardCell(tableView)
-        configurePostCardCell(cell, post: post)
-
-        if let topic = readerTopic,
-           ReaderHelpers.topicIsDiscover(topic),
-           indexPath.row == 0,
-           shouldShowCommentSpotlight {
-            cell.spotlightIsShown = true
-        } else {
-            cell.spotlightIsShown = false
-        }
-
+        let cell = tableConfiguration.postCardCell(tableView)
+        let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
+                                                    isLoggedIn: isLoggedIn,
+                                                    showsSeparator: showsSeparator,
+                                                    parentViewController: self)
+        cell.configure(with: viewModel)
         return cell
     }
 

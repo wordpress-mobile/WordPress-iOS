@@ -31,9 +31,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
          static let accessbilityHint: String = NSLocalizedString("Tap to view posts for this tag", comment: "Accessibility hint to inform the user what action the post tag chip performs")
     }
 
-    private lazy var metrics: ReaderInterestsStyleGuide.Metrics = {
-        return RemoteFeatureFlag.readerImprovements.enabled() ? .latest : .legacy
-    }()
+    private let metrics: ReaderInterestsStyleGuide.Metrics = .latest
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
@@ -182,10 +180,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         configure(cell: cell, with: title)
 
-        if layout.isExpanded || RemoteFeatureFlag.readerImprovements.enabled() {
-            cell.label.backgroundColor = .clear
-        }
-
+        cell.label.backgroundColor = .clear
         cell.label.accessibilityHint = layout.isExpanded ? Strings.collapseButtonAccessbilityHint : Strings.expandButtonAccessbilityHint
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleExpanded))
