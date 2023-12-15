@@ -2,18 +2,18 @@ import Foundation
 
 enum DashboardCardModel: Hashable {
 
-    case `default`(DashboardCardDefaultModel)
+    case normal(DashboardNormalCardModel)
     case dynamic(DashboardDynamicCardModel)
 
     var cardType: DashboardCard {
         switch self {
-        case .default(let model): return model.cardType
+        case .normal(let model): return model.cardType
         case .dynamic: return .dynamic
         }
     }
 
-    func `default`() -> DashboardCardDefaultModel? {
-        guard case .default(let model) = self else {
+    func normal() -> DashboardNormalCardModel? {
+        guard case .normal(let model) = self else {
             return nil
         }
         return model
@@ -28,7 +28,7 @@ enum DashboardCardModel: Hashable {
 }
 
 /// Represents a card in the dashboard collection view
-struct DashboardCardDefaultModel: Hashable {
+struct DashboardNormalCardModel: Hashable {
     let cardType: DashboardCard
     let dotComID: Int
     let apiResponse: BlogDashboardRemoteEntity?
@@ -51,7 +51,7 @@ struct DashboardCardDefaultModel: Hashable {
         self.apiResponse = entity
     }
 
-    static func == (lhs: DashboardCardDefaultModel, rhs: DashboardCardDefaultModel) -> Bool {
+    static func == (lhs: DashboardNormalCardModel, rhs: DashboardNormalCardModel) -> Bool {
         lhs.cardType == rhs.cardType &&
         lhs.dotComID == rhs.dotComID &&
         lhs.apiResponse == rhs.apiResponse

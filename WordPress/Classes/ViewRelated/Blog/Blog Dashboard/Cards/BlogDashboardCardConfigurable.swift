@@ -16,7 +16,7 @@ extension BlogDashboardCardConfigurable {
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel) {
         switch model {
-        case .default(let model):
+        case .normal(let model):
             self.configure(blog: blog, viewController: viewController, apiResponse: model.apiResponse)
         case .dynamic(let model):
             self.configure(blog: blog, viewController: viewController, model: model)

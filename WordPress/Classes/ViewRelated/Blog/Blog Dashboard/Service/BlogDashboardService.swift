@@ -134,7 +134,7 @@ private extension BlogDashboardService {
 
         // Add "empty" card if the list of cards is empty.
         if allCards.isEmpty || allCards.map(\.cardType) == [.personalize] {
-            let model = DashboardCardModel.default(.init(cardType: .empty, dotComID: dotComID))
+            let model = DashboardCardModel.normal(.init(cardType: .empty, dotComID: dotComID))
             allCards.insert(model, at: 0)
         }
 
@@ -162,7 +162,7 @@ private extension BlogDashboardService {
             return nil
         }
 
-        return .default(.init(cardType: card, dotComID: dotComID, entity: entity))
+        return .normal(.init(cardType: card, dotComID: dotComID, entity: entity))
     }
 
     func dashboardDynamicCardModel(

@@ -89,8 +89,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let draftPostsCardItem = cards.first(where: { $0.cardType == .draftPosts })?.default()
-            let scheduledPostsCardItem = cards.first(where: { $0.cardType == .scheduledPosts })?.default()
+            let draftPostsCardItem = cards.first(where: { $0.cardType == .draftPosts })?.normal()
+            let scheduledPostsCardItem = cards.first(where: { $0.cardType == .scheduledPosts })?.normal()
 
             // Posts section exists
             XCTAssertNotNil(draftPostsCardItem)
@@ -126,7 +126,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let pagesCardItem = cards.first(where: { $0.cardType == .pages })?.default()
+            let pagesCardItem = cards.first(where: { $0.cardType == .pages })?.normal()
 
             // Pages section exists
             XCTAssertNotNil(pagesCardItem)
@@ -149,7 +149,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            guard let activityCardItem = cards.first(where: { $0.cardType == .activityLog })?.default() else {
+            guard let activityCardItem = cards.first(where: { $0.cardType == .activityLog })?.normal() else {
                 return XCTFail("Unexpectedly found nil Optional")
             }
 
@@ -189,7 +189,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let todaysStatsItem = cards.first(where: { $0.cardType == .todaysStats })?.default()
+            let todaysStatsItem = cards.first(where: { $0.cardType == .todaysStats })?.normal()
 
             // Todays stats section exists
             XCTAssertNotNil(todaysStatsItem)
