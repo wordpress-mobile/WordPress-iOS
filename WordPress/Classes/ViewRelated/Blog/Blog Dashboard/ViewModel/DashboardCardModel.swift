@@ -3,7 +3,7 @@ import Foundation
 enum DashboardCardModel: Hashable {
 
     case `default`(DashboardCardDefaultModel)
-    case dynamic(DashboardCardDynamicModel)
+    case dynamic(DashboardDynamicCardModel)
 
     var cardType: DashboardCard {
         switch self {
@@ -19,7 +19,7 @@ enum DashboardCardModel: Hashable {
         return model
     }
 
-    func dynamic() -> DashboardCardDynamicModel? {
+    func dynamic() -> DashboardDynamicCardModel? {
         guard case .dynamic(let model) = self else {
             return nil
         }
@@ -64,7 +64,7 @@ struct DashboardCardDefaultModel: Hashable {
     }
 }
 
-struct DashboardCardDynamicModel: Hashable {
+struct DashboardDynamicCardModel: Hashable {
 
     typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
 

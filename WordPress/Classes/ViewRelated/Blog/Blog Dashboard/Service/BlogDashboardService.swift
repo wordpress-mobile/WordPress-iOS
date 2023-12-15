@@ -167,9 +167,9 @@ private extension BlogDashboardService {
 
     func dashboardDynamicCardModel(
         for blog: Blog,
-        payload: DashboardCardDynamicModel.Payload,
+        payload: DashboardDynamicCardModel.Payload,
         dotComID: Int
-    ) -> DashboardCardDynamicModel? {
+    ) -> DashboardDynamicCardModel? {
         guard DashboardCard.dynamic.shouldShow(for: blog, dynamicCardPayload: payload) else {
             return nil
         }

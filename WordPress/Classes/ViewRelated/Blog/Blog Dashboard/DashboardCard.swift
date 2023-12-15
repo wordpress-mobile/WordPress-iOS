@@ -160,7 +160,7 @@ enum DashboardCard: String, CaseIterable {
 
     func shouldShow(
         for blog: Blog,
-        dynamicCardPayload: DashboardCardDynamicModel.Payload,
+        dynamicCardPayload: DashboardDynamicCardModel.Payload,
         isJetpack: Bool = AppConfiguration.isJetpack
     ) -> Bool {
         return self == .dynamic

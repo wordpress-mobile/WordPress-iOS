@@ -3,7 +3,7 @@ import Foundation
 protocol BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel)
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?)
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardDynamicModel)
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardDynamicCardModel)
     var row: Int { get set }
 }
 
@@ -11,7 +11,7 @@ extension BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardDynamicModel) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardDynamicCardModel) {
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel) {
