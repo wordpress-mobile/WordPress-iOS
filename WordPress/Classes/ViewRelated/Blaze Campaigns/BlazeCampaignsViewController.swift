@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 import WordPressFlux
+import DesignSystem
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
