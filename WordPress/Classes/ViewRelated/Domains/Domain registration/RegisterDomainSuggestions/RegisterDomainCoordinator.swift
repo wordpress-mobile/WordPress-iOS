@@ -114,17 +114,20 @@ class RegisterDomainCoordinator {
             guard let self else {
                 return
             }
-            self.site = selectedBlog
             controller.showLoading()
             self.createCart { [weak self] result in
+                guard let self else {
+                    return
+                }
                 switch result {
                 case .success(let domain):
-                    self?.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                    controller.hideLoading()
+                    self.site = selectedBlog
+                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
+                    self.track(.purchaseDomainSiteSelected, blog: selectedBlog)
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                    controller.hideLoading()
                 }
+                controller.hideLoading()
             }
         }
 
