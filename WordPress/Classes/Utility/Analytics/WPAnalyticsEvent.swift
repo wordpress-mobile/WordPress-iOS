@@ -255,7 +255,7 @@ import Foundation
     case purchaseDomainChooseSiteTapped
     case purchaseDomainCompleted
     case myDomainsSearchDomainTapped
-
+    
     // My Site
     case mySitePullToRefresh
 

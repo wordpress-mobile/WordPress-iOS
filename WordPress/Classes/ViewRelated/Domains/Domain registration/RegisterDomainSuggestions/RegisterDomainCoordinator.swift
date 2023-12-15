@@ -99,12 +99,15 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
-        let config = BlogListConfiguration(shouldShowCancelButton: false,
-                                           shouldShowNavBarButtons: false,
-                                           navigationTitle: TextContent.sitePickerNavigationTitle,
-                                           backButtonTitle: TextContent.sitePickerNavigationTitle,
-                                           shouldHideSelfHostedSites: true,
-                                           shouldHideBlogsNotSupportingDomains: true)
+        let config = BlogListConfiguration(
+            shouldShowCancelButton: false,
+            shouldShowNavBarButtons: false,
+            navigationTitle: TextContent.sitePickerNavigationTitle,
+            backButtonTitle: TextContent.sitePickerNavigationTitle,
+            shouldHideSelfHostedSites: true,
+            shouldHideBlogsNotSupportingDomains: true,
+            analyticsSource: analyticsSource
+        )
         let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil)
 
         blogListViewController.blogSelected = { [weak self] controller, selectedBlog in

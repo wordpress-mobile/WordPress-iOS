@@ -418,6 +418,21 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+#pragma mark - Tracks
+
+- (void)trackEvent:(WPAnalyticsEvent)event properties:(NSDictionary<id, id> * _Nullable)properties
+{
+    NSMutableDictionary<id, id> *mergedProperties = [NSMutableDictionary dictionary];
+
+    if (self.configuration.analyticsSource) {
+        mergedProperties[WPAppAnalyticsKeySource] = self.configuration.analyticsSource;
+    }
+
+    [mergedProperties addEntriesFromDictionary:properties ?: @{}];
+
+    [WPAnalytics trackEvent:event properties:mergedProperties];
+}
+
 #pragma mark - Header methods
 
 - (UIView *)headerView
@@ -803,7 +818,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setSelectedBlog:(Blog *)selectedBlog
 {
     [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
-    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDomainSiteSelected];
+    [self trackEvent:WPAnalyticsEventSiteSwitcherDomainSiteSelected properties:nil];
 }
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
