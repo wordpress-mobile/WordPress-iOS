@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 
+// TODO: Delete this once dynamic cards are implemented on the Backend
 final class DashboardServiceRemoteFake: DashboardServiceRemote {
 
     override func fetch(cards: [String], forBlogID blogID: Int, success: @escaping (NSDictionary) -> Void, failure: @escaping (Error) -> Void) {
