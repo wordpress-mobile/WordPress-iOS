@@ -60,8 +60,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             }
             let destination = TransferDomainsWebViewController(source: self.analyticsSource)
             self.present(UINavigationController(rootViewController: destination), animated: true)
+            self.track(.domainsSearchTransferDomainTapped)
         }
-        return .init(configuration: configuration)
+        return .init(configuration: configuration, analyticsSource: self.analyticsSource)
     }()
 
     /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
