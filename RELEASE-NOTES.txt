@@ -1,6 +1,7 @@
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [**] The block editor now automatically retries failed media uploads when network connectivity is re-established. [#22238]
 
 23.9
 -----
