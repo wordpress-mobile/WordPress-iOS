@@ -26,9 +26,6 @@ SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
 PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
 APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
 
-# Other defines used across multiple lanes
-REPOSITORY_NAME = 'WordPress-iOS'
-
 WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
@@ -59,6 +56,12 @@ PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xc
 ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
+
+# Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.
+# That means if we change the branch as part of an action, it'll return the incorrect branch.
+# This environment variable disables that behavior.
+# See https://github.com/fastlane/fastlane/pull/21597
+ENV['FL_GIT_BRANCH_DONT_USE_ENV_VARS'] = 'true'
 
 # Instanstiate versioning classes
 VERSION_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::MarketingVersionCalculator.new
@@ -280,4 +283,25 @@ before_all do |lane|
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
   # rubocop:enable Style/IfUnlessModifier
+end
+
+def compute_release_branch_name(options:, version: release_version_current)
+  branch_option = :branch
+  branch_name = options[branch_option]
+
+  if branch_name.nil?
+    branch_name = release_branch_name(version:)
+    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
+  end
+
+  branch_name
+end
+
+def release_branch_name(version: release_version_current)
+  "release/#{version}"
+end
+
+def ensure_git_branch_is_release_branch
+  # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+  ensure_git_branch(branch: '^release/')
 end

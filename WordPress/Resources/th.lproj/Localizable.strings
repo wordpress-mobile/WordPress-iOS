@@ -70,9 +70,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "log กิจกรรม";
 
-/* Remove asset from media picker list */
-"Add" = "เพิ่ม";
-
 /* The title on the add category screen */
 "Add a Category" = "เพิ่มหมวดหมู่";
 
@@ -85,9 +82,6 @@
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "ที่อยู่";
-
-/* Description of albums in the photo libraries */
-"Albums" = "อัลบั้ม";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -180,8 +174,7 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "ยุ่ง";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "กล้อง";
 
 /* Alert dismissal title
@@ -352,9 +345,6 @@
 /* No comment provided by engineer. */
 "Couldn't Connect" = "ไม่สามารถเชื่อมต่อได้";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "กำลังนับรายการไฟล์สื่อ...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "ประเทศ";
 
@@ -449,7 +439,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "ยกเลิก";
 
@@ -665,9 +654,6 @@
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "ขนาดรูปภาพ";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "รูปภาพ %@";
-
 /* Undated post time label */
 "Immediately" = "ทันที";
 
@@ -849,13 +835,6 @@
    Title label for the media settings section in the app settings */
 "Media" = "ไฟล์สื่อ";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "ตัวจับไฟล์สื่อ";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "คลังไฟล์สื่อ";
-
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "อัปโหลดไฟล์สื่อ";
 
@@ -987,7 +966,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1252,8 +1230,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "เรื่องที่เกี่ยวข้อง";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -1540,8 +1517,7 @@
    Theme Support action title */
 "Support" = "สนับสนุน";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "เปลี่ยนเว็บไซต์";
 
 /* Label for tagline blog setting
@@ -1650,14 +1626,8 @@
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "มีปัญหาในการปิดกั้นสำหรับเว็บที่กำหนด";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "มีปัญหาในการพยายามเข้าถึงไฟล์สื่อของคุณ  โปรดลองใหม่อีกครั้งภายหลัง";
-
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงกล้องเพื่อถ่ายรูป\/วีดีโอใหม่  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงคลังไฟล์สื่ออุปกรณ์ของคุณเพื่อจะเพิ่มรูปภาพ และ\/หรือ ไฟล์วีดีโอไปยังเรื่องของคุณ  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "ยังไม่มีการเขียนเรื่องบนเว็บ  ลองอีกครั้งภายหลัง";
@@ -1838,9 +1808,6 @@
 
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "ไฟล์วีดีโอ %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "วีดีโอ";
