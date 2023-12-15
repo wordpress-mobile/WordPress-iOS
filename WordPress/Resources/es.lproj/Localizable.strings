@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-04 22:54:30+0000 */
+/* Translation-Revision-Date: 2023-12-07 10:50:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -475,12 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Tipo de actividad (%1$d)";
 
-/* Remove asset from media picker list */
-"Add" = "Añadir";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Añadir %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Añadir el bloque después";
 
@@ -641,9 +635,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Álbumes";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -952,9 +943,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Leyenda del audio. Vacía";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Autenticando";
 
@@ -1262,8 +1250,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Calculando…";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Cámara";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1527,9 +1514,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Elegir el archivo";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Elegir de mi dispositivo";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Elige entre una página de inicio que muestre tus últimas entradas (blog clásico) o una página fija \/ estática.";
@@ -2024,9 +2008,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "No se ha podido cerrar la cuenta automáticamente";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Contando elementos multimedia...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Países";
 
@@ -2407,7 +2388,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Descartar";
 
@@ -2424,12 +2404,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nombre público";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Documento, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Documento: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "¿A que se siente uno bien terminando una lista?";
@@ -2624,9 +2598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Editar botón «Más»";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Editar %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Editar palabra de la lista negra";
@@ -3664,9 +3635,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Imagen: %@";
-
 /* Undated post time label */
 "Immediately" = "Inmediatamente";
 
@@ -4167,17 +4135,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Cargando copias de seguridad...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Cargando GIFs…";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Cargando menús…";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Cargando personas…";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Cargando fotos…";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Cargando plan...";
@@ -4422,13 +4384,6 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Tamaño de la caché de medios";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Captura de multimedia";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Librería multimedia";
-
 /* Title for action sheet with media options. */
 "Media Options" = "Opciones de medios";
 
@@ -4450,9 +4405,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Opciones de medios";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Fallo en la vista previa del medio.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Medios subidos (%ld archivos)";
@@ -4856,9 +4808,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "No se han encontrado eventos coincidentes.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "No hay medios que coincidan con tu búsqueda";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4997,9 +4947,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Aún no hay ningún «Me gusta»";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Nada que mostrar";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabla de detalles de notificación";
 
@@ -5059,7 +5006,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5154,9 +5100,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir configuración";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Abrir selector completo de multimedia";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Abrir en Safari";
@@ -5373,9 +5316,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografía";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Fotos proporcionadas por Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Elige un nombre de usuario";
@@ -5653,9 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Aquí aparecerán las entradas que te gusten.";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Funciona con Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5673,9 +5610,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Vista previa";
-
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Vista previa %@";
 
 /* Title for web preview device switching button */
 "Preview Device" = "Vista previa del dispositivo";
@@ -5904,7 +5838,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Redo" = "Rehacer";
 
 /* Label for link title in Referrers stat. */
-"Referrer" = "Referencia";
+"Referrer" = "Remitente";
 
 /* Period Stats 'Referrers' header */
 "Referrers" = "Referencias";
@@ -5942,8 +5876,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Recordatorios eliminados";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6364,12 +6297,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "Ajustes de búsqueda";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "¡Busca para encontrar fotos gratuitas que añadir a tu biblioteca de medios!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "¡Busca para descubrir fotos gratuitas que añadir a tu biblioteca de medios!";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Buscar…";
 
@@ -6460,9 +6387,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Seleccionar el dominio";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Elige medios.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Elegir el estilo del párrafo";
@@ -7088,8 +7012,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Soporte";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Cambiar de sitio";
 
 /* Switches the Editor to HTML Mode */
@@ -7177,9 +7100,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Las etiquetas ayudan a decir a los lectores de qué trata una entrada. Separa las diferentes etiquetas con comas.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Toma una foto o vídeo";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Haz una foto";
 
@@ -7249,9 +7169,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Toca para seleccionar el periodo anterior";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Toca para cambiar a otro sitio o para añadir un nuevo sitio";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Toca para ver más detalles.";
@@ -7330,9 +7247,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "La conexión con Facebook no puede encontrar ninguna página. Difundir no puede conectar con perfiles de Facebook, solo con páginas publicadas.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "No se pudo añadir el GIF a la biblioteca de medios.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "La cuenta de Google «%@» no coincide con ninguna cuenta de WordPress.com";
@@ -7541,9 +7455,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Hubo un problema al intentar acceder a tu localización. Por favor, prueba de nuevo.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Se ha producido un problema al intentar acceder a tus elementos multimedia. Inténtalo de nuevo más tarde.";
-
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Hubo un problema al tratar de seguir el sitio. Si persiste el problema puedes contactarnos desde la pantalla Yo > Ayuda y soporte";
 
@@ -7613,9 +7524,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Esta aplicación requiere permiso para acceder a la cámara para escanear códigos de acceso. Toca en el botón Abrir la configuración para habilitarlo.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Esta aplicación necesita permiso para acceder a la biblioteca multimedia del dispositivo con el fin de añadir fotos y vídeos en tus entradas. Cambia la configuración de privacidad si deseas permitir esta acción.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Esta combinación de colores puede dificultar la lectura. Prueba a utilizar un color de fondo más brillante o un color de texto más oscuro.";
@@ -8175,9 +8083,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML desconocido";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Fecha de creación desconocida";
-
 /* No comment provided by engineer. */
 "Unknown error" = "Error desconocido";
 
@@ -8420,9 +8325,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Vídeo no subido";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Vídeo, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Vídeos";
@@ -8953,9 +8855,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Ayuda de WordPress";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "Medios de WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Biblioteca de medios de WordPress";
 
@@ -9270,9 +9169,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Tu cuenta no tiene permisos para subir medios a este sitio. El administrador del sitio puede cambiar estos permisos.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Tu aplicación no está autorizada para acceder a la biblioteca de medios debido a restricciones activas tales como controles parentales. Por favor, revisa los ajustes de control parental en este dispositivo.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Tu copia de seguridad ya está disponible para descargarla";
 
@@ -9447,9 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
 "appSettings.optimizeImagesPopup.turnOn" = "Sí, déjala encendida";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "archivo de audio";
 
@@ -9560,9 +9453,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Copiar URL";
-
-/* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "Abrir en el navegador";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Más información";
@@ -10022,9 +9912,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/direccion-de-mi-sitio (URL)";
-
-/* Label displayed on image media items. */
-"image" = "imagen";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Para hacer las fotos o vídeos que deseas usar en tus entradas.";
@@ -10625,12 +10512,6 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Enviar comentarios";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "de";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "otros";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Página de inicio";
@@ -11525,9 +11406,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "no leído";
-
-/* Label displayed on video media items. */
-"video" = "vídeo";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visita nuestra página de documentación";

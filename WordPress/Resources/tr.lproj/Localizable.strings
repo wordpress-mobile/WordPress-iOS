@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-13 13:55:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -475,12 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Etkinlik Türü (%1$d)";
 
-/* Remove asset from media picker list */
-"Add" = "Ekle";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "%@ ekle";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Blok sonrasına ekle";
 
@@ -641,9 +635,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albümler";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -952,9 +943,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Ses yazısı. Boş";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Ses, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Doğrulanıyor";
 
@@ -1262,8 +1250,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Hesaplanıyor...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Kamera";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1527,9 +1514,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Dosya seçin";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Cihazımdan seç";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "En son gönderilerinizi görüntüleyen bir ana sayfa (klasik blog) veya sabit\/statik bir sayfa seçin.";
@@ -2024,9 +2008,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Hesap otomatik olarak kapatılamadı";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Ortam öğeleri sayılıyor...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Ülkeler";
 
@@ -2407,7 +2388,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Kapat";
 
@@ -2424,12 +2404,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Görünen isim";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Belge, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Belge: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Listedeki bazı işleri tamamlamak iyi hissettirmiyor mu?";
@@ -2624,9 +2598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "\"Daha fazla\" tuşunu düzenle";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "%@ düzenle";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Kara Liste Sözcüğünü Düzenle";
@@ -3664,9 +3635,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image title on image settings. */
 "Image title" = "Görsel başlığı";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Görsel, %@";
-
 /* Undated post time label */
 "Immediately" = "Hemen";
 
@@ -4167,17 +4135,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Yedeklemeler yükleniyor...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "GIFler yükleniyor...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Menüler yükleniyor...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Kişiler yükleniyor...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Fotoğraflar yükleniyor...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Plan yükleniyor...";
@@ -4422,13 +4384,6 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Ortam ön belleği boyutu";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Görsel yakalama";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Ortam kütüphanesi";
-
 /* Title for action sheet with media options. */
 "Media Options" = "Ortam seçenekleri";
 
@@ -4450,9 +4405,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Medya seçenekleri";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Ortam ön izleme hatası.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Ortam yüklendi (%ld dosya)";
@@ -4856,9 +4808,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Eşleşen etkinlik bulunamadı.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Aramanızla eşleşen ortam yok";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4997,9 +4947,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Henüz hiçbir şey beğenilmedi";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Gösterilecek bir şey yok";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Bildirim detayları tablosu";
 
@@ -5059,7 +5006,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5154,9 +5100,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Ayarları aç";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Tam ortam seçicisini aç";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Safari ile aç";
@@ -5373,9 +5316,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotoğrafçılık";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Fotoğraflar Pexels tarafından sağlandı";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Kullanıcı adı seçin";
@@ -5653,9 +5593,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Beğendiğiniz yazılar burada görüntülenecek.";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Destekleyen Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5673,9 +5610,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Önizleme";
-
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "%@ Önizlemesi";
 
 /* Title for web preview device switching button */
 "Preview Device" = "Ön izleme cihazı";
@@ -5942,8 +5876,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Hatırlatıcılar kaldırıldı";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6364,12 +6297,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "Arama ayarları";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Ortam kütüphanenize eklemek üzere GIF bulmak için ara!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Ortam kütüphanenize eklemek üzere ücretsiz fotoğraf bulmak için ara!";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Ara...";
 
@@ -6460,9 +6387,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Alan adı seç";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Ortam dosyası seçin.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Paragraf stilini seçin";
@@ -7088,8 +7012,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Destek";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Site değiştir";
 
 /* Switches the Editor to HTML Mode */
@@ -7177,9 +7100,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Etiketler okuyuculara bir gönderinin ne hakkında olduğunu anlatmaya yardımcı olur. Farklı etiketleri virgüller ile ayırın.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Fotoğraf veya video çek";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Fotoğraf çek";
 
@@ -7249,9 +7169,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Bir önceki dönemi seçmek için seçe dokunun";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Başka bir siteye geçmek için dokunun veya yeni bir site ekleyin";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Daha fazla ayrıntı görüntülemek için dokunun.";
@@ -7330,9 +7247,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook bağlantısı hiçbir sayfa bulamıyor. Duyuru, Facebook profillerine bağlanamaz, yalnızca yayınlanan sayfalara bağlanabilir.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF, ortam kütüphanesine eklenemez.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = " Google hesabı \"%@\" WordPress.com'daki herhangi bir hesapla eşleşmiyor";
@@ -7541,9 +7455,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Konumunuza ulaşırken bir problem oluştu. Lütfen daha sonra tekrar deneyin.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Ortam dosyasına erişmeye çalışılırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.";
-
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Öyküler düzenleyicisinde bir sorun oluştu.  Sorun tekrar ederse lütfen Ben > Yardım ve Destek ekranından bizimle iletişim kurun.";
 
@@ -7613,9 +7524,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Bu uygulamanın giriş kodlarını taramak için Kameraya erişmek için izne ihtiyacı vardır, etkinleştirmek için Ayarları Aç düğmesine dokunun.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Bu uygulama yazılarınıza fotoğraf ve\/veya video eklemek için cihazınızın görsel kitaplığa erişim izni istiyor. Buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Bu renk birleşimi insanların okuması zor olabilir. Daha parlak bir arka plan ve\/veya daha koyu bir metin rengi kullanmayı deneyin.";
@@ -8175,9 +8083,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Bilinmeyen HTML";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Bilinmeyen oluşturma tarihi";
-
 /* No comment provided by engineer. */
 "Unknown error" = "Bilinmeyen hata";
 
@@ -8420,9 +8325,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Video yüklenmedi";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Videolar";
@@ -8953,9 +8855,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress yardımı";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress ortamı";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress ortam kütüphanesi";
 
@@ -9270,9 +9169,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Hesabınızın bu siteye ortam yükleme izni yok. Site yöneticisi bu izinleri değiştirebilir.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Ebeveyn kontrolleri gibi etkin kısıtlamalar nedeniyle uygulamanızın ortam kitaplığına erişme yetkisi yok. Lütfen bu cihazdaki ebeveyn kontrolü ayarlarınızı kontrol edin.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Yedeklemeniz artık indirilebilir";
 
@@ -9447,9 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
 "appSettings.optimizeImagesPopup.turnOn" = "Evet, açık kalsın";
 
-/* Label displayed on audio media items. */
-"audio" = "ses";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
 
@@ -9562,13 +9455,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionCopyURL" = "Adresi Kopyala";
 
 /* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "Tarayıcıda Aç";
+"blogHeader.actionVisitSite" = "Siteyi ziyaret et";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Daha fazla bilgi edinin";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Yeni yılda blog yazma alışkanlığı oluşturmayı hedefleyen topluluk etkinliğimiz Bloganuary'den ocak ayı boyunca blog istemleri alacaksınız.";
+"bloganuary.dashboard.card.description" = "Yeni yılda blog yazma alışkanlığı oluşturmayı hedefleyen topluluk etkinliğimiz Bloganuary'den Ocak ayı boyunca blog istemleri alacaksınız.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary yaklaşıyor!";
@@ -9590,10 +9483,10 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "bloganuary.learnMore.modal.descriptions.first" = "Her gün size ilham verecek yeni istemler alın.";
 
 /* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
-"bloganuary.learnMore.modal.footer.addition" = "Bloganuary'ye katılmak için Blog İstemlerini etkinleştirmeni gerekir.";
+"bloganuary.learnMore.modal.footer.addition" = "Bloganuary'ye katılmak için Blog İstemlerini etkinleştirmeniz gerekir.";
 
 /* An informative excerpt shown in a subtler tone. */
-"bloganuary.learnMore.modal.footer.text" = "Bloganuary ocak ayı boyunca size konular göndermek için Günlük Blog İstemlerini kullanacak.";
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary Ocak ayı boyunca size konular göndermek için Günlük Blog İstemlerini kullanacak.";
 
 /* The headline text of the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.headline" = "Bir ay sürecek yazma etkinliğimize katılın";
@@ -9924,6 +9817,15 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Ekle";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Görselleri seç";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Seçileni görüntüle (%@)";
+
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Kampanya Ayrıntıları";
 
@@ -10022,9 +9924,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/benim-site-adresim (URL)";
-
-/* Label displayed on image media items. */
-"image" = "görsel";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
@@ -10380,6 +10279,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Silindi!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Hepsi";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Ses";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Belgeler";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Resimler";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Videolar";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Sil";
 
@@ -10457,6 +10371,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video Çek";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ \/ %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d piksel";
@@ -10611,6 +10528,27 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Hiçbir siteniz yok";
 
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Site eylemleri";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Daha fazla site eylemi göstermek için dokunun";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Ana sayfayı kişiselleştir";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Site simgesini değiştir";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Site başlığını değiştir";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Site değiştir";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Siteyi ziyaret et";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
 
@@ -10625,12 +10563,6 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri Bildirim gönderin";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = ",";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "diğer";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Ana sayfa";
@@ -11190,6 +11122,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Ortamı önizle";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Ekle";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Seçimi kaldır";
 
@@ -11364,6 +11299,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Kapat";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Pexels tarafından sağlanan fotoğraflar";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Bu sohbette";
 
@@ -11511,6 +11452,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "Yardım";
 
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Ortam kitaplığınıza eklemek için GIF arayın";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
 
@@ -11525,9 +11469,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "okunmamış";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "belge sayfamızı ziyaret edin";

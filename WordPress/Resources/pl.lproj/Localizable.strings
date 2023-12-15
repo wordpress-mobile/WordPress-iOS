@@ -156,9 +156,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Dziennik aktywności";
 
-/* Remove asset from media picker list */
-"Add" = "Dodaj";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Dodaj na początku";
 
@@ -201,9 +198,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumy";
 
 /* Autoapprove every comment
    Browse all themes selection title
@@ -405,8 +399,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Obliczanie…";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Aparat";
 
 /* Title of an alert letting the user know */
@@ -921,7 +914,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Odrzuć";
 
@@ -929,12 +921,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Wyświetlana nazwa";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokument, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domeny";
@@ -1005,9 +991,6 @@
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Edytuj przycisk \"Więcej\"";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Edytuj %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edytuj czarną listę słów";
@@ -1724,10 +1707,6 @@
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Rozmiar pamięci podręcznej mediów";
 
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Biblioteka mediów";
-
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Wgrywanie multimediów";
 
@@ -1934,7 +1913,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -2177,9 +2155,6 @@
 /* Label for selecting the number of posts per page */
 "Posts per page" = "Wpisów na stronie";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Napędzane przez Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -2326,8 +2301,7 @@
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Przypomnienia zostały usunięte";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -3728,9 +3702,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odrzuć";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
-
 /* No comment provided by engineer. */
 "password" = "hasło";
 
@@ -3850,9 +3821,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "nieznany adres URL";
-
-/* Label displayed on video media items. */
-"video" = "film";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Odrzuć";

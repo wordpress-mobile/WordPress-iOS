@@ -228,6 +228,7 @@ private struct BloganuaryOverlayView: View {
             Text(viewModel.promptsEnabled ? Strings.buttonTitleForEnabledPrompts : Strings.buttonTitleForDisabledPrompts)
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
+                .frame(maxWidth: .infinity)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.vertical, 14.0)

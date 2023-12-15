@@ -264,6 +264,10 @@ import Foundation
     case mySiteNoSitesViewActionTapped
     case mySiteNoSitesViewHidden
 
+    // My Site: Header Actions
+    case mySiteHeaderMoreTapped
+    case mySiteHeaderPersonalizeHomeTapped
+
     // Site Switcher
     case mySiteSiteSwitcherTapped
     case siteSwitcherDisplayed
@@ -1013,6 +1017,12 @@ import Foundation
             return "my_site_no_sites_view_action_tapped"
         case .mySiteNoSitesViewHidden:
             return "my_site_no_sites_view_hidden"
+
+        // My Site Header Actions
+        case .mySiteHeaderMoreTapped:
+            return "my_site_header_more_tapped"
+        case .mySiteHeaderPersonalizeHomeTapped:
+            return "my_site_header_personalize_home_tapped"
 
         // Site Switcher
         case .mySiteSiteSwitcherTapped:
