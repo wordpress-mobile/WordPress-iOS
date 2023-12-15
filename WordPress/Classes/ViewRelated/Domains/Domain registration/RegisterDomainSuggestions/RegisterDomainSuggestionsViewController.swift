@@ -418,15 +418,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
     private func pushPurchaseDomainChoiceScreen() {
         @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
-        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
+        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel, analyticsSource: analyticsSource) { [weak self] in
             guard let self else { return }
             choicesViewModel.isGetDomainLoading = true
             self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
-            WPAnalytics.track(.purchaseDomainGetDomainTapped)
         } chooseSiteAction: { [weak self] in
             guard let self else { return }
             self.coordinator?.handleExistingSiteChoice(on: self)
-            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
         }
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = TextContent.domainChoiceTitle
