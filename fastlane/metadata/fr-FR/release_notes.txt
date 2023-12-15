@@ -1,9 +1,0 @@
-Nous avons ajouté un réglage Optimiser les images pour que les nouvelles images mises en ligne aient par défaut la taille et la qualité optimales. Par ailleurs, vous pouvez supprimer les images, les vidéos et autres médias via l’écran Médias dans Mes sites.
-
-Vous désirez une assistance supplémentaire pour les médias ? Vous avez de la chance : les miniatures et images originales se chargent désormais plus rapidement sur l’écran Médias du site, et les miniatures GIF s’animent correctement. Nous avons également ajouté des boutons pour que vous puissiez sélectionner et désélectionner les fichiers médias dans le mode Aperçu.
-
-L’éditeur de blocs affiche l’option « Dégrouper » pour les blocs imbriqués uniquement si ces derniers la prennent en charge. Ah oui, nous avons aussi ajouté un sélecteur de photo natif pour l’éditeur de Story.
-
-Nous avons corrigé l’écran des détails de l’élément multimédia pour les utilisateurs d’iPad. Nous avons éliminé un bug sur l’écran Statistiques, de sorte que les sites s’ouvrent désormais lorsque vous cliquez sur leur URL.
-
-Enfin, la liste des pages de votre site se charge désormais plus rapidement. Oui, même si celui-ci comporte des centaines de pages. Et oui, nous sommes doués à ce point-là.

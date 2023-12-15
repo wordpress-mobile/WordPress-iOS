@@ -162,10 +162,7 @@ private struct BloganuaryNudgeCardView: View {
 
         static let description = NSLocalizedString(
             "bloganuary.dashboard.card.description",
-            value: """
-            For the month of January, blogging prompts will come from Bloganuary - \
-            our community challenge to build a blogging habit for the new year.
-            """,
+            value: "For the month of January, blogging prompts will come from Bloganuary — our community challenge to build a blogging habit for the new year.",
             comment: "Short description for the Bloganuary event, shown right below the title."
         )
 
