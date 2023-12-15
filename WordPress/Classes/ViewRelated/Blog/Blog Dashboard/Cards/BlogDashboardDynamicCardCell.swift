@@ -13,11 +13,7 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel) {
-        guard case .dynamic(let model) = model else {
-            return
-        }
-
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardDynamicModel) {
         self.presentingViewController = viewController
         self.configureMoreButton(with: blog)
 
