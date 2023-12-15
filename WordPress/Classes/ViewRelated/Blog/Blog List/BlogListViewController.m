@@ -818,7 +818,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setSelectedBlog:(Blog *)selectedBlog
 {
     [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
-    [self trackEvent:WPAnalyticsEventSiteSwitcherDomainSiteSelected properties:nil];
+    [self trackEvent:WPAnalyticsEventSiteSwitcherSiteSelected properties:nil];
 }
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated

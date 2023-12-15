@@ -123,7 +123,7 @@ class RegisterDomainCoordinator {
                 case .success(let domain):
                     self.site = selectedBlog
                     self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                    self.track(.purchaseDomainSiteSelected, blog: selectedBlog)
+                    self.track(.purchaseDomainSiteSelected)
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
                 }
@@ -135,7 +135,7 @@ class RegisterDomainCoordinator {
     }
 
     func trackDomainPurchasingCompleted() {
-        self.track(.purchaseDomainCompleted, blog: site)
+        self.track(.purchaseDomainCompleted)
     }
 
     // MARK: Helpers
@@ -206,7 +206,7 @@ class RegisterDomainCoordinator {
                 return WPAnalytics.domainsProperties(usingCredit: false, origin: nil, domainOnly: true)
             }
         }()
-        self.track(.domainsPurchaseWebviewViewed, properties: properties, blog: site)
+        self.track(.domainsPurchaseWebviewViewed, properties: properties)
 
         webViewController.configureSandboxStore {
             if shouldPush {
@@ -263,14 +263,14 @@ class RegisterDomainCoordinator {
 
     // MARK: - Tracks
 
-    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil, blog: Blog?) {
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
         let defaultProperties: [AnyHashable: Any] = [WPAppAnalyticsKeySource: analyticsSource]
 
         let properties = defaultProperties.merging(properties ?? [:]) { first, second in
             return first
         }
 
-        if let blog {
+        if let blog = self.site {
             WPAnalytics.track(event, properties: properties, blog: blog)
         } else {
             WPAnalytics.track(event, properties: properties)
