@@ -20,7 +20,14 @@ public extension XCUIElement {
 
         let deviceScreenFrame = app.windows.element(boundBy: 0).frame
         let deviceScreenWidth = deviceScreenFrame.size.width
-        let visibleAreaTop = topElement.frame.origin.y + topElement.frame.size.height
+        let visibleAreaTop: CGFloat
+
+        if topElement.exists {
+            visibleAreaTop = topElement.frame.origin.y + topElement.frame.size.height
+        } else {
+            visibleAreaTop = deviceScreenFrame.origin.y
+        }
+
         let visibleAreaHeight = bottomElement.frame.origin.y - visibleAreaTop
         let visibleAreaFrame = CGRect(x: 0, y: visibleAreaTop, width: deviceScreenWidth, height: visibleAreaHeight)
 
