@@ -1,6 +1,7 @@
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [**] Tapping a block with a failed media upload now retries all failed uploads in the post instead of only the one media tapped. [#22240]
 
 23.9
 -----
