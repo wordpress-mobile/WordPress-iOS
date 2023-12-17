@@ -1,9 +1,0 @@
-Wir haben die Einstellung „Bilder optimieren“ hinzugefügt, damit neu hochgeladene Bilder standardmäßig die optimale Größe und Qualität haben. Du kannst außerdem im Bildschirm „Medien“ unter „Meine Websites“ Bilder, Videos und andere Medien löschen.
-
-Du wünschst dir noch mehr Support im Bereich Medien? Da hast du Glück: Vorschaubilder und Originalbilder laden jetzt im Bildschirm „Site Media“ (Websitemedien) schneller und GIF-Vorschaubilder werden korrekt animiert. Wir haben zudem Buttons hinzugefügt, damit du Mediendateien im Vorschaumodus aus- und abwählen kannst.
-
-Im Block-Editor siehst du die Option „Gruppierung aufheben“ nur für verschachtelte Blöcke, die diese Option auch unterstützen. Oh! Wir haben außerdem noch eine native Fotoauswahl zum Story-Editor hinzugefügt.
-
-Der Bildschirm mit den Details zu Medienelementen für iPad-Benutzer ist repariert und der Bug im Bildschirm „Statistiken“ behoben, sodass Websites sich jetzt öffnen, sobald du auf ihre URLs klickst. Zudem konnten wir ein Migrationsproblem für WordPress-Benutzer beheben, deren Konten über keine Websites verfügen. Die Aufforderung „Uninstall WordPress” (WordPress deinstallieren) findest du jetzt auch in deinem Dashboard.
-
-Und zu guter Letzt lädt die Liste deiner Website-Seiten jetzt schneller. Auch dann, wenn deine Website aus Hunderten von Seiten besteht. Was sollen wir sagen? Wir verstehen eben etwas von unserem Handwerk.

@@ -475,12 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "活动类型 (%1$d)";
 
-/* Remove asset from media picker list */
-"Add" = "添加";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "添加 %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "在之后添加区块";
 
@@ -641,9 +635,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "相册";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -952,9 +943,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "音频说明。空";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "音频，%@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "正在验证";
 
@@ -1262,8 +1250,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "正在计算...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "照相机";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1527,9 +1514,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "选择文件";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "从我的设备中选择";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "选择显示您的近期文章（经典博客）的主页或固定\/静态页面。";
@@ -2024,9 +2008,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "无法自动关闭帐户";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "正在统计媒体项目数…";
-
 /* Period Stats 'Countries' header */
 "Countries" = "国家\/地区";
 
@@ -2407,7 +2388,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "关闭";
 
@@ -2424,12 +2404,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "显示名称";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "文档，%@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "文档：%@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "将清单上的事情划掉是不是感觉很棒？";
@@ -2624,9 +2598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "编辑“更多”按钮";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "编辑 %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "编辑禁止名单关键词";
@@ -3661,9 +3632,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image title on image settings. */
 "Image title" = "图像标题";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "图像，%@";
-
 /* Undated post time label */
 "Immediately" = "立即";
 
@@ -4164,17 +4132,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "正在加载备份…";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "正在加载 GIF...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "正在加载菜单...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "正在加载人员信息…";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "正在加载照片...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "正在加载套餐...";
@@ -4419,13 +4381,6 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "媒体缓存大小";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "媒体拍摄";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "媒体库";
-
 /* Title for action sheet with media options. */
 "Media Options" = "媒体选项";
 
@@ -4447,9 +4402,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "媒体选项";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "媒体预览加载失败。";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "已上传媒体（%ld 个文件）";
@@ -4853,9 +4805,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "未发现符合条件的事件。";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "没有与您的搜索匹配的媒体";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4994,9 +4944,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "尚无点赞内容";
 
-/* Default message for empty media picker */
-"Nothing to show" = "没有可显示的内容";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知详细信息表";
 
@@ -5056,7 +5003,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5151,9 +5097,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "打开设置";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "打开完整媒体选择器";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "用 Safari 打开";
@@ -5370,9 +5313,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "摄影";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Pexels 提供的照片";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "选择用户名";
@@ -5650,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "您喜欢的文章将在此处显示。";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "由 Tenor 提供支持";
-
 /* Browse premium themes selection title */
 "Premium" = "付费";
 
@@ -5670,9 +5607,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "预览";
-
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "预览 %@";
 
 /* Title for web preview device switching button */
 "Preview Device" = "预览设备";
@@ -5939,8 +5873,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "删除提醒";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6361,12 +6294,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "搜索设置";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "搜索查找要添加到您的媒体库中的 GIF！";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "搜索查找要添加到您的媒体库中的免费照片！";
-
 /* Menus search bar placeholder text. */
 "Search..." = "搜索...";
 
@@ -6457,9 +6384,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "选择域";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "选择媒体。";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "选择段落样式";
@@ -7085,8 +7009,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "支持";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "转换站点";
 
 /* Switches the Editor to HTML Mode */
@@ -7174,9 +7097,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "标签有助于读者了解文章内容。使用英文逗号分隔不同的标签。";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "拍照或录像";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "拍照";
 
@@ -7246,9 +7166,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "点击选择前一个时段";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "点击切换到另一站点，或添加一个新站点。";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "轻点以查看更多详细信息。";
@@ -7327,9 +7244,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 连接无法找到任何页面。Publicize 无法连接到 Facebook 个人资料，只能连接到已发布的页面。";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "无法将 GIF 格式的图片添加到媒体库。";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Google 账户“%@”与 WordPress.com 上的任何账户均不匹配";
@@ -7538,9 +7452,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "尝试访问您的位置时出错。请稍后重试。";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "尝试访问您的媒体时出现问题。请稍后重试。";
-
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "关注站点时出现问题。如果该问题多次出现，请通过“我 > 帮助与支持”界面与我们联系。";
 
@@ -7610,9 +7521,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "此应用程序需要相机访问权限才能扫描登录代码，点击“打开设置”按钮启用此权限。";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "此应用程序需要获取设备媒体库的访问权限，才可以向您的文章内添加照片和\/或视频。如要允许此操作，请更改隐私设置。";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "此颜色搭配可能不便于用户阅读。 不妨尝试使用较浅的背景颜色和\/或较深的文本颜色。";
@@ -8172,9 +8080,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "未知 HTML";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "创建日期未知";
-
 /* No comment provided by engineer. */
 "Unknown error" = "未知错误";
 
@@ -8417,9 +8322,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "视频无法上传";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "视频，%@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "视频";
@@ -8950,9 +8852,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress 帮助";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress 媒体";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress 媒体库";
 
@@ -9267,9 +9166,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "您的账户无权将媒体文件上传到此站点。站点管理员可以更改这些权限。";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "因家长控制等活动限制，您的应用程序无权访问媒体库。请检查此设备的家长控制设置。";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "您的备份现已可供下载";
 
@@ -9444,9 +9340,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
 "appSettings.optimizeImagesPopup.turnOn" = "是，继续优化";
 
-/* Label displayed on audio media items. */
-"audio" = "音频";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
@@ -9554,9 +9447,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "复制 URL";
-
-/* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "在浏览器中打开";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "了解更多";
@@ -10016,9 +9906,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
-
-/* Label displayed on image media items. */
-"image" = "图像";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍摄要在您的文章内使用的照片或视频。";
@@ -10619,12 +10506,6 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "发送反馈";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "\/";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "其他";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "主页";
@@ -11519,9 +11400,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未读";
-
-/* Label displayed on video media items. */
-"video" = "视频";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "访问我们的文档页面";

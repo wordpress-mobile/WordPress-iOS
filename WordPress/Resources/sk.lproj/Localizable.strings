@@ -201,12 +201,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Záznamy o činnosti";
 
-/* Remove asset from media picker list */
-"Add" = "Pridať";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Pridať %@";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Pridať obsah do príspevku";
 
@@ -249,9 +243,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Pokročilé";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumy";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -439,9 +430,6 @@
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Pridať súbor ako odkaz";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Overuje sa";
 
@@ -555,8 +543,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Prepočítava sa...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Fotoaparát";
 
 /* Title of an alert letting the user know */
@@ -692,9 +679,6 @@
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
 "Choose a theme" = "Vyberte tému";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Vybrať z Môjho zariadenia";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymazanie vyrovnávacej pamäte zariadenia";
@@ -951,9 +935,6 @@
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Nepodarilo sa nahrať odporúčaný obrázok";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Počítam množstvo súborov...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Krajiny";
 
@@ -1143,7 +1124,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Zrušiť";
 
@@ -1151,9 +1131,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Zobraziť meno";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Nie je to dobrý pocit odškrtávať veci zo zoznamu?";
@@ -1687,9 +1664,6 @@
 /* Hint for image title on image settings. */
 "Image title" = "Nadpis obrázka";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Obrázok, %@";
-
 /* Undated post time label */
 "Immediately" = "Okamžite";
 
@@ -1931,14 +1905,8 @@
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Načítavanie Aktivít...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Nahrávanie GIFov ... ";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítanie menu...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Nahrávanie fotografií ...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Načítava sa paušál...";
@@ -2094,13 +2062,6 @@
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Veľkosť cache súborov";
 
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Zachytiť súbor";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Knižnica súborov";
-
 /* Title for action sheet with media options. */
 "Media Options" = "Nastavenia súborov";
 
@@ -2116,9 +2077,6 @@
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Veľkosť súboru (%1$@) je príliš veľká. Maximálna povolená veľkosť je %2$@";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Náhľad súboru zlyhal.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Nahrávajú  sa média (%ld súborov)";
@@ -2311,9 +2269,7 @@
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Zatiaľ žiadne lajky";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Žiadne média nezodpovedajú vyhľadávaniu";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -2398,9 +2354,6 @@
 /* A message title */
 "Nothing liked yet" = "Žiaden príspevok označený \"Páči sa mi to\"";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Žiadne možnosti";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailná tabuľka notifikácií";
 
@@ -2433,7 +2386,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -2495,9 +2447,6 @@
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Otvoriť výber všetkých médií";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Otvoriť v Safari";
@@ -2620,9 +2569,6 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knižnica fotografií";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Fotografie poskytnuté službou Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Vyberte užívateľské meno";
@@ -2785,9 +2731,6 @@
    Title for screen to preview a static content. */
 "Preview" = "Náhľad";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Náhľad %@";
-
 /* No comment provided by engineer. */
 "Preview post" = "Predchádzajúce články";
 
@@ -2939,8 +2882,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Súvisiace články";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -3174,12 +3116,6 @@
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Vyhľadajte GIFy a pridajte ich do Knižnice médií!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Vyhľadajte zadarmo fotografie, ktoré si pridáte do Knižnice médií";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Hľadať...";
 
@@ -3207,9 +3143,6 @@
 
 /* No comment provided by engineer. */
 "Select a color" = "Vybrať farbu";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Vybrať súbor.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte štýl odseku";
@@ -3576,8 +3509,7 @@
    Theme Support action title */
 "Support" = "Podpora";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Prepnúť webovú stránku";
 
 /* Switches the Editor to HTML Mode */
@@ -3632,9 +3564,6 @@
 /* Displayed when the user views tags in blog settings and there are no tags */
 "Tags created here can be quickly added to new posts" = "Vytvorené značky sa dajp rýchlo pridať do nového článku";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Odfotogravovať alebo nasnímať video";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Klepnutím na položku [bookmark-outline] uložte príspevok do svojho zoznamu.";
 
@@ -3688,9 +3617,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Toto používateľské meno nie je povolené.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF formát sa nepodarilo pripojiť do Knižnice médií. ";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -3824,9 +3750,6 @@
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Došlo k chybe pri pokuse načítať vašu polohu. Skúste to znovu pozdejšie.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Vyskytol sa problém pri pokuse sprístupniť vaše súbory. Skúste to znovu neskôr.";
-
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Vyskytol sa problém so sledovaním webovej stránky. Ak problém aj naďalej trvá, kontaktujte nás cez Profil > Pomocník & Podpora.";
 
@@ -3859,9 +3782,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do knižnice súborov vo vašom zariadení, aby ste mohli pridať fotografie a\/alebo video do vášho článku. Prosím zmeňte nastavenia súkromia, pokiaľ si prajete ich pridanie.";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Táto e-mailová adresa nie je registrovaná na WordPress.com.";
@@ -4157,9 +4077,6 @@
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámy kód HTML";
 
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Neznámy dátum vytvorenia";
-
 /* No comment provided by engineer. */
 "Unknown error" = "Neznáma chyba";
 
@@ -4309,9 +4226,6 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export videa bol zrušený.";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Videá";
@@ -4493,9 +4407,6 @@
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Pomoc WordPress";
-
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress média";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Knižnica médií WordPress";
@@ -4722,9 +4633,6 @@
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
-
 /* Used when displaying author of a plugin. */
 "by %@" = "kým %@";
 
@@ -4733,9 +4641,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moja-stranka.sk (URL adresa)";
-
-/* Label displayed on image media items. */
-"image" = "obrázok";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
@@ -4746,20 +4651,11 @@
 /* Later today */
 "later today" = "neskôr dnes";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "ďalšie";
-
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "nasledujúce položky budú zmazané:";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "neznáma url adresa";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Články";

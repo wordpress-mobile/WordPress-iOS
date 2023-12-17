@@ -1,5 +1,6 @@
 import Gridicons
 import UIKit
+import DesignSystem
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
@@ -120,6 +121,9 @@ class BlogDetailHeaderView: UIView {
         if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
             titleView.siteActionButton.showsMenuAsPrimaryAction = true
             titleView.siteActionButton.menu = siteActionsMenu
+            titleView.siteActionButton.addAction(UIAction { _ in
+                WPAnalytics.trackEvent(.mySiteHeaderMoreTapped)
+            }, for: .menuActionTriggered)
         }
 
         if let siteIconMenu = delegate?.makeSiteIconMenu() {

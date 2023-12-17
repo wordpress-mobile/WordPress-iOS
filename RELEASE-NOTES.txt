@@ -4,6 +4,7 @@
 
 23.9
 -----
+* [**] Updates the My Site header to show site actions in a context menu [#22151]
 * [**] Add media fitlers to the Site Media screen [#22096]
 * [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
 * [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]

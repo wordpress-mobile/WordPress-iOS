@@ -46,7 +46,6 @@ extension SitePickerViewController {
             return DDLogError("Failed to show dashboard personalization screen: siteID is missing")
         }
 
-        // TODO: track event
         let viewController = UIHostingController(rootView: NavigationView {
             BlogDashboardPersonalizationView(viewModel: .init(blog: self.blog, service: .init(siteID: siteID)))
         }.navigationViewStyle(.stack)) // .stack is required for iPad
@@ -54,6 +53,8 @@ extension SitePickerViewController {
             viewController.modalPresentationStyle = .formSheet
         }
         present(viewController, animated: true)
+
+        WPAnalytics.trackEvent(.mySiteHeaderPersonalizeHomeTapped)
     }
 }
 

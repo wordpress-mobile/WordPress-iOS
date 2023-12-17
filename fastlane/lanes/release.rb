@@ -24,28 +24,25 @@ platform :ios do
 
     release_branch_name = compute_release_branch_name(options:, version: release_version_next)
 
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      Code Freeze:
+      • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
+
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
+    MESSAGE
+
+    UI.important(message)
+
     skip_user_confirmation = options[:skip_confirm]
 
-    unless skip_user_confirmation
-      # The `release_version_next` is used as the `new internal release version` value because the external and internal
-      # release versions are always the same.
-      message = <<-MESSAGE
-        Code Freeze:
-        • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
-        • Current release version and build code: #{release_version_current} (#{build_code_current}).
-        • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
-
-        • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
-        • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
-      MESSAGE
-
-      UI.important(message)
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
-
-    # Create the release branch
-    release_branch_name = compute_release_branch_name(options:, version: release_version_next)
     UI.message 'Creating release branch...'
     Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
     UI.success "Done! New release branch is: #{git_branch}"
@@ -101,7 +98,7 @@ platform :ios do
     )
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
-      UI.message('Aborting code freeze as requested.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -137,7 +134,7 @@ platform :ios do
     generate_strings_file_for_glotpress
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message('Aborting code freeze completion. See you later.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -158,22 +155,21 @@ platform :ios do
 
     git_pull
 
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      • Current build code: #{build_code_current}
+      • New build code: #{build_code_next}
+
+      • Current internal build code: #{build_code_current_internal}
+      • New internal build code: #{build_code_next_internal}
+    MESSAGE
+
+    UI.important(message)
+
     skip_user_confirmation = options[:skip_confirm]
 
-    unless skip_user_confirmation
-      # The `release_version_next` is used as the `new internal release version` value because the external and internal
-      # release versions are always the same.
-      message = <<-MESSAGE
-        • Current build code: #{build_code_current}
-        • New build code: #{build_code_next}
-
-        • Current internal build code: #{build_code_current_internal}
-        • New internal build code: #{build_code_next_internal}
-      MESSAGE
-
-      UI.important(message)
-      UI.user_error!('Aborted by user request') unless UI.confirm('Do you want to continue?')
-    end
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
@@ -182,7 +178,7 @@ platform :ios do
     bump_build_codes
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message('Aborting beta deployment.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
 
@@ -213,7 +209,7 @@ platform :ios do
     previous_version = VERSION_FORMATTER.release_version(VERSION_CALCULATOR.previous_patch_version(version: parsed_version))
 
     # Check versions
-    message = <<-MESSAGE
+    message = <<~MESSAGE
       New Hotfix:
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
@@ -308,7 +304,7 @@ platform :ios do
 
     # Wrap up
     version = release_version_current
-    removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
@@ -320,7 +316,7 @@ platform :ios do
       push_to_git_remote(tags: false)
       trigger_release_build
     else
-      UI.message('Aborting release finalization. See you later.')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
   end
