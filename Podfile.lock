@@ -119,7 +119,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
-  - WordPress-Editor-iOS (~> 1.19.9)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f4ddade4f730365f4141dd5074f47adef520f7ec`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f4ddade4f730365f4141dd5074f47adef520f7ec`)
   - WordPressAuthenticator (~> 8.0)
   - WordPressKit (~> 9.0)
   - WordPressShared (~> 2.2)
@@ -156,8 +157,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
     - WordPressUI
@@ -177,11 +176,23 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.110.0-alpha2.podspec
+  WordPress-Aztec-iOS:
+    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  WordPress-Aztec-iOS:
+    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -227,6 +238,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 0b80196128148bbcc9c925157a648526b36bb558
+PODFILE CHECKSUM: 3c87f2b4eb1679558a7cdb7be4eb9e1f18421256
 
 COCOAPODS: 1.14.2
