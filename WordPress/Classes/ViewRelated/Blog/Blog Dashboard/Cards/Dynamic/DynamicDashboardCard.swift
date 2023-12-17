@@ -93,7 +93,7 @@ struct DynamicDashboardCard: View {
                     size: .small,
                     isJetpack: AppConfiguration.isJetpack
                 )) {
-                    print("asd")
+                    input.action?.callback()
                 }
                 Spacer()
             }
