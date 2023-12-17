@@ -70,11 +70,13 @@ struct DynamicDashboardCard: View {
                     VStack(alignment: .leading) {
                         if let title = row.title {
                             Text(title)
+                                .style(.bodyLarge(.emphasized))
                                 .foregroundStyle(Color.DS.Foreground.primary)
                         }
 
                         if let description = row.description {
                             Text(description)
+                                .style(.bodySmall(.regular))
                                 .foregroundStyle(Color.DS.Foreground.secondary)
                         }
                     }
@@ -112,26 +114,30 @@ extension DSButtonStyle {
     }
 }
 
-#Preview {
-    DynamicDashboardCard(
-        input: .init(
-            featureImageURL: URL(string: "google.com")!,
-            rows: [
-                .init(
-                    title: "Title first",
-                    description: "Description first",
-                    imageURL: URL(string: "wordpress.com")!
-                ),
-                .init(
-                    title: "Title second",
-                    description: "Description second",
-                    imageURL: URL(string: "wordpress.com")!
-                )
-            ],
-            action: .init(title: "Action button", callback: {
-                ()
-            })
+#if DEBUG
+struct DynamicDashboardCard_Previews: PreviewProvider {
+    static var previews: some View {
+        DynamicDashboardCard(
+            input: .init(
+                featureImageURL: URL(string: "google.com")!,
+                rows: [
+                    .init(
+                        title: "Title first",
+                        description: "Description first",
+                        imageURL: URL(string: "wordpress.com")!
+                    ),
+                    .init(
+                        title: "Title second",
+                        description: "Description second",
+                        imageURL: URL(string: "wordpress.com")!
+                    )
+                ],
+                action: .init(title: "Action button", callback: {
+                    ()
+                })
+            )
         )
-    )
-    .padding()
+        .padding()
+    }
 }
+#endif
