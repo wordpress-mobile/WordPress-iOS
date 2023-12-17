@@ -8,7 +8,7 @@ enum DashboardCardModel: Hashable {
     var cardType: DashboardCard {
         switch self {
         case .normal(let model): return model.cardType
-        case .dynamic: return .dynamic
+        case .dynamic(let model): return model.cardType
         }
     }
 
@@ -27,34 +27,29 @@ enum DashboardCardModel: Hashable {
     }
 }
 
-extension DashboardCardModel: BlogDashboardAnalyticPropertiesProviding {
+extension DashboardCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
 
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
-        var properties = cardType.blogDashboardAnalyticProperties
-        if case let .dynamic(model) = self {
-            let extra: [AnyHashable: Any] = ["id": model.payload.id]
-            properties = properties.merging(extra, uniquingKeysWith: { first, second in
-                return first
-            })
+    private var model: BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding {
+        switch self {
+        case .normal(let card): return card
+        case .dynamic(let card): return card
         }
-        return properties
     }
-}
-
-extension DashboardCardModel: BlogDashboardPersonalizable {
 
     var blogDashboardPersonalizationKey: String? {
-        switch self {
-        case .default(let card): return card.cardType.blogDashboardPersonalizationKey
-        case .dynamic(let card): return "dynamic_card_\(card.payload.id)"
-        }
+        return model.blogDashboardPersonalizationKey
     }
 
     var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
-        return cardType.blogDashboardPersonalizationSettingsScope
+        return model.blogDashboardPersonalizationSettingsScope
+    }
+
+    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+        return model.blogDashboardAnalyticProperties
     }
 }
 
+// MARK: - Normal Card Model
 
 /// Represents a card in the dashboard collection view
 struct DashboardNormalCardModel: Hashable {
@@ -93,10 +88,45 @@ struct DashboardNormalCardModel: Hashable {
     }
 }
 
+extension DashboardNormalCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardPersonalizationKey: String? {
+        return cardType.blogDashboardPersonalizationKey
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return cardType.blogDashboardPersonalizationSettingsScope
+    }
+    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+        return cardType.blogDashboardAnalyticProperties
+    }
+}
+
+// MARK: - Dynamic Card Model
+
 struct DashboardDynamicCardModel: Hashable {
 
     typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
 
+    let cardType: DashboardCard = .dynamic
     let payload: Payload
     let dotComID: Int
+}
+
+extension DashboardDynamicCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardPersonalizationKey: String? {
+        return "dynamic_card_\(payload.id)"
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return .siteSpecific
+    }
+
+    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+        let properties: [AnyHashable: Any] = ["id": payload.id]
+        return cardType.blogDashboardAnalyticProperties.merging(properties, uniquingKeysWith: { first, second in
+            return first
+        })
+    }
 }

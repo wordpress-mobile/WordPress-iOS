@@ -177,7 +177,7 @@ private extension BlogDashboardService {
 
     func dashboardCardModel(
         for blog: Blog,
-        payload: DashboardCardDynamicModel.Payload,
+        payload: DashboardDynamicCardModel.Payload,
         dotComID: Int,
         personalizationService: BlogDashboardPersonalizationService
     ) -> DashboardCardModel? {
