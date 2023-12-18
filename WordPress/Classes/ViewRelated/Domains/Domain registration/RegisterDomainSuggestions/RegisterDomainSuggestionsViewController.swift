@@ -6,6 +6,7 @@ import WordPressFlux
 import Combine
 
 enum DomainSelectionType {
+    case siteCreation
     case registerWithPaidPlan
     case purchaseWithPaidPlan
     case purchaseSeparately
@@ -383,6 +384,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             )
         case .purchaseFromDomainManagement:
             pushPurchaseDomainChoiceScreen()
+        case .siteCreation:
+            print("")
         }
     }
 

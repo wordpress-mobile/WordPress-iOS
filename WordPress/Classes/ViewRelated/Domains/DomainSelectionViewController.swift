@@ -294,7 +294,19 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private func fetchAddresses(_ searchTerm: String) {
         isShowingError = false
         updateIcon(isLoading: true)
-        service.addresses(for: searchTerm) { [weak self] results in
+
+        let type: DomainsServiceRemote.DomainSuggestionType
+        switch domainSelectionType {
+        case .siteCreation:
+            type = domainPurchasingEnabled ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
+        default:
+            type = .noWordpressDotCom
+//            if coordinator?.site?.hasBloggerPlan == true {
+//                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+//            }
+        }
+
+        service.addresses(for: searchTerm, type: type) { [weak self] results in
             DispatchQueue.main.async {
                 self?.handleResult(results)
             }
