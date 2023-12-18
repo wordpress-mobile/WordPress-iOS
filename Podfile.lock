@@ -119,8 +119,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f4ddade4f730365f4141dd5074f47adef520f7ec`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f4ddade4f730365f4141dd5074f47adef520f7ec`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `16a7a70f6731fb04ef9fbf7ba39f534588eb9e16`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `16a7a70f6731fb04ef9fbf7ba39f534588eb9e16`)
   - WordPressAuthenticator (~> 8.0)
   - WordPressKit (~> 9.0)
   - WordPressShared (~> 2.2)
@@ -177,10 +177,10 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.110.0-alpha2.podspec
   WordPress-Aztec-iOS:
-    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -188,10 +188,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPress-Aztec-iOS:
-    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: f4ddade4f730365f4141dd5074f47adef520f7ec
+    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -238,6 +238,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 3c87f2b4eb1679558a7cdb7be4eb9e1f18421256
+PODFILE CHECKSUM: d5fd89805f9bdcbdde1b425b67d50e492d03d426
 
 COCOAPODS: 1.14.2
