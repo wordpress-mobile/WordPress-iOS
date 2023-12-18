@@ -76,7 +76,7 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
                         ]
                     )
                 ],
-            card: card.cardType
+            card: card
         )
     }
 

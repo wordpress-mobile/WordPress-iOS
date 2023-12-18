@@ -1,10 +1,15 @@
 import Foundation
 
-///
+/// `BlogDashboardPersonalizable` is a protocol that defines the requirements for personalizing blog dashboard items.
+/// It provides properties to access personalization key and settings scope specific to the blog dashboard.
 protocol BlogDashboardPersonalizable {
 
+    /// The personalization key for the blog dashboard.
+    /// This key is used to identify and retrieve personalization settings specific to a dashboard item.
     var blogDashboardPersonalizationKey: String? { get }
 
+    /// The scope of the blog dashboard personalization settings.
+    /// This defines the extent to which the personalization settings are applied, such as site-agnostic or site-specific.
     var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope { get }
 }
 
@@ -59,8 +64,8 @@ struct BlogDashboardPersonalizationService {
 
     private func lookUpKey(from scope: SettingsScope) -> String {
         switch scope {
-        case .siteGeneric: return siteID
-        case .siteSpecific: return Constants.siteAgnosticVisibilityKey
+        case .siteSpecific: return siteID
+        case .siteGeneric: return Constants.siteAgnosticVisibilityKey
         }
     }
 

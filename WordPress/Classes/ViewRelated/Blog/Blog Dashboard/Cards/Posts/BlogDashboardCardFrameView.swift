@@ -190,11 +190,11 @@ class BlogDashboardCardFrameView: UIView {
 
     /// Adds the "more" button with the given actions to the corner of the cell.
     func addMoreMenu(items: [UIMenuElement], card: BlogDashboardAnalyticPropertiesProviding) {
-        self.onEllipsisButtonTap = {
+        onEllipsisButtonTap = {
             BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
         }
-        self.ellipsisButton.showsMenuAsPrimaryAction = true
-        self.ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: items)
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: items)
     }
 
     private func updateEllipsisButtonState() {
