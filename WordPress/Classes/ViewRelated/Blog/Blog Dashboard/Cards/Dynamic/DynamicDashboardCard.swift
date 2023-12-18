@@ -3,7 +3,6 @@ import DesignSystem
 
 struct DynamicDashboardCard: View {
     private enum Constants {
-        static let featureImageHeight: CGFloat = 151
         static let rowImageDiameter: CGFloat = 48
     }
 
@@ -43,13 +42,15 @@ struct DynamicDashboardCard: View {
     @ViewBuilder
     var featureImage: some View {
         if let featureImageURL = input.featureImageURL {
-            AsyncImage(url: featureImageURL)
-                .frame(height: Constants.featureImageHeight)
-                .clipShape(
-                    RoundedRectangle(
-                        cornerRadius: Length.Radius.small
+            AsyncImage(url: featureImageURL) { image in
+                image.image?.resizable()
+                    .aspectRatio(2, contentMode: .fit)
+                    .clipShape(
+                        RoundedRectangle(
+                            cornerRadius: Length.Radius.small
+                        )
                     )
-                )
+            }
         }
     }
 
@@ -119,17 +120,17 @@ struct DynamicDashboardCard_Previews: PreviewProvider {
     static var previews: some View {
         DynamicDashboardCard(
             input: .init(
-                featureImageURL: URL(string: "google.com")!,
+                featureImageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=400x200")!,
                 rows: [
                     .init(
                         title: "Title first",
                         description: "Description first",
-                        imageURL: URL(string: "wordpress.com")!
+                        imageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=48x48")!
                     ),
                     .init(
                         title: "Title second",
                         description: "Description second",
-                        imageURL: URL(string: "wordpress.com")!
+                        imageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=48x48")!
                     )
                 ],
                 action: .init(title: "Action button", callback: {
