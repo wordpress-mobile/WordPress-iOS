@@ -30,7 +30,8 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
 
     /// The creator collects user input as they advance through the wizard flow.
     private let service: SiteAddressService
-    private let selection: (DomainSuggestion) -> Void
+    private let selection: ((DomainSuggestion) -> Void)?
+    private let coordinator: RegisterDomainCoordinator?
 
     /// Tracks the site address selected by users
     private var selectedDomain: DomainSuggestion? {
@@ -137,12 +138,14 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         domainSelectionType: DomainSelectionType,
         primaryActionTitle: String = Strings.selectDomain,
         includeSupportButton: Bool = false,
-        selection: @escaping (DomainSuggestion) -> Void
+        selection: ((DomainSuggestion) -> Void)? = nil,
+        coordinator: RegisterDomainCoordinator? = nil
     ) {
         self.service = service
         self.domainSelectionType = domainSelectionType
         self.includeSupportButton = includeSupportButton
         self.selection = selection
+        self.coordinator = coordinator
         self.data = []
         self.noResultsLabel = {
             let label = UILabel()
@@ -380,8 +383,41 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
             return
         }
 
-        trackDomainsSelection(selectedDomain)
-        selection(selectedDomain)
+
+//        let properties: [AnyHashable: Any] = ["domain_name": selectedDomain.domainName]
+//        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator?.site)
+
+        let onFailure: () -> () = { [weak self] in
+//            self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+//            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+        }
+
+        switch domainSelectionType {
+        case .registerWithPaidPlan:
+            pushRegisterDomainDetailsViewController()
+        case .purchaseSeparately:
+//            setPrimaryButtonLoading(true)
+            coordinator?.handlePurchaseDomainOnly(
+                on: self,
+                onSuccess: { [weak self] in
+//                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure)
+        case .purchaseWithPaidPlan:
+//            setPrimaryButtonLoading(true)
+            coordinator?.addDomainToCartLinkedToCurrentSite(
+                on: self,
+                onSuccess: { [weak self] in
+//                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
+        case .purchaseFromDomainManagement:
+            pushPurchaseDomainChoiceScreen()
+        case .siteCreation:
+            trackDomainsSelection(selectedDomain)
+            selection?(selectedDomain)
+        }
     }
 
     private func setupCells() {
@@ -580,10 +616,12 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
                                                        value: "Domains",
                                                        comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
         )
-
         static let supportButtonTitle = NSLocalizedString("domainSelection.helpButton.title",
                                                           value: "Help",
                                                           comment: "Help button")
+        static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
+                                                     value: "Purchase Domain",
+                                                     comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
     }
 }
 
@@ -820,6 +858,8 @@ private extension DomainSelectionViewController {
     }
 }
 
+// MARK: - Support
+
 private extension DomainSelectionViewController {
     func includeSupportButtonIfNeeded() {
         guard includeSupportButton else { return }
@@ -835,5 +875,47 @@ private extension DomainSelectionViewController {
         let supportVC = SupportTableViewController()
         let navigationController = UINavigationController(rootViewController: supportVC)
         topmostPresentedViewController.show(navigationController, sender: nil)
+    }
+}
+
+// MARK: - Routing
+
+private extension DomainSelectionViewController {
+    private func pushRegisterDomainDetailsViewController() {
+        guard let siteID = coordinator?.site?.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
+        guard let domain = coordinator?.domain else {
+            return
+        }
+
+        let controller = RegisterDomainDetailsViewController()
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self, let coordinator else {
+                return
+            }
+            coordinator.domainPurchasedCallback?(self, name)
+            coordinator.trackDomainPurchasingCompleted()
+        }
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    private func pushPurchaseDomainChoiceScreen() {
+        @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
+        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
+            guard let self else { return }
+            choicesViewModel.isGetDomainLoading = true
+            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+            WPAnalytics.track(.purchaseDomainGetDomainTapped)
+        } chooseSiteAction: { [weak self] in
+            guard let self else { return }
+            self.coordinator?.handleExistingSiteChoice(on: self)
+            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
+        }
+        let hostingController = UIHostingController(rootView: view)
+        hostingController.title = Strings.domainChoiceTitle
+        self.navigationController?.pushViewController(hostingController, animated: true)
     }
 }
