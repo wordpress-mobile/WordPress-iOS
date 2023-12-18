@@ -13,7 +13,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         static let noResultsTopInset        = CGFloat(64)
         static let sitePromptEdgeMargin     = CGFloat(50)
         static let sitePromptBottomMargin   = CGFloat(10)
-        static let sitePromptTopMargin      = CGFloat(25)
+        static let sitePromptTopMargin      = CGFloat(4)
     }
 
     override var separatorStyle: SeparatorStyle {
@@ -35,6 +35,9 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     /// Tracks the site address selected by users
     private var selectedDomain: DomainSuggestion? {
         didSet {
+            if selectedDomain != nil {
+                hideTransferFooterView()
+            }
             itemSelectionChanged(selectedDomain != nil)
         }
     }
@@ -48,6 +51,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
+    private var analyticsSource: String? // TODO
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -99,6 +103,31 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
             return Strings.noConnection
         }
     }
+
+    // MARK: - Transfer Footer Views
+
+    private lazy var transferFooterView: RegisterDomainTransferFooterView = {
+        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
+            guard let self else {
+                return
+            }
+            let destination = TransferDomainsWebViewController(source: self.analyticsSource)
+            self.present(UINavigationController(rootViewController: destination), animated: true)
+        }
+        return .init(configuration: configuration)
+    }()
+
+    /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
+    private lazy var transferFooterViewConstraints: (visible: [NSLayoutConstraint], hidden: [NSLayoutConstraint]) = {
+        let base = [
+            transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+
+        let visible = base + [transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+        let hidden = base + [transferFooterView.topAnchor.constraint(equalTo: view.bottomAnchor)]
+        return (visible: visible, hidden: hidden)
+    }()
 
     // MARK: WebAddressWizardContent
 
@@ -154,6 +183,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         addAddressHintView()
         configureUIIfNeeded()
         navigationItem.backButtonTitle = Strings.backButtonTitle
+        setupTransferFooterView()
     }
 
     private func configureUIIfNeeded() {
@@ -453,9 +483,11 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private func search(_ string: String?) {
         guard let query = string, query.isEmpty == false else {
             clearContent()
+            showTransferFooterView()
             return
         }
 
+        hideTransferFooterView()
         performSearchIfNeeded(query: query)
     }
 
@@ -721,5 +753,49 @@ extension DomainSelectionViewController: UITableViewDelegate {
     func retry() {
         let retryQuery = lastSearchQuery ?? ""
         performSearchIfNeeded(query: retryQuery)
+    }
+}
+
+// MARK: - Transfer Footer Setup
+
+private extension DomainSelectionViewController {
+    func setupTransferFooterView() {
+        guard domainSelectionType == .purchaseFromDomainManagement else {
+            return
+        }
+        self.view.addSubview(transferFooterView)
+        self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
+    }
+
+    /// Updates transfer footer view constraints to either hide or show the view.
+    private func updateTransferFooterViewConstraints(hidden: Bool, animated: Bool = true) {
+        guard transferFooterView.superview != nil else {
+            return
+        }
+
+        let constraints = transferFooterViewConstraints
+        let duration = animated ? WPAnimationDurationDefault : 0
+
+        NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
+        NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)
+
+        if !hidden {
+            self.transferFooterView.isHidden = false
+        }
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            self.transferFooterView.isHidden = hidden
+            self.view.setNeedsLayout()
+        }
+    }
+
+    private func showTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: false, animated: animated)
+    }
+
+    private func hideTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: true, animated: animated)
     }
 }

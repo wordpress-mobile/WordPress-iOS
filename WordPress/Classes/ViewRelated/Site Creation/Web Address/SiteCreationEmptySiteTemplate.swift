@@ -11,20 +11,26 @@ struct SiteCreationEmptySiteTemplate: View {
     }
 
     var body: some View {
-        VStack(spacing: Constants.containerStackSpacing) {
-            siteBarVStack
-            tooltip
-        }
-        .background(
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [Color.emptySiteGradientInitial, Color.emptySiteBackgroundPrimary]
-                ),
-                startPoint: .top,
-                endPoint: .center
+        VStack {
+            Spacer()
+            VStack(spacing: Constants.containerStackSpacing) {
+                siteBarVStack
+                tooltip
+            }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [Color.emptySiteGradientInitial, Color.emptySiteBackgroundPrimary]
+                    ),
+                    startPoint: .top,
+                    endPoint: .center
+                )
             )
-        )
-        .cornerRadius(Constants.containerCornerRadius)
+            .cornerRadius(Constants.containerCornerRadius)
+            Spacer()
+            Spacer()
+        }
+
     }
 
     private var siteBarVStack: some View {
