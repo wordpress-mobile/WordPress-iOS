@@ -52,6 +52,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
     private var analyticsSource: String? // TODO
+    private let includeSupportButton: Bool
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -135,10 +136,12 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         service: SiteAddressService,
         domainSelectionType: DomainSelectionType,
         primaryActionTitle: String = Strings.selectDomain,
+        includeSupportButton: Bool = false,
         selection: @escaping (DomainSuggestion) -> Void
     ) {
         self.service = service
         self.domainSelectionType = domainSelectionType
+        self.includeSupportButton = includeSupportButton
         self.selection = selection
         self.data = []
         self.noResultsLabel = {
@@ -184,6 +187,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         configureUIIfNeeded()
         navigationItem.backButtonTitle = Strings.backButtonTitle
         setupTransferFooterView()
+        includeSupportButtonIfNeeded()
     }
 
     private func configureUIIfNeeded() {
@@ -576,6 +580,10 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
                                                        value: "Domains",
                                                        comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
         )
+
+        static let supportButtonTitle = NSLocalizedString("domainSelection.helpButton.title",
+                                                          value: "Help",
+                                                          comment: "Help button")
     }
 }
 
@@ -809,5 +817,23 @@ private extension DomainSelectionViewController {
 
     private func hideTransferFooterView(animated: Bool = true) {
         self.updateTransferFooterViewConstraints(hidden: true, animated: animated)
+    }
+}
+
+private extension DomainSelectionViewController {
+    func includeSupportButtonIfNeeded() {
+        guard includeSupportButton else { return }
+
+        let supportButton = UIBarButtonItem(title: Strings.supportButtonTitle,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(handleSupportButtonTapped))
+        navigationItem.rightBarButtonItem = supportButton
+    }
+
+    @objc func handleSupportButtonTapped(sender: UIBarButtonItem) {
+        let supportVC = SupportTableViewController()
+        let navigationController = UINavigationController(rootViewController: supportVC)
+        topmostPresentedViewController.show(navigationController, sender: nil)
     }
 }
