@@ -1,12 +1,7 @@
 import Foundation
 
-protocol BlogDashboardAnalyticPropertiesProviding {
-
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] { get }
-}
-
 struct BlogDashboardHelpers {
-    typealias Card = BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding
+    typealias Card = BlogDashboardAnalyticPropertiesProviding & BlogDashboardPersonalizable
 
     static func makeHideCardAction(for card: Card, blog: Blog) -> UIAction {
         let service = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
@@ -17,7 +12,7 @@ struct BlogDashboardHelpers {
     }
 
     static func makeHideCardAction(for card: DashboardCard, blog: Blog) -> UIAction {
-        return Self.makeHideCardAction(for: card as Card, blog: blog)
+        Self.makeHideCardAction(for: card as Card, blog: blog)
     }
 
     static func makeHideCardAction(_ handler: @escaping () -> Void) -> UIAction {

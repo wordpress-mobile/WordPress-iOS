@@ -245,7 +245,7 @@ private extension BlogDashboardRemoteEntity {
 
 extension DashboardCard: BlogDashboardAnalyticPropertiesProviding {
 
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+    var analyticProperties: [AnyHashable: Any] {
         return ["card": rawValue]
     }
 }

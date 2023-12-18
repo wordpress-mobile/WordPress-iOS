@@ -44,8 +44,8 @@ extension DashboardCardModel: BlogDashboardPersonalizable, BlogDashboardAnalytic
         return model.blogDashboardPersonalizationSettingsScope
     }
 
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
-        return model.blogDashboardAnalyticProperties
+    var analyticProperties: [AnyHashable: Any] {
+        return model.analyticProperties
     }
 }
 
@@ -97,8 +97,9 @@ extension DashboardNormalCardModel: BlogDashboardPersonalizable, BlogDashboardAn
     var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
         return cardType.blogDashboardPersonalizationSettingsScope
     }
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
-        return cardType.blogDashboardAnalyticProperties
+
+    var analyticProperties: [AnyHashable: Any] {
+        return cardType.analyticProperties
     }
 }
 
@@ -123,9 +124,9 @@ extension DashboardDynamicCardModel: BlogDashboardPersonalizable, BlogDashboardA
         return .siteSpecific
     }
 
-    var blogDashboardAnalyticProperties: [AnyHashable: Any] {
+    var analyticProperties: [AnyHashable: Any] {
         let properties: [AnyHashable: Any] = ["id": payload.id]
-        return cardType.blogDashboardAnalyticProperties.merging(properties, uniquingKeysWith: { first, second in
+        return cardType.analyticProperties.merging(properties, uniquingKeysWith: { first, second in
             return first
         })
     }
