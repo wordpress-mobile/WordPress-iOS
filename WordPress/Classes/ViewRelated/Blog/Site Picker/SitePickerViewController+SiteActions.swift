@@ -20,11 +20,14 @@ extension SitePickerViewController {
     }
 
     private func makePrimarySection() -> UIMenu {
-        UIMenu(options: .displayInline, children: [
+        var menuItems = [
             MenuItem.visitSite(visitSiteTapped),
             MenuItem.addSite(addSiteTapped),
-            MenuItem.switchSite(siteSwitcherTapped)
-        ].map { $0.toAction })
+        ]
+        if numberOfBlogs() > 1 {
+            menuItems.append(MenuItem.switchSite(siteSwitcherTapped))
+        }
+        return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
 
     private func makeSecondarySection() -> UIMenu {
@@ -63,6 +66,12 @@ extension SitePickerViewController {
         present(viewController, animated: true)
 
         WPAnalytics.trackEvent(.mySiteHeaderPersonalizeHomeTapped)
+    }
+
+    private func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        return defaultAccount?.blogs?.count ?? 0
     }
 }
 
