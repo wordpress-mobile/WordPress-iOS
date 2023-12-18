@@ -16,6 +16,7 @@
       "identifier" : "FABB1F8F2602FC2C00C8785C",
       "name" : "Jetpack"
     },
+    "testRepetitionMode" : "retryOnFailure",
     "uiTestingScreenshotsLifetime" : "keepAlways"
   },
   "testTargets" : [
