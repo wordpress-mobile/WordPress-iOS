@@ -62,20 +62,27 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     }
 }
 
-public func tapUntilCondition(element: XCUIElement, condition: Bool, description: String, maxRetries: Int = 10) {
+public func waitForElementAndTap(_ tapElement: XCUIElement, untilConditionOn conditionElement: XCUIElement, condition: String, errorMessage: String, maxRetries: Int = 5) {
+
     var retries = 0
     while retries < maxRetries {
-        if !condition {
-            element.tap()
-            break
+        tapElement.tap()
+
+        switch condition {
+        case "exists":
+            if conditionElement.exists { return }
+        case "selected":
+            if conditionElement.isSelected { return }
+        default:
+            XCTFail("\(condition) is invalid! Please choose 'exists' or 'selected'")
         }
 
-        usleep(500000) // a 0.5 second delay before retrying
+        sleep(1) // a 1 second delay before retrying
         retries += 1
     }
 
     if retries == maxRetries {
-        XCTFail("Condition \(description) still not met after \(maxRetries) tries.")
+        XCTFail("\(errorMessage) after \(maxRetries) tries.")
     }
 }
 
