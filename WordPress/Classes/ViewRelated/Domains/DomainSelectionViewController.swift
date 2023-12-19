@@ -12,7 +12,7 @@ enum DomainSelectionType {
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
-class DomainSelectionViewController: CollapsableHeaderViewController {
+final class DomainSelectionViewController: CollapsableHeaderViewController {
     static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
 
     // MARK: Properties
@@ -30,10 +30,6 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
 
     var domainPurchasingEnabled: Bool {
         return RemoteFeatureFlag.plansInSiteCreation.enabled()
-    }
-
-    var information: String? {
-        return nil
     }
 
     /// The creator collects user input as they advance through the wizard flow.
@@ -516,7 +512,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private func query(from textField: UITextField?) -> String? {
         guard let text = textField?.text,
               !text.isEmpty else {
-            return information
+            return nil
         }
 
         return text
