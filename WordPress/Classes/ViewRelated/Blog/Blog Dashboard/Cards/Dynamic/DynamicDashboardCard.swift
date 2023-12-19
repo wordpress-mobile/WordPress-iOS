@@ -43,8 +43,9 @@ struct DynamicDashboardCard: View {
     var featureImage: some View {
         if let featureImageURL = input.featureImageURL {
             AsyncImage(url: featureImageURL) { image in
-                image.image?.resizable()
-                    .aspectRatio(2, contentMode: .fit)
+                image.image?
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .clipShape(
                         RoundedRectangle(
                             cornerRadius: Length.Radius.small
