@@ -63,14 +63,6 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
     private let includeSupportButton: Bool
-    private var analyticsSource: String? {
-        switch domainSelectionType {
-        case .siteCreation:
-            return nil
-        default:
-            return coordinator?.analyticsSource
-        }
-    }
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -130,7 +122,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
             guard let self else {
                 return
             }
-            let destination = TransferDomainsWebViewController(source: self.analyticsSource)
+            let destination = TransferDomainsWebViewController(source: self.coordinator?.analyticsSource)
             self.present(UINavigationController(rootViewController: destination), animated: true)
         }
         return .init(configuration: configuration)
@@ -761,9 +753,9 @@ extension DomainSelectionViewController: UITableViewDataSource {
     }
 
     func configureNoMatchCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier) ?? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier) ?? {
             // Create and configure a new TableView cell if one hasn't been queued yet
-            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier)
+            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier)
             newCell.detailTextLabel?.text = Strings.noMatch
             newCell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
             newCell.detailTextLabel?.textColor = .textSubtle
@@ -1013,9 +1005,9 @@ private extension DomainSelectionViewController {
     func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
         let defaultProperties = { () -> [AnyHashable: Any] in
             if let blog {
-                return WPAnalytics.domainsProperties(for: blog, origin: self.analyticsSource)
+                return WPAnalytics.domainsProperties(for: blog, origin: self.coordinator?.analyticsSource)
             } else {
-                return WPAnalytics.domainsProperties(origin: self.analyticsSource)
+                return WPAnalytics.domainsProperties(origin: self.coordinator?.analyticsSource)
             }
         }()
 
