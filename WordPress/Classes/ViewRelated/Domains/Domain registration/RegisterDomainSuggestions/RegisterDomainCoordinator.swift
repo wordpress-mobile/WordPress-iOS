@@ -123,7 +123,6 @@ class RegisterDomainCoordinator {
                 case .success(let domain):
                     self.site = selectedBlog
                     self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                    self.track(.purchaseDomainSiteSelected)
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
                 }

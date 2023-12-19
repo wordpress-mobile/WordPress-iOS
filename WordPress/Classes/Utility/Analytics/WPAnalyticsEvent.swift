@@ -253,7 +253,6 @@ import Foundation
     case purchaseDomainScreenShown
     case purchaseDomainGetDomainTapped
     case purchaseDomainChooseSiteTapped
-    case purchaseDomainSiteSelected
     case purchaseDomainCompleted
     case myDomainsSearchDomainTapped
 
@@ -1004,8 +1003,6 @@ import Foundation
             return "domain_management_purchase_domain_choose_site_tapped"
         case .purchaseDomainCompleted:
             return "domain_management_purchase_domain_completed"
-        case .purchaseDomainSiteSelected:
-            return "domain_management_purchase_domain_site_selected"
         case .myDomainsSearchDomainTapped:
             return "domain_management_my_domains_search_domain_tapped"
 
