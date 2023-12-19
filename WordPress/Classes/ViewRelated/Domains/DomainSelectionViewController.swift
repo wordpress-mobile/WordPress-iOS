@@ -941,7 +941,7 @@ private extension DomainSelectionViewController {
 
 private extension DomainSelectionViewController {
     func setupBackButton() {
-        if isModal() {
+        if navigationController?.children.count == 1 {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                 target: self,
                                                                 action: #selector(handleCancelButtonTapped))
