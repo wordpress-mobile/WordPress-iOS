@@ -2,6 +2,14 @@ import UIKit
 import WordPressAuthenticator
 import SwiftUI
 
+enum DomainSelectionType {
+    case siteCreation
+    case registerWithPaidPlan
+    case purchaseWithPaidPlan
+    case purchaseSeparately
+    case purchaseFromDomainManagement
+}
+
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
 class DomainSelectionViewController: CollapsableHeaderViewController {
@@ -189,7 +197,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         loadHeaderView()
         addAddressHintView()
         configureUIIfNeeded()
-        navigationItem.backButtonTitle = Strings.backButtonTitle
+        setupBackButton()
         setupTransferFooterView()
         includeSupportButtonIfNeeded()
     }
@@ -937,5 +945,23 @@ private extension DomainSelectionViewController {
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = Strings.domainChoiceTitle
         self.navigationController?.pushViewController(hostingController, animated: true)
+    }
+}
+
+// MARK: - Back Button
+
+private extension DomainSelectionViewController {
+    func setupBackButton() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                                target: self,
+                                                                action: #selector(handleCancelButtonTapped))
+        } else {
+            navigationItem.backButtonTitle = Strings.backButtonTitle
+        }
+    }
+
+    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        dismiss(animated: true)
     }
 }
