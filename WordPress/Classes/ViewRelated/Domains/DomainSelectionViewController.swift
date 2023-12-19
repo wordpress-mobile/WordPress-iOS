@@ -36,6 +36,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     /// Tracks the site address selected by users
     private var selectedDomain: DomainSuggestion? {
         didSet {
+            coordinator?.domain = selectedDomain
             if selectedDomain != nil {
                 hideTransferFooterView()
             }
@@ -388,27 +389,27 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
 //        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator?.site)
 
         let onFailure: () -> () = { [weak self] in
-//            self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-//            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            self?.displayActionableNotice(title: Strings.errorTitle, actionTitle: Strings.errorDismiss)
         }
 
         switch domainSelectionType {
         case .registerWithPaidPlan:
             pushRegisterDomainDetailsViewController()
         case .purchaseSeparately:
-//            setPrimaryButtonLoading(true)
+            setPrimaryButtonLoading(true)
             coordinator?.handlePurchaseDomainOnly(
                 on: self,
                 onSuccess: { [weak self] in
-//                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure)
         case .purchaseWithPaidPlan:
-//            setPrimaryButtonLoading(true)
+            setPrimaryButtonLoading(true)
             coordinator?.addDomainToCartLinkedToCurrentSite(
                 on: self,
                 onSuccess: { [weak self] in
-//                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
@@ -417,6 +418,19 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         case .siteCreation:
             trackDomainsSelection(selectedDomain)
             selection?(selectedDomain)
+        }
+    }
+
+    private func setPrimaryButtonLoading(_ isLoading: Bool, afterDelay delay: Double = 0.0) {
+        // We're dispatching here so that we can wait until after the webview has been
+        // fully presented before we switch the button back to its default state.
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.primaryActionButton.isEnabled = !isLoading
+            if isLoading {
+                SVProgressHUD.show()
+            } else {
+                SVProgressHUD.dismiss()
+            }
         }
     }
 
@@ -622,6 +636,12 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
                                                      value: "Purchase Domain",
                                                      comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
     }
 }
 

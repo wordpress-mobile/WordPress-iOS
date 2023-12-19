@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressKit
 
 class RegisterDomainCoordinator {
 
@@ -21,7 +22,7 @@ class RegisterDomainCoordinator {
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
-    var domain: FullyQuotedDomainSuggestion?
+    var domain: DomainSuggestion?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
@@ -72,6 +73,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success(let domain):
                 self?.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, blog)
+                onSuccess()
             case .failure:
                 onFailure()
             }
@@ -134,7 +136,7 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
-    private func createCart(completion: @escaping (Result<FullyQuotedDomainSuggestion, Swift.Error>) -> Void) {
+    private func createCart(completion: @escaping (Result<DomainSuggestion, Swift.Error>) -> Void) {
         guard let domain else {
             completion(.failure(Error.noDomainWhenCreatingCart))
             return
@@ -142,7 +144,7 @@ class RegisterDomainCoordinator {
         let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain.remoteSuggestion(),
+                                                 domainSuggestion: domain,
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { _ in
             completion(.success(domain))
