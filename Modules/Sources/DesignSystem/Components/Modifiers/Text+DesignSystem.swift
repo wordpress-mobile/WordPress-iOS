@@ -59,7 +59,7 @@ extension TextStyle {
 }
 
 // MARK: - SwiftUI.Text
-extension Text {
+public extension Text {
     @ViewBuilder
     func style(_ style: TextStyle) -> some View {
         self.font(style.font)
