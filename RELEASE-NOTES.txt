@@ -1,6 +1,7 @@
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
 
 23.9
 -----
