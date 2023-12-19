@@ -9,7 +9,7 @@ struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
     private let domainSelectionType: DomainSelectionType
     private let onDismiss: () -> Void
 
-    private var domainSuggestionViewController: RegisterDomainSuggestionsViewController
+    private var domainSuggestionViewController: DomainSelectionViewController
 
     init(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) {
         self.blog = blog
