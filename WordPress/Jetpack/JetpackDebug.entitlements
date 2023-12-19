@@ -12,6 +12,7 @@
 	<array>
 		<string>applinks:jetpack.com</string>
 		<string>webcredentials:wordpress.com</string>
+        <string>webcredentials:*.wordpress.com</string>
 		<string>applinks:apps.wordpress.com</string>
 		<string>applinks:wordpress.com</string>
 		<string>applinks:*.wordpress.com</string>
