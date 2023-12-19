@@ -149,7 +149,7 @@ enum DashboardCard: String, CaseIterable {
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
-            return FeatureFlag.domainFocus.enabled && isJetpack
+            return FeatureFlag.googleDomainsCard.enabled && isJetpack
         }
     }
 
