@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import WordPressKit
 
-/// Makes RegisterDomainSuggestionsViewController available to SwiftUI
+/// Makes DomainSelectionViewController available to SwiftUI
 struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
     private let blog: Blog
