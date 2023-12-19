@@ -643,8 +643,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
         static func prompt(_ type: DomainSelectionType, _ blog: Blog?) -> String {
             if type == .purchaseSeparately, let primaryDomainAddress = blog?.primaryDomainAddress {
-                let directPurchasePrompt = String(format: Strings.directPurchasePrompt, primaryDomainAddress)
-                return [Strings.prompt, directPurchasePrompt].joined(separator: "\n\n")
+                return String(format: Strings.directPurchasePrompt, primaryDomainAddress)
             } else {
                 return Strings.prompt
             }
