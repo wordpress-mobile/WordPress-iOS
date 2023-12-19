@@ -46,6 +46,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         didSet {
             coordinator?.domain = selectedDomain
             if selectedDomain != nil {
+                trackDomainSelected()
                 hideTransferFooterView()
             }
             itemSelectionChanged(selectedDomain != nil)
@@ -61,8 +62,15 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
-    private var analyticsSource: String? // TODO
     private let includeSupportButton: Bool
+    private var analyticsSource: String? {
+        switch domainSelectionType {
+        case .siteCreation:
+            return nil
+        default:
+            return coordinator?.analyticsSource
+        }
+    }
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -193,7 +201,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTable()
-        WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
+        trackViewDidLoad()
         loadHeaderView()
         addAddressHintView()
         configureUIIfNeeded()
@@ -316,10 +324,11 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         case .siteCreation:
             type = domainPurchasingEnabled ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
         default:
-            type = .noWordpressDotCom
-//            if coordinator?.site?.hasBloggerPlan == true {
-//                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
-//            }
+            if coordinator?.site?.hasBloggerPlan == true {
+                type = .allowlistedTopLevelDomains(["blog"])
+            } else {
+                type = .noWordpressDotCom
+            }
         }
 
         service.addresses(for: searchTerm, type: type) { [weak self] results in
@@ -393,8 +402,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         }
 
 
-//        let properties: [AnyHashable: Any] = ["domain_name": selectedDomain.domainName]
-//        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator?.site)
+        trackDomainsSelection(selectedDomain)
 
         let onFailure: () -> () = { [weak self] in
             self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
@@ -424,7 +432,6 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         case .purchaseFromDomainManagement:
             pushPurchaseDomainChoiceScreen()
         case .siteCreation:
-            trackDomainsSelection(selectedDomain)
             selection?(selectedDomain)
         }
     }
@@ -534,20 +541,6 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         itemSelectionChanged(false)
     }
 
-    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
-        var domainSuggestionProperties: [String: Any] = [
-            "chosen_domain": domainSuggestion.domainName as AnyObject,
-            "search_term": lastSearchQuery as AnyObject,
-            "is_free": domainSuggestion.isFree.stringLiteral
-        ]
-
-        if domainPurchasingEnabled {
-            domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
-        }
-
-        WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
-    }
-
     // MARK: - Search logic
 
     func updateIcon(isLoading: Bool) {
@@ -563,6 +556,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
 
         hideTransferFooterView()
         performSearchIfNeeded(query: query)
+        trackSearchStarted()
     }
 
     // MARK: - Search logic
@@ -963,5 +957,76 @@ private extension DomainSelectionViewController {
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
         dismiss(animated: true)
+    }
+}
+
+// MARK: - Tracks
+
+private extension DomainSelectionViewController {
+    func trackViewDidLoad() {
+        switch domainSelectionType {
+        case .siteCreation:
+            WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
+        default:
+            track(.domainsDashboardDomainsSearchShown)
+        }
+    }
+
+    func trackDomainSelected() {
+        switch domainSelectionType {
+        case .siteCreation:
+            break
+        default:
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
+        }
+    }
+
+    func trackSearchStarted() {
+        switch domainSelectionType {
+        case .siteCreation:
+            break
+        default:
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
+        }
+    }
+
+    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
+        switch domainSelectionType {
+        case .siteCreation:
+            var domainSuggestionProperties: [String: Any] = [
+                "chosen_domain": domainSuggestion.domainName as AnyObject,
+                "search_term": lastSearchQuery as AnyObject,
+                "is_free": domainSuggestion.isFree.stringLiteral
+            ]
+
+            if domainPurchasingEnabled {
+                domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
+            }
+
+            WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
+        default:
+            let properties: [AnyHashable: Any] = ["domain_name": domainSuggestion.domainName]
+            self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator?.site)
+        }
+    }
+
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
+        let defaultProperties = { () -> [AnyHashable: Any] in
+            if let blog {
+                return WPAnalytics.domainsProperties(for: blog, origin: self.analyticsSource)
+            } else {
+                return WPAnalytics.domainsProperties(origin: self.analyticsSource)
+            }
+        }()
+
+        let properties = properties.merging(defaultProperties) { current, _ in
+            return current
+        }
+
+        if let blog {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
+        }
     }
 }
