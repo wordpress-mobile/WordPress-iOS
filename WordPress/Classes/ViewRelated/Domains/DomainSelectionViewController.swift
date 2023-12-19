@@ -28,10 +28,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         return .hidden
     }
 
-    var domainPurchasingEnabled: Bool {
-        return RemoteFeatureFlag.plansInSiteCreation.enabled()
-    }
-
     /// The creator collects user input as they advance through the wizard flow.
     private let service: SiteAddressService
     private let selection: ((DomainSuggestion) -> Void)?
@@ -199,10 +195,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func configureUIIfNeeded() {
-        guard domainPurchasingEnabled else {
-            return
-        }
-
         NSLayoutConstraint.activate([
             largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
         ])
@@ -212,33 +204,20 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func loadHeaderView() {
+        searchBar.searchBarStyle = UISearchBar.Style.default
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
+        searchBar.layer.borderWidth = 0
+        searchHeader.addSubview(searchBar)
+        searchBar.delegate = self
+        headerView.backgroundColor = .basicBackground
 
-        if domainPurchasingEnabled {
-            searchBar.searchBarStyle = UISearchBar.Style.default
-            searchBar.translatesAutoresizingMaskIntoConstraints = false
-            WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
-            searchBar.layer.borderWidth = 0
-            searchHeader.addSubview(searchBar)
-            searchBar.delegate = self
-            headerView.backgroundColor = .basicBackground
-
-            NSLayoutConstraint.activate([
-                searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
-                searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
-                searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
-                searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
-            ])
-        } else {
-            searchHeader.addSubview(searchTextField)
-            searchHeader.backgroundColor = searchTextField.backgroundColor
-            let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
-            let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
-            let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
-            let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
-            searchHeader.addConstraints([top, bottom, leading, trailing])
-            searchHeader.addTopBorder(withColor: .divider)
-            searchHeader.addBottomBorder(withColor: .divider)
-        }
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
+            searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
+            searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
+            searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
+        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -271,14 +250,8 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let self else { return }
 
-            if self.domainPurchasingEnabled {
-                if !self.siteTemplateHostingController.view.isHidden {
-                    self.updateTitleViewVisibility(true)
-                }
-            } else {
-                if !self.sitePromptView.isHidden {
-                    self.updateTitleViewVisibility(true)
-                }
+            if !self.siteTemplateHostingController.view.isHidden {
+                self.updateTitleViewVisibility(true)
             }
         }
     }
@@ -310,7 +283,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         let type: DomainsServiceRemote.DomainSuggestionType
         switch domainSelectionType {
         case .siteCreation:
-            type = domainPurchasingEnabled ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
+            type = RemoteFeatureFlag.plansInSiteCreation.enabled() ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
         default:
             if coordinator?.site?.hasBloggerPlan == true {
                 type = .allowlistedTopLevelDomains(["blog"])
@@ -445,11 +418,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        if domainPurchasingEnabled {
-            search(searchBar.text)
-        } else {
-            search(query(from: searchTextField))
-        }
+        search(searchBar.text)
     }
 
     private func prepareViewIfNeeded() {
@@ -487,9 +456,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
-        if !domainPurchasingEnabled {
-            table.separatorStyle = .none
-        }
         table.dataSource = self
         table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
@@ -497,7 +463,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
-        table.isAccessibilityElement = false
+        table.accessibilityIdentifier = "DomainSelectionTable"
     }
 
     private func setupTableBackground() {
@@ -550,39 +516,22 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     private func setAddressHintVisibility(isHidden: Bool) {
-        if domainPurchasingEnabled {
-            siteTemplateHostingController.view?.isHidden = isHidden
-        } else {
-            sitePromptView.isHidden = isHidden
-        }
+        siteTemplateHostingController.view?.isHidden = isHidden
     }
 
     private func addAddressHintView() {
-        if domainPurchasingEnabled {
-            guard let siteCreationView = siteTemplateHostingController.view else {
-                return
-            }
-            siteCreationView.isUserInteractionEnabled = false
-            siteCreationView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(siteCreationView)
-            NSLayoutConstraint.activate([
-                siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-                containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
-                siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
-                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
-            ])
-        } else {
-            sitePromptView = SitePromptView(frame: .zero)
-            sitePromptView.isUserInteractionEnabled = false
-            sitePromptView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(sitePromptView)
-            NSLayoutConstraint.activate([
-                sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
-                sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
-                sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
-                sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
-            ])
+        guard let siteCreationView = siteTemplateHostingController.view else {
+            return
         }
+        siteCreationView.isUserInteractionEnabled = false
+        siteCreationView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(siteCreationView)
+        NSLayoutConstraint.activate([
+            siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
+            siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
+            containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
+        ])
         setAddressHintVisibility(isHidden: true)
     }
 
@@ -734,31 +683,29 @@ private extension DomainSelectionViewController {
 extension DomainSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !isShowingError else { return 1 }
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? 1 : data.count
+        return data.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard data.count > 0 else { return nil }
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? nil : Strings.suggestions
+        return Strings.suggestions
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (domainPurchasingEnabled || hasExactMatch) ? 1 : 2
+        return 1
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
+        return nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isShowingError {
             return configureErrorCell(tableView, cellForRowAt: indexPath)
-        } else if !domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0 {
-            return configureNoMatchCell(table, cellForRowAt: indexPath)
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
         }
@@ -786,15 +733,9 @@ extension DomainSelectionViewController: UITableViewDataSource {
         }
 
         let domainSuggestion = data[indexPath.row]
-        if domainPurchasingEnabled {
-            let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
-            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, type: domainSelectionType, tags: tags)
-            cell.update(with: viewModel)
-        } else {
-            cell.update(with: domainSuggestion)
-            cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
-            cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-        }
+        let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
+        let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, type: domainSelectionType, tags: tags)
+        cell.update(with: viewModel)
 
         return cell
     }
@@ -815,7 +756,7 @@ extension DomainSelectionViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
-        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? nil : indexPath
+        return indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -827,11 +768,7 @@ extension DomainSelectionViewController: UITableViewDelegate {
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
 
-        if domainPurchasingEnabled {
-            searchBar.resignFirstResponder()
-        } else {
-            searchTextField.resignFirstResponder()
-        }
+        searchBar.resignFirstResponder()
     }
 
     func retry() {
@@ -1003,9 +940,7 @@ private extension DomainSelectionViewController {
                 "is_free": domainSuggestion.isFree.stringLiteral
             ]
 
-            if domainPurchasingEnabled {
-                domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
-            }
+            domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
 
             WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
         default:
