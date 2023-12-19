@@ -179,7 +179,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         table = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: table,
                    mainTitle: domainSelectionType == .siteCreation ? Strings.mainTitle : Strings.alternativeTitle,
-                   prompt: Strings.prompt,
+                   prompt: Strings.prompt(domainSelectionType, coordinator?.site),
                    primaryActionTitle: primaryActionTitle,
                    accessoryView: searchHeader)
     }
@@ -610,6 +610,11 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
                                                                 comment: "Search domain - Title for the Suggested domains screen")
         static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
+
+        static let directPurchasePrompt: String = NSLocalizedString("domainSelection.redirectPrompt.title",
+                                                                    value: "Domains purchased on this site will redirect to %1$@",
+                                                                    comment: "Description for the first domain purchased with a free plan.")
+
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
         static let selectDomain: String = NSLocalizedString("siteCreation.domains.buttons.selectDomain",
@@ -639,6 +644,15 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
                                                     value: "Dismiss",
                                                     comment: "Action shown in a bottom notice to dismiss it.")
+
+        static func prompt(_ type: DomainSelectionType, _ blog: Blog?) -> String {
+            if type == .purchaseSeparately, let primaryDomainAddress = blog?.primaryDomainAddress {
+                let directPurchasePrompt = String(format: Strings.directPurchasePrompt, primaryDomainAddress)
+                return [Strings.prompt, directPurchasePrompt].joined(separator: "\n\n")
+            } else {
+                return Strings.prompt
+            }
+        }
     }
 }
 
