@@ -32,6 +32,7 @@ struct UniversalLinkRouter: LinkRouter {
     static let defaultRoutes: [Route] =
         redirects +
         meRoutes +
+        domainsRoutes +
         newPostRoutes +
         newPageRoutes +
         jetpackRoutes +
@@ -44,8 +45,13 @@ struct UniversalLinkRouter: LinkRouter {
 
     static let meRoutes: [Route] = [
         MeRoute(),
+        MeAllDomainsRoute(),
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute()
+    ]
+
+    static let domainsRoutes: [Route] = [
+        DomainsManageRoute()
     ]
 
     static let jetpackRoutes: [Route] = [
