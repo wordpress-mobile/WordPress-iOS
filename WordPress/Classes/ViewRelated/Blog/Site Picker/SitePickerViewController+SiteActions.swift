@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressAuthenticator
 
 extension SitePickerViewController {
 
@@ -45,12 +46,51 @@ extension SitePickerViewController {
         ])
     }
 
+    // MARK: - Add site
+
     private func addSiteTapped() {
+        let canCreateWPComSite = defaultAccount() != nil
+        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+
+        // Launch wp.com site creation if the user can't add self-hosted sites
+        if canCreateWPComSite && !canAddSelfHostedSite {
+            launchSiteCreation()
+            return
+        }
+
+        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteActionButton,
+                               canCreateWPComSite: canCreateWPComSite,
+                               canAddSelfHostedSite: canAddSelfHostedSite)
+    }
+
+    private func showAddSiteActionSheet(from sourceView: UIView, canCreateWPComSite: Bool, canAddSelfHostedSite: Bool) {
+        let actionSheet = AddSiteAlertFactory().makeAddSiteAlert(
+            source: "my_site",
+            canCreateWPComSite: canCreateWPComSite,
+            createWPComSite: launchSiteCreation,
+            canAddSelfHostedSite: canAddSelfHostedSite,
+            addSelfHostedSite: launchLoginForSelfHostedSite
+        )
+
+        actionSheet.popoverPresentationController?.sourceView = sourceView
+        actionSheet.popoverPresentationController?.sourceRect = sourceView.bounds
+        actionSheet.popoverPresentationController?.permittedArrowDirections = .up
+
+        parent?.present(actionSheet, animated: true)
+    }
+
+    private func launchSiteCreation() {
         guard let parent = parent as? MySiteViewController else {
             return
         }
         parent.launchSiteCreation(source: "my_site")
     }
+
+    private func launchLoginForSelfHostedSite() {
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+    }
+
+    // MARK: - Personalize home
 
     private func personalizeHomeTapped() {
         guard let siteID = blog.dotComID?.intValue else {
@@ -68,10 +108,14 @@ extension SitePickerViewController {
         WPAnalytics.trackEvent(.mySiteHeaderPersonalizeHomeTapped)
     }
 
+    // MARK: - Helpers
+
     private func numberOfBlogs() -> Int {
-        let context = ContextManager.sharedInstance().mainContext
-        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-        return defaultAccount?.blogs?.count ?? 0
+        defaultAccount()?.blogs?.count ?? 0
+    }
+
+    private func defaultAccount() -> WPAccount? {
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 }
 

@@ -16,7 +16,7 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Child Views
 
-    private let titleView: TitleView
+    let titleView: TitleView
 
     // MARK: - Delegate
 
@@ -202,7 +202,7 @@ class BlogDetailHeaderView: UIView {
     }
 }
 
-fileprivate extension BlogDetailHeaderView {
+extension BlogDetailHeaderView {
     class TitleView: UIView {
         private enum Dimensions {
             static let siteSwitcherHeight: CGFloat = 36
