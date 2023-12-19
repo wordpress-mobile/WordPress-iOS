@@ -107,7 +107,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-635238afe0018415606570fe04945f7b9de8d9b0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-2955bc097a0ec3c5661a2cdeb92fffc0451cacd1.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -119,8 +119,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `16a7a70f6731fb04ef9fbf7ba39f534588eb9e16`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `16a7a70f6731fb04ef9fbf7ba39f534588eb9e16`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8565ee0082532a2d6d931d434e372909179f5e4e`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8565ee0082532a2d6d931d434e372909179f5e4e`)
   - WordPressAuthenticator (~> 8.0)
   - WordPressKit (~> 9.0)
   - WordPressShared (~> 2.2)
@@ -175,12 +175,12 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-635238afe0018415606570fe04945f7b9de8d9b0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-2955bc097a0ec3c5661a2cdeb92fffc0451cacd1.podspec
   WordPress-Aztec-iOS:
-    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
+    :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
+    :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -188,10 +188,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPress-Aztec-iOS:
-    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
+    :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: 16a7a70f6731fb04ef9fbf7ba39f534588eb9e16
+    :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -206,7 +206,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 2e3f84fa368544649191b831b026d3c35741d325
+  Gutenberg: ec464aceb91dbff143440a158d8734acd5aefbca
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -238,6 +238,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: d5fd89805f9bdcbdde1b425b67d50e492d03d426
+PODFILE CHECKSUM: d8cbf73197c47624ea39de8ae48a925df3f89463
 
 COCOAPODS: 1.14.2
