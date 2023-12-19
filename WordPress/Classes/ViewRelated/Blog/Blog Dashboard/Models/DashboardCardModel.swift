@@ -121,7 +121,7 @@ extension DashboardDynamicCardModel: BlogDashboardPersonalizable, BlogDashboardA
     }
 
     var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
-        return .siteSpecific
+        return .siteGeneric
     }
 
     var analyticProperties: [AnyHashable: Any] {
