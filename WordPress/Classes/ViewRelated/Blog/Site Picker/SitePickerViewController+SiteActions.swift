@@ -61,6 +61,8 @@ extension SitePickerViewController {
         showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteActionButton,
                                canCreateWPComSite: canCreateWPComSite,
                                canAddSelfHostedSite: canAddSelfHostedSite)
+
+        WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped)
     }
 
     private func showAddSiteActionSheet(from sourceView: UIView, canCreateWPComSite: Bool, canAddSelfHostedSite: Bool) {
