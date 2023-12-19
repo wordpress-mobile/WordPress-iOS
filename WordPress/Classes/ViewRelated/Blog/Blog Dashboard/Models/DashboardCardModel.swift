@@ -29,23 +29,23 @@ enum DashboardCardModel: Hashable {
 
 extension DashboardCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
 
-    private var model: BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding {
+    private var card: BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding {
         switch self {
-        case .normal(let card): return card
-        case .dynamic(let card): return card
+        case .normal(let model): return model
+        case .dynamic(let model): return model
         }
     }
 
     var blogDashboardPersonalizationKey: String? {
-        return model.blogDashboardPersonalizationKey
+        return card.blogDashboardPersonalizationKey
     }
 
     var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
-        return model.blogDashboardPersonalizationSettingsScope
+        return card.blogDashboardPersonalizationSettingsScope
     }
 
     var analyticProperties: [AnyHashable: Any] {
-        return model.analyticProperties
+        return card.analyticProperties
     }
 }
 
