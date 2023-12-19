@@ -178,7 +178,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
         searchHeader = UIView(frame: .zero)
         table = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: table,
-                   mainTitle: Strings.mainTitle,
+                   mainTitle: domainSelectionType == .siteCreation ? Strings.mainTitle : Strings.alternativeTitle,
                    prompt: Strings.prompt,
                    primaryActionTitle: primaryActionTitle,
                    accessoryView: searchHeader)
@@ -605,6 +605,9 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
                                                            comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
         static let mainTitle: String = NSLocalizedString("Choose a domain",
                                                          comment: "Select domain name. Title")
+        static let alternativeTitle: String = NSLocalizedString("domainSelection.search.title",
+                                                                value: "Search domains",
+                                                                comment: "Search domain - Title for the Suggested domains screen")
         static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
