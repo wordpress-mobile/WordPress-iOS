@@ -779,7 +779,7 @@ extension DomainSelectionViewController: UITableViewDataSource {
         let domainSuggestion = data[indexPath.row]
         if domainPurchasingEnabled {
             let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
-            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, tags: tags)
+            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, type: domainSelectionType, tags: tags)
             cell.update(with: viewModel)
         } else {
             cell.update(with: domainSuggestion)
