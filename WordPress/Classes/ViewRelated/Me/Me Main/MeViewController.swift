@@ -365,12 +365,11 @@ class MeViewController: UITableViewController {
         navigateToTarget(for: RowTitles.accountSettings)
     }
 
-    /// Selects the Account Settings row and pushes the Account Settings view controller
+    /// Selects the All DOmains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
     }
-
 
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
