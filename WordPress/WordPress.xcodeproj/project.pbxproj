@@ -3134,7 +3134,6 @@
 		D821C819210037F8002ED995 /* activity-log-activity-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D821C818210037F8002ED995 /* activity-log-activity-content.json */; };
 		D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */; };
 		D82253DC2199411F0014D0E2 /* SiteAddressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253DB2199411F0014D0E2 /* SiteAddressService.swift */; };
-		D82253DF2199418B0014D0E2 /* WebAddressWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */; };
 		D82253E5219956540014D0E2 /* AddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E3219956540014D0E2 /* AddressTableViewCell.swift */; };
 		D8225409219AB2030014D0E2 /* SiteInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8225407219AB0520014D0E2 /* SiteInformation.swift */; };
 		D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */; };
@@ -4479,7 +4478,6 @@
 		FABB22112602FC2C00C8785C /* MyProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */; };
 		FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E2A671FE432B900788F22 /* TitleBadgeDisclosureCell.swift */; };
 		FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123B220F4097A00DF8486 /* FormattableContent.swift */; };
-		FABB22162602FC2C00C8785C /* WebAddressWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */; };
 		FABB22182602FC2C00C8785C /* SiteSegmentsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D853723B21952DC90076F461 /* SiteSegmentsStep.swift */; };
 		FABB22192602FC2C00C8785C /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E1BFD924A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift */; };
 		FABB221B2602FC2C00C8785C /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3418E32DCF005F11F9 /* Theme.m */; };
@@ -8483,7 +8481,6 @@
 		D821C818210037F8002ED995 /* activity-log-activity-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-activity-content.json"; sourceTree = "<group>"; };
 		D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableContentGroupTests.swift; sourceTree = "<group>"; };
 		D82253DB2199411F0014D0E2 /* SiteAddressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAddressService.swift; sourceTree = "<group>"; };
-		D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressWizardContent.swift; sourceTree = "<group>"; };
 		D82253E3219956540014D0E2 /* AddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewCell.swift; sourceTree = "<group>"; };
 		D8225407219AB0520014D0E2 /* SiteInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteInformation.swift; sourceTree = "<group>"; };
 		D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullMockUserDefaults.swift; sourceTree = "<group>"; };
@@ -16465,7 +16462,6 @@
 				08EA036529C9B50500B72A87 /* DesignSystem */,
 				D82253E3219956540014D0E2 /* AddressTableViewCell.swift */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
-				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
 				467D3DF925E4436000EB9CB0 /* SitePromptView.swift */,
 				467D3E0B25E4436D00EB9CB0 /* SitePromptView.xib */,
 				08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */,
@@ -21544,7 +21540,6 @@
 				C7F7BE4C2626301500CE547F /* AuthenticationHandler.swift in Sources */,
 				E66E2A691FE432BC00788F22 /* TitleBadgeDisclosureCell.swift in Sources */,
 				7E4123BF20F4097B00DF8486 /* FormattableContent.swift in Sources */,
-				D82253DF2199418B0014D0E2 /* WebAddressWizardContent.swift in Sources */,
 				8BD34F0B27D14B3C005E931C /* Blog+DashboardState.swift in Sources */,
 				D853723C21952DC90076F461 /* SiteSegmentsStep.swift in Sources */,
 				32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
@@ -24379,7 +24374,6 @@
 				FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */,
 				FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */,
 				4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
-				FABB22162602FC2C00C8785C /* WebAddressWizardContent.swift in Sources */,
 				C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				3F8D988A26153484003619E5 /* UnifiedPrologueBackgroundView.swift in Sources */,
 				FABB22182602FC2C00C8785C /* SiteSegmentsStep.swift in Sources */,

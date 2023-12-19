@@ -29,7 +29,7 @@ class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     var domainPurchasingEnabled: Bool {
-        return true
+        return RemoteFeatureFlag.plansInSiteCreation.enabled()
     }
 
     var information: String? {
