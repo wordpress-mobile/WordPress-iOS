@@ -41,6 +41,7 @@ struct SiteDomainsView: View {
                     updateDomainsList()
                 }, failure: nil)
             })
+            .ignoresSafeArea()
         })
     }
 
