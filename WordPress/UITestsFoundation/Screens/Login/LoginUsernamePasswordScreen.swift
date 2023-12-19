@@ -40,13 +40,11 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
         fill(username: username, password: password)
-
         return try MySitesScreen()
     }
 
     public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-
         return try MySiteScreen()
     }
 
@@ -66,6 +64,10 @@ public class LoginUsernamePasswordScreen: ScreenObject {
             passwordTextField.typeText(password)
         }
         nextButton.tap()
+
+        if #available(iOS 17.2, *) {
+            app.dismissSavePasswordPrompt()
+        }
     }
 
     private func dismissQuickStartPromptIfNeeded() throws {
