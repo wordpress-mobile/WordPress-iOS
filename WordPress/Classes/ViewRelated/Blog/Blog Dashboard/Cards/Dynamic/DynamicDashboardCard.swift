@@ -58,7 +58,7 @@ struct DynamicDashboardCard: View {
     var rowsVStack: some View {
         VStack(spacing: Length.Padding.single) {
             ForEach(input.rows) { row in
-                HStack(spacing: Length.Padding.split) {
+                HStack(alignment: .top, spacing: Length.Padding.split) {
                     if let imageURL = row.imageURL {
                         AsyncImage(url: imageURL)
                             .frame(
