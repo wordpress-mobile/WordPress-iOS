@@ -67,8 +67,8 @@ struct ReaderNavigationButton: View {
     }
 
     struct Colors {
-        static let primary: Color = Color(uiColor: UIColor(light: .white, dark: .black))
-        static let background: Color = Color(uiColor: UIColor(light: .black, dark: .white))
+        static let primary: Color = Color(uiColor: .systemBackground)
+        static let background: Color = Color(uiColor: .text)
     }
 
     struct Strings {
