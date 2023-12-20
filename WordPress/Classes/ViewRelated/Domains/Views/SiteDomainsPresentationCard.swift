@@ -2,7 +2,7 @@ import SwiftUI
 import DesignSystem
 
 /// A card with a title, a description and buttons that return an action
-struct PresentationCard: View {
+struct SiteDomainsPresentationCard: View {
     let title: String
     let description: String
     let destinations: [Destination]
@@ -42,7 +42,7 @@ struct PresentationCard: View {
     }
 }
 
-extension PresentationCard {
+extension SiteDomainsPresentationCard {
     struct Destination: Identifiable {
         let id: UUID = UUID()
         let title: String

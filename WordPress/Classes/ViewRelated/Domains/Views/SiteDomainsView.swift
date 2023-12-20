@@ -115,7 +115,7 @@ struct SiteDomainsView: View {
     /// Builds the Get New Domain section when no othert domains are present for the given blog
     private func makeGetFirstDomainSection(blog: Blog) -> some View {
         return Section {
-            PresentationCard(
+            SiteDomainsPresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
                 destinations: makeGetFirstDomainSectionDestinations(blog: blog)
@@ -123,9 +123,9 @@ struct SiteDomainsView: View {
         }
     }
 
-    private func makeGetFirstDomainSectionDestinations(blog: Blog) -> [PresentationCard.Destination] {
+    private func makeGetFirstDomainSectionDestinations(blog: Blog) -> [SiteDomainsPresentationCard.Destination] {
         let primaryDestination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseWithPaidPlan
-        var destinations: [PresentationCard.Destination] = [
+        var destinations: [SiteDomainsPresentationCard.Destination] = [
             .init(
                 title: TextContent.primaryButtonTitle(blog.canRegisterDomainWithPaidPlan),
                 style: .primary,
@@ -211,7 +211,7 @@ private extension SiteDomainsView {
                                                                                     comment: "Description for the first domain purchased with a paid plan.")
         static let firstDomainRegistrationTitle: String = NSLocalizedString("Claim your free domain",
                                                                                    comment: "Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
-        static let firstDomainRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan",
+        static let firstDomainRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan.",
                                                                   comment: "Description for the first domain purchased with a paid plan.")
         static let firstDomainRegistrationButtonTitle = NSLocalizedString("Search for a domain",
                                                                     comment: "title of the button that searches the first domain.")
