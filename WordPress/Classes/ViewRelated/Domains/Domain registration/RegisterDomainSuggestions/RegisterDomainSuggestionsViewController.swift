@@ -5,7 +5,8 @@ import WordPressAuthenticator
 import WordPressFlux
 import Combine
 
-enum DomainSelectionType {
+enum DomainSelectionType: Int, Identifiable {
+    var id: Int { rawValue }
     case registerWithPaidPlan
     case purchaseWithPaidPlan
     case purchaseSeparately

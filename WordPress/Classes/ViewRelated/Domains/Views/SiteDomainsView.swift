@@ -6,15 +6,20 @@ import DesignSystem
 struct SiteDomainsView: View {
 
     @ObservedObject var blog: Blog
-    @State var isShowingDomainRegistrationFlow = false
-    @State var isShowingDirectDomainPurchasingFlow = false
+    @State var isShowingDomainSelectionWithType: DomainSelectionType?
     @State var blogService = BlogService(coreDataStack: ContextManager.shared)
     @State var domainsList: [Blog.DomainRepresentation] = []
 
     // Property observer
-    private func showingDomainRegistrationFlow(to value: Bool) {
-        if value {
+    private func showingDomainSelectionWithType(to value: DomainSelectionType?) {
+        switch value {
+        case .purchaseSeparately, .registerWithPaidPlan:
             WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        case .none:
+            break
+        default:
+            // TODO: Analytics
+            break
         }
     }
     private func showingDirectDomainPurchasingFlow(to value: Bool) {
@@ -41,18 +46,9 @@ struct SiteDomainsView: View {
                 updateDomainsList()
             }, failure: nil)
         }
-        .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
-            let domainSelectionType: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseWithPaidPlan
+        .sheet(item: $isShowingDomainSelectionWithType, content: { domainSelectionType in
             makeDomainSearch(for: blog, domainSelectionType: domainSelectionType, onDismiss: {
-                isShowingDomainRegistrationFlow = false
-                blogService.refreshDomains(for: blog, success: {
-                    updateDomainsList()
-                }, failure: nil)
-            })
-        })
-        .sheet(isPresented: $isShowingDirectDomainPurchasingFlow, content: {
-            makeDomainSearch(for: blog, domainSelectionType: .purchaseSeparately, onDismiss: {
-                isShowingDirectDomainPurchasingFlow = false
+                isShowingDomainSelectionWithType = nil
                 blogService.refreshDomains(for: blog, success: {
                     updateDomainsList()
                 }, failure: nil)
@@ -110,7 +106,7 @@ struct SiteDomainsView: View {
                         size: .small,
                         isJetpack: AppConfiguration.isJetpack
                     )) {
-                        $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow).wrappedValue = true
+                        $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = .registerWithPaidPlan
                     }
             }
         }
@@ -128,11 +124,14 @@ struct SiteDomainsView: View {
     }
 
     private func makeGetFirstDomainSectionDestinations(blog: Blog) -> [PresentationCard.Destination] {
+        let primaryDestination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseWithPaidPlan
         var destinations: [PresentationCard.Destination] = [
             .init(
                 title: TextContent.primaryButtonTitle(blog.canRegisterDomainWithPaidPlan),
                 style: .primary,
-                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)
+                action: {
+                    $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = primaryDestination
+                }
             )
         ]
 
@@ -141,7 +140,9 @@ struct SiteDomainsView: View {
                 .init(
                     title: TextContent.firstDomainDirectPurchaseButtonTitle,
                     style: .tertiary,
-                    isShowingDestination: $isShowingDirectDomainPurchasingFlow.onChange(showingDirectDomainPurchasingFlow)
+                    action: {
+                        $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = .purchaseSeparately
+                    }
                 )
             )
         }

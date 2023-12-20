@@ -1,7 +1,7 @@
 import SwiftUI
 import DesignSystem
 
-/// A card with a title, a description and a button that can present a view
+/// A card with a title, a description and buttons that return an action
 struct PresentationCard: View {
     let title: String
     let description: String
@@ -34,7 +34,7 @@ struct PresentationCard: View {
                             size: .large,
                             isJetpack: AppConfiguration.isJetpack
                         )) {
-                            destination.isShowingDestination = true
+                            destination.action()
                         }
                 }
             }
@@ -47,6 +47,6 @@ extension PresentationCard {
         let id: UUID = UUID()
         let title: String
         let style: DSButtonStyle.Emphasis
-        @Binding var isShowingDestination: Bool
+        let action: (() -> Void)
     }
 }
