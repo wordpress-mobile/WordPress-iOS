@@ -1,44 +1,18 @@
 {
     "dynamic": [
         {
-          "id": "year_in_review_2023",
-          "title": "Year In Review 2023",
-          "remote_feature_flag": "dynamic_dashboard_cards",
-          "featured_image": "https://path/to/image",
-          "url": "https://wordpress.com",
-          "action": "Call to action",
+          "id": "domain_management_announcement",
+          "remote_feature_flag": "domain_management_announcement_card",
+          "title": "New: Domains Management",
+          "featured_image": "https://mobiledotblog.files.wordpress.com/2023/12/all-domains.png",
+          "url": "https://wordpress.com/me/domains",
+          "action": "Check it out",
           "order": "top",
           "rows": [
             {
-              "icon": "https://path/to/image",
-              "title": "xyz",
-              "description": "xyz"
-            },
-            {
-              "icon": "https://path/to/image",
-              "title": "xyz",
-              "description": "xyz"
-            }
-          ]
-        },
-        {
-          "id": "domain_management",
-          "title": "New: Domain Management",
-          "remote_feature_flag": "dynamic_dashboard_cards",
-          "featured_image": "https://path/to/image",
-          "url": "https://wordpress.com",
-          "action": "Call to action",
-          "order": "top",
-          "rows": [
-            {
-              "icon": "https://path/to/image",
-              "title": "xyz",
-              "description": "xyz"
-            },
-            {
-              "icon": "https://path/to/image",
-              "title": "xyz",
-              "description": "xyz"
+              "title": "Manage all your domains in one place",
+              "description": "Check status, make renewals, and buy or import more domains.",
+              "icon": null
             }
           ]
         },
