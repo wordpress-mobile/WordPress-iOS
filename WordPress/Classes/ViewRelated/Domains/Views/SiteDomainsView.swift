@@ -7,6 +7,7 @@ struct SiteDomainsView: View {
 
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
+    @State var isShowingDirectDomainPurchasingFlow = false
     @State var blogService = BlogService(coreDataStack: ContextManager.shared)
     @State var domainsList: [Blog.DomainRepresentation] = []
 
@@ -16,6 +17,11 @@ struct SiteDomainsView: View {
             WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
         }
     }
+    private func showingDirectDomainPurchasingFlow(to value: Bool) {
+        if value {
+            // TODO: Analytics
+        }
+    }
 
     var body: some View {
         List {
@@ -23,6 +29,7 @@ struct SiteDomainsView: View {
                 makeSiteAddressSection(blog: blog)
             }
             makeDomainsSection(blog: blog)
+                .listRowInsets(Metrics.insets)
         }
         .listStyle(InsetGroupedListStyle())
         .buttonStyle(PlainButtonStyle())
@@ -35,8 +42,17 @@ struct SiteDomainsView: View {
             }, failure: nil)
         }
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
-            makeDomainSearch(for: blog, onDismiss: {
+            let domainSelectionType: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseWithPaidPlan
+            makeDomainSearch(for: blog, domainSelectionType: domainSelectionType, onDismiss: {
                 isShowingDomainRegistrationFlow = false
+                blogService.refreshDomains(for: blog, success: {
+                    updateDomainsList()
+                }, failure: nil)
+            })
+        })
+        .sheet(isPresented: $isShowingDirectDomainPurchasingFlow, content: {
+            makeDomainSearch(for: blog, domainSelectionType: .purchaseSeparately, onDismiss: {
+                isShowingDirectDomainPurchasingFlow = false
                 blogService.refreshDomains(for: blog, success: {
                     updateDomainsList()
                 }, failure: nil)
@@ -102,14 +118,35 @@ struct SiteDomainsView: View {
 
     /// Builds the Get New Domain section when no othert domains are present for the given blog
     private func makeGetFirstDomainSection(blog: Blog) -> some View {
-        Section {
+        return Section {
             PresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
-                destinationTitle: TextContent.firstSearchDomainButtonTitle,
-                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)
+                destinations: makeGetFirstDomainSectionDestinations(blog: blog)
             )
         }
+    }
+
+    private func makeGetFirstDomainSectionDestinations(blog: Blog) -> [PresentationCard.Destination] {
+        var destinations: [PresentationCard.Destination] = [
+            .init(
+                title: TextContent.primaryButtonTitle(blog.canRegisterDomainWithPaidPlan),
+                style: .primary,
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)
+            )
+        ]
+
+        if !blog.canRegisterDomainWithPaidPlan {
+            destinations.append(
+                .init(
+                    title: TextContent.firstDomainDirectPurchaseButtonTitle,
+                    style: .tertiary,
+                    isShowingDestination: $isShowingDirectDomainPurchasingFlow.onChange(showingDirectDomainPurchasingFlow)
+                )
+            )
+        }
+
+        return destinations
     }
 
     private var siteAddressForGetFirstDomainSection: String {
@@ -125,10 +162,10 @@ struct SiteDomainsView: View {
     }
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
-    private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
+    private func makeDomainSearch(for blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> some View {
         return DomainSuggestionViewControllerWrapper(
             blog: blog,
-            domainSelectionType: blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately,
+            domainSelectionType: domainSelectionType,
             onDismiss: onDismiss
         )
     }
@@ -171,29 +208,39 @@ private extension SiteDomainsView {
         static let firstFreeDomainWithPaidPlanDomainDescription = NSLocalizedString("site.domains.freeDomainWithPaidPlan.description",
                                                                                     value: "Get a free one-year domain registration or transfer with any annual paid plan.",
                                                                                     comment: "Description for the first domain purchased with a paid plan.")
-        static let firstPaidPlanRegistrationTitle: String = NSLocalizedString("Claim your free domain",
+        static let firstDomainRegistrationTitle: String = NSLocalizedString("Claim your free domain",
                                                                                    comment: "Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
-        static let firstPaidPlanRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan",
+        static let firstDomainRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan",
                                                                   comment: "Description for the first domain purchased with a paid plan.")
-        static let firstSearchDomainButtonTitle = NSLocalizedString("Search for a domain",
+        static let firstDomainRegistrationButtonTitle = NSLocalizedString("Search for a domain",
                                                                     comment: "title of the button that searches the first domain.")
 
+        static let firstDomainDirectPurchaseButtonTitle: String = NSLocalizedString("site.domains.purchaseDirectly.buttons.title",
+                                                                                      value: "Just search for a domain",
+                                                                                      comment: "Title for a button that opens domain purchasing flow.")
+        static let firstDomainWithPaidPlanButtonTitle: String = NSLocalizedString("site.domains.purchaseWithPlan.buttons.title",
+                                                                                      value: "Upgrade to a plan",
+                                                                                      comment: "Title for a button that opens plan and domain purchasing flow.")
+
         static func firstDomainTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {
-            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationTitle : firstFreeDomainWithPaidPlanDomainTitle
+            canRegisterDomainWithPaidPlan ? firstDomainRegistrationTitle : firstFreeDomainWithPaidPlanDomainTitle
         }
 
         static func firstDomainDescription(_ canRegisterDomainWithPaidPlan: Bool) -> String {
-            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationDescription : firstFreeDomainWithPaidPlanDomainDescription
+            canRegisterDomainWithPaidPlan ? firstDomainRegistrationDescription : firstFreeDomainWithPaidPlanDomainDescription
         }
 
         static func additionalDomainTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {
-            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationTitle : additionalRedirectedDomainTitle
+            canRegisterDomainWithPaidPlan ? firstDomainRegistrationTitle : additionalRedirectedDomainTitle
+        }
+
+        static func primaryButtonTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {
+            canRegisterDomainWithPaidPlan ? firstDomainRegistrationButtonTitle : firstDomainWithPaidPlanButtonTitle
         }
     }
 
-    enum Metrics {
-        static let sectionPaddingDefaultHeight: CGFloat = 16.0
-        static let topPadding: CGFloat = -34.0
+    struct Metrics {
+        static let insets = EdgeInsets(.init(top: Length.Padding.double, leading: Length.Padding.double, bottom: Length.Padding.double, trailing: Length.Padding.double))
     }
 }
 
