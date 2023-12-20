@@ -124,7 +124,7 @@ extension ReaderTabView {
         NSLayoutConstraint.activate([
             navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
             navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
-            navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 4.0),
+            navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8.0),
             navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
             buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
             buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
