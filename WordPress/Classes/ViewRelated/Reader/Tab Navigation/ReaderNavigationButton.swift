@@ -49,7 +49,7 @@ struct ReaderNavigationButton: View {
         .padding(.leading, selectedItem.image == nil ? 16.0 : 8.0)
         .padding(.trailing, 12.0)
         .background(Colors.background)
-        .clipShape(.capsule)
+        .clipShape(Capsule())
     }
 
     private func menuButton(for item: ReaderTabItem) -> some View {
