@@ -1,31 +1,32 @@
 import SwiftUI
+import DesignSystem
 
 /// A card with a title, a description and a button that can present a view
-struct PresentationCard<Appearance: View>: View {
-    var title: String
-    var description: String
-    var highlight: String
+struct PresentationCard: View {
+    let title: String
+    let description: String
+    let destinationTitle: String
     @Binding var isShowingDestination: Bool
 
     private let titleFontSize: CGFloat = 28
 
-    var appearance: () -> Appearance
-
     var body: some View {
         VStack {
             Text(title)
-                .font(Font.system(size: titleFontSize,
-                                  weight: .regular,
-                                  design: .serif))
+                .font(Font.system(size: titleFontSize, weight: .regular, design: .serif))
                 .padding()
-            (Text(description) +
-             Text(highlight).bold())
+            Text(description)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-            PresentationButton(
-                isShowingDestination: $isShowingDestination,
-                appearance: appearance)
-                .padding()
+            DSButton(
+                title: title,
+                style: .init(
+                    emphasis: .primary,
+                    size: .large,
+                    isJetpack: AppConfiguration.isJetpack
+                )) {
+                    isShowingDestination = true
+                }
         }
     }
 }

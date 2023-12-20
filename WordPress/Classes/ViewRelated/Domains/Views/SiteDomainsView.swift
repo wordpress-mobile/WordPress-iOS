@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressKit
+import DesignSystem
 
 /// The Site Domains  screen, accessible from My Site
 struct SiteDomainsView: View {
@@ -86,17 +87,15 @@ struct SiteDomainsView: View {
                 makeDomainCell(domain: $0)
             }
             if blog.supports(.domains) {
-                PresentationButton(
-                    isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
-                    appearance: {
-                        HStack {
-                            Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
-                                .foregroundColor(Color(UIColor.primary))
-                                .bold()
-                            Spacer()
-                        }
+                DSButton(
+                    title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
+                    style: .init(
+                        emphasis: .tertiary,
+                        size: .small,
+                        isJetpack: AppConfiguration.isJetpack
+                    )) {
+                        $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow).wrappedValue = true
                     }
-                )
             }
         }
     }
@@ -107,11 +106,9 @@ struct SiteDomainsView: View {
             PresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
-                highlight: siteAddressForGetFirstDomainSection,
-                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)) {
-                    ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
-                        .largeRoundedRectangle()
-                }
+                destinationTitle: TextContent.firstSearchDomainButtonTitle,
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)
+            )
         }
     }
 
