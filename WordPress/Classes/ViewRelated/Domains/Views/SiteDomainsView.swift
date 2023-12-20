@@ -23,8 +23,7 @@ struct SiteDomainsView: View {
             }
             makeDomainsSection(blog: blog)
         }
-        .listStyle(GroupedListStyle())
-        .padding(.top, blog.supports(.domains) ? Metrics.topPadding : 0)
+        .listStyle(InsetGroupedListStyle())
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .onAppear {
