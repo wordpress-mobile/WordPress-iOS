@@ -81,6 +81,7 @@ struct DebugMenuView: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary.opacity(0.5))
                 }
+                .contentShape(Rectangle())
             }.buttonStyle(.plain)
         }
         Toggle(Strings.alwaysSendLogs, isOn: $viewModel.isForcedCrashLoggingEnabled)
