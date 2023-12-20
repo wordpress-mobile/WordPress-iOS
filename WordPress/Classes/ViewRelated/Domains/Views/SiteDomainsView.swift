@@ -13,8 +13,12 @@ struct SiteDomainsView: View {
     // Property observer
     private func showingDomainSelectionWithType(to value: DomainSelectionType?) {
         switch value {
-        case .purchaseSeparately, .registerWithPaidPlan:
+        case .registerWithPaidPlan:
             WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        case .purchaseSeparately:
+            WPAnalytics.track(.domainsDashboardGetDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        case .purchaseWithPaidPlan:
+            WPAnalytics.track(.domainsDashboardGetPlanTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
         case .none:
             break
         default:
