@@ -103,14 +103,6 @@ class ReaderTabViewController: UIViewController {
     }
 }
 
-
-// MARK: - Navigation Buttons
-extension ReaderTabViewController {
-    @objc private func didTapSearchButton() {
-        viewModel.navigateToSearch()
-    }
-}
-
 // MARK: Observing Quick Start
 extension ReaderTabViewController {
     private func startObservingQuickStart() {
@@ -185,7 +177,7 @@ extension ReaderTabViewController {
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
-        static let discoverIndex = 1
+        static let discoverIndex = 0
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
     }
