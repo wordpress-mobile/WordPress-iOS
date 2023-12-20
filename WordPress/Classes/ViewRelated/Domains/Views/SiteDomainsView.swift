@@ -22,11 +22,6 @@ struct SiteDomainsView: View {
             break
         }
     }
-    private func showingDirectDomainPurchasingFlow(to value: Bool) {
-        if value {
-            // TODO: Analytics
-        }
-    }
 
     var body: some View {
         List {
