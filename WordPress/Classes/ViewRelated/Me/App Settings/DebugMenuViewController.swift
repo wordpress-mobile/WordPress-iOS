@@ -1,6 +1,7 @@
 import UIKit
 import AutomatticTracks
 import SwiftUI
+import WordPressFlux
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
@@ -50,20 +51,24 @@ struct DebugMenuView: View {
         Button(Strings.quickStartForNewSiteRow) {
             QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
             viewModel.objectWillChange.send() // Refresh
+            showSuccessNotice()
         }
         Button(Strings.quickStartForExistingSiteRow) {
             QuickStartTourGuide.shared.setup(for: blog, type: .existingSite)
             viewModel.objectWillChange.send() // Refresh
+            showSuccessNotice()
         }
         Button(Strings.removeQuickStartRow, role: .destructive) {
             QuickStartTourGuide.shared.remove(from: blog)
             viewModel.objectWillChange.send() // Refresh
+            showSuccessNotice()
         }.disabled(blog.quickStartType == .undefined)
     }
 
     @ViewBuilder private var logging: some View {
         Button(Strings.sendLogMessage) {
             WordPressAppDelegate.crashLogging?.logMessage("Debug Log Message \(UUID().uuidString)")
+            showSuccessNotice()
         }
         Button(Strings.sendTestCrash) {
             DDLogInfo("Initiating user-requested crash")
@@ -96,6 +101,11 @@ struct DebugMenuView: View {
         }
         return Wrapped(viewController: viewController)
     }
+}
+
+private func showSuccessNotice() {
+    let notice = Notice(title: "✅", feedbackType: .success)
+    ActionDispatcher.dispatch(NoticeAction.post(notice))
 }
 
 private final class DebugMenuViewModel: ObservableObject {
