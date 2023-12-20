@@ -1,7 +1,7 @@
 import WordPressFlux
 
 
-@objc class ReaderTabViewModel: NSObject {
+@objc class ReaderTabViewModel: NSObject, ObservableObject {
 
     // MARK: - Properties
     /// tab bar items
@@ -9,9 +9,16 @@ import WordPressFlux
     private var subscription: Receipt?
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
 
-    private var tabItems: [ReaderTabItem] {
-        tabItemsStore.items
+    var tabItems: [ReaderTabItem] = [] {
+        didSet {
+            filterItems = tabItems.filter { !($0.content.topic is ReaderListTopic) }
+            listItems = tabItems.filter { $0.content.topic is ReaderListTopic }
+        }
     }
+
+    @Published var filterItems: [ReaderTabItem] = []
+    @Published var listItems: [ReaderTabItem] = []
+
     /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
@@ -53,7 +60,8 @@ import WordPressFlux
             guard let viewModel = self else {
                 return
             }
-            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItems, viewModel.selectedIndex) }
+            viewModel.tabItems = viewModel.tabItemsStore.items
+            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItemsStore.items, viewModel.selectedIndex) }
         }
         addNotificationsObservers()
         observeNetworkStatus()
@@ -86,6 +94,7 @@ extension ReaderTabViewModel {
         if tabItems[index].content.type == .saved {
             setContent?(tabItems[index].content)
         }
+        didSelectIndex?(index)
     }
 
     /// switch to the tab whose topic matches the given predicate
@@ -99,7 +108,6 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        didSelectIndex?(index)
     }
 
     /// switch to the tab  whose title matches the given predicate
@@ -110,7 +118,6 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        didSelectIndex?(index)
     }
 }
 
