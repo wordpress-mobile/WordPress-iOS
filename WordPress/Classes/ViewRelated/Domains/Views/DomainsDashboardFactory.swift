@@ -28,7 +28,7 @@ struct DomainsDashboardFactory {
         }
 
         let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
-            customTitle: RegisterDomainCoordinator.TextContent.checkoutTitle,
+            customTitle: nil,
             analyticsSource: "site_domains"
         ) { [weak coordinator] controller, domain in
             coordinator?.domainPurchasedCallback?(controller, domain)

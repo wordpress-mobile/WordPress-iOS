@@ -72,6 +72,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success(let domain):
                 self?.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, blog)
+                onSuccess()
             case .failure:
                 onFailure()
             }
