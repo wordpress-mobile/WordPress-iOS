@@ -22,18 +22,18 @@ extension SitePickerViewController {
 
     private func makePrimarySection() -> UIMenu {
         var menuItems = [
-            MenuItem.visitSite(visitSiteTapped),
-            MenuItem.addSite(addSiteTapped),
+            MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
+            MenuItem.addSite({ [weak self] in self?.addSiteTapped()} ),
         ]
         if numberOfBlogs() > 1 {
-            menuItems.append(MenuItem.switchSite(siteSwitcherTapped))
+            menuItems.append(MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() }))
         }
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
 
     private func makeSecondarySection() -> UIMenu {
         UIMenu(options: .displayInline, children: [
-            MenuItem.siteTitle(siteTitleTapped).toAction,
+            MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction,
             UIMenu(title: Strings.siteIcon, image: UIImage(systemName: "photo.circle"), children: [
                 makeSiteIconMenu() ?? UIMenu()
             ])
@@ -42,7 +42,7 @@ extension SitePickerViewController {
 
     private func makeTertiarySection() -> UIMenu {
         UIMenu(options: .displayInline, children: [
-            MenuItem.personalizeHome(personalizeHomeTapped).toAction
+            MenuItem.personalizeHome({ [weak self] in self?.personalizeHomeTapped() }).toAction
         ])
     }
 
