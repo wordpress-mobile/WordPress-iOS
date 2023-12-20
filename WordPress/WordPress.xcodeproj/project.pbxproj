@@ -2112,6 +2112,10 @@
 		834A49D32A0C23A90042ED3D /* TemplatePageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834A49D12A0C23A90042ED3D /* TemplatePageTableViewCell.swift */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
+		8352AC712B2A185A00F8492C /* ReaderNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352AC702B2A185A00F8492C /* ReaderNavigationButton.swift */; };
+		8352AC722B2A185A00F8492C /* ReaderNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352AC702B2A185A00F8492C /* ReaderNavigationButton.swift */; };
+		8352AC742B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352AC732B2A485100F8492C /* ReaderNavigationMenu.swift */; };
+		8352AC752B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352AC732B2A485100F8492C /* ReaderNavigationMenu.swift */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
 		835771352A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */; };
 		835771362A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */; };
@@ -7482,6 +7486,8 @@
 		8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		8350E49411D2C71E00A7B073 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		8350E49511D2C71E00A7B073 /* Media.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
+		8352AC702B2A185A00F8492C /* ReaderNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNavigationButton.swift; sourceTree = "<group>"; };
+		8352AC732B2A485100F8492C /* ReaderNavigationMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNavigationMenu.swift; sourceTree = "<group>"; };
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialNoSharesView.swift; sourceTree = "<group>"; };
@@ -11249,12 +11255,14 @@
 		3F09CCA62428FE8600D00A8C /* Tab Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				8352AC702B2A185A00F8492C /* ReaderNavigationButton.swift */,
+				8352AC732B2A485100F8492C /* ReaderNavigationMenu.swift */,
 				3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */,
 				3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */,
 				3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */,
 				3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */,
-				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
 				3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */,
+				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
 			);
 			path = "Tab Navigation";
 			sourceTree = "<group>";
@@ -22206,6 +22214,7 @@
 				AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
+				8352AC712B2A185A00F8492C /* ReaderNavigationButton.swift in Sources */,
 				80EF672527F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
@@ -22844,6 +22853,7 @@
 				FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */,
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				3250490724F988220036B47F /* Interpolation.swift in Sources */,
+				8352AC742B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */,
 				0CB424F62AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */,
 				0C8FC9A12A8BC8630059DCE4 /* PHPickerController+Extensions.swift in Sources */,
 				E17FEAD8221490F7006E1D2D /* PostEditorAnalyticsSession.swift in Sources */,
@@ -24291,6 +24301,7 @@
 				FABB21D92602FC2C00C8785C /* SearchIdentifierGenerator.swift in Sources */,
 				C7124E922638905B00929318 /* StarFieldView.swift in Sources */,
 				FABB21DA2602FC2C00C8785C /* StatsTwoColumnRow.swift in Sources */,
+				8352AC752B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */,
 				982DDF91263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */,
 				FABB21DC2602FC2C00C8785C /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
 				FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */,
@@ -24867,6 +24878,7 @@
 				8B55F9DC2614D902007D618E /* CircledIcon.swift in Sources */,
 				FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */,
 				3FE3D1FD26A6F34900F3CD10 /* WPStyleGuide+List.swift in Sources */,
+				8352AC722B2A185A00F8492C /* ReaderNavigationButton.swift in Sources */,
 				175CC17D2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
 				FABB237A2602FC2C00C8785C /* LikeComment.swift in Sources */,
 				FABB237B2602FC2C00C8785C /* Page.swift in Sources */,
