@@ -69,9 +69,9 @@ extension SitePickerViewController {
         let actionSheet = AddSiteAlertFactory().makeAddSiteAlert(
             source: "my_site",
             canCreateWPComSite: canCreateWPComSite,
-            createWPComSite: launchSiteCreation,
+            createWPComSite: { [weak self] in self?.launchSiteCreation() },
             canAddSelfHostedSite: canAddSelfHostedSite,
-            addSelfHostedSite: launchLoginForSelfHostedSite
+            addSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
         )
 
         actionSheet.popoverPresentationController?.sourceView = sourceView
