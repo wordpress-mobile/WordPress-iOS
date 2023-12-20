@@ -207,9 +207,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d roky";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i oblast pro menu v šabloně";
 
@@ -469,13 +466,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Typ aktivit (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Přidat";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Přidat %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Přidat blok po";
 
@@ -566,9 +556,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add menu item to children" = "Přidat položku menu pro děti";
 
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Přidat nová média";
-
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Přidat nové menu";
 
@@ -630,9 +617,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Letecká pošta";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Alba";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -710,9 +694,6 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativní text";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Případně můžete zadat heslo pro tento účet.";
@@ -861,9 +842,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Opravdu chcete odpojit Jetpack od webové stránky?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Opravdu chcete trvale odstranit vybrané položky?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Opravdu chcete tuto položku trvale smazat?";
 
@@ -937,9 +915,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Zvukový titulek. Prázdný";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Ověřuji";
@@ -1227,8 +1202,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Výpočet...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Fotoaparát";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1296,9 +1270,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušit";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Zrušit nahrávání";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1356,9 +1327,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Změnit heslo";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Změnit nastavení";
 
 /* Change Username title. */
 "Change Username" = "Změnit uživatelské jméno";
@@ -1498,9 +1466,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Vyberte soubor";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Vyberte ze seznamu moje zařízení";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Vyberte si z domovské stránky, která zobrazuje vaše nejnovější příspěvky (klasický blog), nebo pevné \/ statické stránky.";
@@ -1995,9 +1960,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Účet se nepodařilo zavřít automaticky";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Počítám mediální soubory";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Země";
 
@@ -2245,7 +2207,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Smazat";
@@ -2370,7 +2331,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Skrýt";
 
@@ -2387,12 +2347,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Zobrazované jméno";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokument, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "není to dobrý pocit, když věci odškrtnete ze seznamu?";
@@ -2575,8 +2529,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Každý blok má své vlastní nastavení. Chcete-li je najít, klepněte na blok. Jeho nastavení se zobrazí na panelu nástrojů ve spodní části obrazovky.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2585,9 +2538,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Upravit \"více\" tlačítek";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Upravit %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Upravit seznam zablokovaných slov";
@@ -2774,9 +2724,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Výše zadejte různá slova a my vyhledáme adresu, která jí odpovídá.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Aktivujte režim úprav a povolte smazání vícenásobným výběrem";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3000,9 +2947,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Selhalo";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Export médií se nezdařil";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Oznámení se nepodařilo označit jako přečtené";
@@ -3619,9 +3563,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image title on image settings. */
 "Image title" = "Nadpis obrázku";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Obrázek, %@";
-
 /* Undated post time label */
 "Immediately" = "Okamžitě";
 
@@ -4104,17 +4045,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Načítání záloh...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Načítání GIFů...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítání menu...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Načítání lidí ...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Načítání fotografií...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Nahrávám plán...";
@@ -4344,9 +4279,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Já";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -4357,13 +4290,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Velikost cache médií";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Zachytit médii";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Knihovna médií";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Nastavení médií";
@@ -4386,9 +4312,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Nastavení médií";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Náhled médií selhal.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Nahraná média (%ld soubory)";
@@ -4789,9 +4712,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Nebyly nalezeny žádné odpovídající události.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Vašemu vyhledávání neodpovídají žádná média";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4927,9 +4848,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Zatím se nic nelíbilo";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Nic k vidění";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailní tabulka notifikací";
 
@@ -4989,7 +4907,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5051,9 +4968,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Zobrazit pouze výňatek";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Dostupné jsou pouze vybrané fotografie, ke kterým jste udělili přístup.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5087,9 +5001,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otevřít nastavení";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Otevřít úplný výběr médií";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Otevřít v Safari";
@@ -5303,12 +5214,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografie";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotky";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Fotografie poskytla společnost Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Vyberte uživatelské jméno";
@@ -5577,9 +5482,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Zde se objeví příspěvky, které se vám líbí.";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Běží na Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5598,17 +5500,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a static content. */
 "Preview" = "Náhled";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Náhled %@";
-
 /* Title for web preview device switching button */
 "Preview Device" = "Náhled zařízení";
 
 /* Title on display preview error */
 "Preview Unavailable" = "Náhled není k dispozici";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Náhled média";
 
 /* No comment provided by engineer. */
 "Preview page" = "Náhled stránky";
@@ -5863,8 +5759,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Připomenutí odstraněny!";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6082,9 +5977,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Opakovat skenování";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Opakovat nahrávání";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Zopakujte všechno";
 
@@ -6282,12 +6174,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "Nastavení vyhledávání";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Vyhledejte GIF a přidejte jej do knihovny médií!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Vyhledejte fotografie zdarma, které chcete přidat do knihovny médií!";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Hledání...";
 
@@ -6358,9 +6244,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Vybrat zemi";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Vybrat více";
-
 /* Blog Picker's Title */
 "Select Site" = "Vybrat web";
 
@@ -6381,9 +6264,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Vybrat doménu";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Vybrat soubory";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte styl odstavce";
@@ -7009,8 +6889,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Podpora";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Přepnout web";
 
 /* Switches the Editor to HTML Mode */
@@ -7095,9 +6974,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Štítky pomáhají čtenářům říct, o čem je příspěvek. Jednotlivé značky oddělte čárkami.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Vybrat fotku nebo video";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Udělat fotku";
 
@@ -7164,12 +7040,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Klepnutím vyberte předchozí období";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Klepnutím přepnete na jiný web nebo přidáte nový web";
-
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Klepnutím zobrazíte média na celé obrazovce";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Klepnutím zobrazíte další podrobnosti.";
@@ -7245,9 +7115,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Připojení k Facebooku nemůže najít žádné stránky. Publicita se nemůže připojit k profilům Facebooku, pouze k publikovaným stránkám.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF nelze přidat do knihovny médií.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Účet Google \"%@\" neodpovídá žádnému účtu na WordPress.com";
@@ -7444,9 +7311,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Došlo k potížím při zobrazování tohoto příspěvku.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Vyskytl se problém s načtením mediální položky.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Při načítání dat došlo k potížím. Obnovte stránku a zkuste to znovu.";
 
@@ -7458,9 +7322,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Došlo k chybě při pokusu načíst vaší polohu. Zkuste to později znovu.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Došlo k potížím při pokusu o přístup k médiím. Zkuste to znovu později.";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Došlo k potížím při začátku sledování webu. Pokud problém přetrvává můžete nás kontaktovat prostřednictvím > Pomoc a podpora. ";
@@ -7531,9 +7392,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Tato aplikace potřebuje oprávnění pro přístup k fotoaparátu, aby mohla skenovat přihlašovací kódy, klepnutím na tlačítko Otevřít nastavení ji povolte.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Tato aplikace vyžaduje povolení pro přístupu ke knihovnu médií v zařízení, aby bylo možné přidat fotografie a\/nebo videa do příspěvků. Pokud si to přejete, změňte nastavení soukromí";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Tato barevná kombinace může být špatně čitelná. Zkuste použít jasnější barvu pozadí a\/nebo tmavší barvu textu.";
@@ -7773,14 +7631,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Změnit blok...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Odstranit";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Odstraňte vybraná média do koše";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Smazat tento příspěvek?";
@@ -7910,9 +7764,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Nelze vytvořit nové odkazy na pozvánky.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Nelze smazat všechny mediální položky.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nelze smazat mediální položku.";
@@ -8087,9 +7938,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámé HTML";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Neznámé datum vytvoření";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Neznámá chyba";
@@ -8327,9 +8175,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Video soubor nebyl nahrán";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Videa";
@@ -8850,9 +8695,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Nápověda WordPress";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress média";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress knihovna médií";
 
@@ -9161,9 +9003,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Váš účet nemá oprávnění k nahrávání médií na tuto stránku. Správce stránky může tyto oprávnění změnit.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Vaše aplikace nemá oprávnění k přístupu do knihovny médií kvůli aktivním omezením, jako jsou rodičovská kontrola. Zkontrolujte nastavení rodičovského zámku v tomto zařízení.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Vaše záloha je nyní k dispozici ke stažení";
 
@@ -9181,9 +9020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Vaše bezplatná adresa na WordPress.com je";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Vaše média se nepodařilo exportovat. Pokud problém přetrvává, můžete nás kontaktovat prostřednictvím obrazovky Já > Nápověda a podpora.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Vaše nová doména %@ se nastavuje. Může trvat až 30 minut, než vaše doména začne fungovat.";
@@ -9301,9 +9137,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
-
-/* Label displayed on audio media items. */
-"audio" = "audio";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "zvukový soubor";
@@ -9447,9 +9280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moje-webova-adresa (URL)";
-
-/* Label displayed on image media items. */
-"image" = "obrázky";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Pořizovat fotky a videa a umožnit použití ve vašich příspěvcích. ";
@@ -9697,9 +9527,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "Označeno jako spam";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Odmítnout";
-
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Odmítnout";
 
@@ -9714,9 +9541,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Už nepotřebujete WordPress aplikaci";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Dokončit";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "Odstraňte WordPress aplikaci";
@@ -9789,12 +9613,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Odeslat zpětnou vazbu";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "ostatní";
 
 /* No comment provided by engineer. */
 "password" = "heslo";
@@ -10020,9 +9838,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "nepřečtené";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "navštivte naši stránku s dokumentací";

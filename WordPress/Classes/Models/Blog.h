@@ -236,7 +236,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (readonly) BOOL hasIcon;
 
 /** Determine timezone for blog from blog options.  If no timezone information is stored on the device, then assume GMT+0 is the default. */
-@property (readonly) NSTimeZone *timeZone;
+@property (readonly, nullable) NSTimeZone *timeZone;
 
 #pragma mark - Blog information
 

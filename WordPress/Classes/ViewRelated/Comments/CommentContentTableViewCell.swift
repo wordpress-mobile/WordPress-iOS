@@ -9,12 +9,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         case info
     }
 
-    enum RenderMethod {
+    enum RenderMethod: Equatable {
         /// Uses WebKit to render the comment body.
         case web
 
         /// Uses WPRichContent to render the comment body.
-        case richContent
+        case richContent(NSAttributedString)
     }
 
     // MARK: - Public Properties
@@ -243,12 +243,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     @objc func ensureRichContentTextViewLayout() {
-        guard renderMethod == .richContent,
-              let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
-                  return
-              }
-
-        richContentTextView.updateLayoutForAttachments()
+        switch renderMethod {
+        case .richContent:
+            if let richContentTextView = contentContainerView.subviews.first as? WPRichContentView {
+                richContentTextView.updateLayoutForAttachments()
+            }
+        default:
+            return
+        }
     }
 }
 
@@ -473,9 +475,10 @@ private extension CommentContentTableViewCell {
             switch renderMethod {
             case .web:
                 return WebCommentContentRenderer(comment: comment)
-            case .richContent:
+            case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer(comment: comment)
                 renderer.richContentDelegate = self.richContentDelegate
+                renderer.attributedText = attributedText
                 return renderer
             }
         }()

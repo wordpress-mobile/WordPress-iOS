@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-15 17:54:11+0000 */
+/* Translation-Revision-Date: 2023-12-06 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -207,9 +207,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d jaren";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i menugebied in dit thema";
 
@@ -264,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s social pictogram";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "Het blok '%s' is omgezet naar blokken";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' wordt niet volledig ondersteund";
@@ -472,13 +472,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Type activiteit (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Toevoegen";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Voeg %@ toe";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Blok toevoegen na";
 
@@ -575,9 +568,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add menu item to children" = "Menu-item aan onderliggende toevoegen";
 
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Nieuwe media toevoegen";
-
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Nieuw menu toevoegen";
 
@@ -642,9 +632,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albums";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -726,11 +713,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Je kan ook de inhoud naar blokken omzetten.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Als alternatief, kan je deze blokken ook losmaken en afzonderlijk bewerken door op 'Patronen losmaken' te tikken.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Als alternatief, kan je dit blok ook losmaken en afzonderlijk bewerken door op 'Patroon losmaken' te tikken.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
@@ -879,9 +863,6 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Weet je zeker dat je Jetpack wilt loskoppelen van jouw site?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Weet je zeker dat je deze items definitief wilt verwijderen?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
 
@@ -955,9 +936,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Audio bijschrift. Leeg";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Authenticatie";
@@ -1169,10 +1147,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "Blokkenmenu";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor. Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor. Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Blokken die dieper dan %d niveaus genesteld zijn worden mogelijk niet goed weergegeven in de mobiele editor.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1269,8 +1244,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Wordt berekend ...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1338,9 +1312,6 @@ translators: Block name. %s: The localized block name */
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Annuleren";
 
-/* Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Annuleer upload";
-
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
    Menus alert button title to cancel discarding changes and not select a new menu location */
@@ -1398,9 +1369,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Wijzig wachtwoord";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Wijzig instellingen";
 
 /* Change Username title. */
 "Change Username" = "Wijzig gebruikersnaam";
@@ -1540,9 +1508,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Kies bestand";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Kies van mijn apparaat";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Kies uit een homepage waarop je nieuwste berichten (klassiek blog) of een vaste\/statische pagina wordt weergegeven.";
@@ -2037,9 +2002,6 @@ translators: Block name. %s: The localized block name */
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Kon account niet automatisch sluiten";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Media-items tellen...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Landen";
 
@@ -2290,7 +2252,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Verwijderen";
@@ -2421,7 +2382,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Afbreken";
 
@@ -2438,12 +2398,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Weergavenaam";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Document: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Voelt het niet goed om dingen van een lijst af te strepen?";
@@ -2629,8 +2583,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tik op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -2639,9 +2592,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Wijzig \"Meer\" knop";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Bewerk %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Bewerk bloklijst woord";
@@ -2834,9 +2784,6 @@ translators: Block name. %s: The localized block name */
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Voer hierboven andere woorden in, zodat wij op zoek kunnen gaan naar een adres dat overeenkomt.";
-
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Bewerken openen om gelijktijdig meerdere te verwijderen";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -3061,9 +3008,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "Mislukt";
 
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Media export mislukt";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Meldingen als gelezen markeren mislukt";
 
@@ -3264,6 +3208,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Hierom raden we aan de content platter te maken door het blok niet te groeperen of het blok te bewerken in je webbrowser.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "We hebben je contactgegevens van WordPress.com alvast ingevuld om je op weg te helpen. Controleer of dit de juiste gegevens zijn die je voor dit domein wilt gebruiken.";
@@ -3678,9 +3628,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image title on image settings. */
 "Image title" = "Titel voor afbeelding";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Afbeelding, %@";
 
 /* Undated post time label */
 "Immediately" = "Onmiddellijk";
@@ -4182,17 +4129,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Back-ups aan het laden...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "GIF's laden...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Menu's worden geladen...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Mensen laden...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Foto's laden...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Abonnement wordt geladen...";
@@ -4425,9 +4366,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Ik";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -4438,13 +4377,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Media cache grootte";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Mediaregistratie";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Mediabibliotheek";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Media opties";
@@ -4467,9 +4399,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Media opties";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Voorvertoning media mislukt.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Media geüpload (%ld bestanden)";
@@ -4873,9 +4802,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Geen overeenkomende evenementen gevonden.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Er komen geen media overeen met je zoekopdracht";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -5014,9 +4941,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Nog niks leuk gevonden";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Niets te tonen";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Melding details tabel";
 
@@ -5076,7 +5000,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5138,9 +5061,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Toon alleen samenvatting";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Alleen de geselecteerde foto's waar je toegang voor hebt zijn beschikbaar.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5174,9 +5094,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Open Instellingen";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Open de volledige mediakiezer";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Open in Safari";
@@ -5390,12 +5307,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografie";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Foto's";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Foto's aangeboden door Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Kies een gebruikersnaam";
@@ -5673,9 +5584,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Berichten die je liket, verschijnen hier.";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Mogelijk gemaakt door Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5694,17 +5602,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a static content. */
 "Preview" = "Voorbeeld";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Voorbeeld %@";
-
 /* Title for web preview device switching button */
 "Preview Device" = "Voorbeeld apparaat";
 
 /* Title on display preview error */
 "Preview Unavailable" = "Voorbeeld niet beschikbaar";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Een voorbeeld van de media bekijken";
 
 /* No comment provided by engineer. */
 "Preview page" = "Voorvertoning pagina";
@@ -5965,8 +5867,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Herinneringen verwijderd";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6187,9 +6088,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title that triggers a scan */
 "Retry Scan" = "Scan opnieuw proberen";
 
-/* User action to retry media upload. */
-"Retry Upload" = "Upload opnieuw proberen";
-
 /* User action to retry all failed media uploads. */
 "Retry all" = "Probeer alles opnieuw";
 
@@ -6390,12 +6288,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search settings" = "Zoek instellingen";
 
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Zoek naar GIF's om aan je mediabibliotheek toe te voegen!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Zoek gratis foto's om toe te voegen aan je mediabibliotheek!";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Zoeken...";
 
@@ -6466,9 +6358,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selecteer land";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Meer selecteren";
-
 /* Blog Picker's Title */
 "Select Site" = "Site selecteren";
 
@@ -6489,9 +6378,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Selecteer domein";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Selecteer media.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Alineastijl selecteren";
@@ -7117,8 +7003,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Ondersteuning";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Site wisselen";
 
 /* Switches the Editor to HTML Mode */
@@ -7203,9 +7088,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Tags vertellen een bezoeker waar een bericht over gaat. Scheid verschillende tags met komma's.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Neem foto of video";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Neem een foto";
 
@@ -7275,12 +7157,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Tik om de vorige periode te selecteren";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tik om te wisselen naar een andere site, of voeg een nieuwe site toe";
-
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Klik om media op volledig scherm te bekijken";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Tik hier voor meer informatie.";
@@ -7359,9 +7235,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "De Facebook verbinding kan geen pagina's vinden. Publiceren kan niet verbinden met Facebook profielen, alleen met gepubliceerde pagina's.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "De GIF kon niet worden toegevoegd aan de mediabibliotheek.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Het Google account \"%@\" komt niet overeen met een account op WordPress.com";
@@ -7558,9 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Er is een probleem opgetreden met de weergave van dit bericht.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Niet gelukt om het media-item te laden.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Er is een probleem opgetreden bij het laden van je gegevens. Vernieuw je pagina om het opnieuw te proberen.";
 
@@ -7572,9 +7442,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Er is een probleem opgetreden bij het ophalen van je locatie. Probeer het later opnieuw.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Er is een probleem opgetreden bij het openen van je media. Probeer het later opnieuw.";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Er was een probleem met de verhaal editor.  Als het probleem zich blijft voordoen, kun je contact met ons opnemen via het scherm Mij > Help & Support.";
@@ -7645,9 +7512,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Je moet deze app toegang tot je camera geven om inlogcodes te scannen. Tik op 'Instellingen openen' om de toegang te verlenen.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Deze app heeft toestemming nodig om de mediabibliotheek van je apparaat te kunnen openen voor het toevoegen van foto's en\/of video's aan je berichten. Wijzig de privacyinstellingen als je dit wilt toestaan.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Deze kleurencombinatie is mogelijk lastig te lezen. Gebruik een lichtere achtergrondkleur en\/of een donkerdere tekstkleur.";
@@ -7893,14 +7757,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformeer blok...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Prullenmand";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Verplaats geselecteerde media naar prullenbak";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Bericht naar prullenbak verplaatsen?";
@@ -8033,9 +7893,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Het is niet mogelijk om nieuwe uitnodigingslinks te maken.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Niet mogelijk om alle media te verwijderen.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Niet mogelijk om media te verwijderen.";
@@ -8213,9 +8070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Onbekende HTML";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Onbekende aanmaakdatum";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Onbekende fout";
@@ -8459,9 +8313,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Video niet geüpload";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Video's";
@@ -8985,9 +8836,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress ondersteuning";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress media";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress mediabibliotheek";
 
@@ -9302,9 +9150,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Jouw account heeft geen rechten om media naar deze site te uploaden. De sitebeheerder kan deze rechten aanpassen.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Je app is niet geautoriseerd om de mediabibliotheek te benaderen vanwege actieve restricties zoals ouderlijk toezicht. Controleer de instellingen voor je ouderlijk toezicht op dit apparaat.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Je back-up is nu beschikbaar om te downloaden";
 
@@ -9322,9 +9167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Je gratis WordPress.com adres is";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Je media kunnen niet worden geëxporteerd. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik> Help & Ondersteuning.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Je nieuwe domein %@ wordt ingesteld. Het kan tot 30 minuten duren voor je domein werkend is.";
@@ -9449,8 +9291,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "Wat vind je van WordPress?";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Afbeeldingen optimaliseren";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximaal";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Afbeeldingoptimalisatie maakt afbeeldingen kleiner, zodat ze sneller geüpload kunnen worden.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audiobestand";
@@ -9560,8 +9417,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "URL kopiëren";
 
-/* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "Openen in browser";
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Meer informatie";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Alle blogmeldingen komen in de maand januari van Bloganuary: onze community-challenge om in het nieuwe jaar betere bloggewoonten op te bouwen.";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Blogmeldingen inschakelen";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Aan de slag.";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Je antwoord publiceren.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Lees de antwoorden van andere bloggers ter inspiratie en om nieuwe contacten te leggen.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Krijg elke dag een nieuwe melding als bron van inspiratie.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Je moet Blogmeldingen inschakelen om je aan te kunnen melden voor Bloganuary.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary gebruikt Dagelijkse blogmeldingen om je in de maand januari onderwerpen toe te sturen.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Doe mee aan onze schrijfchallenge van een maand.";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Negeren";
@@ -9934,9 +9819,6 @@ Example: Reply to Pamela Nguyen */
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/mijn-site-adres (URL)";
 
-/* Label displayed on image media items. */
-"image" = "afbeelding";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
 
@@ -10246,9 +10128,6 @@ Example: Reply to Pamela Nguyen */
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unsupportedContentType" = "HTTP inhoudstype niet ondersteund";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Negeren";
-
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
 
@@ -10291,6 +10170,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Je media kon niet worden geëxporteerd Help & Support-scherm. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik > Help & ondersteuning.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Media export mislukt";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Deze app heeft toestemming nodig om de camera te openen voor het registreren van nieuwe media; wijzig de privacyinstellingen als je dit wilt toestaan.";
 
@@ -10304,7 +10189,13 @@ Example: Reply to Pamela Nguyen */
 "mediaPicker.pickFromPhotosLibrary" = "\"Kiezen op apparaat\"";
 
 /* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Maak een foto";
+
+/* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video maken";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "px.%1$d%2$d";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Het lijkt erop dat je de WordPress app nog steeds geïnstalleerd hebt.";
@@ -10318,9 +10209,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Je hebt de WordPress app niet meer nodig op je apparaat";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Afronden";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "We raden je aan om de WordPress app van je apparaat te verwijderen om gegevens conflicten te vermijden.";
 
@@ -10329,6 +10217,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We hebben al je gegevens en instellingen overgedragen. Alles staat precies waar je het gelaten hebt.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Bedankt dat je bent overgestapt naar Jetpack!";
@@ -10377,6 +10268,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welkom bij Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Aan de slag";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "De Jetpack-app heeft alle functies van de WordPress-app, en nu ook exclusieve toegang tot Statistieken, Reader, Meldingen en meer.";
@@ -10459,12 +10353,6 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Stuur feedback";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "van";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "andere";
-
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Startpagina";
 
@@ -10491,6 +10379,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kaarten kunnen verschillende inhoud weergeven, afhankelijk van wat er op je site gebeurt. We zijn bezig meer kaarten en beheermogelijkheden te creëren.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Kaarten toevoegen of verbergen";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Recente activiteit";
@@ -10531,7 +10422,7 @@ Example: Reply to Pamela Nguyen */
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.publishedTimeAgo" = "%@ gepubliceerd";
 
-/* Swipe action title */
+/* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Weergave";
 
 /* User action to dismiss featured media options. */
@@ -10817,6 +10708,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "JouwSitenaam.com";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Klik om media op volledig scherm te bekijken";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Een voorbeeld van de media bekijken";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Deselecteren";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Selecteer";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
@@ -11117,9 +11020,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "ongelezen";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "bezoek onze documentatie pagina";

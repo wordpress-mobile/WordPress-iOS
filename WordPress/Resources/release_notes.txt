@@ -1,15 +1,5 @@
-* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
-* [*] Fix the media item details screen layout on iPad [#22042]
-* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
-* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
-* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
-* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
-* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
-* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
-* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
-* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
-* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
-* [*] [internal] Add workarounds for large emoji on P2. [#22080]
-* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
-* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
-* [**] Refactor deleting media [#21748]
+We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
+
+Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
+
+Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. Sweet.

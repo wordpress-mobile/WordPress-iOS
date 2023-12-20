@@ -5,13 +5,13 @@ protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
     /// Return a non-nil value to allow adding media using the empty state.
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu?
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu?
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu?
 }
 
 extension SiteMediaCollectionViewControllerDelegate {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection: [Media]) {}
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? { nil }
-    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media) -> UIMenu? { nil }
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? { nil }
 }
 
 /// The internal view controller for managing the media collection view.
@@ -222,7 +222,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     @objc private func didRecognizePanGesture(_ gesture: UIPanGestureRecognizer) {
-        guard isEditing else { return }
+        guard isEditing, allowsMultipleSelection else { return }
 
         switch gesture.state {
         case .began:
@@ -404,7 +404,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         if let viewController = navigationController?.topViewController,
            let detailsViewController = viewController as? SiteMediaPageViewController {
             let before = indexPath.item > 0 ? fetchController.object(at: IndexPath(item: indexPath.item - 1, section: 0)) : nil
-            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item + 1, section: 0)) : nil
+            let after = indexPath.item < (fetchController.fetchedObjects?.count ?? 0) ? fetchController.object(at: IndexPath(item: indexPath.item, section: 0)) : nil
 
             detailsViewController.didDeleteItem(media, before: before, after: after)
         }
@@ -476,7 +476,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             return self.makePreviewViewController(for: media)
         }, actionProvider: { [weak self] _ in
             guard let self else { return nil }
-            return self.delegate?.siteMediaViewController(self, contextMenuFor: media)
+            let cell = collectionView.cellForItem(at: indexPath)
+            return self.delegate?.siteMediaViewController(self, contextMenuFor: media, sourceView: cell ?? self.view)
         })
     }
 

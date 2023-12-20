@@ -11,12 +11,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     @IBOutlet weak var commentButton: PostMetaButton!
     @IBOutlet weak var likeButton: PostMetaButton!
 
-    /// These are added to dynamically apply changes based on the `readerImprovements` feature flag.
-    /// Once the flag is removed, we should remove these and apply the changes directly on the XIB file.
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var stackViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var stackViewTrailingConstraint: NSLayoutConstraint!
-
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
 
@@ -34,19 +28,15 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     weak var delegate: ReaderDetailToolbarDelegate? = nil
 
-    private lazy var readerImprovementsEnabled: Bool = {
-        return RemoteFeatureFlag.readerImprovements.enabled()
-    }()
-
     private var likeButtonTitle: String {
-        guard let post, readerImprovementsEnabled else {
+        guard let post else {
             return likeLabel(count: likeCount)
         }
         return post.isLiked ? Constants.likedButtonTitle : Constants.likeButtonTitle
     }
 
     private var likeCount: Int {
-        post?.likeCount.intValue ?? 0
+        post?.likeCount?.intValue ?? 0
     }
 
     override func awakeFromNib() {
@@ -57,6 +47,14 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         adjustInsetsForTextDirection()
 
         prepareActionButtonsForVoiceOver()
+    }
+
+    func viewWillAppear() {
+        subscribePostChanges()
+    }
+
+    func viewWillDisappear() {
+        unsubscribePostChanges()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -71,35 +69,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.post = post
         self.viewController = viewController
 
-        likeCountObserver = post.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
-            // ensure that we only update the like button when there's actual change.
-            let oldValue = change.oldValue??.intValue ?? 0
-            let newValue = change.newValue??.intValue ?? 0
-            guard oldValue != newValue else {
-                return
-            }
-
-            self?.configureLikeActionButton(true)
-            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
-        }
-
-        commentCountObserver = post.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
-            // ensure that we only update the like button when there's actual change.
-            let oldValue = change.oldValue??.intValue ?? 0
-            let newValue = change.newValue??.intValue ?? 0
-            guard oldValue != newValue else {
-                return
-            }
-
-            self?.configureCommentActionButton()
-        }
-
+        subscribePostChanges()
         configureActionButtons()
-    }
-
-    deinit {
-        likeCountObserver?.invalidate()
-        commentCountObserver?.invalidate()
     }
 
     // MARK: - Actions
@@ -164,14 +135,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
-
-        // TODO: Apply changes on the XIB directly once the `readerImprovements` flag is removed.
-        if readerImprovementsEnabled {
-            stackView.distribution = .fillEqually
-            stackView.spacing = 16.0
-            stackViewLeadingConstraint.constant = 16.0
-            stackViewTrailingConstraint.constant = 16.0
-        }
     }
 
     // MARK: - Configuration
@@ -222,16 +185,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
                                                   titleColor: .textSubtle,
                                                   imageColor: .textSubtle,
                                                   disabledColor: disabledColor)
-
-        /// Configure the UIButton so it displays the button image on top of the title label.
-        /// Previously, this would be achieved through titleEdgeInsets and imageEdgeInsets, but these
-        /// will be deprecated soon. The new way to do this is through `UIButton.Configuration`, by setting
-        /// `imagePlacement` to `.top`.
-        ///
-        /// TODO: remove unused styles once the `readerImprovements` flag is removed.
-        guard readerImprovementsEnabled else {
-            return
-        }
 
         var configuration = UIButton.Configuration.plain()
 
@@ -304,16 +257,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let animationDuration = 0.3
         let imageView = UIImageView(image: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon)
 
-        if readerImprovementsEnabled {
-            /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
-            /// To work around this, let's add the faux image to the image view instead, so it can be
-            /// properly placed in front of the masking view.
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            likeImageView.addSubview(imageView)
-            likeImageView.pinSubviewAtCenter(imageView)
-        } else {
-            likeButton.addSubview(imageView)
-        }
+        /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
+        /// To work around this, let's add the faux image to the image view instead, so it can be
+        /// properly placed in front of the masking view.
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        likeImageView.addSubview(imageView)
+        likeImageView.pinSubviewAtCenter(imageView)
 
         if likeButton.isSelected {
             // Prep a mask to hide the likeButton's image, since changes to visibility and alpha are ignored
@@ -322,12 +271,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             likeImageView.addSubview(mask)
             likeImageView.pinSubviewToAllEdges(mask)
             mask.translatesAutoresizingMaskIntoConstraints = false
-
-            if readerImprovementsEnabled {
-                likeImageView.bringSubviewToFront(imageView)
-            } else {
-                likeButton.bringSubviewToFront(imageView)
-            }
+            likeImageView.bringSubviewToFront(imageView)
 
             // Configure starting state
             imageView.alpha = 0.0
@@ -377,15 +321,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     private func configureCommentActionButton() {
         commentButton.isEnabled = shouldShowCommentActionButton
 
-        if readerImprovementsEnabled {
-            commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .normal)
-            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .selected)
-            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .highlighted)
-            commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: [.highlighted, .selected])
-            commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .disabled)
-        } else {
-            WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
-        }
+        commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .normal)
+        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .selected)
+        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .highlighted)
+        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: [.highlighted, .selected])
+        commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .disabled)
 
         configureActionButtonStyle(commentButton)
     }
@@ -436,8 +376,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let commentCount = post.commentCount()?.intValue ?? 0
-        let commentTitle = readerImprovementsEnabled ? Constants.commentButtonTitle : commentLabel(count: commentCount)
-        let showTitle: Bool = readerImprovementsEnabled || traitCollection.horizontalSizeClass != .compact
+        let commentTitle = Constants.commentButtonTitle
 
         likeButton.setTitle(likeButtonTitle, for: .normal)
         likeButton.setTitle(likeButtonTitle, for: .highlighted)
@@ -445,8 +384,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         commentButton.setTitle(commentTitle, for: .normal)
         commentButton.setTitle(commentTitle, for: .highlighted)
 
-        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: showTitle)
-        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: showTitle)
+        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: true)
+        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: true)
     }
 
     private func commentLabel(count: Int) -> String {
@@ -577,5 +516,39 @@ private extension ReaderDetailToolbar {
                 Note: Since the display space is limited, a short or concise translation is preferred.
                 """
         )
+    }
+}
+
+// MARK: - Observe Post
+
+private extension ReaderDetailToolbar {
+    func subscribePostChanges() {
+        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
+            self?.configureLikeActionButton(true)
+            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
+        }
+
+        commentCountObserver = post?.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
+            // ensure that we only update the like button when there's actual change.
+            let oldValue = change.oldValue??.intValue ?? 0
+            let newValue = change.newValue??.intValue ?? 0
+            guard oldValue != newValue else {
+                return
+            }
+
+            self?.configureCommentActionButton()
+        }
+    }
+
+    func unsubscribePostChanges() {
+        likeCountObserver?.invalidate()
+        commentCountObserver?.invalidate()
     }
 }

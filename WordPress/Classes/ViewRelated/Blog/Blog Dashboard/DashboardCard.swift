@@ -9,6 +9,7 @@ import Foundation
 enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
+    case bloganuaryNudge = "bloganuary_nudge"
     case prompts
     case googleDomains
     case blaze
@@ -41,6 +42,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardScheduledPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
+        case .bloganuaryNudge:
+            return DashboardBloganuaryCardCell.self
         case .prompts:
             return DashboardPromptsCardCell.self
         case .ghost:
@@ -115,6 +118,8 @@ enum DashboardCard: String, CaseIterable {
             return shouldShowRemoteCard(apiResponse: apiResponse)
         case .todaysStats:
             return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+        case .bloganuaryNudge:
+            return DashboardBloganuaryCardCell.shouldShowCard(for: blog)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
@@ -144,7 +149,7 @@ enum DashboardCard: String, CaseIterable {
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
-            return FeatureFlag.domainFocus.enabled && isJetpack
+            return FeatureFlag.googleDomainsCard.enabled && isJetpack
         }
     }
 

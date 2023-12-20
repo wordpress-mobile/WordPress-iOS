@@ -54,9 +54,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d ár";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i valmyndarsvæði í þessu þema";
 
@@ -112,10 +109,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aðgerðaskrá";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Bæta við";
-
 /* The title on the add category screen */
 "Add a Category" = "Bæta við flokki";
 
@@ -140,9 +133,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Ítarlegra";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albúm";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -236,9 +226,6 @@
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Ertu viss um að þú viljir eyða valmyndinni?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Ertu viss um að þú viljir eyða þessum hlutum varanlega?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Ertu viss um að þú viljir eyða þessum hlut varanlega?";
 
@@ -321,8 +308,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Reikna...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Myndavél";
 
 /* Title of an alert letting the user know */
@@ -604,9 +590,6 @@
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Gat ekkki tengst";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Tel fjölda skráa...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Lönd";
 
@@ -670,7 +653,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Eyða";
@@ -752,7 +734,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Loka";
 
@@ -785,8 +766,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Drög";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1085,9 +1065,6 @@
 /* Hint for image title on image settings. */
 "Image title" = "Titill myndar";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Mynd, %@";
-
 /* Undated post time label */
 "Immediately" = "Strax";
 
@@ -1339,22 +1316,13 @@
 "Me" = "Ég";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Skrár";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Stærð skyndiminni fyrir skrár";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Aðgengi að margmiðlunarefni";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Margmiðlunarsafn";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Valkostir skráa";
@@ -1365,9 +1333,6 @@
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Hleð upp";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Ekki tókst að forskoða skrá.";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Miðlungi gott";
@@ -1552,7 +1517,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1897,8 +1861,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Tengdar greinar";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -1978,9 +1941,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Reyna aftur";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Reyna upphal aftur";
 
 /* No comment provided by engineer. */
 "Retry?" = "Reyna aftur?";
@@ -2295,8 +2255,7 @@
    Theme Support action title */
 "Support" = "Aðstoð";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Skipta um vef";
 
 /* Menu item label for linking a specific tag.
@@ -2448,9 +2407,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Það kom upp vandamál við að sýna þessa færslu.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Það kom upp vandamál með að hlaða skrána.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Það kom upp vandamál við að fjarlægja lokun fyrir þennan vef.";
 
@@ -2459,9 +2415,6 @@
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Það kom upp vandamál við að nálgast upplýsingar um staðsetningu þína. Vinsamlegast reynið aftur síðar.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Það kom upp vandamál við að nálgast skrárnar þínar. Vinsamlegast reynið aftur síðar.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Það kom upp villa við að hlaða inn áskriftarleiðum";
@@ -2477,9 +2430,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Þetta forrit þarf heimild til þess að komast í myndavélina og taka nýjar myndir\/myndbönd, vinsamlegast breyttu persónuverndarstillingum ef þú vilt leyfa þetta.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Þetta forrit þarf heimild til þess að komast í skrárnar þínar og setja inn myndir\/myndbönd í færslurnar þínar. Vinsamlegast breyttu persónuverndarstillingum ef þú vilt leyfa þetta.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Þessari skrá hefur verið eytt.";
@@ -2543,8 +2493,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Heildarfjöldi WordPress.com fylgjenda: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Rusl";
@@ -2586,9 +2535,6 @@
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Gat ekki samstillt";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Gat ekki eytt öllum skrám.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Gat ekki eytt skrá.";
@@ -2724,9 +2670,6 @@
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Staðfesta innskráningu";
-
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Myndband, %@";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Myndbönd";

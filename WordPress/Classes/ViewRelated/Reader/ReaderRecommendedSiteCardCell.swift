@@ -10,10 +10,6 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
 
     weak var delegate: ReaderRecommendedSitesCardCellDelegate?
 
-    private var readerImprovements: Bool {
-        RemoteFeatureFlag.readerImprovements.enabled()
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -83,33 +79,13 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         hostNameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         hostNameLabel.textColor = .textSubtle
 
-        if readerImprovements {
-            descriptionLabel?.removeFromSuperview()
-        } else {
-            // Description Label
-            descriptionLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-            descriptionLabel?.textColor = .text
-        }
-
         applyFollowButtonStyles()
-        headerStackView.spacing = readerImprovements ? 12.0 : 8.0
+        headerStackView.spacing = 12.0
     }
 
     private func applyFollowButtonStyles() {
-        guard !RemoteFeatureFlag.readerImprovements.enabled() else {
-            applyNewFollowButtonStyles()
-            return
-        }
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            WPStyleGuide.applyReaderFollowButtonStyle(followButton)
-        } else {
-            WPStyleGuide.applyReaderIconFollowButtonStyle(followButton)
-        }
-    }
-
-    private func applyNewFollowButtonStyles() {
         let contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
-        WPStyleGuide.applyNewReaderFollowButtonStyle(followButton, contentInsets: contentInsets)
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton, contentInsets: contentInsets)
     }
 
 }

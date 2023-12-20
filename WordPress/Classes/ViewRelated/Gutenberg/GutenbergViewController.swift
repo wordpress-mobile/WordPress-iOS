@@ -344,6 +344,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()
+        observeNetworkStatus()
 
         gutenberg.delegate = self
         fetchBlockSettings()
@@ -1076,10 +1077,22 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.topmostPresentedViewController.present(navController, animated: true)
     }
 
+    func gutenbergDidRequestConnectionStatus() -> Bool {
+        return ReachabilityUtils.isInternetReachable()
+    }
+
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
         post.managedObjectContext?.perform {
             WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
         }
+    }
+}
+
+// MARK: - NetworkAwareUI NetworkStatusDelegate
+
+extension GutenbergViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        gutenberg.connectionStatusChange(isConnected: active)
     }
 }
 

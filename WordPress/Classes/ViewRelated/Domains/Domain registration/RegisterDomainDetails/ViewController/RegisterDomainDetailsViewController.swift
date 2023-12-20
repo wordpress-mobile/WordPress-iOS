@@ -58,7 +58,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
             .domainsRegistrationFormViewed,
             properties: WPAnalytics.domainsProperties(
                 usingCredit: true,
-                origin: .menu
+                origin: DomainsAnalyticsWebViewOrigin.menu.rawValue
             )
         )
     }
