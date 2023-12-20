@@ -5,8 +5,7 @@ import DesignSystem
 struct PresentationCard: View {
     let title: String
     let description: String
-    let destinationTitle: String
-    @Binding var isShowingDestination: Bool
+    let destinations: [Destination]
 
     var body: some View {
         VStack(spacing: Length.Padding.medium) {
@@ -27,16 +26,27 @@ struct PresentationCard: View {
             }
 
             VStack(spacing: Length.Padding.single) {
-                DSButton(
-                    title: title,
-                    style: .init(
-                        emphasis: .primary,
-                        size: .large,
-                        isJetpack: AppConfiguration.isJetpack
-                    )) {
-                        isShowingDestination = true
-                    }
+                ForEach(destinations) { destination in
+                    DSButton(
+                        title: destination.title,
+                        style: .init(
+                            emphasis: destination.style,
+                            size: .large,
+                            isJetpack: AppConfiguration.isJetpack
+                        )) {
+                            destination.isShowingDestination = true
+                        }
+                }
             }
         }
+    }
+}
+
+extension PresentationCard {
+    struct Destination: Identifiable {
+        let id: UUID = UUID()
+        let title: String
+        let style: DSButtonStyle.Emphasis
+        @Binding var isShowingDestination: Bool
     }
 }
