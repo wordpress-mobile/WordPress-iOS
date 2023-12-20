@@ -111,7 +111,7 @@ actor ImageDownloader {
 
     private func validate(response: URLResponse) throws {
         guard let response = response as? HTTPURLResponse else {
-            throw ImageDownloaderError.unexpectedResponse
+            return // The request was made not over HTTP, e.g. a `file://` request
         }
         guard (200..<400).contains(response.statusCode) else {
             throw ImageDownloaderError.unacceptableStatusCode(response.statusCode)
@@ -183,7 +183,6 @@ private struct AnonymousImageDownloadTask: ImageDownloaderTask {
 }
 
 enum ImageDownloaderError: Error {
-    case unexpectedResponse
     case unacceptableStatusCode(_ statusCode: Int?)
 }
 
