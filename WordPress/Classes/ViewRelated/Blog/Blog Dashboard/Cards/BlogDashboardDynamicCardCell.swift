@@ -26,8 +26,9 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
         self.configureMoreButton(with: blog)
 
-        if let title = model.payload.title {
-            self.frameView.setTitle(title)
+        self.frameView.setTitle(model.payload.title)
+        self.frameView.onViewTap = { [weak self] in
+            self?.didTapCard(with: model)
         }
 
         if let viewController {
@@ -36,8 +37,8 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     }
 
     private func configureHostingController(with model: DashboardDynamicCardModel, parent: UIViewController) {
-        let content = DynamicDashboardCard(model: model) {
-
+        let content = DynamicDashboardCard(model: model) { [weak self] in
+            self?.didTapAction(with: model)
         }
 
         if let hostingController {
@@ -59,7 +60,6 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     private func setupFrameView() {
 //        self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
 //        self.frameView.onEllipsisButtonTap = { }
-//        self.frameView.onViewTap = { }
         self.frameView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(frameView)
         self.contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
@@ -78,6 +78,16 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 //                ],
 //            card: .googleDomains
 //        )
+    }
+
+    // MARK: - User Interaction
+
+    private func didTapAction(with model: DashboardDynamicCardModel) {
+
+    }
+
+    private func didTapCard(with model: DashboardDynamicCardModel) {
+
     }
 }
 
