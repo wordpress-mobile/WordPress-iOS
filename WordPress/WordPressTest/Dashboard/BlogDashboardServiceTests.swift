@@ -409,6 +409,41 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Dynamic Cards
+
+    func testDynamicCardsPresenceWhenRemoteFeatureFlagIsEnabled() throws {
+        let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
+        remoteServiceMock.respondWith = .withDynamicCards
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            XCTAssertEqual(cards[0].dynamic()?.payload.id, "id_12345")
+            XCTAssertEqual(cards[1].dynamic()?.payload.id, "id_67890")
+            XCTAssertEqual(cards[cards.endIndex - 2].dynamic()?.payload.id, "id_13579")
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testDynamicCardsAbsenceWhenRemoteFeatureFlagIsDisabled() throws {
+        let expect = expectation(description: "No dynamic card should be present")
+        remoteServiceMock.respondWith = .withDynamicCards
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let dynamicCards = cards.compactMap { $0.dynamic() }
+            XCTAssertTrue(dynamicCards.isEmpty)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     // MARK: - Local Pages
 
     // TODO: Add test to check that local pages are considered if no pages are returned from the endpoint
@@ -432,6 +467,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
+        case withDynamicCards = "dashboard-200-dynamic-cards.json"
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
         case withoutPosts = "dashboard-200-without-posts.json"

@@ -170,7 +170,11 @@ private extension BlogDashboardService {
         payload: DashboardDynamicCardModel.Payload,
         dotComID: Int
     ) -> DashboardDynamicCardModel? {
-        guard DashboardCard.dynamic.shouldShow(for: blog, dynamicCardPayload: payload) else {
+        guard DashboardCard.dynamic.shouldShow(
+            for: blog,
+            dynamicCardPayload: payload,
+            isJetpack: isJetpack
+        ) else {
             return nil
         }
         return .init(payload: payload, dotComID: dotComID)
