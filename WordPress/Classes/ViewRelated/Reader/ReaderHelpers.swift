@@ -549,7 +549,7 @@ struct ReaderPostMenuButtonTitles {
 /// Reader tab items
 extension ReaderHelpers {
 
-    static let defaultSavedItemPosition = 3
+    static let defaultSavedItemPosition = 2
 
     /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
@@ -564,19 +564,19 @@ extension ReaderHelpers {
                 return true
             }
 
-            // first item: Following
-            if topicIsFollowing(leftTopic) {
-                return true
-            }
-            if topicIsFollowing(rightTopic) {
-                return false
-            }
-
-            // second item: Discover
+            // first item: Discover
             if topicIsDiscover(leftTopic) {
                 return true
             }
             if topicIsDiscover(rightTopic) {
+                return false
+            }
+
+            // second item: Following/subscriptions
+            if topicIsFollowing(leftTopic) {
+                return true
+            }
+            if topicIsFollowing(rightTopic) {
                 return false
             }
 

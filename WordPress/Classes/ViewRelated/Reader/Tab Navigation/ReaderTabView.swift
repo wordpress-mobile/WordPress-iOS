@@ -4,6 +4,16 @@ class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
     private let containerView: UIView
+    private let buttonContainer: UIView
+    private lazy var navigationMenu: UIView = {
+        if !viewModel.itemsLoaded {
+            viewModel.fetchReaderMenu()
+        }
+        let view = UIView.embedSwiftUIView(ReaderNavigationMenu(viewModel: viewModel,
+                                                                selectedItem: viewModel.tabItems[viewModel.selectedIndex]))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private let viewModel: ReaderTabViewModel
 
@@ -11,27 +21,44 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return 1 // TODO: Discover index
+        return viewModel.tabItems.firstIndex(where: { $0.content.topicType == .discover })
     }
 
     private var p2Index: Int? {
-        return 2 // TODO: P2 index
+        return viewModel.tabItems.firstIndex(where: { ($0.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         containerView = UIView()
+        buttonContainer = UIView()
 
         self.viewModel = viewModel
 
         super.init(frame: .zero)
 
+        viewModel.didSelectIndex = { [weak self] index in
+            guard let self else {
+                return
+            }
+
+            if let existingFilter = filteredTabs.first(where: { $0.index == index }) {
+                if previouslySelectedIndex == discoverIndex {
+                    addContentToContainerView(index: index)
+                }
+                viewModel.setFilterContent(topic: existingFilter.topic)
+            } else {
+                addContentToContainerView(index: index)
+            }
+            previouslySelectedIndex = index
+        }
+
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
-            self?.addContentToContainerView()
+            self?.addContentToContainerView(index: index)
         }
 
         setupViewElements()
-        viewModel.fetchReaderMenu() // TODO: Temporary, remove later
+        viewModel.fetchReaderMenu()
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
@@ -48,14 +75,21 @@ class ReaderTabView: UIView {
 extension ReaderTabView {
 
     private func setupViewElements() {
-        backgroundColor = .filterBarBackground
+        backgroundColor = UIColor(light: .white, dark: .black)
+        setupButtonContainer()
         setupMainStackView()
         activateConstraints()
+    }
+
+    private func setupButtonContainer() {
+        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(navigationMenu)
     }
 
     private func setupMainStackView() {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
+        addSubview(buttonContainer)
         addSubview(mainStackView)
         mainStackView.addArrangedSubview(containerView)
     }
@@ -65,9 +99,9 @@ extension ReaderTabView {
         divider.backgroundColor = Appearance.dividerColor
     }
 
-    private func addContentToContainerView() {
+    private func addContentToContainerView(index: Int) {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildContentViewController(at: 0) else { // TODO: Replace `0` with selected index
+            let childController = viewModel.makeChildContentViewController(at: index) else {
                 return
         }
 
@@ -87,7 +121,19 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToAllEdges(mainStackView)
+        NSLayoutConstraint.activate([
+            navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
+            navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
+            navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 4.0),
+            navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
+            buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
+            buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            buttonContainer.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
+        ])
     }
 
     func applyFilter(for selectedTopic: ReaderAbstractTopic?) {
@@ -95,7 +141,7 @@ extension ReaderTabView {
             return
         }
 
-        let selectedIndex = 0 // TODO: Selected index according to selection
+        let selectedIndex = viewModel.selectedIndex
 
         // Remove any filters for selected index, then add new filter to array.
         self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
@@ -106,28 +152,6 @@ extension ReaderTabView {
 // MARK: - Actions
 
 private extension ReaderTabView {
-
-    /// Tab bar
-    @objc func selectedTabDidChange(_ tabBar: FilterTabBar) {
-
-        // If the tab was previously filtered, refilter it.
-        // Otherwise reset the filter.
-        if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
-
-            if previouslySelectedIndex == discoverIndex {
-                // Reset the container view to show a feed's content.
-                addContentToContainerView()
-            }
-
-            viewModel.setFilterContent(topic: existingFilter.topic)
-        } else {
-            addContentToContainerView()
-        }
-
-        previouslySelectedIndex = tabBar.selectedIndex
-
-        viewModel.showTab(at: tabBar.selectedIndex)
-    }
 
     @objc func topicUnfollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
