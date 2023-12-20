@@ -19,7 +19,7 @@ struct ReaderNavigationMenu: View {
     }
 
     struct Colors {
-        static let searchIcon: Color = Color(uiColor: UIColor(light: .black, dark: .white))
+        static let searchIcon: Color = Color(uiColor: .text)
     }
 
 }
