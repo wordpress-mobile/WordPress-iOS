@@ -71,7 +71,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         viewModel.onTabBarItemsDidChange { items, index in
             setTabBarItemsExpectation.fulfill()
             XCTAssertEqual(index, 0)
-            XCTAssertEqual(items.map { $0.title }, ["Following", "Following"])
+            XCTAssertEqual(items.map { $0.title }, ["Subscriptions", "Subscriptions"])
         }
         // Then
         viewModel.fetchReaderMenu()
@@ -142,6 +142,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         topic.title = "content topic"
         let content = ReaderContent(topic: topic)
         store.items = [ReaderTabItem(content)]
+        viewModel.fetchReaderMenu()
         // When
         let controller = viewModel.makeChildContentViewController(at: 0)
         viewModel.setContent?(content)
