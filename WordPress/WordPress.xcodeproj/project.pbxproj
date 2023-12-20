@@ -3744,7 +3744,8 @@
 		F48D44BB2989A9070051EAA6 /* ReaderSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */; };
 		F48D44BC2989AA8A0051EAA6 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
 		F48D44BD2989AA8C0051EAA6 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
-		F48EBF8E2B3266F6004CD561 /* dashboard-200-dynamic-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = F48EBF8C2B3262D5004CD561 /* dashboard-200-dynamic-cards.json */; };
+		F48EBF942B333550004CD561 /* dashboard-200-with-only-one-dynamic-card.json in Resources */ = {isa = PBXBuildFile; fileRef = F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */; };
+		F48EBF952B333B31004CD561 /* dashboard-200-with-multiple-dynamic-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = F48EBF8C2B3262D5004CD561 /* dashboard-200-with-multiple-dynamic-cards.json */; };
 		F49B99FF2937C9B4000CEFCE /* MigrationEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */; };
 		F49B9A0029393049000CEFCE /* MigrationAppDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A5ADB2935848F00961E3A /* MigrationAppDetection.swift */; };
 		F49B9A06293A21BF000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
@@ -9122,7 +9123,8 @@
 		F48D44B5298992C30051EAA6 /* BlockedSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedSite.swift; sourceTree = "<group>"; };
 		F48D44B7298993900051EAA6 /* WordPress 147.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 147.xcdatamodel"; sourceTree = "<group>"; };
 		F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteService.swift; sourceTree = "<group>"; };
-		F48EBF8C2B3262D5004CD561 /* dashboard-200-dynamic-cards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-dynamic-cards.json"; sourceTree = "<group>"; };
+		F48EBF8C2B3262D5004CD561 /* dashboard-200-with-multiple-dynamic-cards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-multiple-dynamic-cards.json"; sourceTree = "<group>"; };
+		F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-only-one-dynamic-card.json"; sourceTree = "<group>"; };
 		F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAnalyticsTracker.swift; sourceTree = "<group>"; };
 		F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEvent.swift; sourceTree = "<group>"; };
@@ -14113,7 +14115,8 @@
 				8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */,
 				8B45C12527B2A27400EA3257 /* dashboard-200-with-drafts-only.json */,
 				8B2D4F5227ECE089009B085C /* dashboard-200-without-posts.json */,
-				F48EBF8C2B3262D5004CD561 /* dashboard-200-dynamic-cards.json */,
+				F48EBF8C2B3262D5004CD561 /* dashboard-200-with-multiple-dynamic-cards.json */,
+				F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -19636,6 +19639,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F48EBF952B333B31004CD561 /* dashboard-200-with-multiple-dynamic-cards.json in Resources */,
+				F48EBF942B333550004CD561 /* dashboard-200-with-only-one-dynamic-card.json in Resources */,
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				F4426FDB287F066400218003 /* site-suggestions.json in Resources */,
@@ -19732,7 +19737,6 @@
 				D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
-				F48EBF8E2B3266F6004CD561 /* dashboard-200-dynamic-cards.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */,
 				3211055B250C027D0048446F /* valid-jpeg-header.jpg in Resources */,

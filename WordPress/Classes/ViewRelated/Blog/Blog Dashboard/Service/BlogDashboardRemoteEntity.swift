@@ -71,9 +71,9 @@ extension BlogDashboardRemoteEntity {
         }
 
         struct Row: Decodable, Hashable {
-            let icon: String
-            let title: String
-            let description: String
+            let title: String?
+            let description: String?
+            let icon: String?
         }
 
         private enum CodingKeys: String, CodingKey {

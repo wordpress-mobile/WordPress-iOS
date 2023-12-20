@@ -413,7 +413,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     func testDynamicCardsPresenceWhenRemoteFeatureFlagIsEnabled() throws {
         let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
-        remoteServiceMock.respondWith = .withDynamicCards
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
         try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -430,7 +430,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     func testDynamicCardsAbsenceWhenRemoteFeatureFlagIsDisabled() throws {
         let expect = expectation(description: "No dynamic card should be present")
-        remoteServiceMock.respondWith = .withDynamicCards
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
         try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -438,6 +438,48 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         service.fetch(blog: blog) { cards in
             let dynamicCards = cards.compactMap { $0.dynamic() }
             XCTAssertTrue(dynamicCards.isEmpty)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testDecodingWithDynamicCards() throws {
+        let expect = expectation(description: "Dynamic card should be successfully decoded")
+        remoteServiceMock.respondWith = .withOnlyOneDynamicCard
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            do {
+                let card = try XCTUnwrap(cards.first?.dynamic())
+                let payload = card.payload
+                let expected = BlogDashboardRemoteEntity.BlogDashboardDynamic(
+                    id: "id_12345",
+                    remoteFeatureFlag: "feature_flag_12345",
+                    title: "Title 12345",
+                    featuredImage: "https://example.com/image12345",
+                    url: "https://example.com/url12345",
+                    action: "Action 12345",
+                    order: .top,
+                    rows: [
+                        .init(
+                            title: "Row Title 1",
+                            description: nil,
+                            icon: "https://example.com/icon12345"
+                        ),
+                        .init(
+                            title: "Row Title 2",
+                            description: "Row Description 2",
+                            icon: nil
+                        )
+                    ]
+                )
+                XCTAssertEqual(payload, expected)
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
             expect.fulfill()
         }
 
@@ -467,7 +509,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
-        case withDynamicCards = "dashboard-200-dynamic-cards.json"
+        case withOnlyOneDynamicCard = "dashboard-200-with-only-one-dynamic-card.json"
+        case withMultipleDynamicCards = "dashboard-200-with-multiple-dynamic-cards.json"
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
         case withoutPosts = "dashboard-200-without-posts.json"
