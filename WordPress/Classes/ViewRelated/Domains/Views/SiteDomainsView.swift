@@ -169,10 +169,12 @@ private extension SiteDomainsView {
         static let additionalRedirectedDomainTitle: String = NSLocalizedString("Add a domain",
                                                                                comment: "Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard.")
 
-        static let firstRedirectedDomainTitle: String = NSLocalizedString("Get your domain",
-                                                                          comment: "Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard.")
-        static let firstRedirectedDomainDescription = NSLocalizedString("Domains purchased on this site will redirect users to ",
-                                                                  comment: "Description for the first domain purchased with a free plan.")
+        static let firstFreeDomainWithPaidPlanDomainTitle: String = NSLocalizedString("site.domains.freeDomainWithPaidPlan.title",
+                                                                                      value: "Get your domain",
+                                                                                      comment: "Title of the card that starts the purchase of the first domain with a paid plan.")
+        static let firstFreeDomainWithPaidPlanDomainDescription = NSLocalizedString("site.domains.freeDomainWithPaidPlan.description",
+                                                                                    value: "Get a free one-year domain registration or transfer with any annual paid plan.",
+                                                                                    comment: "Description for the first domain purchased with a paid plan.")
         static let firstPaidPlanRegistrationTitle: String = NSLocalizedString("Claim your free domain",
                                                                                    comment: "Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
         static let firstPaidPlanRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan",
@@ -181,11 +183,11 @@ private extension SiteDomainsView {
                                                                     comment: "title of the button that searches the first domain.")
 
         static func firstDomainTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {
-            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationTitle : firstRedirectedDomainTitle
+            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationTitle : firstFreeDomainWithPaidPlanDomainTitle
         }
 
         static func firstDomainDescription(_ canRegisterDomainWithPaidPlan: Bool) -> String {
-            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationDescription : firstRedirectedDomainDescription
+            canRegisterDomainWithPaidPlan ? firstPaidPlanRegistrationDescription : firstFreeDomainWithPaidPlanDomainDescription
         }
 
         static func additionalDomainTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {
