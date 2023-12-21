@@ -1,6 +1,7 @@
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [***] [Jetpack-only] Plans: Upgrade to a Plan from domains dashboard in Jetpack app [#22261]
 
 23.9
 -----
