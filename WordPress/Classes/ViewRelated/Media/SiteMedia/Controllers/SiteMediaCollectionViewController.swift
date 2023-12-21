@@ -1,5 +1,6 @@
 import UIKit
 import PhotosUI
+import Gifu
 
 protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
@@ -482,18 +483,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func makePreviewViewController(for media: Media) -> UIViewController? {
-        let viewModel = getViewModel(for: media)
-        guard let image = viewModel.getCachedThubmnail() else {
-            return nil
-        }
-        let imageView = UIImageView(image: image)
-        imageView.accessibilityIgnoresInvertColors = true
-
-        let viewController = UIViewController()
-        viewController.view.addSubview(imageView)
-        viewController.view.pinSubviewToAllEdges(imageView)
-        viewController.preferredContentSize = image.size
-        return viewController
+        SiteMediaPreviewViewController(media: media)
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching
