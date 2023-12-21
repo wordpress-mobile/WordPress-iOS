@@ -16,7 +16,7 @@ class RegisterDomainCoordinator {
 
     private let crashLogger: CrashLogging
 
-    let analyticsSource: String?
+    let analyticsSource: String
 
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
@@ -34,7 +34,7 @@ class RegisterDomainCoordinator {
     ///   - crashLogger: An instance of `CrashLogging` to handle crash logging. Defaults to `.main` if not provided.
     init(site: Blog?,
          domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
-         analyticsSource: String? = "domains_register",
+         analyticsSource: String = "domains_register",
          crashLogger: CrashLogging = .main) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
@@ -99,29 +99,34 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
-        let config = BlogListConfiguration(shouldShowCancelButton: false,
-                                           shouldShowNavBarButtons: false,
-                                           navigationTitle: TextContent.sitePickerNavigationTitle,
-                                           backButtonTitle: TextContent.sitePickerNavigationTitle,
-                                           shouldHideSelfHostedSites: true,
-                                           shouldHideBlogsNotSupportingDomains: true)
+        let config = BlogListConfiguration(
+            shouldShowCancelButton: false,
+            shouldShowNavBarButtons: false,
+            navigationTitle: TextContent.sitePickerNavigationTitle,
+            backButtonTitle: TextContent.sitePickerNavigationTitle,
+            shouldHideSelfHostedSites: true,
+            shouldHideBlogsNotSupportingDomains: true,
+            analyticsSource: analyticsSource
+        )
         let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil)
 
         blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
             guard let self else {
                 return
             }
-            self.site = selectedBlog
             controller.showLoading()
             self.createCart { [weak self] result in
+                guard let self else {
+                    return
+                }
                 switch result {
                 case .success(let domain):
-                    self?.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                    controller.hideLoading()
+                    self.site = selectedBlog
+                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                    controller.hideLoading()
                 }
+                controller.hideLoading()
             }
         }
 
@@ -129,7 +134,7 @@ class RegisterDomainCoordinator {
     }
 
     func trackDomainPurchasingCompleted() {
-        WPAnalytics.track(.purchaseDomainCompleted)
+        self.track(.purchaseDomainCompleted)
     }
 
     // MARK: Helpers
@@ -164,7 +169,7 @@ class RegisterDomainCoordinator {
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: url,
-            source: analyticsSource ?? "",
+            source: analyticsSource,
             title: title
         )
         let navController = LightNavigationController(rootViewController: webViewController)
@@ -193,13 +198,14 @@ class RegisterDomainCoordinator {
             }
         }
 
-        if let site {
-            let properties = WPAnalytics.domainsProperties(for: site)
-            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties, blog: site)
-        } else {
-            let properties = WPAnalytics.domainsProperties(usingCredit: false, domainOnly: true)
-            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: properties)
-        }
+        let properties: [AnyHashable: Any] = {
+            if let site {
+                return WPAnalytics.domainsProperties(for: site, origin: nil as String?)
+            } else {
+                return WPAnalytics.domainsProperties(usingCredit: false, origin: nil, domainOnly: true)
+            }
+        }()
+        self.track(.domainsPurchaseWebviewViewed, properties: properties)
 
         webViewController.configureSandboxStore {
             if shouldPush {
@@ -251,6 +257,22 @@ class RegisterDomainCoordinator {
         if domainRegistrationSucceeded {
             onSuccess(domain)
 
+        }
+    }
+
+    // MARK: - Tracks
+
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
+        let defaultProperties: [AnyHashable: Any] = [WPAppAnalyticsKeySource: analyticsSource]
+
+        let properties = defaultProperties.merging(properties ?? [:]) { first, second in
+            return first
+        }
+
+        if let blog = self.site {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
         }
     }
 }

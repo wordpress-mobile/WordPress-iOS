@@ -37,6 +37,10 @@ final class RegisterDomainTransferFooterView: UIView {
         )
     }
 
+    // MARK: - Properties
+
+    private let analyticsSource: String?
+
     // MARK: - Views
 
     private let titleLabel: UILabel = {
@@ -57,7 +61,8 @@ final class RegisterDomainTransferFooterView: UIView {
 
     // MARK: - Init
 
-    init(configuration: Configuration) {
+    init(configuration: Configuration, analyticsSource: String? = nil) {
+        self.analyticsSource = analyticsSource
         super.init(frame: .zero)
         self.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
         self.addTopBorder(withColor: .divider)
@@ -95,11 +100,9 @@ final class RegisterDomainTransferFooterView: UIView {
 
         let action = UIAction { _ in
             configuration.buttonAction()
-            WPAnalytics.track(.domainsSearchTransferDomainTapped)
         }
         self.titleLabel.text = configuration.title
         self.primaryButton.setTitle(configuration.buttonTitle, for: .normal)
         self.primaryButton.addAction(action, for: .touchUpInside)
     }
-
 }
