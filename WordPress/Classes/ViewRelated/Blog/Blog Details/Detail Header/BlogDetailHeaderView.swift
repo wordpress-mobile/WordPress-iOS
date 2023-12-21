@@ -1,5 +1,6 @@
 import Gridicons
 import UIKit
+import DesignSystem
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?

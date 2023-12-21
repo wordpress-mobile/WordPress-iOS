@@ -55,7 +55,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
-        try? featureFlags.override(FeatureFlag.domainFocus, withValue: false)
+        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: false)
     }
 
     override func tearDown() {
@@ -65,7 +65,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
-        try? featureFlags.override(FeatureFlag.domainFocus, withValue: FeatureFlag.domainFocus.originalValue)
+        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: FeatureFlag.googleDomainsCard.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
