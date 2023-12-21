@@ -9,6 +9,6 @@
  #
  #   LOCAL_GUTENBERG=../my-gutenberg-fork bundle exec pod install
 ref:
-  tag: v1.110.0-alpha2
+  commit: 81da625e16d4f2ca9a0b5ae00b405359e839e85d
 github_org: wordpress-mobile
 repo_name: gutenberg-mobile
