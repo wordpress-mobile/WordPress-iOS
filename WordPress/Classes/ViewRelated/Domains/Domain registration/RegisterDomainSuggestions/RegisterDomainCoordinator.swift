@@ -54,7 +54,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success:
                 guard let self else { return }
-                self.presentCheckoutWebview(on: viewController, title: nil, shouldPush: false)
+                self.presentCheckoutWebview(on: viewController, title: nil)
                 onSuccess()
             case .failure:
                 onFailure()
@@ -88,7 +88,7 @@ class RegisterDomainCoordinator {
         createCart { [weak self] result in
             switch result {
             case .success:
-                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle, shouldPush: true)
+                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
                 choicesViewModel?.isGetDomainLoading = false
 
             case .failure:
@@ -155,8 +155,7 @@ class RegisterDomainCoordinator {
     }
 
     private func presentCheckoutWebview(on viewController: UIViewController,
-                                        title: String?,
-                                        shouldPush: Bool) {
+                                        title: String?) {
         guard let domain,
               let url = checkoutURL() else {
             crashLogger.logMessage("Failed to present domain checkout webview.",
@@ -169,7 +168,6 @@ class RegisterDomainCoordinator {
             source: analyticsSource ?? "",
             title: title
         )
-        let navController = LightNavigationController(rootViewController: webViewController)
 
         // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
         // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
@@ -184,11 +182,7 @@ class RegisterDomainCoordinator {
             }
 
             self.handleWebViewURLChange(newURL, domain: domain.domainName, onCancel: {
-                if shouldPush {
-                    viewController.navigationController?.popViewController(animated: true)
-                } else {
-                    navController.dismiss(animated: true)
-                }
+                viewController.dismiss(animated: true)
             }) { domain in
                 self.domainPurchasedCallback?(viewController, domain)
                 self.trackDomainPurchasingCompleted()
@@ -204,11 +198,7 @@ class RegisterDomainCoordinator {
         }
 
         webViewController.configureSandboxStore {
-            if shouldPush {
-                viewController.navigationController?.pushViewController(webViewController, animated: true)
-            } else {
-                viewController.present(navController, animated: true)
-            }
+            viewController.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 
