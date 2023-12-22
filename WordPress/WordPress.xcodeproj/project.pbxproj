@@ -262,6 +262,8 @@
 		082A645C291C2DD700668D2C /* Routes+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A645A291C2DD700668D2C /* Routes+Jetpack.swift */; };
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
+		0830538C2B2732E400B889FE /* DynamicDashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830538B2B2732E400B889FE /* DynamicDashboardCard.swift */; };
+		0830538D2B2732E400B889FE /* DynamicDashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830538B2B2732E400B889FE /* DynamicDashboardCard.swift */; };
 		0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */; };
 		0839F88C2993C1B500415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
 		0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
@@ -425,6 +427,8 @@
 		0C391E612A3002950040EA91 /* BlazeCampaignStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */; };
 		0C391E622A3002950040EA91 /* BlazeCampaignStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */; };
 		0C391E642A312DB20040EA91 /* BlazeCampaignViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */; };
+		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
+		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6C4CD02A4F0A000049E762 /* BlazeCampaignsStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */; };
 		0C6C4CD42A4F0AD90049E762 /* blaze-search-page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */; };
@@ -1973,8 +1977,6 @@
 		80A2153E29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */; };
 		80A2154029CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
 		80A2154129CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
-		80A2154329D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */; };
-		80A2154429D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */; };
 		80A2154629D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */; };
 		80A2154729D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */; };
 		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
@@ -5969,6 +5971,7 @@
 		082AB9DB1C4F035E000CA523 /* PostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTag.h; sourceTree = "<group>"; };
 		082AB9DC1C4F035E000CA523 /* PostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTag.m; sourceTree = "<group>"; };
 		082D50AE1EF46DB300788719 /* WordPress 61.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 61.xcdatamodel"; sourceTree = "<group>"; };
+		0830538B2B2732E400B889FE /* DynamicDashboardCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDashboardCard.swift; sourceTree = "<group>"; };
 		083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceLocationService.swift; sourceTree = "<group>"; };
 		0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverCoordinator.swift; sourceTree = "<group>"; };
 		0845B8C51E833C56001BA771 /* URL+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Helpers.swift"; sourceTree = "<group>"; };
@@ -6144,6 +6147,7 @@
 		0C391E5D2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignView.swift; sourceTree = "<group>"; };
 		0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignStatusView.swift; sourceTree = "<group>"; };
 		0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignViewModelTests.swift; sourceTree = "<group>"; };
+		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -7393,7 +7397,6 @@
 		809A91022A7A4C710063D4FA /* NotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticScreensTabBarWrapper.swift; sourceTree = "<group>"; };
 		80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlag.swift; sourceTree = "<group>"; };
-		80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugViewController.swift; sourceTree = "<group>"; };
 		80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigOverrideStore.swift; sourceTree = "<group>"; };
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
@@ -10007,6 +10010,14 @@
 			path = "Feature Highlight";
 			sourceTree = "<group>";
 		};
+		0830538A2B272F9C00B889FE /* Dynamic */ = {
+			isa = PBXGroup;
+			children = (
+				0830538B2B2732E400B889FE /* DynamicDashboardCard.swift */,
+			);
+			path = Dynamic;
+			sourceTree = "<group>";
+		};
 		083ED8CA2A4322A7007F89B3 /* EEUUSCompliance */ = {
 			isa = PBXGroup;
 			children = (
@@ -11368,7 +11379,7 @@
 				0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */,
 				F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */,
 				CECEEB542823164800A28ADE /* MediaCacheSettingsViewController.swift */,
-				80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */,
+				0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */,
 			);
 			path = "App Settings";
 			sourceTree = "<group>";
@@ -13880,6 +13891,7 @@
 			children = (
 				011F52BB2A15324800B04114 /* Free to Paid Plans */,
 				0118968D29D1EAC900D34BA9 /* Domains */,
+				0830538A2B272F9C00B889FE /* Dynamic */,
 				FA70024E29DC3B6100E874FD /* Activity Log */,
 				FA98B61429A3B71E0071AAE8 /* Blaze */,
 				80D9CFF229DCA51C00FE3400 /* Pages */,
@@ -21924,6 +21936,7 @@
 				2F161B0622CC2DC70066A5C5 /* LoadingStatusView.swift in Sources */,
 				080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */,
 				DCF892C9282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */,
+				0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */,
 				2FA6511B21F26A57009AA935 /* InlineErrorRetryTableViewCell.swift in Sources */,
 				08216FCF1CDBF96000304BA7 /* MenuItemSourceCell.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
@@ -22485,7 +22498,6 @@
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				C3C39B0726F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */,
-				80A2154329D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */,
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
 				57C3D393235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift in Sources */,
@@ -22760,6 +22772,7 @@
 				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
 				F16601C423E9E783007950AE /* SharingAuthorizationWebViewController.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
+				0830538C2B2732E400B889FE /* DynamicDashboardCard.swift in Sources */,
 				241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
 				B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */,
@@ -23912,7 +23925,6 @@
 				FABB20EE2602FC2C00C8785C /* StockPhotosResultsPage.swift in Sources */,
 				FABB20EF2602FC2C00C8785C /* QuickStartTourGuide.swift in Sources */,
 				FABB20F02602FC2C00C8785C /* ReaderDetailToolbar.swift in Sources */,
-				80A2154429D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */,
 				FAD1263D2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */,
 				FABB20F12602FC2C00C8785C /* RecentSitesService.swift in Sources */,
 				FA332AD129C1F97A00182FBB /* MovedToJetpackViewController.swift in Sources */,
@@ -24557,6 +24569,7 @@
 				0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */,
 				4A1E77CD2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
 				FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */,
+				0830538D2B2732E400B889FE /* DynamicDashboardCard.swift in Sources */,
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,
 				4A2C73F52A95856000ACE79E /* PostRepository.swift in Sources */,
 				98DCF4A6275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
@@ -25309,6 +25322,7 @@
 				C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */,
 				FABB24DA2602FC2C00C8785C /* HomeWidgetAllTimeData.swift in Sources */,
 				DC3B9B2D27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */,
+				0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */,
 				0C8FC9A82A8BFAAE0059DCE4 /* NSItemProvider+Exportable.swift in Sources */,
 				FABB24DB2602FC2C00C8785C /* UIView+Borders.swift in Sources */,
 				FABB24DC2602FC2C00C8785C /* BasePost.m in Sources */,

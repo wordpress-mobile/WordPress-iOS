@@ -1,4 +1,4 @@
-enum TextStyle {
+public enum TextStyle {
     case heading1
     case heading2
     case heading3
@@ -9,7 +9,7 @@ enum TextStyle {
     case footnote
     case caption
 
-    enum Weight {
+    public enum Weight {
         case regular
         case emphasized
     }

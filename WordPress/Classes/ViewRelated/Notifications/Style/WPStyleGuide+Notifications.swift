@@ -268,12 +268,6 @@ extension WPStyleGuide {
             return (approved ? blockLinkColor : blockUnapprovedLinkColor)
         }
 
-        // Filters Helpers
-        public static func configureSegmentedControl(_ segmentedControl: UISegmentedControl) {
-            let style = [ NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 12) ]
-            segmentedControl.setTitleTextAttributes(style, for: UIControl.State())
-        }
-
         // User Cell Helpers
         public static func configureFollowButton(_ button: UIButton) {
             // General
