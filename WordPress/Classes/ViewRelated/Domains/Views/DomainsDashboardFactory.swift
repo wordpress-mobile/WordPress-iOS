@@ -8,12 +8,14 @@ struct DomainsDashboardFactory {
         return viewController
     }
 
-    static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
+    static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> DomainSelectionViewController {
         let coordinator = RegisterDomainCoordinator(site: blog)
-        let viewController = RegisterDomainSuggestionsViewController.instance(
-            coordinator: coordinator,
+        let viewController = DomainSelectionViewController(
+            service: DomainsServiceAdapter(coreDataStack: ContextManager.shared),
             domainSelectionType: domainSelectionType,
-            includeSupportButton: false)
+            includeSupportButton: false,
+            coordinator: coordinator
+        )
 
         coordinator.domainPurchasedCallback = { viewController, domain in
             let blogService = BlogService(coreDataStack: ContextManager.shared)

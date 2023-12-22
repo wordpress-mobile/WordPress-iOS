@@ -52,6 +52,7 @@ struct SiteDomainsView: View {
                     updateDomainsList()
                 }, failure: nil)
             })
+            .ignoresSafeArea()
         })
     }
 
@@ -93,7 +94,8 @@ struct SiteDomainsView: View {
 
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
     private func makeDomainsListSection(blog: Blog) -> some View {
-        Section(header: Text(TextContent.domainsListSectionHeader)) {
+        let destination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
+        return Section(header: Text(TextContent.domainsListSectionHeader)) {
             ForEach(domainsList) {
                 makeDomainCell(domain: $0)
             }
@@ -105,7 +107,7 @@ struct SiteDomainsView: View {
                         size: .small,
                         isJetpack: AppConfiguration.isJetpack
                     )) {
-                        $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = .registerWithPaidPlan
+                        $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
                     }
             }
         }
