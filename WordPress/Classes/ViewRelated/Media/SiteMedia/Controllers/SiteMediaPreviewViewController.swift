@@ -20,6 +20,17 @@ final class SiteMediaPreviewViewController: UIViewController {
 
         view.backgroundColor = .secondarySystemBackground
 
+        switch media.mediaType {
+        case .image, .video:
+            configureImagePreview()
+        case .document, .audio:
+            configureDocumentPreview()
+        default:
+            break
+        }
+    }
+
+    private func configureImagePreview() {
         imageView.accessibilityIgnoresInvertColors = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
@@ -29,6 +40,22 @@ final class SiteMediaPreviewViewController: UIViewController {
 
         Task { await loadImage(size: .small) }
         Task { await loadImage(size: .large) }
+    }
+
+    private func configureDocumentPreview() {
+        preferredContentSize = CGSize(width: 180, height: 180)
+
+        let infoView = SiteMediaDocumentInfoView()
+        infoView.configureLargeStyle()
+        infoView.configure(.make(with: media))
+
+        let container = UIStackView(arrangedSubviews: [infoView])
+        container.alignment = .center
+        container.layoutMargins = UIEdgeInsets(allEdges: 8)
+        container.isLayoutMarginsRelativeArrangement = true
+        container.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(container)
+        view.pinSubviewToAllEdges(container)
     }
 
     private func loadImage(size: MediaImageService.ImageSize) async {
