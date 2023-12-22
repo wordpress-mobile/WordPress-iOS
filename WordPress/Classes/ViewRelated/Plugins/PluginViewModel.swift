@@ -551,7 +551,11 @@ class PluginViewModel: Observable {
 
             atHelper.startAutomatedTransferProcess(retryingAfterFailure: true)
         })
-        let controller = RegisterDomainSuggestionsViewController.instance(coordinator: coordinator)
+        let controller = DomainSelectionViewController(
+            service: DomainsServiceAdapter(coreDataStack: ContextManager.shared),
+            domainSelectionType: .registerWithPaidPlan,
+            coordinator: coordinator
+        )
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

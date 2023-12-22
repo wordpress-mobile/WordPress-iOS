@@ -19,6 +19,7 @@ import UIKit
             dashboardViewController.navigationController?.popViewController(animated: true)
         }
         controller.navigationItem.largeTitleDisplayMode = .never
-        dashboardViewController.show(controller, sender: nil)
+        let navigationController = UINavigationController(rootViewController: controller)
+        dashboardViewController.present(navigationController, animated: true)
     }
 }

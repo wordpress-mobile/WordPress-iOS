@@ -11,10 +11,11 @@ import SwiftUI
         blog: Blog
     ) {
         let coordinator = RegisterDomainCoordinator(site: blog)
-        let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
-            coordinator: coordinator,
+        let domainSuggestionsViewController = DomainSelectionViewController(
+            service: DomainsServiceAdapter(coreDataStack: ContextManager.shared),
             domainSelectionType: .purchaseWithPaidPlan,
-            includeSupportButton: false
+            includeSupportButton: false,
+            coordinator: coordinator
         )
 
         let purchaseCallback = { (checkoutViewController: UIViewController, domainName: String) in

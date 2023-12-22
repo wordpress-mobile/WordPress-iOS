@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 struct SiteCreationEmptySiteTemplate: View {
     private enum Constants {
@@ -11,20 +12,26 @@ struct SiteCreationEmptySiteTemplate: View {
     }
 
     var body: some View {
-        VStack(spacing: Constants.containerStackSpacing) {
-            siteBarVStack
-            tooltip
-        }
-        .background(
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [Color.emptySiteGradientInitial, Color.emptySiteBackgroundPrimary]
-                ),
-                startPoint: .top,
-                endPoint: .center
+        VStack {
+            Spacer()
+            VStack(spacing: Constants.containerStackSpacing) {
+                siteBarVStack
+                tooltip
+            }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [Color.emptySiteGradientInitial, Color.emptySiteBackgroundPrimary]
+                    ),
+                    startPoint: .top,
+                    endPoint: .center
+                )
             )
-        )
-        .cornerRadius(Constants.containerCornerRadius)
+            .cornerRadius(Constants.containerCornerRadius)
+            Spacer()
+            Spacer()
+        }
+
     }
 
     private var siteBarVStack: some View {
@@ -135,12 +142,12 @@ private extension SiteCreationEmptySiteTemplate {
 }
 
 private extension Color {
-    static let emptySiteBackgroundPrimary = Color("emptySiteBackgroundPrimary")
-    static let emptySiteBackgroundSecondary = Color("emptySiteBackgroundSecondary")
-    static let emptySiteForegroundPrimary = Color("emptySiteForegroundPrimary")
-    static let emptySiteForegroundSecondary = Color("emptySiteForegroundSecondary")
-    static let emptySiteGradientInitial = Color("emptySiteGradientInitial")
-    static let emptySiteTooltipGradientInitial = Color("emptySiteTooltipGradientInitial")
-    static let emptySiteTooltipBackground = Color("emptySiteTooltipBackground")
-    static let emptySiteTooltipBorder = Color("emptySiteTooltipBorder")
+    static let emptySiteBackgroundPrimary = Color.DS.custom("emptySiteBackgroundPrimary")
+    static let emptySiteBackgroundSecondary = Color.DS.custom("emptySiteBackgroundSecondary")
+    static let emptySiteForegroundPrimary = Color.DS.custom("emptySiteForegroundPrimary")
+    static let emptySiteForegroundSecondary = Color.DS.custom("emptySiteForegroundSecondary")
+    static let emptySiteGradientInitial = Color.DS.custom("emptySiteGradientInitial")
+    static let emptySiteTooltipGradientInitial = Color.DS.custom("emptySiteTooltipGradientInitial")
+    static let emptySiteTooltipBackground = Color.DS.custom("emptySiteTooltipBackground")
+    static let emptySiteTooltipBorder = Color.DS.custom("emptySiteTooltipBorder")
 }
