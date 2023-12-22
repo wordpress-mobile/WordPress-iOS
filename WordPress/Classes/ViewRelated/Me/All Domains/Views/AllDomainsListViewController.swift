@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import AutomatticTracks
+import DesignSystem
 
 final class AllDomainsListViewController: UIViewController {
 

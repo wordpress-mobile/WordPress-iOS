@@ -49,12 +49,12 @@ PODS:
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Sentry (8.15.2):
-    - Sentry/Core (= 8.15.2)
-    - SentryPrivate (= 8.15.2)
-  - Sentry/Core (8.15.2):
-    - SentryPrivate (= 8.15.2)
-  - SentryPrivate (8.15.2)
+  - Sentry (8.16.1):
+    - Sentry/Core (= 8.16.1)
+    - SentryPrivate (= 8.16.1)
+  - Sentry/Core (8.16.1):
+    - SentryPrivate (= 8.16.1)
+  - SentryPrivate (8.16.1)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -70,7 +70,7 @@ PODS:
     - WordPressKit (~> 9.0.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (9.0.0):
+  - WordPressKit (9.0.1):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -121,16 +121,14 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8565ee0082532a2d6d931d434e372909179f5e4e`)
   - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8565ee0082532a2d6d931d434e372909179f5e4e`)
-  - WordPressAuthenticator (~> 8.0)
-  - WordPressKit (~> 9.0)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `b51b4b238103f7812db0aa1a265995e1c6d1e355`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `32b5a9fdd097b82934a5ce679c915a1fc3f21848`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -157,7 +155,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - wpxmlrpc
@@ -182,17 +179,33 @@ EXTERNAL SOURCES:
   WordPress-Editor-iOS:
     :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressAuthenticator:
+    :commit: b51b4b238103f7812db0aa1a265995e1c6d1e355
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: 32b5a9fdd097b82934a5ce679c915a1fc3f21848
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  Gutenberg:
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :submodules: true
+    :tag: v1.100.2
   WordPress-Aztec-iOS:
     :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
     :commit: 8565ee0082532a2d6d931d434e372909179f5e4e
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressAuthenticator:
+    :commit: b51b4b238103f7812db0aa1a265995e1c6d1e355
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: 32b5a9fdd097b82934a5ce679c915a1fc3f21848
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -215,8 +228,8 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
-  SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
+  Sentry: fcd7073d05654d9f0214d0226fca3d56d6530379
+  SentryPrivate: 1cf54bae8be81dee04672b4c14ad5de52efb909f
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -224,8 +237,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: 076a963e784bd5c57f9fa979bcab2a67bd929abb
-  WordPressKit: 3f599b50b996e4352efa5594e6de95e53315da12
+  WordPressAuthenticator: 738d6423d11db1927b4f30dec8c4b90a442df8fc
+  WordPressKit: 304725187d755db8d5ff73a58d27eda0071771c1
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
