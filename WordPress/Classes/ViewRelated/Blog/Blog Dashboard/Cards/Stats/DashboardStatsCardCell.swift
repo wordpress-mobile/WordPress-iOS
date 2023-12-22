@@ -76,16 +76,14 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
             self.showStats(for: blog, from: viewController)
         }
 
-        if FeatureFlag.personalizeHomeTab.enabled {
-            frameView.addMoreMenu(items: [
-                UIMenu(options: .displayInline, children: [
-                    makeShowStatsMenuAction(for: blog, in: viewController)
-                ]),
-                UIMenu(options: .displayInline, children: [
-                    BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
-                ])
-            ], card: .todaysStats)
-        }
+        frameView.addMoreMenu(items: [
+            UIMenu(options: .displayInline, children: [
+                makeShowStatsMenuAction(for: blog, in: viewController)
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+            ])
+        ], card: .todaysStats)
 
         statsStackView?.views = viewModel?.todaysViews
         statsStackView?.visitors = viewModel?.todaysVisitors
