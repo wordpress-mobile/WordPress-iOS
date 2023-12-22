@@ -506,7 +506,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
+        let count = fetchController.fetchedObjects?.count ?? 0
+        for indexPath in indexPaths where indexPath.row < count {
             let media = fetchController.object(at: indexPath)
             getViewModel(for: media).cancelPrefetching()
         }
