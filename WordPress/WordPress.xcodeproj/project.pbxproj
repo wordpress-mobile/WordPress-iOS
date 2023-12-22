@@ -18870,7 +18870,7 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
-				E95F507CB302C7926F88A2D2 /* [CP] Embed Pods Frameworks */,
+				CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -20674,6 +20674,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -20756,26 +20776,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
-		};
-		E95F507CB302C7926F88A2D2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
 			isa = PBXShellScriptBuildPhase;

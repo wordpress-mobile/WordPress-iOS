@@ -75,10 +75,6 @@ final class ImageView: UIView {
         }
     }
 
-    func setImage(_ image: UIImage) {
-        setState(.success(image))
-    }
-
     // MARK: - State
 
     enum State {

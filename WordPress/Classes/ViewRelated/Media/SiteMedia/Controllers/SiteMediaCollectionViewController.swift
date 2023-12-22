@@ -1,6 +1,5 @@
 import UIKit
 import PhotosUI
-import Gifu
 
 protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])
