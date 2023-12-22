@@ -145,6 +145,7 @@ extension ReaderSiteTopic {
             let itemResult = result.map { sites in
                 sites.map { topic in
                     return TableDataItem(topic: topic, configure: { cell in
+                        cell.imageView?.downloadSiteIcon(at: topic.siteBlavatar)
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
                         addUnseenPostCount(topic, with: cell)
@@ -258,6 +259,7 @@ extension ReaderTagTopic {
                 tags.map { topic in
                     return TableDataItem(topic: topic, configure: { (cell) in
                         cell.textLabel?.text = topic.slugForDisplay
+                        cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
                     })
                 }
             }
