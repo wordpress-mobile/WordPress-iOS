@@ -230,6 +230,8 @@ import Foundation
     // Domains
     case domainsDashboardViewed
     case domainsDashboardAddDomainTapped
+    case domainsDashboardGetDomainTapped
+    case domainsDashboardGetPlanTapped
     case domainsSearchSelectDomainTapped
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
@@ -957,6 +959,10 @@ import Foundation
             return "domains_dashboard_viewed"
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
+        case .domainsDashboardGetDomainTapped:
+            return "domains_dashboard_get_domain_tapped"
+        case .domainsDashboardGetPlanTapped:
+            return "domains_dashboard_get_plan_tapped"
         case .domainsSearchSelectDomainTapped:
             return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:

@@ -2,7 +2,8 @@ import UIKit
 import WordPressAuthenticator
 import SwiftUI
 
-enum DomainSelectionType {
+enum DomainSelectionType: Int, Identifiable {
+    var id: Int { rawValue }
     case siteCreation
     case registerWithPaidPlan
     case purchaseWithPaidPlan

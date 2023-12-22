@@ -29,6 +29,16 @@ struct DomainsDashboardFactory {
             viewController.present(controller, animated: true)
         }
 
+        let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
+            customTitle: nil,
+            analyticsSource: "site_domains"
+        ) { [weak coordinator] controller, domain in
+            coordinator?.domainPurchasedCallback?(controller, domain)
+            coordinator?.trackDomainPurchasingCompleted()
+        }
+
+        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart
+
         return viewController
     }
 }
