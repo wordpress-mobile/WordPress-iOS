@@ -3857,7 +3857,6 @@
 		F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E1BBDF253B74240091E9A6 /* URLQueryItem+Parameters.swift */; };
 		F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */; };
 		F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29037243FAB0300C19CA5 /* FilterTableData.swift */; };
-		F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E63128243BC8190088229D /* FilterSheetView.swift */; };
 		F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E6312A243BC83E0088229D /* FilterSheetViewController.swift */; };
 		F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		F5EF481823ABCAE0004C3532 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
@@ -4324,7 +4323,6 @@
 		FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F668B60255DD11400D0038A /* JetpackConnectionViewController.swift */; };
 		FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */; };
 		FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A22E325783D2000A79950 /* JetpackScanService.swift */; };
-		FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E63128243BC8190088229D /* FilterSheetView.swift */; };
 		FABB217B2602FC2C00C8785C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
 		FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BDEA721CE4824300682885 /* ReaderSearchTopic.swift */; };
 		FABB217D2602FC2C00C8785C /* WPMediaPicker+MediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A34A9825DEF47D00C9654B /* WPMediaPicker+MediaPicker.swift */; };
@@ -9159,7 +9157,6 @@
 		F5E1BBDF253B74240091E9A6 /* URLQueryItem+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLQueryItem+Parameters.swift"; sourceTree = "<group>"; };
 		F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProvider.swift; sourceTree = "<group>"; };
 		F5E29037243FAB0300C19CA5 /* FilterTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableData.swift; sourceTree = "<group>"; };
-		F5E63128243BC8190088229D /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 		F5E6312A243BC83E0088229D /* FilterSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetViewController.swift; sourceTree = "<group>"; };
 		F75F3A68DCE524B4BAFCE76E /* Pods-WordPressDraftActionExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F85B762A18D018C22DF2A40D /* Pods-JetpackShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -17827,7 +17824,6 @@
 		F597768C243E1E140062BAD1 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				F5E63128243BC8190088229D /* FilterSheetView.swift */,
 				F5E6312A243BC83E0088229D /* FilterSheetViewController.swift */,
 				F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */,
 				F5E29037243FAB0300C19CA5 /* FilterTableData.swift */,
@@ -21225,7 +21221,6 @@
 				83A337A12A9FA525009ED60C /* ReaderSiteHeaderView.swift in Sources */,
 				FA6402D129C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */,
 				F48D44BA2989A58C0051EAA6 /* ReaderSiteService.swift in Sources */,
-				F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				83914BD42A2EA03A0017A588 /* PostSettingsViewController+JetpackSocial.swift in Sources */,
 				803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
@@ -24037,7 +24032,6 @@
 				FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */,
 				83DC5C472A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift in Sources */,
 				FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */,
-				FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */,
 				FABB217B2602FC2C00C8785C /* WPAddPostCategoryViewController.m in Sources */,
 				FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */,
 				3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */,
