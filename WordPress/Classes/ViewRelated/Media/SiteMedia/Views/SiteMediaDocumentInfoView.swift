@@ -35,8 +35,6 @@ final class SiteMediaDocumentInfoView: UIView {
     func configureLargeStyle() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         titleLabel.numberOfLines = 3
-
-        iconView.
     }
 
     func configure(_ viewModel: SiteMediaDocumentInfoViewModel) {
