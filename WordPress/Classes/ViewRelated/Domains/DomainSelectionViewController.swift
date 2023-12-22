@@ -2,9 +2,17 @@ import UIKit
 import WordPressAuthenticator
 import SwiftUI
 
+enum DomainSelectionType {
+    case siteCreation
+    case registerWithPaidPlan
+    case purchaseWithPaidPlan
+    case purchaseSeparately
+    case purchaseFromDomainManagement
+}
+
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
-final class WebAddressWizardContent: CollapsableHeaderViewController {
+final class DomainSelectionViewController: CollapsableHeaderViewController {
     static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
 
     // MARK: Properties
@@ -13,26 +21,26 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let noResultsTopInset        = CGFloat(64)
         static let sitePromptEdgeMargin     = CGFloat(50)
         static let sitePromptBottomMargin   = CGFloat(10)
-        static let sitePromptTopMargin      = CGFloat(25)
+        static let sitePromptTopMargin      = CGFloat(4)
     }
 
     override var separatorStyle: SeparatorStyle {
         return .hidden
     }
 
-    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
-    private var domainPurchasingEnabled: Bool {
-        return siteCreator.domainPurchasingEnabled
-    }
-
     /// The creator collects user input as they advance through the wizard flow.
-    private let siteCreator: SiteCreator
     private let service: SiteAddressService
-    private let selection: (DomainSuggestion) -> Void
+    private let selection: ((DomainSuggestion) -> Void)?
+    private let coordinator: RegisterDomainCoordinator?
 
     /// Tracks the site address selected by users
     private var selectedDomain: DomainSuggestion? {
         didSet {
+            coordinator?.domain = selectedDomain
+            if selectedDomain != nil {
+                trackDomainSelected()
+                hideTransferFooterView()
+            }
             itemSelectionChanged(selectedDomain != nil)
         }
     }
@@ -45,6 +53,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
+    private let domainSelectionType: DomainSelectionType
+    private let includeSupportButton: Bool
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -97,12 +107,46 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         }
     }
 
+    // MARK: - Transfer Footer Views
+
+    private lazy var transferFooterView: RegisterDomainTransferFooterView = {
+        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
+            guard let self else {
+                return
+            }
+            let destination = TransferDomainsWebViewController(source: self.coordinator?.analyticsSource)
+            self.present(UINavigationController(rootViewController: destination), animated: true)
+        }
+        return .init(configuration: configuration)
+    }()
+
+    /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
+    private lazy var transferFooterViewConstraints: (visible: [NSLayoutConstraint], hidden: [NSLayoutConstraint]) = {
+        let base = [
+            transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+
+        let visible = base + [transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+        let hidden = base + [transferFooterView.topAnchor.constraint(equalTo: view.bottomAnchor)]
+        return (visible: visible, hidden: hidden)
+    }()
+
     // MARK: WebAddressWizardContent
 
-    init(creator: SiteCreator, service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
-        self.siteCreator = creator
+    init(
+        service: SiteAddressService,
+        domainSelectionType: DomainSelectionType,
+        primaryActionTitle: String = Strings.selectDomain,
+        includeSupportButton: Bool = false,
+        selection: ((DomainSuggestion) -> Void)? = nil,
+        coordinator: RegisterDomainCoordinator? = nil
+    ) {
         self.service = service
+        self.domainSelectionType = domainSelectionType
+        self.includeSupportButton = includeSupportButton
         self.selection = selection
+        self.coordinator = coordinator
         self.data = []
         self.noResultsLabel = {
             let label = UILabel()
@@ -126,9 +170,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchHeader = UIView(frame: .zero)
         table = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: table,
-                   mainTitle: Strings.mainTitle,
-                   prompt: Strings.prompt,
-                   primaryActionTitle: creator.domainPurchasingEnabled ? Strings.selectDomain : Strings.createSite,
+                   mainTitle: domainSelectionType == .siteCreation ? Strings.mainTitle : Strings.alternativeTitle,
+                   prompt: Strings.prompt(domainSelectionType, coordinator?.site),
+                   primaryActionTitle: primaryActionTitle,
                    accessoryView: searchHeader)
     }
 
@@ -141,18 +185,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTable()
-        WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
+        trackViewDidLoad()
         loadHeaderView()
         addAddressHintView()
         configureUIIfNeeded()
-        navigationItem.backButtonTitle = Strings.backButtonTitle
+        setupBackButton()
+        setupTransferFooterView()
+        includeSupportButtonIfNeeded()
     }
 
     private func configureUIIfNeeded() {
-        guard domainPurchasingEnabled else {
-            return
-        }
-
         NSLayoutConstraint.activate([
             largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
         ])
@@ -162,33 +204,20 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func loadHeaderView() {
+        searchBar.searchBarStyle = UISearchBar.Style.default
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
+        searchBar.layer.borderWidth = 0
+        searchHeader.addSubview(searchBar)
+        searchBar.delegate = self
+        headerView.backgroundColor = .basicBackground
 
-        if domainPurchasingEnabled {
-            searchBar.searchBarStyle = UISearchBar.Style.default
-            searchBar.translatesAutoresizingMaskIntoConstraints = false
-            WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
-            searchBar.layer.borderWidth = 0
-            searchHeader.addSubview(searchBar)
-            searchBar.delegate = self
-            headerView.backgroundColor = .basicBackground
-
-            NSLayoutConstraint.activate([
-                searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
-                searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
-                searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
-                searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
-            ])
-        } else {
-            searchHeader.addSubview(searchTextField)
-            searchHeader.backgroundColor = searchTextField.backgroundColor
-            let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
-            let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
-            let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
-            let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
-            searchHeader.addConstraints([top, bottom, leading, trailing])
-            searchHeader.addTopBorder(withColor: .divider)
-            searchHeader.addBottomBorder(withColor: .divider)
-        }
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
+            searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
+            searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
+            searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
+        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -221,14 +250,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let self else { return }
 
-            if self.domainPurchasingEnabled {
-                if !self.siteTemplateHostingController.view.isHidden {
-                    self.updateTitleViewVisibility(true)
-                }
-            } else {
-                if !self.sitePromptView.isHidden {
-                    self.updateTitleViewVisibility(true)
-                }
+            if !self.siteTemplateHostingController.view.isHidden {
+                self.updateTitleViewVisibility(true)
             }
         }
     }
@@ -256,7 +279,20 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private func fetchAddresses(_ searchTerm: String) {
         isShowingError = false
         updateIcon(isLoading: true)
-        service.addresses(for: searchTerm) { [weak self] results in
+
+        let type: DomainsServiceRemote.DomainSuggestionType
+        switch domainSelectionType {
+        case .siteCreation:
+            type = RemoteFeatureFlag.plansInSiteCreation.enabled() ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
+        default:
+            if coordinator?.site?.hasBloggerPlan == true {
+                type = .allowlistedTopLevelDomains(["blog"])
+            } else {
+                type = .noWordpressDotCom
+            }
+        }
+
+        service.addresses(for: searchTerm, type: type) { [weak self] results in
             DispatchQueue.main.async {
                 self?.handleResult(results)
             }
@@ -326,8 +362,52 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             return
         }
 
+
         trackDomainsSelection(selectedDomain)
-        selection(selectedDomain)
+
+        let onFailure: () -> () = { [weak self] in
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            self?.displayActionableNotice(title: Strings.errorTitle, actionTitle: Strings.errorDismiss)
+        }
+
+        switch domainSelectionType {
+        case .registerWithPaidPlan:
+            pushRegisterDomainDetailsViewController()
+        case .purchaseSeparately:
+            setPrimaryButtonLoading(true)
+            coordinator?.handlePurchaseDomainOnly(
+                on: self,
+                onSuccess: { [weak self] in
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure)
+        case .purchaseWithPaidPlan:
+            setPrimaryButtonLoading(true)
+            coordinator?.addDomainToCartLinkedToCurrentSite(
+                on: self,
+                onSuccess: { [weak self] in
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
+        case .purchaseFromDomainManagement:
+            pushPurchaseDomainChoiceScreen()
+        case .siteCreation:
+            selection?(selectedDomain)
+        }
+    }
+
+    private func setPrimaryButtonLoading(_ isLoading: Bool, afterDelay delay: Double = 0.0) {
+        // We're dispatching here so that we can wait until after the webview has been
+        // fully presented before we switch the button back to its default state.
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.primaryActionButton.isEnabled = !isLoading
+            if isLoading {
+                SVProgressHUD.show()
+            } else {
+                SVProgressHUD.dismiss()
+            }
+        }
     }
 
     private func setupCells() {
@@ -338,11 +418,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        if domainPurchasingEnabled {
-            search(searchBar.text)
-        } else {
-            search(query(from: searchTextField))
-        }
+        search(searchBar.text)
     }
 
     private func prepareViewIfNeeded() {
@@ -380,9 +456,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
-        if !domainPurchasingEnabled {
-            table.separatorStyle = .none
-        }
         table.dataSource = self
         table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
@@ -390,7 +463,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
-        table.isAccessibilityElement = false
+        table.accessibilityIdentifier = "DomainSelectionTable"
     }
 
     private func setupTableBackground() {
@@ -405,7 +478,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private func query(from textField: UITextField?) -> String? {
         guard let text = textField?.text,
               !text.isEmpty else {
-            return siteCreator.information?.title
+            return nil
         }
 
         return text
@@ -422,20 +495,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         itemSelectionChanged(false)
     }
 
-    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
-        var domainSuggestionProperties: [String: Any] = [
-            "chosen_domain": domainSuggestion.domainName as AnyObject,
-            "search_term": lastSearchQuery as AnyObject,
-            "is_free": domainSuggestion.isFree.stringLiteral
-        ]
-
-        if domainPurchasingEnabled {
-            domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
-        }
-
-        WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
-    }
-
     // MARK: - Search logic
 
     func updateIcon(isLoading: Bool) {
@@ -445,54 +504,40 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private func search(_ string: String?) {
         guard let query = string, query.isEmpty == false else {
             clearContent()
+            showTransferFooterView()
             return
         }
 
+        hideTransferFooterView()
         performSearchIfNeeded(query: query)
+        trackSearchStarted()
     }
 
     // MARK: - Search logic
 
     private func setAddressHintVisibility(isHidden: Bool) {
-        if domainPurchasingEnabled {
-            siteTemplateHostingController.view?.isHidden = isHidden
-        } else {
-            sitePromptView.isHidden = isHidden
-        }
+        siteTemplateHostingController.view?.isHidden = isHidden
     }
 
     private func addAddressHintView() {
-        if domainPurchasingEnabled {
-            guard let siteCreationView = siteTemplateHostingController.view else {
-                return
-            }
-            siteCreationView.isUserInteractionEnabled = false
-            siteCreationView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(siteCreationView)
-            NSLayoutConstraint.activate([
-                siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-                containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
-                siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
-                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
-            ])
-        } else {
-            sitePromptView = SitePromptView(frame: .zero)
-            sitePromptView.isUserInteractionEnabled = false
-            sitePromptView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(sitePromptView)
-            NSLayoutConstraint.activate([
-                sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
-                sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
-                sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
-                sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
-            ])
+        guard let siteCreationView = siteTemplateHostingController.view else {
+            return
         }
+        siteCreationView.isUserInteractionEnabled = false
+        siteCreationView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(siteCreationView)
+        NSLayoutConstraint.activate([
+            siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
+            siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
+            containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
+        ])
         setAddressHintVisibility(isHidden: true)
     }
 
     // MARK: - Others
 
-    private enum Strings {
+    enum Strings {
         static let suggestionsUpdated = NSLocalizedString("Suggestions updated",
                                                           comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
         static let noResults = NSLocalizedString("No available addresses matching your search",
@@ -505,8 +550,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                            comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
         static let mainTitle: String = NSLocalizedString("Choose a domain",
                                                          comment: "Select domain name. Title")
+        static let alternativeTitle: String = NSLocalizedString("domainSelection.search.title",
+                                                                value: "Search domains",
+                                                                comment: "Search domain - Title for the Suggested domains screen")
         static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
+
+        static let directPurchasePrompt: String = NSLocalizedString("domainSelection.redirectPrompt.title",
+                                                                    value: "Domains purchased on this site will redirect to %1$@",
+                                                                    comment: "Description for the first domain purchased with a free plan.")
+
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
         static let selectDomain: String = NSLocalizedString("siteCreation.domains.buttons.selectDomain",
@@ -524,12 +577,32 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                        value: "Domains",
                                                        comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
         )
+        static let supportButtonTitle = NSLocalizedString("domainSelection.helpButton.title",
+                                                          value: "Help",
+                                                          comment: "Help button")
+        static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
+                                                     value: "Purchase Domain",
+                                                     comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
+
+        static func prompt(_ type: DomainSelectionType, _ blog: Blog?) -> String {
+            if type == .purchaseSeparately, let primaryDomainAddress = blog?.primaryDomainAddress {
+                return String(format: Strings.directPurchasePrompt, primaryDomainAddress)
+            } else {
+                return Strings.prompt
+            }
+        }
     }
 }
 
 // MARK: - Sorting
 
-private extension WebAddressWizardContent {
+private extension DomainSelectionViewController {
     // Mimics the sorting on the web - two top domains, one free domain, and other domains
     private func sortFreeAndPaidSuggestions(_ suggestions: [DomainSuggestion]) -> [DomainSuggestion] {
         var topDomains: [DomainSuggestion] = []
@@ -557,7 +630,7 @@ private extension WebAddressWizardContent {
 
 // MARK: - NetworkStatusDelegate
 
-extension WebAddressWizardContent: NetworkStatusDelegate {
+extension DomainSelectionViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         isNetworkActive = active
     }
@@ -565,7 +638,7 @@ extension WebAddressWizardContent: NetworkStatusDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension WebAddressWizardContent: UITextFieldDelegate {
+extension DomainSelectionViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
@@ -578,7 +651,7 @@ extension WebAddressWizardContent: UITextFieldDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension WebAddressWizardContent: UISearchBarDelegate {
+extension DomainSelectionViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         clearSelectionAndCreateSiteButton()
     }
@@ -590,7 +663,7 @@ extension WebAddressWizardContent: UISearchBarDelegate {
 
 // MARK: - VoiceOver
 
-private extension WebAddressWizardContent {
+private extension DomainSelectionViewController {
     func postScreenChangedForVoiceOver() {
         UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
@@ -607,43 +680,41 @@ private extension WebAddressWizardContent {
 }
 
 // MARK: UITableViewDataSource
-extension WebAddressWizardContent: UITableViewDataSource {
+extension DomainSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !isShowingError else { return 1 }
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? 1 : data.count
+        return data.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard data.count > 0 else { return nil }
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? nil : Strings.suggestions
+        return Strings.suggestions
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (domainPurchasingEnabled || hasExactMatch) ? 1 : 2
+        return 1
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
+        return nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isShowingError {
             return configureErrorCell(tableView, cellForRowAt: indexPath)
-        } else if !domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0 {
-            return configureNoMatchCell(table, cellForRowAt: indexPath)
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
         }
     }
 
     func configureNoMatchCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier) ?? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier) ?? {
             // Create and configure a new TableView cell if one hasn't been queued yet
-            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier)
+            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier)
             newCell.detailTextLabel?.text = Strings.noMatch
             newCell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
             newCell.detailTextLabel?.textColor = .textSubtle
@@ -662,15 +733,9 @@ extension WebAddressWizardContent: UITableViewDataSource {
         }
 
         let domainSuggestion = data[indexPath.row]
-        if domainPurchasingEnabled {
-            let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
-            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, tags: tags)
-            cell.update(with: viewModel)
-        } else {
-            cell.update(with: domainSuggestion)
-            cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
-            cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-        }
+        let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
+        let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, type: domainSelectionType, tags: tags)
+        cell.update(with: viewModel)
 
         return cell
     }
@@ -687,11 +752,11 @@ extension WebAddressWizardContent: UITableViewDataSource {
 }
 
 // MARK: UITableViewDelegate
-extension WebAddressWizardContent: UITableViewDelegate {
+extension DomainSelectionViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
-        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? nil : indexPath
+        return indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -703,15 +768,204 @@ extension WebAddressWizardContent: UITableViewDelegate {
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
 
-        if domainPurchasingEnabled {
-            searchBar.resignFirstResponder()
-        } else {
-            searchTextField.resignFirstResponder()
-        }
+        searchBar.resignFirstResponder()
     }
 
     func retry() {
         let retryQuery = lastSearchQuery ?? ""
         performSearchIfNeeded(query: retryQuery)
+    }
+}
+
+// MARK: - Transfer Footer Setup
+
+private extension DomainSelectionViewController {
+    func setupTransferFooterView() {
+        guard domainSelectionType == .purchaseFromDomainManagement else {
+            return
+        }
+        self.view.addSubview(transferFooterView)
+        self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
+    }
+
+    /// Updates transfer footer view constraints to either hide or show the view.
+    private func updateTransferFooterViewConstraints(hidden: Bool, animated: Bool = true) {
+        guard transferFooterView.superview != nil else {
+            return
+        }
+
+        let constraints = transferFooterViewConstraints
+        let duration = animated ? WPAnimationDurationDefault : 0
+
+        NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
+        NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)
+
+        if !hidden {
+            self.transferFooterView.isHidden = false
+        }
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            self.transferFooterView.isHidden = hidden
+            self.view.setNeedsLayout()
+        }
+    }
+
+    private func showTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: false, animated: animated)
+    }
+
+    private func hideTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: true, animated: animated)
+    }
+}
+
+// MARK: - Support
+
+private extension DomainSelectionViewController {
+    func includeSupportButtonIfNeeded() {
+        guard includeSupportButton else { return }
+
+        let supportButton = UIBarButtonItem(title: Strings.supportButtonTitle,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(handleSupportButtonTapped))
+        navigationItem.rightBarButtonItem = supportButton
+    }
+
+    @objc func handleSupportButtonTapped(sender: UIBarButtonItem) {
+        let supportVC = SupportTableViewController()
+        let navigationController = UINavigationController(rootViewController: supportVC)
+        topmostPresentedViewController.show(navigationController, sender: nil)
+    }
+}
+
+// MARK: - Routing
+
+private extension DomainSelectionViewController {
+    private func pushRegisterDomainDetailsViewController() {
+        guard let siteID = coordinator?.site?.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
+        guard let domain = coordinator?.domain else {
+            return
+        }
+
+        let controller = RegisterDomainDetailsViewController()
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self, let coordinator else {
+                return
+            }
+            coordinator.domainPurchasedCallback?(self, name)
+            coordinator.trackDomainPurchasingCompleted()
+        }
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    private func pushPurchaseDomainChoiceScreen() {
+        @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
+        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
+            guard let self else { return }
+            choicesViewModel.isGetDomainLoading = true
+            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+            WPAnalytics.track(.purchaseDomainGetDomainTapped)
+        } chooseSiteAction: { [weak self] in
+            guard let self else { return }
+            self.coordinator?.handleExistingSiteChoice(on: self)
+            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
+        }
+        let hostingController = UIHostingController(rootView: view)
+        hostingController.title = Strings.domainChoiceTitle
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
+}
+
+// MARK: - Back Button
+
+private extension DomainSelectionViewController {
+    func setupBackButton() {
+        if navigationController?.children.count == 1 {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                                target: self,
+                                                                action: #selector(handleCancelButtonTapped))
+        } else {
+            navigationItem.backButtonTitle = Strings.backButtonTitle
+        }
+    }
+
+    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+}
+
+// MARK: - Tracks
+
+private extension DomainSelectionViewController {
+    func trackViewDidLoad() {
+        switch domainSelectionType {
+        case .siteCreation:
+            WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
+        default:
+            track(.domainsDashboardDomainsSearchShown)
+        }
+    }
+
+    func trackDomainSelected() {
+        switch domainSelectionType {
+        case .siteCreation:
+            break
+        default:
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
+        }
+    }
+
+    func trackSearchStarted() {
+        switch domainSelectionType {
+        case .siteCreation:
+            break
+        default:
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
+        }
+    }
+
+    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
+        switch domainSelectionType {
+        case .siteCreation:
+            var domainSuggestionProperties: [String: Any] = [
+                "chosen_domain": domainSuggestion.domainName as AnyObject,
+                "search_term": lastSearchQuery as AnyObject,
+                "is_free": domainSuggestion.isFree.stringLiteral
+            ]
+
+            domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
+
+            WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
+        default:
+            let properties: [AnyHashable: Any] = ["domain_name": domainSuggestion.domainName]
+            self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator?.site)
+        }
+    }
+
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
+        let defaultProperties = { () -> [AnyHashable: Any] in
+            if let blog {
+                return WPAnalytics.domainsProperties(for: blog, origin: self.coordinator?.analyticsSource)
+            } else {
+                return WPAnalytics.domainsProperties(origin: self.coordinator?.analyticsSource)
+            }
+        }()
+
+        let properties = properties.merging(defaultProperties) { current, _ in
+            return current
+        }
+
+        if let blog {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
+        }
     }
 }
