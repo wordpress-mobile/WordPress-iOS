@@ -1,14 +1,86 @@
+import WordPressFlux
+
 class FilterSheetViewController: UIViewController {
 
+    // MARK: Properties
+
     private let viewTitle: String
-    private let filters: [FilterProvider]
+
+    private let filterProvider: FilterProvider
+
+    // closure that's called when a filter item is selected.
     private let changedFilter: (ReaderAbstractTopic) -> Void
 
-    init(viewTitle: String,
-         filters: [FilterProvider],
+    private var receipt: Receipt?
+
+    private var dataSource: FilterTableViewDataSource? {
+        didSet {
+            tableView.dataSource = dataSource
+            tableView.reloadData()
+        }
+    }
+
+    // MARK: Views
+
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.tableFooterView = UIView() // To hide the separators for empty cells
+        tableView.separatorStyle = .none
+        tableView.delegate = self
+        return tableView
+    }()
+
+    private lazy var emptyView: EmptyActionView = {
+        let view = EmptyActionView(tappedButton: tappedEmptyAddButton)
+
+        // Hide the button if the user is not logged in
+        view.button.isHidden = !ReaderHelpers.isLoggedIn()
+
+        return view
+    }()
+
+    private lazy var ghostableTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.allowsSelection = false
+        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+
+    private lazy var headerLabelView: UIView = {
+        let labelView = UIView()
+        let label = UILabel()
+        label.font = HeaderConstants.font
+        label.text = viewTitle
+        label.translatesAutoresizingMaskIntoConstraints = false
+        labelView.addSubview(label)
+        labelView.pinSubviewToAllEdges(label, insets: HeaderConstants.insets)
+        return labelView
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [
+            headerLabelView,
+            tableView,
+            ghostableTableView,
+            emptyView
+        ])
+
+        stack.setCustomSpacing(HeaderConstants.spacing, after: headerLabelView)
+        stack.axis = .vertical
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+
+    // MARK: Methods
+
+    init(filter: FilterProvider,
+         viewTitle: String? = nil,
          changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
-        self.viewTitle = viewTitle
-        self.filters = filters
+        let defaultTitle = filter.section == .sites ? Strings.blogFilterTitle : Strings.tagFilterTitle
+        self.viewTitle = viewTitle ?? defaultTitle
+        self.filterProvider = filter
         self.changedFilter = changedFilter
         super.init(nibName: nil, bundle: nil)
     }
@@ -17,13 +89,120 @@ class FilterSheetViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
-        view = FilterSheetView(viewTitle: viewTitle,
-                               filters: filters,
-                               presentationController: self,
-                               changedFilter: changedFilter)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        configureViews()
+        configureObservers()
+        refresh()
     }
 }
+
+// MARK: - Private Helpers
+
+private extension FilterSheetViewController {
+
+    struct HeaderConstants {
+        static let spacing: CGFloat = 16
+        static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
+        static let font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+    }
+
+    struct Strings {
+        static let blogFilterTitle = NSLocalizedString(
+            "reader.filterSheet.byBlog.title",
+            value: "Filter by blog",
+            comment: "Title for a filter sheet on the Reader to filter the stream by blog"
+        )
+        static let tagFilterTitle = NSLocalizedString(
+            "reader.filterSheet.byTag.title",
+            value: "Filter by tag",
+            comment: "Title for a filter sheet on the Reader to filter the stream by tag"
+        )
+    }
+
+    func configureViews() {
+        // configure table view
+        tableView.register(filterProvider.cellClass, forCellReuseIdentifier: filterProvider.reuseIdentifier)
+
+        // configure content view
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+    }
+
+    func configureObservers() {
+        receipt = filterProvider.onChange { [weak self] in
+            guard let self else {
+                return
+            }
+
+            self.dataSource = FilterTableViewDataSource(data: self.filterProvider.items,
+                                                        reuseIdentifier: self.filterProvider.reuseIdentifier)
+            if !self.filterProvider.state.isReady {
+                /// Loading state
+                self.emptyView.isHidden = true
+                self.tableView.isHidden = true
+                self.updateGhostableTableViewOptions(cellClass: self.filterProvider.cellClass,
+                                                     identifier: self.filterProvider.reuseIdentifier)
+            } else {
+                /// Finished loading
+                self.ghostableTableView.stopGhostAnimation()
+                self.ghostableTableView.isHidden = true
+
+                let isEmpty = self.filterProvider.items.isEmpty
+                if isEmpty {
+                    self.refreshEmpty()
+                }
+                self.emptyView.isHidden = !isEmpty
+                self.tableView.isHidden = isEmpty
+            }
+        }
+    }
+
+    func tappedEmptyAddButton() {
+        filterProvider.showAdd(on: self, sceneDelegate: self)
+    }
+
+    func refresh() {
+        filterProvider.refresh()
+    }
+
+    func refreshEmpty() {
+        emptyView.title = filterProvider.emptyTitle
+        emptyView.labelText = filterProvider.emptyActionTitle
+    }
+
+    func updateGhostableTableViewOptions(cellClass: UITableViewCell.Type, identifier: String) {
+        ghostableTableView.register(cellClass, forCellReuseIdentifier: identifier)
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: identifier, rowsPerSection: [15])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.isHidden = false
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension FilterSheetViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let topic = dataSource?.data[indexPath.row].topic {
+            changedFilter(topic)
+        }
+    }
+}
+
+// MARK: - SceneDelegate
+
+extension FilterSheetViewController: ScenePresenterDelegate {
+    func didDismiss(presenter: ScenePresenter) {
+        refresh()
+    }
+}
+
+// MARK: - DrawerPresentable
 
 extension FilterSheetViewController: DrawerPresentable {
     func handleDismiss() {
@@ -31,7 +210,7 @@ extension FilterSheetViewController: DrawerPresentable {
     }
 
     var scrollableView: UIScrollView? {
-        return (view as? FilterSheetView)?.tableView
+        return tableView
     }
 
     var collapsedHeight: DrawerHeight {
