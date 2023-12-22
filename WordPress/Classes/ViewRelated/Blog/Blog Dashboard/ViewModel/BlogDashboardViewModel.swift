@@ -50,23 +50,6 @@ final class BlogDashboardViewModel {
         )
     }()
 
-    // TODO: Delete this once dynamic cards are implemented on the Backend
-    private lazy var fakeService: BlogDashboardService = {
-        let service = DashboardServiceRemoteFake(
-            wordPressComRestApi: WordPressComRestApi.defaultApi(
-                in: managedObjectContext,
-                localeKey: WordPressComRestApi.LocaleKeyV2
-            )
-        )
-        return BlogDashboardService(
-            managedObjectContext: managedObjectContext,
-            isJetpack: AppConfiguration.isJetpack,
-            isDotComAvailable: AccountHelper.isDotcomAvailable(),
-            shouldShowJetpackFeatures: JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(),
-            remoteService: service
-        )
-    }()
-
     private lazy var dataSource: DashboardDataSource? = {
         guard let viewController = viewController else {
             return nil
@@ -142,11 +125,6 @@ final class BlogDashboardViewModel {
     /// Call the API to return cards for the current blog
     func loadCards(completion: (([DashboardCardModel]) -> Void)? = nil) {
         viewController?.showLoading()
-
-        // TODO: Delete this once dynamic cards are implemented on the Backend
-        let service = RemoteFeatureFlag.dynamicDashboardCards.enabled()
-        ? fakeService
-        : service
 
         service.fetch(blog: blog, completion: { [weak self] cards in
             self?.viewController?.stopLoading()
