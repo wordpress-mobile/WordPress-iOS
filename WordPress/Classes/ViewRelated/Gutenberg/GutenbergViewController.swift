@@ -1094,7 +1094,9 @@ extension GutenbergViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         gutenberg.connectionStatusChange(isConnected: active)
         #if DEBUG || INTERNAL_BUILD
-            mediaInserterHelper.retryFailedMediaUploads()
+            if active {
+                mediaInserterHelper.retryFailedMediaUploads()
+            }
         #endif
     }
 }
