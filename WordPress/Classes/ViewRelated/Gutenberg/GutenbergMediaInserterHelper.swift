@@ -199,11 +199,12 @@ class GutenbergMediaInserterHelper: NSObject {
         switch state {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
+        case .thumbnailReady(let url) where ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
+        case .thumbnailReady(let url) where !ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
+            // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: url, serverID: nil)
         case .thumbnailReady(let url):
-            guard ReachabilityUtils.isInternetReachable() && media.remoteStatus != .failed else {
-                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
-                return
-            }
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
             break
         case .uploading:
@@ -246,11 +247,17 @@ class GutenbergMediaInserterHelper: NSObject {
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             }
         case .failed(let error):
-            if error.code == NSURLErrorCancelled {
+            switch error.code {
+            case NSURLErrorCancelled:
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
-                return
+            case NSURLErrorNetworkConnectionLost: fallthrough
+            case NSURLErrorNotConnectedToInternet: fallthrough
+            case NSURLErrorTimedOut where !ReachabilityUtils.isInternetReachable():
+                // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: nil, serverID: nil)
+            default:
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
             }
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
         }
