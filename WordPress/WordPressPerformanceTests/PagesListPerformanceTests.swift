@@ -1,14 +1,9 @@
-//
-//  WordPressPerformanceTests.swift
-//  WordPressPerformanceTests
-//
-//  Created by Alex on 12/25/23.
-//  Copyright © 2023 WordPress. All rights reserved.
-//
-
+import Foundation
 import XCTest
 
-final class WordPressPerformanceTests: XCTestCase {
+@testable import WordPress
+
+class PagesListPerformanceTests: CoreDataTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
