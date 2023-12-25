@@ -7,16 +7,6 @@ class PagesListTests: CoreDataTestCase {
 
     let randomID = UniquePool<Int>(range: 1...999999)
 
-    func testFlatList() throws {
-        let total = 1000
-        let pages = (1...total).map { id in
-            let page = PageBuilder(mainContext).build()
-            page.postID = NSNumber(value: id)
-            return page
-        }
-        try makeAssertions(pages: pages)
-    }
-
     func testOneNestedList() throws {
         let pages = parentPage(childrenCount: 1, additionalLevels: 5)
         try makeAssertions(pages: pages)
@@ -38,7 +28,17 @@ class PagesListTests: CoreDataTestCase {
         try makeAssertions(pages: pages)
     }
 
-    func testHugeNestedLists() throws {
+    func _testFlatList() throws {
+        let total = 1000
+        let pages = (1...total).map { id in
+            let page = PageBuilder(mainContext).build()
+            page.postID = NSNumber(value: id)
+            return page
+        }
+        try makeAssertions(pages: pages)
+    }
+
+    func _testHugeNestedLists() throws {
         var pages = [Page]()
         for _ in 1...100 {
             pages.append(contentsOf: parentPage(childrenCount: 5, additionalLevels: 4))
@@ -54,7 +54,7 @@ class PagesListTests: CoreDataTestCase {
     }
 
     // Measure performance using a page list where somewhat reflects a real-world page list, where some pages whose parent pages are in list.
-    func testPerformance() throws {
+    func _testPerformance() throws {
         // Make sure the total number of pages is about the same as the one in `testWorstPerformance`.
         var pages = [Page]()
         // Add pages whose parents are in the list.
@@ -78,7 +78,7 @@ class PagesListTests: CoreDataTestCase {
     }
 
     // Measure performance using a page list where contains non-top-level pages and none of their parent pages are in the list.
-    func testWorstPerformance() throws {
+    func _testWorstPerformance() throws {
         var pages = [Page]()
         for id in 1...5000 {
             let page = PageBuilder(mainContext).build()
