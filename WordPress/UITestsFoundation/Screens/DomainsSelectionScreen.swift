@@ -1,10 +1,10 @@
 import ScreenObject
 import XCTest
 
-public class DomainsSuggestionsScreen: ScreenObject {
+public class DomainsSelectionScreen: ScreenObject {
 
     private let domainSuggestionsTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["DomainSuggestionsTable"]
+        $0.tables["DomainSelectionTable"]
     }
 
     private let selectDomainButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -15,6 +15,11 @@ public class DomainsSuggestionsScreen: ScreenObject {
         $0.staticTexts["Search domains"]
     }
 
+    private let searchTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.searchFields.firstMatch
+    }
+
+    var searchTextField: XCUIElement { searchTextFieldGetter(app) }
     var domainSuggestionsTable: XCUIElement { domainSuggestionsTableGetter(app) }
     var selectDomainButton: XCUIElement { selectDomainButtonGetter(app) }
     var siteDomainsNavbarHeader: XCUIElement { siteDomainsNavbarHeaderGetter(app) }
@@ -27,12 +32,18 @@ public class DomainsSuggestionsScreen: ScreenObject {
     }
 
     public static func isLoaded() -> Bool {
-        (try? DomainsSuggestionsScreen().isLoaded) ?? false
+        (try? DomainsSelectionScreen().isLoaded) ?? false
+    }
+
+    public func searchDomain() throws -> Self {
+        searchTextField.tap()
+        searchTextField.typeText("domainexample.blog")
+        return self
     }
 
     @discardableResult
     public func selectDomain() throws -> Self {
-        domainSuggestionsTable.cells.lastMatch?.tap()
+        domainSuggestionsTable.cells.firstMatch.tap()
         return self
     }
 

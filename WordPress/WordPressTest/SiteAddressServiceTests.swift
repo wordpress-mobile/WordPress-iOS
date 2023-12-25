@@ -21,7 +21,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
         let searchTerm = "domaintesting"
 
         let waitExpectation = expectation(description: "Domains should be successfully fetched")
-        service.addresses(for: searchTerm) { (results) in
+        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { (results) in
             switch results {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: true)
@@ -49,7 +49,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
         let searchTerm = "notIncludedResult"
 
         let waitExpectation = expectation(description: "Domains should be successfully fetched")
-        service.addresses(for: searchTerm) { (results) in
+        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { (results) in
             switch results {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: false)
@@ -71,36 +71,6 @@ class SiteAddressServiceTests: CoreDataTestCase {
         expect(parameters["quantity"] as? Int).to(equal(20))
 
         waitForExpectations(timeout: 0.1)
-    }
-
-    func testSuggestionsBySegmentSuccess() {
-        let searchTerm = "domaintesting"
-
-        let waitExpectation = expectation(description: "Domains should be successfully fetched")
-        service.addresses(for: searchTerm, segmentID: 2) { (results) in
-            switch results {
-            case .success(let fetchedResults):
-                self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: true)
-            case .failure:
-                fail("This is using a mocked endpoint so there is a test error")
-            }
-
-            waitExpectation.fulfill()
-        }
-
-        expect(self.remoteApi.getMethodCalled).to(beTrue())
-
-        // Respond with mobile editor not yet set on the server
-        remoteApi.successBlockPassedIn!(mockedResponse as AnyObject, HTTPURLResponse())
-        expect(self.remoteApi.URLStringPassedIn!).to(equal("rest/v1.1/domains/suggestions"))
-        let parameters = remoteApi.parametersPassedIn as! [String: AnyObject]
-
-        expect(parameters["query"] as? String).to(equal(searchTerm))
-        expect(parameters["quantity"] as? Int).toNot(beNil())
-        expect(parameters["segment_id"] as? Int).toNot(beNil())
-
-        waitForExpectations(timeout: 0.1)
-
     }
 
     // Helpers

@@ -1,6 +1,9 @@
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [***] [Jetpack-only] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
+* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
 
 23.9
 -----
