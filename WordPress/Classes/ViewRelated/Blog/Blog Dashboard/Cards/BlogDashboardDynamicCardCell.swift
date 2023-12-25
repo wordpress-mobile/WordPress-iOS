@@ -3,6 +3,10 @@ import SwiftUI
 
 final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
+    // MARK: - Dependencies
+
+    private let analyticsTracker: DashboardDynamicCardAnalyticsTracking = DashboardDynamicCardAnalyticsTracker()
+
     // MARK: - Views
 
     private let frameView = BlogDashboardCardFrameView()
@@ -34,6 +38,8 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
         if let viewController {
             self.configureHostingController(with: model, parent: viewController)
         }
+
+        self.analyticsTracker.track(.cardShown(id: model.payload.id), frequency: .oncePerSession)
     }
 
     private func configureHostingController(with model: DashboardDynamicCardModel, parent: UIViewController) {
@@ -59,7 +65,6 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
     private func setupFrameView() {
         self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-//        self.frameView.onEllipsisButtonTap = { }
         self.frameView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(frameView)
         self.contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
@@ -83,11 +88,13 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     // MARK: - User Interaction
 
     private func didTapAction(with model: DashboardDynamicCardModel) {
-
+        let payload = model.payload
+        self.analyticsTracker.track(.cardCtaTapped(id: payload.id, url: payload.url))
     }
 
     private func didTapCard(with model: DashboardDynamicCardModel) {
-
+        let payload = model.payload
+        self.analyticsTracker.track(.cardTapped(id: payload.id, url: payload.url))
     }
 }
 

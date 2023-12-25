@@ -3591,10 +3591,10 @@
 		F41BDD73290BBDCA00B7F2B0 /* MigrationActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */; };
 		F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */; };
 		F41BDD7B29114E2400B7F2B0 /* MigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */; };
-		F41D98D52B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98D42B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift */; };
 		F41D98D72B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98D62B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift */; };
-		F41D98D82B3901EA004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98D42B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift */; };
 		F41D98D92B3901F5004EC050 /* DashboardDynamicCardAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98D62B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift */; };
+		F41D98DE2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98DD2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift */; };
+		F41D98DF2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41D98DD2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift */; };
 		F41E32FE287B47A500F89082 /* SuggestionsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E32FD287B47A500F89082 /* SuggestionsListViewModel.swift */; };
 		F41E32FF287B47A500F89082 /* SuggestionsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E32FD287B47A500F89082 /* SuggestionsListViewModel.swift */; };
 		F41E3301287B5FE500F89082 /* SuggestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E3300287B5FE500F89082 /* SuggestionViewModel.swift */; };
@@ -8984,8 +8984,8 @@
 		F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsView.swift; sourceTree = "<group>"; };
 		F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationFlowCoordinator.swift; sourceTree = "<group>"; };
 		F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStep.swift; sourceTree = "<group>"; };
-		F41D98D42B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAppAnalytics+DashboardDynamicCards.swift"; sourceTree = "<group>"; };
 		F41D98D62B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDynamicCardAnalyticsEvent.swift; sourceTree = "<group>"; };
+		F41D98DD2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDynamicCardAnalyticsTracker.swift; sourceTree = "<group>"; };
 		F41E32FD287B47A500F89082 /* SuggestionsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModel.swift; sourceTree = "<group>"; };
 		F41E3300287B5FE500F89082 /* SuggestionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionViewModel.swift; sourceTree = "<group>"; };
 		F41E4E8B28F18B7B001880C6 /* AppIconListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListViewModelTests.swift; sourceTree = "<group>"; };
@@ -17400,8 +17400,8 @@
 		F41D98D32B38967D004EC050 /* Dashboard Dynamic Cards */ = {
 			isa = PBXGroup;
 			children = (
-				F41D98D42B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift */,
 				F41D98D62B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift */,
+				F41D98DD2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift */,
 			);
 			path = "Dashboard Dynamic Cards";
 			sourceTree = "<group>";
@@ -21343,7 +21343,6 @@
 				3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */,
 				FA98B61629A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */,
 				C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */,
-				F41D98D52B38970B004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift in Sources */,
 				7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */,
 				F5AE440625DD0345003675F4 /* CameraHandler.swift in Sources */,
 				2F668B63255DD11400D0038A /* JetpackConnectionViewController.swift in Sources */,
@@ -22070,6 +22069,7 @@
 				7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */,
 				F1D8C6EB26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */,
 				436D56262117312700CEAA33 /* RegisterDomainDetailsViewController+HeaderFooter.swift in Sources */,
+				F41D98DE2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift in Sources */,
 				931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				AE2F3125270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
@@ -24566,7 +24566,6 @@
 				FABB22962602FC2C00C8785C /* ApproveComment.swift in Sources */,
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
 				FABB22982602FC2C00C8785C /* PostingActivityCollectionViewCell.swift in Sources */,
-				F41D98D82B3901EA004EC050 /* WPAppAnalytics+DashboardDynamicCards.swift in Sources */,
 				FABB22992602FC2C00C8785C /* NibLoadable.swift in Sources */,
 				FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				FABB229A2602FC2C00C8785C /* BackupListViewController.swift in Sources */,
@@ -24997,6 +24996,7 @@
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
 				FABB23CA2602FC2C00C8785C /* EditPostViewController.swift in Sources */,
 				0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */,
+				F41D98DF2B39BADE004EC050 /* DashboardDynamicCardAnalyticsTracker.swift in Sources */,
 				F484D4EB2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */,
 				FABB23CB2602FC2C00C8785C /* PostListFilter.swift in Sources */,
 				FABB23CC2602FC2C00C8785C /* MediaThumbnailExporter.swift in Sources */,

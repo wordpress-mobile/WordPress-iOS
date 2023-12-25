@@ -1,9 +1,9 @@
-enum DashboardDynamicCardAnalyticsEvent {
+enum DashboardDynamicCardAnalyticsEvent: Hashable {
 
     case cardShown(id: String)
     case cardHideTapped(id: String)
-    case cardTapped(id: String, url: String)
-    case cardCtaTapped(id: String, url: String)
+    case cardTapped(id: String, url: String?)
+    case cardCtaTapped(id: String, url: String?)
 
     var name: String {
         switch self {
@@ -19,7 +19,11 @@ enum DashboardDynamicCardAnalyticsEvent {
         case .cardShown(let id), .cardHideTapped(let id):
             return [Keys.id: id]
         case .cardTapped(let id, let url), .cardCtaTapped(let id, let url):
-            return [Keys.id: id, Keys.url: url]
+            var props = [Keys.id: id]
+            if let url {
+                props[Keys.url] = url
+            }
+            return props
         }
     }
 
