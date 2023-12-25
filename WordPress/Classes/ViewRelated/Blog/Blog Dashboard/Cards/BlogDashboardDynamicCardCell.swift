@@ -3,9 +3,9 @@ import SwiftUI
 
 final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
-    // MARK: - Dependencies
+    // MARK: - Properties
 
-    private let analyticsTracker: DashboardDynamicCardAnalyticsTracking = DashboardDynamicCardAnalyticsTracker()
+    private var coordinator: BlogDashboardDynamicCardCoordinator?
 
     // MARK: - Views
 
@@ -27,6 +27,8 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     // MARK: - Configuration
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardDynamicCardModel) {
+        self.coordinator = .init(viewController: viewController, model: model)
+
         self.presentingViewController = viewController
         self.configureMoreButton(for: model, blog: blog)
 
@@ -39,7 +41,7 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
             self.configureHostingController(with: model, parent: viewController)
         }
 
-        self.analyticsTracker.track(.cardShown(id: model.payload.id), frequency: .oncePerSession)
+        self.coordinator?.didAppear()
     }
 
     private func configureHostingController(with model: DashboardDynamicCardModel, parent: UIViewController) {
@@ -88,13 +90,11 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     // MARK: - User Interaction
 
     private func didTapAction(with model: DashboardDynamicCardModel) {
-        let payload = model.payload
-        self.analyticsTracker.track(.cardCtaTapped(id: payload.id, url: payload.url))
+        self.coordinator?.didTapCardCTA()
     }
 
     private func didTapCard(with model: DashboardDynamicCardModel) {
-        let payload = model.payload
-        self.analyticsTracker.track(.cardTapped(id: payload.id, url: payload.url))
+        self.coordinator?.didTapCard()
     }
 }
 
