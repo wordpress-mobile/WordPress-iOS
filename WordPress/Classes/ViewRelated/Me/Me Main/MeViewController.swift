@@ -365,10 +365,12 @@ class MeViewController: UITableViewController {
         navigateToTarget(for: RowTitles.accountSettings)
     }
 
-    /// Selects the All DOmains row and pushes the All Domains view controller
+    /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
+    #if JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
+    #endif
     }
 
     /// Selects the App Settings row and pushes the App Settings view controller
