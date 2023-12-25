@@ -8,7 +8,7 @@ enum DashboardCardModel: Hashable {
     var cardType: DashboardCard {
         switch self {
         case .normal(let model): return model.cardType
-        case .dynamic: return .dynamic
+        case .dynamic(let model): return model.cardType
         }
     }
 
@@ -26,6 +26,30 @@ enum DashboardCardModel: Hashable {
         return model
     }
 }
+
+extension DashboardCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
+
+    private var card: BlogDashboardPersonalizable & BlogDashboardAnalyticPropertiesProviding {
+        switch self {
+        case .normal(let model): return model
+        case .dynamic(let model): return model
+        }
+    }
+
+    var blogDashboardPersonalizationKey: String? {
+        return card.blogDashboardPersonalizationKey
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return card.blogDashboardPersonalizationSettingsScope
+    }
+
+    var analyticProperties: [AnyHashable: Any] {
+        return card.analyticProperties
+    }
+}
+
+// MARK: - Normal Card Model
 
 /// Represents a card in the dashboard collection view
 struct DashboardNormalCardModel: Hashable {
@@ -64,10 +88,46 @@ struct DashboardNormalCardModel: Hashable {
     }
 }
 
+extension DashboardNormalCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardPersonalizationKey: String? {
+        return cardType.blogDashboardPersonalizationKey
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return cardType.blogDashboardPersonalizationSettingsScope
+    }
+
+    var analyticProperties: [AnyHashable: Any] {
+        return cardType.analyticProperties
+    }
+}
+
+// MARK: - Dynamic Card Model
+
 struct DashboardDynamicCardModel: Hashable {
 
     typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
 
+    let cardType: DashboardCard = .dynamic
     let payload: Payload
     let dotComID: Int
+}
+
+extension DashboardDynamicCardModel: BlogDashboardPersonalizable, BlogDashboardAnalyticPropertiesProviding {
+
+    var blogDashboardPersonalizationKey: String? {
+        return "dynamic_card_\(payload.id)"
+    }
+
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope {
+        return .siteGeneric
+    }
+
+    var analyticProperties: [AnyHashable: Any] {
+        let properties: [AnyHashable: Any] = ["id": payload.id]
+        return cardType.analyticProperties.merging(properties, uniquingKeysWith: { first, second in
+            return first
+        })
+    }
 }

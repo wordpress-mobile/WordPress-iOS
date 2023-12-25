@@ -3575,6 +3575,8 @@
 		F4026B1E2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */; };
 		F413F77A2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */; };
 		F413F77B2B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */; };
+		F413F7882B2B253A00A64A94 /* DashboardCard+Personalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7872B2B253A00A64A94 /* DashboardCard+Personalization.swift */; };
+		F413F7892B2B253A00A64A94 /* DashboardCard+Personalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413F7872B2B253A00A64A94 /* DashboardCard+Personalization.swift */; };
 		F4141EE42AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */; };
 		F4141EE62AE71AF0000D2AAE /* AllDomainsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */; };
 		F4141EE82AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */; };
@@ -3734,6 +3736,8 @@
 		F48D44BB2989A9070051EAA6 /* ReaderSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */; };
 		F48D44BC2989AA8A0051EAA6 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
 		F48D44BD2989AA8C0051EAA6 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
+		F48EBF8A2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EBF892B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift */; };
+		F48EBF8B2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EBF892B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift */; };
 		F48EBF942B333550004CD561 /* dashboard-200-with-only-one-dynamic-card.json in Resources */ = {isa = PBXBuildFile; fileRef = F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */; };
 		F48EBF952B333B31004CD561 /* dashboard-200-with-multiple-dynamic-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = F48EBF8C2B3262D5004CD561 /* dashboard-200-with-multiple-dynamic-cards.json */; };
 		F49B99FF2937C9B4000CEFCE /* MigrationEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */; };
@@ -8952,6 +8956,7 @@
 		F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainRegistrationCardCell.swift; sourceTree = "<group>"; };
 		F40CC35C2954991C00D75A95 /* WordPress 146.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 146.xcdatamodel"; sourceTree = "<group>"; };
 		F413F7792B2A183E00A64A94 /* BlogDashboardDynamicCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardDynamicCardCell.swift; sourceTree = "<group>"; };
+		F413F7872B2B253A00A64A94 /* DashboardCard+Personalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DashboardCard+Personalization.swift"; sourceTree = "<group>"; };
 		F4141EE22AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewController+Strings.swift"; sourceTree = "<group>"; };
 		F4141EE52AE71AF0000D2AAE /* AllDomainsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListViewModel.swift; sourceTree = "<group>"; };
 		F4141EE72AE72DC4000D2AAE /* AllDomainsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListTableViewCell.swift; sourceTree = "<group>"; };
@@ -9102,6 +9107,7 @@
 		F48D44B5298992C30051EAA6 /* BlockedSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedSite.swift; sourceTree = "<group>"; };
 		F48D44B7298993900051EAA6 /* WordPress 147.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 147.xcdatamodel"; sourceTree = "<group>"; };
 		F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteService.swift; sourceTree = "<group>"; };
+		F48EBF892B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardAnalyticPropertiesProviding.swift; sourceTree = "<group>"; };
 		F48EBF8C2B3262D5004CD561 /* dashboard-200-with-multiple-dynamic-cards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-multiple-dynamic-cards.json"; sourceTree = "<group>"; };
 		F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-only-one-dynamic-card.json"; sourceTree = "<group>"; };
 		F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
@@ -10773,7 +10779,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -13914,9 +13920,9 @@
 		8B6214E127B1B2D6001DF7B6 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */,
 				8B6214E227B1B2F3001DF7B6 /* BlogDashboardService.swift */,
 				8BBC778A27B5531700DBA087 /* BlogDashboardPersistence.swift */,
-				0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */,
 				8BAC9D9D27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift */,
 				8B15CDAA27EB89AC00A75749 /* BlogDashboardPostsParser.swift */,
 			);
@@ -14098,7 +14104,6 @@
 			isa = PBXGroup;
 			children = (
 				8B074A4F27AC3A64003A2EB8 /* BlogDashboardViewModel.swift */,
-				8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */,
 				806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -17319,6 +17324,17 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		F413F7832B2B251A00A64A94 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8BF9E03227B1A8A800915B27 /* DashboardCard.swift */,
+				8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */,
+				F413F7872B2B253A00A64A94 /* DashboardCard+Personalization.swift */,
+				F48EBF892B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		F4141EEF2AE99EE2000D2AAE /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -18125,12 +18141,12 @@
 		FA73D7D7278D9E6300DF24B3 /* Blog Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				F413F7832B2B251A00A64A94 /* Models */,
 				8B4DDF23278F3AED0022494D /* Cards */,
 				8B6214E127B1B2D6001DF7B6 /* Service */,
 				8BEE845B27B1DD8E0001A93C /* ViewModel */,
 				8BC81D6327CFC0C60057F790 /* Helpers */,
 				FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */,
-				8BF9E03227B1A8A800915B27 /* DashboardCard.swift */,
 				80D9CFF929E5E6FE00FE3400 /* DashboardCardTableView.swift */,
 			);
 			path = "Blog Dashboard";
@@ -18856,7 +18872,7 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
-				CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */,
+				E42C39F1A003092A4AE8F2A2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -19140,13 +19156,13 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
@@ -20660,26 +20676,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CDB91045FD48AA779DCF9C53 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -20750,11 +20746,11 @@
 			files = (
 			);
 			inputPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
 			);
 			outputPaths = (
 				"",
@@ -20762,6 +20758,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
+		};
+		E42C39F1A003092A4AE8F2A2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -20923,13 +20939,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
 			);
 			outputPaths = (
 			);
@@ -22316,6 +22332,7 @@
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
 				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
+				F48EBF8A2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
@@ -22797,6 +22814,7 @@
 				C81CCD6F243AF7D700A83E27 /* TenorReponseParser.swift in Sources */,
 				4020B2BD2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */,
 				982D261F2788DDF200A41286 /* ReaderCommentsFollowPresenter.swift in Sources */,
+				F413F7882B2B253A00A64A94 /* DashboardCard+Personalization.swift in Sources */,
 				F5E032D6240889EB003AF350 /* CreateButtonCoordinator.swift in Sources */,
 				74729CA32056FA0900D1394D /* SearchManager.swift in Sources */,
 				7E8980CA22E8C7A600C567B0 /* BlogToBlogMigration87to88.swift in Sources */,
@@ -24353,6 +24371,7 @@
 				0C0AD10B2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */,
 				FABB222A2602FC2C00C8785C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */,
+				F413F7892B2B253A00A64A94 /* DashboardCard+Personalization.swift in Sources */,
 				FABB222B2602FC2C00C8785C /* MediaHelper.swift in Sources */,
 				FABB222C2602FC2C00C8785C /* ReaderActionHelpers.swift in Sources */,
 				FABB222D2602FC2C00C8785C /* NoteBlockUserTableViewCell.swift in Sources */,
@@ -25054,6 +25073,7 @@
 				FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */,
 				FABB242F2602FC2C00C8785C /* UINavigationController+SplitViewFullscreen.swift in Sources */,
 				803BB99029667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
+				F48EBF8B2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */,
 				0CE7833E2B08F3C300B114EB /* ExternalMediaPickerViewController.swift in Sources */,
 				FABB24302602FC2C00C8785C /* ReaderReblogPresenter.swift in Sources */,
 				0CE538D12B0E317000834BA2 /* StockPhotosWelcomeView.swift in Sources */,
@@ -30340,7 +30360,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30429,12 +30449,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
 			productName = Lottie;
 		};
 		3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */ = {

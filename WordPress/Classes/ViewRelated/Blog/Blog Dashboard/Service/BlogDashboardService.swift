@@ -112,14 +112,24 @@ private extension BlogDashboardService {
             )
         }
 
-        // Maps dynamic cards to `DashboardCardModel`.k
+        // Maps dynamic cards to `DashboardCardModel`.
         if let dynamic = entity?.dynamic?.value {
             let cards = dynamic.compactMap { payload in
-                return self.dashboardDynamicCardModel(for: blog, payload: payload, dotComID: dotComID)
+                return self.dashboardCardModel(
+                    for: blog,
+                    payload: payload,
+                    dotComID: dotComID,
+                    personalizationService: personalizationService
+                )
             }
-            let cardsByOrder = Dictionary(grouping: cards) { $0.payload.order ?? .bottom }
-            let topCards = cardsByOrder[.top, default: []].map { DashboardCardModel.dynamic($0) }
-            let bottomCards = cardsByOrder[.bottom, default: []].map { DashboardCardModel.dynamic($0) }
+            let cardsByOrder = Dictionary(grouping: cards) { card -> BlogDashboardRemoteEntity.BlogDashboardDynamic.Order in
+                guard case .dynamic(let model) = card, let order = model.payload.order else {
+                    return .bottom
+                }
+                return order
+            }
+            let topCards = cardsByOrder[.top, default: []]
+            let bottomCards = cardsByOrder[.bottom, default: []]
 
             // Adds "top" cards at the beginning of the list.
             allCards = topCards + allCards
@@ -165,19 +175,19 @@ private extension BlogDashboardService {
         return .normal(.init(cardType: card, dotComID: dotComID, entity: entity))
     }
 
-    func dashboardDynamicCardModel(
+    func dashboardCardModel(
         for blog: Blog,
         payload: DashboardDynamicCardModel.Payload,
-        dotComID: Int
-    ) -> DashboardDynamicCardModel? {
-        guard DashboardCard.dynamic.shouldShow(
-            for: blog,
-            dynamicCardPayload: payload,
-            isJetpack: isJetpack
-        ) else {
+        dotComID: Int,
+        personalizationService: BlogDashboardPersonalizationService
+    ) -> DashboardCardModel? {
+        let model: DashboardCardModel = .dynamic(.init(payload: payload, dotComID: dotComID))
+        guard model.cardType.shouldShow(for: blog, dynamicCardPayload: payload, isJetpack: isJetpack),
+              personalizationService.isEnabled(model)
+        else {
             return nil
         }
-        return .init(payload: payload, dotComID: dotComID)
+        return model
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {

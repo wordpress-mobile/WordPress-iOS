@@ -87,17 +87,6 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    /// Specifies whether the card settings should be applied across
-    /// different sites or only to a particular site.
-    var settingsType: SettingsType {
-        switch self {
-        case .googleDomains:
-            return .siteGeneric
-        default:
-            return .siteSpecific
-        }
-    }
-
     func shouldShow(
         for blog: Blog,
         apiResponse: BlogDashboardRemoteEntity? = nil,
@@ -224,11 +213,6 @@ enum DashboardCard: String, CaseIterable {
             }
         }
     }
-
-    enum SettingsType {
-        case siteSpecific
-        case siteGeneric
-    }
 }
 
 private extension BlogDashboardRemoteEntity {
@@ -252,3 +236,12 @@ private extension BlogDashboardRemoteEntity {
         return (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
     }
  }
+
+// MARK: - BlogDashboardAnalyticPropertiesProviding Protocol Conformance
+
+extension DashboardCard: BlogDashboardAnalyticPropertiesProviding {
+
+    var analyticProperties: [AnyHashable: Any] {
+        return ["card": rawValue]
+    }
+}
