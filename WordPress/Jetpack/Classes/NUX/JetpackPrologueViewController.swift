@@ -27,7 +27,7 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var logoImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "jetpack-logo"))
+        let imageView = UIImageView(image: UIImage(named: "wp-jp-circular-lockup"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -37,7 +37,8 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var logoWidthConstraint: NSLayoutConstraint = {
-        let width = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
+//        let width = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
+        let width: CGFloat = 132.35
         return logoImageView.widthAnchor.constraint(equalToConstant: width)
     }()
 
@@ -95,9 +96,11 @@ class JetpackPrologueViewController: UIViewController {
         // constraints
         NSLayoutConstraint.activate([
             logoWidthConstraint,
-            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
+//            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
+            logoImageView.heightAnchor.constraint(equalToConstant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
+//            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 135)
         ])
     }
 

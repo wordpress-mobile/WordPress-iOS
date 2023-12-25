@@ -5,9 +5,8 @@ struct JetpackPromptsConfiguration {
 
     enum Constants {
         // alternate colors in rows
-        static let evenColor = UIColor.muriel(color: .jetpackGreen, .shade50)
-        static let oddColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50).withAlphaComponent(0.5),
-                                      dark: .muriel(color: .jetpackGreen, .shade20))
+        static let evenColor = UIColor(hexString: "3858E3")
+        static let oddColor = UIColor.muriel(color: .jetpackGreen, .shade40)
 
         static let basePrompts = [
             NSLocalizedString("jetpack.prologue.prompt.updatePlugin",

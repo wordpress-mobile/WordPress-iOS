@@ -12,7 +12,7 @@ struct JetpackPrologueStyleGuide {
     static let gradientColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0), dark: .muriel(color: .jetpackGreen, .shade100))
 
     // Continue with WordPress button colors
-    static let continueFillColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50), dark: .white)
+    static let continueFillColor = JetpackPromptsConfiguration.Constants.evenColor!
     static let continueHighlightedFillColor = UIColor(light: .muriel(color: .jetpackGreen, .shade90), dark: whiteWithAlpha07)
     static let continueTextColor = UIColor(light: .white, dark: .muriel(color: .jetpackGreen, .shade80))
     static let continueHighlightedTextColor = whiteWithAlpha07
