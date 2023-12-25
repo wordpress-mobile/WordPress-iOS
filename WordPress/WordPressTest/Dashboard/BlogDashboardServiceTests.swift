@@ -89,8 +89,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let draftPostsCardItem = cards.first(where: {$0.cardType == .draftPosts})
-            let scheduledPostsCardItem = cards.first(where: {$0.cardType == .scheduledPosts})
+            let draftPostsCardItem = cards.first(where: { $0.cardType == .draftPosts })?.normal()
+            let scheduledPostsCardItem = cards.first(where: { $0.cardType == .scheduledPosts })?.normal()
 
             // Posts section exists
             XCTAssertNotNil(draftPostsCardItem)
@@ -126,7 +126,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let pagesCardItem = cards.first(where: {$0.cardType == .pages})
+            let pagesCardItem = cards.first(where: { $0.cardType == .pages })?.normal()
 
             // Pages section exists
             XCTAssertNotNil(pagesCardItem)
@@ -149,7 +149,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
+            guard let activityCardItem = cards.first(where: { $0.cardType == .activityLog })?.normal() else {
                 return XCTFail("Unexpectedly found nil Optional")
             }
 
@@ -189,7 +189,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
+            let todaysStatsItem = cards.first(where: { $0.cardType == .todaysStats })?.normal()
 
             // Todays stats section exists
             XCTAssertNotNil(todaysStatsItem)
@@ -409,6 +409,83 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Dynamic Cards
+
+    func testDynamicCardsPresenceWhenRemoteFeatureFlagIsEnabled() throws {
+        let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            XCTAssertEqual(cards[0].dynamic()?.payload.id, "id_12345")
+            XCTAssertEqual(cards[1].dynamic()?.payload.id, "id_67890")
+            XCTAssertEqual(cards[cards.endIndex - 2].dynamic()?.payload.id, "id_13579")
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testDynamicCardsAbsenceWhenRemoteFeatureFlagIsDisabled() throws {
+        let expect = expectation(description: "No dynamic card should be present")
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let dynamicCards = cards.compactMap { $0.dynamic() }
+            XCTAssertTrue(dynamicCards.isEmpty)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testDecodingWithDynamicCards() throws {
+        let expect = expectation(description: "Dynamic card should be successfully decoded")
+        remoteServiceMock.respondWith = .withOnlyOneDynamicCard
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            do {
+                let card = try XCTUnwrap(cards.first?.dynamic())
+                let payload = card.payload
+                let expected = BlogDashboardRemoteEntity.BlogDashboardDynamic(
+                    id: "id_12345",
+                    remoteFeatureFlag: "feature_flag_12345",
+                    title: "Title 12345",
+                    featuredImage: "https://example.com/image12345",
+                    url: "https://example.com/url12345",
+                    action: "Action 12345",
+                    order: .top,
+                    rows: [
+                        .init(
+                            title: "Row Title 1",
+                            description: nil,
+                            icon: "https://example.com/icon12345"
+                        ),
+                        .init(
+                            title: "Row Title 2",
+                            description: "Row Description 2",
+                            icon: nil
+                        )
+                    ]
+                )
+                XCTAssertEqual(payload, expected)
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     // MARK: - Local Pages
 
     // TODO: Add test to check that local pages are considered if no pages are returned from the endpoint
@@ -432,6 +509,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
+        case withOnlyOneDynamicCard = "dashboard-200-with-only-one-dynamic-card.json"
+        case withMultipleDynamicCards = "dashboard-200-with-multiple-dynamic-cards.json"
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
         case withoutPosts = "dashboard-200-without-posts.json"

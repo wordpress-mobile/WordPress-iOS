@@ -1,7 +1,34 @@
 import Foundation
 
+enum DashboardCardModel: Hashable {
+
+    case normal(DashboardNormalCardModel)
+    case dynamic(DashboardDynamicCardModel)
+
+    var cardType: DashboardCard {
+        switch self {
+        case .normal(let model): return model.cardType
+        case .dynamic: return .dynamic
+        }
+    }
+
+    func normal() -> DashboardNormalCardModel? {
+        guard case .normal(let model) = self else {
+            return nil
+        }
+        return model
+    }
+
+    func dynamic() -> DashboardDynamicCardModel? {
+        guard case .dynamic(let model) = self else {
+            return nil
+        }
+        return model
+    }
+}
+
 /// Represents a card in the dashboard collection view
-struct DashboardCardModel: Hashable {
+struct DashboardNormalCardModel: Hashable {
     let cardType: DashboardCard
     let dotComID: Int
     let apiResponse: BlogDashboardRemoteEntity?
@@ -24,7 +51,7 @@ struct DashboardCardModel: Hashable {
         self.apiResponse = entity
     }
 
-    static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
+    static func == (lhs: DashboardNormalCardModel, rhs: DashboardNormalCardModel) -> Bool {
         lhs.cardType == rhs.cardType &&
         lhs.dotComID == rhs.dotComID &&
         lhs.apiResponse == rhs.apiResponse
@@ -35,4 +62,12 @@ struct DashboardCardModel: Hashable {
         hasher.combine(dotComID)
         hasher.combine(apiResponse)
     }
+}
+
+struct DashboardDynamicCardModel: Hashable {
+
+    typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
+
+    let payload: Payload
+    let dotComID: Int
 }

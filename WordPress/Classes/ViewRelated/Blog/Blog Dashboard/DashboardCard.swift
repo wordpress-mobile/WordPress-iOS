@@ -7,6 +7,7 @@ import Foundation
 ///
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable {
+    case dynamic
     case jetpackInstall
     case quickStart
     case bloganuaryNudge = "bloganuary_nudge"
@@ -32,6 +33,8 @@ enum DashboardCard: String, CaseIterable {
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
+        case .dynamic:
+            return BlogDashboardDynamicCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .quickStart:
@@ -150,7 +153,20 @@ enum DashboardCard: String, CaseIterable {
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
             return FeatureFlag.googleDomainsCard.enabled && isJetpack
+        case .dynamic:
+            return false
         }
+    }
+
+    func shouldShow(
+        for blog: Blog,
+        dynamicCardPayload: DashboardDynamicCardModel.Payload,
+        isJetpack: Bool = AppConfiguration.isJetpack
+    ) -> Bool {
+        return self == .dynamic
+        && isJetpack
+        && RemoteDashboardCard.dynamic.supported(by: blog)
+        /* && Check if the current user has `dynamicCardPayload.remoteFeatureFlag` */
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
@@ -191,6 +207,7 @@ enum DashboardCard: String, CaseIterable {
         case posts
         case pages
         case activity
+        case dynamic
 
         func supported(by blog: Blog) -> Bool {
             switch self {
@@ -202,6 +219,8 @@ enum DashboardCard: String, CaseIterable {
                 return DashboardPagesListCardCell.shouldShowCard(for: blog)
             case .activity:
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
+            case .dynamic:
+                return RemoteFeatureFlag.dynamicDashboardCards.enabled()
             }
         }
     }
