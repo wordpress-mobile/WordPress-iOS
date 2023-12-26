@@ -5,15 +5,24 @@ struct AllDomainsListCardView: View {
 
     // MARK: - Types
 
-    struct ViewModel {
-
+    struct ViewModel: Identifiable {
+        let id = UUID()
         let name: String
         let description: String?
         let status: Status?
         let expiryDate: String?
+        let isPrimary: Bool
 
         typealias Status = DomainsService.AllDomainsListItem.Status
         typealias StatusType = DomainsService.AllDomainsListItem.StatusType
+
+        init(name: String, description: String?, status: Status?, expiryDate: String?, isPrimary: Bool = false) {
+            self.name = name
+            self.description = description
+            self.status = status
+            self.expiryDate = expiryDate
+            self.isPrimary = isPrimary
+        }
     }
 
     // MARK: - Properties
@@ -37,6 +46,7 @@ struct AllDomainsListCardView: View {
         VStack(alignment: .leading, spacing: Length.Padding.single) {
             domainText
             domainHeadline
+            primaryDomainLabel
             statusHStack
         }
     }
@@ -59,31 +69,37 @@ struct AllDomainsListCardView: View {
         }
     }
 
+    private var primaryDomainLabel: some View {
+        Group {
+            if viewModel.isPrimary {
+                PrimaryDomainView()
+            } else {
+                EmptyView()
+            }
+        }
+    }
+
     private var statusHStack: some View {
         HStack(spacing: Length.Padding.double) {
-            statusText
-            Spacer()
+            if let status = viewModel.status {
+                statusText(status: status)
+                Spacer()
+            }
             expirationText
         }
     }
 
-    private var statusText: some View {
-        Group {
-            if let status = viewModel.status {
-                HStack(spacing: Length.Padding.single) {
-                    Circle()
-                        .fill(status.type.indicatorColor)
-                        .frame(
-                            width: Length.Padding.single,
-                            height: Length.Padding.single
-                        )
-                    Text(status.value)
-                        .foregroundColor(status.type.textColor)
-                        .font(.subheadline.weight(status.type.fontWeight))
-                }
-            } else {
-                EmptyView()
-            }
+    private func statusText(status: DomainsService.AllDomainsListItem.Status) -> some View {
+        HStack(spacing: Length.Padding.single) {
+            Circle()
+                .fill(status.type.indicatorColor)
+                .frame(
+                    width: Length.Padding.single,
+                    height: Length.Padding.single
+                )
+            Text(status.value)
+                .foregroundColor(status.type.textColor)
+                .font(.subheadline.weight(status.type.fontWeight))
         }
     }
 
