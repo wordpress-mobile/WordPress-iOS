@@ -670,7 +670,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -979,7 +978,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -1549,12 +1547,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
-
-    /// For larger texts we don't show the quick actions row
-    if (detailSection.category == BlogDetailsSectionCategoryQuickAction && self.isAccessibilityCategoryEnabled) {
-        return 0;
-    }
-
     return [detailSection.rows count];
 }
 
