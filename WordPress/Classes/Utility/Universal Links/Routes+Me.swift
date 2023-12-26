@@ -7,13 +7,6 @@ struct MeRoute: Route {
     let jetpackPowered: Bool = false
 }
 
-struct MeAllDomainsRoute: Route {
-    let path = "/me/domains"
-    let section: DeepLinkSection? = .me
-    let action: NavigationAction = MeNavigationAction.allDomains
-    let jetpackPowered: Bool = true
-}
-
 struct MeAccountSettingsRoute: Route {
     let path = "/me/account"
     let section: DeepLinkSection? = .me
