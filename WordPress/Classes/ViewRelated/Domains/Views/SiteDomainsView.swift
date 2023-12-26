@@ -7,8 +7,7 @@ struct SiteDomainsView: View {
 
     @ObservedObject var blog: Blog
     @State var isShowingDomainSelectionWithType: DomainSelectionType?
-    @State var blogService = BlogService(coreDataStack: ContextManager.shared)
-    @State var domainsList: [Blog.DomainRepresentation] = []
+    @StateObject var viewModel: SiteDomainsViewModel
 
     // Property observer
     private func showingDomainSelectionWithType(to value: DomainSelectionType?) {
@@ -22,96 +21,85 @@ struct SiteDomainsView: View {
         case .none:
             break
         default:
-            // TODO: Analytics
             break
         }
     }
 
     var body: some View {
         List {
-            if blog.supports(.domains) {
-                makeSiteAddressSection(blog: blog)
+            if let freeDomainSection = viewModel.freeDomainSection {
+                makeDomainsListSection(section: freeDomainSection)
             }
-            makeDomainsSection(blog: blog)
-                .listRowInsets(Metrics.insets)
+            makeDomainsSections(blog: blog)
         }
         .listStyle(InsetGroupedListStyle())
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .onAppear {
-            updateDomainsList()
-
-            blogService.refreshDomains(for: blog, success: {
-                updateDomainsList()
-            }, failure: nil)
+            viewModel.refresh()
         }
         .sheet(item: $isShowingDomainSelectionWithType, content: { domainSelectionType in
             makeDomainSearch(for: blog, domainSelectionType: domainSelectionType, onDismiss: {
                 isShowingDomainSelectionWithType = nil
-                blogService.refreshDomains(for: blog, success: {
-                    updateDomainsList()
-                }, failure: nil)
+                viewModel.refresh()
             })
             .ignoresSafeArea()
         })
     }
 
     @ViewBuilder
-    private func makeDomainsSection(blog: Blog) -> some View {
+    private func makeDomainsSections(blog: Blog) -> some View {
         if blog.hasDomains {
-            makeDomainsListSection(blog: blog)
+            makeDomainsListSections(blog: blog)
         } else {
             makeGetFirstDomainSection(blog: blog)
         }
     }
 
-    /// Builds the site address section for the given blog
-    private func makeSiteAddressSection(blog: Blog) -> some View {
-        Section(footer: Text(TextContent.primarySiteSectionFooter(blog.hasPaidPlan))) {
-            VStack(alignment: .leading) {
-                Text(TextContent.siteAddressTitle)
-                Text(blog.freeSiteAddress)
-                    .bold()
-                if blog.freeDomainIsPrimary {
-                    ShapeWithTextView(title: TextContent.primaryAddressLabel)
-                        .smallRoundedRectangle()
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func makeDomainCell(domain: Blog.DomainRepresentation) -> some View {
-        VStack(alignment: .leading) {
-            Text(domain.domain.domainName)
-            if domain.domain.isPrimaryDomain {
-                ShapeWithTextView(title: TextContent.primaryAddressLabel)
-                    .smallRoundedRectangle()
-            }
-            makeExpiryRenewalLabel(domain: domain)
-        }
-    }
+    // MARK: - Domains Section
 
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
-    private func makeDomainsListSection(blog: Blog) -> some View {
+    private func makeDomainsListSections(blog: Blog) -> some View {
         let destination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
-        return Section(header: Text(TextContent.domainsListSectionHeader)) {
-            ForEach(domainsList) {
-                makeDomainCell(domain: $0)
+
+        return Group {
+            ForEach(viewModel.domainsSections) { section in
+                makeDomainsListSection(section: section)
             }
-            if blog.supports(.domains) {
-                DSButton(
-                    title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
-                    style: .init(
-                        emphasis: .tertiary,
-                        size: .small,
-                        isJetpack: AppConfiguration.isJetpack
-                    )) {
-                        $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
-                    }
-            }
+
+            DSButton(
+                title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
+                style: .init(
+                    emphasis: .tertiary,
+                    size: .small,
+                    isJetpack: AppConfiguration.isJetpack
+                )) {
+                    $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
+                }
         }
     }
+
+    private func makeDomainsListSection(section: SiteDomainsViewModel.Section) -> some View {
+        return Section {
+            AllDomainsListCardView(viewModel: section.card)
+        } header: {
+            if let title = section.title {
+                Text(title)
+                    .padding([.top, .horizontal], Length.Padding.double)
+                    .padding(.bottom, Length.Padding.half)
+            }
+        } footer: {
+            if let footer = section.footer {
+                Text(footer)
+                    .padding(.horizontal, Length.Padding.double)
+                    .padding(.vertical, Length.Padding.half)
+            }
+        }
+        .listRowInsets(.init())
+        .listSectionSpacingBackwardsCompatible(Length.Padding.double)
+    }
+
+    // MARK: - First Domain Section
 
     /// Builds the Get New Domain section when no othert domains are present for the given blog
     private func makeGetFirstDomainSection(blog: Blog) -> some View {
@@ -151,18 +139,6 @@ struct SiteDomainsView: View {
         return destinations
     }
 
-    private var siteAddressForGetFirstDomainSection: String {
-        blog.canRegisterDomainWithPaidPlan ? "" : blog.freeSiteAddress
-    }
-
-    private func makeExpiryRenewalLabel(domain: Blog.DomainRepresentation) -> some View {
-        let stringForDomain = DomainExpiryDateFormatter.expiryDate(for: domain.domain)
-
-        return Text(stringForDomain)
-                .font(.subheadline)
-                .foregroundColor(domain.domain.expirySoon || domain.domain.expired ? Color(UIColor.error) : Color(UIColor.textSubtle))
-    }
-
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
     private func makeDomainSearch(for blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> some View {
         return DomainSuggestionViewControllerWrapper(
@@ -170,10 +146,6 @@ struct SiteDomainsView: View {
             domainSelectionType: domainSelectionType,
             onDismiss: onDismiss
         )
-    }
-
-    private func updateDomainsList() {
-        domainsList = blog.domainsList
     }
 }
 
@@ -184,26 +156,10 @@ private extension SiteDomainsView {
     enum TextContent {
         // Navigation bar
         static let navigationTitle = NSLocalizedString("Site Domains", comment: "Title of the Domains Dashboard.")
-        // Site address section
-        static func primarySiteSectionFooter(_ paidPlan: Bool) -> String {
-            paidPlan ? "" : NSLocalizedString("Your primary site address is what visitors will see in their address bar when visiting your website.",
-                                                                        comment: "Footer of the primary site section in the Domains Dashboard.")
-        }
-
-        static let siteAddressTitle = NSLocalizedString("Your free WordPress.com address is",
-                                                        comment: "Title of the site address section in the Domains Dashboard.")
-        static let primaryAddressLabel = NSLocalizedString("Primary site address",
-                                                           comment: "Primary site address label, used in the site address section of the Domains Dashboard.")
 
         // Domains section
-        static let domainsListSectionHeader: String = NSLocalizedString("Your Site Domains",
-                                                                              comment: "Header of the domains list section in the Domains Dashboard.")
-        static let paidPlanDomainSectionFooter: String = NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",
-                                                                           comment: "Footer of the free domain registration section for a paid plan.")
-
         static let additionalRedirectedDomainTitle: String = NSLocalizedString("Add a domain",
                                                                                comment: "Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard.")
-
         static let firstFreeDomainWithPaidPlanDomainTitle: String = NSLocalizedString("site.domains.freeDomainWithPaidPlan.title",
                                                                                       value: "Get your domain",
                                                                                       comment: "Title of the card that starts the purchase of the first domain with a paid plan.")
@@ -255,7 +211,7 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     // MARK: - Init
 
     init(blog: Blog) {
-        super.init(rootView: .init(blog: blog))
+        super.init(rootView: .init(blog: blog, viewModel: .init(blog: blog, blogService: BlogService(coreDataStack: ContextManager.shared))))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -284,5 +240,21 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
 #endif
+    }
+}
+
+private extension View {
+    func listSectionSpacingBackwardsCompatible(_ spacing: CGFloat) -> some View {
+        if #available(iOS 17.0, *) {
+            return listSectionSpacing(spacing)
+        } else {
+            var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            layoutConfig.headerMode = .supplementary
+            layoutConfig.headerTopPadding = spacing
+            layoutConfig.footerMode = .supplementary
+            let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
+            UICollectionView.appearance(whenContainedInInstancesOf: [UIHostingController<SiteDomainsView>.self]).collectionViewLayout = listLayout
+            return self
+        }
     }
 }
