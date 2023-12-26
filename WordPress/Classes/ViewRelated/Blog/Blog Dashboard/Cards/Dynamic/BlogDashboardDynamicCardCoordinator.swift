@@ -42,7 +42,7 @@ private extension BlogDashboardDynamicCardCoordinator {
 
     private static var firedAnalyticEvents = Set<DashboardDynamicCardAnalyticsEvent>()
 
-    func track(_ event: DashboardDynamicCardAnalyticsEvent, frequency: DashboardDynamicCardAnalyticsTrackingFrequency = .multipleTimesPerSession) {
+    func track(_ event: DashboardDynamicCardAnalyticsEvent, frequency: TrackingFrequency = .multipleTimesPerSession) {
         guard frequency == .multipleTimesPerSession || (frequency == .oncePerSession && !Self.firedAnalyticEvents.contains(event)) else {
             return
         }
@@ -50,7 +50,7 @@ private extension BlogDashboardDynamicCardCoordinator {
         Self.firedAnalyticEvents.insert(event)
     }
 
-    enum DashboardDynamicCardAnalyticsTrackingFrequency {
+    enum TrackingFrequency {
         case oncePerSession
         case multipleTimesPerSession
     }
