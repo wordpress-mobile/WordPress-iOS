@@ -1035,15 +1035,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addNullableObject:[self jetpackCardSectionViewModel]];
     }
 
-    // This code will be removed in a future PR.
-//    if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
-//        if (!self.hasLoggedDomainCreditPromptShownEvent) {
-//            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
-//            self.hasLoggedDomainCreditPromptShownEvent = YES;
-//        }
-//        [marr addNullableObject:[self domainCreditSectionViewModel]];
-//    }
-
     if ([self shouldShowQuickStartChecklist]) {
         [marr addNullableObject:[self quickStartSectionViewModel]];
     }

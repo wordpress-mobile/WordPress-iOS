@@ -20,7 +20,7 @@ public class LoginEpilogueScreen: ScreenObject {
     }
 
     private let siteNameSearchFieldGetter: (XCUIApplication) -> XCUIElement = {
-        $0.searchFields["Type a name for your site"]
+        $0.searchFields.firstMatch
     }
 
     private let createSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -112,7 +112,7 @@ public class LoginEpilogueScreen: ScreenObject {
     public func chooseDomainName(_ domainName: String) -> Self {
         siteNameSearchField.tap()
         siteNameSearchField.typeText(domainName)
-        app.staticTexts[domainName] .tap()
+        app.staticTexts[domainName].tap()
         createSiteButton.tap()
 
         return self

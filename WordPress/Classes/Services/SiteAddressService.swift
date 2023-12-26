@@ -17,18 +17,13 @@ struct SiteAddressServiceResult {
 typealias SiteAddressServiceCompletion = (Result<SiteAddressServiceResult, Error>) -> Void
 
 protocol SiteAddressService {
-    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion)
+    func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion)
 }
 
 // MARK: - MockSiteAddressService
 
 final class MockSiteAddressService: SiteAddressService {
-    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
-        completion(.success(SiteAddressServiceResult(hasExactMatch: true, domainSuggestions: mockAddresses)))
-    }
-
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
+    func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion) {
         completion(.success(SiteAddressServiceResult(hasExactMatch: true, domainSuggestions: mockAddresses)))
     }
 
@@ -50,11 +45,6 @@ private extension DomainSuggestion {
 final class DomainsServiceAdapter: SiteAddressService {
 
     // MARK: Properties
-
-    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
-    private var domainPurchasingEnabled: Bool {
-        RemoteFeatureFlag.plansInSiteCreation.enabled()
-    }
 
     /**
      Corresponds to:
@@ -98,38 +88,18 @@ final class DomainsServiceAdapter: SiteAddressService {
 
     // MARK: SiteAddressService
 
-    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
-
-        domainsService.getDomainSuggestions(query: query,
-                                            segmentID: segmentID,
-                                            quantity: domainRequestQuantity,
-                                            success: { domainSuggestions in
-                                                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
-                                            },
-                                            failure: { error in
-                                                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                                                    completion(Result.success(SiteAddressServiceResult()))
-                                                    return
-                                                }
-
-                                                completion(Result.failure(error))
-                                            })
-    }
-
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-        let domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = domainPurchasingEnabled
-        ? .freeAndPaid
-        : .wordPressDotComAndDotBlogSubdomains
+    func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion) {
         domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
-                                            domainSuggestionType: domainSuggestionType,
+                                            domainSuggestionType: type,
                                             success: { domainSuggestions in
-            if self.domainPurchasingEnabled {
+            switch type {
+            case .freeAndPaid:
                 let hasExactMatch = domainSuggestions.contains { domain -> Bool in
                     return domain.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame
                 }
                 completion(Result.success(.init(hasExactMatch: hasExactMatch, domainSuggestions: domainSuggestions)))
-            } else {
+            default:
                 completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
             }
         },
