@@ -6,6 +6,7 @@ final class BlogDashboardDynamicCardCoordinator {
 
     private let analyticsTracker: AnalyticsEventTracking.Type
     private let model: DashboardDynamicCardModel
+    private let linkRouter: LinkRouter
 
     private weak var viewController: UIViewController?
 
@@ -13,9 +14,11 @@ final class BlogDashboardDynamicCardCoordinator {
 
     init(viewController: UIViewController?,
          model: DashboardDynamicCardModel,
+         linkRouter: LinkRouter = UniversalLinkRouter.shared,
          analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self) {
         self.viewController = viewController
         self.model = model
+        self.linkRouter = linkRouter
         self.analyticsTracker = analyticsTracker
     }
 
@@ -44,7 +47,7 @@ final class BlogDashboardDynamicCardCoordinator {
     }
 
     private func routeToCardDestination(url: URL) {
-        if UniversalLinkRouter.shared.canHandle(url: url) {
+        if linkRouter.canHandle(url: url) {
             routeToUniversalURL(url: url)
         } else {
             routeToWebView(url: url)
@@ -65,7 +68,7 @@ final class BlogDashboardDynamicCardCoordinator {
     private func routeToUniversalURL(url: URL) {
         if let urlString = model.payload.url,
            let url = URL(string: urlString) {
-            UniversalLinkRouter.shared.handle(url: url)
+            linkRouter.handle(url: url, shouldTrack: true, source: nil)
         }
     }
 }
