@@ -9,35 +9,45 @@ final class SiteDomainsViewModel: ObservableObject {
         let card: AllDomainsListCardView.ViewModel
     }
 
-    @Published
-    private(set) var sections: [Section]
+    private let blogService: BlogService
+    private let blog: Blog
 
-    init(blog: Blog) {
-        self.sections = Self.buildSections(from: blog)
+    @Published
+    private(set) var freeDomainSection: Section?
+    @Published
+    private(set) var domainsSections: [Section]
+
+    init(blog: Blog, blogService: BlogService) {
+        self.freeDomainSection = Self.buildFreeDomainSection(from: blog)
+        self.domainsSections = Self.buildDomainsSections(from: blog)
+        self.blog = blog
+        self.blogService = blogService
+    }
+
+    func refresh() {
+        blogService.refreshDomains(for: blog, success: { [weak self] in
+            guard let self else { return }
+            self.freeDomainSection = Self.buildFreeDomainSection(from: blog)
+            self.domainsSections = Self.buildDomainsSections(from: blog)
+        }, failure: nil)
     }
 
     // MARK: - Sections
 
-    private static func buildSections(from blog: Blog) -> [Section] {
-        return buildFreeDomainSection(from: blog) + buildDomainsSections(from: blog)
-    }
+    private static func buildFreeDomainSection(from blog: Blog) -> Section? {
+        guard let freeDomain = blog.freeDomain else { return nil }
 
-    private static func buildFreeDomainSection(from blog: Blog) -> [Section] {
-        guard let freeDomain = blog.freeDomain else { return [] }
-
-        return [
-            Section(
-                title: Strings.freeDomainSectionTitle,
-                footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
-                card: .init(
-                    name: blog.freeSiteAddress,
-                    description: nil,
-                    status: nil,
-                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
-                    isPrimary: freeDomain.isPrimaryDomain
-                )
+        return Section(
+            title: Strings.freeDomainSectionTitle,
+            footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
+            card: .init(
+                name: blog.freeSiteAddress,
+                description: nil,
+                status: nil,
+                expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
+                isPrimary: freeDomain.isPrimaryDomain
             )
-        ]
+        )
     }
 
     private static func buildDomainsSections(from blog: Blog) -> [Section] {
