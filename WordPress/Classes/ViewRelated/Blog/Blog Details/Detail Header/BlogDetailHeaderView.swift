@@ -100,13 +100,13 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Initializers
 
-    required init(items: [ActionRow.Item], delegate: BlogDetailHeaderViewDelegate) {
+    required init(delegate: BlogDetailHeaderViewDelegate) {
         titleView = TitleView(frame: .zero)
 
         super.init(frame: .zero)
 
         self.delegate = delegate
-        setupChildViews(items: items)
+        setupChildViews()
     }
 
     required init?(coder: NSCoder) {
@@ -115,7 +115,7 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Child View Initialization
 
-    private func setupChildViews(items: [ActionRow.Item]) {
+    private func setupChildViews() {
         assert(delegate != nil)
 
         if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
@@ -145,17 +145,15 @@ class BlogDetailHeaderView: UIView {
 
         addSubview(titleView)
 
-        let showsActionRow = items.count > 0
-        setupConstraintsForChildViews(showsActionRow)
+        setupConstraintsForChildViews()
     }
 
     // MARK: - Constraints
 
     private var topActionRowConstraint: NSLayoutConstraint?
 
-    private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
+    private func setupConstraintsForChildViews() {
         let constraints = constraintsForTitleView()
-
         NSLayoutConstraint.activate(constraints)
     }
 
