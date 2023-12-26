@@ -334,8 +334,6 @@
 		08BBA3512A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BBA34F2A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift */; };
 		08C3886A1ED78EE70057BE49 /* Media+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+Extensions.m */; };
 		08C42C31281807880034720B /* ReaderSubscribeCommentsActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */; };
-		08C437162B32283300273E9D /* Routes+Domains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C437152B32283300273E9D /* Routes+Domains.swift */; };
-		08C437172B32283300273E9D /* Routes+Domains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C437152B32283300273E9D /* Routes+Domains.swift */; };
 		08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
 		08CBC77A29AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
@@ -6022,7 +6020,6 @@
 		08C388681ED78EE70057BE49 /* Media+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+Extensions.h"; sourceTree = "<group>"; };
 		08C388691ED78EE70057BE49 /* Media+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+Extensions.m"; sourceTree = "<group>"; };
 		08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscribeCommentsActionTests.swift; sourceTree = "<group>"; };
-		08C437152B32283300273E9D /* Routes+Domains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Domains.swift"; sourceTree = "<group>"; };
 		08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEmptySiteTemplate.swift; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
 		08CC67781C49B65A00153AD7 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
@@ -10658,7 +10655,6 @@
 				174C11922624C78900346EC6 /* Routes+Start.swift */,
 				1715179120F4B2EB002C4A38 /* Routes+Stats.swift */,
 				17B7C89D20EC1D0D0042E260 /* UniversalLinkRouter.swift */,
-				08C437152B32283300273E9D /* Routes+Domains.swift */,
 			);
 			path = "Universal Links";
 			sourceTree = "<group>";
@@ -22049,7 +22045,6 @@
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				C81CCD7D243BF7A600A83E27 /* TenorDataSource.swift in Sources */,
 				9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */,
-				08C437162B32283300273E9D /* Routes+Domains.swift in Sources */,
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				98B11B892216535100B7F2D7 /* StatsChildRowsView.swift in Sources */,
@@ -25517,7 +25512,6 @@
 				FADFBD3C265F5B2E00039C41 /* WPStyleGuide+Jetpack.swift in Sources */,
 				FABB257B2602FC2C00C8785C /* WPAccount.m in Sources */,
 				80C523A529959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
-				08C437172B32283300273E9D /* Routes+Domains.swift in Sources */,
 				FABB257C2602FC2C00C8785C /* CLPlacemark+Formatting.swift in Sources */,
 				0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */,
 				FABB257D2602FC2C00C8785C /* SiteStatsDetailTableViewController.swift in Sources */,
