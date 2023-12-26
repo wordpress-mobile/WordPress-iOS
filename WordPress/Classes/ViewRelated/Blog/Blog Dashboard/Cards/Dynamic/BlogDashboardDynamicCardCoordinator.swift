@@ -27,12 +27,46 @@ final class BlogDashboardDynamicCardCoordinator {
 
     func didTapCard() {
         let payload = model.payload
+        if let urlString = model.payload.url,
+           let url = URL(string: urlString) {
+            routeToCardDestination(url: url)
+        }
         self.track(.cardTapped(id: payload.id, url: payload.url))
     }
 
     func didTapCardCTA() {
         let payload = model.payload
+        if let urlString = model.payload.url,
+           let url = URL(string: urlString) {
+            routeToCardDestination(url: url)
+        }
         self.track(.cardCtaTapped(id: payload.id, url: payload.url))
+    }
+
+    private func routeToCardDestination(url: URL) {
+        if UniversalLinkRouter.shared.canHandle(url: url) {
+            routeToUniversalURL(url: url)
+        } else {
+            routeToWebView(url: url)
+        }
+    }
+
+    private func routeToWebView(url: URL) {
+        guard UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "dashboard")
+        let navController = UINavigationController(rootViewController: controller)
+        viewController?.present(navController, animated: true)
+    }
+
+    private func routeToUniversalURL(url: URL) {
+        if let urlString = model.payload.url,
+           let url = URL(string: urlString) {
+            UniversalLinkRouter.shared.handle(url: url)
+        }
     }
 }
 
