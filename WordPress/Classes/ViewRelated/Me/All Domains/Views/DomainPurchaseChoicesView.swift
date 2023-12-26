@@ -1,6 +1,10 @@
 import SwiftUI
 import DesignSystem
 
+class DomainPurchaseChoicesViewModel: ObservableObject {
+    @Published var isGetDomainLoading: Bool = false
+}
+
 struct DomainPurchaseChoicesView: View {
     private enum Constants {
         static let imageLength: CGFloat = 36
