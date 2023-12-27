@@ -6,7 +6,6 @@
 * [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
 
-
 23.9
 -----
 * [**] Updates the My Site header to show site actions in a context menu [#22151]
