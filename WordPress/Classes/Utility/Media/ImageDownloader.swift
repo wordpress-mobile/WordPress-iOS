@@ -102,7 +102,50 @@ actor ImageDownloader {
 
     // MARK: - Networking
 
+    private final class ImageDataTask {
+        var subscriptions = Set<UUID>()
+        var isCancelled = false
+        var task: Task<Data, Error>
+
+        init(subscriptions: Set<UUID> = Set<UUID>(), isCancelled: Bool = false, task: Task<Data, Error>) {
+            self.subscriptions = subscriptions
+            self.isCancelled = isCancelled
+            self.task = task
+        }
+    }
+
+    private var tasks: [String: ImageDataTask] = [:]
+
     private func data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
+        let requestKey = request.urlRequest?.url?.absoluteString ?? ""
+        let subscriptionID = UUID()
+        let task = tasks[requestKey] ?? ImageDataTask(task: Task {
+            try await self._data(for: request, options: options, key: requestKey)
+        })
+        task.subscriptions.insert(subscriptionID)
+        tasks[requestKey] = task
+
+        return try await withTaskCancellationHandler {
+            try await task.task.value
+        } onCancel: {
+            Task {
+                await self.unsubscribe(subscriptionID, key: requestKey)
+            }
+        }
+    }
+
+    private func unsubscribe(_ subscriptionID: UUID, key: String) {
+        guard let task = tasks[key],
+              task.subscriptions.remove(subscriptionID) != nil,
+              task.subscriptions.isEmpty else {
+            return
+        }
+        task.task.cancel()
+        tasks[key] = nil
+    }
+
+    private func _data(for request: URLRequest, options: ImageRequestOptions, key: String) async throws -> Data {
+        defer { tasks[key] = nil }
         let session = options.isDiskCacheEnabled ? urlSessionWithCache : urlSession
         let (data, response) = try await session.data(for: request)
         try validate(response: response)
