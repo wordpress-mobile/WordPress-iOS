@@ -12,10 +12,7 @@ class ImageDownloaderTests: CoreDataTestCase {
         sut = ImageDownloader(cache: cache)
     }
 
-    // TODO: test canellation
     // TODO: test coalescing
-    // TODO: test caching
-    // TODO: test resizing
 
     override func tearDown() {
         super.tearDown()
@@ -70,6 +67,35 @@ class ImageDownloaderTests: CoreDataTestCase {
         } catch {
             XCTAssertEqual((error as? URLError)?.code, .cancelled)
         }
+    }
+
+    func testMemoryCache() async throws {
+        // GIVEN
+        let imageURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        try mockResponse(withResource: "test-image", fileExtension: "jpg")
+
+        let size = CGSize(width: 256, height: 256)
+        let options = ImageRequestOptions(
+            size: size,
+            isMemoryCacheEnabled: true,
+            isDiskCacheEnabled: false
+        )
+        _ = try await sut.image(from: imageURL, options: options)
+
+        // THEN resized image is stored in memory cache
+        XCTAssertEqual(sut.cachedImage(for: imageURL, size: size)?.size, CGSize(width: 386, height: 256))
+
+        // GIVEN
+        HTTPStubs.removeAllStubs()
+        stub(condition: { _ in true }, response: { _ in
+            HTTPStubsResponse(error: URLError(.unknown))
+        })
+
+        // WHEN
+        let image = try await sut.image(from: imageURL, options: options)
+
+        // THEN resized image is returned from memory cache
+        XCTAssertEqual(image.size, CGSize(width: 386, height: 256))
     }
 
     // MARK: - Helpers
