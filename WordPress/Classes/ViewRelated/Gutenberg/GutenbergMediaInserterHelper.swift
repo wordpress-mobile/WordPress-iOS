@@ -13,8 +13,6 @@ class GutenbergMediaInserterHelper: NSObject {
     ///
     fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
-    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
-
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg

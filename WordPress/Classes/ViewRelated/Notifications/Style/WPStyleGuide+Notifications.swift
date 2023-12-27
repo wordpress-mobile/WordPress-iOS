@@ -25,8 +25,6 @@ extension WPStyleGuide {
         public static let noteBackgroundReadColor   = UIColor.ungroupedListBackground
         public static let noteBackgroundUnreadColor = UIColor.ungroupedListUnread
 
-        public static let noteSeparatorColor        = blockSeparatorColor
-
         // Notification undo overlay
         public static let noteUndoBackgroundColor   = UIColor.error
         public static let noteUndoTextColor         = UIColor.white
