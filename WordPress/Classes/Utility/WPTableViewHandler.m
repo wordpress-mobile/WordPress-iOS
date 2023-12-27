@@ -1,3 +1,4 @@
+#import <CoreData/CoreData.h>
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"

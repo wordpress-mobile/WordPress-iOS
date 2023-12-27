@@ -1,3 +1,4 @@
+#import <CoreData/CoreData.h>
 #import "BlogSelectorViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPBlogTableViewCell.h"

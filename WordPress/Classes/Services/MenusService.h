@@ -1,3 +1,4 @@
+#import <CoreData/CoreData.h>
 #import "LocalCoreDataService.h"
 
 NS_ASSUME_NONNULL_BEGIN
