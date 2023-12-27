@@ -91,7 +91,7 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
     private func startPrefetching(for media: Media) {
         if let task = prefetchingTask {
             // Give the task a chance to complete and/or the new task
-            // to subscrive to the underlying network task
+            // to subscribe to the underlying network task
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 task.cancel()
             }
