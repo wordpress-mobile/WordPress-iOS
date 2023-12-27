@@ -2,6 +2,8 @@
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 
+@import NSObject_SafeExpectations;
+
 static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 
 @implementation BlogToJetpackAccount
