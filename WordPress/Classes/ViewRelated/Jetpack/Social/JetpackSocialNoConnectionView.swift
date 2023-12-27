@@ -107,15 +107,10 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
 
             for task in downloadTasks {
                 let (url, index) = task
-                WPImageSource.shared().downloadImage(for: url) { image in
-                    guard let image else {
-                        return
-                    }
-                    DispatchQueue.main.async {
+                Task { @MainActor in
+                    if let image = try? await ImageDownloader.shared.image(from: url) {
                         self.icons[index] = image
                     }
-                } failure: { error in
-                    DDLogError("Error downloading icon: \(String(describing: error))")
                 }
             }
         }
