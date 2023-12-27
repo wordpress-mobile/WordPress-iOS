@@ -79,7 +79,7 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let current = (viewController as! MediaItemViewController).media
-        guard let media = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: current) else {
+         guard let media = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: current) else {
             return nil
         }
         if let next = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: media) {
