@@ -912,18 +912,6 @@ private extension OldReaderPostCardCell {
         reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
-    func followLabel() -> String {
-        return followButtonIsSelected() ? followingLabel() : notFollowingLabel()
-    }
-
-    func followingLabel() -> String {
-        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
-    }
-
-    func notFollowingLabel() -> String {
-        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
-    }
-
     func followHint() -> String {
         return followButtonIsSelected() ? unfollow(): follow()
     }

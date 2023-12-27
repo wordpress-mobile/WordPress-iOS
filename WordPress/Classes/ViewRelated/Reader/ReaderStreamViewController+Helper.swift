@@ -175,11 +175,3 @@ extension ReaderStreamViewController {
         WPAnalytics.trackReader(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
     }
 }
-
-private extension ReaderStreamViewController {
-
-    struct Constants {
-        // The number of characters allowed for the horizontal layout.
-        static let tagStreamHeaderHorizontalLengthLimit = 10
-    }
-}
