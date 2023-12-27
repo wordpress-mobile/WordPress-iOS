@@ -81,21 +81,16 @@ struct SiteDomainsView: View {
 
     private func makeDomainsListSection(section: SiteDomainsViewModel.Section) -> some View {
         return Section {
-            AllDomainsListCardView(viewModel: section.card)
+            AllDomainsListCardView(viewModel: section.card, padding: 0)
         } header: {
             if let title = section.title {
                 Text(title)
-                    .padding([.top, .horizontal], Length.Padding.double)
-                    .padding(.bottom, Length.Padding.half)
             }
         } footer: {
             if let footer = section.footer {
                 Text(footer)
-                    .padding(.horizontal, Length.Padding.double)
-                    .padding(.vertical, Length.Padding.half)
             }
         }
-        .listRowInsets(.init())
         .listSectionSpacingBackwardsCompatible(Length.Padding.double)
     }
 

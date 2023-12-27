@@ -28,18 +28,20 @@ struct AllDomainsListCardView: View {
     // MARK: - Properties
 
     private let viewModel: ViewModel
+    private let padding: CGFloat
 
     // MARK: - Init
 
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, padding: CGFloat = Length.Padding.double) {
         self.viewModel = viewModel
+        self.padding = padding
     }
 
     // MARK: - Views
 
     var body: some View {
         textContainerVStack
-            .padding(Length.Padding.double)
+            .padding(padding)
     }
 
     private var textContainerVStack: some View {
