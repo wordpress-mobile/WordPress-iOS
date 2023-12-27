@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.1/sites/106707880/stats/top-authors/*",
+    "urlPath": "/rest/v1.1/sites/106707880/stats/top-authors/",
     "queryParameters": {
       "period": {
         "equalTo": "day"
