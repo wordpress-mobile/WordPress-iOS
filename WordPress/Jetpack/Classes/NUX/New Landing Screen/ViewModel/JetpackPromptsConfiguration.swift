@@ -1,11 +1,12 @@
 import SwiftUI
+import DesignSystem
 
 /// Text and constants for animated prompts in the Jetpack prologue screen
 struct JetpackPromptsConfiguration {
 
     enum Constants {
         // alternate colors in rows
-        static let evenColor = UIColor(hexString: "3858E3")
+        static let evenColor = UIColor.DS.Background.brand(isJetpack: false)
         static let oddColor = UIColor.muriel(color: .jetpackGreen, .shade40)
 
         static let basePrompts = [
