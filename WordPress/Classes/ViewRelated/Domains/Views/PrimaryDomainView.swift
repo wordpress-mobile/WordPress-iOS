@@ -17,6 +17,8 @@ struct PrimaryDomainView: View {
         }
         .background(Color.DS.Background.secondary)
         .clipShape(RoundedRectangle(cornerRadius: Length.Radius.small))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Strings.primaryDomain)
     }
 }
 
