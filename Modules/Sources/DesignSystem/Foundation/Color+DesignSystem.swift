@@ -40,6 +40,10 @@ public extension Color {
         private static func colorWithModuleBundle(colorName: String) -> Color {
             Color(colorName, bundle: .module)
         }
+
+        public static func custom(_ colorName: String) -> Color {
+            return colorWithModuleBundle(colorName: colorName)
+        }
     }
 }
 

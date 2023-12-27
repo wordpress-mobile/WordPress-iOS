@@ -57,17 +57,17 @@ public struct DSButton: View {
                 ProgressView()
                     .tint(Color.white)
             } else {
-                buttonText
-                    .foregroundStyle(
-                        style.foregroundColor
-                            .opacity(foregroundOpacity)
-                    )
-                    .padding(
-                        .horizontal,
-                        style.size == .small
-                        ? Length.Padding.split
-                        : Length.Padding.medium
-                    )
+                if style.emphasis != .tertiary {
+                    buttonText
+                        .padding(
+                            .horizontal,
+                            style.size == .small
+                            ? Length.Padding.split
+                            : Length.Padding.medium
+                        )
+                } else {
+                    buttonText
+                }
             }
         }
         .frame(
@@ -95,6 +95,10 @@ public struct DSButton: View {
             weight = .regular
         }
         return Text(title).style(textStyle(weight))
+            .foregroundStyle(
+                style.foregroundColor
+                    .opacity(foregroundOpacity)
+            )
     }
 
     @ViewBuilder
