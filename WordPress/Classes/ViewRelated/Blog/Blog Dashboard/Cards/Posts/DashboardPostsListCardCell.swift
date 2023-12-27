@@ -72,7 +72,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         frameView.add(subview: tableView)
 
         contentView.addSubview(frameView)
-        contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
+        contentView.pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
     }
 
     func trackPostsDisplayed() {
@@ -223,7 +223,5 @@ private extension DashboardPostsListCardCell {
 
     enum Constants {
         static let iconSize = CGSize(width: 18, height: 18)
-        static let constraintPriority = UILayoutPriority(999)
-        static let numberOfPosts = 3
     }
 }

@@ -479,10 +479,6 @@ extension WPStyleGuide {
         public static let subtextTextStyle: UIFont.TextStyle = .caption1
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline
 
-        public static let crossPostTitleTextStyle: UIFont.TextStyle = .body
-        public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .caption1
-        public static let crossPostLineSpacing: CGFloat = 2.0
-
         public static let actionButtonSize: CGSize = CGSize(width: 20, height: 20)
     }
 

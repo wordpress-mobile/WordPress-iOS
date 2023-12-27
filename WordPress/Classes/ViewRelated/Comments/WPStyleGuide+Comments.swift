@@ -13,18 +13,5 @@ extension WPStyleGuide {
 
         static let detailFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let detailTextColor = UIColor.textSubtle
-
-        private static let titleTextColor = UIColor.text
-        private static let titleTextStyle = UIFont.TextStyle.headline
-
-        static let titleBoldAttributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(titleTextStyle, fontWeight: .semibold),
-            .foregroundColor: titleTextColor
-        ]
-
-        static let titleRegularAttributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(titleTextStyle, fontWeight: .regular),
-            .foregroundColor: titleTextColor
-        ]
     }
 }

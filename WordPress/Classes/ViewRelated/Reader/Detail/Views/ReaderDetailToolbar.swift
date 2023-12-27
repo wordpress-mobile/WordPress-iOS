@@ -388,14 +388,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: true)
     }
 
-    private func commentLabel(count: Int) -> String {
-        if traitCollection.horizontalSizeClass == .compact {
-            return count > 0 ? String(count) : ""
-        } else {
-            return WPStyleGuide.commentCountForDisplay(count)
-        }
-    }
-
     private func likeLabel(count: Int) -> String {
         if traitCollection.horizontalSizeClass == .compact {
             return count > 0 ? String(count) : ""

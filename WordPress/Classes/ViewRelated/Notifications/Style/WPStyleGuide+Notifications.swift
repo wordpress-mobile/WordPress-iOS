@@ -23,7 +23,6 @@ extension WPStyleGuide {
         public static let noticonUnmoderatedColor   = UIColor.warning
 
         public static let noteBackgroundReadColor   = UIColor.ungroupedListBackground
-        public static let noteBackgroundUnreadColor = UIColor.ungroupedListUnread
 
         // Notification undo overlay
         public static let noteUndoBackgroundColor   = UIColor.error

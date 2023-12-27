@@ -150,7 +150,6 @@ extension ReaderStreamViewController {
     private enum UndoCell {
         static let nibName = "ReaderSavedPostUndoCell"
         static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
-        static let height: CGFloat = 44
     }
 
     func setupUndoCell(_ tableView: UITableView) {
