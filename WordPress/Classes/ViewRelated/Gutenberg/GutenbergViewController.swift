@@ -850,7 +850,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message = error.localizedDescription
             if media.canRetry {
                 let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                    self.mediaInserterHelper.retryUploadOf(media: media)
+                    #if DEBUG || INTERNAL_BUILD
+                        self.mediaInserterHelper.retryFailedMediaUploads()
+                    #else
+                        self.mediaInserterHelper.retryUploadOf(media: media)
+                    #endif
                 }
                 alertController.addAction(retryUploadAction)
             }
