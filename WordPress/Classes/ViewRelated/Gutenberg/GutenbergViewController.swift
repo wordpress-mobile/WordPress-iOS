@@ -587,14 +587,30 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
         }
     }
 
     func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
+        }
+    }
+
+    private func didEncounterMissingContextError() {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logError(NSError(domain: self.errorDomain, code: ErrorCode.managedObjectContextMissing.rawValue, userInfo: [NSDebugDescriptionErrorKey: "The post is missing an associated managed object context"]))
         }
     }
 
