@@ -65,9 +65,95 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
         }))
     }
 
+    func test_didTapCardInvokesLinkRouterWhenURLMatches() {
+        // Given
+        let (id, url) = ("123", "https://wordpress.com")
+        var mockRouter = MockRouter(routes: [])
+        let expectation = expectation(description: "LinkRouter must invoke completion")
+        var isLinkInvoked = false
+
+        mockRouter.completion = { _, _ in
+            isLinkInvoked = true
+            expectation.fulfill()
+        }
+        let coordinator = makeCoordinator(id: id, url: url, linkRouter: mockRouter)
+
+        // When
+        coordinator.didTapCard()
+
+        // Then
+        wait(for: [expectation], timeout: 1)
+        XCTAssert(isLinkInvoked)
+    }
+
+    func test_didTapCardDoesNotInvokeLinkRouterWhenURLInvalid() {
+        // Given
+        let (id, url) = ("123", "gibberish")
+        var mockRouter = MockRouter(routes: [])
+        mockRouter.canHandle = false
+        var isLinkInvoked = false
+
+        mockRouter.completion = { _, _ in
+            isLinkInvoked = true
+            XCTFail("completion shouldn't have ran")
+        }
+        let coordinator = makeCoordinator(id: id, url: url, linkRouter: mockRouter)
+
+        // When
+        coordinator.didTapCard()
+
+        // Then
+        XCTAssertFalse(isLinkInvoked)
+    }
+
+    func test_didTapCardCTAInvokesLinkRouterWhenURLMatches() {
+        // Given
+        let (id, url) = ("123", "https://wordpress.com")
+        var mockRouter = MockRouter(routes: [])
+        let expectation = expectation(description: "LinkRouter must invoke completion")
+        var isLinkInvoked = false
+
+        mockRouter.completion = { _, _ in
+            isLinkInvoked = true
+            expectation.fulfill()
+        }
+        let coordinator = makeCoordinator(id: id, url: url, linkRouter: mockRouter)
+
+        // When
+        coordinator.didTapCardCTA()
+
+        // Then
+        wait(for: [expectation], timeout: 1)
+        XCTAssert(isLinkInvoked)
+    }
+
+    func test_didTapCardCTADoesNotInvokeLinkRouterWhenURLInvalid() {
+        // Given
+        let (id, url) = ("123", "gibberish")
+        var mockRouter = MockRouter(routes: [])
+        mockRouter.canHandle = false
+        var isLinkInvoked = false
+
+        mockRouter.completion = { _, _ in
+            isLinkInvoked = true
+            XCTFail("completion shouldn't have ran")
+        }
+        let coordinator = makeCoordinator(id: id, url: url, linkRouter: mockRouter)
+
+        // When
+        coordinator.didTapCardCTA()
+
+        // Then
+        XCTAssertFalse(isLinkInvoked)
+    }
+
     // MARK: - Helpers
 
-    private func makeCoordinator(id: String, url: String? = nil) -> BlogDashboardDynamicCardCoordinator {
+    private func makeCoordinator(
+        id: String,
+        url: String? = nil,
+        linkRouter: LinkRouter = MockRouter(routes: [])
+    ) -> BlogDashboardDynamicCardCoordinator {
         let payload = DashboardDynamicCardModel.Payload(
             id: id,
             remoteFeatureFlag: "default",
@@ -81,6 +167,7 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
         return .init(
             viewController: UIViewController(),
             model: .init(payload: payload, dotComID: 1),
+            linkRouter: linkRouter,
             analyticsTracker: AnalyticsEventTrackingSpy.self
         )
     }
