@@ -30,7 +30,7 @@ final class BlogDashboardDynamicCardCoordinator {
 
     func didTapCard() {
         let payload = model.payload
-        if let urlString = model.payload.url,
+        if let urlString = payload.url,
            let url = URL(string: urlString) {
             routeToCardDestination(url: url)
         }
@@ -66,10 +66,7 @@ final class BlogDashboardDynamicCardCoordinator {
     }
 
     private func routeToUniversalURL(url: URL) {
-        if let urlString = model.payload.url,
-           let url = URL(string: urlString) {
-            linkRouter.handle(url: url, shouldTrack: true, source: nil)
-        }
+        linkRouter.handle(url: url, shouldTrack: true, source: nil)
     }
 }
 
