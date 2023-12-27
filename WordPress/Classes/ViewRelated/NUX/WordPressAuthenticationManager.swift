@@ -79,7 +79,7 @@ extension WordPressAuthenticationManager {
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
                                                    enableUnifiedCarousel: true,
-                                                   enablePasskeys: false,
+                                                   enablePasskeys: true,
                                                    enableSocialLogin: true)
     }
 
