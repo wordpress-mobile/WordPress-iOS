@@ -73,7 +73,7 @@ extension AddressTableViewCell.ViewModel {
 
 extension AddressTableViewCell.ViewModel {
 
-    init(model: DomainSuggestion, tags: [Tag] = []) {
+    init(model: DomainSuggestion, type: DomainSelectionType, tags: [Tag] = []) {
         // Declare variables
         var tags = tags
         let cost: Cost
@@ -81,12 +81,29 @@ extension AddressTableViewCell.ViewModel {
         // Format cost and sale cost
         if model.isFree {
             cost = .free
-        } else if let formatter = Self.currencyFormatter(code: model.currencyCode),
-                  let costValue = model.cost,
-                  let formattedCost = formatter.string(from: .init(value: costValue)) {
-            cost = .freeWithPaidPlan(cost: formattedCost)
         } else {
-            cost = .freeWithPaidPlan(cost: model.costString)
+            switch type {
+            case .purchaseSeparately:
+                if let formatter = Self.currencyFormatter(code: model.currencyCode),
+                   let costValue = model.cost,
+                   let formattedCost = formatter.string(from: .init(value: costValue)) {
+                    if let saleCost = model.saleCost, let formattedSaleCost = formatter.string(from: .init(value: saleCost)) {
+                        cost = .onSale(cost: formattedCost, sale: formattedSaleCost)
+                    } else {
+                        cost = .regular(cost: formattedCost)
+                    }
+                } else {
+                    cost = .regular(cost: model.costString)
+                }
+            default:
+                if let formatter = Self.currencyFormatter(code: model.currencyCode),
+                   let costValue = model.cost,
+                   let formattedCost = formatter.string(from: .init(value: costValue)) {
+                    cost = .freeWithPaidPlan(cost: formattedCost)
+                } else {
+                    cost = .freeWithPaidPlan(cost: model.costString)
+                }
+            }
         }
 
         // Configure tags

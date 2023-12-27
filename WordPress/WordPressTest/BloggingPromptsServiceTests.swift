@@ -157,7 +157,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         // with the v3 implementation, we no longer have access to intercept at the method level.
         // this means, we lose the time information of the passed date.
         // In this case, we can only compare the year, month, and day components.
-        let expectedDate = BloggingPromptsServiceRemoteMock.dateFormatter.date(from: "2022-01-02")!
+        let expectedDate = try XCTUnwrap(BloggingPromptsServiceRemoteMock.dateFormatter.date(from: "2022-01-02"))
         let expectedDateComponents = Self.calendar.dateComponents(in: Self.utcTimeZone, from: expectedDate)
         let expectedNumber = 10
 
@@ -418,6 +418,9 @@ private extension BloggingPromptsServiceTests {
         dateComponents.year = forcedYear
         dateComponents.month = month
         dateComponents.day = day
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        dateComponents.second = 0
 
         return try XCTUnwrap(Self.calendar.date(from: dateComponents))
     }

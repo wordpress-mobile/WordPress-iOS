@@ -5,7 +5,16 @@ final class WebAddressStep: WizardStep {
     private let service: SiteAddressService
 
     private(set) lazy var content: UIViewController = {
-        return WebAddressWizardContent(creator: creator, service: self.service) { [weak self] (address) in
+        let primaryActionTitle = creator.domainPurchasingEnabled ?
+        DomainSelectionViewController.Strings.selectDomain :
+        DomainSelectionViewController.Strings.createSite
+
+        return DomainSelectionViewController(
+            service: service,
+            domainSelectionType: .siteCreation,
+            primaryActionTitle: primaryActionTitle,
+            includeSupportButton: false
+        ) { [weak self] (address) in
             self?.didSelect(address)
         }
     }()

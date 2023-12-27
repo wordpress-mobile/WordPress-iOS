@@ -24,6 +24,15 @@ extension RootViewPresenter {
         }
     }
 
+    func navigateToAllDomains() {
+        CATransaction.perform {
+            showMeScreen()
+        } completion: {
+            self.meViewController?.navigateToAllDomains()
+        }
+    }
+
+
     func navigateToAppSettings() {
         CATransaction.perform {
             showMeScreen()
