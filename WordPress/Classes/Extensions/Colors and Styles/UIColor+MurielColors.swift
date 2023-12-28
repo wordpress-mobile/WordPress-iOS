@@ -46,7 +46,6 @@ extension UIColor {
 
     /// Muriel error color
     static var error = muriel(color: .error)
-    static var errorDark = muriel(color: .error, .shade70)
     class func error(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: .error, shade)
     }
@@ -67,9 +66,6 @@ extension UIColor {
 
     /// Muriel success color
     static var success = muriel(color: .success)
-    class func success(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .success, shade)
-    }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)

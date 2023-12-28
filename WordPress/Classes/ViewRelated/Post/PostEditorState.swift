@@ -355,10 +355,6 @@ public class PostEditorStateContext {
         return action.publishActionLabel
     }
 
-    var publishQuestionTitleText: String {
-        return action.publishingActionQuestionLabel
-    }
-
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {

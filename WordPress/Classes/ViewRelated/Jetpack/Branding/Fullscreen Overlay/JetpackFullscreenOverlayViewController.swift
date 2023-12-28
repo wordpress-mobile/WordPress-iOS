@@ -280,7 +280,6 @@ private extension JetpackFullscreenOverlayViewController {
         static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
         static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 12)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
-        static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let switchButtonCornerRadius: CGFloat = 6

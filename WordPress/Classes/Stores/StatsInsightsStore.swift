@@ -947,10 +947,6 @@ extension StatsInsightsStore {
         return state.annualAndMostPopularTimeStatus
     }
 
-    var isFetchingLastPostSummary: Bool {
-        return lastPostSummaryStatus == .loading
-    }
-
     var isFetchingOverview: Bool {
         /*
          * Use reflection here to inspect all the members of type StoreFetchingStatus

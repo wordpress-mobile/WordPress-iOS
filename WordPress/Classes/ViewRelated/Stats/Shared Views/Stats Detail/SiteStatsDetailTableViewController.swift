@@ -227,12 +227,6 @@ private extension SiteStatsDetailTableViewController {
         }
     }
 
-    func applyTableUpdates() {
-        tableView.performBatchUpdates({
-            updateStatSectionForFilterChange()
-        })
-    }
-
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedDetails()
     }

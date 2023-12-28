@@ -196,8 +196,6 @@ final class MediaItemViewController: UITableViewController {
         }
     }
 
-    private var documentInteractionController: UIDocumentInteractionController?
-
     private func presentDocumentViewControllerForMedia() {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }

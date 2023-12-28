@@ -18,7 +18,6 @@ class StatsLineChartView: LineChartView {
 
     private struct Constants {
         static let intrinsicHeight          = CGFloat(190)
-        static let highlightAlpha           = CGFloat(1)
         static let highlightLineWidth       = 1.0
         static let highlightLineDashLengths = 4.4
         static let horizontalAxisLabelCount = 3

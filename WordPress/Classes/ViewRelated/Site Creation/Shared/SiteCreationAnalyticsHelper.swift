@@ -58,10 +58,6 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Site Name
-    static func trackSiteNameViewed() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameViewed)
-    }
-
     static func trackSiteNameEntered(_ name: String) {
         let properties = [siteNameKey: name]
         WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)

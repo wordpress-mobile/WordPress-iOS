@@ -73,8 +73,6 @@ class CircularProgressView: UIView {
         }
     }
 
-    var errorTintColor = UIColor.white
-
     var state: State = .stopped {
         didSet {
             refreshState()
