@@ -383,10 +383,6 @@ class SiteStatsInsightsViewModel: Observable {
             ])
     }
 
-    func isFetchingOverview() -> Bool {
-        return insightsStore.isFetchingOverview
-    }
-
     func fetchingFailed() -> Bool {
         return insightsStore.fetchingFailed(for: .insights)
     }

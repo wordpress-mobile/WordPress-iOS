@@ -424,7 +424,6 @@ extension PushNotificationsManager {
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
         static let local = "qs-local-notification"
-        static let bloggingPrompts = "blogging-prompts-notification"
     }
 
     enum Tracking {

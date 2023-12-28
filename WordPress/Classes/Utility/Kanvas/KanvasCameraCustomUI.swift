@@ -9,7 +9,6 @@ public class KanvasCustomUI {
     private static let brightBlue = UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightYellow = UIColor.muriel(color: MurielColor(name: .yellow)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightRed = UIColor.muriel(color: MurielColor(name: .red)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange)).color(for: UITraitCollection(userInterfaceStyle: .dark))

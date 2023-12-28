@@ -1881,10 +1881,6 @@ private extension NotificationsViewController {
         return ContextManager.sharedInstance().mainContext
     }
 
-    var actionsService: NotificationActionsService {
-        return NotificationActionsService(coreDataStack: ContextManager.shared)
-    }
-
     var userDefaults: UserPersistentRepository {
         return UserPersistentStoreFactory.instance()
     }

@@ -351,18 +351,6 @@ private extension CommentDetailViewController {
         return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
-    /// returns the height of the navigation bar + the status bar.
-    var topBarHeight: CGFloat {
-        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
-            (navigationController?.navigationBar.frame.height ?? 0.0)
-    }
-
-    /// determines the threshold for the content offset on whether the content has scrolled.
-    /// for translucent navigation bars, the content view spans behind the status bar and navigation bar so we'd have to account for that.
-    var contentScrollThreshold: CGFloat {
-        (navigationController?.navigationBar.isTranslucent ?? false) ? -topBarHeight : 0
-    }
-
     func configureView() {
         containerStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(containerStackView)

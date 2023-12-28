@@ -198,8 +198,6 @@ private extension SiteDomainsView {
         // Domains section
         static let domainsListSectionHeader: String = NSLocalizedString("Your Site Domains",
                                                                               comment: "Header of the domains list section in the Domains Dashboard.")
-        static let paidPlanDomainSectionFooter: String = NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",
-                                                                           comment: "Footer of the free domain registration section for a paid plan.")
 
         static let additionalRedirectedDomainTitle: String = NSLocalizedString("Add a domain",
                                                                                comment: "Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard.")

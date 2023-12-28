@@ -34,12 +34,6 @@ extension WPStyleGuide {
                      .foregroundColor: UIColor.text]
         }
 
-        public static func summaryBoldStyle() -> [NSAttributedString.Key: Any] {
-            return [.paragraphStyle: summaryParagraph,
-                    .font: summaryBoldFont,
-                    .foregroundColor: UIColor.text]
-        }
-
         public static func timestampStyle() -> [NSAttributedString.Key: Any] {
             return  [.font: timestampFont,
                      .foregroundColor: UIColor.textSubtle]
