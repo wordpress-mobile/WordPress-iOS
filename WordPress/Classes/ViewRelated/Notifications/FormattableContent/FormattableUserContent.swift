@@ -28,6 +28,10 @@ class FormattableUserContent: NotificationTextContent {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
 
+    var notificationID: String? {
+        return parent.notificationIdentifier
+    }
+
     var metaSiteID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Site] as? NSNumber
     }

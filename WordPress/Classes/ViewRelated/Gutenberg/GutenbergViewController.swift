@@ -755,19 +755,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
-    struct AnyEncodable: Encodable {
-
-        let value: Encodable
-        init(value: Encodable) {
-            self.value = value
-        }
-
-        func encode(to encoder: Encoder) throws {
-            try value.encode(to: encoder)
-        }
-
-    }
-
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
         if mediaFiles.isEmpty {
