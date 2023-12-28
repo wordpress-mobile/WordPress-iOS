@@ -25,13 +25,3 @@ class FormattableTextContent: FormattableContent {
         self.ranges = ranges
     }
 }
-
-extension FormattableMediaItem {
-    fileprivate enum MediaKeys {
-        static let RawType      = "type"
-        static let URL          = "url"
-        static let Indices      = "indices"
-        static let Width        = "width"
-        static let Height       = "height"
-    }
-}

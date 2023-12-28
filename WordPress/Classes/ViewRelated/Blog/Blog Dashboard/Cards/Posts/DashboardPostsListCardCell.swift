@@ -220,8 +220,4 @@ private extension DashboardPostsListCardCell {
         static let viewAllDrafts = NSLocalizedString("my-sites.drafts.card.viewAllDrafts", value: "View all drafts", comment: "Title for the View all drafts button in the More menu")
         static let viewAllScheduledPosts = NSLocalizedString("my-sites.scheduled.card.viewAllScheduledPosts", value: "View all scheduled posts", comment: "Title for the View all scheduled drafts button in the More menu")
     }
-
-    enum Constants {
-        static let iconSize = CGSize(width: 18, height: 18)
-    }
 }

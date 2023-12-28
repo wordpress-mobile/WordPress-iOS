@@ -324,7 +324,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     enum RunError: Error {
         case unableToScheduleDynamicNotification(reason: String)
-        case staticNotificationAlreadyDelivered
     }
 
     private let eventTracker: NotificationEventTracker
