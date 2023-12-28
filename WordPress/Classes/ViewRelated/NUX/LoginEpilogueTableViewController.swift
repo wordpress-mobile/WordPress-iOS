@@ -238,7 +238,6 @@ private extension LoginEpilogueTableViewController {
         static let createNewSiteReuseIdentifier = "createNewSite"
         static let profileRowHeight = CGFloat(180)
         static let blogRowHeight = CGFloat(60)
-        static let headerHeight = CGFloat(50)
     }
 }
 

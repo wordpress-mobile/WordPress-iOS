@@ -24,10 +24,6 @@ extension WPStyleGuide {
                      .foregroundColor: UIColor.text]
         }
 
-        public static func gravatarPlaceholderImage() -> UIImage {
-            return gravatar
-        }
-
         public static func summaryRegularStyle() -> [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: summaryParagraph,
                      .font: summaryRegularFont,
@@ -84,8 +80,6 @@ extension WPStyleGuide {
         private static var contentItalicFont: UIFont {
             return  WPStyleGuide.fontForTextStyle(.body, symbolicTraits: .traitItalic)
         }
-
-        fileprivate static let gravatar = UIImage(named: "gravatar")!
 
         private static var summaryRegularFont: UIFont {
             return WPStyleGuide.fontForTextStyle(.footnote)
