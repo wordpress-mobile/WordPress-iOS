@@ -157,13 +157,6 @@ class JetpackLoginViewController: UIViewController {
         faqButton.isHidden = tacButton.isHidden
     }
 
-    // MARK: - Private Helpers
-
-    fileprivate func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
-
-
     // MARK: - Browser
 
     fileprivate func openInstallJetpackURL() {

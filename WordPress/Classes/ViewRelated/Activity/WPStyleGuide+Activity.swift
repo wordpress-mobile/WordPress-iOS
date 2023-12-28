@@ -91,10 +91,6 @@ extension WPStyleGuide {
             return WPStyleGuide.fontForTextStyle(.footnote)
         }
 
-        private static var summaryBoldFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        }
-
         private static var summaryLineSize: CGFloat {
             return WPStyleGuide.fontSizeForTextStyle(.footnote) * 1.3
         }

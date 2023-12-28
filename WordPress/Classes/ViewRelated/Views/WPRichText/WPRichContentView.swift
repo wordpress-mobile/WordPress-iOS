@@ -446,15 +446,6 @@ private extension WPRichContentView {
     }
 }
 
-// MARK: - Rich Media Struct
-
-/// A simple struct used to keep references to a rich text image and its associated attachment.
-///
-struct RichMedia {
-    let image: WPRichTextImage
-    let attachment: WPTextAttachment
-}
-
 // This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted
 // from there and trimmed to only contain the relevant parts.
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
