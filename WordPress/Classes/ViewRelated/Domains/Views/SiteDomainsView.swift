@@ -30,7 +30,7 @@ struct SiteDomainsView: View {
             makeDomainsSections(blog: blog)
         }
         .listRowSeparator(.hidden)
-        .listRowSpacing(Length.Padding.double)
+        //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
         .onTapGesture(perform: { })
         .onAppear {
             viewModel.refresh()
