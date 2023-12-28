@@ -437,11 +437,3 @@ fileprivate func isFutureDated(_ date: Date?) -> Bool {
 
     return comparison == .orderedAscending
 }
-
-fileprivate func isPastDated(_ date: Date?) -> Bool {
-    guard let date = date else {
-        return false
-    }
-
-    return date < Date()
-}

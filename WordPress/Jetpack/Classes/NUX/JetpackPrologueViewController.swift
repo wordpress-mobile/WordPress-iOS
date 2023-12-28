@@ -5,14 +5,6 @@ class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    var starFieldView: StarFieldView = {
-        let config = StarFieldViewConfig(particleImage: JetpackPrologueStyleGuide.Stars.particleImage,
-                                         starColors: JetpackPrologueStyleGuide.Stars.colors)
-        let view = StarFieldView(with: config)
-        view.layer.masksToBounds = true
-        return view
-    }()
-
     private let motion: CMMotionManager? = {
         let motion = CMMotionManager()
         motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval

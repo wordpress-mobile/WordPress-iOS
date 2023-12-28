@@ -63,10 +63,6 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
     }
 
-    static func trackSiteNameSkipped() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
-    }
-
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))

@@ -103,7 +103,6 @@ import Combine
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isLoggedIn = false

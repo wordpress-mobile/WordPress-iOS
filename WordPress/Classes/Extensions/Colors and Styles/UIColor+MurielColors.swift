@@ -60,9 +60,6 @@ extension UIColor {
 
     /// Muriel editor primary color
     static var editorPrimary = muriel(color: .editorPrimary)
-    class func editorPrimary(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .editorPrimary, shade)
-    }
 
     /// Muriel success color
     static var success = muriel(color: .success)
@@ -188,10 +185,6 @@ extension UIColor {
 
     static var divider: UIColor {
         return .separator
-    }
-
-    static var primaryButtonBorder: UIColor {
-        return .opaqueSeparator
     }
 
     /// WP color for table foregrounds (cells, etc)

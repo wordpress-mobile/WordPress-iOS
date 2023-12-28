@@ -287,7 +287,6 @@ private extension JetpackFullscreenOverlayViewController {
         static let titleKern: CGFloat = 0.37
         static let buttonsNormalBottomSpacing: CGFloat = 30
         static let singleButtonBottomSpacing: CGFloat = 60
-        static let actionInfoButtonBottomSpacing: CGFloat = 24
     }
 
     enum Constants {
