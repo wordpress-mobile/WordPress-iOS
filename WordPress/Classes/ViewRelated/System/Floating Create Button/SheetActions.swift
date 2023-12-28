@@ -39,16 +39,6 @@ struct PageAction: ActionSheetItem {
 }
 
 struct StoryAction: ActionSheetItem {
-
-    private enum Constants {
-        enum Badge {
-            static let font = UIFont.preferredFont(forTextStyle: .caption1)
-            static let insets = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 8)
-            static let cornerRadius: CGFloat = 2
-            static let backgroundColor = UIColor.muriel(color: MurielColor(name: .red, shade: .shade50))
-        }
-    }
-
     let handler: () -> Void
     let source: String
 
