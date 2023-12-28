@@ -1425,12 +1425,6 @@ private extension NotificationDetailsViewController {
         return NotificationActionsService(coreDataStack: ContextManager.shared)
     }
 
-    enum DisplayError: Error {
-        case missingParameter
-        case unsupportedFeature
-        case unsupportedType
-    }
-
     enum ContentMedia {
         static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
         static let duration                 = TimeInterval(0.25)
