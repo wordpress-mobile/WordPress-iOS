@@ -24,7 +24,6 @@ class SiteCreationAnalyticsHelper {
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
-    private static let customTreatmentNameKey = "custom_treatment_variation_name"
 
     // MARK: - Lifecycle
     static func trackSiteCreationAccessed(source: String) {
@@ -55,12 +54,6 @@ class SiteCreationAnalyticsHelper {
 
     static func trackSiteIntentCanceled() {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
-    }
-
-    // MARK: - Site Name
-    static func trackSiteNameEntered(_ name: String) {
-        let properties = [siteNameKey: name]
-        WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
     }
 
     // MARK: - Site Design

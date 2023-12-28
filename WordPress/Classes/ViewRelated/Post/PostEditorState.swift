@@ -361,13 +361,6 @@ public class PostEditorStateContext {
         return action.publishActionAnalyticsStat
     }
 
-    // TODO: Remove as dead code?
-    /// Indicates if the editor should be dismissed when the publish button is tapped
-    ///
-    var publishActionDismissesEditor: Bool {
-        return action != .update
-    }
-
     /// Returns whether the secondary publish button should be displayed, or not
     ///
     var isSecondaryPublishButtonShown: Bool {
