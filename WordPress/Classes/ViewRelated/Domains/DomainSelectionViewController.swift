@@ -51,7 +51,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
     private let searchBar = UISearchBar()
-    private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType

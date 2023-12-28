@@ -13,8 +13,6 @@ class GutenbergMediaInserterHelper: NSObject {
     ///
     fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
-    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
-
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg
@@ -144,6 +142,10 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func retryUploadOf(media: Media) {
         mediaCoordinator.retryMedia(media)
+    }
+
+    func retryFailedMediaUploads() {
+        _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: true)
     }
 
     func hasFailedMedia() -> Bool {

@@ -342,10 +342,7 @@ private extension ReaderTabView {
     enum Appearance {
         static let barHeight: CGFloat = 48
 
-        static let tabBarAnimationsDuration = 0.2
-
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
-        static let filterButtonMaxFontSize: CGFloat = 28.0
         static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)

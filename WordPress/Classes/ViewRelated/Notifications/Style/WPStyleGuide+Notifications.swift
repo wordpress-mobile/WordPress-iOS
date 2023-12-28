@@ -12,12 +12,6 @@ extension WPStyleGuide {
         // NoteTableViewHeader
         public static let sectionHeaderBackgroundColor = UIColor.ungroupedListBackground
 
-        public static var sectionHeaderRegularStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: sectionHeaderParagraph,
-                     .font: sectionHeaderFont,
-                     .foregroundColor: sectionHeaderTextColor]
-        }
-
         // ListTableViewCell
         public static let unreadIndicatorColor = UIColor.primaryLight
 
@@ -29,9 +23,6 @@ extension WPStyleGuide {
         public static let noticonUnmoderatedColor   = UIColor.warning
 
         public static let noteBackgroundReadColor   = UIColor.ungroupedListBackground
-        public static let noteBackgroundUnreadColor = UIColor.ungroupedListUnread
-
-        public static let noteSeparatorColor        = blockSeparatorColor
 
         // Notification undo overlay
         public static let noteUndoBackgroundColor   = UIColor.error
@@ -315,7 +306,6 @@ extension WPStyleGuide {
 
         public static let headerFontSize            = CGFloat(12)
         public static let headerLineSize            = CGFloat(16)
-        public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let subjectNoticonSize        = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
@@ -329,9 +319,6 @@ extension WPStyleGuide {
         //
 
         // ParagraphStyle's
-        fileprivate static let sectionHeaderParagraph   = NSMutableParagraphStyle(
-            minLineHeight: headerLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
-        )
         fileprivate static let subjectParagraph         = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
@@ -352,7 +339,6 @@ extension WPStyleGuide {
         )
 
         // Colors
-        fileprivate static let sectionHeaderTextColor   = UIColor.textSubtle
         fileprivate static let subjectTextColor         = UIColor.text
         fileprivate static let subjectNoticonColor      = noticonReadColor
         fileprivate static let footerTextColor          = UIColor.textSubtle
@@ -361,9 +347,6 @@ extension WPStyleGuide {
         fileprivate static let headerTitleContextColor  = UIColor.primary
 
         // Fonts
-        fileprivate static var sectionHeaderFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .semibold)
-        }
         fileprivate static var subjectRegularFont: UIFont {
             return WPStyleGuide.fontForTextStyle(.subheadline)
         }

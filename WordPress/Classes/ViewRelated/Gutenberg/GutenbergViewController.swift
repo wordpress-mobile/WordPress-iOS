@@ -587,14 +587,30 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
         }
     }
 
     func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
+        }
+    }
+
+    private func didEncounterMissingContextError() {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logError(NSError(domain: self.errorDomain, code: ErrorCode.managedObjectContextMissing.rawValue, userInfo: [NSDebugDescriptionErrorKey: "The post is missing an associated managed object context"]))
         }
     }
 
@@ -850,7 +866,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message = error.localizedDescription
             if media.canRetry {
                 let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                    self.mediaInserterHelper.retryUploadOf(media: media)
+                    #if DEBUG || INTERNAL_BUILD
+                        self.mediaInserterHelper.retryFailedMediaUploads()
+                    #else
+                        self.mediaInserterHelper.retryUploadOf(media: media)
+                    #endif
                 }
                 alertController.addAction(retryUploadAction)
             }
@@ -1093,6 +1113,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         gutenberg.connectionStatusChange(isConnected: active)
+        #if DEBUG || INTERNAL_BUILD
+            if active {
+                mediaInserterHelper.retryFailedMediaUploads()
+            }
+        #endif
     }
 }
 
@@ -1419,7 +1444,6 @@ private extension GutenbergViewController {
         )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
-        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
 }
 

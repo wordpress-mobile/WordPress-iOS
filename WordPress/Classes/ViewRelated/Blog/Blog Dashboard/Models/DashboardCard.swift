@@ -7,6 +7,7 @@ import Foundation
 ///
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable {
+    case dynamic
     case jetpackInstall
     case quickStart
     case bloganuaryNudge = "bloganuary_nudge"
@@ -32,6 +33,8 @@ enum DashboardCard: String, CaseIterable {
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
+        case .dynamic:
+            return BlogDashboardDynamicCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .quickStart:
@@ -81,17 +84,6 @@ enum DashboardCard: String, CaseIterable {
             return .promptsDashboardCardViewed
         default:
             return nil
-        }
-    }
-
-    /// Specifies whether the card settings should be applied across
-    /// different sites or only to a particular site.
-    var settingsType: SettingsType {
-        switch self {
-        case .googleDomains:
-            return .siteGeneric
-        default:
-            return .siteSpecific
         }
     }
 
@@ -150,7 +142,26 @@ enum DashboardCard: String, CaseIterable {
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
             return FeatureFlag.googleDomainsCard.enabled && isJetpack
+        case .dynamic:
+            return false
         }
+    }
+
+    static func shouldShowDynamicCard(
+        for blog: Blog,
+        payload: DashboardDynamicCardModel.Payload,
+        remoteFeatureFlagStore: RemoteFeatureFlagStore,
+        isJetpack: Bool = AppConfiguration.isJetpack
+    ) -> Bool {
+        let remoteFeatureFlagEnabled = {
+            guard let key = payload.remoteFeatureFlag else {
+                return true
+            }
+            return remoteFeatureFlagStore.value(for: key) ?? false
+        }()
+        return isJetpack
+        && RemoteDashboardCard.dynamic.supported(by: blog)
+        && remoteFeatureFlagEnabled
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
@@ -191,6 +202,7 @@ enum DashboardCard: String, CaseIterable {
         case posts
         case pages
         case activity
+        case dynamic
 
         func supported(by blog: Blog) -> Bool {
             switch self {
@@ -202,13 +214,10 @@ enum DashboardCard: String, CaseIterable {
                 return DashboardPagesListCardCell.shouldShowCard(for: blog)
             case .activity:
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
+            case .dynamic:
+                return RemoteFeatureFlag.dynamicDashboardCards.enabled()
             }
         }
-    }
-
-    enum SettingsType {
-        case siteSpecific
-        case siteGeneric
     }
 }
 
@@ -233,3 +242,12 @@ private extension BlogDashboardRemoteEntity {
         return (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
     }
  }
+
+// MARK: - BlogDashboardAnalyticPropertiesProviding Protocol Conformance
+
+extension DashboardCard: BlogDashboardAnalyticPropertiesProviding {
+
+    var analyticProperties: [AnyHashable: Any] {
+        return ["card": rawValue]
+    }
+}
