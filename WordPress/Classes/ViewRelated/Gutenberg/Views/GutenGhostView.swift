@@ -59,6 +59,12 @@ class GutenGhostView: UIView {
         }
     }
 
+    var hidesToolbar: Bool = false {
+        didSet {
+            toolbarViews.forEach({ $0.isHidden = hidesToolbar })
+        }
+    }
+
     func startAnimation() {
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
