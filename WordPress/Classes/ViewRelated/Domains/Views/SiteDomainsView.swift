@@ -27,13 +27,10 @@ struct SiteDomainsView: View {
 
     var body: some View {
         List {
-            if let freeDomainSection = viewModel.freeDomainSection {
-                makeDomainsListSection(section: freeDomainSection)
-            }
             makeDomainsSections(blog: blog)
         }
-        .listStyle(InsetGroupedListStyle())
-        .buttonStyle(PlainButtonStyle())
+        .listRowSeparator(.hidden)
+        .listRowSpacing(Length.Padding.double)
         .onTapGesture(perform: { })
         .onAppear {
             viewModel.refresh()
@@ -47,26 +44,43 @@ struct SiteDomainsView: View {
         })
     }
 
-    @ViewBuilder
-    private func makeDomainsSections(blog: Blog) -> some View {
-        if blog.hasDomains {
-            makeDomainsListSections(blog: blog)
-        } else {
-            makeGetFirstDomainSection(blog: blog)
-        }
-    }
-
     // MARK: - Domains Section
 
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
-    private func makeDomainsListSections(blog: Blog) -> some View {
+    @ViewBuilder
+    private func makeDomainsSections(blog: Blog) -> some View {
+        ForEach(viewModel.sections, id: \.id) { section in
+            switch section.content {
+            case .rows(let rows):
+                makeDomainsListSection(blog: blog, section: section, rows: rows)
+            case .addDomain:
+                makeAddDomainSection(blog: blog)
+            case .upgradePlan:
+                makeGetFirstDomainSection(blog: blog)
+            }
+        }
+    }
+
+    private func makeDomainsListSection(blog: Blog, section: SiteDomainsViewModel.Section, rows: [AllDomainsListCardView.ViewModel]) -> some View {
+        Section {
+            ForEach(rows) { domainViewModel in
+                AllDomainsListCardView(viewModel: domainViewModel, padding: 0)
+            }
+        } header: {
+            if let title = section.title {
+                Text(title)
+            }
+        } footer: {
+            if let footer = section.footer {
+                Text(footer)
+            }
+        }
+    }
+
+    private func makeAddDomainSection(blog: Blog) -> some View {
         let destination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
 
-        return Group {
-            ForEach(viewModel.domainsSections) { section in
-                makeDomainsListSection(section: section)
-            }
-
+        return Section {
             DSButton(
                 title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 style: .init(
@@ -79,26 +93,11 @@ struct SiteDomainsView: View {
         }
     }
 
-    private func makeDomainsListSection(section: SiteDomainsViewModel.Section) -> some View {
-        return Section {
-            AllDomainsListCardView(viewModel: section.card, padding: 0)
-        } header: {
-            if let title = section.title {
-                Text(title)
-            }
-        } footer: {
-            if let footer = section.footer {
-                Text(footer)
-            }
-        }
-        .listSectionSpacingBackwardsCompatible(Length.Padding.double)
-    }
-
     // MARK: - First Domain Section
 
     /// Builds the Get New Domain section when no othert domains are present for the given blog
     private func makeGetFirstDomainSection(blog: Blog) -> some View {
-        return Section {
+        Section {
             SiteDomainsPresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
@@ -235,21 +234,5 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
 #endif
-    }
-}
-
-private extension View {
-    func listSectionSpacingBackwardsCompatible(_ spacing: CGFloat) -> some View {
-        if #available(iOS 17.0, *) {
-            return listSectionSpacing(spacing)
-        } else {
-            var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-            layoutConfig.headerMode = .supplementary
-            layoutConfig.headerTopPadding = spacing
-            layoutConfig.footerMode = .supplementary
-            let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
-            UICollectionView.appearance(whenContainedInInstancesOf: [UIHostingController<SiteDomainsView>.self]).collectionViewLayout = listLayout
-            return self
-        }
     }
 }

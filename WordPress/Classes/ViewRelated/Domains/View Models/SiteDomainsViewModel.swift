@@ -3,23 +3,26 @@ import Combine
 
 final class SiteDomainsViewModel: ObservableObject {
     struct Section: Identifiable {
+        enum SectionKind {
+            case rows([AllDomainsListCardView.ViewModel])
+            case addDomain
+            case upgradePlan
+        }
+
         let id = UUID()
         let title: String?
         let footer: String?
-        let card: AllDomainsListCardView.ViewModel
+        let content: SectionKind
     }
 
     private let blogService: BlogService
     private let blog: Blog
 
     @Published
-    private(set) var freeDomainSection: Section?
-    @Published
-    private(set) var domainsSections: [Section]
+    private(set) var sections: [Section]
 
     init(blog: Blog, blogService: BlogService) {
-        self.freeDomainSection = Self.buildFreeDomainSection(from: blog)
-        self.domainsSections = Self.buildDomainsSections(from: blog)
+        self.sections = Self.buildSections(from: blog)
         self.blog = blog
         self.blogService = blogService
     }
@@ -27,44 +30,76 @@ final class SiteDomainsViewModel: ObservableObject {
     func refresh() {
         blogService.refreshDomains(for: blog, success: { [weak self] in
             guard let self else { return }
-            self.freeDomainSection = Self.buildFreeDomainSection(from: blog)
-            self.domainsSections = Self.buildDomainsSections(from: blog)
+            self.sections = Self.buildSections(from: blog)
         }, failure: nil)
     }
 
     // MARK: - Sections
 
-    private static func buildFreeDomainSection(from blog: Blog) -> Section? {
-        guard let freeDomain = blog.freeDomain else { return nil }
+    private static func buildSections(from blog: Blog) -> [Section] {
+        return Self.buildFreeDomainSections(from: blog) + Self.buildDomainsSections(from: blog)
+    }
 
-        return Section(
+    private static func buildFreeDomainSections(from blog: Blog) -> [Section] {
+        guard let freeDomain = blog.freeDomain else { return [] }
+        return [Section(
             title: Strings.freeDomainSectionTitle,
             footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
-            card: .init(
+            content: .rows([.init(
                 name: blog.freeSiteAddress,
                 description: nil,
                 status: nil,
                 expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
                 isPrimary: freeDomain.isPrimaryDomain
-            )
-        )
+            )])
+        )]
     }
 
     private static func buildDomainsSections(from blog: Blog) -> [Section] {
         var sections: [Section] = []
-        for (index, domainRepresentation) in blog.domainsList.enumerated() {
+
+        let primaryDomain = blog.domainsList.first(where: { $0.domain.isPrimaryDomain })
+        let otherDomains = blog.domainsList.filter { !$0.domain.isPrimaryDomain }
+
+        if let primaryDomain {
             let section = Section(
-                title: index == 0 ? Strings.domainsListSectionTitle : nil,
-                footer: domainRepresentation.domain.isPrimaryDomain ? Strings.primaryDomainDescription : nil,
-                card: .init(
-                    name: domainRepresentation.domain.domainName,
+                title: Strings.domainsListSectionTitle,
+                footer: Strings.primaryDomainDescription,
+                content: .rows([.init(
+                    name: primaryDomain.domain.domainName,
                     description: nil,
                     status: nil,
-                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: domainRepresentation.domain),
-                    isPrimary: domainRepresentation.domain.isPrimaryDomain
-                )
+                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: primaryDomain.domain),
+                    isPrimary: primaryDomain.domain.isPrimaryDomain
+                )])
             )
             sections.append(section)
+        }
+
+        if otherDomains.count > 0 {
+            let domainRows = otherDomains.map {
+                AllDomainsListCardView.ViewModel(
+                    name: $0.domain.domainName,
+                    description: nil,
+                    status: nil,
+                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: $0.domain),
+                    isPrimary: false
+                )
+            }
+
+            let section = Section(
+                title: primaryDomain == nil ? Strings.domainsListSectionTitle : nil,
+                footer: nil,
+                content: .rows(domainRows)
+            )
+
+            sections.append(section)
+        }
+
+        if sections.count == 0 {
+            sections.append(Section(title: nil, footer: nil, content: .upgradePlan))
+        } else {
+            sections.append(Section(title: nil, footer: nil, content: .addDomain))
         }
 
         return sections
