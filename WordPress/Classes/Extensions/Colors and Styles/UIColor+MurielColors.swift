@@ -232,10 +232,6 @@ extension UIColor {
         return .systemGray
     }
 
-    static var buttonIcon: UIColor {
-        return .systemGray2
-    }
-
     /// For icons that are present in a toolbar or similar view
     static var toolbarInactive: UIColor {
         return .secondaryLabel

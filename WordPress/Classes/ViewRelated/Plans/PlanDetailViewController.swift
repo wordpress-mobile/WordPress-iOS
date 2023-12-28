@@ -3,8 +3,6 @@ import CocoaLumberjack
 import WordPressShared
 
 class PlanDetailViewController: UIViewController {
-    fileprivate let cellIdentifier = "PlanFeatureListItem"
-
     fileprivate let tableViewHorizontalMargin: CGFloat = 24.0
     fileprivate let planImageDropshadowRadius: CGFloat = 3.0
 

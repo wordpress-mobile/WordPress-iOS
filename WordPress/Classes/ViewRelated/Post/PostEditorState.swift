@@ -115,10 +115,6 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var isPostPostShown: Bool {
-        return false
-    }
-
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
@@ -374,12 +370,6 @@ public class PostEditorStateContext {
     ///
     var publishActionDismissesEditor: Bool {
         return action != .update
-    }
-
-    /// Should post-post be shown for the current editor when publishing has happened
-    ///
-    var isPostPostShown: Bool {
-        return action.isPostPostShown
     }
 
     /// Returns whether the secondary publish button should be displayed, or not

@@ -362,10 +362,6 @@ final class MediaItemViewController: UITableViewController {
 
     // MARK: - Sharing Logic
 
-    private func share(media: Any, sender: UIBarButtonItem) {
-        share([media], sender: sender)
-    }
-
     private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
         let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityController.modalPresentationStyle = .popover

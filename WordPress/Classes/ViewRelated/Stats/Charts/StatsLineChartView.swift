@@ -22,7 +22,6 @@ class StatsLineChartView: LineChartView {
         static let highlightLineWidth       = 1.0
         static let highlightLineDashLengths = 4.4
         static let horizontalAxisLabelCount = 3
-        static let presentationDelay        = TimeInterval(0.5)
         static let rotationDelay            = TimeInterval(0.35)
         static let secondaryDataSetIndex    = 1
         static let topOffset                = CGFloat(16)

@@ -17,7 +17,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
     private var receipt: Receipt?
 
     private let insightsStore = StoreContainer.shared.statsInsights
-    private var insightsChangeReceipt: Receipt?
     private let periodStore = StoreContainer.shared.statsPeriod
 
     private lazy var tableHandler: ImmuTableViewHandler = {
