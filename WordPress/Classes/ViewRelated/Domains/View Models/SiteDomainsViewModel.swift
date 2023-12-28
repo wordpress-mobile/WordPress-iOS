@@ -2,75 +2,85 @@ import Foundation
 import Combine
 
 final class SiteDomainsViewModel: ObservableObject {
-    struct Section: Identifiable {
-        enum SectionKind {
-            case rows([AllDomainsListCardView.ViewModel])
-            case addDomain
-            case upgradePlan
-        }
-
-        let id = UUID()
-        let title: String?
-        let footer: String?
-        let content: SectionKind
-    }
-
     private let blogService: BlogService
     private let blog: Blog
+    private let domainsService: DomainsService?
 
     @Published
-    private(set) var sections: [Section]
+    private(set) var state: State = .loading
 
     init(blog: Blog, blogService: BlogService) {
-        self.sections = Self.buildSections(from: blog)
         self.blog = blog
         self.blogService = blogService
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        self.domainsService = DomainsService(coreDataStack: ContextManager.shared, wordPressComRestApi: account?.wordPressComRestApi)
     }
 
     func refresh() {
-        blogService.refreshDomains(for: blog, success: { [weak self] in
-            guard let self else { return }
-            self.sections = Self.buildSections(from: blog)
-        }, failure: nil)
+        domainsService?.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success(let domains):
+                let sections = Self.buildSections(from: blog, domains: domains)
+                self.state = .normal(sections)
+            case .failure(let error):
+                break
+            }
+        })
     }
 
     // MARK: - Sections
 
-    private static func buildSections(from blog: Blog) -> [Section] {
-        return Self.buildFreeDomainSections(from: blog) + Self.buildDomainsSections(from: blog)
+    private static func buildSections(from blog: Blog, domains: [DomainsService.AllDomainsListItem]) -> [Section] {
+        return Self.buildFreeDomainSections(from: blog) + Self.buildDomainsSections(from: blog, domains: domains)
     }
 
     private static func buildFreeDomainSections(from blog: Blog) -> [Section] {
         guard let freeDomain = blog.freeDomain else { return [] }
-        return [Section(
-            title: Strings.freeDomainSectionTitle,
-            footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
-            content: .rows([.init(
-                name: blog.freeSiteAddress,
-                description: nil,
-                status: nil,
-                expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
-                isPrimary: freeDomain.isPrimaryDomain
-            )])
-        )]
+        return [
+            Section(
+                title: Strings.freeDomainSectionTitle,
+                footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
+                content: .rows([.init(
+                    name: blog.freeSiteAddress,
+                    description: nil,
+                    status: nil,
+                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
+                    isPrimary: freeDomain.isPrimaryDomain
+                )])
+            )
+        ]
     }
 
-    private static func buildDomainsSections(from blog: Blog) -> [Section] {
+    private static func buildDomainsSections(from blog: Blog, domains: [DomainsService.AllDomainsListItem]) -> [Section] {
         var sections: [Section] = []
 
-        let primaryDomain = blog.domainsList.first(where: { $0.domain.isPrimaryDomain })
-        let otherDomains = blog.domainsList.filter { !$0.domain.isPrimaryDomain }
+        let primaryDomainName = blog.domainsList.first(where: { $0.domain.isPrimaryDomain })?.domain.domainName
+        var primaryDomain: DomainsService.AllDomainsListItem?
+        var otherDomains: [DomainsService.AllDomainsListItem] = []
+
+        for domain in domains {
+            if domain.blogId == blog.dotComID?.intValue {
+                if primaryDomainName == domain.domain {
+                    primaryDomain = domain
+                } else {
+                    otherDomains.append(domain)
+                }
+            }
+        }
 
         if let primaryDomain {
             let section = Section(
                 title: Strings.domainsListSectionTitle,
                 footer: Strings.primaryDomainDescription,
                 content: .rows([.init(
-                    name: primaryDomain.domain.domainName,
+                    name: primaryDomain.domain,
                     description: nil,
-                    status: nil,
-                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: primaryDomain.domain),
-                    isPrimary: primaryDomain.domain.isPrimaryDomain
+                    status: primaryDomain.status,
+                    expiryDate: AllDomainsListItemViewModel.expiryDate(from: primaryDomain),
+                    isPrimary: true
                 )])
             )
             sections.append(section)
@@ -79,10 +89,10 @@ final class SiteDomainsViewModel: ObservableObject {
         if otherDomains.count > 0 {
             let domainRows = otherDomains.map {
                 AllDomainsListCardView.ViewModel(
-                    name: $0.domain.domainName,
+                    name: $0.domain,
                     description: nil,
-                    status: nil,
-                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: $0.domain),
+                    status: $0.status,
+                    expiryDate: AllDomainsListItemViewModel.expiryDate(from: $0),
                     isPrimary: false
                 )
             }
@@ -117,5 +127,39 @@ private extension SiteDomainsViewModel {
         static let domainsListSectionTitle: String = NSLocalizedString("site.domains.domainSection.title",
                                                                        value: "Your Site Domains",
                                                                        comment: "Header of the domains list section in the Domains Dashboard.")
+    }
+}
+
+// MARK: - Types
+
+extension SiteDomainsViewModel {
+    enum State {
+        case normal([Section])
+        case loading
+        case message(MessageStateViewModel)
+    }
+
+    struct Section: Identifiable {
+        enum SectionKind {
+            case rows([AllDomainsListCardView.ViewModel])
+            case addDomain
+            case upgradePlan
+        }
+
+        let id = UUID()
+        let title: String?
+        let footer: String?
+        let content: SectionKind
+    }
+
+    struct MessageStateViewModel {
+        let title: String
+        let description: String
+        let button: Button?
+
+        struct Button {
+            let title: String
+            let action: () -> Void
+        }
     }
 }

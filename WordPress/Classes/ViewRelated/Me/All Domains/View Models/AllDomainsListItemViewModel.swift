@@ -48,14 +48,14 @@ struct AllDomainsListItemViewModel {
 
     // MARK: - Helpers
 
-    private static func description(from domain: Domain) -> String? {
+    static func description(from domain: Domain) -> String? {
         guard !domain.isDomainOnlySite else {
             return nil
         }
         return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
     }
 
-    private static func expiryDate(from domain: Domain) -> String? {
+    static func expiryDate(from domain: Domain) -> String? {
         guard let date = domain.expiryDate, domain.hasRegistration else {
             return nil
         }

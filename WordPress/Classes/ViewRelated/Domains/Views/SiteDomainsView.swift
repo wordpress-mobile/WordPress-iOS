@@ -26,12 +26,21 @@ struct SiteDomainsView: View {
     }
 
     var body: some View {
-        List {
-            makeDomainsSections(blog: blog)
+        Group {
+            switch viewModel.state {
+            case .normal(let sections):
+                List {
+                    makeDomainsSections(blog: blog, sections: sections)
+                }
+                .listRowSeparator(.hidden)
+                //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
+                .onTapGesture(perform: { })
+            case .message(let messageViewModel):
+                Text("Error")
+            case .loading:
+                Text("Loading")
+            }
         }
-        .listRowSeparator(.hidden)
-        //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
-        .onTapGesture(perform: { })
         .onAppear {
             viewModel.refresh()
         }
@@ -48,8 +57,8 @@ struct SiteDomainsView: View {
 
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
     @ViewBuilder
-    private func makeDomainsSections(blog: Blog) -> some View {
-        ForEach(viewModel.sections, id: \.id) { section in
+    private func makeDomainsSections(blog: Blog, sections: [SiteDomainsViewModel.Section]) -> some View {
+        ForEach(sections, id: \.id) { section in
             switch section.content {
             case .rows(let rows):
                 makeDomainsListSection(blog: blog, section: section, rows: rows)
