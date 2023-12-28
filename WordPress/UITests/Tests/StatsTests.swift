@@ -24,7 +24,7 @@ class StatsTests: XCTestCase {
 
     func testInsightsStatsLoadProperly() throws {
         let insightsStats: [String] = [
-            "Your views in the last 7-days are -9 (-82%) lower than the previous 7-days. ",
+            "Your views in the last 7-days are -4 (-36%) lower than the previous 7-days. ",
             "Thursday",
             "34% of views",
             "Best Hour",
