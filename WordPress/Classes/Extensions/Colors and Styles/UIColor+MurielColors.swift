@@ -43,9 +43,6 @@ extension UIColor {
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
-    class func brand(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .brand, shade)
-    }
 
     /// Muriel error color
     static var error = muriel(color: .error)

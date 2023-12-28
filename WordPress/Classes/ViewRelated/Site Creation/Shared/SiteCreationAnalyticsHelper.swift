@@ -72,10 +72,6 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
     }
 
-    static func trackSiteNameCanceled() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
-    }
-
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))

@@ -26,7 +26,6 @@ struct ShareNoticeText {
 
     static let failureDraftTitleDefault = AppLocalizedString("Unable to upload 1 draft post", comment: "Alert displayed to the user when a single post has failed to upload.")
     static let failureTitleDefault  = AppLocalizedString("Unable to upload 1 post", comment: "Alert displayed to the user when a single post has failed to upload.")
-    static let failureDraftTitleSingular = AppLocalizedString("Unable to upload 1 draft post, 1 file", comment: "Alert displayed to the user when a single post and 1 file has failed to upload.")
     static let failureTitleSingular = AppLocalizedString("Unable to upload 1 post, 1 file", comment: "Alert displayed to the user when a single post and 1 file has failed to upload.")
     static let failureDraftTitlePlural = AppLocalizedString("Unable to upload 1 draft post, %ld files", comment: "Alert displayed to the user when a single post and multiple files have failed to upload.")
     static let failureTitlePlural   = AppLocalizedString("Unable to upload 1 post, %ld files", comment: "Alert displayed to the user when a single post and multiple files have failed to upload.")
