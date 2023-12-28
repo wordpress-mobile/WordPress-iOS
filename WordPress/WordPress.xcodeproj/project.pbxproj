@@ -2335,8 +2335,6 @@
 		8F228B22E190FF92D05E53DB /* TimeZoneSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */; };
 		8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
-		912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */; };
-		9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */; };
 		912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */; };
 		91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */; };
 		91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */; };
@@ -4786,7 +4784,6 @@
 		FABB23752602FC2C00C8785C /* ReaderInterestsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F77124ABB6C90088E8F3 /* ReaderInterestsDataSource.swift */; };
 		FABB23762602FC2C00C8785C /* ActivityContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */; };
 		FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */; };
-		FABB23782602FC2C00C8785C /* GutenbergViewController+InformativeDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */; };
 		FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511621F26A24009AA935 /* ChangePasswordViewController.swift */; };
 		FABB237A2602FC2C00C8785C /* LikeComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1EF20E0893A00C4D82F /* LikeComment.swift */; };
 		FABB237B2602FC2C00C8785C /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E1D46C1CEF77B500126697 /* Page.swift */; };
@@ -7654,8 +7651,6 @@
 		8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneSearchHeaderView.swift; sourceTree = "<group>"; };
 		8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeZoneSearchHeaderView.xib; sourceTree = "<group>"; };
 		91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergVideoUploadProcessor.swift; sourceTree = "<group>"; };
-		912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+InformativeDialog.swift"; sourceTree = "<group>"; };
-		9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergInformativeDialogTests.swift; sourceTree = "<group>"; };
 		912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+Localization.swift"; sourceTree = "<group>"; };
 		9149D34BF5182F360C84EDB9 /* Pods-JetpackDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaPickerHelper.swift; sourceTree = "<group>"; };
@@ -13106,7 +13101,6 @@
 				FF8C54AC21F677260003ABCF /* GutenbergMediaInserterHelper.swift */,
 				7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */,
 				7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */,
-				912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */,
 				912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */,
 				FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */,
 				4625B5472537875E00C04AAD /* Collapsable Header */,
@@ -18599,7 +18593,6 @@
 				FF9A6E7021F9361700D36D14 /* MediaUploadHashTests.swift */,
 				FF2EC3C12209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift */,
 				FF1B11E6238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift */,
-				9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */,
 				1D19C56529C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift */,
 				FF0B2566237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift */,
 				4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */,
@@ -22017,7 +22010,6 @@
 				3236F77224ABB6C90088E8F3 /* ReaderInterestsDataSource.swift in Sources */,
 				7E4123CA20F4184200DF8486 /* ActivityContentGroup.swift in Sources */,
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
-				912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */,
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
 				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
@@ -23545,7 +23537,6 @@
 				80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */,
 				80C523AB29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
-				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
 				8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */,
 				C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */,
 				323F8F3023A22C4C000BA49C /* SiteCreationRotatingMessageViewTests.swift in Sources */,
@@ -24851,7 +24842,6 @@
 				FABB23762602FC2C00C8785C /* ActivityContentGroup.swift in Sources */,
 				C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */,
 				FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */,
-				FABB23782602FC2C00C8785C /* GutenbergViewController+InformativeDialog.swift in Sources */,
 				3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */,
 				8B55F9DC2614D902007D618E /* CircledIcon.swift in Sources */,
 				FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */,
