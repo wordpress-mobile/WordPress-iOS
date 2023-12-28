@@ -3217,7 +3217,6 @@ extension AztecPostViewController {
     }
 
     struct Constants {
-        static let defaultMargin            = CGFloat(20)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
         static let savingDraftButtonSize    = CGSize(width: 130, height: 30)

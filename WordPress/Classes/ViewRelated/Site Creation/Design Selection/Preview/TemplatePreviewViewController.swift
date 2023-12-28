@@ -37,13 +37,6 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
     private var onDismissWithDeviceSelected: ((PreviewDevice) -> ())?
 
-    lazy var ghostView: GutenGhostView = {
-        let ghost = GutenGhostView()
-        ghost.hidesToolbar = true
-        ghost.translatesAutoresizingMaskIntoConstraints = false
-        return ghost
-    }()
-
     private var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {

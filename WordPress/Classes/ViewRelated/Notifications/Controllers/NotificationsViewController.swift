@@ -1821,20 +1821,6 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         controller.view.backgroundColor = .basicBackground
         return controller
     }
-
-    private func fetchFirstNotification() -> Notification? {
-        let context = managedObjectContext()
-        guard let fetchRequest = self.fetchRequest() else {
-            return nil
-        }
-        fetchRequest.fetchLimit = 1
-
-        if let results = try? context.fetch(fetchRequest) as? [Notification] {
-            return results.first
-        }
-
-        return nil
-    }
 }
 
 // MARK: - Details Navigation Datasource

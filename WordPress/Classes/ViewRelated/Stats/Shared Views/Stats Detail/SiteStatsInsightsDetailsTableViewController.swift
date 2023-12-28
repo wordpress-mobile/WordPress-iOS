@@ -244,28 +244,6 @@ private extension SiteStatsInsightsDetailsTableViewController {
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedDetails()
     }
-
-    func updateStatSectionForFilterChange() {
-        guard let oldStatSection = statSection else {
-            return
-        }
-
-        switch oldStatSection {
-        case .insightsFollowersWordPress:
-            statSection = .insightsFollowersEmail
-        case .insightsFollowersEmail:
-            statSection = .insightsFollowersWordPress
-        case .insightsCommentsAuthors:
-            statSection = .insightsCommentsPosts
-        case .insightsCommentsPosts:
-            statSection = .insightsCommentsAuthors
-        default:
-            // Return here as `initViewModel` is only needed for filtered cards.
-            return
-        }
-
-        initViewModel()
-    }
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods

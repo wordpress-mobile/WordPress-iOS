@@ -15,7 +15,6 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
     private let mainContext = ContextManager.sharedInstance().mainContext
     private let textViewManager = RevisionPreviewTextViewManager()
     private var titleInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
-    private var textViewInsets = UIEdgeInsets(top: 0.0, left: 6.0, bottom: 0.0, right: 6.0)
 
     private lazy var textView: TextView = {
         let aztext = TextView(defaultFont: WPFontManager.notoRegularFont(ofSize: 16),

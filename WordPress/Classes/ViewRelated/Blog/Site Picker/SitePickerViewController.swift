@@ -12,7 +12,6 @@ final class SitePickerViewController: UIViewController {
         }
     }
 
-    var siteIconPresenter: SiteIconPickerPresenter?
     var siteIconPickerPresenter: SiteIconPickerPresenter?
     var onBlogSwitched: ((Blog) -> Void)?
     var onBlogListDismiss: (() -> Void)?
