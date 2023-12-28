@@ -420,12 +420,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         saveForLaterButton.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
         saveForLaterButton.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
     }
-
-    private func prepareReblogForVoiceOver() {
-        reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
-        reblogButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
 }
 
 // MARK: - Private Helpers

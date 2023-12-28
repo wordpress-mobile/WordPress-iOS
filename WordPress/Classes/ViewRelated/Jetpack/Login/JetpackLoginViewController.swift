@@ -10,7 +10,6 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Constants
 
-    fileprivate let jetpackInstallRelativePath = "plugin-install.php?tab=plugin-information&plugin=jetpack"
     var blog: Blog
 
     // MARK: - Properties

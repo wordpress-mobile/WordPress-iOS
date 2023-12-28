@@ -153,10 +153,6 @@ private extension PluginViewController {
         }
     }
 
-    private func addChildController(_ controller: UIViewController) {
-
-    }
-
     private func getNoResultsViewController() -> NoResultsViewController {
         if let noResultsViewController = self.noResultsViewController {
             return noResultsViewController

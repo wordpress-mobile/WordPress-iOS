@@ -6,7 +6,6 @@ import WordPressShared
 class PostListFilterSettings: NSObject {
     fileprivate static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
     fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
-    fileprivate static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
     @objc let blog: Blog
     @objc let postType: PostServiceType

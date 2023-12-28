@@ -1990,7 +1990,6 @@ private extension NotificationsViewController {
     enum Syncing {
         static let minimumPullToRefreshDelay = TimeInterval(1.5)
         static let pushMaxWait = TimeInterval(1.5)
-        static let syncTimeout = TimeInterval(10)
         static let undoTimeout = TimeInterval(4)
     }
 

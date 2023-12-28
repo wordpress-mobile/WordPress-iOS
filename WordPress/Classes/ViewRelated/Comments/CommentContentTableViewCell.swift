@@ -87,7 +87,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Constants
 
-    private let customBottomSpacing: CGFloat = 10
     private let contentButtonsTopSpacing: CGFloat = 15
 
     // MARK: Outlets
@@ -527,7 +526,4 @@ private extension String {
                                                         + "%1$d is a placeholder for the number of Likes.")
     static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
                                                 + "%1$d is a placeholder for the number of Likes.")
-
-    // pattern that detects empty HTML elements (including HTML comments within).
-    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 }

@@ -1440,7 +1440,6 @@ private extension NotificationDetailsViewController {
     enum Settings {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
-        static let expirationFiveMinutes    = TimeInterval(60 * 5)
     }
 
     enum Assets {
