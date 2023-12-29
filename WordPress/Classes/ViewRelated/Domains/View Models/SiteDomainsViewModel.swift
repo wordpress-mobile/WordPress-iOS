@@ -2,18 +2,16 @@ import Foundation
 import Combine
 
 final class SiteDomainsViewModel: ObservableObject {
-    private let blogService: BlogService
     private let blog: Blog
     private let domainsService: DomainsService?
 
     @Published
     private(set) var state: State = .loading
+    private(set) var loadedDomains: [DomainsService.AllDomainsListItem] = []
 
-    init(blog: Blog, blogService: BlogService) {
+    init(blog: Blog, domainsService: DomainsService?) {
         self.blog = blog
-        self.blogService = blogService
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        self.domainsService = DomainsService(coreDataStack: ContextManager.shared, wordPressComRestApi: account?.wordPressComRestApi)
+        self.domainsService = domainsService
     }
 
     func refresh() {
@@ -23,6 +21,7 @@ final class SiteDomainsViewModel: ObservableObject {
             }
             switch result {
             case .success(let domains):
+                self.loadedDomains = domains
                 let sections = Self.buildSections(from: blog, domains: domains)
                 self.state = .normal(sections)
             case .failure(let error):

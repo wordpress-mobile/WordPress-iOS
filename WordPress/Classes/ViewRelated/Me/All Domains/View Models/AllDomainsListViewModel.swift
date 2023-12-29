@@ -47,9 +47,13 @@ class AllDomainsListViewModel {
 
     // MARK: - Init
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared, domains: [DomainsService.AllDomainsListItem] = []) {
         if let account = defaultAccount(with: coreDataStack) {
             self.domainsService = .init(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi)
+        }
+        self.domains = domains
+        if domains.count > 0 {
+            self.state = self.state(from: domains, searchQuery: lastSearchQuery)
         }
     }
 

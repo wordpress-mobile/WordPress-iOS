@@ -218,11 +218,16 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     // MARK: - Properties
 
     private let domainManagementFeatureFlag = RemoteFeatureFlag.domainManagement
+    private let viewModel: SiteDomainsViewModel
 
     // MARK: - Init
 
     init(blog: Blog) {
-        super.init(rootView: .init(blog: blog, viewModel: .init(blog: blog, blogService: BlogService(coreDataStack: ContextManager.shared))))
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        let domainsService = DomainsService(coreDataStack: ContextManager.shared, wordPressComRestApi: account?.wordPressComRestApi)
+        let viewModel = SiteDomainsViewModel(blog: blog, domainsService: domainsService)
+        self.viewModel = viewModel
+        super.init(rootView: .init(blog: blog, viewModel: viewModel))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -246,7 +251,9 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         }
         let title = AllDomainsListViewController.Strings.title
         let action = UIAction { [weak self] _ in
-            self?.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+            guard let self else { return }
+            let allDomainsViewController = AllDomainsListViewController(viewModel: .init(domains: self.viewModel.loadedDomains))
+            self.navigationController?.pushViewController(allDomainsViewController, animated: true)
             WPAnalytics.track(.domainsDashboardAllDomainsTapped)
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
