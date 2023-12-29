@@ -4,7 +4,7 @@ import DesignSystem
 
 final class AllDomainsListEmptyView: UIView {
 
-    typealias ViewModel = AllDomainsListMessageStateViewModel
+    typealias ViewModel = DomainsStateViewModel
 
     private enum Appearance {
         static let labelsSpacing: CGFloat = Length.Padding.single

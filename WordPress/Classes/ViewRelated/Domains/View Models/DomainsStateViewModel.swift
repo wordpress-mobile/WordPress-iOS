@@ -1,7 +1,6 @@
 import Foundation
 
-struct AllDomainsListMessageStateViewModel {
-
+struct DomainsStateViewModel {
     let title: String
     let description: String
     let button: Button?
