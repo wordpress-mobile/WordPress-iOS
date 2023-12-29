@@ -4,13 +4,13 @@ import Combine
 
 final class SiteDomainsViewModel: ObservableObject {
     private let blog: Blog
-    private let domainsService: DomainsService?
+    private let domainsService: DomainsServiceAllDomainsFetching?
 
     @Published
     private(set) var state: State = .loading
     private(set) var loadedDomains: [DomainsService.AllDomainsListItem] = []
 
-    init(blog: Blog, domainsService: DomainsService?) {
+    init(blog: Blog, domainsService: DomainsServiceAllDomainsFetching?) {
         self.blog = blog
         self.domainsService = domainsService
     }
@@ -135,7 +135,7 @@ final class SiteDomainsViewModel: ObservableObject {
     }
 }
 
-private extension SiteDomainsViewModel {
+extension SiteDomainsViewModel {
     enum Strings {
         static let freeDomainSectionTitle = NSLocalizedString("site.domains.freeDomainSection.title",
                                                               value: "Your Free WordPress.com domain",
