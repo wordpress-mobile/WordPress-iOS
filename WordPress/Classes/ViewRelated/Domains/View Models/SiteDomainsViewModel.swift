@@ -33,6 +33,7 @@ final class SiteDomainsViewModel: ObservableObject {
 
     private func errorMessageViewModel(from error: Error) -> DomainsStateViewModel {
         return DomainsStateViewModel.errorMessageViewModel(from: error) { [weak self] in
+            self?.state = .loading
             self?.refresh()
         }
     }

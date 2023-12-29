@@ -45,7 +45,8 @@ struct SiteDomainsView: View {
                     }
                 }
             case .loading:
-                EmptyView()
+                ProgressView()
+                    .progressViewStyle(.circular)
             }
         }
         .onAppear {
