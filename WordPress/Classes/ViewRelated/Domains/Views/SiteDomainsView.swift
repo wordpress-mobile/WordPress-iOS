@@ -26,7 +26,9 @@ struct SiteDomainsView: View {
     }
 
     var body: some View {
-        Group {
+        ZStack {
+            Color.DS.Background.secondary.edgesIgnoringSafeArea(.all)
+
             switch viewModel.state {
             case .normal(let sections):
                 List {
@@ -36,9 +38,14 @@ struct SiteDomainsView: View {
                 //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
                 .onTapGesture(perform: { })
             case .message(let messageViewModel):
-                Text("Error")
+                VStack {
+                    HStack(alignment: .center) {
+                        DomainsStateView(viewModel: messageViewModel)
+                            .padding(.horizontal, Length.Padding.double)
+                    }
+                }
             case .loading:
-                Text("Loading")
+                EmptyView()
             }
         }
         .onAppear {
