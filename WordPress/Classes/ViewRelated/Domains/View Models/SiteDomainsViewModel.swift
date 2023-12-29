@@ -26,9 +26,15 @@ final class SiteDomainsViewModel: ObservableObject {
                 let sections = Self.buildSections(from: blog, domains: domains)
                 self.state = .normal(sections)
             case .failure(let error):
-                break
+                self.state = .message(self.errorMessageViewModel(from: error))
             }
         })
+    }
+
+    private func errorMessageViewModel(from error: Error) -> DomainsStateViewModel {
+        return DomainsStateViewModel.errorMessageViewModel(from: error) { [weak self] in
+            self?.refresh()
+        }
     }
 
     // MARK: - Sections
@@ -136,7 +142,7 @@ extension SiteDomainsViewModel {
     enum State {
         case normal([Section])
         case loading
-        case message(MessageStateViewModel)
+        case message(DomainsStateViewModel)
     }
 
     struct Section: Identifiable {
