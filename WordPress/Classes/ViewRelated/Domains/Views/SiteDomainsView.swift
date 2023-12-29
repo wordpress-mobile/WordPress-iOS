@@ -36,7 +36,6 @@ struct SiteDomainsView: View {
                 }
                 .listRowSeparator(.hidden)
                 //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
-                .onTapGesture(perform: { })
             case .message(let messageViewModel):
                 VStack {
                     HStack(alignment: .center) {
@@ -78,10 +77,23 @@ struct SiteDomainsView: View {
         }
     }
 
-    private func makeDomainsListSection(blog: Blog, section: SiteDomainsViewModel.Section, rows: [AllDomainsListCardView.ViewModel]) -> some View {
+    private func makeDomainsListSection(blog: Blog, section: SiteDomainsViewModel.Section, rows: [SiteDomainsViewModel.Section.Row]) -> some View {
         Section {
-            ForEach(rows) { domainViewModel in
-                AllDomainsListCardView(viewModel: domainViewModel, padding: 0)
+            ForEach(rows) { row  in
+                if let navigation = row.navigation {
+                    NavigationLink(destination: {
+                        DomainDetailsWebViewControllerWrapper(
+                            domain: navigation.domain,
+                            siteSlug: navigation.siteSlug,
+                            type: navigation.type,
+                            analyticsSource: navigation.analyticsSource
+                        )
+                    }, label: {
+                        AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
+                    })
+                } else {
+                    AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
+                }
             }
         } header: {
             if let title = section.title {

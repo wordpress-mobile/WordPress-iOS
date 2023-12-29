@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 import Combine
 
 final class SiteDomainsViewModel: ObservableObject {
@@ -50,12 +51,14 @@ final class SiteDomainsViewModel: ObservableObject {
                 title: Strings.freeDomainSectionTitle,
                 footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
                 content: .rows([.init(
-                    name: blog.freeSiteAddress,
-                    description: nil,
-                    status: nil,
-                    expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
-                    isPrimary: freeDomain.isPrimaryDomain
-                )])
+                    viewModel: .init(
+                        name: blog.freeSiteAddress,
+                        description: nil,
+                        status: nil,
+                        expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
+                        isPrimary: freeDomain.isPrimaryDomain
+                    ),
+                    navigation: nil)])
             )
         ]
     }
@@ -82,11 +85,14 @@ final class SiteDomainsViewModel: ObservableObject {
                 title: Strings.domainsListSectionTitle,
                 footer: Strings.primaryDomainDescription,
                 content: .rows([.init(
-                    name: primaryDomain.domain,
-                    description: nil,
-                    status: primaryDomain.status,
-                    expiryDate: AllDomainsListItemViewModel.expiryDate(from: primaryDomain),
-                    isPrimary: true
+                    viewModel: .init(
+                        name: primaryDomain.domain,
+                        description: nil,
+                        status: primaryDomain.status,
+                        expiryDate: AllDomainsListItemViewModel.expiryDate(from: primaryDomain),
+                        isPrimary: true
+                    ),
+                    navigation: navigation(from: primaryDomain)
                 )])
             )
             sections.append(section)
@@ -94,12 +100,15 @@ final class SiteDomainsViewModel: ObservableObject {
 
         if otherDomains.count > 0 {
             let domainRows = otherDomains.map {
-                AllDomainsListCardView.ViewModel(
-                    name: $0.domain,
-                    description: nil,
-                    status: $0.status,
-                    expiryDate: AllDomainsListItemViewModel.expiryDate(from: $0),
-                    isPrimary: false
+                SiteDomainsViewModel.Section.Row(
+                    viewModel: .init(
+                        name: $0.domain,
+                        description: nil,
+                        status: $0.status,
+                        expiryDate: AllDomainsListItemViewModel.expiryDate(from: $0),
+                        isPrimary: false
+                    ),
+                    navigation: navigation(from: $0)
                 )
             }
 
@@ -119,6 +128,10 @@ final class SiteDomainsViewModel: ObservableObject {
         }
 
         return sections
+    }
+
+    private static func navigation(from domain: DomainsService.AllDomainsListItem) -> SiteDomainsViewModel.Section.Row.Navigation {
+        return .init(domain: domain.domain, siteSlug: domain.siteSlug, type: domain.type)
     }
 }
 
@@ -147,9 +160,22 @@ extension SiteDomainsViewModel {
 
     struct Section: Identifiable {
         enum SectionKind {
-            case rows([AllDomainsListCardView.ViewModel])
+            case rows([Row])
             case addDomain
             case upgradePlan
+        }
+
+        struct Row: Identifiable {
+            struct Navigation: Hashable {
+                let domain: String
+                let siteSlug: String
+                let type: DomainType
+                let analyticsSource: String = "site_domains"
+            }
+
+            let id = UUID()
+            let viewModel: AllDomainsListCardView.ViewModel
+            let navigation: Navigation?
         }
 
         let id = UUID()
