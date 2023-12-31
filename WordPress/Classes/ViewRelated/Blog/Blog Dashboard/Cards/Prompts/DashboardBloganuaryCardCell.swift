@@ -27,14 +27,14 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
         }
 
         // Check for date eligibility.
-        let isDateInDecember: Bool = {
+        let isDateWithinEligibleMonths: Bool = {
             let components = date.dateAndTimeComponents()
             guard let month = components.month else {
                 return false
             }
 
-            // NOTE: For simplicity, we're going to hardcode the date check if the date is within December.
-            return month == 12
+            // NOTE: For simplicity, we're going to hardcode the date check if the date is within December or January.
+            return Constants.eligibleMonths.contains(month)
         }()
 
         // Check if the blog is marked as a potential blogging site.
@@ -42,7 +42,7 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
             return (try? BloggingPromptSettings.of(blog))?.isPotentialBloggingSite ?? false
         }
 
-        return isDateInDecember && isPotentialBloggingSite
+        return isDateWithinEligibleMonths && isPotentialBloggingSite
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
@@ -111,6 +111,11 @@ class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 
         return frameView
     }
+
+    struct Constants {
+        // Only show the card in December and January.
+        static let eligibleMonths = [1, 12]
+    }
 }
 
 // MARK: - SwiftUI
@@ -144,7 +149,7 @@ private struct BloganuaryNudgeCardView: View {
 
     var textContainer: some View {
         VStack(alignment: .leading, spacing: 8.0) {
-            Text(Strings.title)
+            Text(cardTitle)
                 .font(.headline)
                 .fontWeight(.semibold)
             Text(Strings.description)
@@ -153,11 +158,28 @@ private struct BloganuaryNudgeCardView: View {
         }
     }
 
+    var cardTitle: String {
+        let components = Date().dateAndTimeComponents()
+        guard let month = components.month,
+              DashboardBloganuaryCardCell.Constants.eligibleMonths.contains(month) else {
+            return Strings.title
+        }
+
+        return month == 1 ? Strings.runningTitle : Strings.title
+    }
+
     struct Strings {
         static let title = NSLocalizedString(
             "bloganuary.dashboard.card.title",
             value: "Bloganuary is coming!",
             comment: "Title for the Bloganuary dashboard card."
+        )
+
+        // The card title string to be shown while Bloganuary is running
+        static let runningTitle = NSLocalizedString(
+            "bloganuary.dashboard.card.runningTitle",
+            value: "Bloganuary is here!",
+            comment: "Title for the Bloganuary dashboard card while Bloganuary is running."
         )
 
         static let description = NSLocalizedString(
