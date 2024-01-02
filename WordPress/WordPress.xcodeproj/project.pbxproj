@@ -3307,7 +3307,6 @@
 		E19B17AE1E5C6944007517C6 /* BasePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AD1E5C6944007517C6 /* BasePost.swift */; };
 		E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */; };
 		E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17B11E5C8F36007517C6 /* AbstractPost.swift */; };
-		E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
 		E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03EE117422DCE0085D192 /* BlogToAccount.m */; };
 		E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */; };
 		E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C714DB05C300954CF8 /* AVFoundation.framework */; };
@@ -5387,8 +5386,6 @@
 		FABB26392602FC2C00C8785C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FABB263A2602FC2C00C8785C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5AA54D41A8E7510003BDD12 /* WebKit.framework */; };
 		FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */; };
-		FABB263C2602FC2C00C8785C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
-		FABB263D2602FC2C00C8785C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
 		FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4DEAD7244B56E200ACA032 /* CoreServices.framework */; };
 		FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FABB28462603067C00C8785C /* Launch Screen.storyboard */; };
 		FABB286C2603086900C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
@@ -5468,7 +5465,6 @@
 		FAFC065127D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */; };
 		FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */; };
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
-		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FE003F5D282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
 		FE003F5E282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
@@ -8554,7 +8550,6 @@
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12FE0731FA0CEE000F28710 /* ImmuTable+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImmuTable+Optional.swift"; sourceTree = "<group>"; };
 		E131CB5116CACA6B004B0314 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		E131CB5316CACB05004B0314 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_has-blog.json"; sourceTree = "<group>"; };
 		E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_doesnt-have-blog.json"; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -8639,7 +8634,6 @@
 		E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		E19B17B11E5C8F36007517C6 /* AbstractPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPost.swift; sourceTree = "<group>"; };
 		E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 3.xcdatamodel"; sourceTree = "<group>"; };
-		E19DF740141F7BDD000002F3 /* libz.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E1A03EE017422DCD0085D192 /* BlogToAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToAccount.h; sourceTree = "<group>"; };
 		E1A03EE117422DCE0085D192 /* BlogToAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogToAccount.m; sourceTree = "<group>"; };
 		E1A03F46174283DF0085D192 /* BlogToJetpackAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToJetpackAccount.h; sourceTree = "<group>"; };
@@ -9318,7 +9312,6 @@
 		FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Dashboard.swift"; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
-		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		FDCB9A89134B75B900E5C776 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -9544,8 +9537,6 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
-				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
-				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
 				A1C54EBE8C34FFD5015F8FC9 /* Pods_Apps_WordPress.framework in Frameworks */,
@@ -9686,8 +9677,6 @@
 				17A8858F2757BEC00071FCA3 /* AutomatticAbout in Frameworks */,
 				FABB263A2602FC2C00C8785C /* WebKit.framework in Frameworks */,
 				FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */,
-				FABB263C2602FC2C00C8785C /* libiconv.dylib in Frameworks */,
-				FABB263D2602FC2C00C8785C /* libz.dylib in Frameworks */,
 				FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */,
 				9C86CF3E1EAC13181A593D00 /* Pods_Apps_Jetpack.framework in Frameworks */,
 			);
@@ -10866,10 +10855,7 @@
 				E185474D1DED8D8800D875D7 /* UserNotifications.framework */,
 				93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */,
 				B5AA54D41A8E7510003BDD12 /* WebKit.framework */,
-				FD21397E13128C5300099582 /* libiconv.dylib */,
 				93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */,
-				E131CB5316CACB05004B0314 /* libxml2.dylib */,
-				E19DF740141F7BDD000002F3 /* libz.dylib */,
 				B7556D1D8CFA5CEAEAC481B9 /* Pods.framework */,
 				B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */,
 				733F36052126197800988727 /* UserNotificationsUI.framework */,
