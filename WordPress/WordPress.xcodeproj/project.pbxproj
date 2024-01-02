@@ -7145,7 +7145,6 @@
 		742B7F39209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFPlaybackStrategy.swift; sourceTree = "<group>"; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
 		7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaFileManager.swift; sourceTree = "<group>"; };
-		743368F01F914DCE0055224D /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74337EDC20054D5500777997 /* MainShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainShareViewController.swift; sourceTree = "<group>"; };
 		7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImageCache.swift; sourceTree = "<group>"; };
 		74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionPresentationController.swift; sourceTree = "<group>"; };
@@ -7170,7 +7169,6 @@
 		74729CA52056FE6000D1394D /* SearchableItemConvertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableItemConvertable.swift; sourceTree = "<group>"; };
 		74729CA92057100200D1394D /* SearchIdentifierGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIdentifierGenerator.swift; sourceTree = "<group>"; };
 		74729CAD205722E300D1394D /* AbstractPost+Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Searchable.swift"; sourceTree = "<group>"; };
-		747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTagsPickerViewController.swift; sourceTree = "<group>"; };
 		748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-private.json"; sourceTree = "<group>"; };
 		748437EA1F1D4A4800E8DDAF /* gallery-reader-post-public.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-public.json"; sourceTree = "<group>"; };
@@ -7673,7 +7671,6 @@
 		9363113D19F9DE0700B0C739 /* WordPress 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 23.xcdatamodel"; sourceTree = "<group>"; };
 		9363113E19FA996700B0C739 /* AccountServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountServiceTests.swift; sourceTree = "<group>"; };
 		93652B811A006C96006A4C47 /* WordPress 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 24.xcdatamodel"; sourceTree = "<group>"; };
-		9368C7981EC5F0C70092CE8E /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9371F25C1E4A207F00BF26A0 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9371F25D1E4A208E00BF26A0 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9371F25E1E4A20A100BF26A0 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -8139,7 +8136,6 @@
 		B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelperTests.swift; sourceTree = "<group>"; };
-		B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCropViewController.xib; sourceTree = "<group>"; };
 		B5EEDB961C91F10400676B2B /* Blog+Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Interface.swift"; sourceTree = "<group>"; };
 		B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationSettingsService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -8644,7 +8640,6 @@
 		E19B17B11E5C8F36007517C6 /* AbstractPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPost.swift; sourceTree = "<group>"; };
 		E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 3.xcdatamodel"; sourceTree = "<group>"; };
 		E19DF740141F7BDD000002F3 /* libz.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		E19FED0B1FBD85F300D77FAB /* WordPressFlux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressFlux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1A03EE017422DCD0085D192 /* BlogToAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToAccount.h; sourceTree = "<group>"; };
 		E1A03EE117422DCE0085D192 /* BlogToAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogToAccount.m; sourceTree = "<group>"; };
 		E1A03F46174283DF0085D192 /* BlogToJetpackAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToJetpackAccount.h; sourceTree = "<group>"; };
@@ -10871,11 +10866,6 @@
 				E185474D1DED8D8800D875D7 /* UserNotifications.framework */,
 				93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */,
 				B5AA54D41A8E7510003BDD12 /* WebKit.framework */,
-				B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */,
-				E19FED0B1FBD85F300D77FAB /* WordPressFlux.framework */,
-				747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */,
-				9368C7981EC5F0C70092CE8E /* WordPressKit.framework */,
-				743368F01F914DCE0055224D /* WordPressKit.framework */,
 				FD21397E13128C5300099582 /* libiconv.dylib */,
 				93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */,
 				E131CB5316CACB05004B0314 /* libxml2.dylib */,
