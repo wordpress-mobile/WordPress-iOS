@@ -49,14 +49,14 @@ final class DashboardBloganuaryCardCellTests: CoreDataTestCase {
         XCTAssertFalse(result)
     }
 
-    func testCardIsNotShownForEligibleSitesOutsideEligibleMonths() throws {
+    func testCardIsNotShownForEligibleSitesOutsideDecember() throws {
         // Given
         let blog = makeBlog()
         makeBloggingPromptSettings()
         try mainContext.save()
 
         // When
-        let result = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInFebruary)
+        let result = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInJanuary)
 
         // Then
         XCTAssertFalse(result)
@@ -69,12 +69,10 @@ final class DashboardBloganuaryCardCellTests: CoreDataTestCase {
         try mainContext.save()
 
         // When
-        let resultForDecember = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInDecember)
-        let resultForJanuary = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInJanuary)
+        let result = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInDecember)
 
         // Then
-        XCTAssertTrue(resultForDecember)
-        XCTAssertTrue(resultForJanuary)
+        XCTAssertTrue(result)
     }
 
     func testCardIsShownForEligibleSitesThatHavePromptsDisabled() throws {
@@ -109,16 +107,6 @@ private extension DashboardBloganuaryCardCellTests {
         let date = Date()
         var components = Self.calendar.dateComponents([.year, .month, .day], from: date)
         components.month = 1
-        components.year = 2024
-        components.day = 10
-
-        return Self.calendar.date(from: components) ?? date
-    }
-
-    var sometimeInFebruary: Date {
-        let date = Date()
-        var components = Self.calendar.dateComponents([.year, .month, .day], from: date)
-        components.month = 2
         components.year = 2024
         components.day = 10
 
