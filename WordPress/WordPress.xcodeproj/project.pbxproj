@@ -8525,7 +8525,6 @@
 		E105205A1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlogMigration_61_62.swift; sourceTree = "<group>"; };
 		E105E9CD1726955600C0D9E7 /* WPAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAccount.h; sourceTree = "<group>"; };
 		E105E9CE1726955600C0D9E7 /* WPAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAccount.m; sourceTree = "<group>"; };
-		E10675C9183FA78E00E5CE5C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E10B3651158F2D3F00419A93 /* QuartzCore.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E10B3653158F2D4500419A93 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E10F3DA01E5C2CE0008FAADA /* PostListFilterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterTests.swift; sourceTree = "<group>"; };
@@ -10877,7 +10876,6 @@
 				747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */,
 				9368C7981EC5F0C70092CE8E /* WordPressKit.framework */,
 				743368F01F914DCE0055224D /* WordPressKit.framework */,
-				E10675C9183FA78E00E5CE5C /* XCTest.framework */,
 				FD21397E13128C5300099582 /* libiconv.dylib */,
 				93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */,
 				E131CB5316CACB05004B0314 /* libxml2.dylib */,
