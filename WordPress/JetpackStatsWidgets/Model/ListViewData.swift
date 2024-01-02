@@ -1,4 +1,5 @@
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 struct ListViewData {
 
