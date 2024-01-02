@@ -33,7 +33,7 @@ extension ThisWeekWidgetStats {
         var days = [ThisWeekWidgetDay]()
 
         for index in 0..<maxDaysToDisplay {
-            guard index + 1 <= summaryData.endIndex else {
+            guard index + 1 < summaryData.endIndex else {
                 break
             }
 
