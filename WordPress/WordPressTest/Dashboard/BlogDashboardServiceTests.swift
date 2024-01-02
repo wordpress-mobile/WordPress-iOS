@@ -11,7 +11,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var persistenceMock: BlogDashboardPersistenceMock!
     private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
-    private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
     private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
@@ -28,7 +27,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
-        remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
         service = BlogDashboardService(
             managedObjectContext: mainContext,
             // Notice these three boolean make the test run as if the app was Jetpack.
@@ -43,8 +41,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             remoteService: remoteServiceMock,
             persistence: persistenceMock,
             repository: repositoryMock,
-            postsParser: postsParserMock,
-            remoteFeatureFlagStore: remoteFeatureFlagStore
+            postsParser: postsParserMock
         )
 
         // The state of the world these tests assume relies on certain feature flags.
@@ -413,10 +410,9 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     // MARK: - Dynamic Cards
 
-    func testCardsPresenceWhenAllCardsFeatureFlagsAreEnabled() throws {
+    func testCardsPresenceWhenFeatureFlagIsEnabled() throws {
         let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
         remoteServiceMock.respondWith = .withMultipleDynamicCards
-        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345", "feature_flag_67890", "feature_flag_13579"]
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
@@ -430,28 +426,9 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
-    func testCardsPresenceWhenSomeCardsFeatureFlagsAreEnabled() throws {
-        let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
-        remoteServiceMock.respondWith = .withMultipleDynamicCards
-        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345"]
-        remoteFeatureFlagStore.disabledFeatureFlag = ["feature_flag_67890"]
-
-        let blog = newTestBlog(id: wpComID, context: mainContext)
-
-        service.fetch(blog: blog) { cards in
-            let numberOfDynamicCards = cards.compactMap { $0.dynamic() }.count
-            XCTAssertEqual(numberOfDynamicCards, 1)
-            XCTAssertEqual(cards[0].dynamic()?.payload.id, "id_12345")
-            expect.fulfill()
-        }
-
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-
-    func testCardsAbsenceWhenRemoteFeatureFlagIsDisabled() throws {
+    func testCardsAbsenceWhenFeatureFlagIsDisabled() throws {
         let expect = expectation(description: "No dynamic card should be present")
         remoteServiceMock.respondWith = .withMultipleDynamicCards
-        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345", "feature_flag_67890", "feature_flag_13579"]
         try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -468,7 +445,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testDecodingWithDynamicCards() throws {
         let expect = expectation(description: "Dynamic card should be successfully decoded")
         remoteServiceMock.respondWith = .withOnlyOneDynamicCard
-        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345"]
         try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -479,7 +455,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
                 let payload = card.payload
                 let expected = BlogDashboardRemoteEntity.BlogDashboardDynamic(
                     id: "id_12345",
-                    remoteFeatureFlag: "feature_flag_12345",
                     title: "Title 12345",
                     featuredImage: "https://example.com/image12345",
                     url: "https://example.com/url12345",
