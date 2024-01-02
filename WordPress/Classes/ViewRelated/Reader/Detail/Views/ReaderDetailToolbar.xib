@@ -19,11 +19,11 @@
                         <constraint firstAttribute="height" constant="0.5" id="ikP-PI-Is1"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
-                    <rect key="frame" x="28" y="27.5" width="358" height="44"/>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
+                    <rect key="frame" x="36" y="27.5" width="342" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
-                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="73.5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="fqQ-GT-Dks"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="sbH-ur-3hQ"/>
@@ -38,7 +38,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
-                            <rect key="frame" x="100.5" y="0.0" width="48" height="44"/>
+                            <rect key="frame" x="89.5" y="0.0" width="73.5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Z2e-Ky-bYe"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
@@ -53,7 +53,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
-                            <rect key="frame" x="205.5" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="179" y="0.0" width="73.5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="GbG-ii-IcP"/>
                                 <constraint firstAttribute="height" constant="44" id="qNK-wQ-gIc"/>
@@ -68,7 +68,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
-                            <rect key="frame" x="306" y="0.0" width="52" height="44"/>
+                            <rect key="frame" x="268.5" y="0.0" width="73.5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Fio-gF-mFy"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="JqZ-KF-mxs"/>
@@ -88,10 +88,10 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="TSN-68-1mv" firstAttribute="centerY" secondItem="opk-iy-IwF" secondAttribute="centerY" id="12d-dS-uUK"/>
-                <constraint firstAttribute="trailingMargin" secondItem="TSN-68-1mv" secondAttribute="trailing" constant="8" id="ibp-zt-iup"/>
+                <constraint firstAttribute="trailingMargin" secondItem="TSN-68-1mv" secondAttribute="trailing" constant="16" id="ibp-zt-iup"/>
                 <constraint firstItem="RGe-0W-AQZ" firstAttribute="top" secondItem="opk-iy-IwF" secondAttribute="top" id="p1n-uB-ayF"/>
                 <constraint firstAttribute="trailing" secondItem="RGe-0W-AQZ" secondAttribute="trailing" id="p2i-u4-L3o"/>
-                <constraint firstItem="TSN-68-1mv" firstAttribute="leading" secondItem="opk-iy-IwF" secondAttribute="leadingMargin" constant="8" id="sW1-Ik-cCa"/>
+                <constraint firstItem="TSN-68-1mv" firstAttribute="leading" secondItem="opk-iy-IwF" secondAttribute="leadingMargin" constant="16" id="sW1-Ik-cCa"/>
                 <constraint firstItem="RGe-0W-AQZ" firstAttribute="leading" secondItem="opk-iy-IwF" secondAttribute="leading" id="z4Y-xe-owz"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -101,9 +101,6 @@
                 <outlet property="likeButton" destination="1Ht-4U-b7J" id="cZs-ZL-BT4"/>
                 <outlet property="reblogButton" destination="TVh-aP-o67" id="iyb-fz-V0I"/>
                 <outlet property="saveForLaterButton" destination="kYk-HZ-8zf" id="YaG-nx-qsB"/>
-                <outlet property="stackView" destination="TSN-68-1mv" id="6DM-P6-cng"/>
-                <outlet property="stackViewLeadingConstraint" destination="sW1-Ik-cCa" id="lds-dr-DNC"/>
-                <outlet property="stackViewTrailingConstraint" destination="ibp-zt-iup" id="ggo-IN-DhM"/>
             </connections>
             <point key="canvasLocation" x="166.66666666666669" y="134.26339285714286"/>
         </view>

@@ -45,9 +45,4 @@ private extension RootViewCoordinator {
     var accountSites: [Blog]? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.visibleBlogs
     }
-
-    struct Constants {
-        static let featureIntroDisplayedUDKey = "wp_intro_shown_blogging_prompts"
-    }
-
 }

@@ -344,6 +344,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()
+        observeNetworkStatus()
 
         gutenberg.delegate = self
         fetchBlockSettings()
@@ -586,14 +587,30 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
         }
     }
 
     func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-        post.managedObjectContext!.perform {
+        guard let context = post.managedObjectContext else {
+            didEncounterMissingContextError()
+            completion(.failure(URLError(.unknown) as NSError))
+            return
+        }
+        context.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
+        }
+    }
+
+    private func didEncounterMissingContextError() {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logError(NSError(domain: self.errorDomain, code: ErrorCode.managedObjectContextMissing.rawValue, userInfo: [NSDebugDescriptionErrorKey: "The post is missing an associated managed object context"]))
         }
     }
 
@@ -754,19 +771,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
-    struct AnyEncodable: Encodable {
-
-        let value: Encodable
-        init(value: Encodable) {
-            self.value = value
-        }
-
-        func encode(to encoder: Encoder) throws {
-            try value.encode(to: encoder)
-        }
-
-    }
-
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
         if mediaFiles.isEmpty {
@@ -849,7 +853,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message = error.localizedDescription
             if media.canRetry {
                 let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                    self.mediaInserterHelper.retryUploadOf(media: media)
+                    #if DEBUG || INTERNAL_BUILD
+                        self.mediaInserterHelper.retryFailedMediaUploads()
+                    #else
+                        self.mediaInserterHelper.retryUploadOf(media: media)
+                    #endif
                 }
                 alertController.addAction(retryUploadAction)
             }
@@ -1076,10 +1084,27 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.topmostPresentedViewController.present(navController, animated: true)
     }
 
+    func gutenbergDidRequestConnectionStatus() -> Bool {
+        return ReachabilityUtils.isInternetReachable()
+    }
+
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
         post.managedObjectContext?.perform {
             WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
         }
+    }
+}
+
+// MARK: - NetworkAwareUI NetworkStatusDelegate
+
+extension GutenbergViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        gutenberg.connectionStatusChange(isConnected: active)
+        #if DEBUG || INTERNAL_BUILD
+            if active {
+                mediaInserterHelper.retryFailedMediaUploads()
+            }
+        #endif
     }
 }
 
@@ -1406,7 +1431,6 @@ private extension GutenbergViewController {
         )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
-        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
 }
 

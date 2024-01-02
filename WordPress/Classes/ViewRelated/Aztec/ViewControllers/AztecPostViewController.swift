@@ -3309,11 +3309,6 @@ extension AztecPostViewController {
         static let monospace                = UIFont(name: "Menlo-Regular", size: 16.0)!
     }
 
-    struct Restoration {
-        static let restorationIdentifier    = "AztecPostViewController"
-        static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
-    }
-
     struct MediaUploadingCancelAlert {
         static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is canceling an upload.")
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")

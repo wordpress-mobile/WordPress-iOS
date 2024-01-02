@@ -80,10 +80,6 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
         SVProgressHUD.showDismissibleError(withStatus: Strings.errorTitle)
     }
 
-    private func dismiss() {
-        presentingViewController?.dismiss(animated: true)
-    }
-
     private var topViewController: UIViewController? {
         presentingViewController?.topmostPresentedViewController
     }

@@ -1,6 +1,11 @@
 24.0
 -----
-
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [***] [Jetpack-only] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
+* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
+* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
 
 23.9
 -----
@@ -11,6 +16,8 @@
 * [**] [internal] Remove WPMediaPicker dependency [#22103]
 * [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
 * [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
+* [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
+* [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
 * [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
 * [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
 * [*] [Jetpack-only] Fix an issue where VoiceOver could lose focus when liking posts in Reader. [#22232]

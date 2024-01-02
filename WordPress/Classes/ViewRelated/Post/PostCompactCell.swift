@@ -200,7 +200,6 @@ class PostCompactCell: UITableViewCell {
         static let separator = " · "
         static let contentSpacing: CGFloat = 8
         static let imageRadius: CGFloat = 2
-        static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
         static let margin: CGFloat = 16
     }
