@@ -7,7 +7,6 @@ final class BlogDashboardService {
     private let persistence: BlogDashboardPersistence
     private let postsParser: BlogDashboardPostsParser
     private let repository: UserPersistentRepository
-    private let remoteFeatureFlagStore: RemoteFeatureFlagStore
     private let isJetpack: Bool
     private let isDotComAvailable: Bool
     private let shouldShowJetpackFeatures: Bool
@@ -20,8 +19,7 @@ final class BlogDashboardService {
         remoteService: DashboardServiceRemote? = nil,
         persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
         repository: UserPersistentRepository = UserDefaults.standard,
-        postsParser: BlogDashboardPostsParser? = nil,
-        remoteFeatureFlagStore: RemoteFeatureFlagStore = .init()
+        postsParser: BlogDashboardPostsParser? = nil
     ) {
         self.isJetpack = isJetpack
         self.isDotComAvailable = isDotComAvailable
@@ -30,7 +28,6 @@ final class BlogDashboardService {
         self.persistence = persistence
         self.repository = repository
         self.postsParser = postsParser ?? BlogDashboardPostsParser(managedObjectContext: managedObjectContext)
-        self.remoteFeatureFlagStore = remoteFeatureFlagStore
     }
 
     /// Fetch cards from remote
@@ -187,8 +184,6 @@ private extension BlogDashboardService {
         let model = DashboardDynamicCardModel(payload: payload, dotComID: dotComID)
         let shouldShow = DashboardCard.shouldShowDynamicCard(
             for: blog,
-            payload: payload,
-            remoteFeatureFlagStore: remoteFeatureFlagStore,
             isJetpack: isJetpack
         )
         guard shouldShow, personalizationService.isEnabled(model) else {

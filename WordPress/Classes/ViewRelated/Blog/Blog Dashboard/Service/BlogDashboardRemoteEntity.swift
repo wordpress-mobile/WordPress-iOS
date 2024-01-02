@@ -57,7 +57,6 @@ extension BlogDashboardRemoteEntity {
     struct BlogDashboardDynamic: Decodable, Hashable {
 
         let id: String
-        let remoteFeatureFlag: String?
         let title: String?
         let featuredImage: String?
         let url: String?
@@ -79,7 +78,6 @@ extension BlogDashboardRemoteEntity {
         private enum CodingKeys: String, CodingKey {
             case id
             case title
-            case remoteFeatureFlag = "remote_feature_flag"
             case featuredImage = "featured_image"
             case url
             case action

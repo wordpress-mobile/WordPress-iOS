@@ -147,21 +147,8 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    static func shouldShowDynamicCard(
-        for blog: Blog,
-        payload: DashboardDynamicCardModel.Payload,
-        remoteFeatureFlagStore: RemoteFeatureFlagStore,
-        isJetpack: Bool = AppConfiguration.isJetpack
-    ) -> Bool {
-        let remoteFeatureFlagEnabled = {
-            guard let key = payload.remoteFeatureFlag else {
-                return true
-            }
-            return remoteFeatureFlagStore.value(for: key) ?? false
-        }()
-        return isJetpack
-        && RemoteDashboardCard.dynamic.supported(by: blog)
-        && remoteFeatureFlagEnabled
+    static func shouldShowDynamicCard(for blog: Blog, isJetpack: Bool = AppConfiguration.isJetpack) -> Bool {
+        isJetpack && RemoteDashboardCard.dynamic.supported(by: blog)
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
