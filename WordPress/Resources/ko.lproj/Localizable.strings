@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-19 09:54:27+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -9454,6 +9454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
 
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
 
@@ -9807,6 +9810,12 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "추가";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "선택한 내용 보기(%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "캠페인 상세";
@@ -10491,6 +10500,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "사이트가 없습니다";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "사이트 조치";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "눌러서 추가 사이트 조치 표시";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "홈 개인 설정";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "사이트 제목 변경";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
@@ -11239,6 +11260,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
 
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "미디어 라이브러리에 추가할 무료 사진을 검색하여 찾으세요!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "대화";
 
@@ -11385,6 +11409,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "도움말";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "미디어 라이브러리에 추가할 GIF를 검색하여 찾으세요!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";

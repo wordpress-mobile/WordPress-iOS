@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 13:54:10+0000 */
+/* Translation-Revision-Date: 2023-12-19 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: it */
@@ -9451,6 +9451,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Copia URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Visualizza il sito";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Scopri di più";
 
@@ -9807,6 +9810,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "esempio.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Aggiungi";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Seleziona le immagini";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Vista selezionata (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Dettagli della campagna";
@@ -10261,6 +10273,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Elemento eliminato.";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Tutti";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Documenti";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Immagini";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Video";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Elimina";
 
@@ -10335,6 +10362,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Fai un video";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ di %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$dx%2$d px";
@@ -10488,6 +10518,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Non sono presenti siti";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Azioni del sito";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Clicca per mostrare più azioni del sito";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalizza la home";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Cambia l'icona del sito";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Modifica il titolo del sito";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Cambia sito";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Visualizza il sito";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignora";
@@ -11056,6 +11107,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Visualizza in anteprima elemento multimediale";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Aggiungi";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Deseleziona";
 
@@ -11227,6 +11281,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Ignora";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Foto fornite da Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Cerca per trovare foto gratuite da aggiungere alla tua Libreria multimediale!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In questa conversazione";
 
@@ -11373,6 +11433,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Aiuto";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Cerca per trovare GIF da aggiungere alla tua Libreria multimediale!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "questi elementi verranno eliminati:";

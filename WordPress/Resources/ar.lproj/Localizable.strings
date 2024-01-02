@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-19 14:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -9448,8 +9448,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "نسخ عنوان URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "زيارة الموقع";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "معرفة المزيد";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "في شهر يناير، ستأتي موجّهات التدوين من Bloganuary - تحدٍّ مجتمعي لدينا لإنشاء عادة التدوين الخاصة بالعام الجديد.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary قادمة!";
@@ -9801,6 +9807,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "إضافة";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "تحديد صور";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "عرض العناصر المحدَّدة (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "تفاصيل الحملة";
@@ -10255,6 +10270,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "محذوف!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "الكل";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "الصوت";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "الوثائق";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "الصور";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "الفيديوهات";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "حذف";
 
@@ -10332,6 +10362,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "تسجيل فيديو";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ من %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × ⁦%2$d⁩ بكسل";
@@ -10485,6 +10518,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "ليس لديك أي مواقع";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "إجراءات الموقع";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "النقر لإظهار مزيد من إجراءات الموقع";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "تخصيص الصفحة الرئيسية";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "تغيير أيقونة الموقع";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "تغيير عنوان الموقع";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "تغيير الموقع";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "زيارة الموقع";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "تجاهل";
@@ -11009,6 +11063,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "معاينة الوسائط";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "إضافة";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "إلغاء التحديد";
 
@@ -11183,6 +11240,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "تجاهُل";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "الصور مقدمة من Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "ابحث للعثور على صور مجانية لإضافتها إلى مكتبة الوسائط الخاصة بك!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "في هذه المحادثة";
 
@@ -11329,6 +11392,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "مساعدة";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "ابحث للعثور على صور بتنسيق GIF لإضافتها إلى مكتبة الوسائط الخاصة بك!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";
