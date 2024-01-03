@@ -53,9 +53,9 @@ def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
   # pod 'WordPressKit', '~> 9.0'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '32b5a9fdd097b82934a5ce679c915a1fc3f21848'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'task/22315-backend-driven-dynamic-cards-filtering'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  pod 'WordPressKit', path: '../WordPressKit-iOS'
+  # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
 
 def kanvas
