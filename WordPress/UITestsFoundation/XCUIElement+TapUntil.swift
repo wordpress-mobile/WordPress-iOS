@@ -80,7 +80,14 @@ public extension XCUIElement {
 
         guard condition.isMet() else {
             sleep(UInt32(retryInterval))
-            return tapUntil(condition, retriedCount: retriedCount + 1, failureMessage: failureMessage, maxRetries: maxRetries, retryInterval: retryInterval)
+
+            return tapUntil(
+                condition,
+                retriedCount: retriedCount + 1,
+                failureMessage: failureMessage,
+                maxRetries: maxRetries,
+                retryInterval: retryInterval
+            )
         }
     }
 }
