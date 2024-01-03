@@ -11,6 +11,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var persistenceMock: BlogDashboardPersistenceMock!
     private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
+    private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
+
     private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
@@ -27,6 +29,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
+        remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
         service = BlogDashboardService(
             managedObjectContext: mainContext,
             // Notice these three boolean make the test run as if the app was Jetpack.
@@ -41,7 +44,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             remoteService: remoteServiceMock,
             persistence: persistenceMock,
             repository: repositoryMock,
-            postsParser: postsParserMock
+            postsParser: postsParserMock,
+            remoteFeatureFlagStore: remoteFeatureFlagStore
         )
 
         // The state of the world these tests assume relies on certain feature flags.
@@ -74,6 +78,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
+            XCTAssertEqual(self.remoteServiceMock.didCallWithDeviceId, "Test")
             XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity", "dynamic"])
             expect.fulfill()
         }
@@ -521,11 +526,19 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     var respondWith: Response = .withDraftAndSchedulePosts
 
     var didCallWithBlogID: Int?
+    var didCallWithDeviceId: String?
     var didRequestCards: [String]?
 
-    override func fetch(cards: [String], forBlogID blogID: Int, success: @escaping (NSDictionary) -> Void, failure: @escaping (Error) -> Void) {
+    override func fetch(
+        cards: [String],
+        forBlogID blogID: Int,
+        deviceId: String,
+        success: @escaping (NSDictionary) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         didCallWithBlogID = blogID
         didRequestCards = cards
+        didCallWithDeviceId = deviceId
 
         if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
         let data: Data = try? Data(contentsOf: fileURL),

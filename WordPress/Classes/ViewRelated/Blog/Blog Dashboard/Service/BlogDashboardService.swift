@@ -10,6 +10,7 @@ final class BlogDashboardService {
     private let isJetpack: Bool
     private let isDotComAvailable: Bool
     private let shouldShowJetpackFeatures: Bool
+    private let remoteFeatureFlagStore: RemoteFeatureFlagStore
 
     init(
         managedObjectContext: NSManagedObjectContext,
@@ -19,7 +20,8 @@ final class BlogDashboardService {
         remoteService: DashboardServiceRemote? = nil,
         persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
         repository: UserPersistentRepository = UserDefaults.standard,
-        postsParser: BlogDashboardPostsParser? = nil
+        postsParser: BlogDashboardPostsParser? = nil,
+        remoteFeatureFlagStore: RemoteFeatureFlagStore = .init()
     ) {
         self.isJetpack = isJetpack
         self.isDotComAvailable = isDotComAvailable
@@ -28,6 +30,7 @@ final class BlogDashboardService {
         self.persistence = persistence
         self.repository = repository
         self.postsParser = postsParser ?? BlogDashboardPostsParser(managedObjectContext: managedObjectContext)
+        self.remoteFeatureFlagStore = remoteFeatureFlagStore
     }
 
     /// Fetch cards from remote
@@ -39,8 +42,9 @@ final class BlogDashboardService {
         }
 
         let cardsToFetch: [String] = DashboardCard.RemoteDashboardCard.allCases.filter {$0.supported(by: blog)}.map { $0.rawValue }
+        let deviceID = remoteFeatureFlagStore.deviceID
 
-        remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
+        remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, deviceId: deviceID, success: { [weak self] cardsDictionary in
 
             guard let cardsDictionary = self?.parseCardsForLocalContent(cardsDictionary, blog: blog) else {
                 failure?([])
