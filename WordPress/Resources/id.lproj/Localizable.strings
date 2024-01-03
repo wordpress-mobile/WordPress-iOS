@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-19 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -9445,11 +9445,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Salin URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Kunjungi situs";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
-
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Selama bulan Januari, prompt blogging akan datang dari Bloganuary—tantangan kami untuk komunitas guna membentuk kebiasaan blogging di tahun yang baru.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary segera hadir!";
@@ -9801,6 +9801,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "contoh.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Tambah";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Pilih Gambar";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Tampilan Dipilih (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Detail Kampanye";
@@ -10255,6 +10264,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Dihapus!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Semua";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Dokumen";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Gambar";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Video";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Hapus";
 
@@ -10332,6 +10356,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Ambil Video";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ dari %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d piksel";
@@ -10485,6 +10512,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Anda belum memiliki situs";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Tindakan di Situs";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Ketuk untuk menunjukkan tindakan lain di situs";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalisasikan beranda";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Ubah ikon situs";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Ubah judul situs";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Alihkan sistus";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Kunjungi situs";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
@@ -11059,6 +11107,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Pratinjau media";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Tambah";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Batalkan Pilihan";
 
@@ -11233,6 +11284,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Tutup";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Foto disediakan oleh Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Dalam percakapan ini";
 
@@ -11379,6 +11436,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Bantuan";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";
