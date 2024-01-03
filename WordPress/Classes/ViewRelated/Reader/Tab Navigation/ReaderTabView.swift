@@ -10,7 +10,7 @@ class ReaderTabView: UIView {
             viewModel.fetchReaderMenu()
         }
         let view = UIView.embedSwiftUIView(ReaderNavigationMenu(viewModel: viewModel,
-                                                                selectedItem: viewModel.tabItems[viewModel.selectedIndex]))
+                                                                selectedItem: viewModel.tabItems[safe: viewModel.selectedIndex]))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
