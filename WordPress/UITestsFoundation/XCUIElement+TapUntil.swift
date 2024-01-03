@@ -59,7 +59,7 @@ public extension XCUIElement {
         fileprivate func isMet() -> Bool {
             switch state {
             case .exists: return element.exists
-            case .dismissed: return element.isHittable
+            case .dismissed: return element.isHittable == false
             case .selected: return element.isSelected
             }
         }
