@@ -62,7 +62,7 @@ extension WPTabBarController {
 extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
-        let gravatarIcon = image.gravatarIcon(size: 28.0)
+        let gravatarIcon = image.gravatarIcon(size: 26.0)
         self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
         self.selectedImage = gravatarIcon
     }
