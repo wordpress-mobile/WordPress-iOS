@@ -26,7 +26,7 @@ PODS:
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
   - Gridicons (1.2.0)
-  - Gutenberg (1.109.3)
+  - Gutenberg (1.109.2)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
