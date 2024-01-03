@@ -494,6 +494,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
+    UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+    [generator impactOccurred];
+
     [self animateSelectedItem:item for:tabBar];
 }
 
