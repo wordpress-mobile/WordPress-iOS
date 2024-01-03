@@ -490,6 +490,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
 }
 
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    [self animateSelectedItem:item for:tabBar];
+}
+
 #pragma mark - Zendesk Notifications
 
 - (void)updateIconIndicators:(NSNotification *)notification
