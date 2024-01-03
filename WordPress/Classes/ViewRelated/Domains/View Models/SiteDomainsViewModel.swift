@@ -82,7 +82,7 @@ final class SiteDomainsViewModel: ObservableObject {
 
         if let primaryDomain {
             let section = Section(
-                title: Strings.domainsListSectionTitle,
+                title: String(format: Strings.domainsListSectionTitle, blog.title ?? blog.freeSiteAddress),
                 footer: Strings.primaryDomainDescription,
                 content: .rows([.init(
                     viewModel: .init(
@@ -113,7 +113,7 @@ final class SiteDomainsViewModel: ObservableObject {
             }
 
             let section = Section(
-                title: primaryDomain == nil ? Strings.domainsListSectionTitle : nil,
+                title: primaryDomain == nil ? String(format: Strings.domainsListSectionTitle, blog.title ?? blog.freeSiteAddress) : nil,
                 footer: nil,
                 content: .rows(domainRows)
             )
@@ -144,8 +144,8 @@ extension SiteDomainsViewModel {
                                                                 value: "Your primary site address is what visitors will see in their address bar when visiting your website.",
                                                                 comment: "Footer of the primary site section in the Domains Dashboard.")
         static let domainsListSectionTitle: String = NSLocalizedString("site.domains.domainSection.title",
-                                                                       value: "Your Site Domains",
-                                                                       comment: "Header of the domains list section in the Domains Dashboard.")
+                                                                       value: "Other domains for %1$@",
+                                                                       comment: "Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site.")
     }
 }
 
