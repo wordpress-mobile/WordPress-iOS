@@ -173,9 +173,8 @@ extension ReaderTabViewModel {
             filters.append(ReaderTagTopic.filterProvider())
         }
 
-        return FilterSheetViewController(viewTitle: selectedTab.title,
-                                         filters: filters,
-                                         changedFilter: completion)
+        // TODO: Will be updated in the next PR.
+        return FilterSheetViewController(filter: filters.last!, changedFilter: completion)
     }
 }
 
