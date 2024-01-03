@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReaderNavigationButton: View {
 
-    @StateObject var viewModel: ReaderTabViewModel
+    @ObservedObject var viewModel: ReaderTabViewModel
     @State var selectedItem: ReaderTabItem
 
     var body: some View {

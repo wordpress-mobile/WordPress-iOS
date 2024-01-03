@@ -1,7 +1,7 @@
 struct ReaderTabItem: FilterTabBarItem, Hashable {
 
     let id = UUID()
-    let shouldHideButtonsView: Bool
+    let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
 
@@ -15,7 +15,7 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     init(_ content: ReaderContent) {
         self.content = content
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
-        shouldHideButtonsView = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
         shouldHideSettingsButton = content.type == .selfHostedFollowing
         shouldHideTagFilter = content.topicType == .organization
     }

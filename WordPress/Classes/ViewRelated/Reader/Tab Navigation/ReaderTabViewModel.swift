@@ -41,6 +41,20 @@ import WordPressUI
     /// Settings
     private let settingsPresenter: ScenePresenter
 
+    /// The available filters for the current stream.
+    @Published var streamFilters = [FilterProvider]() {
+        didSet {
+            // refresh the filter list immediately upon update.
+            streamFilters.forEach { $0.refresh() }
+        }
+    }
+
+    /// The active stream filter for the stream.
+    ///
+    /// The `FilterProvider`'s ID is stored to identify where the `ReaderAbstractTopic` is coming from.
+    /// When this property is nil, it means the stream is in an unfiltered state.
+    @Published var activeStreamFilter: (filterID: FilterProvider.ID, topic: ReaderAbstractTopic)?
+
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ItemsStore,
@@ -56,6 +70,7 @@ import WordPressUI
                 return
             }
             viewModel.tabItems = viewModel.tabItemsStore.items
+            viewModel.reloadStreamFilters()
             viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItemsStore.items, viewModel.selectedIndex) }
         }
         addNotificationsObservers()
@@ -87,6 +102,10 @@ extension ReaderTabViewModel {
         if tabItems[index].content.type == .saved {
             setContent?(tabItems[index].content)
         }
+
+        // reload filters for the new stream.
+        reloadStreamFilters()
+
         didSelectIndex?(index)
     }
 
@@ -116,6 +135,36 @@ extension ReaderTabViewModel {
 
 // MARK: - Filter
 extension ReaderTabViewModel {
+
+    func reloadStreamFilters() {
+        guard let selectedStream = tabItems[safe: selectedIndex] else {
+            return
+        }
+
+        // always reset active stream filters
+        activeStreamFilter = nil
+
+        // remove stream filters if the current stream does not allow filtering.
+        if selectedStream.shouldHideStreamFilters {
+            streamFilters = []
+            return
+        }
+
+        let siteType: SiteOrganizationType = {
+            if let teamTopic = selectedStream.content.topic as? ReaderTeamTopic {
+                return teamTopic.organizationType
+            }
+            return .none
+        }()
+
+        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
+
+        if !selectedStream.shouldHideTagFilter {
+            filters.append(ReaderTagTopic.filterProvider())
+        }
+
+        streamFilters = filters
+    }
 
     func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
         let viewController = makeFilterSheetViewController(completion: completion)
