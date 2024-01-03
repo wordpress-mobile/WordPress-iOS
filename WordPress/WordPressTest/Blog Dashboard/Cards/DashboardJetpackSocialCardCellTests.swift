@@ -80,6 +80,14 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
         XCTAssertFalse(shouldShowCard(for: blog))
     }
 
+    func testCardDisplaysWhenJetpackSiteRunsOutOfShares() throws {
+        // Given, when
+        let blog = createTestBlog(hasConnections: true, publicizeInfoState: .exceedingLimit)
+
+        // Then
+        XCTAssertTrue(shouldShowCard(for: blog))
+    }
+
     // MARK: - Card state tests
 
     func testInitialCardState() {
@@ -173,6 +181,7 @@ private extension DashboardJetpackSocialCardCellTests {
 
         if hasConnections {
             let connection = PublicizeConnection(context: mainContext)
+            connection.status = "ok"
             builder = builder.with(connections: [connection])
         }
 
