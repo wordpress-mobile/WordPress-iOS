@@ -88,6 +88,7 @@ struct SiteDomainsView: View {
                             type: navigation.type,
                             analyticsSource: navigation.analyticsSource
                         )
+                        .navigationTitle(navigation.domain)
                     }, label: {
                         AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
                     })
