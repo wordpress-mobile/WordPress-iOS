@@ -182,7 +182,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
         if ([Feature enabled:FeatureFlagNewTabIcons]) {
-            _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader-unselected"];
+            _readerNavigationController.tabBarItem.image = [[UIImage imageNamed:@"tab-bar-reader-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             _readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-reader-selected"];
         } else {
             UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
@@ -213,7 +213,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
     if ([Feature enabled:FeatureFlagNewTabIcons]) {
-        self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications-unselected"];
+        self.notificationsTabBarImage = [[UIImage imageNamed:@"tab-bar-notifications-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-wp";
         self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
@@ -238,7 +238,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         if ([Feature enabled:FeatureFlagNewTabIcons]) {
-            [self configureMeTabImageWithUnselectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-unselected"]
+            [self configureMeTabImageWithUnselectedPlaceholderImage:[[UIImage imageNamed:@"tab-bar-me-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                                            selectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-selected"]];
         } else {
             [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];

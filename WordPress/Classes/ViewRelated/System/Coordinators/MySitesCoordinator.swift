@@ -70,7 +70,7 @@ class MySitesCoordinator: NSObject {
         navigationController.navigationBar.isTranslucent = false
 
         if FeatureFlag.newTabIcons.enabled {
-            navigationController.tabBarItem.image = UIImage(named: "tab-bar-home-unselected")
+            navigationController.tabBarItem.image = UIImage(named: "tab-bar-home-unselected")?.withRenderingMode(.alwaysOriginal)
             navigationController.tabBarItem.selectedImage = UIImage(named: "tab-bar-home-selected")
         } else {
             let tabBarImage = AppStyleGuide.mySiteTabIcon
