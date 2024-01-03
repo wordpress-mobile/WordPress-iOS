@@ -31,7 +31,9 @@ class FilterSheetViewController: UIViewController {
     }()
 
     private lazy var emptyView: EmptyActionView = {
-        let view = EmptyActionView(tappedButton: tappedEmptyAddButton)
+        let view = EmptyActionView { [weak self] in
+            self?.tappedEmptyAddButton()
+        }
 
         // Hide the button if the user is not logged in
         view.button.isHidden = !ReaderHelpers.isLoggedIn()
