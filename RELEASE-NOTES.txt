@@ -1,7 +1,3 @@
-24.1
------
-* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
-
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
@@ -9,6 +5,7 @@
 * [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
 * [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
 
 23.9
 -----
