@@ -111,15 +111,13 @@ struct SiteDomainsView: View {
         let destination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
 
         return Section {
-            DSButton(
-                title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
-                style: .init(
-                    emphasis: .tertiary,
-                    size: .small,
-                    isJetpack: AppConfiguration.isJetpack
-                )) {
-                    $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
-                }
+            Button {
+                $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
+            } label: {
+                Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
+                    .style(TextStyle.bodyMedium(.regular))
+                    .foregroundColor(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
+            }
         }
     }
 
