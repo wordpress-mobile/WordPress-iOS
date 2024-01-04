@@ -9,6 +9,7 @@
 * [**] [internal] [Jetpack-only] Adds support for dynamic dashboard cards driven by the backend [#22326]
 * [*] Fix a rare crash in post search related to tags [#22275]
 * [*] Fix a rare crash when deleting posts [#22277]
+* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
 * [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
 * [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
 
