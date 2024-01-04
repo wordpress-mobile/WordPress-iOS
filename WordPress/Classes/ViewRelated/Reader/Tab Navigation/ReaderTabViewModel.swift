@@ -30,7 +30,7 @@ import WordPressFlux
     var makeReaderContentViewController: (ReaderContent) -> ReaderContentViewController
 
     /// Completion handler for selecting a filter from the available filter list
-    var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
+    var filterTapped: ((FilterProvider, UIView?, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
     /// search
     var navigateToSearch: () -> Void
@@ -174,8 +174,11 @@ extension ReaderTabViewModel {
         streamFilters = filters
     }
 
-    func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
-        let viewController = makeFilterSheetViewController(completion: completion)
+    func presentFilter(filter: FilterProvider,
+                       from: UIViewController,
+                       sourceView: UIView?,
+                       completion: @escaping (ReaderAbstractTopic?) -> Void) {
+        let viewController = makeFilterSheetViewController(filter: filter, completion: completion)
         let bottomSheet = BottomSheetViewController(childViewController: viewController)
         bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
@@ -187,20 +190,26 @@ extension ReaderTabViewModel {
         settingsPresenter.present(on: from, animated: true, completion: nil)
     }
 
-    func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
-        filterTapped?(from, { [weak self] topic in
-            if let topic = topic {
-                self?.setFilterContent(topic: topic)
+    func didTapStreamFilterButton(with filter: FilterProvider) {
+        // TODO: @dvdchr Figure out the source rect.
+        filterTapped?(filter, nil) { [weak self, filterID = filter.id] topic in
+            guard let topic else {
+                return
             }
-            completion(topic)
-        })
+            self?.setFilterContent(topic: topic)
+            self?.activeStreamFilter = (filterID, topic)
+        }
     }
 
-    func resetFilter(selectedItem: FilterTabBarItem) {
-        WPAnalytics.track(.readerFilterSheetCleared)
-        if let content = (selectedItem as? ReaderTabItem)?.content {
-            setContent?(content)
+    // Reset filter
+    func resetStreamFilter() {
+        guard let currentTab = tabItems[safe: selectedIndex] else {
+            return
         }
+
+        WPAnalytics.track(.readerFilterSheetCleared)
+        activeStreamFilter = nil
+        setContent?(currentTab.content)
     }
 
     func setFilterContent(topic: ReaderAbstractTopic) {
@@ -214,24 +223,9 @@ extension ReaderTabViewModel {
 
 // MARK: - Bottom Sheet
 extension ReaderTabViewModel {
-    private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
-        let selectedTab = tabItems[selectedIndex]
-
-        let siteType: SiteOrganizationType = {
-            if let teamTopic = selectedTab.content.topic as? ReaderTeamTopic {
-                return teamTopic.organizationType
-            }
-            return .none
-        }()
-
-        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
-
-        if !selectedTab.shouldHideTagFilter {
-            filters.append(ReaderTagTopic.filterProvider())
-        }
-
-        // TODO: Will be updated in the next PR.
-        return FilterSheetViewController(filter: filters.last!, changedFilter: completion)
+    private func makeFilterSheetViewController(filter: FilterProvider,
+                                               completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
+        return FilterSheetViewController(filter: filter, changedFilter: completion)
     }
 }
 
