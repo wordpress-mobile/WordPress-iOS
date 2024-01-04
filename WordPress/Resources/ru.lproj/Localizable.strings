@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-06 08:54:08+0000 */
+/* Translation-Revision-Date: 2023-12-20 09:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ru */
@@ -9454,6 +9454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Копировать URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Перейти на сайт";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Подробнее";
 
@@ -9813,6 +9816,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Добавить";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Выбрать изображения";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Показать выбранное (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Детали кампании";
@@ -10267,6 +10279,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Удалено!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Все";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Аудио";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Документы";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Изображения";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Видео";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Удалить";
 
@@ -10344,6 +10371,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Записать видео";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ из %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d пикс.";
@@ -10497,6 +10527,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "У вас нет сайтов";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Действия с сайтом";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Нажмите, чтобы показать больше действий с сайтом";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Настроить страницу «Главная»";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Сменить значок сайта";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Изменить название сайта";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Переключиться на другой сайт";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Перейти на сайт";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Закрыть";
@@ -11071,6 +11122,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Предварительный просмотр медиафайла";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Добавить";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Отменить выбор";
 
@@ -11245,6 +11299,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Закрыть";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Фотографии предоставлены Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Найдите бесплатные фотографии и добавьте их в вашу Библиотеку файлов!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "В этом обсуждении";
 
@@ -11391,6 +11451,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Справка";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Найдите GIF-изображения и добавьте их в вашу Библиотеку файлов!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";

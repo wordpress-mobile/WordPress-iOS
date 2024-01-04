@@ -3,10 +3,6 @@ import JetpackStatsWidgetsCore
 import DesignSystem
 
 struct CompliancePopover: View {
-    private enum Constants {
-        static let verticalScrollBuffer: CGFloat = 40
-    }
-
     @StateObject
     var viewModel: CompliancePopoverViewModel
 

@@ -101,16 +101,6 @@ class MySitesCoordinator: NSObject {
         navigationController.viewControllers = [rootContentViewController]
     }
 
-    // MARK: - Sites List
-
-    private func showSitesList() {
-        showRootViewController()
-
-        let navigationController = UINavigationController(rootViewController: blogListViewController)
-        navigationController.modalPresentationStyle = .formSheet
-        mySiteViewController.present(navigationController, animated: true)
-    }
-
     // MARK: - Blog Details
 
     @objc

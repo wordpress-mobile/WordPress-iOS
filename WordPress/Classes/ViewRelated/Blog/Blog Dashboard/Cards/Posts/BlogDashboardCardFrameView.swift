@@ -185,6 +185,11 @@ class BlogDashboardCardFrameView: UIView {
 
     /// Adds the "more" button with the given actions to the corner of the cell.
     func addMoreMenu(items: [UIMenuElement], card: DashboardCard) {
+        self.addMoreMenu(items: items, card: card as BlogDashboardAnalyticPropertiesProviding)
+    }
+
+    /// Adds the "more" button with the given actions to the corner of the cell.
+    func addMoreMenu(items: [UIMenuElement], card: BlogDashboardAnalyticPropertiesProviding) {
         onEllipsisButtonTap = {
             BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
         }
