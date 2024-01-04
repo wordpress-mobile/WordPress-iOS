@@ -7,16 +7,6 @@ class PagesListTests: CoreDataTestCase {
 
     let randomID = UniquePool<Int>(range: 1...999999)
 
-    func testFlatList() throws {
-        let total = 1000
-        let pages = (1...total).map { id in
-            let page = PageBuilder(mainContext).build()
-            page.postID = NSNumber(value: id)
-            return page
-        }
-        try makeAssertions(pages: pages)
-    }
-
     func testOneNestedList() throws {
         let pages = parentPage(childrenCount: 1, additionalLevels: 5)
         try makeAssertions(pages: pages)
@@ -36,62 +26,6 @@ class PagesListTests: CoreDataTestCase {
         let pages = groups.flatMap { $0 }
 
         try makeAssertions(pages: pages)
-    }
-
-    func testHugeNestedLists() throws {
-        var pages = [Page]()
-        for _ in 1...100 {
-            pages.append(contentsOf: parentPage(childrenCount: 5, additionalLevels: 4))
-        }
-        // Add orphan pages
-        for _ in 1...50 {
-            let newPages = parentPage(childrenCount: 5)
-            newPages[0].parentID = NSNumber(value: randomID.next())
-            pages.append(contentsOf: newPages)
-        }
-
-        try makeAssertions(pages: pages)
-    }
-
-    // Measure performance using a page list where somewhat reflects a real-world page list, where some pages whose parent pages are in list.
-    func testPerformance() throws {
-        // Make sure the total number of pages is about the same as the one in `testWorstPerformance`.
-        var pages = [Page]()
-        // Add pages whose parents are in the list.
-        for _ in 1...100 {
-            pages.append(contentsOf: parentPage(childrenCount: 5, additionalLevels: 4))
-        }
-        // Add pages whose parents are *not* in the list.
-        for _ in 1...80 {
-            let newPages = parentPage(childrenCount: 5, additionalLevels: 4)
-            newPages[0].parentID = NSNumber(value: randomID.next())
-            pages.append(contentsOf: newPages)
-        }
-        // Use a shuffled list to test performance, which in theory means more iterations in trying to find a page's parent page.
-        pages = pages.shuffled()
-        NSLog("\(pages.count) pages used in \(#function)")
-
-        measure {
-            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
-            XCTAssertEqual(list.count, pages.count)
-        }
-    }
-
-    // Measure performance using a page list where contains non-top-level pages and none of their parent pages are in the list.
-    func testWorstPerformance() throws {
-        var pages = [Page]()
-        for id in 1...5000 {
-            let page = PageBuilder(mainContext).build()
-            page.postID = NSNumber(value: id)
-            page.parentID = NSNumber(value: randomID.next())
-            pages.append(page)
-        }
-        NSLog("\(pages.count) pages used in \(#function)")
-
-        measure {
-            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
-            XCTAssertEqual(list.count, pages.count)
-        }
     }
 
     func testOrphanPagesNestedLists() throws {
