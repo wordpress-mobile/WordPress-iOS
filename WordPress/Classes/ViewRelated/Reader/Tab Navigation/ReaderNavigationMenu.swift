@@ -8,7 +8,6 @@ struct ReaderNavigationMenu: View {
     var body: some View {
         HStack(spacing: 8.0) {
             ScrollView(.horizontal, showsIndicators: false) {
-                // TODO: @dvdchr wrap in ScrollView.
                 HStack {
                     if let selectedItem {
                         ReaderNavigationButton(viewModel: viewModel, selectedItem: selectedItem)
