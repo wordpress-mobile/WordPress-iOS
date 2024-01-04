@@ -254,19 +254,10 @@ class PostEditorNavigationBarManager {
 }
 
 extension PostEditorNavigationBarManager {
-    private enum Constants {
-        static let closeButtonInsets = NSDirectionalEdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3)
-        static let closeButtonEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
-    }
-
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static var blogTitle: UIFont {
             WPStyleGuide.navigationBarStandardFont
         }
-    }
-
-    private enum Assets {
-        static let closeButtonModalImage    = UIImage.gridicon(.cross)
     }
 }

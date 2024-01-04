@@ -5,6 +5,7 @@
 * [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
 * [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
 
 23.9
 -----
@@ -18,6 +19,8 @@
 * [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
 * [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
 * [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
+* [*] [Jetpack-only] Fix an issue where VoiceOver could lose focus when liking posts in Reader. [#22232]
 
 23.8
 -----

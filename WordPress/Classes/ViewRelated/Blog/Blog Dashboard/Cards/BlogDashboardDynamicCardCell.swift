@@ -3,6 +3,10 @@ import SwiftUI
 
 final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
+    // MARK: - Properties
+
+    private var coordinator: BlogDashboardDynamicCardCoordinator?
+
     // MARK: - Views
 
     private let frameView = BlogDashboardCardFrameView()
@@ -23,6 +27,8 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     // MARK: - Configuration
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardDynamicCardModel) {
+        self.coordinator = .init(viewController: viewController, model: model)
+
         self.presentingViewController = viewController
         self.configureMoreButton(for: model, blog: blog)
 
@@ -34,6 +40,8 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
         if let viewController {
             self.configureHostingController(with: model, parent: viewController)
         }
+
+        self.coordinator?.didAppear()
     }
 
     private func configureHostingController(with model: DashboardDynamicCardModel, parent: UIViewController) {
@@ -59,7 +67,6 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 
     private func setupFrameView() {
         self.frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-//        self.frameView.onEllipsisButtonTap = { }
         self.frameView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(frameView)
         self.contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
@@ -83,11 +90,11 @@ final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
     // MARK: - User Interaction
 
     private func didTapAction(with model: DashboardDynamicCardModel) {
-
+        self.coordinator?.didTapCardCTA()
     }
 
     private func didTapCard(with model: DashboardDynamicCardModel) {
-
+        self.coordinator?.didTapCard()
     }
 }
 
