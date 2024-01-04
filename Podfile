@@ -143,8 +143,8 @@ abstract_target 'Apps' do
   pod 'NSURL+IDN', '~> 0.4'
 
   # pod 'WordPressAuthenticator', '~> 8.0'
-  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: '215c77f4dad18b67943bc46174050d8c668c597c'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
+  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'trunk'
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
