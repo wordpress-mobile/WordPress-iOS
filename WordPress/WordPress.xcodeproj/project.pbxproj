@@ -659,9 +659,6 @@
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
 		175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */; };
-		175CC1702720548700622FB4 /* DomainExpiryDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC16F2720548700622FB4 /* DomainExpiryDateFormatter.swift */; };
-		175CC1712720548700622FB4 /* DomainExpiryDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC16F2720548700622FB4 /* DomainExpiryDateFormatter.swift */; };
-		175CC17527205BFB00622FB4 /* DomainExpiryDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC17427205BFB00622FB4 /* DomainExpiryDateFormatterTests.swift */; };
 		175CC1772721814C00622FB4 /* domain-service-updated-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 175CC1762721814B00622FB4 /* domain-service-updated-domains.json */; };
 		175CC17927230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */; };
 		175CC17A27230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */; };
@@ -6315,8 +6312,6 @@
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSaveForLater+Analytics.swift"; sourceTree = "<group>"; };
-		175CC16F2720548700622FB4 /* DomainExpiryDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainExpiryDateFormatter.swift; sourceTree = "<group>"; };
-		175CC17427205BFB00622FB4 /* DomainExpiryDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainExpiryDateFormatterTests.swift; sourceTree = "<group>"; };
 		175CC1762721814B00622FB4 /* domain-service-updated-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-updated-domains.json"; sourceTree = "<group>"; };
 		175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+StringRepresentation.swift"; sourceTree = "<group>"; };
 		175CC17B2723103000622FB4 /* WPAnalytics+Domains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAnalytics+Domains.swift"; sourceTree = "<group>"; };
@@ -10577,7 +10572,6 @@
 		175CC17327205BDC00622FB4 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
-				175CC17427205BFB00622FB4 /* DomainExpiryDateFormatterTests.swift */,
 				F46546322AF54DCD0017E3D1 /* AllDomainsListItemViewModelTests.swift */,
 				F46546342AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift */,
 				F4F7B2522AFA585700207282 /* DomainDetailsWebViewControllerTests.swift */,
@@ -11516,7 +11510,6 @@
 			isa = PBXGroup;
 			children = (
 				3F3DD0B526FD18EB00F5F121 /* Blog+DomainsDashboardView.swift */,
-				175CC16F2720548700622FB4 /* DomainExpiryDateFormatter.swift */,
 				014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */,
 			);
 			path = Utility;
@@ -22468,7 +22461,6 @@
 				013A8CB62AB83B40004FF5D0 /* DashboardDomainsCardSearchView.swift in Sources */,
 				F11C9F78243B3C9600921DDC /* MediaHost+ReaderPostContentProvider.swift in Sources */,
 				FA1A55EF25A6F0740033967D /* RestoreStatusView.swift in Sources */,
-				175CC1702720548700622FB4 /* DomainExpiryDateFormatter.swift in Sources */,
 				985793C822F23D7000643DBF /* CustomizeInsightsCell.swift in Sources */,
 				93E6336F272C1074009DACF8 /* LoginEpilogueCreateNewSiteCell.swift in Sources */,
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
@@ -23694,7 +23686,6 @@
 				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,
-				175CC17527205BFB00622FB4 /* DomainExpiryDateFormatterTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				321955C124BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift in Sources */,
 				F4EF4BAB291D3D4700147B61 /* SiteIconTests.swift in Sources */,
@@ -24697,7 +24688,6 @@
 				FABB22F32602FC2C00C8785C /* RegisterDomainDetailsViewController+Cells.swift in Sources */,
 				4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */,
 				3F46EEC728BC4935004F02B2 /* JetpackPrompt.swift in Sources */,
-				175CC1712720548700622FB4 /* DomainExpiryDateFormatter.swift in Sources */,
 				FABB22F42602FC2C00C8785C /* ReaderStreamViewController+Sharing.swift in Sources */,
 				B0DE91B62AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */,
 				FABB22F52602FC2C00C8785C /* FilterTabBar.swift in Sources */,

@@ -16,7 +16,7 @@ final class SiteDomainsViewModel: ObservableObject {
     }
 
     func refresh() {
-        domainsService?.fetchAllDomains(resolveStatus: true, noWPCOM: true, completion: { [weak self] result in
+        domainsService?.fetchAllDomains(resolveStatus: true, noWPCOM: false, completion: { [weak self] result in
             guard let self else {
                 return
             }
@@ -41,22 +41,37 @@ final class SiteDomainsViewModel: ObservableObject {
     // MARK: - Sections
 
     private static func buildSections(from blog: Blog, domains: [DomainsService.AllDomainsListItem]) -> [Section] {
-        return Self.buildFreeDomainSections(from: blog) + Self.buildDomainsSections(from: blog, domains: domains)
+        var wpcomDomains: [DomainsService.AllDomainsListItem] = []
+        var otherDomains: [DomainsService.AllDomainsListItem] = []
+
+        for domain in domains {
+            if domain.wpcomDomain {
+                wpcomDomains.append(domain)
+            } else {
+                otherDomains.append(domain)
+            }
+        }
+
+        return Self.buildFreeDomainSections(from: blog, wpComDomains: wpcomDomains) + Self.buildDomainsSections(from: blog, domains: otherDomains)
     }
 
-    private static func buildFreeDomainSections(from blog: Blog) -> [Section] {
-        guard let freeDomain = blog.freeDomain else { return [] }
+    private static func buildFreeDomainSections(from blog: Blog, wpComDomains: [DomainsService.AllDomainsListItem]) -> [Section] {
+        let blogWpComDomains = wpComDomains.filter { $0.blogId == blog.dotComID?.intValue }
+        guard let freeDomain = blogWpComDomains.count > 1 ? blogWpComDomains.first(where: { $0.isWpcomStagingDomain }) : blogWpComDomains.first else {
+            return []
+        }
+
         return [
             Section(
                 title: Strings.freeDomainSectionTitle,
                 footer: blog.freeDomainIsPrimary ? Strings.primaryDomainDescription : nil,
                 content: .rows([.init(
                     viewModel: .init(
-                        name: blog.freeSiteAddress,
+                        name: freeDomain.domain,
                         description: nil,
                         status: nil,
-                        expiryDate: DomainExpiryDateFormatter.expiryDate(for: freeDomain),
-                        isPrimary: freeDomain.isPrimaryDomain
+                        expiryDate: AllDomainsListItemViewModel.expiryDate(from: freeDomain),
+                        isPrimary: blog.freeDomainIsPrimary
                     ),
                     navigation: nil)])
             )

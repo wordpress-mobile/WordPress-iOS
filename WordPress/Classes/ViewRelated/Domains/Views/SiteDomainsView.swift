@@ -263,7 +263,8 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         let title = AllDomainsListViewController.Strings.title
         let action = UIAction { [weak self] _ in
             guard let self else { return }
-            let allDomainsViewController = AllDomainsListViewController(viewModel: .init(domains: self.viewModel.loadedDomains))
+            let domains = self.viewModel.loadedDomains.filter { !$0.wpcomDomain }
+            let allDomainsViewController = AllDomainsListViewController(viewModel: .init(domains: domains))
             self.navigationController?.pushViewController(allDomainsViewController, animated: true)
             WPAnalytics.track(.domainsDashboardAllDomainsTapped)
         }

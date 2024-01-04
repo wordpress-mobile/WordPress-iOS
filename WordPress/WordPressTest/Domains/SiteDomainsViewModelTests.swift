@@ -18,17 +18,20 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
     }
 
     func testInitialState_isLoading() {
+        viewModel.refresh()
         XCTAssertTrue(viewModel.state == SiteDomainsViewModel.State.loading, "Initial state should be loading")
+        XCTAssertTrue(mockDomainsService.resolveStatus)
+        XCTAssertFalse(mockDomainsService.noWPCOM)
     }
 
-    func testRefresh_onlyFreeDomain() {
+    func testRefresh_onlyFreeDomain() throws {
         let blog = BlogBuilder(mainContext)
+            .with(blogID: 111)
             .with(supportsDomains: true)
-            .with(domainCount: 1, of: .wpCom, domainName: "Test")
             .build()
         viewModel = SiteDomainsViewModel(blog: blog, domainsService: mockDomainsService)
 
-        mockDomainsService.fetchResult = .success([])
+        mockDomainsService.fetchResult = .success([try .make(domain: "Test", blogId: 111, wpcomDomain: true)])
         viewModel.refresh()
 
         if case .normal(let sections) = viewModel.state,
@@ -36,6 +39,29 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
             XCTAssertEqual(sections[0].title, SiteDomainsViewModel.Strings.freeDomainSectionTitle)
             XCTAssertEqual(sections[1].content, .upgradePlan)
             XCTAssertEqual(rows[0].viewModel.name, "Test")
+        } else {
+            XCTFail("Expected state not loaded")
+        }
+    }
+
+    func testRefresh_stagingAndSimpleFreeDomain() throws {
+        let blog = BlogBuilder(mainContext)
+            .with(blogID: 111)
+            .with(supportsDomains: true)
+            .build()
+        viewModel = SiteDomainsViewModel(blog: blog, domainsService: mockDomainsService)
+
+        mockDomainsService.fetchResult = .success([
+            try .make(domain: "test.wordpress.com", blogId: 111, isWpcomStagingDomain: false, wpcomDomain: true),
+            try .make(domain: "test.wpcomstaging.com", blogId: 111, isWpcomStagingDomain: true, wpcomDomain: true)
+        ])
+        viewModel.refresh()
+
+        if case .normal(let sections) = viewModel.state,
+           case .rows(let rows) = sections[0].content {
+            XCTAssertEqual(sections[0].title, SiteDomainsViewModel.Strings.freeDomainSectionTitle)
+            XCTAssertEqual(sections[1].content, .upgradePlan)
+            XCTAssertEqual(rows[0].viewModel.name, "test.wpcomstaging.com")
         } else {
             XCTFail("Expected state not loaded")
         }
@@ -49,7 +75,10 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
             .build()
         viewModel = SiteDomainsViewModel(blog: blog, domainsService: mockDomainsService)
 
-        mockDomainsService.fetchResult = .success([try .make(blogId: 123)])
+        mockDomainsService.fetchResult = .success([
+            try .make(blogId: 123),
+            try .make(domain: "Test", blogId: 123, wpcomDomain: true)
+        ])
         viewModel.refresh()
 
         if case .normal(let sections) = viewModel.state,
@@ -65,11 +94,13 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext)
             .with(blogID: 123)
             .with(supportsDomains: true)
-            .with(domainCount: 1, of: .wpCom, domainName: "Test")
             .build()
         viewModel = SiteDomainsViewModel(blog: blog, domainsService: mockDomainsService)
 
-        mockDomainsService.fetchResult = .success([try .make(blogId: 1)])
+        mockDomainsService.fetchResult = .success([
+            try .make(blogId: 1),
+            try .make(domain: "Test", blogId: 123, wpcomDomain: true)
+        ])
         viewModel.refresh()
 
         if case .normal(let sections) = viewModel.state {
@@ -83,7 +114,6 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext)
             .with(blogID: 123)
             .with(supportsDomains: true)
-            .with(domainCount: 1, of: .wpCom, domainName: "Test")
             .build()
         viewModel = SiteDomainsViewModel(blog: blog, domainsService: mockDomainsService)
 
@@ -102,8 +132,12 @@ final class SiteDomainsViewModelTests: CoreDataTestCase {
 
 private class MockDomainsService: NSObject, DomainsServiceAllDomainsFetching {
     var fetchResult: Result<[DomainsService.AllDomainsListItem], Error>?
+    var resolveStatus: Bool = false
+    var noWPCOM: Bool = false
 
     func fetchAllDomains(resolveStatus: Bool, noWPCOM: Bool, completion: @escaping (DomainsServiceRemote.AllDomainsEndpointResult) -> Void) {
+        self.resolveStatus = resolveStatus
+        self.noWPCOM = noWPCOM
         if let result = fetchResult {
             completion(result)
         }

@@ -15,6 +15,12 @@ struct AllDomainsListItemViewModel {
             value: "Renews",
             comment: "The renews label of the domain card in All Domains screen."
         )
+
+        static let neverExpires = NSLocalizedString(
+            "domain.management.card.neverExpires.label",
+            value: "Never expires",
+            comment: "Label indicating that a domain name registration has no expiry date."
+        )
     }
 
     typealias Row = AllDomainsListCardView.ViewModel
@@ -55,9 +61,9 @@ struct AllDomainsListItemViewModel {
         return !domain.blogName.isEmpty ? domain.blogName : domain.siteSlug
     }
 
-    static func expiryDate(from domain: Domain) -> String? {
+    static func expiryDate(from domain: Domain) -> String {
         guard let date = domain.expiryDate, domain.hasRegistration else {
-            return nil
+            return Strings.neverExpires
         }
         let expired = date < Date()
         let notice = expired ? Strings.expired : Strings.renews
