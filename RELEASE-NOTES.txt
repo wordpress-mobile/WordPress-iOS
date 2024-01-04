@@ -1,3 +1,7 @@
+24.1
+-----
+* [**] Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
+
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
