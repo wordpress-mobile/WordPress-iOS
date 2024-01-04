@@ -2,12 +2,22 @@ import SwiftUI
 
 struct ReaderNavigationMenu: View {
 
-    var viewModel: ReaderTabViewModel
-    var selectedItem: ReaderTabItem
+    @ObservedObject var viewModel: ReaderTabViewModel
+    @State var selectedItem: ReaderTabItem?
 
     var body: some View {
         HStack {
-            ReaderNavigationButton(viewModel: viewModel, selectedItem: selectedItem)
+            // TODO: @dvdchr wrap in ScrollView.
+            HStack {
+                if let selectedItem {
+                    ReaderNavigationButton(viewModel: viewModel, selectedItem: selectedItem)
+                }
+
+                // TODO: @dvdchr Replace with proper implementation
+                ForEach(viewModel.streamFilters) { filter in
+                    Text(filter.title).font(.subheadline)
+                }
+            }
             Spacer()
             Button {
                 viewModel.navigateToSearch()

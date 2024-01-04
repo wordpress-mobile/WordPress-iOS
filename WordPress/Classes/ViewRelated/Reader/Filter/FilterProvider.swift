@@ -1,6 +1,8 @@
 import WordPressFlux
 
-class FilterProvider: Observable, FilterTabBarItem {
+class FilterProvider: Identifiable, Observable, FilterTabBarItem {
+
+    let id: UUID = UUID()
 
     enum State {
         case loading
@@ -119,10 +121,10 @@ extension ReaderSiteTopic {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
-                return NSLocalizedString("Sites", comment: "Sites Filter Tab Title")
+                return Strings.unnumberedFilterTitle
             case .ready(let items):
                 let filteredItems = FilterProvider.filterItems(items, siteType: siteType)
-                return String(format: NSLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), filteredItems.count)
+                return String(format: filteredItems.count == 1 ? Strings.singularFilterTitle : Strings.pluralFilterTitle, filteredItems.count)
             }
         }
 
@@ -145,6 +147,7 @@ extension ReaderSiteTopic {
             let itemResult = result.map { sites in
                 sites.map { topic in
                     return TableDataItem(topic: topic, configure: { cell in
+                        cell.imageView?.downloadSiteIcon(at: topic.siteBlavatar)
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
                         addUnseenPostCount(topic, with: cell)
@@ -225,6 +228,35 @@ extension ReaderSiteTopic {
         static let pluralUnseen = NSLocalizedString("%1$d unseen posts", comment: "Format string for plural unseen posts count. The %1$d is a placeholder for the count.")
     }
 
+    private struct Strings {
+        static let unnumberedFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.blog.unnumbered",
+            value: "Tags",
+            comment: """
+                Button title to filter the Reader stream by blog.
+                This is displayed when we don't know the number of blogs yet.
+                """
+        )
+
+        static let singularFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.blog.singular",
+            value: "%1$d Blog",
+            comment: """
+                Singular button title to filter the Reader stream by blog.
+                %1$d is a placeholder for the number of blogs.
+                """
+        )
+
+        static let pluralFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.blog.plural",
+            value: "%1$d Blogs",
+            comment: """
+                Plural button title to filter the Reader stream by blog.
+                %1$d is a placeholder for the number of blogs.
+                """
+        )
+    }
+
 }
 
 extension ReaderTagTopic {
@@ -233,9 +265,9 @@ extension ReaderTagTopic {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
-                return NSLocalizedString("Topics", comment: "Topics Filter Tab Title")
+                return Strings.unnumberedFilterTitle
             case .ready(let items):
-                return String(format: NSLocalizedString("Topics (%lu)", comment: "Topics Filter Tab Title with Count"), items.count)
+                return String(format: items.count == 1 ? Strings.singularFilterTitle : Strings.pluralFilterTitle, items.count)
             }
         }
 
@@ -258,6 +290,7 @@ extension ReaderTagTopic {
                 tags.map { topic in
                     return TableDataItem(topic: topic, configure: { (cell) in
                         cell.textLabel?.text = topic.slugForDisplay
+                        cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
                     })
                 }
             }
@@ -284,5 +317,34 @@ extension ReaderTagTopic {
             DDLogError("There was a problem fetching followed tags." + error.localizedDescription)
             completion(.failure(error))
         }
+    }
+
+    private struct Strings {
+        static let unnumberedFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.tag.unnumbered",
+            value: "Tags",
+            comment: """
+                Button title to filter the Reader stream by tag.
+                This is displayed when we don't know the number of tags yet.
+                """
+        )
+
+        static let singularFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.tag.singular",
+            value: "%1$d Tag",
+            comment: """
+                Singular button title to filter the Reader stream by tag.
+                %1$d is a placeholder for the number of tags.
+                """
+        )
+
+        static let pluralFilterTitle = NSLocalizedString(
+            "reader.navigation.filter.blog.plural",
+            value: "%1$d Tags",
+            comment: """
+                Plural button title to filter the Reader stream by tag.
+                %1$d is a placeholder for the number of tags.
+                """
+        )
     }
 }
