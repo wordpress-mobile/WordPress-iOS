@@ -121,7 +121,7 @@ final class SiteDomainsViewModel: ObservableObject {
             sections.append(section)
         }
 
-        if sections.count == 0 {
+        if sections.count == 0 || blog.canRegisterDomainWithPaidPlan {
             sections.append(Section(title: nil, footer: nil, content: .upgradePlan))
         } else {
             sections.append(Section(title: nil, footer: nil, content: .addDomain))
