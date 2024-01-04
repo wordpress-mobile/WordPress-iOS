@@ -118,10 +118,6 @@ class GutenbergMediaInserterHelper: NSObject {
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
     }
 
-    func retryUploadOf(media: Media) {
-        mediaCoordinator.retryMedia(media)
-    }
-
     func retryFailedMediaUploads() {
         _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: true)
     }
