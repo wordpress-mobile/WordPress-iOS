@@ -170,7 +170,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     if (error.code == NSURLErrorCancelled) {
         [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withBlog:blog];
     } else {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed withBlog:blog error:error];
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlog:blog];
     }
 }
 
