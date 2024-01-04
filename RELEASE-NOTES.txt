@@ -7,6 +7,8 @@
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
 * [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
 * [**] [internal] [Jetpack-only] Adds support for dynamic dashboard cards driven by the backend [#22326]
+* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
+* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
 
 23.9
 -----
@@ -20,6 +22,8 @@
 * [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
 * [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
 * [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
+* [*] [Jetpack-only] Fix an issue where VoiceOver could lose focus when liking posts in Reader. [#22232]
 
 23.8
 -----

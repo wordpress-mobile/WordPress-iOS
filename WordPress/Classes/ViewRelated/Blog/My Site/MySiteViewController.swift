@@ -124,8 +124,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
-            launchSiteCreation: self.launchSiteCreationFromNoSites,
-            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+            launchSiteCreation: { [weak self] in self?.launchSiteCreationFromNoSites() },
+            launchLoginForSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
         )
         let noSiteView = NoSitesView(
             viewModel: noSitesViewModel,
