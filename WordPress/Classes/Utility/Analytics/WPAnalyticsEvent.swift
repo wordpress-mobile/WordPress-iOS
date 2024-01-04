@@ -251,7 +251,7 @@ import Foundation
     case addDomainTapped
     case domainsSearchTransferDomainTapped
     case domainsSearchRowSelected
-    case siteSwitcherDomainSiteSelected
+    case siteSwitcherSiteSelected
     case purchaseDomainScreenShown
     case purchaseDomainGetDomainTapped
     case purchaseDomainChooseSiteTapped
@@ -268,6 +268,7 @@ import Foundation
 
     // My Site: Header Actions
     case mySiteHeaderMoreTapped
+    case mySiteHeaderAddSiteTapped
     case mySiteHeaderPersonalizeHomeTapped
 
     // Site Switcher
@@ -999,8 +1000,8 @@ import Foundation
             return "domains_dashboard_domains_search_transfer_domain_tapped"
         case .domainsSearchRowSelected:
             return "domain_management_domains_search_row_selected"
-        case .siteSwitcherDomainSiteSelected:
-            return "site_switcher_domain_site_selected"
+        case .siteSwitcherSiteSelected:
+            return "site_switcher_site_selected"
         case .purchaseDomainScreenShown:
             return "domain_management_purchase_domain_screen_shown"
         case .purchaseDomainGetDomainTapped:
@@ -1027,6 +1028,8 @@ import Foundation
         // My Site Header Actions
         case .mySiteHeaderMoreTapped:
             return "my_site_header_more_tapped"
+        case .mySiteHeaderAddSiteTapped:
+            return "my_site_header_add_site_tapped"
         case .mySiteHeaderPersonalizeHomeTapped:
             return "my_site_header_personalize_home_tapped"
 

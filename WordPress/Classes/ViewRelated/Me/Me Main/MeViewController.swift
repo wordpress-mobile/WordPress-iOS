@@ -601,11 +601,6 @@ private extension MeViewController {
 
     enum HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
-        static let products = NSLocalizedString(
-            "me.products.header",
-            value: "Products",
-            comment: "Products header text in Me Screen."
-        )
     }
 
     enum LogoutAlert {

@@ -1,0 +1,5 @@
+Abbiamo aggiornato l'editor classico con nuovi contenuti multimediali per Foto e Media sito. Non preoccuparti, puoi ancora caricare immagini, video e altro sul tuo sito.
+
+A proposito di tipi di media, ora puoi aggiungere filtri per i contenuti multimediali nella schermata Media sito. Se usi un iPhone, noterai anche la nuova modalità di rapporto d'aspetto. Entrambe le opzioni sono disponibili quando clicchi sul titolo del menu.
+
+Infine, abbiamo sistemato il pop-up di conformità non funzionante che appare mentre si controllano le statistiche durante il processo di onboarding. Abbiamo anche risolto un raro crash che si verificava durante la disconnessione. Carino.

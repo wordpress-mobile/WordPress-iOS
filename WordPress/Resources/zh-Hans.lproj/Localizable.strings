@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-12-19 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_CN */
@@ -9448,11 +9448,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "复制 URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "查看站点";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "了解更多";
-
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "在一月份，Bloganuary 将向您发送博客提示，这是我们发起的一项社区挑战，旨在帮助广大用户在新的一年养成写博客的习惯。";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary 即将上线！";
@@ -9807,6 +9807,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "添加";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "选择图片";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "查看已选项 (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "活动详细信息";
@@ -10261,6 +10270,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "已删除！";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "所有";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "音频";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "文档";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "图像";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "视频";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "删除";
 
@@ -10338,6 +10362,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "拍摄视频";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "第 %1$@ 步，共 %2$@ 步";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d 像素";
@@ -10491,6 +10518,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "您没有任何站点";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "站点操作";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "轻点以显示更多站点操作";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "对首页进行个性化设置";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "更改站点图标";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "更改站点标题";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "切换站点";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "查看站点";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
@@ -11065,6 +11113,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "预览媒体";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "添加";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "取消选择";
 
@@ -11239,6 +11290,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "忽略";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Pexels 提供的照片";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "搜索查找要添加到您的媒体库中的免费照片！";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "此会话中";
 
@@ -11385,6 +11442,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "帮助";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "搜索查找要添加到您的媒体库中的 GIF！";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";

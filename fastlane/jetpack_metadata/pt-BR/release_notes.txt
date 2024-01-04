@@ -1,0 +1,5 @@
+Atualizamos o editor clássico com novos seletores de mídia para Mídia do site e Fotos. Não se preocupe, você ainda pode fazer upload de imagens, vídeos e muito mais no seu site.
+
+E por falar nisso, agora é possível adicionar filtros de mídia à tela Mídia do site. Se você estiver usando um iPhone, notará um novo modo de proporção de tela também. Ambas as opções estão disponíveis ao tocar no menu de título.
+
+Por fim, corrigimos o pop-up de conformidade corrompido que aparece ao verificar as estatísticas durante o processo de integração. Também corrigimos uma falha rara que ocorria ao fazer logout. Incrível.

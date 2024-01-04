@@ -32,9 +32,6 @@ import Combine
     /// view controller is very large, with over 2000 lines of code!
     private let siteBlockingController = ReaderPostBlockingController()
 
-    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
-    private let sharingController = PostSharingController()
-
     // MARK: - Services
 
     private lazy var readerPostService = ReaderPostService(coreDataStack: coreDataStack)

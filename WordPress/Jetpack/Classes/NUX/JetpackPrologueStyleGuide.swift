@@ -35,9 +35,6 @@ struct JetpackPrologueStyleGuide {
     // Blur effect for the prologue buttons
     static let prologueButtonsBlurEffect: UIBlurEffect? = UIBlurEffect(style: .regular)
 
-
-
-
     struct Title {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         static let textColor: UIColor = .white

@@ -51,7 +51,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
     private let searchBar = UISearchBar()
-    private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
@@ -868,16 +867,20 @@ private extension DomainSelectionViewController {
 
     private func pushPurchaseDomainChoiceScreen() {
         @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
-        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
-            guard let self else { return }
-            choicesViewModel.isGetDomainLoading = true
-            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
-            WPAnalytics.track(.purchaseDomainGetDomainTapped)
-        } chooseSiteAction: { [weak self] in
-            guard let self else { return }
-            self.coordinator?.handleExistingSiteChoice(on: self)
-            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
-        }
+        let view = DomainPurchaseChoicesView(
+            viewModel: choicesViewModel,
+            analyticsSource: coordinator?.analyticsSource,
+            buyDomainAction: { [weak self] in
+                guard let self else { return }
+                choicesViewModel.isGetDomainLoading = true
+                self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+                WPAnalytics.track(.purchaseDomainGetDomainTapped)
+            }, chooseSiteAction: { [weak self] in
+                guard let self else { return }
+                self.coordinator?.handleExistingSiteChoice(on: self)
+                WPAnalytics.track(.purchaseDomainChooseSiteTapped)
+            }
+        )
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = Strings.domainChoiceTitle
         self.navigationController?.pushViewController(hostingController, animated: true)

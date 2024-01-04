@@ -20,7 +20,6 @@ import UIKit
         case actionSheetHeader
         case promptNotification
         case promptStaticNotification
-        case unknown
 
         var editorEntryPoint: PostEditorEntryPoint {
             switch self {

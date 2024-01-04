@@ -10,14 +10,6 @@ final class QuickStartSettings {
         self.userDefaults = userDefaults
     }
 
-    // MARK: - Quick Start availability
-
-    func isQuickStartAvailable(for blog: Blog) -> Bool {
-        return blog.isUserCapableOf(.ManageOptions) &&
-            blog.isUserCapableOf(.EditThemeOptions) &&
-            !blog.isWPForTeams()
-    }
-
     // MARK: - User Defaults Storage
 
     func promptWasDismissed(for blog: Blog) -> Bool {
