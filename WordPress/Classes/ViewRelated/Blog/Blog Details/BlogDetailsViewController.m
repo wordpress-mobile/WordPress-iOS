@@ -24,7 +24,6 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
-static NSString *const BlogDetailsQuickActionsCellIdentifier = @"BlogDetailsQuickActionsCell";
 static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
@@ -377,7 +376,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
-    [self.tableView registerClass:[QuickActionsCell class] forCellReuseIdentifier:BlogDetailsQuickActionsCellIdentifier];
     UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
@@ -670,7 +668,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -979,7 +976,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -1034,15 +1030,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.shouldShowTopJetpackBrandingMenuCard == YES) {
         [marr addNullableObject:[self jetpackCardSectionViewModel]];
     }
-
-    // This code will be removed in a future PR.
-//    if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
-//        if (!self.hasLoggedDomainCreditPromptShownEvent) {
-//            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
-//            self.hasLoggedDomainCreditPromptShownEvent = YES;
-//        }
-//        [marr addNullableObject:[self domainCreditSectionViewModel]];
-//    }
 
     if ([self shouldShowQuickStartChecklist]) {
         [marr addNullableObject:[self quickStartSectionViewModel]];
@@ -1558,12 +1545,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
-
-    /// For larger texts we don't show the quick actions row
-    if (detailSection.category == BlogDetailsSectionCategoryQuickAction && self.isAccessibilityCategoryEnabled) {
-        return 0;
-    }
-
     return [detailSection.rows count];
 }
 
@@ -1602,11 +1583,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return cell;
     }
 
-    if (section.category == BlogDetailsSectionCategoryQuickAction) {
-        QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
-        [self configureQuickActionsWithCell: cell];
-        return cell;
-    }
     
     if (section.category == BlogDetailsSectionCategoryQuickStart) {
         QuickStartCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickStartCellIdentifier];

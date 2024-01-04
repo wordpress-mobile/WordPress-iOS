@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-12 15:08:37+0000 */
+/* Translation-Revision-Date: 2023-12-14 16:51:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
@@ -9461,7 +9461,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "bloganuary.dashboard.card.button.learnMore" = "Läs mer";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "För månaden januari kommer bloggningsförslagen att komma från Bloganuary – vår communityutmaning avsedd att bygga upp en bloggvana för det nya året.";
+"bloganuary.dashboard.card.description" = "För januari månad kommer bloggningsförslagen från Bloganuary – vår community-utmaning att bygga en bloggvana för det nya året.";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary är på väg!";

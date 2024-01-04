@@ -157,7 +157,6 @@ private extension DashboardStatsCardCell {
 
     enum Constants {
         static let spacing: CGFloat = 20
-        static let iconSize = CGSize(width: 18, height: 18)
 
         static let constraintPriority = UILayoutPriority(999)
 

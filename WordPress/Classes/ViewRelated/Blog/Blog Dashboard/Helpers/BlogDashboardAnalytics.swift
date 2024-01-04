@@ -31,11 +31,19 @@ class BlogDashboardAnalytics {
         }
     }
 
+    static func trackContextualMenuAccessed(for card: BlogDashboardAnalyticPropertiesProviding) {
+        WPAnalytics.track(.dashboardCardContextualMenuAccessed, properties: card.analyticProperties)
+    }
+
+    static func trackHideTapped(for card: BlogDashboardAnalyticPropertiesProviding) {
+        WPAnalytics.track(.dashboardCardHideTapped, properties: card.analyticProperties)
+    }
+
     static func trackContextualMenuAccessed(for card: DashboardCard) {
-        WPAnalytics.track(.dashboardCardContextualMenuAccessed, properties: ["card": card.rawValue])
+        self.trackContextualMenuAccessed(for: card as BlogDashboardAnalyticPropertiesProviding)
     }
 
     static func trackHideTapped(for card: DashboardCard) {
-        WPAnalytics.track(.dashboardCardHideTapped, properties: ["card": card.rawValue])
+        self.trackHideTapped(for: card as BlogDashboardAnalyticPropertiesProviding)
     }
 }

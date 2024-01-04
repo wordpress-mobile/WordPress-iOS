@@ -272,21 +272,6 @@ class WPRichTextFormatter {
         }
         return (processedString, attachments)
     }
-
-
-    /// Returns the html processor that handles the specified tag.
-    ///
-    /// - Parameters:
-    ///     - tagName: The name of an HTML tag.
-    ///
-    /// - Returns: An HtmlTagProcessor optional.
-    ///
-    func processorForTagName(_ tagName: String) -> HtmlTagProcessor? {
-        return tags.filter({ (item) -> Bool in
-            item.tagName == tagName
-        }).first
-    }
-
 }
 
 

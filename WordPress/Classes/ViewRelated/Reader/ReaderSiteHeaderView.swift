@@ -116,10 +116,6 @@ struct ReaderSiteHeader: View {
 
     struct Constants {
         static let defaultSiteImage = "blavatar-default"
-        static let iconSide = WPStyleGuide.fontSizeForTextStyle(.callout)
-        static let followIconSize = CGSize(width: iconSide, height: iconSide)
-        static let followIcon = UIImage.gridicon(.readerFollow, size: followIconSize).imageWithTintColor(.white)
-        static let followingIcon = UIImage.gridicon(.readerFollowing, size: followIconSize).imageWithTintColor(.buttonIcon)
         static let countsFormat = NSLocalizedString("reader.site.header.counts",
                                                     value: "%1$@ posts • %2$@ followers",
                                                     comment: "The formatted number of posts and followers for a site. " +
