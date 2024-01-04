@@ -28,12 +28,16 @@ actor PostSearchSuggestionsService {
         let tokens = await [authors, tags]
         let selectedTokenIDs = Set(selectedTokens.map(\.id))
 
-        return Array(tokens
+        let output = Array(tokens
             .flatMap { $0 }
             .filter { !selectedTokenIDs.contains($0.token.id) }
             .sorted { ($0.score, $0.token.value) > ($1.score, $1.token.value) }
             .map { $0.token }
             .prefix(3))
+
+        // Remove duplicates
+        var encounteredIDs = Set<AnyHashable>()
+        return output.filter { encounteredIDs.insert($0.id).inserted }
     }
 
     private struct RankedToken {
@@ -79,7 +83,7 @@ actor PostSearchSuggestionsService {
 
     private func getTagTokens(for searchTerm: String, selectedTokens: [any PostSearchToken]) async -> [RankedToken] {
         guard !selectedTokens.contains(where: { $0 is PostSearchTagToken }) else {
-            return [] // Don't suggest authors anymore
+            return [] // Don't suggest tags anymore
         }
         let tokens = await getAllTagTokens()
         let search = StringRankedSearch(searchTerm: searchTerm)
