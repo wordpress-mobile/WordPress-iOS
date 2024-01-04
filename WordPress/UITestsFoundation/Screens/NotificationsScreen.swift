@@ -84,7 +84,11 @@ public class NotificationsScreen: ScreenObject {
     }
 
     public func replyToComment(withText text: String) -> Self {
-        waitForElementAndTap(replyCommentButton, untilConditionOn: replyTextView, condition: "exists", errorMessage: "Reply Text View does not exists!")
+        replyCommentButton.tapUntil(
+            element: replyTextView,
+            matches: .exists,
+            failureMessage: "Reply Text View does not exists!"
+        )
 
         replyTextView.typeText(text)
         replyButton.tap()

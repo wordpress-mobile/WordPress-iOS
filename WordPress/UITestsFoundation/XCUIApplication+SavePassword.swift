@@ -9,9 +9,12 @@ extension XCUIApplication {
             guard buttons["Save Password"].waitForExistence(timeout: 20) else { return  }
 
             // There should be no need to wait for this button to exist since it's part of the same
-            // alert where "Save Password" is.
+            // alert where "Save Password" is...
             let notNowButton = XCUIApplication().buttons["Not Now"]
-            waitForElementAndTap(notNowButton, untilConditionOn: notNowButton, condition: "dismissed", errorMessage: "Save Password Prompt not dismissed!")
+            // ...but we've seen failures in CI where this cannot be found so let's check first
+            XCTAssertTrue(notNowButton.waitForExistence(timeout: 5))
+
+            notNowButton.tapUntil(.dismissed, failureMessage: "Save Password Prompt not dismissed!")
         }
     }
 }

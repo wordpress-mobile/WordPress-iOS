@@ -152,7 +152,7 @@ public class EditorPostSettings: ScreenObject {
         // To ensure that the day tap happens on the correct month
         let nextMonth = monthLabel.value as! String
         if nextMonth != currentMonth {
-            waitForElementAndTap(firstCalendarDayButton, untilConditionOn: firstCalendarDayButton, condition: "selected", errorMessage: "First Day button not selected!")
+            firstCalendarDayButton.tapUntil(.selected, failureMessage: "First Day button not selected!")
         }
 
         doneButton.tap()
