@@ -19,7 +19,6 @@ protocol ContentCoordinator {
 struct DefaultContentCoordinator: ContentCoordinator {
     enum DisplayError: Error {
         case missingParameter
-        case unsupportedFeature
         case unsupportedType
     }
 

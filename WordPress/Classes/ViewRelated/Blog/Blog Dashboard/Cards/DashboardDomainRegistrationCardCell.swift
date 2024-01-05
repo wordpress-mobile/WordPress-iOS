@@ -103,7 +103,7 @@ extension DashboardDomainRegistrationCardCell {
             comment: "Action to redeem domain credit."
         )
         static let content = NSLocalizedString(
-            "All WordPress.com plans include a custom domain name. Register your free premium domain now.",
+            "All WordPress.com annual plans include a custom domain name. Register your free domain now.",
             comment: "Information about redeeming domain credit on site dashboard."
         )
         static let hideThis = NSLocalizedString(

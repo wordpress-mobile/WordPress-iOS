@@ -133,7 +133,7 @@ enum DashboardCard: String, CaseIterable {
         case .empty:
             return false // Controlled manually based on other cards visibility
         case .personalize:
-            return FeatureFlag.personalizeHomeTab.enabled
+            return true
         case .pages:
             return DashboardPagesListCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .activityLog:

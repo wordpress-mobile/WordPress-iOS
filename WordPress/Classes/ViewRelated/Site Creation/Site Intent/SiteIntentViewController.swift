@@ -138,8 +138,6 @@ extension SiteIntentViewController {
 
     private enum Metrics {
         static let largeTitleLines = 2
-        static let continueButtonPadding: CGFloat = 16
-        static let continueButtonHeight: CGFloat = 44
     }
 }
 

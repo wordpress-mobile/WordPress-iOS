@@ -482,11 +482,6 @@ extension WPStyleGuide {
         public static let actionButtonSize: CGSize = CGSize(width: 20, height: 20)
     }
 
-    public struct Detail {
-        public static let titleTextStyle: UIFont.TextStyle = .title2
-        public static let contentTextStyle: UIFont.TextStyle = .callout
-    }
-
     public struct ReaderDetail {
         public static var reblogToolbarIcon: UIImage? {
             return UIImage(named: "icon-reader-reblog")?.withRenderingMode(.alwaysTemplate)
@@ -521,30 +516,10 @@ extension WPStyleGuide {
     }
 
     public struct FollowButton {
-        struct Style {
-            static let followBackgroundColor: UIColor = .primaryButtonBackground
-            static let followTextColor: UIColor = .white
-            static let followingBackgroundColor: UIColor = .clear
-            static let followingIconColor: UIColor = .buttonIcon
-            static let followingTextColor: UIColor = .textSubtle
-
-            static let imageTitleSpace: CGFloat = 2.0
-            static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
-            static let titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
-            static let contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
-        }
-
         struct Text {
             static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
             static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
             static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-        }
-    }
-
-    public struct FollowConversationButton {
-        struct Style {
-            static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
-            static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
         }
     }
 }
