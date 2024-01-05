@@ -18,7 +18,7 @@ class RemoteFeatureFlagStore {
       }()
 
     /// The `deviceID` ensures we retain a stable set of Feature Flags between updates. If there are staged rollouts or other dynamic changes
-    /// happening server-side we don't want out flags to change on each fetch, so we provide an anonymous ID to manage this.
+    /// happening server-side we don't want our flags to change on each fetch, so we provide an anonymous ID to manage this.
     public var deviceID: String {
         guard let deviceID = persistenceStore.string(forKey: Constants.DeviceIdKey) else {
             DDLogInfo("🚩 Unable to find existing device ID – generating a new one")
