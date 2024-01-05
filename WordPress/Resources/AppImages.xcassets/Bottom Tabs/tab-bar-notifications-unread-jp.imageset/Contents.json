@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "tab-bar-notifications-unread-jp.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "tab-bar-notifications-unread-jp-dark.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
