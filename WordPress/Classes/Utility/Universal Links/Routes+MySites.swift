@@ -66,9 +66,17 @@ extension MySitesRoute: Route {
 extension MySitesRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator
+        let campaign = AppBannerCampaign.getCampaign(from: values)
 
         guard let blog = blog(from: values) else {
-            WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
+            var properties: [AnyHashable: Any] = [
+                "route": path,
+                "error": "invalid_site_id"
+            ]
+            if let campaign {
+                properties["campaign"] = campaign
+            }
+            WPAppAnalytics.track(.deepLinkFailed, withProperties: properties)
 
             if failAndBounce(values) == false {
                 coordinator.showRootViewController()
@@ -84,7 +92,7 @@ extension MySitesRoute: NavigationAction {
         case .posts:
             coordinator.showPosts(for: blog)
         case .media:
-            if AppBannerCampaign.make(from: values) == .qrCodeMedia {
+            if campaign.flatMap(AppBannerCampaign.init) == .qrCodeMedia {
                 coordinator.showMediaPicker(for: blog)
             } else {
                 coordinator.showMedia(for: blog)

@@ -28,8 +28,7 @@ extension AppBannerRoute: NavigationAction {
                 return
         }
 
-        let campaign = (values[MatchedRouteURLComponentKey.url.rawValue])
-            .flatMap(getCampaign)
+        let campaign = AppBannerCampaign.getCampaign(from: values)
 
         // Convert the fragment into a URL and ask the link router to handle
         // it like a normal route.
@@ -52,14 +51,11 @@ extension AppBannerRoute: NavigationAction {
 enum AppBannerCampaign: String {
     case qrCodeMedia = "qr-code-media"
 
-    static func make(from values: [String: String]) -> AppBannerCampaign? { values[MatchedRouteURLComponentKey.url.rawValue]
-            .flatMap(getCampaign)
-            .flatMap(AppBannerCampaign.init)
+    static func getCampaign(from values: [String: String]) -> String? {
+        guard let url = values[MatchedRouteURLComponentKey.url.rawValue],
+              let queryItems = URLComponents(string: url)?.queryItems else {
+            return nil
+        }
+        return queryItems.first(where: { $0.name == "campaign" })?.value
     }
-}
-
-private func getCampaign(from url: String) -> String? {
-    URLComponents(string: url)?.queryItems?
-        .first { $0.name == "campaign"
-    }?.value
 }
