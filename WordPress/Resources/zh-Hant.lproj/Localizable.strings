@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-21 08:24:08+0000 */
+/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "全部";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "所有 WordPress.com 年繳方案皆隨附一個自訂網域名稱。 立即註冊你的免費網域。";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9454,6 +9457,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示：這個社群挑戰的目的，是為了協助你在新的一年養成寫網誌的習慣。";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary 正式開跑！";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary 挑戰即將來臨！";
 
@@ -10518,6 +10524,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "你沒有任何網站";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "新增網站";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "網站動作";

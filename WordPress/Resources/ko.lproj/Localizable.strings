@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-19 09:54:27+0000 */
+/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ko_KR */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "모든";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "모든 워드프레스닷컴 연간 요금제에는 사용자 정의 도메인 네임이 포함됩니다. 지금 무료 도메인을 등록하세요.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9457,6 +9460,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary가 여기에 있습니다!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
 
@@ -10500,6 +10506,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "사이트가 없습니다";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "사이트 추가";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "사이트 조치";
