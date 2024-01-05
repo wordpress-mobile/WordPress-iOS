@@ -34,6 +34,11 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         return UIMenu(options: [.displayInline], children: children)
     }
 
+    func showPhotosPicker(from viewController: UIViewController) {
+        MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
+            .showPhotosPicker(delegate: self)
+    }
+
     // MARK: - PHPickerViewControllerDelegate
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {

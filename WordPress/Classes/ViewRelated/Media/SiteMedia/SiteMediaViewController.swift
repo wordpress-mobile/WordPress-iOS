@@ -17,9 +17,12 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     private var isPreparingToShare = false
     private var isFirstAppearance = true
+    private var showPicker = false
 
-    @objc init(blog: Blog) {
+    @objc init(blog: Blog, showPicker: Bool = false) {
         self.blog = blog
+        self.showPicker = showPicker
+
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
@@ -51,6 +54,11 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
             navigationItem.hidesSearchBarWhenScrolling = false
         }
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
+
+        if showPicker {
+            buttonAddMediaMenuController.showPhotosPicker(from: self)
+            showPicker = false
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

@@ -49,6 +49,15 @@ extension AppBannerRoute: NavigationAction {
     }
 }
 
+enum AppBannerCampaign: String {
+    case qrCodeMedia = "qr-code-media"
+
+    static func make(from values: [String: String]) -> AppBannerCampaign? { values[MatchedRouteURLComponentKey.url.rawValue]
+            .flatMap(getCampaign)
+            .flatMap(AppBannerCampaign.init)
+    }
+}
+
 private func getCampaign(from url: String) -> String? {
     URLComponents(string: url)?.queryItems?
         .first { $0.name == "campaign"

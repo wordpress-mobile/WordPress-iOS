@@ -115,11 +115,11 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] = [:]) {
         showBlogDetails(for: blog)
 
         if let mySiteViewController = navigationController.topViewController as? MySiteViewController {
-            mySiteViewController.showBlogDetailsSubsection(subsection)
+            mySiteViewController.showBlogDetailsSubsection(subsection, userInfo: userInfo)
         }
     }
 
@@ -207,6 +207,10 @@ class MySitesCoordinator: NSObject {
 
     func showMedia(for blog: Blog) {
         showBlogDetails(for: blog, then: .media)
+    }
+
+    func showMediaPicker(for blog: Blog) {
+        showBlogDetails(for: blog, then: .media, userInfo: [BlogDetailsViewController.userInfoShowPickerKey(): true])
     }
 
     func showComments(for blog: Blog) {

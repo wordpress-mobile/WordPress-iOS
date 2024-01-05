@@ -84,7 +84,11 @@ extension MySitesRoute: NavigationAction {
         case .posts:
             coordinator.showPosts(for: blog)
         case .media:
-            coordinator.showMedia(for: blog)
+            if AppBannerCampaign.make(from: values) == .qrCodeMedia {
+                coordinator.showMediaPicker(for: blog)
+            } else {
+                coordinator.showMedia(for: blog)
+            }
         case .comments:
             coordinator.showComments(for: blog)
         case .sharing:
