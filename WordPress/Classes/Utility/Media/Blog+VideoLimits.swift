@@ -13,17 +13,6 @@ extension Blog {
         return Blog.maximumVideoDurationForFreeSites
     }
 
-    /// Returns `true` if the blog is allowed to upload the given asset.
-    func canUploadAsset(_ asset: WPMediaAsset) -> Bool {
-        guard asset.assetType() == .video else {
-            return true
-        }
-        guard let limit = videoDurationLimit else {
-            return true
-        }
-        return asset.duration() <= limit
-    }
-
     /// Returns `true` if the blog is allowed to upload the video at the given URL.
     func canUploadVideo(from videoURL: URL) -> Bool {
         guard let limit = videoDurationLimit else {

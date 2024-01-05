@@ -81,13 +81,13 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v23.5-whats-new"
+msgctxt "v23.9-whats-new"
 msgid ""
-"We’ve made some visual changes to the reader. You’ll notice updates to feed cards, headers, buttons, recommendations, and more. Please feel free to give us lots of compliments.\n"
+"We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.\n"
 "\n"
-"In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too, even in block-based themes on dark mode. And you can quote us on that.\n"
+"Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.\n"
 "\n"
-"Finally, we fixed a code issue in blogging prompt settings that caused the app to crash.\n"
+"Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. We also fixed a rare crash that happened while logging out. Sweet.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

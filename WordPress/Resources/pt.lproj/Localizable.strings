@@ -54,9 +54,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d anos";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i área de menu neste tema";
 
@@ -147,13 +144,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Relatórios de actividade";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Adicionar";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Adicionar %@";
-
 /* The title on the add category screen */
 "Add a Category" = "Adicionar categoria";
 
@@ -193,9 +183,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avançadas";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Álbuns";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -305,14 +292,8 @@
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Tem a certeza que quer desligar o Jetpack do site?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Tem a certeza que pretende eliminar permanentemente estes itens?";
-
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Tem a certeza que pretende mover este artigo para o lixo?";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Áudio, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "A autenticar";
@@ -396,8 +377,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "A calcular...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Câmara";
 
 /* Alert dismissal title
@@ -436,10 +416,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -455,10 +432,6 @@
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancelar";
-
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Cancelar carregamento";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -684,10 +657,6 @@
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Continuar a ler";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Copiar link";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Não foi possível guardar alterações";
 
@@ -717,9 +686,6 @@
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Não foi possível carregar a imagem de destaque";
-
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "A contar itens multimédia";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Países";
@@ -801,7 +767,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Eliminar";
@@ -809,10 +774,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Eliminar menu";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Eliminar permanentemente";
 
@@ -883,7 +845,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Ignorar";
 
@@ -891,9 +852,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nome a mostrar";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Documento: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domínios";
@@ -922,17 +880,12 @@
 /* Name for the status of a draft post. */
 "Draft" = "Rascunho";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Rascunhos";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Editar";
@@ -1034,9 +987,6 @@
 
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Erro ao actualizar as definições do Jetpack";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Todos";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Excerto";
@@ -1268,9 +1218,6 @@
 /* Hint for image title on image settings. */
 "Image title" = "Título da imagem";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Imagem, %@";
-
 /* Undated post time label */
 "Immediately" = "Imediatamente";
 
@@ -1453,14 +1400,8 @@
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "A carregar actividades...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "A carregar GIFs...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "A carregar menus...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "A carregar as fotografias...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "A carregar plano...";
@@ -1565,7 +1506,6 @@
 "Max Video Upload Size" = "Resolução máxima dos vídeos";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -1573,22 +1513,13 @@
 "Me" = "Eu";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Multimédia";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Tamanho da cache de multimédia";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Captura de multimédia";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Biblioteca multimédia";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Opções de multimédia";
@@ -1599,9 +1530,6 @@
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "A carregar multimédia";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Falhou ao pré-visualizar multimédia.";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Médio";
@@ -1622,9 +1550,6 @@
    Label for the share message field on the post settings. */
 "Message" = "Mensagem";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadados";
-
 /* Title of Months stats filter. */
 "Months" = "Meses";
 
@@ -1632,28 +1557,19 @@
 "Months and Years" = "Meses e anos";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Mais";
 
 /* Action button to display more available options
    Label for the More Options area in post settings. Should use the same translation as core WP. */
 "More Options" = "Mais opções";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Mover para rascunhos";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Mover para o lixo";
 
@@ -1669,7 +1585,8 @@
    Title of My Site tab */
 "My Site" = "O meu site";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Os meus sites";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1773,9 +1690,6 @@
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nada encontrado.";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Nada para mostrar";
-
 /* Link to Notification Settings section
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
@@ -1808,7 +1722,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1926,18 +1839,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Página restaurada para os rascunhos.";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Página restaurada e publicada.";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Página restaurada e agendada.";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "Página movida para o lixo.";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1970,8 +1871,7 @@
    Title of pending Comments filter. */
 "Pending" = "Pendente";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Pendente de revisão";
 
 /* Noun. Title of the people management feature.
@@ -2060,24 +1960,12 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato do artigo";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Conteúdo restaurado para os rascunhos.";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Conteúdo restaurado e publicado.";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Conteúdo restaurado e agendado.";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Definições do Artigo";
 
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Artigo criado em %@";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "Conteúdo movido para o lixo.";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Código postal";
@@ -2138,8 +2026,7 @@
 "Privacy Settings" = "Definições de privacidade";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privada";
 
 /* Menu item label for linking a project page. */
@@ -2156,19 +2043,16 @@
    Title for the publish settings view */
 "Publish" = "Publicar";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicar imediatamente";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publicar agora";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
 
 /* Precedes the name of the blog just posted on */
@@ -2228,8 +2112,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Artigos relacionados";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -2303,9 +2186,6 @@
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Reenviar";
 
-/* Title of the reset button */
-"Reset" = "Repor";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionar e cortar";
 
@@ -2326,12 +2206,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -2339,9 +2216,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Tentar de novo";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Tentar carregar de novo";
 
 /* No comment provided by engineer. */
 "Retry?" = "Tentar de novo?";
@@ -2379,11 +2253,7 @@
 /* Title of button allowing users to change the status of the post they are currently editing to Draft. */
 "Save as Draft" = "Guardar como rascunho";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Guardado!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "A guardar...";
 
@@ -2423,9 +2293,6 @@
 /* Blog Picker's Title */
 "Select Site" = "Seleccionar site";
 
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Seleccionar multimédia.";
-
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Seleccione o estilo do parágrafo";
 
@@ -2454,7 +2321,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -2621,8 +2487,7 @@
    Title of Start Over settings page */
 "Start Over" = "Começar de novo";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -2658,7 +2523,7 @@
    Theme Support action title */
 "Support" = "Suporte";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Mudar de site";
 
 /* Switches the Editor to HTML Mode */
@@ -2768,7 +2633,7 @@
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "O URL personalizado para o título do artigo.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "O nome de utilizador ou senha armazenada na aplicação podem estar desactualizados. Por favor re-digite sua senha nas configurações e tente novamente.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -2795,17 +2660,11 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Ocorreu um problema ao mostrar este artigo.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Ocorreu um erro ao carregar o item multimédia.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Ocorreu um problema ao remover o bloco do site especificado.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Ocorreu um erro ao guardar alterações da gestão de partilha.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Ocorreu um problema ao tentar aceder à sua biblioteca multimédia. Por favor tente de novo mais tarde.";
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Ocorreu um erro ao carregar actividades";
@@ -2827,9 +2686,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "WordPress precisa de autorização para aceder à câmara do seu dispositivo para poder adicionar fotos e vídeos aos seus artigos. Por favor, actualize as suas definições de privacidade.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "WordPress precisa de autorização para aceder à biblioteca multimédia do seu dispositivo para poder adicionar fotos e vídeos aos seus artigos. Por favor, actualize as suas definições de privacidade.";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Este endereço de email não está registado em WordPress.com.";
@@ -2908,8 +2764,7 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfego";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Lixo";
@@ -2965,17 +2820,11 @@
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Não é possível ligar";
 
-/* An error message. */
-"Unable to Connect" = "Não é possível ligar";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os conteúdos";
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Não é possível sincronizar";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Não é possível eliminar todos os itens multimédia.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Não é possível eliminar o item multimédia.";
@@ -3013,8 +2862,6 @@
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "Anular";
 
@@ -3034,9 +2881,6 @@
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML desconhecido";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Data de criação desconhecida";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Erro desconhecido";
@@ -3143,15 +2987,10 @@
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Pré-visualização de vídeo indisponível";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Vídeo, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "Vídeos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -3384,17 +3223,11 @@
 /* Age between dates equaling one hour. */
 "an hour" = "uma hora";
 
-/* Label displayed on audio media items. */
-"audio" = "áudio";
-
 /* Used when displaying author of a plugin. */
 "by %@" = "por %@";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/endereço-do-meu-site (URL)";
-
-/* Label displayed on image media items. */
-"image" = "imagem";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
@@ -3405,14 +3238,8 @@
 /* Later today */
 "later today" = "mais logo";
 
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "outros";
-
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecido";
-
-/* Label displayed on video media items. */
-"video" = "vídeo";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Conteúdos";

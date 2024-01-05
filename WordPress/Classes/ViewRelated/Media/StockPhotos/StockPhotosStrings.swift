@@ -20,21 +20,4 @@ extension String {
             comment: "Dismiss the AlertView"
         )
     }
-
-    // MARK: - Placeholder
-    static var freePhotosPlaceholderTitle: String {
-        return NSLocalizedString("Search to find free photos to add to your Media Library!", comment: "Title for placeholder in Free Photos")
-    }
-
-    static var freePhotosPlaceholderSubtitle: String {
-        return NSLocalizedString("Photos provided by Pexels", comment: "Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is.")
-    }
-
-    static var freePhotosSearchNoResult: String {
-        return NSLocalizedString("No media matching your search", comment: "Phrase to show when the user search for images but there are no result to show.")
-    }
-
-    static var freePhotosSearchLoading: String {
-        return NSLocalizedString("Loading Photos...", comment: "Phrase to show when the user has searched for images and they are being loaded.")
-    }
 }

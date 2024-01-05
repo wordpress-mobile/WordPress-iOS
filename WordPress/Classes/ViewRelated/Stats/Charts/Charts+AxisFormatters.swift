@@ -1,7 +1,7 @@
 
 import Foundation
 
-import Charts
+import DGCharts
 
 // MARK: - HorizontalAxisFormatter
 

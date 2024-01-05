@@ -7,30 +7,27 @@ import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.
 ///
-class MediaItemViewController: UITableViewController {
+final class MediaItemViewController: UITableViewController {
+    let media: Media
 
-    class DownloadDelegate: NSObject, AVAssetDownloadDelegate {
-
-    }
-
-    // swiftlint:disable:next weak_delegate
-    let delegate = DownloadDelegate()
-
-    @objc let media: Media
-
-    fileprivate var viewModel: ImmuTable!
-    fileprivate var mediaMetadata: MediaMetadata {
+    private var viewModel: ImmuTable!
+    private var mediaMetadata: MediaMetadata {
         didSet {
-            updateNavigationItem()
+            if !mediaMetadata.matches(media) {
+                saveChanges()
+            }
         }
     }
 
-    @objc init(media: Media) {
+    private let headerView = MediaItemHeaderView()
+    private lazy var headerMaxHeightConstraint = headerView.heightAnchor.constraint(lessThanOrEqualToConstant: 320)
+
+    init(media: Media) {
         self.media = media
 
         self.mediaMetadata = MediaMetadata(media: media)
 
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,9 +37,10 @@ class MediaItemViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self],
-                               tableView: tableView)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+
+        ImmuTable.registerRows([TextRow.self, EditableTextRow.self], tableView: tableView)
 
         updateViewModel()
         updateNavigationItem()
@@ -73,41 +71,25 @@ class MediaItemViewController: UITableViewController {
         }
 
         viewModel = ImmuTable(sections: [
-            ImmuTableSection(rows: [ headerRow ]),
             ImmuTableSection(headerText: nil, rows: mediaInfoRows, footerText: nil),
-            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"),
-                             rows: metadataRows,
-                             footerText: nil)
-            ])
+            ImmuTableSection(headerText: nil, rows: metadataRows, footerText: nil)
+        ])
+
+        headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 280).isActive = true
+        headerMaxHeightConstraint.isActive = true
+        headerView.configure(with: media)
+        tableView.tableHeaderView = headerView
+
+        headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapHeaderView)))
     }
 
-    private var headerRow: ImmuTableRow {
-        switch media.mediaType {
-        case .image, .video:
-            return MediaImageRow(media: media, action: { [weak self] row in
-                guard let media = self?.media else { return }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-                switch media.mediaType {
-                case .image:
-                    if self?.isMediaLoaded() == true {
-                        self?.presentImageViewControllerForMedia()
-                    }
-                case .video:
-                    self?.presentVideoViewControllerForMedia()
-                default: break
-                }
-            })
-        default:
-            return MediaDocumentRow(media: media, action: { [weak self] _ in
-                guard let media = self?.media else { return }
-
-                // We're currently not presenting previews for audio until
-                // we can resolve an auth issue. @frosty 2017-05-02
-                if media.mediaType != .audio {
-                    self?.presentDocumentViewControllerForMedia()
-                }
-            })
-        }
+        // Using a constant instead of a `multiplier` because the multiplier-based
+        // constraint doesn't seem to go into effect until after `viewDidLayoutSubviews`.
+        headerMaxHeightConstraint.constant = view.bounds.height * 0.75
+        tableView.sizeToFitHeaderView()
     }
 
     private var metadataRows: [ImmuTableRow] {
@@ -158,43 +140,36 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func updateNavigationItem() {
-        if mediaMetadata.matches(media) {
-            navigationItem.leftBarButtonItem = nil
-            let shareItem = UIBarButtonItem(image: .gridicon(.shareiOS),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(shareTapped(_:)))
-            shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
+        let shareItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(shareTapped))
+        shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
 
-            let trashItem = UIBarButtonItem(image: .gridicon(.trash),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(trashTapped(_:)))
-            trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
+        let trashItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(trashTapped))
+        trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
 
-            if media.blog.supports(.mediaDeletion) {
-                navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
-            } else {
-                navigationItem.rightBarButtonItems = [ shareItem ]
-            }
+        if media.blog.supports(.mediaDeletion) {
+            navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
         } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
-            navigationItem.rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped)) ]
+            navigationItem.rightBarButtonItems = [ shareItem ]
         }
     }
 
-    private func isMediaLoaded() -> Bool {
-        let headerIndexPath = IndexPath(row: 0, section: 0)
-        // Check in case of future changes.
-        assert(viewModel.sections[headerIndexPath.section].rows[headerIndexPath.row].cellClass == headerRow.cellClass, "Wrong index path for headerRow")
-
-        guard
-            let cell = tableView.cellForRow(at: headerIndexPath) as? MediaItemImageTableViewCell,
-            cell.customImageView.image != nil else {
-
-            return false
+    @objc private func didTapHeaderView() {
+        switch media.mediaType {
+        case .image:
+            presentImageViewControllerForMedia()
+        case .video:
+            presentVideoViewControllerForMedia()
+        case .document:
+            presentDocumentViewControllerForMedia()
+        default:
+            break
         }
-        return true
     }
 
     private func presentImageViewControllerForMedia() {
@@ -222,6 +197,7 @@ class MediaItemViewController: UITableViewController {
     }
 
     private var documentInteractionController: UIDocumentInteractionController?
+
     private func presentDocumentViewControllerForMedia() {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
@@ -247,35 +223,32 @@ class MediaItemViewController: UITableViewController {
 
     // MARK: - Actions
 
-    private var shareVideoCancellable: AnyCancellable? = nil
-
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        switch media.mediaType {
-        case .image:
-            media.image(with: .zero) { [weak self] image, error in
-                guard let image = image else {
-                    if let error = error {
-                        DDLogError("Error when attempting to share image: \(error)")
-                    }
-                    return
-                }
-
-                self?.share(media: image, sender: sender)
+        func setPreparingToShare(_ isSharing: Bool) {
+            if isSharing {
+                let indicator = UIActivityIndicatorView()
+                indicator.startAnimating()
+                indicator.frame = CGRect(origin: .zero, size: CGSize(width: 43, height: 44))
+                sender.customView = indicator
+            } else {
+                sender.customView = nil
             }
-        case .audio, .video:
-            shareVideoCancellable = media.videoURLPublisher(skipTransformCheck: true).sink { [weak self] completion in
-                if case .failure(let error) = completion {
-                    DDLogError("Error when attempting to share video: \(error)")
-                }
+            sender.isEnabled = !isSharing
+        }
 
-                self?.shareVideoCancellable = nil
-            } receiveValue: { [weak self] url in
-                DispatchQueue.main.async { [weak self] in
-                    self?.share(media: url, sender: sender)
-                }
+        setPreparingToShare(true)
+
+        WPAnalytics.track(.siteMediaShareTapped, properties: ["number_of_items": 1])
+
+        Task {
+            do {
+                let fileURLs = try await Media.downloadRemoteData(for: [media], blog: media.blog)
+                self.share(fileURLs, sender: sender)
+            } catch {
+                SVProgressHUD.showError(withStatus: SiteMediaViewController.sharingFailureMessage)
             }
-        default:
-            break
+
+            setPreparingToShare(false)
         }
     }
 
@@ -305,36 +278,28 @@ class MediaItemViewController: UITableViewController {
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
 
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.delete(media, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self?.media.blog)
-            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-        }, failure: { error in
-            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
-        })
+        let repository = MediaRepository(coreDataStack: ContextManager.shared)
+        let mediaID = TaggedManagedObjectID(media)
+        Task { @MainActor in
+            do {
+                try await repository.delete(mediaID)
+
+                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self.media.blog)
+                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            } catch {
+                SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
+            }
+        }
     }
 
-    @objc private func cancelTapped() {
-        mediaMetadata = MediaMetadata(media: media)
-        reloadViewModel()
-        updateTitle()
-    }
-
-    @objc private func saveTapped() {
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Saving...", comment: "Text displayed in HUD while a media item's metadata (title, etc) is being saved."))
-
+    private func saveChanges() {
         mediaMetadata.update(media)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.update(media, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
-            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Saved!", comment: "Text displayed in HUD when a media item's metadata (title, etc) is saved successfully."))
-            self?.updateNavigationItem()
-        }, failure: { error in
+        }, failure: { _ in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to save media item.", comment: "Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved."))
-            self.updateNavigationItem()
         })
     }
 
@@ -344,6 +309,7 @@ class MediaItemViewController: UITableViewController {
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
                                         onValueChanged: { value in
                 self?.title = value
+                (self?.parent as? SiteMediaPageViewController)?.title = value
                 self?.mediaMetadata.title = value
                 self?.reloadViewModel()
             })
@@ -396,15 +362,6 @@ class MediaItemViewController: UITableViewController {
 
     // MARK: - Sharing Logic
 
-    private func mediaURL() -> URL? {
-        guard let remoteURL = media.remoteURL,
-           let url = URL(string: remoteURL) else {
-            return nil
-        }
-
-        return url
-    }
-
     private func share(media: Any, sender: UIBarButtonItem) {
         share([media], sender: sender)
     }
@@ -418,7 +375,6 @@ class MediaItemViewController: UITableViewController {
                 WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
             }
         }
-
         present(activityController, animated: true)
     }
 }
@@ -436,7 +392,6 @@ extension MediaItemViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = viewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
-
         row.configureCell(cell)
 
         return cell
@@ -449,37 +404,6 @@ extension MediaItemViewController {
 
 // MARK: - UITableViewDelegate
 extension MediaItemViewController {
-    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if row is MediaDocumentRow && media.mediaType == .audio {
-            return false
-        }
-
-        return true
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if let customHeight = type(of: row).customHeight {
-            return CGFloat(customHeight)
-        } else if row is MediaImageRow {
-            return UITableView.automaticDimension
-        }
-
-        return tableView.rowHeight
-    }
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if let customHeight = type(of: row).customHeight {
-            return CGFloat(customHeight)
-        } else if row is MediaImageRow {
-            return view.readableContentGuide.layoutFrame.width
-        }
-
-        return tableView.rowHeight
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
         row.action?(row)
@@ -497,7 +421,7 @@ private struct MediaMetadataPresenter {
         let width = media.width ?? 0
         let height = media.height ?? 0
 
-        return "\(width) ✕ \(height)"
+        return "\(width) × \(height)"
     }
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)

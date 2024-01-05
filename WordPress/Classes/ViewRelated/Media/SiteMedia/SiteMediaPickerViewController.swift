@@ -12,7 +12,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
     private let collectionViewController: SiteMediaCollectionViewController
     private let toolbarItemTitle = SiteMediaSelectionTitleView()
-    private lazy var buttonDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
+    private lazy var buttonDone = UIBarButtonItem(title: Strings.add, style: .done, target: self, action: #selector(buttonDoneTapped))
 
     weak var delegate: SiteMediaPickerViewControllerDelegate?
 
@@ -31,6 +31,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
+        modalPresentationStyle = .formSheet
     }
 
     required init?(coder: NSCoder) {
@@ -43,24 +44,16 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         collectionViewController.embed(in: self)
         collectionViewController.delegate = self
 
-        configureNavigationBarAppearance()
-        configurationNavigationItems()
+        configureDefaultNavigationBarAppearance()
+        configureNavigationItems()
         startSelection()
     }
 
     // MARK: - Configuration
 
-    private func configureNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-    }
-
-    private func configurationNavigationItems() {
+    private func configureNavigationItems() {
         let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
-            self?.buttonDoneTapped()
+            self?.buttonCancelTapped()
         })
 
         navigationItem.leftBarButtonItem = buttonCancel
@@ -106,6 +99,13 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
     // MARK: - SiteMediaCollectionViewControllerDelegate
 
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? {
+        let title = viewController.isSelected(media) ? Strings.deselect : Strings.select
+        return UIMenu(children: [UIAction(title: title, image: UIImage(systemName: "checkmark.circle")) { [weak self] _ in
+            self?.collectionViewController.toggleSelection(for: media)
+        }])
+    }
+
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media]) {
         if !allowsMultipleSelection {
             if !selection.isEmpty {
@@ -119,4 +119,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
 
 private enum Strings {
     static let title = NSLocalizedString("siteMediaPicker.title", value: "Media", comment: "Media screen navigation title")
+    static let add = NSLocalizedString("siteMediaPicker.add", value: "Add", comment: "Title for confirmation navigation bar button item")
+    static let select = NSLocalizedString("siteMediaPicker.select", value: "Select", comment: "Button selection media in media picker")
+    static let deselect = NSLocalizedString("siteMediaPicker.deselect", value: "Deselect", comment: "Button selection media in media picker")
 }

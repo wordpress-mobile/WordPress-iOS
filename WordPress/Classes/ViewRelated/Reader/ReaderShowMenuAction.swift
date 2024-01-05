@@ -109,8 +109,25 @@ final class ReaderShowMenuAction {
                                                })
         }
 
+        // Reblog
+        //
+        // Only show the Reblog menu when:
+        // - The site is not private,
+        // - The user is logged in,
+        // - and the user uses accessibility content size.
+        if !post.isPrivate(),
+           isLoggedIn,
+           let vc = vc as? ReaderStreamViewController,
+           vc.traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            let buttonTitle = ReaderPostCardCell.Constants.reblogButtonText
+
+            alertController.addActionWithTitle(buttonTitle, style: .default) { _ in
+                ReaderReblogAction().execute(readerPost: post, origin: vc, reblogSource: .list)
+            }
+        }
+
         // Save post
-        if RemoteFeatureFlag.readerImprovements.enabled(), let vc = vc as? ReaderStreamViewController {
+        if let vc = vc as? ReaderStreamViewController {
             let buttonTitle = post.isSavedForLater ? ReaderPostMenuButtonTitles.removeSavedPost: ReaderPostMenuButtonTitles.savePost
 
             alertController.addActionWithTitle(buttonTitle, style: .default) { _ in

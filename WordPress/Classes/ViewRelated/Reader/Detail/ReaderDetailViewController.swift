@@ -77,9 +77,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The actual header
     private lazy var header: UIView & ReaderDetailHeader = {
-        guard RemoteFeatureFlag.readerImprovements.enabled() else {
-            return ReaderDetailHeaderView.loadFromNib()
-        }
         return ReaderDetailNewHeaderViewHost()
     }()
 
@@ -186,6 +183,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         coordinator?.start()
 
+        startObservingPost()
+
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
@@ -197,6 +196,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         super.viewWillAppear(animated)
         setupFeaturedImage()
         updateFollowButtonState()
+        toolbar.viewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -207,6 +207,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         featuredImage.viewWillDisappear()
+        toolbar.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -252,6 +253,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
            let postURL = URL(string: postURLString) {
             webView.postURL = postURL
         }
+
+        webView.isP2 = post.isP2Type()
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
@@ -533,7 +536,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Configure the webview
     private func configureWebView() {
-        webView.usesSansSerifStyle = RemoteFeatureFlag.readerImprovements.enabled()
+        webView.usesSansSerifStyle = true
         webView.navigationDelegate = self
     }
 
@@ -605,10 +608,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
 
         headerContainerView.pinSubviewToAllEdges(header)
-
-        if !RemoteFeatureFlag.readerImprovements.enabled() {
-            headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
-        }
     }
 
     private func fetchLikes() {
@@ -677,9 +676,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
 
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
-        }
+        toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -710,9 +707,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
                                                object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userBlocked(_:)),
+                                               name: .ReaderUserBlockingDidEnd,
+                                               object: nil)
+    }
+
+    @objc private func userBlocked(_ notification: Foundation.Notification) {
+        dismiss()
     }
 
     @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        dismiss()
+    }
+
+    private func dismiss() {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
@@ -807,9 +817,33 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
         static let bottomMargin: CGFloat = 16
-        static let toolbarHeight: CGFloat = 50
         static let delay: Double = 50
         static let preferredToolbarHeight: CGFloat = 58.0
+    }
+
+    // MARK: - Managed object observer
+
+    func startObservingPost() {
+        guard let post else {
+            return
+        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleObjectsChange(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                               object: post.managedObjectContext)
+    }
+
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let post else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(post) || refreshed.contains(post) {
+            header.configure(for: post)
+        }
     }
 }
 

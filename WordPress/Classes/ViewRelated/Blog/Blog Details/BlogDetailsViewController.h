@@ -7,7 +7,6 @@
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
-    BlogDetailsSectionCategoryQuickAction,
     BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
     BlogDetailsSectionCategoryQuickStart,
@@ -21,6 +20,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryMigrationSuccess,
     BlogDetailsSectionCategoryJetpackBrandingCard,
     BlogDetailsSectionCategoryJetpackInstallCard,
+    BlogDetailsSectionCategorySotW2023Card,
     BlogDetailsSectionCategoryContent,
     BlogDetailsSectionCategoryTraffic,
     BlogDetailsSectionCategoryMaintenance

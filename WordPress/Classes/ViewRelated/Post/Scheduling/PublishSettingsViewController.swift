@@ -49,7 +49,7 @@ struct PublishSettingsViewModel {
         self.post = post
 
         title = post.postTitle
-        timeZone = post.blog.timeZone
+        timeZone = post.blog.timeZone ?? TimeZone.current
 
         dateFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .long, timeStyle: .none)
         dateTimeFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .medium, timeStyle: .short)
@@ -202,16 +202,16 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     func dateTimeCalendarViewController(with model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
         return { [weak self] _ in
-            return PresentableSchedulingViewControllerProvider.viewController(sourceView: self?.viewController?.tableView,
-                                                                              sourceRect: self?.rectForSelectedRow() ?? .zero,
-                                                                              viewModel: model,
-                                                                              transitioningDelegate: self,
-                                                                              updated: { [weak self] date in
-                WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
-                self?.viewModel.setDate(date)
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-            },
-                                                                              onDismiss: nil)
+            return PresentableSchedulingViewControllerProvider.viewController(
+                sourceView: self?.viewController?.tableView,
+                sourceRect: self?.rectForSelectedRow() ?? .zero,
+                viewModel: model,
+                updated: { [weak self] date in
+                    WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+                    self?.viewModel.setDate(date)
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+                },
+                onDismiss: nil)
         }
     }
 
@@ -221,18 +221,5 @@ private struct DateAndTimeRow: ImmuTableRow {
             return nil
         }
         return viewController.tableView.rectForRow(at: selectedIndexPath)
-    }
-}
-
-// The calendar sheet is shown towards the bottom half of the screen so a custom transitioning delegate is needed.
-extension PublishSettingsController: UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
-        presentationController.delegate = self
-        return presentationController
-    }
-
-    func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return traitCollection.verticalSizeClass == .compact ? .overFullScreen : .none
     }
 }

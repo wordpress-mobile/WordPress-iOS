@@ -82,7 +82,7 @@ class MySitesCoordinator: NSObject {
 
     @objc
     private(set) lazy var blogListViewController: BlogListViewController = {
-        BlogListViewController(meScenePresenter: self.meScenePresenter)
+        BlogListViewController(configuration: .defaultConfig, meScenePresenter: self.meScenePresenter)
     }()
 
     private lazy var mySiteViewController: MySiteViewController = {
@@ -99,16 +99,6 @@ class MySitesCoordinator: NSObject {
         becomeActiveTab()
 
         navigationController.viewControllers = [rootContentViewController]
-    }
-
-    // MARK: - Sites List
-
-    private func showSitesList() {
-        showRootViewController()
-
-        let navigationController = UINavigationController(rootViewController: blogListViewController)
-        navigationController.modalPresentationStyle = .formSheet
-        mySiteViewController.present(navigationController, animated: true)
     }
 
     // MARK: - Blog Details

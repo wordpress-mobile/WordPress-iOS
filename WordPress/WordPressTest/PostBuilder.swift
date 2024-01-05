@@ -8,11 +8,15 @@ import Foundation
 class PostBuilder {
     private let post: Post
 
-    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {
+    init(_ context: NSManagedObjectContext, blog: Blog? = nil, canBlaze: Bool = false) {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
 
         // Non-null Core Data properties
-        post.blog = blog ?? BlogBuilder(context).build()
+        if let blog {
+            post.blog = blog
+        } else {
+            post.blog = canBlaze ? BlogBuilder(context).canBlaze().build() : BlogBuilder(context).build()
+        }
     }
 
     private static func buildPost(context: NSManagedObjectContext) -> Post {
@@ -71,7 +75,6 @@ class PostBuilder {
         post.autosaveIdentifier = 1
         return self
     }
-
 
     func withImage() -> PostBuilder {
         post.pathForDisplayImage = "https://localhost/image.png"
@@ -206,22 +209,5 @@ class PostBuilder {
         // TODO: Enable this assertion once we can ensure that the post's MOC isn't being deallocated after the `PostBuilder` is
         // assert(post.managedObjectContext != nil)
         return post
-    }
-
-    static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
-
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-
-        do {
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-        } catch {
-            print("Adding in-memory persistent store failed")
-        }
-
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        return managedObjectContext
     }
 }

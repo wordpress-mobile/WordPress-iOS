@@ -9,7 +9,7 @@ import PhotosUI
 extension SitePickerViewController {
 
     func makeSiteIconMenu() -> UIMenu? {
-        return UIMenu(children: [
+        UIMenu(options: .displayInline, children: [
             UIDeferredMenuElement.uncached { [weak self] in
                 $0(self?.makeUpdateSiteIconActions() ?? [])
             }
@@ -42,7 +42,7 @@ extension SitePickerViewController {
         var actions = [
             mediaMenu.makePhotosAction(delegate: presenter),
             mediaMenu.makeCameraAction(delegate: presenter),
-            mediaMenu.makeMediaAction(blog: blog, delegate: presenter)
+            mediaMenu.makeSiteMediaAction(blog: blog, delegate: presenter)
         ]
         if FeatureFlag.siteIconCreator.enabled {
             actions.append(UIAction(

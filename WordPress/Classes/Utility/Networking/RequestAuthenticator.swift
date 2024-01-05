@@ -10,10 +10,6 @@ import Foundation
 ///
 class RequestAuthenticator: NSObject {
 
-    enum Error: Swift.Error {
-        case atomicSiteWithoutDotComID(blog: Blog)
-    }
-
     enum DotComAuthenticationType {
         case regular
         case regularMapped(siteID: Int)

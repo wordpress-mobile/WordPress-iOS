@@ -5,10 +5,11 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:wordpress.com</string>
+		<string>webcredentials:*.wordpress.com</string>
 		<string>applinks:wordpress.com</string>
+		<string>applinks:*.wordpress.com</string>
 		<string>applinks:apps.wordpress.com</string>
 		<string>applinks:links.wp.a8cmail.com</string>
-		<string>applinks:*.wordpress.com</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>

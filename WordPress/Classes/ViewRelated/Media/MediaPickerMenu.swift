@@ -1,6 +1,5 @@
 import UIKit
 import PhotosUI
-import WPMediaPicker
 import UniformTypeIdentifiers
 import AVFoundation
 import CocoaLumberjack
@@ -170,82 +169,37 @@ extension MediaPickerMenu {
     private static var strongDelegateKey: UInt8 = 0
 }
 
-// MARK: - MediaPickerMenu (WordPress Media)
+// MARK: - MediaPickerMenu (Site Media)
 
 extension MediaPickerMenu {
-    func makeMediaAction(blog: Blog, delegate: MediaPickerViewControllerDelegate) -> UIAction {
+    /// Returns an action for selecting media from the media uploaded by the user
+    /// to their site.
+    func makeSiteMediaAction(blog: Blog, delegate: SiteMediaPickerViewControllerDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromMedia,
             image: UIImage(systemName: "photo.stack"),
             attributes: [],
-            handler: { _ in showMediaPicker(blog: blog, delegate: delegate) }
+            handler: { _ in showSiteMediaPicker(blog: blog, delegate: delegate) }
         )
     }
 
-    func showMediaPicker(blog: Blog, delegate: MediaPickerViewControllerDelegate) {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        if let filter {
-            switch filter {
-            case .images:
-                options.filter = [.image]
-            case .videos:
-                options.filter = [.video]
-            }
-        }
-        options.allowMultipleSelection = isMultipleSelectionEnabled
-        options.showSearchBar = true
-        options.badgedUTTypes = [UTType.gif.identifier]
-        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
-        options.allowCaptureOfMedia = false
-
-        let dataSource = MediaLibraryPickerDataSource(blog: blog)
-        dataSource.ignoreSyncErrors = true
-
-        let delegate = PickerMenuMediaPickerViewControllerDelegate(delegate: delegate)
-
-        let picker = WPNavigationMediaPickerViewController(options: options)
-        picker.showGroupSelector = false
-        picker.dataSource = dataSource
-        picker.delegate = delegate
-        picker.modalPresentationStyle = .formSheet
-
-        objc_setAssociatedObject(picker, &MediaPickerMenu.dataSourceAssociatedKey, dataSource, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        objc_setAssociatedObject(picker, &MediaPickerMenu.delegateAssociatedKey, delegate, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-        presentingViewController?.present(picker, animated: true)
-    }
-
-    private static var dataSourceAssociatedKey: UInt8 = 0
-    private static var delegateAssociatedKey: UInt8 = 0
-}
-
-/// Exposes only a subset of `WPMediaPickerViewControllerDelegate` to the users.
-protocol MediaPickerViewControllerDelegate: AnyObject {
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset])
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController)
-}
-
-private final class PickerMenuMediaPickerViewControllerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
-    weak var delegate: MediaPickerViewControllerDelegate?
-
-    init(delegate: MediaPickerViewControllerDelegate) {
-        self.delegate = delegate
-    }
-
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        delegate?.mediaPickerController(picker, didFinishPicking: assets)
-    }
-
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        delegate?.mediaPickerControllerDidCancel(picker)
+    func showSiteMediaPicker(blog: Blog, delegate: SiteMediaPickerViewControllerDelegate) {
+        let viewController = SiteMediaPickerViewController(
+            blog: blog,
+            filter: filter.map { [$0.mediaType] },
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        viewController.delegate = delegate
+        let navigation = UINavigationController(rootViewController: viewController)
+        presentingViewController?.present(navigation, animated: true)
     }
 }
+
 
 // MARK: - MediaPickerMenu (Stock Photo)
 
 extension MediaPickerMenu {
-    func makeStockPhotos(blog: Blog, delegate: StockPhotosPickerDelegate) -> UIAction {
+    func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromStockPhotos,
             image: UIImage(systemName: "photo.on.rectangle"),
@@ -254,22 +208,30 @@ extension MediaPickerMenu {
         )
     }
 
-    func showStockPhotosPicker(blog: Blog, delegate: StockPhotosPickerDelegate) {
-        guard let presentingViewController else { return }
+    func showStockPhotosPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
+        guard let presentingViewController,
+              let api = blog.wordPressComRestApi() else {
+            return
+        }
 
-        let picker = StockPhotosPicker()
+        let picker = ExternalMediaPickerViewController(
+            dataSource: StockPhotosDataSource(service: DefaultStockPhotosService(api: api)),
+            source: .stockPhotos,
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        picker.title = Strings.pickFromStockPhotos
+        picker.welcomeView = StockPhotosWelcomeView()
         picker.delegate = delegate
-        picker.allowMultipleSelection = isMultipleSelectionEnabled
-        let stockPhotosViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
 
-        objc_setAssociatedObject(stockPhotosViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let navigation = UINavigationController(rootViewController: picker)
+        presentingViewController.present(navigation, animated: true)
     }
 }
 
 // MARK: - MediaPickerMenu (Free GIF, Tenor)
 
 extension MediaPickerMenu {
-    func makeFreeGIFAction(blog: Blog, delegate: TenorPickerDelegate) -> UIAction {
+    func makeFreeGIFAction(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromTenor,
             image: UIImage(systemName: "play.square.stack"),
@@ -278,18 +240,21 @@ extension MediaPickerMenu {
         )
     }
 
-    func showFreeGIFPicker(blog: Blog, delegate: TenorPickerDelegate) {
+    func showFreeGIFPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
         guard let presentingViewController else { return }
 
-        let picker = TenorPicker()
-        picker.allowMultipleSelection = isMultipleSelectionEnabled
+        let picker = ExternalMediaPickerViewController(
+            dataSource: TenorDataSource(service: TenorService()),
+            source: .tenor,
+            allowsMultipleSelection: isMultipleSelectionEnabled
+        )
+        picker.title = Strings.pickFromTenor
+        picker.welcomeView = TenorWelcomeView()
         picker.delegate = delegate
-        let tenorViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
 
-        objc_setAssociatedObject(tenorViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let navigation = UINavigationController(rootViewController: picker)
+        presentingViewController.present(navigation, animated: true)
     }
-
-    private static var tenorPickereAssociatedKey: UInt8 = 0
 }
 
 extension MediaPickerMenu.MediaFilter {
@@ -298,6 +263,13 @@ extension MediaPickerMenu.MediaFilter {
         case .image: self = .images
         case .video: self = .videos
         default: return nil
+        }
+    }
+
+    var mediaType: MediaType {
+        switch self {
+        case .images: return .image
+        case .videos: return .video
         }
     }
 }

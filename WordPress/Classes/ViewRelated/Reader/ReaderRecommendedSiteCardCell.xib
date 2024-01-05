@@ -21,21 +21,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="454" height="130"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSm-00-vyn">
-                                <rect key="frame" x="16" y="12" width="422" height="40"/>
+                                <rect key="frame" x="16" y="12" width="422" height="106"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="750" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mms-yI-nd4" userLabel="Header Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="384" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="384" height="106"/>
                                         <subviews>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="FEv-sY-BYI" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                                <gestureRecognizers/>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vYe-Ee-b18" userLabel="Image Container">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="106"/>
+                                                <subviews>
+                                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="FEv-sY-BYI" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="33" width="40" height="40"/>
+                                                        <gestureRecognizers/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="BAX-Rs-vVo"/>
+                                                            <constraint firstAttribute="width" constant="40" id="C9q-wn-fc4"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="BAX-Rs-vVo"/>
-                                                    <constraint firstAttribute="width" constant="40" id="C9q-wn-fc4"/>
+                                                    <constraint firstAttribute="trailing" secondItem="FEv-sY-BYI" secondAttribute="trailing" id="ayO-Pi-bOJ"/>
+                                                    <constraint firstItem="FEv-sY-BYI" firstAttribute="leading" secondItem="vYe-Ee-b18" secondAttribute="leading" id="ceN-Dx-fYb"/>
+                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FEv-sY-BYI" secondAttribute="bottom" id="iMu-vn-0yX"/>
+                                                    <constraint firstItem="FEv-sY-BYI" firstAttribute="centerY" secondItem="vYe-Ee-b18" secondAttribute="centerY" id="oCj-Sk-Miw"/>
+                                                    <constraint firstItem="FEv-sY-BYI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vYe-Ee-b18" secondAttribute="top" id="vyz-lq-2WR"/>
                                                 </constraints>
-                                            </imageView>
+                                            </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="L7q-C1-xba">
-                                                <rect key="frame" x="48" y="0.0" width="336" height="40"/>
+                                                <rect key="frame" x="48" y="0.0" width="336" height="106"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Blog Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEs-BA-Qeh">
                                                         <rect key="frame" x="0.0" y="0.0" width="336" height="17"/>
@@ -44,8 +56,8 @@
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="740" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RNB-9V-A6a" userLabel="Blog Host Name">
-                                                        <rect key="frame" x="0.0" y="18" width="336" height="22"/>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="250" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RNB-9V-A6a" userLabel="Blog Host Name">
+                                                        <rect key="frame" x="0.0" y="18" width="336" height="88"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -56,7 +68,7 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epE-Yr-j1l" userLabel="Follow Button">
-                                        <rect key="frame" x="392" y="3" width="30" height="34"/>
+                                        <rect key="frame" x="392" y="36" width="30" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="ai0-Bv-Ahu"/>
                                         </constraints>
@@ -75,12 +87,6 @@
                                     <constraint firstAttribute="bottom" secondItem="mms-yI-nd4" secondAttribute="bottom" id="zzn-Us-jOT"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Description / Tag Line" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="guM-Ci-dh4">
-                                <rect key="frame" x="16" y="62" width="422" height="56"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <edgeInsets key="layoutMargins" top="12" left="16" bottom="12" right="16"/>
                     </stackView>
@@ -96,13 +102,12 @@
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="blogNameLabel" destination="kEs-BA-Qeh" id="ynz-iR-VpE"/>
-                <outlet property="descriptionLabel" destination="guM-Ci-dh4" id="64l-1G-VYB"/>
                 <outlet property="followButton" destination="epE-Yr-j1l" id="ts5-8g-DQp"/>
                 <outlet property="headerStackView" destination="mms-yI-nd4" id="qxS-2d-0xQ"/>
                 <outlet property="hostNameLabel" destination="RNB-9V-A6a" id="EQr-pT-p1q"/>
                 <outlet property="iconImageView" destination="FEv-sY-BYI" id="zxN-JN-Jgs"/>
             </connections>
-            <point key="canvasLocation" x="-601.171875" y="-58.857979502196187"/>
+            <point key="canvasLocation" x="-601.39534883720933" y="-59.227467811158803"/>
         </tableViewCell>
     </objects>
     <resources>

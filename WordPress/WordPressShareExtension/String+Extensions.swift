@@ -95,9 +95,4 @@ extension String {
         let fullOptions = options.union([.anchored])
         return range(of: prefix, options: fullOptions) != nil
     }
-
-    /// Returns true if this String consists of digits
-    var isNumeric: Bool {
-        return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-    }
 }

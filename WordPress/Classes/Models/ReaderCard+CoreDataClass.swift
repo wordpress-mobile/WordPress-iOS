@@ -25,6 +25,15 @@ public class ReaderCard: NSManagedObject {
         return .unknown
     }
 
+    var isRecommendationCard: Bool {
+        switch type {
+        case .topics, .sites:
+            return true
+        default:
+            return false
+        }
+    }
+
     var topicsArray: [ReaderTagTopic] {
         topics?.array as? [ReaderTagTopic] ?? []
     }

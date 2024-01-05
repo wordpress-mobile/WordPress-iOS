@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 13:54:30+0000 */
+/* Translation-Revision-Date: 2023-12-21 08:24:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@，%2$@。";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d 篇文章。";
 
@@ -209,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d 年";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$d 像素";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "此佈景主題中有 %i  個選單區域";
@@ -270,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 社交圖示";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "'%s' 區塊已轉換成區塊";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "系統不完全支援「%s」";
@@ -478,13 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "活動類型 (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "新增";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "新增 %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "在之後新增區塊";
 
@@ -581,9 +571,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add menu item to children" = "將選單項目新增至子項目";
 
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "新增媒體";
-
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "新增選單";
 
@@ -648,9 +635,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
-
-/* Description of albums in the photo libraries */
-"Albums" = "相簿";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -730,10 +714,13 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "替代文字";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "你可以改為點選「中斷連結版面配置」，然後中斷連結並單獨編輯這些區塊。";
+"Alternatively, you can convert the content to blocks." = "此外，您也可以將內容轉換成區塊。";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "你可以改為點選「中斷連結版面配置」，然後中斷連結並單獨編輯此區塊。";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "你也可以改為點選「中斷連結」，然後中斷連結並單獨編輯此區塊。";
+
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "或者，你可以取消區塊群組來簡化內容。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "或者你也可以輸入此帳號的密碼。";
@@ -882,14 +869,8 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "你確定要中斷Jetpack？";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "確定要永久刪除選取的項目？";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "確定要永久刪除這些項目？";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "是否確定要永久刪除此頁面？";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "你確定要永久刪除此文章？";
@@ -921,9 +902,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "是否確定要送交審查？";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "是否確定要清除這個頁面？";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "你確定要將這篇文章移至垃圾桶嗎？";
@@ -964,9 +942,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "音訊字幕。 清空";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "音訊，%@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "驗證中";
@@ -1178,10 +1153,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "區塊選單";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "向下內嵌超過 %d 層的區塊，在行動編輯器中可能無法正常轉譯。 因此我們建議藉由取消區塊群組，或使用你的網頁編輯器編輯區塊來減少內容。";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "向下內嵌超過 %d 層的區塊，在行動編輯器中可能無法正常轉譯。 因此我們建議藉由取消區塊群組，或使用你的網頁瀏覽器編輯區塊來減少內容。";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "行動編輯器可能無法正確顯示內嵌超過 %d 層的區塊。";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "網誌";
@@ -1259,9 +1231,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "By ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "作者：%@。";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "繼續操作即代表你同意我們的_服務條款_。";
 
@@ -1281,8 +1250,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "正在計算…";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "相機";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1333,10 +1301,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1352,10 +1317,6 @@ translators: Block name. %s: The localized block name */
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "取消";
-
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "取消上傳";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -1385,7 +1346,7 @@ translators: Block name. %s: The localized block name */
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
-"Caption" = "說明文字";
+"Caption" = "媒體說明文字";
 
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1414,9 +1375,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "變更密碼";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "變更設定";
 
 /* Change Username title. */
 "Change Username" = "變更使用者名稱";
@@ -1556,9 +1514,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "選擇檔案";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "從「我的裝置」中選擇";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "選擇讓首頁顯示你的最新文章 (傳統網誌)，或顯示固定\/靜態頁面。";
@@ -1760,9 +1715,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "社群和非營利";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "簡潔有力";
-
 /* The action is completed */
 "Completed" = "已完成";
 
@@ -1948,10 +1900,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Copied block" = "複製的區塊";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "複製鏈結";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "將連結複製到留言";
 
@@ -2059,9 +2007,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "無法自動關閉帳號";
-
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "正在計算媒體項目…";
 
 /* Period Stats 'Countries' header */
 "Countries" = "國家\/地區";
@@ -2313,7 +2258,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "刪除";
@@ -2321,15 +2265,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "刪除選單";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "永久刪除";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "是否要永久刪除？";
 
 /* Button label for deleting the current site
@@ -2448,7 +2388,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "關閉";
 
@@ -2465,12 +2404,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "顯示名稱";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "文件：%@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "文件：%@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "清單中又少了一件事情，感覺不錯吧！";
@@ -2632,8 +2565,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "撰寫草稿並發表文章。";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "草稿";
 
 /* No comment provided by engineer. */
@@ -2644,10 +2576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "拖曳以調整焦點";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "複製";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "重複區塊";
@@ -2661,22 +2589,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每個區塊都有其各自的設定。 若要找到這些設定，請點選區塊。 區塊設定會顯示在畫面底部的工具列。";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "編輯";
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "編輯「更多」按鈕";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "編輯 %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "編輯封鎖清單字詞";
@@ -2867,9 +2788,6 @@ translators: Block name. %s: The localized block name */
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "請在上方輸入其他文字，我們會尋找與其相符的地址。";
 
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "若要刪除，請進入編輯模式以啟用多選功能";
-
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "輸入密碼";
@@ -3025,9 +2943,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "每天 %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "所有人";
-
 /* Example story title description */
 "Example story title" = "限時動態標題範例";
 
@@ -3036,9 +2951,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "摘要長度 (字數)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "文章摘要。%@。";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "文章摘要是指選擇性手動摘錄的內容。";
@@ -3049,8 +2961,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "結束全螢幕";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展開";
 
 /* Accessibility hint */
@@ -3099,9 +3010,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "失敗";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "無法匯出媒體";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "無法將全部通知標示為已讀";
@@ -3303,6 +3211,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "橄欖球";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "因此，我們建議使用網頁編輯器來編輯區塊。";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "因此，我們建議使用網頁瀏覽器來編輯區塊。";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "為了方便起見，我們已預先填入你的 WordPress.com 聯絡人資訊。請檢視各項資訊，以確認這是你想要用於此網域的正確資訊。";
@@ -3621,8 +3535,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "首頁";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "首頁";
 
 /* Label for Homepage Settings site settings section
@@ -3718,9 +3631,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image title on image settings. */
 "Image title" = "圖片標題";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "圖片 (%@ 建立)";
 
 /* Undated post time label */
 "Immediately" = "立即";
@@ -4207,9 +4117,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "留言中的連結";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "清單樣式";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "載入";
 
@@ -4225,17 +4132,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "正在載入備份…";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "正在載入 GIF...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "正在載入選單...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "正在載入人員…";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "正在載入相片...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "正在載入方案…";
@@ -4297,8 +4198,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "當地服務";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "本機變更";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4462,7 +4362,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "最大影片上傳大小";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4470,9 +4369,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "我";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "多媒體內容";
@@ -4483,13 +4380,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "媒體快取大小";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "媒體擷取";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "媒體庫";
 
 /* Title for action sheet with media options. */
 "Media Options" = "媒體選項";
@@ -4512,9 +4402,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "媒體選項";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "媒體預覽失敗。";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "上傳的媒體 (%ld 個檔案)";
@@ -4553,9 +4440,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "訊息";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "中繼資料";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4575,13 +4459,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "月份與年份";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "更多";
 
 /* Action button to display more available options
@@ -4639,15 +4521,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "移動選單項目";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "移至草稿";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "移至垃圾桶";
 
@@ -4679,7 +4554,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "我的網站";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "我的網站";
 
 /* Siri Suggestion to open My Sites */
@@ -4857,7 +4733,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No blocks found" = "找不到區塊";
 
 /* An option in a list. Automatically approve no comments. */
-"No comments" = "無留言";
+"No comments" = "尚無留言";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed on the post details page when there are no post comments.
@@ -4929,9 +4805,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "找不到符合條件的活動。";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "沒有符合你搜尋條件的媒體";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4949,8 +4823,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "尚無通知";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "沒有頁面符合你的搜尋條件";
 
 /* Text displayed when search for plugins returns no results */
@@ -4970,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "最近沒有發表包含此標籤的文章。";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "沒有文章符合你的搜尋條件";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "沒有文章。";
@@ -5074,9 +4944,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "尚未有按讚的文章";
 
-/* Default message for empty media picker */
-"Nothing to show" = "沒有可顯示的內容";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知詳細資訊表";
 
@@ -5136,7 +5003,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5198,9 +5064,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "只顯示摘要";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "只能查看你已授權存取的選定照片。";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5234,9 +5097,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "開啟設定";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "開啟所有媒體挑選器";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "在 Safari 中開啟";
@@ -5276,6 +5136,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "或者";
+
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "或選擇其他驗證方式。";
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或輸入網站位址登入。";
@@ -5335,15 +5198,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "網頁";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "頁面已還原為草稿";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "頁面已還原為已發表";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "頁面已還原為已排程";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "頁面設定";
@@ -5359,9 +5213,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "頁面上傳失敗";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "頁面已移至垃圾桶。";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "頁面待審中";
@@ -5434,8 +5285,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "待審核";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "等待複審";
 
 /* Noun. Title of the people management feature.
@@ -5463,12 +5313,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "攝影";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "圖片";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "由 Pexels 提供的相片";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "挑選使用者名稱";
@@ -5562,7 +5406,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "請輸入 WordPress.com 帳戶的密碼，以便使用 Apple ID 登入。";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "請輸入驗證器應用程式上的驗證碼，或點選下方連結以透過簡訊接收驗證碼。";
+"Please enter the verification code from your authenticator app." = "請輸入驗證器應用程式上的驗證碼。";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "請輸入你的密碼";
@@ -5657,15 +5501,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "文章格式";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "文章已還原為草稿";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "文章已還原為已發表";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "文章已還原為已排程";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "文章設定";
@@ -5684,9 +5519,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上傳失敗";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "文章已移至垃圾桶。";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "文章待審中";
@@ -5746,9 +5578,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "文章與頁面";
 
-/* Title of the Posts Page Badge */
-"Posts page" = "文章列表頁面";
-
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "已成功更新文章頁面";
 
@@ -5760,9 +5589,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "這裡會顯示你按讚的文章。";
-
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "由 Tenor 支援";
 
 /* Browse premium themes selection title */
 "Premium" = "進階版";
@@ -5782,17 +5608,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a static content. */
 "Preview" = "預覽";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "預覽 %@";
-
 /* Title for web preview device switching button */
 "Preview Device" = "預覽裝置";
 
 /* Title on display preview error */
 "Preview Unavailable" = "無法預覽";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "預覽媒體";
 
 /* No comment provided by engineer. */
 "Preview page" = "閱覽頁面";
@@ -5840,8 +5660,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "加州使用者的隱私權聲明";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "私密";
 
 /* No comment provided by engineer. */
@@ -5891,12 +5710,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "發表日期";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "立刻發佈";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "立即發表";
 
@@ -5914,8 +5731,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "已發佈";
 
 /* Precedes the name of the blog just posted on */
@@ -6057,8 +5873,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "提醒已移除";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6071,7 +5886,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove %@" = "移除 %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "移除特色圖片";
+"Remove Featured Image" = "移除精選圖片";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "移除連結";
@@ -6211,9 +6026,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "重新傳送";
 
-/* Title of the reset button */
-"Reset" = "重設";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "重設活動類型篩選器";
 
@@ -6268,12 +6080,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6284,9 +6093,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title that triggers a scan */
 "Retry Scan" = "再次掃瞄";
-
-/* User action to retry media upload. */
-"Retry Upload" = "重試上傳";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "全部重試";
@@ -6385,9 +6191,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "已儲存文章";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "已儲存！";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "儲存此文章以供稍後使用。";
 
@@ -6398,7 +6201,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "正在儲存文章…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "儲存中...";
 
@@ -6489,20 +6291,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search or type URL" = "搜尋或輸入 URL";
 
-/* Text displayed when the search controller will be presented */
-"Search pages" = "搜尋頁面";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "搜尋文章";
-
 /* No comment provided by engineer. */
 "Search settings" = "搜尋設定";
-
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "搜尋免費 GIF 以新增至你的媒體庫！";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "搜尋免費相片以新增至你的媒體庫！";
 
 /* Menus search bar placeholder text. */
 "Search..." = "搜尋...";
@@ -6574,9 +6364,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "選取國家\/地區";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "選取更多";
-
 /* Blog Picker's Title */
 "Select Site" = "選取網站";
 
@@ -6597,9 +6384,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "選取網域";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "選取媒體。";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "選取段落風格";
@@ -6704,18 +6488,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "服務";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "設定上層項目";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "設為特色圖片";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "設為首頁";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "設定為文章頁面";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "設為特色圖片";
@@ -6760,7 +6537,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7146,8 +6922,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "靜態首頁";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7177,9 +6952,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "置頂";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "置頂文章。";
 
 /* User action to stop upload. */
 "Stop upload" = "停止上傳";
@@ -7237,7 +7009,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "支援";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "切換網站";
 
 /* Switches the Editor to HTML Mode */
@@ -7325,9 +7097,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "標籤可協助讀者瞭解文章內容。以逗號分隔不同標籤。";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "拍攝圖片或影片";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "拍攝照片";
 
@@ -7398,12 +7167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "點選以選擇上個期間";
 
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "點選即可切換到其他網站或新增網站";
-
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "點選以全螢幕檢視媒體";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Tap to view more details.";
 
@@ -7449,9 +7212,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "編輯文字區塊時，文字格式控制項就在鍵盤上方的工具列中";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "請改用簡訊傳送驗證碼給我";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "透過簡訊向我傳送驗證碼";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "感謝你選擇 %2$@ 設計的 %1$@";
@@ -7479,9 +7244,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 連結找不到任何頁面。Publicize 無法連結至 Facebook 個人檔案，只能連結至已發表的頁面。";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "無法將 GIF 新增到「媒體庫」。";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "沒有任何與 Google 帳號「%@」匹配的 WordPress.com 帳號";
@@ -7610,7 +7372,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "你嘗試移除的使用者是此網站的擁有者。如需協助，請聯絡支援團隊。";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "儲存在應用程式中的使用者名稱或密碼可能已過期。請在設定中重新輸入密碼，然後再試一次。";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7678,9 +7440,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "顯示此文章時發生問題。";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "載入媒體項目時發生問題。";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "載入資料時發生問題，請重新整理網頁並重試。";
 
@@ -7692,9 +7451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "嘗試存取你的位置時發生問題。請稍後再試一次。";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "嘗試存取你的媒體時發生問題。請稍後再試一次。";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "限時動態編輯器發生問題。  如果問題持續發生，請透過「我」> 「說明與支援」畫面聯絡我們。";
@@ -7765,9 +7521,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "此應用程式需要相機存取權限才能掃描登入碼，請點選「開啟設定」按鈕以啟用權限。";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "此應用程式需要權限才能存取你的裝置媒體庫，以便在你的文章中新增相片和\/或影片。若你希望允許此應用程式功能，請變更隱私設定。";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "此色彩組合可能讓人難以閱讀。 請嘗試更亮的背景顏色和\/或較深的文字顏色。";
@@ -7877,6 +7630,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "完成你的網站設定的時候到了！我們的檢查清單會引導你完成後續步驟。";
+
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "優惠已到期，但別擔心，你的安全是我們的第一要務。 請再試一次！";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "讓 WordPress.com 發揮最大功效的秘訣。";
@@ -8001,23 +7757,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "流量";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "已轉移的網域";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "將 %s 轉換為";
 
 /* No comment provided by engineer. */
 "Transform block…" = "轉換區塊…";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "移至回收桶";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "將選取的媒體移至垃圾桶";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "是否要清除此頁面？";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "是否將此文章移至垃圾桶？";
@@ -8136,9 +7888,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "無法連線";
 
-/* An error message. */
-"Unable to Connect" = "無法連結";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "無法建立限時動態編輯器";
 
@@ -8153,9 +7902,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "無法新建邀請連結。";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "無法刪除所有媒體項目。";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "無法刪除媒體項目。";
@@ -8219,12 +7965,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "無法分享連結";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "離線時無法清除頁面。 請稍後再試一次。";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "離線時無法刪除文章。請稍後再試。";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "無法關閉網站通知";
@@ -8298,8 +8038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "復原";
 
@@ -8341,9 +8079,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "不明 HTML";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "建立日期未知";
 
 /* No comment provided by engineer. */
 "Unknown error" = "發生未知的錯誤";
@@ -8510,6 +8245,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "使用沙盒商店";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "使用安全性金鑰";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用區塊編輯器";
 
@@ -8585,15 +8323,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "影片未上傳";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "影片 (%@ 建立)";
-
 /* Period Stats 'Videos' header */
 "Videos" = "影片";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -8707,6 +8440,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "正在等候安全性金鑰";
 
 /* View title during the Google auth process. */
 "Waiting..." = "等待中…";
@@ -9079,6 +8816,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，發生了點錯誤，我們無法將你登入。請再試一次！";
 
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "糟糕，出狀況了。 請再試一次！";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "糟糕，安全性金鑰似乎不是有效的。 請使用另一組金鑰再試一次";
+
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，此雙重驗證碼無效。請再次檢查你的驗證碼，然後再試一次！";
 
@@ -9105,9 +8848,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress 說明";
-
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress 媒體";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "WordPress 媒體庫";
@@ -9423,9 +9163,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "你的帳號沒有上傳媒體至這個網站的權限。網站管理員可變更這些權限。";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "你的應用程式受到家長監護之類的設定主動限制，因此無權存取媒體庫。請檢查此裝置的家長監護設定。";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "你的備份現在已可下載";
 
@@ -9443,9 +9180,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "你的 WordPress.com 免費位址是";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "無法匯出你的媒體. If the problem persists you can contact us via the Me >「說明與支援」畫面。";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "正在設定你的新網域 %@。 你的網域最多可能需要 30 分鐘才能開始運作。";
@@ -9570,8 +9304,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "你覺得 WordPress 如何？";
 
-/* Label displayed on audio media items. */
-"audio" = "音訊";
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "將圖片最佳化";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "高";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "低";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "最高";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "中等";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "畫質";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "圖片畫質";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "圖片最佳化會壓縮圖片，以加快上傳速度。\n\n系統預設啟用此選項，但你可以隨時在應用程式設定中變更。";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "要繼續最佳化圖片嗎？";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "不，關閉設定";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "是，繼續使用";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音訊檔案";
@@ -9682,7 +9446,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionCopyURL" = "複製網址";
 
 /* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "在瀏覽器中開啟";
+"blogHeader.actionVisitSite" = "造訪網站";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "深入瞭解";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示：這個社群挑戰的目的，是為了協助你在新的一年養成寫網誌的習慣。";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary 挑戰即將來臨！";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "開啟網誌提示";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "開始行動！";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "張貼回覆。";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "閱讀其他部落客的回覆，汲取靈感並建立新人脈。";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "每天接收新提示，激發靈感。";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "需啟用「網誌提示」才能參加 Bloganuary。";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary 會透過「每日網誌提示」傳送 1 月的主題。";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "參加為期一個月的寫作挑戰";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "關閉";
@@ -9710,6 +9508,12 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "回覆 %1$@";
+
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "儲存在應用程式中的使用者名稱或密碼可能已過期。 請在設定中重新輸入密碼，然後再試一次。";
+
+/* An error message. */
+"common.unableToConnect" = "無法連線";
 
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "這些 Cookie 讓我們得以收集使用者與網站互動的相關資訊，進而最佳化效能。";
@@ -9861,6 +9665,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隱藏此訊息";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "搜尋網域";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "取得網域";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "稍後新增網站。";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "單純購買網域";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "已到期";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "續訂";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "尋找網域";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "點選下方，找到完美的網域名稱。";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "你沒有任何網域";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "載入你的網域時發生錯誤。 如果問題持續發生，請聯絡支援人員。";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "發生錯誤";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "再試一次";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "請檢查你的網路連線並再試一次。";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "沒有網際網路連線";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*所有付費年繳方案皆隨附一年免費網域";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "別擔心，你之後也能輕鬆新增網站。";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "選擇網域的使用方式";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "搜尋網域";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "找不到符合「%@」的網域搜尋結果";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "找不到相符的網域";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "選擇網站";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "第一年可享免費網域*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "使用你已開始經營的網站。";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "現有的 WordPress.com 網站";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "所有網域";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "你的自訂網域最多可能需要 30 分鐘才能開始運作。";
 
@@ -9872,39 +9751,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "恭喜，你的網站已上線！";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "須採取行動";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "已啟用";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "完成設定手續";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "錯誤";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "已到期";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "即將到期";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "失敗";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "進行中";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "續訂";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "驗證電子郵件";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "正在驗證";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "最佳替代選項";
@@ -9927,11 +9773,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "每年";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "結帳";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "關閉";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "抱歉，你嘗試新增的網域目前無法透過 Jetpack 應用程式購買。";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "購買網域";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "搜尋";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "選擇網站";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "點兩下即可變更單位";
@@ -9949,6 +9807,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "新增";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "選取圖片";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "檢視選擇項目 (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "行銷活動詳細資訊";
@@ -10048,9 +9915,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (網址)";
-
-/* Label displayed on image media items. */
-"image" = "圖片";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍些相片或影片供文章使用。";
@@ -10352,6 +10216,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "產品";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "無法同步媒體";
 
@@ -10364,17 +10231,23 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "須購買付費方案才能上傳長度超過 5 分鐘的影片。";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "關閉";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "新增媒體";
 
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "新增";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "長寬比網格";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "刪除";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選取";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "分享";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "取消";
@@ -10397,6 +10270,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "已刪除！";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "全部";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "音訊";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "文件";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "圖片";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "影片";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "刪除";
 
@@ -10408,6 +10296,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "沒有符合你搜尋條件的媒體";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "無法分享選取的項目。";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "正方形網格";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "媒體";
@@ -10429,6 +10323,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "關閉";
+
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "無法匯出你的媒體。 如果問題持續發生，請透過「我」> 「說明與支援」畫面聯絡我們。";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "無法匯出媒體";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "此應用程式需要取得權限才能存取相機，以擷取新的媒體。若你願意允許此應用程式功能，請變更隱私設定。";
@@ -10463,6 +10363,12 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "拍攝影片";
 
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "第 %1$@ 步，共 %2$@ 步";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d 像素";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "你似乎仍有安裝 WordPress 應用程式。";
 
@@ -10475,9 +10381,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "你的裝置不再需要 WordPress 應用程式了";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "完成";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "建議解除安裝裝置上的 WordPress 應用程式以避免資料衝突。";
 
@@ -10486,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "我們已轉移你的所有資料和設定。 一切全部順暢銜接。";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "現在就在 Jetpack 應用程式上繼續你的 WordPress 旅程！";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "感謝改用 Jetpack！";
@@ -10534,6 +10440,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "歡迎使用 Jetpack！";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "我們開始吧";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Jetpack 應用程式具備 WordPress 應用程式所有功能，現在還可獨家使用統計資料、閱讀器、通知等功能。";
@@ -10610,6 +10519,27 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "你沒有任何網站";
 
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "網站動作";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "點選以顯示更多網站動作";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "打造個人版首頁";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "變更網站圖示";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "變更網站標題";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "切換網站";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "造訪網站";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
@@ -10625,20 +10555,56 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "傳送意見回饋";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "的";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "首頁";
 
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "其它";
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "本機變更";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "使用 Blaze 進行宣傳";
+/* Badge for page cells */
+"pageList.badgePendingReview" = "待審中";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "文章頁面";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "私人";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "你的首頁正在使用佈景主題範本，且將於網頁編輯器開啟。";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "首頁";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "頁面已成功更新";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "永久刪除";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "確定要永久刪除此頁面嗎？";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "是否要永久刪除？";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "所有人的頁面";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "我的頁面";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "移至垃圾桶";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "確定要將此頁面移至垃圾桶嗎？";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "是否要將此頁面移至垃圾桶？";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "取消";
 
 /* No comment provided by engineer. */
 "password" = "密碼";
@@ -10679,6 +10645,51 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "已建立：%@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "正在刪除文章...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "已編輯：%@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "正在將文章移至垃圾桶...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "已發表：%@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "已排程：%@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "已移至垃圾桶：%@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "作者：%@。";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "文章摘要。%@。";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "置頂文章。";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@，%2$@。";
+
+/* Title for the 'Trash' post list row swipe action */
+"postList.swipeActionDelete" = "垃圾桶";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "刪除";
+
+/* Title for the 'Share' post list row swipe action */
+"postList.swipeActionShare" = "分享";
+
+/* Title for the 'View' post list row swipe action */
+"postList.swipeActionView" = "檢視";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "關閉";
 
@@ -10697,8 +10708,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "設定精選圖片";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "無法更新文章設定";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "使用 Blaze 進行宣傳";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "取消上傳";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "留言";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "永久刪除";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "移至草稿";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "複製";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "頁面屬性";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "預覽";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "立即發表";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "重試";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "設定為首頁";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "設定上層項目";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "設定為文章頁面";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "設定為一般頁面";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "設定";
+
+/* Share the post. */
+"posts.share.actionTitle" = "分享";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "統計資料";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "移至垃圾桶";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "檢視";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "永久刪除的頁面";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "永久刪除的文章";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "頁面已移至垃圾桶。";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "文章已移至垃圾桶。";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "所有人的文章";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "我的文章";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "立即訂購以提高分享次數";
@@ -10726,6 +10812,12 @@ This string is displayed when some of the social accounts are turned off for aut
 %2$d is a placeholder for the total number of social media accounts connected to the user's blog.
 Example: Sharing to 2 of 3 accounts */
 "prepublishing.social.label.partialConnections" = "分享至 %1$d 個帳號 (總額度為 %2$d 個帳號)";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "分享至 %1$@";
 
 /* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
 Informs the remaining limit for post auto-sharing.
@@ -10838,12 +10930,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "讚";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "對文章按讚。";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "已按讚";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "取消按讚此文章。";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "開啟選單，查看更多動作。";
@@ -10907,6 +11001,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新增";
+
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "轉移網域";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "想轉移你擁有的網域嗎？";
 
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "「相關文章」會在你的文章下方顯示你網站上的相關內容。";
@@ -11007,6 +11107,21 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "選取媒體。";
 
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "點選即可在全螢幕中檢視媒體";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "預覽媒體";
+
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "新增";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "取消選取";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "選取";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "媒體";
 
@@ -11014,7 +11129,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteSettings.privacy.title" = "隱私權";
 
 /* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "所有人都能看見你的網站，但系統會要求搜尋引擎不要將你的網站加入索引。";
+"siteVisibility.hidden.hint" = "除非網站準備好供訪客瀏覽，否則訪客看不到網站，只看得到「即將推出」通知。";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "已隱藏";
@@ -11175,6 +11290,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "關閉";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "由 Pexels 提供的相片";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "搜尋免費相片以新增至你的媒體庫！";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "在此討論中";
 
@@ -11322,6 +11443,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "說明";
 
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "搜尋 GIF 以新增至你的媒體庫！";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
 
@@ -11336,9 +11460,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未讀";
-
-/* Label displayed on video media items. */
-"video" = "影片";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "請造訪我們的文件頁面";

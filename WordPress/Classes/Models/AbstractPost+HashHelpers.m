@@ -1,5 +1,5 @@
 #import "AbstractPost+HashHelpers.h"
-#import "Media+WPMediaAsset.h"
+#import "Media+Extensions.h"
 #import "WordPress-Swift.h"
 
 @implementation AbstractPost (HashHelpers)
@@ -21,7 +21,7 @@
                                           [self hashForString:self.password],
                                           [self hashForString:self.author],
                                           [self hashForNSInteger:self.authorID.integerValue],
-                                          [self hashForString:self.featuredImage.identifier],
+                                          [self hashForString:self.featuredImage.objectID.URIRepresentation.absoluteString],
                                           [self hashForString:self.wp_slug]];
 
 

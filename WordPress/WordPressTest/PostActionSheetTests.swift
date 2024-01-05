@@ -22,7 +22,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testPublishedPostOptions() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
 
@@ -31,7 +31,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testLocallyPublishedPostShowsCancelAutoUploadOption() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().with(remoteStatus: .failed).confirmedAutoUpload().build())
 
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
@@ -40,7 +40,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testDraftedPostOptions() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().drafted().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).drafted().build())
 
         postActionSheet.show(for: viewModel, from: view)
 
@@ -49,7 +49,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testScheduledPostOptions() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().scheduled().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).scheduled().build())
 
         postActionSheet.show(for: viewModel, from: view)
 
@@ -58,7 +58,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testTrashedPostOptions() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().trashed().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).trashed().build())
 
         postActionSheet.show(for: viewModel, from: view)
 
@@ -67,7 +67,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testPublishedPostOptionsWithView() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
@@ -76,7 +76,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenStatsTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Stats", in: viewControllerMock.viewControllerPresented)
@@ -85,7 +85,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenDuplicateTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Duplicate", in: viewControllerMock.viewControllerPresented)
@@ -94,7 +94,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenShareTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Share", in: viewControllerMock.viewControllerPresented)
@@ -103,7 +103,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenMoveToDraftTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Move to Draft", in: viewControllerMock.viewControllerPresented)
@@ -112,7 +112,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenDeletePermanentlyTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().trashed().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).trashed().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Delete Permanently", in: viewControllerMock.viewControllerPresented)
@@ -121,7 +121,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenCopyLink() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Copy Link", in: viewControllerMock.viewControllerPresented)
@@ -130,7 +130,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenMoveToTrashTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Move to Trash", in: viewControllerMock.viewControllerPresented)
@@ -139,7 +139,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenViewTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().build())
 
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
         tap("View", in: viewControllerMock.viewControllerPresented)
@@ -167,7 +167,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallsDelegateWhenCancelAutoUploadIsTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).published().with(remoteStatus: .failed).confirmedAutoUpload().build())
 
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
         tap(Titles.cancelAutoUpload, in: viewControllerMock.viewControllerPresented)
@@ -176,7 +176,7 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallsDelegateWhenRetryIsTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 5).build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder(mainContext).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 5).build())
 
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
         tap(Titles.retry, in: viewControllerMock.viewControllerPresented)
@@ -246,10 +246,6 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     }
 
     func publish(_ post: AbstractPost) {
-
-    }
-
-    func restore(_ post: AbstractPost) {
 
     }
 

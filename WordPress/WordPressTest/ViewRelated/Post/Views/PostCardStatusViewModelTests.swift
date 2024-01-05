@@ -1,74 +1,129 @@
 import Nimble
 import XCTest
-
 @testable import WordPress
 
-private typealias ButtonGroups = PostCardStatusViewModel.ButtonGroups
-
 class PostCardStatusViewModelTests: CoreDataTestCase {
-    func testExpectedButtonGroupsForVariousPostAttributeCombinations() {
-        // Arrange
-        let expectations: [(String, Post, ButtonGroups)] = [
-            (
-                "Draft with remote",
-                PostBuilder(mainContext).drafted().withRemote().build(),
-                ButtonGroups(primary: [.edit, .view, .more], secondary: [.publish, .duplicate, .copyLink, .trash])
-            ),
-            (
-                "Draft that was not uploaded to the server",
-                PostBuilder(mainContext).drafted().with(remoteStatus: .failed).build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .copyLink, .trash])
-            ),
-            (
-                "Draft with remote and confirmed local changes",
-                PostBuilder(mainContext).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.publish, .duplicate, .copyLink, .trash])
-            ),
-            (
-                "Draft with remote and canceled local changes",
-                PostBuilder(mainContext).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().cancelledAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .copyLink, .trash])
-            ),
-            (
-                "Local published draft with confirmed auto-upload",
-                PostBuilder(mainContext).published().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.duplicate, .moveToDraft, .copyLink, .trash])
-            ),
-            (
-                "Local published draft with canceled auto-upload",
-                PostBuilder(mainContext).published().with(remoteStatus: .failed).build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .moveToDraft, .copyLink, .trash])
-            ),
-            (
-                "Published post",
-                PostBuilder(mainContext).published().withRemote().build(),
-                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .copyLink, .trash])
-            ),
-            (
-                "Published post with local confirmed changes",
-                PostBuilder(mainContext).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .copyLink, .trash])
-            ),
-            (
-                "Post with the max number of auto uploades retry reached",
-                PostBuilder(mainContext).with(remoteStatus: .failed)
-                    .with(autoUploadAttemptsCount: 3).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.publish, .duplicate, .moveToDraft, .copyLink, .trash])
-            ),
+
+    func testPublishedPostButtons() {
+        // Given
+        let post = PostBuilder(mainContext, canBlaze: true)
+            .withRemote()
+            .published()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft, .duplicate, .share],
+            [.blaze],
+            [.stats, .comments, .settings],
+            [.trash]
         ]
+        expect(buttons).to(equal(expectedButtons))
+    }
 
-        // Act and Assert
-        expectations.forEach { scenario, post, expectedButtonGroups in
-            let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
+    func testPublishedPostButtonsWithBlazeDisabled() {
+        // Given
+        let post = PostBuilder(mainContext, canBlaze: false)
+            .withRemote()
+            .published()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
 
-            guard viewModel.buttonGroups == expectedButtonGroups else {
-                let reason = "The scenario \"\(scenario)\" failed. "
-                    + " Expected buttonGroups to be: \(expectedButtonGroups.prettifiedDescription)."
-                    + " Actual: \(viewModel.buttonGroups.prettifiedDescription)"
-                XCTFail(reason)
-                return
-            }
-        }
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft, .duplicate, .share],
+            [.stats, .comments, .settings],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testPublishedPostButtonsWithJetpackFeaturesDisabled() {
+        // Given
+        let post = PostBuilder(mainContext)
+            .withRemote()
+            .published()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: false, isBlazeFlagEnabled: false)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft, .duplicate, .share],
+            [.settings],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testDraftPostButtons() {
+        // Given
+        let post = PostBuilder(mainContext)
+            .drafted()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.duplicate, .publish],
+            [.settings],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testScheduledPostButtons() {
+        // Given
+        let post = PostBuilder(mainContext)
+            .scheduled()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.moveToDraft],
+            [.settings],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
+    func testTrashedPostButtons() {
+        // Given
+        let post = PostBuilder(mainContext)
+            .trashed()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.moveToDraft],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
     }
 
     /// If the post fails to upload and there is internet connectivity, show "Upload failed" message
@@ -91,17 +146,5 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
 
         expect(viewModel.status).to(equal(i18n("We'll publish the post when your device is back online.")))
         expect(viewModel.statusColor).to(equal(.warning))
-    }
-}
-
-private extension ButtonGroups {
-    var prettifiedDescription: String {
-        return "{ primary: \(primary.prettifiedDescription), secondary: \(secondary.prettifiedDescription) }"
-    }
-}
-
-private extension Array where Element == PostCardStatusViewModel.Button {
-    var prettifiedDescription: String {
-        return "[" + map { String(describing: $0) }.joined(separator: ", ") + "]"
     }
 }

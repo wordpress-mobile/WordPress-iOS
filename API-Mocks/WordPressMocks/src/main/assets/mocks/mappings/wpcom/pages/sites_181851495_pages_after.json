@@ -36,7 +36,7 @@
             "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
             "site_ID": 1
           },
-          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
+          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ssZ{{/assign}}{{now format=customformat}}",
           "modified": "{{now format=customformat}}",
           "title": "New Blank Page",
           "URL": "https://infocusphotographers.com/new-blank-page/",

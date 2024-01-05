@@ -36,27 +36,25 @@ final class SiteAssemblyContentView: UIView {
         return $0
     }(UILabel())
 
+    private let noticeView: UIView = {
+        let noticeText = NSLocalizedString(
+            "domain.purchase.preview.footer",
+            value: "It may take up to 30 minutes for your custom domain to start working.",
+            comment: "Domain Purchase Completion footer"
+        )
+        let noticeView = DomainSetupNoticeView(noticeText: noticeText)
+        let embeddedView = UIView.embedSwiftUIView(noticeView)
+        embeddedView.translatesAutoresizingMaskIntoConstraints = false
+        return embeddedView
+    }()
+
     private lazy var completionLabelsStack: UIStackView = {
-        $0.addArrangedSubviews([completionLabel, completionDescription])
+        $0.addArrangedSubviews([completionLabel, completionDescription, noticeView])
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.spacing = 24
         return $0
     }(UIStackView())
-
-    private let footnoteLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.font = WPStyleGuide.fontForTextStyle(.footnote)
-        $0.textColor = .text
-        let footerText = NSLocalizedString(
-            "domain.purchase.preview.footer",
-            value: "It may take up to 30 minutes for your custom domain to start working.",
-            comment: "Domain Purchase Completion footer"
-        )
-        $0.text = footerText
-        return $0
-    }(UILabel())
 
     /// This provides the user with some playful words while their site is being assembled
     private let statusTitleLabel: UILabel
@@ -315,7 +313,7 @@ final class SiteAssemblyContentView: UIView {
         backgroundColor = .listBackground
 
         statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
-        addSubviews([completionLabelsStack, statusStackView, footnoteLabel])
+        addSubviews([completionLabelsStack, statusStackView])
 
         // Increase the spacing around the illustration
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
@@ -334,8 +332,6 @@ final class SiteAssemblyContentView: UIView {
             prevailingLayoutGuide.trailingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: Parameters.horizontalMargin),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            footnoteLabel.leadingAnchor.constraint(equalTo: completionLabelsStack.leadingAnchor),
-            completionLabelsStack.trailingAnchor.constraint(equalTo: footnoteLabel.trailingAnchor)
         ])
     }
 
@@ -369,7 +365,7 @@ final class SiteAssemblyContentView: UIView {
         if shouldShowDomainPurchase() {
             assembledSiteView.layer.cornerRadius = 12
             assembledSiteView.layer.masksToBounds = true
-            assembledSiteViewBottomConstraint = footnoteLabel.topAnchor.constraint(
+            assembledSiteViewBottomConstraint = (buttonContainerView?.topAnchor ?? bottomAnchor).constraint(
                 equalTo: assembledSiteView.bottomAnchor,
                 constant: 24
             )
@@ -390,7 +386,7 @@ final class SiteAssemblyContentView: UIView {
             assembledSiteViewBottomConstraint,
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
-            (buttonContainerView?.topAnchor ?? bottomAnchor).constraint(equalTo: footnoteLabel.bottomAnchor, constant: 15)
+            (buttonContainerView?.topAnchor ?? bottomAnchor).constraint(equalTo: assembledSiteView.bottomAnchor, constant: 15)
         ])
 
         self.assembledSiteView = assembledSiteView
@@ -446,7 +442,7 @@ final class SiteAssemblyContentView: UIView {
     private func layoutIdle() {
         completionLabel.isHidden = true
         completionDescription.isHidden = true
-        footnoteLabel.isHidden = true
+        noticeView.isHidden = true
         statusStackView.alpha = 0
         errorStateView?.alpha = 0
     }
@@ -512,7 +508,7 @@ final class SiteAssemblyContentView: UIView {
                     self.completionDescription.isHidden = false
                     self.completionLabel.text = self.shouldShowDomainPurchase() ? Strings.Paid.completionTitle : Strings.Free.completionTitle
                     self.completionDescription.text = self.shouldShowDomainPurchase() ? Strings.Paid.description : Strings.Free.description
-                    self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase()
+                    self.noticeView.isHidden = !self.shouldShowDomainPurchase()
 
 
                     if let buttonView = self.buttonContainerView {

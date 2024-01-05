@@ -1,5 +1,5 @@
 
-import Charts
+import DGCharts
 
 // MARK: - Charts extensions
 

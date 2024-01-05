@@ -1,5 +1,5 @@
-We’ve made some visual changes to the reader. You’ll notice updates to feed cards, headers, buttons, recommendations, and more. Please feel free to give us lots of compliments.
+We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
 
-In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too, even in block-based themes on dark mode. And you can quote us on that.
+Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
 
-Finally, we fixed a code issue in blogging prompt settings that caused the app to crash.
+Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. We also fixed a rare crash that happened while logging out. Sweet.

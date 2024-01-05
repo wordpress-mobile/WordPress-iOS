@@ -11,12 +11,6 @@ extension BloggingPrompt {
     /// The prompt content to be displayed at entry points.
     @NSManaged public var text: String
 
-    /// Template title for the draft post.
-    @NSManaged public var title: String
-
-    /// Template content for the draft post.
-    @NSManaged public var content: String
-
     /// The attribution source for the prompt.
     @NSManaged public var attribution: String
 
@@ -31,4 +25,7 @@ extension BloggingPrompt {
 
     /// Contains avatar URLs of some users that have answered the prompt.
     @NSManaged public var displayAvatarURLs: [URL]
+
+    /// Contains additional tags that should be appended to the post for this prompt's answer.
+    @NSManaged public var additionalPostTags: [String]?
 }

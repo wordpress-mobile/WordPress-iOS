@@ -134,17 +134,6 @@ private extension QuickStartChecklistViewController {
     }
 }
 
-private struct TasksCompleteScreenConfiguration {
-    var title: String
-    var subtitle: String
-    var imageName: String
-}
-
-private struct QuickStartChecklistConfiguration {
-    var title: String
-    var tours: [QuickStartTour]
-}
-
 private enum Constants {
     static let analyticsTypeKey = "type"
     static let closeButtonRadius: CGFloat = 30

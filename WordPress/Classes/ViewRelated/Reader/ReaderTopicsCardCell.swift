@@ -21,9 +21,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
-    static var defaultNibName: String {
-        RemoteFeatureFlag.readerImprovements.enabled() ? "ReaderTopicsNewCardCell" : String(describing: self)
-    }
+    static var defaultNibName: String { "ReaderTopicsNewCardCell" }
 
     func configure(_ data: [ReaderAbstractTopic]) {
         self.data = data
@@ -44,21 +42,18 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         collectionView.register(ReaderTopicCardCollectionViewCell.self,
                                 forCellWithReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier())
 
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            configureForNewDesign()
-        }
+        configureForNewDesign()
     }
 
     private func applyStyles() {
-        let usesNewDesign = RemoteFeatureFlag.readerImprovements.enabled()
-        headerLabel.font = usesNewDesign ? WPStyleGuide.fontForTextStyle(.footnote) : WPStyleGuide.serifFontForTextStyle(.title2)
+        headerLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
 
-        containerView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
-        headerLabel.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
-        collectionView.backgroundColor = usesNewDesign ? .secondarySystemBackground : .listForeground
+        containerView.backgroundColor = .secondarySystemBackground
+        headerLabel.backgroundColor = .secondarySystemBackground
+        collectionView.backgroundColor = .secondarySystemBackground
 
         backgroundColor = .clear
-        contentView.backgroundColor = usesNewDesign ? .systemBackground : .listForeground
+        contentView.backgroundColor = .systemBackground
     }
 
     /// Configures the cell and the collection view for the new design.
@@ -77,19 +72,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
         backgroundColor = .systemBackground
         contentView.backgroundColor = .systemBackground
-
-        // add manual separator view
-        let separatorView = UIView()
-        separatorView.backgroundColor = .separator
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(separatorView)
-
-        NSLayoutConstraint.activate([
-            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
-            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
     }
 
     private func refreshData() {
@@ -108,37 +90,14 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 // MARK: - Collection View: Datasource & Delegate
 extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier(), for: indexPath) as? ReaderTopicCardCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-
-            let title = data[indexPath.row].title
-            cell.titleLabel.text = title
-            cell.titleLabel.accessibilityIdentifier = .topicsCardCellIdentifier
-            cell.titleLabel.accessibilityTraits = .button
-
-            return cell
-        }
-
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
-                                                            for: indexPath) as? ReaderInterestsCollectionViewCell else {
-            fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTopicCardCollectionViewCell.cellReuseIdentifier(), for: indexPath) as? ReaderTopicCardCollectionViewCell else {
+            return UICollectionViewCell()
         }
 
         let title = data[indexPath.row].title
-
-        ReaderSuggestedTopicsStyleGuide.applySuggestedTopicStyle(label: cell.label,
-                                                                 with: indexPath.row)
-
-        cell.label.text = title
-        cell.label.accessibilityIdentifier = .topicsCardCellIdentifier
-        cell.label.accessibilityTraits = .button
-
-        // We need to use the calculated size for the height / corner radius because the cell size doesn't change until later
-        let size = sizeForCell(title: title)
-        cell.label.layer.cornerRadius = size.height * 0.5
+        cell.titleLabel.text = title
+        cell.titleLabel.accessibilityIdentifier = .topicsCardCellIdentifier
+        cell.titleLabel.accessibilityTraits = .button
 
         return cell
     }
@@ -182,18 +141,12 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
         let title: NSString = title as NSString
 
         var size = title.size(withAttributes: attributes)
-        size.height += (CellConstants.marginY * 2)
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            size.height += 2 // to account for the top & bottom border width
-        }
+        size.height += (CellConstants.marginY * 2) + 2
 
         // Prevent 1 token from being too long
         let maxWidth = collectionView.bounds.width * CellConstants.maxWidthMultiplier
         let width = min(size.width, maxWidth)
-        size.width = width + (CellConstants.marginX * 2)
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            size.width += 2 // to account for the leading & trailing border width
-        }
+        size.width = width + (CellConstants.marginX * 2) + 2
 
         return size
     }

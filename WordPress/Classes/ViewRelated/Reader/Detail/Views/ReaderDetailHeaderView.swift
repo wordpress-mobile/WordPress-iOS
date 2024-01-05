@@ -7,6 +7,8 @@ protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapHeaderAvatar()
     func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
+    func didTapLikes()
+    func didTapComments()
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {

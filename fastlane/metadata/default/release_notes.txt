@@ -1,6 +1,5 @@
-* [*] Fix a crash when the blog's blogging prompt settings contain invalid JSON [#21677]
-* [*] Fixes an issue where users would land on the Reader after signup while it should not be accessible. [#21751]
-* [*] Block Editor: Split formatted text on triple Enter [https://github.com/WordPress/gutenberg/pull/53354]
-* [*] Block Editor: Quote block: Ensure border is visible with block-based themes in dark [https://github.com/WordPress/gutenberg/pull/54964]
-* [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
-* [*] Fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
+We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
+
+Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
+
+Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. Sweet.

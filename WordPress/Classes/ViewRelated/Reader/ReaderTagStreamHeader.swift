@@ -16,7 +16,7 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: RemoteFeatureFlag.readerImprovements.enabled())
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: true)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -31,12 +31,7 @@ import WordPressShared
     // MARK: - Configuration
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
-        titleLabel.text = {
-            guard RemoteFeatureFlag.readerImprovements.enabled() else {
-                return topic.title
-            }
-            return topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
-        }()
+        titleLabel.text = topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
         followButton.isSelected = topic.following
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
     }
