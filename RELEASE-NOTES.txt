@@ -7,6 +7,7 @@
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
 * [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
 * [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
+* [*] [Jetpack-only] Updated Site Domains screen to make domains management more convenient [#22294, #22311]
 * [**] [internal] [Jetpack-only] Adds support for dynamic dashboard cards driven by the backend [#22326]
 * [*] [internal] Remove personalizeHomeTab feature flag [#22280]
 * [*] Fix a rare crash in post search related to tags [#22275]
