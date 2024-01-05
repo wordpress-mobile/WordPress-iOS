@@ -26,12 +26,28 @@ struct SiteDomainsView: View {
     }
 
     var body: some View {
-        List {
-            makeDomainsSections(blog: blog)
+        ZStack {
+            Color.DS.Background.secondary.edgesIgnoringSafeArea(.all)
+
+            switch viewModel.state {
+            case .normal(let sections):
+                List {
+                    makeDomainsSections(blog: blog, sections: sections)
+                }
+                .listRowSeparator(.hidden)
+                //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
+            case .message(let messageViewModel):
+                VStack {
+                    HStack(alignment: .center) {
+                        DomainsStateView(viewModel: messageViewModel)
+                            .padding(.horizontal, Length.Padding.double)
+                    }
+                }
+            case .loading:
+                ProgressView()
+                    .progressViewStyle(.circular)
+            }
         }
-        .listRowSeparator(.hidden)
-        //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
-        .onTapGesture(perform: { })
         .onAppear {
             viewModel.refresh()
         }
@@ -48,8 +64,8 @@ struct SiteDomainsView: View {
 
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
     @ViewBuilder
-    private func makeDomainsSections(blog: Blog) -> some View {
-        ForEach(viewModel.sections, id: \.id) { section in
+    private func makeDomainsSections(blog: Blog, sections: [SiteDomainsViewModel.Section]) -> some View {
+        ForEach(sections, id: \.id) { section in
             switch section.content {
             case .rows(let rows):
                 makeDomainsListSection(blog: blog, section: section, rows: rows)
@@ -61,10 +77,24 @@ struct SiteDomainsView: View {
         }
     }
 
-    private func makeDomainsListSection(blog: Blog, section: SiteDomainsViewModel.Section, rows: [AllDomainsListCardView.ViewModel]) -> some View {
+    private func makeDomainsListSection(blog: Blog, section: SiteDomainsViewModel.Section, rows: [SiteDomainsViewModel.Section.Row]) -> some View {
         Section {
-            ForEach(rows) { domainViewModel in
-                AllDomainsListCardView(viewModel: domainViewModel, padding: 0)
+            ForEach(rows) { row  in
+                if let navigation = row.navigation {
+                    NavigationLink(destination: {
+                        DomainDetailsWebViewControllerWrapper(
+                            domain: navigation.domain,
+                            siteSlug: navigation.siteSlug,
+                            type: navigation.type,
+                            analyticsSource: navigation.analyticsSource
+                        )
+                        .navigationTitle(navigation.domain)
+                    }, label: {
+                        AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
+                    })
+                } else {
+                    AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
+                }
             }
         } header: {
             if let title = section.title {
@@ -81,15 +111,13 @@ struct SiteDomainsView: View {
         let destination: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
 
         return Section {
-            DSButton(
-                title: TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan),
-                style: .init(
-                    emphasis: .tertiary,
-                    size: .small,
-                    isJetpack: AppConfiguration.isJetpack
-                )) {
-                    $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
-                }
+            Button {
+                $isShowingDomainSelectionWithType.onChange(showingDomainSelectionWithType).wrappedValue = destination
+            } label: {
+                Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
+                    .style(TextStyle.bodyMedium(.regular))
+                    .foregroundColor(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
+            }
         }
     }
 
@@ -201,11 +229,16 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     // MARK: - Properties
 
     private let domainManagementFeatureFlag = RemoteFeatureFlag.domainManagement
+    private let viewModel: SiteDomainsViewModel
 
     // MARK: - Init
 
     init(blog: Blog) {
-        super.init(rootView: .init(blog: blog, viewModel: .init(blog: blog, blogService: BlogService(coreDataStack: ContextManager.shared))))
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        let domainsService = DomainsService(coreDataStack: ContextManager.shared, wordPressComRestApi: account?.wordPressComRestApi)
+        let viewModel = SiteDomainsViewModel(blog: blog, domainsService: domainsService)
+        self.viewModel = viewModel
+        super.init(rootView: .init(blog: blog, viewModel: viewModel))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -229,7 +262,10 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         }
         let title = AllDomainsListViewController.Strings.title
         let action = UIAction { [weak self] _ in
-            self?.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+            guard let self else { return }
+            let domains = self.viewModel.loadedDomains.filter { !$0.wpcomDomain }
+            let allDomainsViewController = AllDomainsListViewController(viewModel: .init(domains: domains))
+            self.navigationController?.pushViewController(allDomainsViewController, animated: true)
             WPAnalytics.track(.domainsDashboardAllDomainsTapped)
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
