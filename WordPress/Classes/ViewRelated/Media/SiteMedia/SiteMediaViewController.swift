@@ -55,7 +55,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         }
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
 
-        if showPicker {
+        if showPicker && blog.userCanUploadMedia {
             buttonAddMediaMenuController.showPhotosPicker(from: self)
             showPicker = false
         }
