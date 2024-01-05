@@ -247,6 +247,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
 
         configureActionButtonStyle(reblogButton)
+        prepareReblogForVoiceOver()
     }
 
     private func playLikeButtonAnimation() {
@@ -371,11 +372,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     fileprivate func configureButtonTitles() {
-        guard let post = post else {
-            return
-        }
-
-        let commentCount = post.commentCount()?.intValue ?? 0
         let commentTitle = Constants.commentButtonTitle
 
         likeButton.setTitle(likeButtonTitle, for: .normal)
@@ -419,6 +415,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let isSaved = post?.isSavedForLater ?? false
         saveForLaterButton.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
         saveForLaterButton.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
+    }
+
+    private func prepareReblogForVoiceOver() {
+        reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 }
 
