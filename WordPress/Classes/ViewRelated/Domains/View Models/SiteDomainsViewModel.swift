@@ -41,16 +41,8 @@ final class SiteDomainsViewModel: ObservableObject {
     // MARK: - Sections
 
     private static func buildSections(from blog: Blog, domains: [DomainsService.AllDomainsListItem]) -> [Section] {
-        var wpcomDomains: [DomainsService.AllDomainsListItem] = []
-        var otherDomains: [DomainsService.AllDomainsListItem] = []
-
-        for domain in domains {
-            if domain.wpcomDomain {
-                wpcomDomains.append(domain)
-            } else {
-                otherDomains.append(domain)
-            }
-        }
+        let wpcomDomains = domains.filter { $0.wpcomDomain }
+        let otherDomains = domains.filter { !$0.wpcomDomain }
 
         return Self.buildFreeDomainSections(from: blog, wpComDomains: wpcomDomains) + Self.buildDomainsSections(from: blog, domains: otherDomains)
     }
@@ -82,18 +74,9 @@ final class SiteDomainsViewModel: ObservableObject {
         var sections: [Section] = []
 
         let primaryDomainName = blog.domainsList.first(where: { $0.domain.isPrimaryDomain })?.domain.domainName
-        var primaryDomain: DomainsService.AllDomainsListItem?
-        var otherDomains: [DomainsService.AllDomainsListItem] = []
-
-        for domain in domains {
-            if domain.blogId == blog.dotComID?.intValue {
-                if primaryDomainName == domain.domain {
-                    primaryDomain = domain
-                } else {
-                    otherDomains.append(domain)
-                }
-            }
-        }
+        let blogDomains = domains.filter({ $0.blogId == blog.dotComID?.intValue })
+        let primaryDomain = blogDomains.first(where: { primaryDomainName == $0.domain })
+        let otherDomains = blogDomains.filter({ primaryDomainName != $0.domain })
 
         if let primaryDomain {
             let section = Section(
