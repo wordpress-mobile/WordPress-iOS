@@ -169,7 +169,7 @@ class RouteMatcherTests: XCTestCase {
         var router = MockRouter(routes: [])
         router.completion = { url, source in
             // THEN it opens a universal link from a fragement and passes the campaign
-            XCTAssertEqual(url, URL(string: "https://wordpress.com/media/1234567?campaign=qr-code-media)"))
+            XCTAssertEqual(url, URL(string: "https://wordpress.com/media/1234567?campaign=qr-code-media"))
             XCTAssertEqual(source, DeepLinkSource.banner(campaign: "qr-code-media"))
         }
         AppBannerRoute().perform(match.values, router: router)
