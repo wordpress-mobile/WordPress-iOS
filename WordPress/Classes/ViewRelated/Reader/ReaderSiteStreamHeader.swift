@@ -12,7 +12,6 @@ import Gridicons
     @IBOutlet fileprivate weak var descriptionLabelTopConstraint: NSLayoutConstraint!
 
     open weak var delegate: ReaderStreamHeaderDelegate?
-    fileprivate var defaultBlavatar = "blavatar-default"
 
     // MARK: - Lifecycle Methods
 

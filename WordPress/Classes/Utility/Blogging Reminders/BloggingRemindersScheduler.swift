@@ -21,7 +21,6 @@ class BloggingRemindersScheduler {
 
     // MARK: - Convenience Typealiases
 
-    typealias BlogIdentifier = BloggingRemindersStore.BlogIdentifier
     typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
     typealias ScheduledWeekdaysWithTime = BloggingRemindersStore.ScheduledWeekdaysWithTime

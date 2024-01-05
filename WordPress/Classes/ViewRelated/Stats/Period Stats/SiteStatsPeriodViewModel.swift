@@ -224,14 +224,6 @@ class SiteStatsPeriodViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
     }
 
-    // MARK: - State
-
-    enum Status {
-        case fetchingData
-        case fetchingCacheData(_ hasCachedData: Bool)
-        case fetchingDataCompleted(_ success: Bool)
-    }
-
     // MARK: - Chart Date
 
     func chartDate(for entryIndex: Int) -> Date? {

@@ -1343,10 +1343,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    var savingDraftButtonSize: CGSize {
-        return AztecPostViewController.Constants.savingDraftButtonSize
-    }
-
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
@@ -1387,10 +1383,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
 
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
-        navigationItem.titleView = view
     }
 }
 

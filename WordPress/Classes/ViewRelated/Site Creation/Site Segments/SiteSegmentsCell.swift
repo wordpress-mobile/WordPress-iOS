@@ -3,13 +3,6 @@ import Alamofire
 import Gridicons
 import WordPressKit
 
-
-private extension String {
-    func hexAsColor() -> UIColor? {
-        return UIColor(hexString: self)
-    }
-}
-
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!

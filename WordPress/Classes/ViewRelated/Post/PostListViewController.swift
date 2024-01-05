@@ -316,10 +316,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         }
     }
 
-    func copyLink(_ post: AbstractPost) {
-        copyPostLink(post)
-    }
-
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let cancelText: String
         let deleteText: String

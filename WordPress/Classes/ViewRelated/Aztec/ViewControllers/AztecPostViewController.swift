@@ -3191,7 +3191,6 @@ extension AztecPostViewController {
     }
 
     struct Constants {
-        static let savingDraftButtonSize    = CGSize(width: 130, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
@@ -3307,10 +3306,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         return Constants.uploadingButtonSize
     }
 
-    var savingDraftButtonSize: CGSize {
-        return Constants.savingDraftButtonSize
-    }
-
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         closeWasPressed()
     }
@@ -3331,10 +3326,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         displayCancelMediaUploads()
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
-        navigationItem.titleView = view
     }
 }
 
