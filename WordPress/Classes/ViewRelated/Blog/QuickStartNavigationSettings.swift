@@ -1,7 +1,4 @@
 class QuickStartNavigationSettings: NSObject {
-    private weak var readerNav: UINavigationController?
-    private var spotlightView: QuickStartSpotlightView?
-
     func updateWith(navigationController: UINavigationController, andViewController viewController: UIViewController) {
 
         switch viewController {

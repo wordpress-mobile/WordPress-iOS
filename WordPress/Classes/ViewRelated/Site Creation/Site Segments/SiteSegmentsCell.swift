@@ -10,12 +10,6 @@ private extension String {
     }
 }
 
-private extension SiteSegment {
-    var iconTintColor: UIColor? {
-        return self.iconColor?.hexAsColor()
-    }
-}
-
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!

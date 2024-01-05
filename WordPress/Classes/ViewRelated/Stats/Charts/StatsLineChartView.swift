@@ -53,13 +53,6 @@ class StatsLineChartView: LineChartView {
 
     private var statsInsightsFilterDimension: StatsInsightsFilterDimension
 
-    private var isHighlightNeeded: Bool {
-        guard let primaryDataSet = primaryDataSet, primaryDataSet.isHighlightEnabled else {
-            return false
-        }
-        return styling.primaryHighlightColor != nil
-    }
-
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
@@ -303,8 +296,6 @@ private extension StatsLineChartView {
 }
 
 // MARK: - ChartViewDelegate
-
-private typealias StatsLineChartMarker = MarkerView
 
 extension StatsLineChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {

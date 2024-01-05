@@ -20,8 +20,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private struct Metrics {
         static let maxLabelWidth            = CGFloat(290)
         static let noResultsTopInset        = CGFloat(64)
-        static let sitePromptEdgeMargin     = CGFloat(50)
-        static let sitePromptBottomMargin   = CGFloat(10)
         static let sitePromptTopMargin      = CGFloat(4)
     }
 

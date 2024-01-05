@@ -245,10 +245,6 @@ extension PostCompactCell {
         }
     }
 
-    func hideSeparator() {
-        separator.isHidden = true
-    }
-
     func disableiPadReadableMargin() {
         iPadReadableLeadingAnchor?.isActive = false
         iPadReadableTrailingAnchor?.isActive = false
