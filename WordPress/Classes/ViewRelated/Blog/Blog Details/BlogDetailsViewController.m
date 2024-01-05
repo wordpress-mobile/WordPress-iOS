@@ -529,7 +529,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            BOOL showPicker = userInfo[[BlogDetailsViewController userInfoShowPickerKey]] != NULL;
+            BOOL showPicker = userInfo[[BlogDetailsViewController userInfoShowPickerKey]] ?: NO;
             [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink showPicker: showPicker];
             break;
         case BlogDetailsSubsectionPages:
