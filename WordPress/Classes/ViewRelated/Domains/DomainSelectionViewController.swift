@@ -475,15 +475,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
-    private func query(from textField: UITextField?) -> String? {
-        guard let text = textField?.text,
-              !text.isEmpty else {
-            return nil
-        }
-
-        return text
-    }
-
     @objc
     private func textChanged(sender: UITextField) {
         search(sender.text)

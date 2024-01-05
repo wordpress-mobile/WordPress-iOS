@@ -151,10 +151,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    private var isReactionBarVisible: Bool {
-        return isCommentReplyEnabled || isCommentLikesEnabled
-    }
-
     var shouldHideSeparator = false {
         didSet {
             separatorView.isHidden = shouldHideSeparator

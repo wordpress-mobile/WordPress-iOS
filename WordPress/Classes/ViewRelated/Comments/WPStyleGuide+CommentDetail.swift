@@ -5,7 +5,6 @@ import UIKit
 extension WPStyleGuide {
     public struct CommentDetail {
         static let tintColor: UIColor = .primary
-        static let externalIconImage: UIImage = .gridicon(.external).imageFlippedForRightToLeftLayoutDirection()
 
         static let textFont = WPStyleGuide.fontForTextStyle(.body)
         static let textColor = UIColor.text

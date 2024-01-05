@@ -429,16 +429,6 @@ extension BaseActivityListViewController: ActivityPresenter {
     }
 }
 
-// MARK: - Restores handling
-
-extension BaseActivityListViewController {
-
-    fileprivate func restoreSiteToRewindID(_ rewindID: String) {
-        navigationController?.popToViewController(self, animated: true)
-        store.actionDispatcher.dispatch(ActivityAction.rewind(site: site, rewindID: rewindID))
-    }
-}
-
 // MARK: - NoResults Handling
 
 private extension BaseActivityListViewController {

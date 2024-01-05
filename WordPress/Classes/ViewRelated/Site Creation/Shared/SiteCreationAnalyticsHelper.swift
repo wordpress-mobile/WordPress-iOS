@@ -21,7 +21,6 @@ class SiteCreationAnalyticsHelper {
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
     private static let verticalSlugKey = "vertical_slug"
-    private static let verticalSearchTerm = "search_term"
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
@@ -59,21 +58,9 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Site Name
-    static func trackSiteNameViewed() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameViewed)
-    }
-
     static func trackSiteNameEntered(_ name: String) {
         let properties = [siteNameKey: name]
         WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
-    }
-
-    static func trackSiteNameSkipped() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
-    }
-
-    static func trackSiteNameCanceled() {
-        WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
     }
 
     // MARK: - Site Design

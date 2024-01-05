@@ -29,11 +29,6 @@ final class BlogDashboardViewController: UIViewController {
         return refreshControl
     }()
 
-    /// The "My Site" parent view controller
-    var mySiteViewController: MySiteViewController? {
-        return parent as? MySiteViewController
-    }
-
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
         return view.superview?.superview as? UIScrollView

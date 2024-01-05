@@ -5,13 +5,6 @@ final class WizardNavigation: UINavigationController {
     private let steps: [WizardStep]
     private let pointer: WizardNavigationPointer
 
-    private lazy var firstContentViewController: UIViewController? = {
-        guard let firstStep = self.steps.first else {
-            return nil
-        }
-        return firstStep.content
-    }()
-
     init(steps: [WizardStep]) {
         self.steps = steps
         self.pointer = WizardNavigationPointer(capacity: steps.count)

@@ -318,11 +318,8 @@
 		08A250FD28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */; };
 		08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */; };
 		08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */; };
-		08A4E129289D202F001D9EC7 /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
-		08A4E12A289D202F001D9EC7 /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
 		08A4E12C289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
 		08A4E12D289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
-		08A4E12F289D2795001D9EC7 /* UserPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */; };
 		08A7343F298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */; };
 		08A73440298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */; };
 		08AA64052A84FFF40076E38D /* DashboardGoogleDomainsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA64042A84FFF40076E38D /* DashboardGoogleDomainsViewModel.swift */; };
@@ -2925,7 +2922,6 @@
 		C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */; };
 		C7124E4E2638528F00929318 /* JetpackPrologueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7124E4C2638528F00929318 /* JetpackPrologueViewController.xib */; };
 		C7124E4F2638528F00929318 /* JetpackPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7124E4D2638528F00929318 /* JetpackPrologueViewController.swift */; };
-		C7124E922638905B00929318 /* StarFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7124E912638905B00929318 /* StarFieldView.swift */; };
 		C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */; };
 		C71AF533281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */; };
 		C71AF534281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */; };
@@ -6004,9 +6000,7 @@
 		08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailInfoViewModel.swift; sourceTree = "<group>"; };
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
 		08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceTests.m; sourceTree = "<group>"; };
-		08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStore.swift; sourceTree = "<group>"; };
 		08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentRepository.swift; sourceTree = "<group>"; };
-		08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStoreTests.swift; sourceTree = "<group>"; };
 		08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayViewModel.swift; sourceTree = "<group>"; };
 		08AA64042A84FFF40076E38D /* DashboardGoogleDomainsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsViewModel.swift; sourceTree = "<group>"; };
 		08AA640B2A8511FB0076E38D /* DashboardGoogleDomainsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsViewModelTests.swift; sourceTree = "<group>"; };
@@ -8264,7 +8258,6 @@
 		C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatCell.xib; sourceTree = "<group>"; };
 		C7124E4C2638528F00929318 /* JetpackPrologueViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackPrologueViewController.xib; sourceTree = "<group>"; };
 		C7124E4D2638528F00929318 /* JetpackPrologueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackPrologueViewController.swift; sourceTree = "<group>"; };
-		C7124E912638905B00929318 /* StarFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarFieldView.swift; sourceTree = "<group>"; };
 		C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsCardCell.xib; sourceTree = "<group>"; };
 		C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsCoordinator.swift; sourceTree = "<group>"; };
 		C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusViewModel.swift; sourceTree = "<group>"; };
@@ -12300,7 +12293,6 @@
 				DC13DB7D293FD09F00E33561 /* StatsInsightsStoreTests.swift */,
 				937250ED267A492D0086075F /* StatsPeriodStoreTests.swift */,
 				0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */,
-				08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */,
 				0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */,
 			);
 			path = Stores;
@@ -16009,7 +16001,6 @@
 			isa = PBXGroup;
 			children = (
 				3F46EEC028BC48D1004F02B2 /* New Landing Screen */,
-				C7124E912638905B00929318 /* StarFieldView.swift */,
 				C7124E4D2638528F00929318 /* JetpackPrologueViewController.swift */,
 				C7124E4C2638528F00929318 /* JetpackPrologueViewController.xib */,
 				C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */,
@@ -16947,7 +16938,6 @@
 				9A09F914230C3E9700F42AB7 /* StoreFetchingStatus.swift */,
 				24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */,
 				3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */,
-				08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */,
 				08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */,
 				08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */,
 				0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */,
@@ -22818,7 +22808,6 @@
 				B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */,
 				F5AE43E425DD02C1003675F4 /* StoryEditor.swift in Sources */,
 				F4C1FC662A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */,
-				08A4E129289D202F001D9EC7 /* UserPersistentStore.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				C31852A129670F8100A78BE9 /* JetpackScanViewController+JetpackBannerViewController.swift in Sources */,
 				436D56302117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift in Sources */,
@@ -23634,7 +23623,6 @@
 				C3E42AB027F4D30E00546706 /* MenuItemsViewControllerTests.swift in Sources */,
 				D842EA4021FABB1800210E96 /* SiteSegmentTests.swift in Sources */,
 				C3C70C562835C5BB00DD2546 /* SiteDesignSectionLoaderTests.swift in Sources */,
-				08A4E12F289D2795001D9EC7 /* UserPersistentStoreTests.swift in Sources */,
 				436D55F5211632B700CEAA33 /* RegisterDomainDetailsViewModelTests.swift in Sources */,
 				E180BD4C1FB462FF00D0D781 /* CookieJarTests.swift in Sources */,
 				F4394D1F2A3AB06F003955C6 /* WPCrashLoggingDataProviderTests.swift in Sources */,
@@ -24234,7 +24222,6 @@
 				FABB21D72602FC2C00C8785C /* Routes+Stats.swift in Sources */,
 				8BF1C81B27BC00AF00F1C203 /* BlogDashboardCardFrameView.swift in Sources */,
 				FABB21D92602FC2C00C8785C /* SearchIdentifierGenerator.swift in Sources */,
-				C7124E922638905B00929318 /* StarFieldView.swift in Sources */,
 				FABB21DA2602FC2C00C8785C /* StatsTwoColumnRow.swift in Sources */,
 				982DDF91263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */,
 				FABB21DC2602FC2C00C8785C /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
@@ -25492,7 +25479,6 @@
 				FABB25702602FC2C00C8785C /* ReaderReblogAction.swift in Sources */,
 				F479995F2AFD241E0023F4FB /* RegisterDomainTransferFooterView.swift in Sources */,
 				FABB25712602FC2C00C8785C /* SiteAssemblyWizardContent.swift in Sources */,
-				08A4E12A289D202F001D9EC7 /* UserPersistentStore.swift in Sources */,
 				FEDDD47026A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */,
 				FABB25722602FC2C00C8785C /* UITableView+Header.swift in Sources */,
 				FABB25732602FC2C00C8785C /* RichTextContentStyles.swift in Sources */,

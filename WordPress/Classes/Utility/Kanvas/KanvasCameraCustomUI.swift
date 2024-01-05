@@ -7,12 +7,9 @@ public class KanvasCustomUI {
     public static let shared = KanvasCustomUI()
 
     private static let brightBlue = UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightRed = UIColor.muriel(color: MurielColor(name: .red)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let white = UIColor.white
 
     static private var firstPrimary: UIColor {
         return KanvasCustomUI.primaryColors.first ?? UIColor.blue
