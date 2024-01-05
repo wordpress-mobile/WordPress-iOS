@@ -183,9 +183,3 @@ extension SiteDomainsViewModel.Section.Row: Equatable {
         return lhs.id == rhs.id && lhs.viewModel == rhs.viewModel
     }
 }
-
-extension SiteDomainsViewModel.MessageStateViewModel: Equatable {
-    public static func == (lhs: SiteDomainsViewModel.MessageStateViewModel, rhs: SiteDomainsViewModel.MessageStateViewModel) -> Bool {
-        return lhs.title == rhs.title && lhs.description == rhs.description
-    }
-}
