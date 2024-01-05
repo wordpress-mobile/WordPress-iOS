@@ -2169,24 +2169,6 @@ private extension AztecPostViewController {
     }
 }
 
-extension AztecPostViewController {
-
-    func contentByStrippingMediaAttachments() -> String {
-        if editorView.editingMode == .html {
-            setHTML(htmlTextView.text)
-        }
-
-        richTextView.removeMediaAttachments()
-        let strippedHTML = getHTML()
-
-        if editorView.editingMode == .html {
-            setHTML(strippedHTML)
-        }
-
-        return strippedHTML
-    }
-}
-
 // MARK: - Computed Properties
 
 extension AztecPostViewController {
@@ -2322,10 +2304,6 @@ extension AztecPostViewController {
 
     fileprivate func insertImage(image: UIImage, source: MediaSource = .deviceLibrary) {
         insert(exportableAsset: image, source: source)
-    }
-
-    private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
-        insert(exportableAsset: media, source: .stockPhotos)
     }
 
     /// Insert media to the post from the site's media library.

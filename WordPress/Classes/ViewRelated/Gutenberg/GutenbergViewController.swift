@@ -483,10 +483,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadPublishButton()
     }
 
-    func contentByStrippingMediaAttachments() -> String {
-        return html //TODO: return media attachment stripped version in future
-    }
-
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()

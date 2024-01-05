@@ -11,13 +11,6 @@ struct PlanDetailViewModel {
         case ready([PlanFeature])
     }
 
-    func withFeatures(_ features: FeaturesViewModel) -> PlanDetailViewModel {
-        return PlanDetailViewModel(
-            plan: plan,
-            features: features
-        )
-    }
-
     var tableViewModel: ImmuTable {
         switch features {
         case .loading, .error:

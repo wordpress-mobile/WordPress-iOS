@@ -303,7 +303,6 @@ extension WPStyleGuide {
         //
 
         public static let headerFontSize            = CGFloat(12)
-        public static let headerLineSize            = CGFloat(16)
         public static let subjectNoticonSize        = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize

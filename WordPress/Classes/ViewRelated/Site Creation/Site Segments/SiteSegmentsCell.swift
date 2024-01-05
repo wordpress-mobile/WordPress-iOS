@@ -29,14 +29,6 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         }
     }
 
-    func set(segment: SiteSegment) {
-        title.text = segment.title
-        subtitle.text = segment.subtitle
-        if let segmentIcon = segment.icon {
-            icon.downloadImage(from: segmentIcon)
-        }
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
