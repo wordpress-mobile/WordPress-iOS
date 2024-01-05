@@ -33,7 +33,6 @@ struct LockScreenFlexibleCard: View {
 
 // MARK: - Appearance
 extension LockScreenFlexibleCard {
-
     private enum Appearance {
         static let textFont = Font.headline
         static let textFontWeight = Font.Weight.semibold
@@ -41,6 +40,5 @@ extension LockScreenFlexibleCard {
 
         static let titleFont = Font.subheadline
         static let titleColor = Color(.secondaryLabel)
-
     }
 }
