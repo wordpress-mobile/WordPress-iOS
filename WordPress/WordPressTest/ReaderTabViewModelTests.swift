@@ -98,13 +98,14 @@ class ReaderTabViewModelTests: CoreDataTestCase {
 
     func testPresentFilterFromView() {
         // Given
+        let filter = makeFilterProvider()
         let filterTappedExpectation = expectation(description: "Filter button was tapped")
-        viewModel.filterTapped = { view, completion in
+        viewModel.filterTapped = { filter, view, completion in
             filterTappedExpectation.fulfill()
         }
-        let view = UIView()
+        let viewController = UIViewController()
         // When
-        viewModel.presentFilter(from: view, completion: { title in })
+        viewModel.didTapStreamFilterButton(with: filter)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -117,7 +118,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         // Given
         let selectedTopic = ReaderAbstractTopic(context: mainContext)
         selectedTopic.title = "selected topic"
-        let item = ReaderTabItem(ReaderContent(topic: selectedTopic))
+        viewModel.tabItems = [ReaderTabItem(ReaderContent(topic: selectedTopic))]
 
         let setContenttopicExpectation = expectation(description: "content topic was set")
         viewModel.setContent = {
@@ -125,7 +126,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
             XCTAssertEqual($0.topic!.title, "selected topic")
         }
         // When
-        viewModel.resetFilter(selectedItem: item)
+        viewModel.resetStreamFilter()
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -164,5 +165,17 @@ extension ReaderTabViewModelTests {
         let controller = MockContentController()
         controller.setContentExpectation = expectation(description: "Topic was set")
         return controller
+    }
+
+    private func makeFilterProvider() -> FilterProvider {
+        return FilterProvider(title: { _ in "Test" },
+                       accessibilityIdentifier: "Test",
+                       cellClass: UITableViewCell.self,
+                       reuseIdentifier: "Cell",
+                       emptyTitle: "Test",
+                       emptyActionTitle: "Test",
+                       section: .sites) { completion in
+            completion(.success([]))
+        }
     }
 }
