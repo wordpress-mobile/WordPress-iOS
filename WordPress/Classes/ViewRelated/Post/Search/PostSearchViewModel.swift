@@ -27,7 +27,6 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     private let entityName: String
 
     private var searchService: PostSearchService?
-    private var localSearchTask: Task<Void, Never>?
     private let suggestionsService: PostSearchSuggestionsService
     private var suggestionsTask: Task<Void, Never>?
     private var isRefreshing = false

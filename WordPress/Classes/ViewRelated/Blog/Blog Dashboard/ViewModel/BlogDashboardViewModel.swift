@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import CoreData
+import WordPressKit
 
 enum DashboardSection: Int, CaseIterable {
     case migrationSuccess
@@ -70,7 +71,7 @@ final class BlogDashboardViewModel {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
                 if var cellConfigurable = cell as? BlogDashboardCardConfigurable {
                     cellConfigurable.row = indexPath.row
-                    cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse)
+                    cellConfigurable.configure(blog: blog, viewController: viewController, model: cardModel)
                 }
                 (cell as? DashboardBlazeCardCell)?.configure(blazeViewModel)
                 return cell

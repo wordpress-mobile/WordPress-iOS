@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 struct DashboardGoogleDomainsCardView: View {
     private var buttonAction: () -> ()

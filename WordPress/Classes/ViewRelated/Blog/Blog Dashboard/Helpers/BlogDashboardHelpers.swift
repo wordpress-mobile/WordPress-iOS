@@ -1,7 +1,13 @@
 import Foundation
 
 struct BlogDashboardHelpers {
+    typealias Card = BlogDashboardAnalyticPropertiesProviding & BlogDashboardPersonalizable
+
     static func makeHideCardAction(for card: DashboardCard, blog: Blog) -> UIAction {
+        Self.makeHideCardAction(for: card as Card, blog: blog)
+    }
+
+    static func makeHideCardAction(for card: Card, blog: Blog) -> UIAction {
         makeHideCardAction {
             BlogDashboardAnalytics.trackHideTapped(for: card)
             BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)

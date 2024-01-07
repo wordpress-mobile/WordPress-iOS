@@ -103,23 +103,6 @@ class MediaSettings: NSObject {
                 return 5
             }
         }
-
-        static func videoResolution(from value: Int) -> MediaSettings.VideoResolution {
-            switch value {
-            case 1:
-                return .size640x480
-            case 2:
-                return .size1280x720
-            case 3:
-                return .size1920x1080
-            case 4:
-                return .size3840x2160
-            case 5:
-                return .sizeOriginal
-            default:
-                return .sizeOriginal
-            }
-        }
     }
 
     // MARK: - Internal variables

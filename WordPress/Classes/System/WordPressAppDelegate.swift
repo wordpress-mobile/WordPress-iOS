@@ -344,10 +344,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         pingHubManager = PingHubManager()
     }
 
-    private func setupShortcutCreator() {
-        shortcutCreator = WP3DTouchShortcutCreator()
-    }
-
     private func setupNoticePresenter() {
         noticePresenter = NoticePresenter()
     }
@@ -643,20 +639,6 @@ extension WordPressAppDelegate {
         }
     }
 
-    var isWelcomeScreenVisible: Bool {
-        get {
-            guard let presentedViewController = window?.rootViewController?.presentedViewController as? UINavigationController else {
-                return false
-            }
-
-            guard let visibleViewController = presentedViewController.visibleViewController else {
-                return false
-            }
-
-            return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
-        }
-    }
-
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -889,7 +871,6 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureLightNavigationBarAppearance()
         WPStyleGuide.configureToolbarAppearance()
 
-        UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UISwitch.appearance().onTintColor = .primary
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])

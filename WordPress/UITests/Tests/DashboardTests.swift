@@ -25,6 +25,7 @@ class DashboardTests: XCTestCase {
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
             .assertScreenIsLoaded()
+            .searchDomain()
             .selectDomain()
             .goToPlanSelection()
             .assertScreenIsLoaded()

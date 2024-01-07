@@ -340,16 +340,3 @@ extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
         }
     }
 }
-
-// MARK: - User Defaults
-
-extension UserDefaults {
-    var quickStartWasDismissedPermanently: Bool {
-        get {
-            return bool(forKey: #function)
-        }
-        set {
-            set(newValue, forKey: #function)
-        }
-    }
-}

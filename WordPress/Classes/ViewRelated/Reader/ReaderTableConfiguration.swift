@@ -73,10 +73,6 @@ final class ReaderTableConfiguration {
         return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
     }
 
-    func oldPostCardCell(_ tableView: UITableView) -> OldReaderPostCardCell {
-        return tableView.dequeueReusableCell(withIdentifier: oldReaderCardCellReuseIdentifier) as! OldReaderPostCardCell
-    }
-
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {
         return tableView.dequeueReusableCell(withIdentifier: readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
     }

@@ -124,8 +124,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
-            launchSiteCreation: self.launchSiteCreationFromNoSites,
-            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+            launchSiteCreation: { [weak self] in self?.launchSiteCreationFromNoSites() },
+            launchLoginForSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
         )
         let noSiteView = NoSitesView(
             viewModel: noSitesViewModel,
@@ -886,6 +886,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     ///
     func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
         blogDetailsViewController?.showDetailView(for: subsection)
+    }
+
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+        blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 
     // TODO: Refactor presentation from routes

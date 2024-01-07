@@ -1,0 +1,5 @@
+Kami memperbarui editor klasik dengan pemilih media baru untuk Foto dan Media Situs. Namun, Anda masih dapat mengunggah gambar, video, dan lain-lain ke situs Anda.
+
+Terkait dengan tipe media, kini Anda dapat menambahkan filter media ke layar Media Situs. Jika menggunakan iPhone, Anda pasti juga akan melihat mode rasio aspek yang baru. Kedua pilihan tersedia jika Anda mengetuk menu judul.
+
+Terakhir, kami memperbaiki kerusakan pop-up kepatuhan yang muncul ketika Anda memeriksa statistik selama proses penyiapan. Mantap.

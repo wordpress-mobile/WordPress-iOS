@@ -15,7 +15,6 @@ class AbstractPostListViewController: UIViewController,
 {
     typealias SyncPostResult = (posts: [AbstractPost], hasMore: Bool)
 
-    private static let postsControllerRefreshInterval = TimeInterval(300)
     private static let httpErrorCodeForbidden = 403
     private static let postsFetchRequestBatchSize = 10
     private static let pagesNumberOfLoadedElement = 100

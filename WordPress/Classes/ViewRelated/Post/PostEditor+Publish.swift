@@ -212,17 +212,6 @@ extension PublishingEditor {
         present(alertController, animated: true, completion: nil)
     }
 
-    fileprivate func displayHasFailedMediaAlert(then: @escaping () -> ()) {
-        let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(FailedMediaRemovalAlert.acceptTitle) { [weak self] alertAction in
-            self?.removeFailedMedia()
-            then()
-        }
-
-        alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
-        present(alertController, animated: true, completion: nil)
-    }
-
     /// If the user is publishing a post, displays the Prepublishing Nudges
     /// Otherwise, shows a confirmation Action Sheet.
     ///
@@ -662,11 +651,4 @@ private struct PostUploadingAlert {
     static let title = NSLocalizedString("Uploading post", comment: "Title for alert when trying to preview a post before the uploading process is complete.")
     static let message = NSLocalizedString("Your post is currently being uploaded. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to preview a post before the upload process is complete.")
     static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-}
-
-private struct FailedMediaRemovalAlert {
-    static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
-    static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-    static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
-    static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
 }

@@ -110,7 +110,6 @@ extension DashboardQuickStartCardCell {
     }
 
     private enum Metrics {
-        static let iconSize = CGSize(width: 18, height: 18)
         static let constraintPriority = UILayoutPriority(999)
     }
 }

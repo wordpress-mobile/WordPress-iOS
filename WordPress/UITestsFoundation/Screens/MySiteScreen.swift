@@ -229,9 +229,9 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func tapFreeToPaidPlansCard() throws -> DomainsSuggestionsScreen {
+    public func tapFreeToPaidPlansCard() throws -> DomainsSelectionScreen {
         freeToPaidPlansCardButton.tap()
-        return try DomainsSuggestionsScreen()
+        return try DomainsSelectionScreen()
     }
 
     @discardableResult

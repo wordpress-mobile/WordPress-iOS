@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-06 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-03 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -645,6 +645,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alles";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Alle jaarlijkse abonnementen van WordPress.com zijn inclusief aangepaste domeinnaam. Registreer nu je gratis domein.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9417,11 +9420,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "URL kopiëren";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Site bekijken";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Meer informatie";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Alle blogmeldingen komen in de maand januari van Bloganuary: onze community-challenge om in het nieuwe jaar betere bloggewoonten op te bouwen.";
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary is aangebroken!";
 
 /* Title of a button that calls the user to enable the Blogging Prompts feature. */
 "bloganuary.learnMore.modal.button.promptsDisabled" = "Blogmeldingen inschakelen";
@@ -9610,6 +9616,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Een domein zoeken";
+
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Neem een domein";
 
@@ -9660,6 +9669,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Domain management choose site card subtitle */
 "domain.management.site.card.footer" = "Een gratis domein voor het eerste jaar";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Gebruik met een site die je al hebt aangemaakt.";
 
 /* Domain management choose site card title */
 "domain.management.site.card.title" = "Bestaande WordPress.com-site";
@@ -9722,6 +9734,9 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Geselecteerde weergeven (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Campagnedetails";
@@ -10338,6 +10353,24 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Je hebt geen sites";
 
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Siteacties";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Tik om meer siteactie weer te geven";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Startpagina personaliseren";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Favicon wijzigen";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Sitetitel wijzigen";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Site bekijken";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
 
@@ -10356,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Startpagina";
 
+/* Badge for page cells */
+"pageList.badgePendingReview" = "Beoordeling in behandeling";
+
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
 
@@ -10373,6 +10409,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Trash option in the trash page confirmation alert. */
 "pagesList.trash.actionTitle" = "Verplaatsen naar prullenbak";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Weet je zeker dat je deze pagina naar de prullenbak wilt verplaatsen?";
 
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
@@ -10410,6 +10449,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "%@ aangemaakt";
+
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Bericht verwijderen";
 
@@ -10421,6 +10463,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.publishedTimeAgo" = "%@ gepubliceerd";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "%@ gepland";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "%@ verplaatst naar prullenbak";
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Weergave";
@@ -11005,6 +11053,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Help";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Zoek gratis GIF's om toe te voegen aan je mediabibliotheek!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
