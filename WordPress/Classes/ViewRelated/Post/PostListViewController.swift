@@ -7,10 +7,6 @@ import UIKit
 final class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
-    private var showingJustMyPosts: Bool {
-        filterSettings.currentPostAuthorFilter() == .mine
-    }
-
     /// If set, when the post list appear it will show the tab for this status
     private var initialFilterWithPostStatus: BasePost.Status?
 

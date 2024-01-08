@@ -37,20 +37,31 @@ struct DynamicDashboardCard: View {
             rowsVStack
             actionHStack
         }
+        .padding(.bottom, Length.Padding.single)
+        .padding(.horizontal, Length.Padding.double)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     @ViewBuilder
     var featureImage: some View {
         if let featureImageURL = input.featureImageURL {
-            AsyncImage(url: featureImageURL) { image in
-                image.image?
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(
-                        RoundedRectangle(
-                            cornerRadius: Length.Radius.small
-                        )
+            AsyncImage(url: featureImageURL) { phase in
+                Group {
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    } else {
+                        Color.DS.Background.secondary
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 150)
+                    }
+                }
+                .clipShape(
+                    RoundedRectangle(
+                        cornerRadius: Length.Radius.small
                     )
+                )
             }
         }
     }
@@ -102,6 +113,14 @@ struct DynamicDashboardCard: View {
                 Spacer()
             }
         }
+    }
+}
+
+final class DynamicDashboardCardViewController: UIHostingController<DynamicDashboardCard> {
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.view.invalidateIntrinsicContentSize()
     }
 }
 

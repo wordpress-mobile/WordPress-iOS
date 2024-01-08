@@ -13,8 +13,6 @@ class GutenbergMediaInserterHelper: NSObject {
     ///
     fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
-    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
-
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg
@@ -88,29 +86,6 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
-    func insertFromMediaEditor(assets: [AsyncImage], callback: @escaping MediaPickerDidPickMediaCallback) {
-        var mediaCollection: [MediaInfo] = []
-        let group = DispatchGroup()
-        assets.forEach { asset in
-            group.enter()
-            if let image = asset.editedImage {
-                insertFromImage(image: image, callback: { media in
-                    guard let media = media,
-                    let selectedMedia = media.first else {
-                        group.leave()
-                        return
-                    }
-                    mediaCollection.append(selectedMedia)
-                    group.leave()
-                })
-            }
-        }
-
-        group.notify(queue: .main) {
-            callback(mediaCollection)
-        }
-    }
-
     func syncUploads() {
         for media in post.media {
             if media.remoteStatus == .failed {
@@ -144,6 +119,10 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func retryUploadOf(media: Media) {
         mediaCoordinator.retryMedia(media)
+    }
+
+    func retryFailedMediaUploads() {
+        _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: true)
     }
 
     func hasFailedMedia() -> Bool {

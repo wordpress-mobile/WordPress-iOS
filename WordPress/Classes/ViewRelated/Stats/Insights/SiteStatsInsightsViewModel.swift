@@ -383,20 +383,12 @@ class SiteStatsInsightsViewModel: Observable {
             ])
     }
 
-    func isFetchingOverview() -> Bool {
-        return insightsStore.isFetchingOverview
-    }
-
     func fetchingFailed() -> Bool {
         return insightsStore.fetchingFailed(for: .insights)
     }
 
     func containsCachedData() -> Bool {
         return insightsStore.containsCachedData(for: insightsToShow)
-    }
-
-    func yearlyPostingActivity(from date: Date = Date()) -> [[PostingStreakEvent]] {
-        return insightsStore.getYearlyPostingActivity(from: date)
     }
 
     func annualInsightsYear() -> Int? {
@@ -828,13 +820,6 @@ private extension SiteStatsInsightsViewModel {
                        dataSubtitle: AppConfiguration.statsRevampV2Enabled ? "" : followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
-    }
-
-    func createAddInsightRow() -> StatsTotalRowData {
-        return StatsTotalRowData(name: StatSection.insightsAddInsight.title,
-                                 data: "",
-                                 icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
-                                 statSection: .insightsAddInsight)
     }
 
     func updateMostRecentChartData(_ periodSummary: StatsSummaryTimeIntervalData?) {

@@ -220,7 +220,6 @@ private extension SignupEpilogueTableViewController {
         static let noPasswordRows = 2
         static let allAccountRows = 3
         static let headerFooterHeight: CGFloat = 50
-        static let footerTrailingMargin: CGFloat = 16
         static let footerTopMargin: CGFloat = 8
     }
 

@@ -704,10 +704,6 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     // MARK: - Tabbed Cards
 
-    func tabbedRowsFrom(_ commentsRowData: [StatsTotalRowData]) -> [DetailDataRow] {
-        return dataRowsFor(commentsRowData)
-    }
-
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
         var followers: [StatsFollower] = []

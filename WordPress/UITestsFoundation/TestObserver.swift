@@ -2,8 +2,8 @@ import XCTest
 
 class TestObserver: NSObject, XCTestObservation {
     override init() {
-            super.init()
-            XCTestObservationCenter.shared.addTestObserver(self)
+        super.init()
+        XCTestObservationCenter.shared.addTestObserver(self)
     }
 
     func testBundleWillStart(_ testBundle: Bundle) {

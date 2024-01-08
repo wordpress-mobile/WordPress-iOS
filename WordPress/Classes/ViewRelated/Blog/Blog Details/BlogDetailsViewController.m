@@ -24,7 +24,6 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
-static NSString *const BlogDetailsQuickActionsCellIdentifier = @"BlogDetailsQuickActionsCell";
 static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
@@ -377,7 +376,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
-    [self.tableView registerClass:[QuickActionsCell class] forCellReuseIdentifier:BlogDetailsQuickActionsCellIdentifier];
     UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
@@ -475,7 +473,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self reloadTableViewPreservingSelection];
 }
 
-- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section 
+{
+    [self showDetailViewForSubsection:section userInfo:@{}];
+}
+
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section userInfo:(NSDictionary *)userInfo
 {
     NSIndexPath *indexPath = [self indexPathForSubsection:section];
 
@@ -526,7 +529,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink];
+            BOOL showPicker = userInfo[[BlogDetailsViewController userInfoShowPickerKey]] ?: NO;
+            [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink showPicker: showPicker];
             break;
         case BlogDetailsSubsectionPages:
             self.restorableSelectedIndexPath = indexPath;
@@ -670,7 +674,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -979,7 +982,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
-            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
@@ -1549,12 +1551,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
-
-    /// For larger texts we don't show the quick actions row
-    if (detailSection.category == BlogDetailsSectionCategoryQuickAction && self.isAccessibilityCategoryEnabled) {
-        return 0;
-    }
-
     return [detailSection.rows count];
 }
 
@@ -1593,11 +1589,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return cell;
     }
 
-    if (section.category == BlogDetailsSectionCategoryQuickAction) {
-        QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
-        [self configureQuickActionsWithCell: cell];
-        return cell;
-    }
     
     if (section.category == BlogDetailsSectionCategoryQuickStart) {
         QuickStartCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickStartCellIdentifier];
@@ -1833,10 +1824,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementPages];
 }
 
-- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source {
+    [self showMediaLibraryFromSource:source showPicker:false];
+}
+
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source showPicker:(BOOL)showPicker
 {
     [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
-    SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog];
+    SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog showPicker:showPicker];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
@@ -2242,6 +2237,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             completion();
         });
     }];
+}
+
+#pragma mark - Constants
+
++ (NSString *)userInfoShowPickerKey {
+    return @"show-picker";
 }
 
 @end

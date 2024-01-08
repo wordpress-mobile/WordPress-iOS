@@ -114,10 +114,6 @@ class SharingAuthorizationWebViewController: WPWebViewController {
         // Delegates should expect to handle a false positive.
         delegate?.authorizeDidSucceed(publicizer)
     }
-
-    private func displayLoadError(error: NSError) {
-        delegate?.authorize(self.publicizer, didFailWithError: error)
-    }
 }
 
 // MARK: - WKNavigationDelegate
