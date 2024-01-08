@@ -10,7 +10,7 @@ class SharingServiceTests: CoreDataTestCase {
     private let blogID = 10
 
     private lazy var account: WPAccount = {
-        AccountBuilder(contextManager)
+        AccountBuilder(contextManager.mainContext)
             .with(id: Int64(userID))
             .with(username: "username")
             .with(authToken: "authToken")

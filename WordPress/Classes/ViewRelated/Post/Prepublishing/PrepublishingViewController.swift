@@ -47,9 +47,9 @@ class PrepublishingViewController: UITableViewController {
         return PublishSettingsViewModel(post: post)
     }()
 
-    private lazy var presentedVC: DrawerPresentationController? = {
+    private var presentedVC: DrawerPresentationController? {
         return (navigationController as? PrepublishingNavigationController)?.presentedVC
-    }()
+    }
 
     enum CompletionResult {
         case completed(AbstractPost)
@@ -133,13 +133,11 @@ class PrepublishingViewController: UITableViewController {
     /// Toggles `keyboardShown` as the keyboard notifications come in
     private func configureKeyboardToggle() {
         NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)
-            .map { _ in return true }
-            .assign(to: \.keyboardShown, on: self)
+            .sink { [weak self] _ in self?.keyboardShown = true }
             .store(in: &cancellables)
 
         NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)
-            .map { _ in return false }
-            .assign(to: \.keyboardShown, on: self)
+            .sink { [weak self] _ in self?.keyboardShown = false }
             .store(in: &cancellables)
     }
 
@@ -375,7 +373,6 @@ class PrepublishingViewController: UITableViewController {
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             sourceRect: nil,
             viewModel: publishSettingsViewModel,
-            transitioningDelegate: nil,
             updated: { [weak self] date in
                 WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
                 self?.publishSettingsViewModel.setDate(date)

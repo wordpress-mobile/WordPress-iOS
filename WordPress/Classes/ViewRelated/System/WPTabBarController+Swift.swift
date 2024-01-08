@@ -106,4 +106,18 @@ extension WPTabBarController {
 
         return selectedViewController.supportedInterfaceOrientations
     }
+
+    @objc func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
+
+        guard let index = tabBar.items?.firstIndex(of: item), tabBar.subviews.count > index + 1,
+              let imageView = tabBar.subviews[index + 1].subviews.last as? UIImageView else {
+            return
+        }
+
+        let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        bounceAnimation.values = [0.8, 1.02, 1.0]
+        bounceAnimation.duration = TimeInterval(0.2)
+        bounceAnimation.calculationMode = CAAnimationCalculationMode.cubic
+        imageView.layer.add(bounceAnimation, forKey: nil)
+    }
 }

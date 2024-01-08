@@ -1,6 +1,107 @@
-23.6
+24.1
 -----
 
+
+24.0
+-----
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [***] [Jetpack-only] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
+* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
+* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
+* [*] [Jetpack-only] Updated Site Domains screen to make domains management more convenient [#22294, #22311]
+* [**] [internal] [Jetpack-only] Adds support for dynamic dashboard cards driven by the backend [#22326]
+* [**] [internal] Add support for the Phase One Fast Media Uploads banner [#22330]
+* [*] [internal] Remove personalizeHomeTab feature flag [#22280]
+* [*] Fix a rare crash in post search related to tags [#22275]
+* [*] Fix a rare crash when deleting posts [#22277]
+* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
+* [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
+* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
+* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
+
+23.9
+-----
+* [**] Updates the My Site header to show site actions in a context menu [#22151]
+* [**] Add media fitlers to the Site Media screen [#22096]
+* [*] The "aspect ratio" mode on the Site Media screen is now also available on iPhone via the new title menu [#22096]
+* [**] Update the classic editor to use the new Photos and Site Media pickers [#22060]
+* [**] [internal] Remove WPMediaPicker dependency [#22103]
+* [*] [internal] Rework Tenor (Free GIF) and Stock Photos (Free Photos) pickers [#22066, #22074]
+* [*] [internal] Remove MediaThumbnailService and reduce the size of the large thumbnails, reducing disk usage [#22106]
+* [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
+* [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
+* [*] [Jetpack-only] Fix an issue where VoiceOver could lose focus when liking posts in Reader. [#22232]
+
+23.8
+-----
+* [**] Add Optimize Images setting for image uploads and enable it by default [#21981]
+* [*] Fix the media item details screen layout on iPad [#22042]
+* [*] Improve the performance of loading thumbnails and original images in the Site Media screen [#22043]
+* [*] Integrate native photos picker (`PHPickerViewController`) in Story Editor [#22059]
+* [*] Fix an issue [#21959] where WordPress → Jetpack migration was not working for accounts with no sites. These users are now presented with a shortened migration flow. The "Uninstall WordPress" prompt will now also appear only as a card on the Dashboard. [#22064]
+* [*] Add Select and Deselect button to previews in Site Media picker [#22078]
+* [*] [internal] Fix an issue with scheduling of posts not working on iOS 17 with Xcode 15 [#22012]
+* [*] [internal] Remove SDWebImage dependency from the app and improve cache cost calculation for GIFs [#21285]
+* [*] Stats: Fix an issue where sites for clicked URLs do not open [#22061]
+* [*] Improve pages list performance when there are hundreds of pages in the site [#22070]
+* [*] Fix an issue with local thumbnails for GIFs inserted to Site Media not being animated [#22083]
+* [*] [internal] Make Reader web views inspectable on iOS 16.4 and higher [#22077]
+* [*] [internal] Add workarounds for large emoji on P2. [#22080]
+* [*] [Jetpack-only] Block Editor: Ensure text is always visible within Contact Info block [https://github.com/Automattic/jetpack/pull/33873]
+* [*] Block Editor: Ensure uploaded audio is always visible within Audio block [https://github.com/WordPress/gutenberg/pull/55627]
+* [*] Block Editor: In the deeply nested block warning, only display the ungroup option for blocks that support it [https://github.com/WordPress/gutenberg/pull/56445]
+* [**] Refactor deleting media [#21748]
+* [*] [Jetpack-only] Add a dashboard card for Bloganuary. [https://github.com/wordpress-mobile/WordPress-iOS/pull/22136]
+* [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+
+23.7
+-----
+* [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
+* [*] Posts & Pages: Moved actions to a context menu and added new actions such as “Comments”, “Settings”, and “Set as regular page”. Made the context menu available via long-press (#21886, #21965, #21963, #21967)
+* [*] Posts & Pages: Added swipe actions - left to view, right to share and/or delete (#21917)
+* [***] Posts & Pages: Added paging, full-text search, and searching via “author” / “tag” filters (#21789)
+* [*] Posts & Pages: Search now works across all authors unless you explicitly add the author filter (#21966)
+* [*] Posts & Pages: Fix an issue with the Pages list not refreshing when the pages are added or modified
+* [*] Posts & Pages: Fix an issue where “View” action was available for Trashed posts (#21958)
+* [*] Posts & Pages: Fix rare crashes in Posts & Pages (#21298)
+* [***] Site Media: Update the design of the Site Media screen with an improved selection mode, updated context menus, a way to share more than one item at a time, better support for animated GIFs, fix a couple of visual issues with state views and search, and more [#21457]
+* [**] Site Media: Improve performance by moving the work to the background, reducing memory usage, prefetching images, decompressing jpegs in the background, canceling unneeded requests, and more [#21470], [#21615], [#21664]
+* [**] Site Media: Add support for selecting site media with a pan gesture [#21702]
+* [*] Site Media: Add storage quota shown proactively in the context menu when adding media [#22013]
+* [*] Site Media: Add aspect ratio mode to Site Media on iPad, which is a new default [#22009]
+* [**] Site Media: Update the design of the Site Media details view that now allows swiping between photos, makes it easier to modify metadata, and delete items [#22008]
+* [*] Site Media: Fix an issue with blank image placeholders on the Site Media screen [#21457]
+* [*] Site Media: Fix an issue with 'you have no media' appears just before the media does [#9922] [#21457]
+* [*] Site Media: Fix an issue with media occasionally flashing white on the Site Media screen
+* [*] Site Media: Fix rare crashes in the Site Media screen and media picker [#21572]
+* [*] Site Media: Fix an issue with sharing PDF and other documents [#22021]
+* [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
+* [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
+* [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
+* [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
+* [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
+* [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
+* [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]
+* [***] [Jetpack-only] Added the All Domains screen enabling the users to manage their domains from within the app [#22033]
+
+23.6
+-----
+* [***] Added support for logging in with security keys [#22001]
+* [***] [Jetpack-only] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
+* [**] When moving a post to trash, show a toast message with undo action instead of an inline undo row. [#21724]
+* [*] Site Domains: Fixed an issue where the message shared while adding a domain was inaccurate. [#21827]
+* [*] Fix an issue where login with site address is blocked after failing the first attempt. [#21848]
+* [*] Fix an issue with an issue [#16999] with HTML not being stripped from post titles [#21846]
+* [*] Fix an issue that leads to an ambiguous error message when an incorrect SMS 2FA code is submitted. [#21863]
+* [*] Fix an issue where two 2FA controllers were being opened at the same time when logging in. [#21865]
+* [*] Block Editor Social Icons: Fix visibility of inactive icons when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55398]
+* [*] Block Editor Classic block: Add option to convert to blocks [https://github.com/WordPress/gutenberg/pull/55461]
+* [*] Block Editor Synced Patterns: Fix visibility of heading section when used with block based themes in dark mode [https://github.com/WordPress/gutenberg/pull/55399]
 
 23.5
 -----
@@ -11,7 +112,6 @@
 * [*] (Internal) Remove .nativePhotoPicker feature flag and the disabled code [#21681](https://github.com/wordpress-mobile/WordPress-iOS/pull/21681)
 * [*] [WordPress-only] fixes an issue where users attempting to create a .com site in the post-sign-up flow are presented with two consecutive overlays. [#21752]
 * [**] [Jetpack-only] Reader: Improvement of core UI elements, including feed cards, tag and site headers, buttons and recommendation sections. [#21772]
-* [***] [internal][Jetpack-only] [***] Added paid domain selection, plan selection, and checkout screens in site creation flow [#21688]
 
 23.4
 -----

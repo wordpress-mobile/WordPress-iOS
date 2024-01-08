@@ -9,17 +9,23 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
     private lazy var buttonAddMedia = SpotlightableButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
+    private var buttonFilter: UIButton?
 
     private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
-    @objc init(blog: Blog) {
+    private var isPreparingToShare = false
+    private var isFirstAppearance = true
+    private var showPicker = false
+
+    @objc init(blog: Blog, showPicker: Bool = false) {
         self.blog = blog
+        self.showPicker = showPicker
+
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
     }
 
@@ -36,17 +42,62 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         collectionViewController.delegate = self
 
         configureAddMediaButton()
-        configureNavigationBarAppearance()
+        configureDefaultNavigationBarAppearance()
+        configureNavigationTitle()
         refreshNavigationItems()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }
         buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
+
+        if showPicker && blog.userCanUploadMedia {
+            buttonAddMediaMenuController.showPhotosPicker(from: self)
+            showPicker = false
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = true
+            isFirstAppearance = false
+        }
     }
 
     // MARK: - Configuration
+
+    private func configureNavigationTitle() {
+        let menu = UIMenu(children: [
+            UIMenu(options: [.displayInline], children: SiteMediaFilter.allFilters.map { filter in
+                UIAction(title: filter.title, image: filter.image) { [weak self] _ in
+                    self?.didUpdateFilter(filter)
+                }
+            }),
+            UIDeferredMenuElement.uncached { [weak self] in
+                let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+                let action = UIAction(
+                    title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                    image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                        self?.collectionViewController.toggleAspectRatioMode()
+                    }
+                $0([action])
+            }
+        ])
+
+        let button = UIButton.makeMenu(title: Strings.title, menu: menu)
+        self.buttonFilter = button
+        if UIDevice.isPad() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        } else {
+            navigationItem.titleView = button
+        }
+    }
 
     private func configureAddMediaButton() {
         let button = self.buttonAddMedia
@@ -63,14 +114,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         button.showsMenuAsPrimaryAction = true
         button.accessibilityLabel = Strings.addButtonAccessibilityLabel
         button.accessibilityHint = Strings.addButtonAccessibilityHint
-    }
-
-    private func configureNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func refreshNavigationItems() {
@@ -91,8 +134,15 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                 let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
                 rightBarButtonItems.append(selectButton)
             }
+
             return rightBarButtonItems
         }()
+    }
+
+    private func didUpdateFilter(_ filter: SiteMediaFilter) {
+        buttonFilter?.setTitle(filter.title, for: .normal)
+        buttonFilter?.sizeToFit() // Important!
+        collectionViewController.setMediaType(filter.mediaType)
     }
 
     // MARK: - Actions
@@ -121,26 +171,32 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         collectionViewController.setEditing(isEditing, allowsMultipleSelection: true)
         refreshNavigationItems()
-
-        if isEditing && toolbarItems == nil {
-            var toolbarItems: [UIBarButtonItem] = []
-            if blog.supports(.mediaDeletion) {
-                toolbarItems.append(toolbarItemDelete)
-            }
-            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
-            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            toolbarItems.append(toolbarItemShare)
-            self.toolbarItems = toolbarItems
-        }
-
+        updateToolbarItems()
         navigationController?.setToolbarHidden(!isEditing, animated: true)
     }
 
-    private func updateToolbarItemsState(for selection: [Media]) {
-        for toolbarItem in toolbarItems ?? [] {
-            toolbarItem.isEnabled = selection.count > 0
+    private func updateToolbarItems() {
+        guard isEditing else { return }
+
+        var toolbarItems: [UIBarButtonItem] = []
+        if blog.supports(.mediaDeletion) {
+            toolbarItems.append(toolbarItemDelete)
         }
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        toolbarItems.append(UIBarButtonItem(customView: toolbarItemTitle))
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        if isPreparingToShare {
+            toolbarItems.append(.activityIndicator)
+        } else {
+            toolbarItems.append(toolbarItemShare)
+        }
+        self.toolbarItems = toolbarItems
+    }
+
+    private func updateToolbarItemsState(for selection: [Media]) {
+        toolbarItemDelete.isEnabled = selection.count > 0
+        toolbarItemShare.isEnabled = selection.count > 0
+
         toolbarItemTitle.setSelection(selection)
     }
 
@@ -185,18 +241,34 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     // MARK: - Actions (Share)
 
-    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil) {
+    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil, sourceView: UIView? = nil) {
         guard !selection.isEmpty else {
             return
         }
-        // TODO: Add spinner (cancellable?)
+
+        func setPreparingToShare(_ isSharing: Bool) {
+            isPreparingToShare = isSharing
+            updateToolbarItems()
+        }
+
+        setPreparingToShare(true)
+
+        WPAnalytics.track(.siteMediaShareTapped, properties: [
+            "number_of_items": selection.count
+        ])
+
         Task {
             do {
-                // TODO: Add analytics
                 let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
 
                 let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
-                activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+                if let popover = activityViewController.popoverPresentationController {
+                    if let barButtonItem {
+                        popover.barButtonItem = barButtonItem
+                    } else {
+                        popover.sourceView = sourceView ?? view
+                    }
+                }
                 activityViewController.completionWithItemsHandler = { [weak self] _, isCompleted, _, _ in
                     if isCompleted {
                         self?.setEditing(false)
@@ -204,8 +276,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
                 }
                 present(activityViewController, animated: true, completion: nil)
             } catch {
-                // TODO: Add error handling
+                SVProgressHUD.showError(withStatus: Strings.sharingFailureMessage)
             }
+
+            setPreparingToShare(false)
         }
     }
 
@@ -218,6 +292,24 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     func makeAddMediaMenu(for viewController: SiteMediaCollectionViewController) -> UIMenu? {
         buttonAddMediaMenuController.makeMenu(for: self)
     }
+
+    func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? {
+        var actions: [UIAction] = []
+
+        actions.append(UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+            self?.shareSelectedMedia([media], sourceView: sourceView)
+        })
+        if blog.supports(.mediaDeletion) {
+            actions.append(UIAction(title: Strings.buttonDelete, image: UIImage(systemName: "trash"), attributes: [.destructive]) { [weak self] _ in
+                self?.deleteSelectedMedia([media])
+            })
+        }
+        return UIMenu(children: actions)
+    }
+}
+
+extension SiteMediaViewController {
+    static var sharingFailureMessage: String { Strings.sharingFailureMessage }
 }
 
 private enum Strings {
@@ -232,4 +324,9 @@ private enum Strings {
     static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
     static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
     static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
+    static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
+    static let buttonShare = NSLocalizedString("mediaLibrary.buttonShare", value: "Share", comment: "Context menu button")
+    static let buttonDelete = NSLocalizedString("mediaLibrary.buttonDelete", value: "Delete", comment: "Context menu button")
+    static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
+    static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")
 }

@@ -31,7 +31,7 @@ public extension NSAttributedString {
             // When displaying an animated gif pass the gif data instead of the image
             if
                 displayAnimatedGifs,
-                let animatedImage = image as? AnimatedImageWrapper,
+                let animatedImage = image as? AnimatedImage,
                 animatedImage.gifData != nil
             {
                 imageAttachment.contents = animatedImage.gifData

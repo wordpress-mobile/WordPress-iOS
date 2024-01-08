@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-19 16:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-04 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: he_IL */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d פוסטים.";
 
@@ -209,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d שנים";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "אזור תפריט %i בערכת עיצוב זו";
@@ -270,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "סמל של הרשת החברתית %s";
+
+/* translators: displayed right after the classic block is converted to blocks. %s: The localized classic block name */
+"'%s' block converted to blocks" = "הבלוק '%s' בהמרה לבלוקים";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' לא נתמך באופן מלא";
@@ -478,13 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "סוג הפעילות (⁦%1$d⁩)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "הוספה";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "הוספת %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "הוספת בלוק לאחר";
 
@@ -581,9 +571,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add menu item to children" = "הוספת פריט תפריט לילדים";
 
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "להוסיף פריט מדיה חדש";
-
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "הוספת תפריט חדש";
 
@@ -649,9 +636,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
 
-/* Description of albums in the photo libraries */
-"Albums" = "אלבומים";
-
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "יישור";
@@ -664,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "הכל";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "כל התוכניות השנתיות של WordPress.com כוללות דומיין אישי. ניתן לרשום את הדומיין החינמי שלך עכשיו.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -730,10 +717,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "טקסט חלופי";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "לחלופין, ניתן לנתק ולערוך את הבלוקים האלה בנפרד על ידי הקשה על 'להפריד מקבצי בלוקים'.";
+"Alternatively, you can convert the content to blocks." = "לחלופין, אפשר להמיר את התוכן לבלוקים.";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "לחלופין, ניתן לנתק ולערוך את הבלוק הזה בנפרד על ידי הקשה על 'להפריד מקבץ'.";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "לחלופין, ניתן להזין את הסיסמה של החשבון.";
@@ -882,14 +869,8 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "האם ברצונך לנתק את Jetpack מהאתר?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "האם אתה בטוח שברצונך למחוק לצמיתות את הפריטים שנבחרו?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "האם אכן ברצונך למחוק פריט זה לצמיתות?";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "האם ברצונך למחוק את העמוד לצמיתות?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "ביקשת למחוק פוסט זה לצמיתות - האם ההחלטה סופית?";
@@ -921,9 +902,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "האם ברצונך לשלוח לביקורת?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "בחרת לשלוח עמוד זה לפח – האם ההחלטה סופית?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "בחרת לשלוח פוסט זה לפח - האם ההחלטה סופית?";
@@ -964,9 +942,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "תיאור אודיו. ריק";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "אודיו, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "מאמת";
@@ -1178,10 +1153,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "תפריט בלוקים";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "בעורך לנייד ייתכן עיבוד לא תקין של בלוקים בקינון עמוק מ-%d רמות. מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת עורך האינטרנט.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "בעורך לנייד ייתכן עיבוד לא תקין של בלוקים בקינון עמוק מ-%d רמות. מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת דפדפן האינטרנט.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "בעורך לנייד ייתכן עיבוד לא תקין של בלוקים בקינון עמוק מ-%d רמות.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "אתר";
@@ -1257,10 +1229,7 @@ translators: Block name. %s: The localized block name */
 "Button position" = "מיקום הכפתור";
 
 /* Label for the post author in the post detail. */
-"By " = "לפי";
-
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "מאת %@.";
+"By " = "לפי ";
 
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "המשך הפעולה מהווה את הסכמתך לתנאי השימוש שלנו.";
@@ -1281,8 +1250,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "חישוב...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "מצלמה";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1333,10 +1301,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1352,10 +1317,6 @@ translators: Block name. %s: The localized block name */
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "בטל";
-
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "ביטול העלאה";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -1414,9 +1375,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "שינוי סיסמה";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "שינוי ההגדרות";
 
 /* Change Username title. */
 "Change Username" = "החלפת שם משתמש";
@@ -1556,9 +1514,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "לבחור קובץ";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "בחירה מהמכשיר שלי";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "לבחור בין עמוד בית שמציג את הפוסטים האחרונים שלך (בלוג קלאסי) ובין עמוד קבוע \/ סטטי.";
@@ -1760,9 +1715,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "קהילה ועמותות ללא מטרות רווח";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "קומפקטי";
-
 /* The action is completed */
 "Completed" = "הושלמה";
 
@@ -1948,10 +1900,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Copied block" = "הבלוק הועתק";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "העתק קישור";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "העתקת הקישור לתגובה";
 
@@ -2059,9 +2007,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "לא ניתן לסגור את החשבון באופן אוטומטי";
-
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "סופר פריטי מדיה...";
 
 /* Period Stats 'Countries' header */
 "Countries" = "מדינות";
@@ -2313,7 +2258,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "מחק";
@@ -2321,15 +2265,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "מחיקת תפריט";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "מחק לצמיתות";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "למחוק לצמיתות?";
 
 /* Button label for deleting the current site
@@ -2448,7 +2388,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "בטל";
 
@@ -2465,12 +2404,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "שם תצוגה";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "מסמך, ‎%@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "מסמכים: ‎%@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "שמחים שהשלמת את המטרה שהצבת לעצמך!";
@@ -2632,8 +2565,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "לכתוב טיוטה ולפרסם פוסט.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "טיוטות";
 
 /* No comment provided by engineer. */
@@ -2644,10 +2576,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "יש לגרור כדי להתאים את נקודת המוקד";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "לשכפל";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "לשכפל בלוק";
@@ -2661,22 +2589,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "לכל בלוק יש הגדרות משלו. כדי למצוא אותן, יש להקיש על הבלוק. ההגדרות שלו יופיעו בסרגל הכלים שנמצא בתחתית המסך.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "עריכה";
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "עריכת הכפתור 'עוד'";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "לערוך את %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "לערוך את המילה ברשימת החסימות";
@@ -2870,9 +2791,6 @@ translators: Block name. %s: The localized block name */
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "יש להזין מילים שונות למעלה ואנחנו נחפש כתובת שתתאים להן.";
 
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "יש לעבור למצב עריכה כדי לאפשר בחירה מרובה למחיקה";
-
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "הזן סיסמה";
@@ -3028,9 +2946,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "בכל יום בשעה %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "כולם";
-
 /* Example story title description */
 "Example story title" = "כותרת סטורי לדוגמה";
 
@@ -3039,9 +2954,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "אורך התקציר (מילים)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "תקציר. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "תקצירים הם סיכומים אופציונליים, \"בעבודת יד\", של התוכן שלך.";
@@ -3052,8 +2964,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "לצאת מתצוגה של מסך מלא";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "הורחב";
 
 /* Accessibility hint */
@@ -3102,9 +3013,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "נכשל";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "ייצוא המדיה נכשל";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "סימון ההודעות כ'נקרא' נכשל";
@@ -3306,6 +3214,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "פוטבול";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת עורך האינטרנט.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "מסיבה זו מומלץ 'לשטח' את התוכן על ידי ביטול הקבצת הבלוק או לערוך את הבלוק בעזרת דפדפן האינטרנט.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "לנוחותך, מילאנו מראש את הפרטים ליצירת קשר עמך ב-WordPress.com. יש לבדוק את הפרטים ולוודא שהמידע נכון לדומיין שבו ברצונך להשתמש.";
@@ -3624,8 +3538,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "עמוד הבית";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "עמוד הבית";
 
 /* Label for Homepage Settings site settings section
@@ -3721,9 +3634,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image title on image settings. */
 "Image title" = "כותרת התמונה";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "תמונה, %@";
 
 /* Undated post time label */
 "Immediately" = "מיד";
@@ -4210,9 +4120,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "קישורים בתגובות";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "סגנון רשימה";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "טעינה";
 
@@ -4228,17 +4135,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "טוען גיבויים...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "טוען קובצי GIF...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "טוען תפריטים...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "טוען אנשים...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "טוען תמונות...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "טוען תוכנית...";
@@ -4300,8 +4201,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "שירותים מקומיים";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "שינויים מקומיים";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4465,7 +4365,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "הגודל המקסימלי להעלאת וידאו";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4473,9 +4372,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "אני";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "מדיה";
@@ -4486,13 +4383,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "גודל מטמון של פריט מדיה";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "לכידת מדיה";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "ספריית מדיה";
 
 /* Title for action sheet with media options. */
 "Media Options" = "אפשרויות מדיה";
@@ -4515,9 +4405,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "אפשרויות מדיה";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "תצוגה מקדימה של פריט מדיה נכשלה.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "פרטי המדיה הועלו (%ld קבצים)";
@@ -4556,9 +4443,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "הודעה";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "מטא-נתונים";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4578,13 +4462,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "חודשים ושנים";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "עוד";
 
 /* Action button to display more available options
@@ -4642,15 +4524,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "להעביר פריט תפריט";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "העברה לטיוטות";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "העברה לפח";
 
@@ -4682,7 +4557,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "אתר שלי";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "האתרים שלי";
 
 /* Siri Suggestion to open My Sites */
@@ -4932,9 +4808,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "לא נמצאו אירועים תואמים.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "לא נמצאו פרטי מדיה שמתאימים לחיפוש שלך";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4952,8 +4826,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "אין עדיין התראות";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "לא נמצאו עמודים שמתאימים לחיפוש שלך";
 
 /* Text displayed when search for plugins returns no results */
@@ -4973,9 +4846,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "לא נוצרו פוסטים בזמן האחרון עם תגית זו.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "לא נמצאו פוסטים שמתאימים לחיפוש שלך";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "אין פוסטים.";
@@ -5077,9 +4947,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "עדיין אין לייקים";
 
-/* Default message for empty media picker */
-"Nothing to show" = "אין מה לראות כאן";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "טבלת פרטי הודעות";
 
@@ -5139,7 +5006,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5201,9 +5067,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "להציג את התקציר בלבד";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "רק התמונות הנבחרות שאליהן סיפקת גישה יהיו זמינות.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5237,9 +5100,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "פתיחת הגדרות";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "פתיחה של בוחר המדיה המלא";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "פתח בדפדפן";
@@ -5279,6 +5139,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "או";
+
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "לחלופין, יש לבחור אמצעי אימות אחר.";
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "לחלופין, ניתן להתחבר באמצעות _הזנת הכתובת של האתר שלך_.";
@@ -5338,15 +5201,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "עמוד";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "עמוד שוחזר למצב 'טיוטה'";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "עמוד שוחזר למצב 'פורסם'";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "עמוד שוחזר למצב 'מתוזמן לפרסום'";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "הגדרות עמוד";
@@ -5362,9 +5216,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a page has failed to upload. */
 "Page failed to upload" = "ההעלאה של העמוד נכשלה";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"Page moved to trash." = "עמוד הועבר לפח.";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page pending review" = "העמוד ממתין לביקורת";
@@ -5437,8 +5288,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "ממתין לאישור";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "ממתין לאישור";
 
 /* Noun. Title of the people management feature.
@@ -5466,12 +5316,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "צילום";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "תמונות";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "התמונות מובאות בחסות Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "בחירת שם משתמש";
@@ -5565,7 +5409,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "עליך להזין את הסיסמה לחשבון שלך ב-WordPress.com כדי להתחבר עם ה-Apple ID שלך.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "יש להזין את קוד האימות מאפליקציית האימות או להקיש על הקישור מתחת כדי לקבל קוד באמצעות הודעת טקסט (SMS).";
+"Please enter the verification code from your authenticator app." = "יש להזין את קוד האימות מאפליקציית האימות.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "הזינו את הפרטים";
@@ -5660,15 +5504,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "פורמט";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "פוסט שוחזר למצב \"טיוטה\"";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "פוסט שוחזר למצב \"פורסם\"";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "פוסט שוחזר למצב \"מתוזמן לפרסום\"";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "הגדרות פוסט";
@@ -5687,9 +5522,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "העלאת הפוסט נכשלה";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"Post moved to trash." = "פוסט הועבר לפח.";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post pending review" = "הפוסט ממתין לביקורת";
@@ -5749,9 +5581,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "פוסטים ועמודים";
 
-/* Title of the Posts Page Badge */
-"Posts page" = "עמוד הפוסטים";
-
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "עמוד הפוסטים עודכן בהצלחה";
 
@@ -5763,9 +5592,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "כאן יופיעו פוסטים שסימנת ב'לייק'.";
-
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "מופעל על ידי Tenor";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -5785,17 +5611,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a static content. */
 "Preview" = "תצוגה מקדימה";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "תצוגה מקדימה של %@";
-
 /* Title for web preview device switching button */
 "Preview Device" = "תצוגה מקדימה של המכשיר";
 
 /* Title on display preview error */
 "Preview Unavailable" = "תצוגה מקדימה לא זמינה";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "תצוגה מקדימה של מדיה";
 
 /* No comment provided by engineer. */
 "Preview page" = "תצוגה מקדימה של העמוד";
@@ -5843,8 +5663,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "הצהרת פרטיות למשתמשים מקליפורניה";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "פרטי";
 
 /* No comment provided by engineer. */
@@ -5894,12 +5713,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "תאריך פרסום";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "פרסום מיידי";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "לפרסם כעת";
 
@@ -5917,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "פורסם";
 
 /* Precedes the name of the blog just posted on */
@@ -6060,8 +5876,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "התזכורות הוסרו";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6214,9 +6029,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "שליחה מחדש";
 
-/* Title of the reset button */
-"Reset" = "אתחול";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "לאפס את המסנן של סוג הפעילות";
 
@@ -6271,12 +6083,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6287,9 +6096,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title that triggers a scan */
 "Retry Scan" = "לנסות לסרוק שוב";
-
-/* User action to retry media upload. */
-"Retry Upload" = "נסה להעלות שוב";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "ניסיון חוזר של הכול";
@@ -6388,9 +6194,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "הפוסט נשמר";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "נשמר!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "שומר את הפוסט הנוכחי למועד מאוחר יותר.";
 
@@ -6401,7 +6204,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "שומר פוסט...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "שומר...";
 
@@ -6492,20 +6294,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search or type URL" = "לחפש או להקליד כתובת URL";
 
-/* Text displayed when the search controller will be presented */
-"Search pages" = "חיפוש עמודים";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "חיפוש פוסטים";
-
 /* No comment provided by engineer. */
 "Search settings" = "הגדרות חיפוש";
-
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "חיפוש קובצי GIF שניתן להוסיף לספריית מדיה שלך!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "חיפוש של תמונות להוספה לספריית המדיה שלך בחינם!";
 
 /* Menus search bar placeholder text. */
 "Search..." = "חיפוש...";
@@ -6577,9 +6367,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "בחירת מדינה";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "לבחור אפשרויות נוספות";
-
 /* Blog Picker's Title */
 "Select Site" = "בחירת אתר";
 
@@ -6600,9 +6387,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "לבחור דומיין";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "בחירת מדיה.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "בחירת סגנון פסקה";
@@ -6707,18 +6491,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "שירות";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "הגדרת הורה";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "להגדיר כתמונה מרכזית";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "להגדיר כעמוד הבית";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "להגדיר כעמוד פוסטים";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "להגדיר כתמונה מרכזית";
@@ -6763,7 +6540,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7149,8 +6925,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "עמוד בית קבוע";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7180,9 +6955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "דביק";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "דביק.";
 
 /* User action to stop upload. */
 "Stop upload" = "לעצור העלאה";
@@ -7240,7 +7012,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "תמיכה";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "החלפת אתר";
 
 /* Switches the Editor to HTML Mode */
@@ -7328,9 +7100,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "התגיות יעזרו לקוראים להבין מה הנושא של הפוסט. להפריד תגיות שונות באמצעות פסיקים.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "צילום תמונה או וידאו";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "לצלם תמונה";
 
@@ -7401,12 +7170,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "יש להקיש כדי לבחור את התקופה הקודמת";
 
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "יש להקיש כדי להחליף לאתר אחר או להוסיף אתר חדש";
-
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "יש להקיש כדי להציג מדיה במסך מלא";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Tap to view more details.";
 
@@ -7452,9 +7215,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "הפקדים לעיצוב טקסט נמצאים בתוך סרגל הכלים שממוקם מעל המקלדת כאשר עורכים בלוק טקסט";
 
-/* Button title
-   The button's title text to send a 2FA code via SMS text message. */
+/* Button title */
 "Text me a code instead" = "שליחת קוד במקום";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "שלחו לי קוד ב-SMS";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "תודה שבחרת ב-%1$@ מאת %2$@";
@@ -7482,9 +7247,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "החיבור עם פייסבוק לא הצליח למצוא דפים. השיתוף האוטומטי לא יכול להתחבר אל פרופילים בפייסבוק, רק לדפים שפורסמו.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "לא ניתן להוסיף את קובץ GIF לספריית המדיה.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "חשבון ה-Google‏ \"%@\" לא תואם לשום חשבון ב-WordPress.com‏";
@@ -7613,7 +7375,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "המשתמש שניסית להסיר רשום בתור הבעלים של האתר. כדאי לפנות לתמיכה לעזרה.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "פג תוקפם של שם המשתמש והססמה השמורים באפליקציה. יש להזין מחדש את הססמה בהגדרות ולנסות שנית.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7681,9 +7443,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "אירעה בעיה בעת הצגת הפוסט.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "נתקלנו בבעיה בטעינת פריט מדיה זה.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "הייתה בעיה בטעינת הנתונים שלך, יש לרענן את העמוד ולנסות שוב.";
 
@@ -7695,9 +7454,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "אירעה בעיה בניסיון לגשת למיקום שלך. יש לנסות שוב מאוחר יותר.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "אירעה בעיה בניסיון לגשת למדיה שלך. כדאי לנסות שוב מאוחר יותר.";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "אירעה בעיה בעורך הסטוריז.  אם הבעיה נמשכת, אפשר ליצור איתנו קשר באמצעות המסך 'עזרה ותמיכה' תחת 'אני'.";
@@ -7768,9 +7524,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "לאפליקציה הזאת נדרשת הרשאת גישה למצלמה לצורך סריקת קודים של התחברות. יש להקיש על הכפתור 'לפתוח את ההגדרות' כדי לאפשר את הגישה.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "אפליקציה זו זקוקה להרשאה כדי לגשת לספריית המדיה במכשיר שלך ולהוסיף תמונות ו\/או סרטוני וידאו לפוסטים שלך. יש לשנות את הגדרות הפרטיות אם ברצונך לאפשר זאת.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "ייתכן ששילוב הצבעים הזה יהיה מאתגר לקריאה עבור אנשים מסוימים. אנחנו ממליצים לנסות צבע רקע בהיר יותר ו\/או צבע טקסט כהה יותר.";
@@ -7880,6 +7633,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "הגיע הזמן לסיים את הגדרת האתר שלך! רשימת המשימות שלנו תדריך אותך בשלבים הבאים.";
+
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "נגמר הזמן הקצוב, אבל לא לדאוג: האבטחה שלך בעדיפות ראשונה אצלנו. יש לנסות שוב!";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "טיפים כדי להפיק את המיטב מ-WordPress.com.";
@@ -8004,23 +7760,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "תעבורה";
 
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "להעביר דומיין";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "לשנות את %s אל";
 
 /* No comment provided by engineer. */
 "Transform block…" = "לשנות בלוק...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "לאשפה";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "להעביר את המדיה הנבחרת לפח";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "האם להעביר את העמוד לפח?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "האם להעביר את הפוסט לפח?";
@@ -8139,9 +7891,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "אי אפשר להתחבר";
 
-/* An error message. */
-"Unable to Connect" = "אי אפשר להתחבר";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "לא ניתן ליצור את עורך הסטוריז";
 
@@ -8156,9 +7905,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "לא ניתן ליצור קישורי הזמנה חדשים.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "לא ניתן למחוק את כל פריטי המדיה.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "לא ניתן למחוק פריט מדיה.";
@@ -8222,12 +7968,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "לא ניתן לשתף את הקישור";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "אין אפשרות להעביר עמודים לפח במצב לא מחובר. יש לנסות שוב מאוחר יותר.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "אין אפשרות להעביר פוסטים לפח במצב לא מחובר. יש לנסות שוב מאוחר יותר.";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "לא ניתן להשבית את ההודעות של האתר";
@@ -8301,8 +8041,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts the previous notification operation
    Revert an operation
    Revert enabling notification after successfully subcribing to the comments for the post.
-   The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
-   The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
 "Undo" = "ביטול פעולה אחרונה";
 
@@ -8344,9 +8082,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML לא מוכר";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "תאריך יצירה לא ידוע";
 
 /* No comment provided by engineer. */
 "Unknown error" = "שגיאה לא ידועה";
@@ -8513,6 +8248,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "להשתמש בחנות של Sandbox";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "להשתמש במפתח אבטחה";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "להשתמש בעורך הבלוקים";
 
@@ -8588,15 +8326,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "הסרטון לא הועלה";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "וידאו, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "סרטונים";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -8710,6 +8443,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "ממתין להשלמת הפעולה על ידי Google...";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "ממתין למפתח אבטחה";
 
 /* View title during the Google auth process. */
 "Waiting..." = "ממתין...";
@@ -9082,6 +8819,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "משהו השתבש ולא ניתן לבצע חיבור לחשבון. יש לנסות שוב!";
 
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "אופס, משהו השתבש. יש לנסות שוב!";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "אופס, נראה שיש לנו כאן מפתח אבטחה לא תקף. נא לנסות שוב עם מפתח אחר";
+
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "הקוד לאימות דו-שלבי אינו תקף. יש לבדוק שוב את הקוד ולנסות שנית!";
 
@@ -9108,9 +8851,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "עזרה של WordPress";
-
-/* Name for the WordPress Media Library */
-"WordPress Media" = "מדיה של WordPress";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "ספריית המדיה של WordPress";
@@ -9426,9 +9166,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "החשבון שלך לא מורשה להעלות מדיה לאתר זה. מנהל המערכת של האתר יכול לשנות את ההרשאות האלו.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "לאפליקציה שלך אין הרשאות גישה לספריית המדיה עקב הגבלות פעילות, כגון בקרת הורים. יש לבדוק את ההגדרות של בקרת ההורים במכשיר זה.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "הגיבוי שלך כעת מוכן להורדה";
 
@@ -9446,9 +9183,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "הכתובת החינמית שלך ב-WordPress.com היא";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "לא ניתן היה לייצא את המדיה שלך. If the problem persists you can contact us via the Me > מסך 'עזרה ותמיכה'.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "כעת מתבצע תהליך ההגדרה של הדומיין החדש שלך, %@. יידרשו עד 30 שעות להתחלת הפעילות של הדומיין.";
@@ -9573,8 +9307,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "מה דעתך על WordPress?";
 
-/* Label displayed on audio media items. */
-"audio" = "אודיו";
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "מיטוב תמונות";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "High";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "נמוכים";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "מקסימום";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "בינוני";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "איכות";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "איכות תמונה";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "מיטוב התמונות מכווץ כעת תמונות להעלאה מהירה יותר.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "קובץ אודיו";
@@ -9685,7 +9449,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionCopyURL" = "להעתיק כתובת URL";
 
 /* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "לפתוח בדפדפן";
+"blogHeader.actionVisitSite" = "לבקר באתר";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "למידע נוסף";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "לאורך כל חודש ינואר יתקבלו מ-Bloganuary הצעות כתיבה יומיות בבלוג. זהו האתגר הקהילתי שלנו לביסוס הרגלי פרסום בבלוג לשנה החדשה.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary כבר כאן!";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary מתקרב!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "להפעיל הנחיות לפרסום בבלוג";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "קדימה!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "מזמינים אותם לפרסם את תשובתך.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "אפשר לקרוא תשובות של בלוגרים אחרים כדי לקבל השראה וליצור חיבורים חדשים.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "כך תגיע אליך מדי יום הנחיה חדשה שתיתן לך השראה.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "כדי להצטרף ל-Bloganuary עליך להפעיל את 'הנחיות פרסום בבלוג'.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "במסגרת Bloganuary נזכיר לך בעזרת 'הנחיות פרסום בבלוג' יומיות לשלוח לנו את הנושאים שלך לחודש ינואר.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "אנו מזמינים אותך להצטרף לאתגר הכתיבה שלנו שיימשך חודש שלם";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "ביטול";
@@ -9713,6 +9514,12 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "לענות ל-%1$@";
+
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "ייתכן ששם המשתמש או הסיסמה המאוחסנים באפליקציה אינם מעודכנים. יש להזין מחדש את הסיסמה בהגדרות ולנסות שוב.";
+
+/* An error message. */
+"common.unableToConnect" = "אי אפשר להתחבר";
 
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "קובצי Cookie אלו מאפשרים לנו לבצע אופטימיזציה של ביצועים על ידי איסוף מידע לגבי האופן שבו משתמשים יוצרים אינטראקציה עם אתרי האינטרנט שלנו.";
@@ -9864,6 +9671,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "להסתיר את המידע";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "לחפש דומיין";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "לקבל דומיין";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "ניתן להוסיף אתר בהמשך.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "עליך רק לרכוש דומיין";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "התוקף פג";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "מתחדש";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "למצוא דומיין";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "לאיתור הדומיין המושלם יש להקיש למטה.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "עדיין אין לך דומיינים";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "We encountered an error while loading your domains. אם הבעיה נמשכת, ניתן ליצור קשר עם התמיכה.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "משהו השתבש";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "יש לנסות שוב";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "עליך לבדוק את החיבור לרשת ולנסות שוב.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "אין חיבור אינטרנט";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*כל התוכניות השנתיות בתשלום כוללות דומיין בחינם לשנה.";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "אל דאגה, ניתן בקלות להוסיף אתר בהמשך.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "לבחור את אופן השימוש בדומיין שלך";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "לחפש דומיינים";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "אין דומיינים תואמים.";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "לבחור אתר";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "דומיין חינם בשנה הראשונה*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "להשתמש בפריט באתר שכבר הקמת.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "אתר WordPress.com קיים";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "כל הדומיינים";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "יידרשו עד 30 דקות להתחלת הפעילות של הדומיין האישי.";
 
@@ -9875,39 +9757,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "כל הכבוד, האתר שלך פורסם!";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "נדרשת פעולה";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "פעיל";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "להשלים את ההגדרה";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "שגיאה";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "התוקף פג";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "התוקף יפוג בקרוב";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "נכשל";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "בביצוע";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "לחדש";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "לאמת את האימייל";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "מאמת";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "החלופה הטובה ביותר";
@@ -9930,11 +9779,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "לשנה";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "קופה";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "ביטול";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "מצטערים, לא ניתן לרכוש את הדומיין שברצונך להוסיף מהאפליקציה של Jetpack כעת.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "לרכוש דומיין";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "חיפוש";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "לבחור אתר";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
@@ -9952,6 +9813,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "להוסיף";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "לבחור תמונות";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "תצוגה נבחרה (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "פרטי הקמפיין";
@@ -10051,9 +9921,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
-
-/* Label displayed on image media items. */
-"image" = "תמונה";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
@@ -10355,6 +10222,9 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "סומן כ'זבל'";
 
+/* Products header text in Me Screen. */
+"me.products.header" = "מוצרים";
+
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "לא ניתן לסנכרן את פריטי המדיה";
 
@@ -10367,17 +10237,23 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "להעלאת סרטון שאורכו מעל חמש דקות נדרשת תוכנית בתשלום.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "ביטול";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "להוסיף פריט מדיה חדש";
 
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "להוסיף";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "יחס גובה:רוחב:";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "למחוק";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "לבחור";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "לשתף";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "ביטול";
@@ -10400,6 +10276,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "הפריט נמחק!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "הכל";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "אודיו";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "מסמכים";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "תמונות";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "סרטוני וידאו";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "למחוק";
 
@@ -10411,6 +10302,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "לא נמצאו פרטי מדיה שמתאימים לחיפוש שלך";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Unable to share the selected items.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Square Grid";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "מדיה";
@@ -10432,6 +10329,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
+
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "לא ניתן היה לייצא את המדיה שלך מסך 'עזרה ותמיכה'. אם הבעיה נמשכת, אפשר ליצור איתנו קשר באמצעות המסך 'עזרה ותמיכה' תחת 'אני'.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "ייצוא המדיה נכשל";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "אפליקציה זו זקוקה להרשאה כדי לגשת למצלמה ולצלם מדיה חדשה, יש לשנות את הגדרות הפרטיות אם ברצונך לאפשר זאת.";
@@ -10466,6 +10369,12 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "צילום וידאו";
 
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ מתוך %2$@";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "פיקסלים.⁦%1$d⁩%2$d";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "נראה שהאפליקציה של WordPress עדיין מותקנת אצלך.";
 
@@ -10478,9 +10387,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "כבר אין לך צורך באפליקציה של WordPress במכשיר לך";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "סיום";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "אנחנו ממליצים להסיר את ההתקנה של האפליקציה של WordPress כדי להימנע מהתנגשויות נתונים.";
 
@@ -10489,6 +10395,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "העברנו את כל הנתונים וההגדרות שלך. השארנו הכול במקום.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "תודה שעברת אל Jetpack!";
@@ -10537,6 +10446,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "ברוך בואך אל Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "קדימה";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "באפליקציה של Jetpack יש את כל הפונקציונליות של האפליקציה של WordPress ועכשיו גם גישה בלעדית לנתונים סטטיסטיים, ל-Reader, להודעות ועוד.";
@@ -10613,6 +10525,30 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "אין לך עוד אתרים";
 
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "הוספת אתר";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "פעולות באתר";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "יש ללחוץ כדי להציג עוד פעולות באתר";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "להתאים אישית את הלשונית 'בית'";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "לשנות את סמל אתר";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "לשנות את שם האתר";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "להחליף אתר";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "לבקר באתר";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "ביטול";
 
@@ -10628,14 +10564,20 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "לשלוח משוב";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "מתוך";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "עמוד הבית";
 
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "אחר";
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "שינויים מקומיים";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "לקדם עם Blaze";
+/* Badge for page cells */
+"pageList.badgePendingReview" = "ביקורת  בהמתנה";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "פוסטים בכל עמוד";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "פרטי";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "עמוד הבית שלך משתמש בתבנית של ערכת עיצוב והוא ייפתח בעורך הדפדפן.";
@@ -10643,11 +10585,44 @@ Example: Reply to Pamela Nguyen */
 /* Title of the theme template homepage cell */
 "pages.template.title" = "עמוד הבית";
 
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "העמוד עודכן בהצלחה.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "למחוק לצמיתות";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "האם ברצונך למחוק את העמוד לצמיתות?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "למחוק לצמיתות?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Pages by everyone";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Pages by me";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "להעביר לפח";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "בחרת לשלוח עמוד זה לפח – האם ההחלטה סופית?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "האם להעביר את העמוד לפח?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "ביטול";
+
 /* No comment provided by engineer. */
 "password" = "סיסמה";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "הכרטיסים עשויים להציג תוכן שונה בהתאם לפעילות באתר שלך. אנחנו עובדים על הוספה של כרטיסים ופקדים נוספים.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "להציג או להסתיר כרטיסים";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "פעילות אחרונה";
@@ -10679,6 +10654,42 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
 
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "מוחק פוסט";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Edited %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "מעביר לפח...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "פורסם %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "מאת %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "תקציר. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "דביק.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Title for the 'Trash' post list row swipe action */
+"postList.swipeActionDelete" = "פח";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "למחוק";
+
+/* Title for the 'Share' post list row swipe action */
+"postList.swipeActionShare" = "לשתף";
+
+/* Title for the 'View' post list row swipe action */
+"postList.swipeActionView" = "להציג";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "ביטול";
 
@@ -10697,8 +10708,83 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "קביעת תמונה מרכזית";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "העדכון של הגדרות ההודעה נכשל.";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "לבטל העלאה";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "תגובות";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "למחוק לצמיתות";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "העברה לטיוטות";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "לשכפל";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "מאפייני עמוד";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "תצוגה מקדימה";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "לפרסם כעת";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "לנסות שוב";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Set as homepage";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "הגדרת הורה";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "להגדיר כעמוד פוסטים";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "להגדיר כעמוד רגיל";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "הגדרות";
+
+/* Share the post. */
+"posts.share.actionTitle" = "לשתף";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "נתונים סטטיסטיים";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "להעביר לפח";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "להציג";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Page deleted permanently";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Post deleted permanently";
+
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "העמוד הועבר לפח";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "הפוסט הועבר לפח";
+
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Posts by everyone";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Posts by me";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "ניתן להירשם עכשיו לקבלת שיתופים נוספים";
@@ -10844,12 +10930,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for the 'Like' button on the reader post card cell. */
 "reader.post.button.like" = "לייק";
 
-/* Accessibility hint for the like button on the reader post card cell
-   Accessibility hint for the liked button on the reader post card cell */
+/* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "הוסיף לייק לפוסט.";
 
 /* Text for the 'Liked' button on the reader post card cell. */
 "reader.post.button.liked" = "קיבל לייק";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "לביטול לייק לפוסט.";
 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.button.menu.accessibility.hint" = "פותח תפריט שכולל פעולות נוספות.";
@@ -10913,6 +11001,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "חדש";
+
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "להעביר דומיין";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Looking to transfer a domain you already own?";
 
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "פוסטים קשורים מציגים תוכן רלוונטי מהאתר שלך, מתחת לפוסטים שלך.";
@@ -11013,6 +11107,21 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "יש לבחור מדיה.";
 
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "יש להקיש כדי להציג מדיה במסך מלא";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "תצוגה מקדימה של מדיה";
+
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "להוסיף";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "ביטול בחירה";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "לבחור";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "מדיה";
 
@@ -11020,7 +11129,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteSettings.privacy.title" = "פרטיות";
 
 /* Hint for users when hidden privacy setting is set */
-"siteVisibility.hidden.hint" = "האתר זמין לכולם, אבל מנועי חיפוש מתבקשים לא לאנדקס אותו.";
+"siteVisibility.hidden.hint" = "האתר מוסתר ממבקרים, אשר רואים רק הודעת 'בקרוב' עד שהאתר יהיה מוכן לצפייה.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "מוסתר";
@@ -11181,6 +11290,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "ביטול";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "התמונות מובאות בחסות Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "אפשר לחפש תמונות חינמיות ולהוסיף אותן לספריית המדיה שלך!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "בשיחה הזאת";
 
@@ -11328,6 +11443,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "עזרה";
 
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "אפשר לחפש קובצי GIF ולהוסיף אותם לספריית המדיה שלך!";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "פריטים אלה יימחקו:";
 
@@ -11342,9 +11460,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "לא נקרא";
-
-/* Label displayed on video media items. */
-"video" = "וידאו";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "היכנס לעמוד המסמכים שלנו";

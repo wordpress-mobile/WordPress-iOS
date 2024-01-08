@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 

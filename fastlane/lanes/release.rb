@@ -13,11 +13,61 @@ platform :ios do
   #
   desc 'Executes the initial steps needed during code freeze'
   lane :code_freeze do |options|
-    gutenberg_dep_check
-    ios_codefreeze_prechecks(options)
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
 
-    ios_bump_version_release
-    new_version = get_app_version
+    # Check out the up-to-date default branch, the designated starting point for the code freeze
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    # Make sure that Gutenberg is configured as expected for a successful code freeze
+    gutenberg_dep_check
+
+    release_branch_name = compute_release_branch_name(options:, version: release_version_next)
+
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      Code Freeze:
+      • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
+
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
+    MESSAGE
+
+    UI.important(message)
+
+    skip_user_confirmation = options[:skip_confirm]
+
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+
+    UI.message 'Creating release branch...'
+    Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
+    UI.success "Done! New release branch is: #{git_branch}"
+
+    # Bump the release version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping release version and build code...'
+    PUBLIC_VERSION_FILE.write(
+      version_short: release_version_next,
+      version_long: build_code_code_freeze
+    )
+    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
+
+    # Bump the internal release version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping internal release version and build code...'
+    INTERNAL_VERSION_FILE.write(
+      # The external and internal release versions are always the same. Because the external release version was
+      # already bumped, we want to just use the `release_version_current`
+      version_short: release_version_current,
+      version_long: build_code_code_freeze_internal
+    )
+    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
+
+    commit_version_and_build_files
+
+    new_version = release_version_current
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
     extract_release_notes_for_version(
@@ -42,22 +92,49 @@ platform :ios do
       release_notes_file_path: release_notes_source_path,
       extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
     )
-    ios_update_release_notes(new_version:)
-
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    ios_update_release_notes(
+      new_version:,
+      release_notes_file_path: release_notes_source_path
     )
-      push_to_git_remote(tags: false)
-    else
-      UI.message('Aborting code completion. See you later.')
+
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
     end
 
-    setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
+    push_to_git_remote(tags: false)
+
+    attempts = 0
+    begin
+      attempts += 1
+      set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+    rescue StandardError => e
+      if attempts < 2
+        sleep_time = 5
+        UI.message("Failed to set branch protection on GitHub. Retrying in #{sleep_time} seconds in case it was because the API hadn't noticed the new branch yet.")
+        sleep(sleep_time)
+        retry
+      else
+        UI.error("Failed to set branch protection on GitHub after #{attempts} attempts")
+        raise e
+      end
+    end
+
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
+
+    message = <<~MESSAGE
+      Code freeze started successfully.
+
+      Next steps:
+
+      - Checkout `#{release_branch_name}` branch locally
+      - Update pods and release notes
+      - Finalize the code freeze
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message:) if is_ci
   end
 
   # Executes the final steps for the code freeze
@@ -69,43 +146,129 @@ platform :ios do
   #
   desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |options|
-    ios_completecodefreeze_prechecks(options)
+    ensure_git_branch_is_release_branch
+
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
+
+    version = release_version_current
+
+    UI.important("Completing code freeze for: #{version}")
+
+    skip_user_confirmation = options[:skip_confirm]
+
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+
     generate_strings_file_for_glotpress
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
-    )
-      push_to_git_remote(tags: false)
-      trigger_beta_build
-    else
-      UI.message('Aborting code freeze completion. See you later.')
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
     end
+
+    push_to_git_remote(tags: false)
+
+    trigger_beta_build
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} code freeze"
+    )
+
+    message = <<~MESSAGE
+      Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message:) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [String] base_version (default: _current app version_) If set, bases the beta on the specified version
-  #                  and `release/<base_version>` branch instead of the current one. Useful for triggering betas on hotfixes for example.
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
-    ios_betabuild_prechecks(options)
+    ensure_git_status_clean
+
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    release_version = release_version_current
+
+    # Check branch
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+      UI.user_error!("Release branch for version #{release_version} doesn't exist.")
+    end
+
+    ensure_git_branch_is_release_branch # This check is mostly redundant
+
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      • Current build code: #{build_code_current}
+      • New build code: #{build_code_next}
+
+      • Current internal build code: #{build_code_current_internal}
+      • New internal build code: #{build_code_next_internal}
+    MESSAGE
+
+    UI.important(message)
+
+    skip_user_confirmation = options[:skip_confirm]
+
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+
     generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
-    lint_localizations
-    ios_bump_version_beta
+    lint_localizations(allow_retry: skip_user_confirmation == false)
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
-    )
-      push_to_git_remote(tags: false)
-      trigger_beta_build
-    else
-      UI.message('Aborting beta deployment. See you later.')
+    bump_build_codes
+
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
     end
+
+    push_to_git_remote(tags: false)
+
+    trigger_beta_build
+
+    # Create an intermediate branch to avoid conflicts when integrating the changes
+    Fastlane::Helper::GitHelper.create_branch("new_beta/#{release_version}")
+    push_to_git_remote(tags: false)
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge changes from #{build_code_current}"
+    )
+
+    message = <<~MESSAGE
+      Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'beta-completed', style: 'success', message:) if is_ci
+  end
+
+  lane :create_editorial_branch do |options|
+    ensure_git_status_clean
+
+    release_version = release_version_current
+
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+      UI.user_error!("Release branch for version #{release_version} doesn't exist.")
+    end
+
+    ensure_git_branch_is_release_branch # This check is mostly redundant
+
+    git_pull
+
+    Fastlane::Helper::GitHelper.create_branch(editorial_branch_name(version: release_version))
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push editorial branch to remote?')
+      UI.message("Aborting as requested. Don't forget to push the branch to the remote manually.")
+      next
+    end
+
+    # We need to also set upstream so the branch created in our local tracks the remote counterpart.
+    # Otherwise, when the next automation step will run and try to push changes made on that branch, it will fail.
+    push_to_git_remote(tags: false, set_upstream: true)
   end
 
   # Sets the stage to start working on a hotfix
@@ -118,11 +281,59 @@ platform :ios do
   #
   desc 'Creates a new hotfix branch for the given `version:x.y.z`. The branch will be cut from the `x.y` tag.'
   lane :new_hotfix_release do |options|
-    prev_ver = ios_hotfix_prechecks(options)
-    ios_bump_version_hotfix(
-      previous_version: prev_ver,
-      version: options[:version]
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
+
+    new_version = options[:version] || UI.input('Version number for the new hotfix?')
+    build_code_hotfix = build_code_hotfix(release_version: new_version)
+    build_code_hotfix_internal = build_code_hotfix_internal(release_version: new_version)
+
+    # Parse the provided version into an AppVersion object
+    parsed_version = VERSION_FORMATTER.parse(new_version)
+    previous_version = VERSION_FORMATTER.release_version(VERSION_CALCULATOR.previous_patch_version(version: parsed_version))
+
+    # Check versions
+    message = <<~MESSAGE
+      New Hotfix:
+
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{new_version} (#{build_code_hotfix}).
+
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
+      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal}).
+
+      Branching from tag: #{previous_version}
+    MESSAGE
+
+    UI.important(message)
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+
+    # Check tags
+    UI.user_error!("Version #{new_version} already exists! Abort!") if git_tag_exists(tag: new_version)
+    UI.user_error!("Version #{previous_version} is not tagged! A hotfix branch cannot be created.") unless git_tag_exists(tag: previous_version)
+
+    # Create the hotfix branch
+    UI.message 'Creating hotfix branch...'
+    Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options:, version: new_version), from: previous_version)
+    UI.success "Done! New hotfix branch is: #{git_branch}"
+
+    # Bump the hotfix version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping hotfix version and build code...'
+    PUBLIC_VERSION_FILE.write(
+      version_short: new_version,
+      version_long: build_code_hotfix
     )
+    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
+
+    # Bump the internal hotfix version and build code and write it to the `xcconfig` file
+    UI.message 'Bumping internal hotfix version and build code...'
+    INTERNAL_VERSION_FILE.write(
+      version_short: new_version,
+      version_long: build_code_hotfix_internal
+    )
+    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
+
+    commit_version_and_build_files
   end
 
   # Finalizes a hotfix, by triggering a release build on CI
@@ -131,18 +342,18 @@ platform :ios do
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
-    ios_finalize_prechecks(options)
+    ensure_git_branch_is_release_branch
+
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
+
+    # Pull the latest hotfix release branch changes
     git_pull
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
-    )
-      push_to_git_remote(tags: false)
-      trigger_release_build
-    else
-      UI.message('Aborting hotfix finalization. See you later.')
-    end
+    UI.important("Triggering hotfix build for version: #{release_version_current}")
+    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+
+    trigger_release_build(branch_to_build: "release/#{release_version_current}")
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -158,31 +369,49 @@ platform :ios do
   lane :finalize_release do |options|
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
-    ios_finalize_prechecks(options)
+    ensure_git_branch_is_release_branch
+
+    # Verify that there's nothing in progress in the working copy
+    ensure_git_status_clean
+
+    skip_user_confirmation = options[:skip_confirm]
+
+    UI.important("Finalizing release: #{release_version_current}")
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+
     git_pull
 
-    check_all_translations(interactive: true)
+    check_all_translations(interactive: skip_user_confirmation == false)
 
     download_localized_strings_and_metadata(options)
-    lint_localizations
-    ios_bump_version_beta
+    lint_localizations(allow_retry: skip_user_confirmation == false)
 
-    # Wrap up
-    version = get_app_version
-    removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    bump_build_codes
+
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the release build?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+
+    version = release_version_current
+    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    trigger_release_build
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} release finalization"
     )
-      push_to_git_remote(tags: false)
-      trigger_release_build
-    else
-      UI.message('Aborting release finalization. See you later.')
-    end
+
+    message = <<~MESSAGE
+      Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'finalization-completed', style: 'success', message:) if is_ci
   end
 
   # Triggers a beta build on CI
@@ -215,8 +444,8 @@ end
 #
 def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
-    buildkite_organization: 'automattic',
-    buildkite_pipeline: 'wordpress-ios',
+    buildkite_organization: BUILDKITE_ORGANIZATION,
+    buildkite_pipeline: BUILDKITE_PIPELINE,
     branch:,
     environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml',
@@ -293,18 +522,43 @@ def prompt_for_confirmation(message:, bypass:)
   UI.confirm(message)
 end
 
-def compute_release_branch_name(options:)
-  branch_option = :branch
-  branch_name = options[branch_option]
-
-  if branch_name.nil?
-    branch_name = release_branch_name
-    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
-  end
-
-  branch_name
+def bump_build_codes
+  bump_production_build_code
+  bump_internal_build_code
+  commit_version_and_build_files
 end
 
-def release_branch_name
-  "release/#{get_app_version}"
+def bump_production_build_code
+  UI.message 'Bumping build code...'
+  PUBLIC_VERSION_FILE.write(version_long: build_code_next)
+  UI.success "Done. New Build Code: #{build_code_current}"
+end
+
+def bump_internal_build_code
+  UI.message 'Bumping internal build code...'
+  INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
+  UI.success "Done. New Internal Build Code: #{build_code_current_internal}"
+end
+
+def commit_version_and_build_files
+  git_commit(
+    path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
+    message: 'Bump version number',
+    allow_nothing_to_commit: false
+  )
+end
+
+def create_release_management_pull_request(base_branch:, title:)
+  token = ENV.fetch('GITHUB_TOKEN', nil)
+
+  UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
+
+  create_pull_request(
+    api_token: token,
+    repo: 'wordpress-mobile/WordPress-iOS',
+    title:,
+    head: Fastlane::Helper::GitHelper.current_git_branch,
+    base: base_branch,
+    labels: 'Releases'
+  )
 end

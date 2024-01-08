@@ -12,17 +12,6 @@ class ReaderInterestsStyleGuide {
         let borderWidth: CGFloat
         let borderColor: UIColor
 
-        /// The legacy metrics for the cell style before `readerImprovements` feature
-        static let legacy = Metrics(
-            interestsLabelMargin: 8.0,
-            cellCornerRadius: 4.0,
-            cellSpacing: 6.0,
-            cellHeight: 26.0,
-            maxCellWidthMultiplier: 0.8,
-            borderWidth: 0,
-            borderColor: .clear
-        )
-
         static let latest = Metrics(
             interestsLabelMargin: 16.0,
             cellCornerRadius: 5.0,
@@ -64,7 +53,7 @@ class ReaderInterestsStyleGuide {
     public class func applyCompactCellLabelStyle(label: UILabel) {
         label.font = Self.compactCellLabelTitleFont
         label.textColor = .text
-        label.backgroundColor = RemoteFeatureFlag.readerImprovements.enabled() ? .clear : .quaternaryBackground
+        label.backgroundColor = .clear
     }
 
     // MARK: - Next Button

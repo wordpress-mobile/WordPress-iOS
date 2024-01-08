@@ -45,6 +45,7 @@ struct UniversalLinkRouter: LinkRouter {
     static let meRoutes: [Route] = [
         MeRoute(),
         MeAccountSettingsRoute(),
+        MeAllDomainsRoute(),
         MeNotificationSettingsRoute()
     ]
 

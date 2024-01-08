@@ -21,7 +21,7 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
         currentDateProvider = MockCurrentDateProvider()
         remoteConfigStore.removalDeadline = "2022-10-10"
-        let account = AccountBuilder(contextManager).build()
+        let account = AccountBuilder(contextManager.mainContext).build()
         UserSettings.defaultDotComUUID = account.uuid
     }
 

@@ -198,7 +198,7 @@ private extension PostsCardViewModel {
     func sync() {
         isSyncing = true
         let filter = postListFilter
-        DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: filter.statuses.strings)
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: filter.statuses)
     }
 
     func updateFilter() {
@@ -272,7 +272,6 @@ private extension PostsCardViewModel {
 
     enum Constants {
         static let numberOfPosts = 3
-        static let numberOfPostsToSync: NSNumber = 3
     }
 
     enum Strings {
@@ -286,9 +285,8 @@ extension PostsCardViewModel: DashboardPostsSyncManagerListener {
     func postsSynced(success: Bool,
                      blog: Blog,
                      postType: DashboardPostsSyncManager.PostType,
-                     posts: [AbstractPost]?,
-                     for statuses: [String]) {
-        let currentStatuses = postListFilter.statuses.strings
+                     for statuses: [BasePost.Status]) {
+        let currentStatuses = postListFilter.statuses
         guard postType == .post,
               self.blog == blog,
               currentStatuses.allSatisfy(statuses.contains) else {

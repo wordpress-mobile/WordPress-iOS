@@ -20,7 +20,6 @@ import UIKit
         case actionSheetHeader
         case promptNotification
         case promptStaticNotification
-        case unknown
 
         var editorEntryPoint: PostEditorEntryPoint {
             switch self {
@@ -32,8 +31,6 @@ import UIKit
                 return .bloggingPromptsActionSheetHeader
             case .promptNotification, .promptStaticNotification:
                 return .bloggingPromptsNotification
-            default:
-                return .unknown
             }
         }
     }

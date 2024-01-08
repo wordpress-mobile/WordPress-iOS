@@ -16,11 +16,11 @@
       "identifier" : "FABB1F8F2602FC2C00C8785C",
       "name" : "Jetpack"
     },
-    "testRepetitionMode" : "retryOnFailure"
+    "testRepetitionMode" : "retryOnFailure",
+    "uiTestingScreenshotsLifetime" : "keepAlways"
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "skippedTests" : [
         "EditorAztecTests",
         "LoginTests\/testEmailMagicLinkLogin()",

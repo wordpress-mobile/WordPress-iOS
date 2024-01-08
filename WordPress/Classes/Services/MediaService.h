@@ -59,7 +59,7 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  @failure a block that will be invoked when there is upload error.
  */
 - (void)updateMedia:(nonnull Media *)media
-     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+     fieldsToUpdate:(nonnull NSArray<NSString *> *)fieldsToUpdate
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
@@ -88,33 +88,9 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  @param success
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
-     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+     fieldsToUpdate:(nonnull NSArray<NSString *> *)fieldsToUpdate
      overallSuccess:(nullable void (^)(void))overallSuccess
             failure:(nullable void (^)(NSError * _Nullable error))failure;
-
-/**
- Deletes the Media object from the server. Note the Media is deleted, not trashed.
-
- @param media object to delete.
- @param success a block that will be invoked when the media deletion finished with success
- @param failure a block that will be invoked when there is an error.
- */
-- (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)(void))success
-            failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
-/**
- Deletes multiple Media objects from the server. Note the Media objects are deleted, not trashed.
-
- @param mediaObjects An array of media objects to delete.
- @param progress a block that will be invoked after each media item is deleted successfully
- @param success a block that will be invoked when the media deletion finished with success
- @param failure a block that will be invoked when there is an error.
- */
-- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
-           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)(void))success
-            failure:(nullable void (^)(void))failure;
 
 /**
  * Sync all Media objects from the server to local database

@@ -4,6 +4,7 @@ import OHHTTPStubs
 
 struct MockRouter: LinkRouter {
     let matcher: RouteMatcher
+    var canHandle: Bool = true
     var completion: ((URL, DeepLinkSource?) -> Void)?
 
     init(routes: [Route]) {
@@ -11,7 +12,7 @@ struct MockRouter: LinkRouter {
     }
 
     func canHandle(url: URL) -> Bool {
-        return true
+        canHandle
     }
 
     func handle(url: URL, shouldTrack track: Bool, source: DeepLinkSource?) {

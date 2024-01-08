@@ -94,7 +94,9 @@ public class PostsScreen: ScreenObject {
     }
 
     public func verifyPostExists(withTitle title: String) {
-        let expectedPost = app.cells.containing(.staticText, identifier: title).element
+        let postsTable = app.tables["PostsTable"]
+        let predicate = NSPredicate(format: "label BEGINSWITH %@", title)
+        let expectedPost = postsTable.cells.element(matching: predicate)
 
         XCTAssertTrue(expectedPost.exists)
     }

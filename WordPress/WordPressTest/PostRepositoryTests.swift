@@ -54,7 +54,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeletePost() async throws {
         let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             return TaggedManagedObjectID(post)
         }
 
@@ -69,7 +69,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeletePostWithRemoteFailure() async throws {
         let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             return TaggedManagedObjectID(post)
         }
 
@@ -89,7 +89,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeleteHistory() async throws {
         let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             let second = first.createRevision()
             second.postTitle = "Edited"
             return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
@@ -107,7 +107,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
     func testDeleteLatest() async throws {
         let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
             let second = first.createRevision()
             second.postTitle = "Edited"
             return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
@@ -174,6 +174,33 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertTrue(isPostDeleted)
     }
 
+    func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() async throws {
+        // Arrange
+        let (postID, revisionID) = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).with(statusAfterSync: .publish).withRemote().build()
+            let revision = post.createRevision()
+            return (TaggedManagedObjectID(post), TaggedManagedObjectID(revision))
+        }
+
+        let remotePost = RemotePost(siteID: 1, status: "trash", title: "Post: Test", content: "New content")!
+        remotePost.type = "post"
+        remoteMock.trashPostResult = .success(remotePost)
+
+        // Act
+        try await repository.trash(postID)
+
+        // Assert
+        let postStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: postID).statusAfterSync }
+        let postStatus = try await contextManager.performQuery { try $0.existingObject(with: postID).status }
+        let revisionStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: revisionID).statusAfterSync }
+        let revisionStatus = try await contextManager.performQuery { try $0.existingObject(with: revisionID).status }
+
+        XCTAssertEqual(postStatusAfterSync, .trash)
+        XCTAssertEqual(postStatus, .trash)
+        XCTAssertEqual(revisionStatusAfterSync, .trash)
+        XCTAssertEqual(revisionStatus, .trash)
+     }
+
     func testRestorePost() async throws {
         let postID = try await contextManager.performAndSave { context in
             let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
@@ -214,6 +241,196 @@ class PostRepositoryTests: CoreDataTestCase {
         }
     }
 
+    func testFetchAllPagesAPIError() async throws {
+        // Use an empty array to simulate an HTTP API error
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = []
+
+        do {
+            let _ = try await repository.fetchAllPages(statuses: [], in: blogID).value
+            XCTFail("The above call should throw")
+        } catch {
+            // Do nothing.
+        }
+    }
+
+    func testFetchAllPagesStopsOnEmptyAPIResponse() async throws {
+        // Given two pages of API result: first page returns 100 page instances, and the second page returns an empty result.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+            []
+        ]
+
+        let pages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(pages.count, 100)
+    }
+
+    func testFetchAllPagesStopsOnNonFullPageAPIResponse() async throws {
+        // Given two pages of API result: first page returns 100 page instances, and the second page returns 10 (any amount that's less than 100) page instances.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+            try (1...10).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            },
+        ]
+
+        let pages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(pages.count, 110)
+    }
+
+    func testCancelFetchAllPages() async throws {
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...10).map { pageNo in
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 100 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            }
+        }
+
+        let cancelled = expectation(description: "Fetching task returns cancellation error")
+        let task = repository.fetchAllPages(statuses: [.publish], in: blogID)
+
+        DispatchQueue.global().asyncAfter(deadline: .now() + .microseconds(100)) {
+            task.cancel()
+        }
+
+        do {
+            let _ = try await task.value
+        } catch is CancellationError {
+            cancelled.fulfill()
+        }
+
+        await fulfillment(of: [cancelled], timeout: 0.3)
+    }
+
+    func testFetchTwoFullPages() async throws {
+        // `fetchAllPages` fetchs 100 page instances at at time. Here we simulate two full pages result.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...2).map { pageNo in
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 1000 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            }
+        } + [[]]
+
+        let allPages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(allPages.count, 200)
+    }
+
+    // This test takes one minute to complete on CI. We'll disable it for now and potentially re-enable
+    // it after CI is migrated to Apple Silicon agents.
+    func _testFetchManyManyPages() async throws {
+        // Here we simulate a site that has a super large number of pages.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = try (1...99).map { pageNo in
+            try (1...100).map {
+                let post = try XCTUnwrap(RemotePost(siteID: NSNumber(value: pageNo * 1000 + $0), status: "publish", title: "Post: Test", content: "This is a test post"))
+                post.type = "page"
+                return post
+            }
+        } + [[]]
+
+        let allPages = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(allPages.count, 9_900)
+    }
+
+    func testFetchAllPagesPurgesDeletedPages() async throws {
+        let postToBeKept = try XCTUnwrap(RemotePost(siteID: 1, status: "publish", title: "Post: Kept", content: "This is a test post"))
+        postToBeKept.postID = 100
+        postToBeKept.type = "page"
+        let postToBeDeleted = try XCTUnwrap(RemotePost(siteID: 1, status: "publish", title: "Post: Deleted", content: "This is a test post"))
+        postToBeDeleted.postID = 200
+        postToBeDeleted.type = "page"
+
+        // The first fetch returns both page instances.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            [postToBeKept, postToBeDeleted],
+        ]
+        let firstFetch = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(firstFetch.count, 2)
+        try await contextManager.performQuery { context in
+            let first = try context.existingObject(with: XCTUnwrap(firstFetch.first))
+            let second = try context.existingObject(with: XCTUnwrap(firstFetch.last))
+            XCTAssertEqual(first.postID, 100)
+            XCTAssertEqual(second.postID, 200)
+        }
+
+        // The second fetch only returns one of them, to simulate a situation where the other page has been deleted from the site.
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [
+            [postToBeKept],
+        ]
+        let secondFetch = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(secondFetch.count, 1)
+        try await contextManager.performQuery { context in
+            let page = try context.existingObject(with: XCTUnwrap(firstFetch.first))
+            XCTAssertEqual(page.postID, postToBeKept.postID)
+        }
+    }
+
+    func testFetchAllPagesKeepPagesWithOtherStatus() async throws {
+        let remotePage = try XCTUnwrap(RemotePost(siteID: 1, status: "publish", title: "Post: Kept", content: "This is a test post"))
+        remotePage.postID = 100
+        remotePage.type = "page"
+
+        // The first fetch returns a published post
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [[remotePage]]
+        let firstFetch = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        try await contextManager.performQuery { context in
+            let page = try context.existingObject(with: XCTUnwrap(firstFetch.first))
+            XCTAssertEqual(page.postID, remotePage.postID)
+        }
+
+        // The second fetch returns empty result, because there is no draft on the site
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [[]]
+        let secondFetch = try await repository.fetchAllPages(statuses: [.draft], in: blogID).value
+        XCTAssertTrue(secondFetch.isEmpty)
+
+        let pageExists = await contextManager.performQuery { context in
+            (try? context.existingObject(with: XCTUnwrap(firstFetch.first))) != nil
+        }
+        XCTAssertTrue(pageExists, "The previously fetched published pages is not deleted by the draft pages fetching request")
+    }
+
+    func testFetchAllPagesKeepLocalEdits() async throws {
+        let remotePage = try XCTUnwrap(RemotePost(siteID: 1, status: "publish", title: "Post: Kept", content: "This is a test post"))
+        remotePage.postID = 100
+        remotePage.type = "page"
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [[remotePage], [remotePage]]
+
+        // The first fetch returns a published post
+        let firstFetch = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        try await contextManager.performQuery { context in
+            let page = try context.existingObject(with: XCTUnwrap(firstFetch.first))
+            XCTAssertEqual(page.postID, remotePage.postID)
+        }
+
+        // Edit the fetched page.
+        let localEditID = try await contextManager.performAndSave { context in
+            let page = try context.existingObject(with: XCTUnwrap(firstFetch.first))
+            let localEdit = page.createRevision()
+            localEdit.postTitle = "Changes changes and changes"
+            return TaggedManagedObjectID(localEdit)
+        }
+
+        // The second fetch returns the same result as the previous one.
+        let secondFetch = try await repository.fetchAllPages(statuses: [.publish], in: blogID).value
+        XCTAssertEqual(firstFetch, secondFetch)
+
+        try await contextManager.performQuery { context in
+            let localEdit = try context.existingObject(with: localEditID)
+            XCTAssertNotNil(localEdit.original)
+            try XCTAssertEqual(XCTUnwrap(localEdit.original).objectID, XCTUnwrap(secondFetch.first).objectID)
+        }
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
@@ -238,7 +455,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     }
 
     var remotePostToReturnOnGetPostWithID: RemotePost?
-    var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
+    var remotePostsToReturnOnSyncPostsOfType = [[RemotePost]]() // Each element contains an array of RemotePost for one API request.
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
 
@@ -262,7 +479,15 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostsToReturnOnSyncPostsOfType)
+        guard !remotePostsToReturnOnSyncPostsOfType.isEmpty else {
+            failure(testError())
+            return
+        }
+
+        let result = remotePostsToReturnOnSyncPostsOfType.removeFirst()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(50)) {
+            success(result)
+        }
     }
 
     override func update(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {

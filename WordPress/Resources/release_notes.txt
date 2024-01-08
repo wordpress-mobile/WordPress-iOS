@@ -1,7 +1,14 @@
-In the block editor, you can now split or exit a formatted block by pressing the “enter” key three times. The left-hand border is always visible for quote blocks, too. And you can quote us on that.
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
+* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
+* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
+* [**] [internal] Add support for the Phase One Fast Media Uploads banner [#22330]
+* [*] [internal] Remove personalizeHomeTab feature flag [#22280]
+* [*] Fix a rare crash in post search related to tags [#22275]
+* [*] Fix a rare crash when deleting posts [#22277]
+* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
+* [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
+* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
+* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
 
-We also squashed a handful of bugs.
-
-- We fixed a code issue in blogging prompt settings that caused the app to crash.
-- During the signup process, you won’t end up in the reader by accident.
-- Creating a .com site? You should no longer see two overlays after completing the signup process. One and done.

@@ -93,6 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
+        PostCoordinator.shared.delegate = self
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -131,12 +132,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ABTest.start()
 
         Media.removeTemporaryData()
+        NSItemProvider.removeTemporaryData()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
-        disableAnimationsForUITests(application)
-        logoutAtLaunchForUITests(application)
+        UITestConfigurator.prepareApplicationForUITests(application)
+        DebugMenuViewController.configure(in: window)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -342,10 +344,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         pingHubManager = PingHubManager()
     }
 
-    private func setupShortcutCreator() {
-        shortcutCreator = WP3DTouchShortcutCreator()
-    }
-
     private func setupNoticePresenter() {
         noticePresenter = NoticePresenter()
     }
@@ -359,25 +357,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Helpers
-
-    /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
-    /// It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton:
-    ///
-    /// XCUIApplication().launchArguments = ["-no-animations"]
-    ///
-    private func disableAnimationsForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-no-animations") {
-            UIView.setAnimationsEnabled(false)
-            application.windows.first?.layer.speed = MAXFLOAT
-            application.mainWindow?.layer.speed = MAXFLOAT
-        }
-    }
-
-    private func logoutAtLaunchForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("-logout-at-launch") {
-            AccountHelper.logOutDefaultWordPressComAccount()
-        }
-    }
 
     var runningInBackground: Bool {
         return UIApplication.shared.applicationState == .background
@@ -660,20 +639,6 @@ extension WordPressAppDelegate {
         }
     }
 
-    var isWelcomeScreenVisible: Bool {
-        get {
-            guard let presentedViewController = window?.rootViewController?.presentedViewController as? UINavigationController else {
-                return false
-            }
-
-            guard let visibleViewController = presentedViewController.visibleViewController else {
-                return false
-            }
-
-            return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
-        }
-    }
-
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -906,7 +871,6 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureLightNavigationBarAppearance()
         WPStyleGuide.configureToolbarAppearance()
 
-        UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UISwitch.appearance().onTintColor = .primary
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
@@ -922,21 +886,6 @@ extension WordPressAppDelegate {
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-
-        // Media Picker styles
-        let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
-        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
-
-        let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = .listBackground
-        cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
-        cellAppearance.placeholderTintColor = .neutral(.shade5)
-        cellAppearance.setCellTintColor(.primary)
-
-        UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
-        WPActionBar.appearance().barBackgroundColor = .basicBackground
-        WPActionBar.appearance().lineColor = .basicBackground
 
         // Post Settings styles
         UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary

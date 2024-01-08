@@ -3,43 +3,43 @@ import UIKit
 import WebKit
 import WordPressAuthenticator
 import WordPressFlux
+import Combine
 
 enum DomainSelectionType {
     case registerWithPaidPlan
     case purchaseWithPaidPlan
     case purchaseSeparately
+    case purchaseFromDomainManagement
+}
+
+class DomainPurchaseChoicesViewModel: ObservableObject {
+    @Published var isGetDomainLoading: Bool = false
 }
 
 class RegisterDomainSuggestionsViewController: UIViewController {
-    typealias DomainPurchasedCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
-    typealias DomainAddedToCartCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
-
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var constraintsInitialized = false
 
-    private var site: Blog!
-    var domainPurchasedCallback: DomainPurchasedCallback!
-    var domainAddedToCartCallback: DomainAddedToCartCallback?
-
-    private var domain: FullyQuotedDomainSuggestion?
+    private var coordinator: RegisterDomainCoordinator?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
-
-    private var webViewURLChangeObservation: NSKeyValueObservation?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configure()
-        hideButton()
+    private var navBarTitle: String = TextContent.title
+    private var analyticsSource: String? {
+        return coordinator?.analyticsSource
     }
 
     @IBOutlet private var buttonViewContainer: UIView! {
         didSet {
-            buttonViewController.move(to: self, into: buttonViewContainer)
+            guard let view = buttonViewContainer else {
+                return
+            }
+            view.addTopBorder(withColor: .divider)
+            view.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
+            buttonViewController.move(to: self, into: view)
         }
     }
 
@@ -53,22 +53,49 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    static func instance(site: Blog,
+    private lazy var transferFooterView: RegisterDomainTransferFooterView = {
+        let configuration = RegisterDomainTransferFooterView.Configuration { [weak self] in
+            guard let self else {
+                return
+            }
+            let destination = TransferDomainsWebViewController(source: self.analyticsSource)
+            self.present(UINavigationController(rootViewController: destination), animated: true)
+            self.track(.domainsSearchTransferDomainTapped)
+        }
+        return .init(configuration: configuration, analyticsSource: self.analyticsSource)
+    }()
+
+    /// Represents the layout constraints for the transfer footer view in its visible and hidden states.
+    private lazy var transferFooterViewConstraints: (visible: [NSLayoutConstraint], hidden: [NSLayoutConstraint]) = {
+        let base = [
+            transferFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transferFooterView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        let visible = base + [transferFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+        let hidden = base + [transferFooterView.topAnchor.constraint(equalTo: view.bottomAnchor)]
+        return (visible: visible, hidden: hidden)
+    }()
+
+    static func instance(coordinator: RegisterDomainCoordinator,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
-                         domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
+                         title: String = TextContent.title) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
-        controller.site = site
+        controller.coordinator = coordinator
         controller.domainSelectionType = domainSelectionType
-        controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
-        controller.siteName = siteNameForSuggestions(for: site)
+        controller.siteName = siteNameForSuggestions(for: coordinator.site)
+        controller.navBarTitle = title
 
         return controller
     }
 
-    private static func siteNameForSuggestions(for site: Blog) -> String? {
+    private static func siteNameForSuggestions(for site: Blog?) -> String? {
+        guard let site else {
+            return nil
+        }
+
         if let siteTitle = site.settings?.name?.nonEmptyString() {
             return siteTitle
         }
@@ -83,8 +110,44 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return nil
     }
 
+    // MARK: - View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configure()
+        hideButton()
+        setupTransferFooterView()
+        track(.domainsDashboardDomainsSearchShown)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let domainsTableViewController {
+            let insets = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: transferFooterView.isHidden ? 0 : transferFooterView.bounds.height,
+                right: 0
+            )
+            if insets != domainsTableViewController.additionalSafeAreaInsets {
+                domainsTableViewController.additionalSafeAreaInsets = insets
+            }
+        }
+    }
+
+    // MARK: - Setup subviews
+
+    private func setupTransferFooterView() {
+        guard domainSelectionType == .purchaseFromDomainManagement else {
+            return
+        }
+        self.view.addSubview(transferFooterView)
+        self.transferFooterView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(transferFooterViewConstraints.visible)
+    }
+
     private func configure() {
-        title = TextContent.title
+        title = navBarTitle
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
         /// If this is the first view controller in the navigation controller - show the cancel button
@@ -95,6 +158,8 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             navigationItem.leftBarButtonItem = cancelButton
         }
 
+        navigationItem.backButtonTitle = TextContent.searchBackButtonTitle
+
         guard includeSupportButton else {
             return
         }
@@ -104,6 +169,39 @@ class RegisterDomainSuggestionsViewController: UIViewController {
                                             target: self,
                                             action: #selector(handleSupportButtonTapped))
         navigationItem.rightBarButtonItem = supportButton
+    }
+
+    // MARK: - Show / Hide Transfer Footer
+
+    /// Updates transfer footer view constraints to either hide or show the view.
+    private func updateTransferFooterViewConstraints(hidden: Bool, animated: Bool = true) {
+        guard transferFooterView.superview != nil else {
+            return
+        }
+
+        let constraints = transferFooterViewConstraints
+        let duration = animated ? WPAnimationDurationDefault : 0
+
+        NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
+        NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)
+
+        if !hidden {
+            self.transferFooterView.isHidden = false
+        }
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            self.transferFooterView.isHidden = hidden
+            self.view.setNeedsLayout()
+        }
+    }
+
+    private func showTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: false, animated: animated)
+    }
+
+    private func hideTransferFooterView(animated: Bool = true) {
+        self.updateTransferFooterViewConstraints(hidden: true, animated: animated)
     }
 
     // MARK: - Bottom Hideable Button
@@ -173,11 +271,11 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
-            vc.blog = site
+            vc.blog = coordinator?.site
             vc.domainSelectionType = domainSelectionType
-            vc.freeSiteAddress = site.freeSiteAddress
+            vc.primaryDomainAddress = coordinator?.site?.primaryDomainAddress
 
-            if site.hasBloggerPlan {
+            if coordinator?.site?.hasBloggerPlan == true {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
@@ -196,20 +294,49 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         supportVC.showFromTabBar()
     }
 
+    // MARK: - Tracks
+
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
+        let defaultProperties = { () -> [AnyHashable: Any] in
+            if let blog {
+                return WPAnalytics.domainsProperties(for: blog, origin: self.analyticsSource)
+            } else {
+                return WPAnalytics.domainsProperties(origin: self.analyticsSource)
+            }
+        }()
+
+        let properties = properties.merging(defaultProperties) { current, _ in
+            return current
+        }
+
+        if let blog {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
+        }
+    }
 }
 
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
-        WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
-        self.domain = domain
-        showButton(animated: true)
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion?) {
+        self.coordinator?.domain = domain
+
+        if domain != nil {
+            WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
+            showButton(animated: true)
+            hideTransferFooterView(animated: true)
+        } else {
+            hideButton(animated: true)
+            showTransferFooterView(animated: true)
+        }
     }
 
     func newSearchStarted() {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
         hideButton(animated: true)
+        showTransferFooterView(animated: true)
     }
 }
 
@@ -217,11 +344,18 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
 
 extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        guard let domain = domain else {
+        guard let coordinator else {
             return
         }
 
-        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+        let properties: [AnyHashable: Any] = {
+            guard let domainName = self.coordinator?.domain?.domainName else {
+                return [:]
+            }
+            return ["domain_name": domainName]
+        }()
+
+        self.track(.domainsSearchSelectDomainTapped, properties: properties, blog: coordinator.site)
 
         let onFailure: () -> () = { [weak self] in
             self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
@@ -230,31 +364,26 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         switch domainSelectionType {
         case .registerWithPaidPlan:
-            pushRegisterDomainDetailsViewController(domain)
+            pushRegisterDomainDetailsViewController()
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            createCart(
-                domain,
+            coordinator.handlePurchaseDomainOnly(
+                on: self,
                 onSuccess: { [weak self] in
-                    self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure)
+        case .purchaseWithPaidPlan:
+            setPrimaryButtonLoading(true)
+            coordinator.addDomainToCartLinkedToCurrentSite(
+                on: self,
+                onSuccess: { [weak self] in
                     self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
-        case .purchaseWithPaidPlan:
-            setPrimaryButtonLoading(true)
-            createCart(
-                domain,
-                onSuccess: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainAddedToCartCallback?(self, domain.domainName)
-                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
-                },
-                onFailure: onFailure
-            )
+        case .purchaseFromDomainManagement:
+            pushPurchaseDomainChoiceScreen()
         }
     }
 
@@ -267,120 +396,40 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
-        guard let siteID = site.dotComID?.intValue else {
+    private func pushRegisterDomainDetailsViewController() {
+        guard let siteID = coordinator?.site?.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
+        guard let domain = coordinator?.domain else {
             return
         }
 
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
-            guard let self = self else {
+            guard let self = self, let coordinator else {
                 return
             }
-
-            self.domainPurchasedCallback?(self, name)
+            coordinator.domainPurchasedCallback?(self, name)
+            coordinator.trackDomainPurchasingCompleted()
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCart(_ domain: FullyQuotedDomainSuggestion,
-                            onSuccess: @escaping () -> (),
-                            onFailure: @escaping () -> ()) {
-        guard let siteID = site.dotComID?.intValue else {
-            DDLogError("Cannot register domains for sites without a dotComID")
-            return
+    private func pushPurchaseDomainChoiceScreen() {
+        @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
+        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel, analyticsSource: analyticsSource) { [weak self] in
+            guard let self else { return }
+            choicesViewModel.isGetDomainLoading = true
+            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+        } chooseSiteAction: { [weak self] in
+            guard let self else { return }
+            self.coordinator?.handleExistingSiteChoice(on: self)
         }
-
-        let proxy = RegisterDomainDetailsServiceProxy()
-        proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain.remoteSuggestion(),
-                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { _ in
-            onSuccess()
-        },
-                                                 failure: { _ in
-            onFailure()
-        })
-    }
-
-    static private let checkoutURLPrefix = "https://wordpress.com/checkout"
-    static private let checkoutSuccessURLPrefix = "https://wordpress.com/checkout/thank-you/"
-
-    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
-    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
-    /// through said web view.
-    ///
-    /// - Parameters:
-    ///     - newURL: the newly set URL for the web view.
-    ///     - siteID: the ID of the site we're trying to register the domain against.
-    ///     - domain: the domain the user is purchasing.
-    ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
-    ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
-    ///
-    private func handleWebViewURLChange(
-        _ newURL: URL,
-        siteID: Int,
-        domain: String,
-        onCancel: () -> Void,
-        onSuccess: (String) -> Void) {
-
-        let canOpenNewURL = newURL.absoluteString.starts(with: Self.checkoutURLPrefix)
-
-        guard canOpenNewURL else {
-            onCancel()
-            return
-        }
-
-        let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
-
-        if domainRegistrationSucceeded {
-            onSuccess(domain)
-
-        }
-    }
-
-    private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
-        guard let homeURL = site.homeURL,
-              let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host),
-              let siteID = site.dotComID?.intValue else {
-            return
-        }
-
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url, source: "domains_register")
-        let navController = LightNavigationController(rootViewController: webViewController)
-
-        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
-        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
-        // call to WKWebViewDelegate methods.
-        //
-        // This was last checked by @diegoreymendez on 2021-09-22.
-        //
-        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
-                  let newURL = change.newValue as? URL else {
-                return
-            }
-
-            self.handleWebViewURLChange(newURL, siteID: siteID, domain: domainSuggestion.domainName, onCancel: {
-                navController.dismiss(animated: true)
-            }) { domain in
-                self.dismiss(animated: true, completion: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.domainPurchasedCallback(self, domain)
-                })
-            }
-        }
-
-        WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
-
-        webViewController.configureSandboxStore { [weak self] in
-            self?.present(navController, animated: true)
-        }
+        let hostingController = UIHostingController(rootView: view)
+        hostingController.title = TextContent.domainChoiceTitle
+        self.navigationController?.pushViewController(hostingController, animated: true)
     }
 }
 
@@ -401,16 +450,17 @@ extension RegisterDomainSuggestionsViewController {
         static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
                                                     value: "Dismiss",
                                                     comment: "Action shown in a bottom notice to dismiss it.")
+        static let domainChoiceTitle = NSLocalizedString("domains.purchase.choice.title",
+                                                     value: "Purchase Domain",
+                                                     comment: "Title for the screen where the user can choose how to use the domain they're end up purchasing.")
+        static let searchBackButtonTitle = NSLocalizedString("domains.search.backButton.title",
+                                                       value: "Search",
+                                                       comment: "Back button title that navigates back to the search domains screen.")
     }
 
     enum Constants {
         // storyboard identifiers
         static let storyboardIdentifier = "RegisterDomain"
         static let viewControllerIdentifier = "RegisterDomainSuggestionsViewController"
-
-        static let checkoutWebAddress = "https://wordpress.com/checkout/"
-        // store sandbox cookie
-        static let storeSandboxCookieName = "store_sandbox"
-        static let storeSandboxCookieDomain = ".wordpress.com"
     }
 }

@@ -12,6 +12,9 @@ extension ReachabilityUtils {
     /// Performs the action when an internet connection is available
     /// If no internet connection is available an error message is displayed
     ///
+    /// - warning: Do not use it as it can't reliably identify as the connection
+    /// is reachable or not and can significantly lag behind the actual
+    /// connectivity status.
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             WPError.showAlert(withTitle: DefaultNoConnectionMessage.title, message: DefaultNoConnectionMessage.message)

@@ -8,10 +8,19 @@ extension WPTabBarController {
 
     @objc func observeGravatarImageUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountEmailAndDefaultBlogUpdated, object: nil)
     }
 
-    @objc func configureMeTabImage(placeholderImage: UIImage) {
-        meNavigationController?.tabBarItem.image = placeholderImage
+    @objc func configureMeTabImage(placeholderImage: UIImage?) {
+        configureMeTabImage(unselectedPlaceholderImage: placeholderImage, selectedPlaceholderImage: placeholderImage)
+    }
+
+    @objc func configureMeTabImage(unselectedPlaceholderImage: UIImage?, selectedPlaceholderImage: UIImage?) {
+        meNavigationController?.tabBarItem.image = unselectedPlaceholderImage
+        meNavigationController?.tabBarItem.selectedImage = selectedPlaceholderImage
 
         guard let account = defaultAccount(),
               let email = account.email else {
@@ -38,12 +47,22 @@ extension WPTabBarController {
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
         meNavigationController?.tabBarItem.configureGravatarImage(image)
     }
+
+    @objc private func accountDidChange() {
+        guard FeatureFlag.newTabIcons.enabled else {
+            configureMeTabImage(placeholderImage: UIImage(named: "icon-tab-me"))
+            return
+        }
+
+        configureMeTabImage(unselectedPlaceholderImage: UIImage(named: "tab-bar-me-unselected"),
+                            selectedPlaceholderImage: UIImage(named: "tab-bar-me-selected"))
+    }
 }
 
 extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
-        let gravatarIcon = image.gravatarIcon(size: 28.0)
+        let gravatarIcon = image.gravatarIcon(size: 26.0)
         self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
         self.selectedImage = gravatarIcon
     }

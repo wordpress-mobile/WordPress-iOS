@@ -23,16 +23,11 @@ struct HomeWidgetToday: Widget {
                                                             placeholderContent: placeholderContent,
                                                             widgetKind: .today)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
-
-            defer {
-                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeToday)
-            }
-
             return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
+        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets for StandBy
     }
 }

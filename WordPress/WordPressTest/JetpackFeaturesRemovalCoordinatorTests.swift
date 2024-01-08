@@ -8,7 +8,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
     override func setUp() {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
-        let account = AccountBuilder(contextManager).build()
+        let account = AccountBuilder(contextManager.mainContext).build()
         UserSettings.defaultDotComUUID = account.uuid
     }
 

@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 
 struct HomeWidgetThisWeek: Widget {
@@ -42,16 +43,11 @@ struct HomeWidgetThisWeek: Widget {
                                                                placeholderContent: placeholderContent,
                                                                widgetKind: .thisWeek)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
-
-            defer {
-                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeThisWeek)
-            }
-
             return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
         .description(LocalizableStrings.thisWeekPreviewDescription)
         .supportedFamilies([.systemMedium, .systemLarge])
+        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
     }
 }

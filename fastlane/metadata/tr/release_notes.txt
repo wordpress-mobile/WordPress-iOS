@@ -1,0 +1,5 @@
+Klasik düzenleyiciyi, Fotoğraflar ve Site ortamı için yeni medya seçicilerle güncelledik. Endişelenmeyin; yine de sitenize resim, video ve daha fazlasını yükleyebilirsiniz.
+
+Medya türlerinden bahsetmişken, artık Site ortamı ekranına medya filtreleri ekleyebilirsiniz. iPhone kullanıyorsanız yeni en-boy oranı modunu da fark edeceksiniz. Başlık menüsüne dokunduğunuzda her iki seçenek de kullanılabilir.
+
+Son olarak, katılım süreci sırasında istatistikleri kontrol ederken görünen bozuk uyumluluk açılır penceresini düzelttik. Tatlı.

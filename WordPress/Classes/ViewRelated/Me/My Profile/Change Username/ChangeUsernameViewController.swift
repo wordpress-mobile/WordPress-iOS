@@ -207,7 +207,6 @@ private extension ChangeUsernameViewController {
     enum Constants {
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
         static let username = NSLocalizedString("Username", comment: "The header and main title")
-        static let cellIdentifier = "SearchTableViewCell"
 
         enum Alert {
             static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")

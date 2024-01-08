@@ -17,6 +17,7 @@ private enum UPRUConstants {
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
     static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
+    static let mediaAspectRatioModeEnabledKey = "mediaAspectRatioModeEnabled"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -183,6 +184,19 @@ extension UserPersistentRepositoryUtility {
             }
         } set {
             UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
+        }
+    }
+
+    var isMediaAspectRatioModeEnabled: Bool {
+        get {
+            let repository = UserPersistentStoreFactory.instance()
+            if let value = repository.object(forKey: UPRUConstants.mediaAspectRatioModeEnabledKey) as? Bool {
+                return value
+            }
+            return UIDevice.current.userInterfaceIdiom == .pad
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.mediaAspectRatioModeEnabledKey)
         }
     }
 }

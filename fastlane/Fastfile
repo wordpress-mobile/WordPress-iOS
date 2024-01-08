@@ -26,9 +26,6 @@ SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
 PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
 APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
 
-# Other defines used across multiple lanes
-REPOSITORY_NAME = 'WordPress-iOS'
-
 WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
@@ -52,22 +49,37 @@ ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS
 Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
-ENV['PROJECT_NAME'] = 'WordPress'
-PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+DEFAULT_BRANCH = 'trunk'
+PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
+# Unfortunately, ios_current_branch_is_hotfix relies on this ENV var under the hood.
+# We can't get rid of it just yet.
 ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
-ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-ENV['PROJECT_ROOT_FOLDER'] = "#{PROJECT_ROOT_FOLDER}/"
-ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
+INTERNAL_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
+
+# Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.
+# That means if we change the branch as part of an action, it'll return the incorrect branch.
+# This environment variable disables that behavior.
+# See https://github.com/fastlane/fastlane/pull/21597
+ENV['FL_GIT_BRANCH_DONT_USE_ENV_VARS'] = 'true'
+
+# Instanstiate versioning classes
+VERSION_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::MarketingVersionCalculator.new
+VERSION_FORMATTER = Fastlane::Wpmreleasetoolkit::Versioning::FourPartVersionFormatter.new
+BUILD_CODE_FORMATTER = Fastlane::Wpmreleasetoolkit::Versioning::FourPartBuildCodeFormatter.new
+PUBLIC_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.new(xcconfig_path: PUBLIC_CONFIG_FILE)
+
+# Instantiate internal versioning classes
+INTERNAL_BUILD_CODE_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::DateBuildCodeCalculator.new
+INTERNAL_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.new(xcconfig_path: INTERNAL_CONFIG_FILE)
+
+BUILDKITE_ORGANIZATION = 'automattic'
+BUILDKITE_PIPELINE = 'wordpress-ios'
 
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
   UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?") unless ENV.key?(key)
   ENV.fetch(key, nil)
-end
-
-def get_app_version(xcconfig_path: PUBLIC_CONFIG_FILE)
-  ios_get_app_version(public_version_xcconfig_file: xcconfig_path)
 end
 
 def gutenberg_config!
@@ -78,10 +90,140 @@ def gutenberg_config!
   UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
 
   begin
-    YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+    YAML.safe_load_file(gutenberg_config_path, symbolize_names: true)
   rescue StandardError => e
     UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
   end
+end
+
+########################################################################
+# Version Methods
+########################################################################
+
+# Returns the release version of the app in the format `1.2` or `1.2.3` if it is a hotfix
+#
+def release_version_current
+  # Read the current release version from the .xcconfig file and parse it into an AppVersion object
+  current_version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
+  # Return the formatted release version
+  VERSION_FORMATTER.release_version(current_version)
+end
+
+# Returns the internal release version of the app in the format `1.2` or `1.2.3` if it is a hotfix
+#
+def release_version_current_internal
+  # Read the current release version from the .xcconfig file and parse it into an AppVersion object
+  current_version = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
+  # Return the formatted release version
+  VERSION_FORMATTER.release_version(current_version)
+end
+
+#  Returns the next release version of the app in the format `1.2` or `1.2.3` if it is a hotfix
+#
+def release_version_next
+  # Read the current release version from the .xcconfig file and parse it into an AppVersion object
+  current_version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
+  # Calculate the next release version
+  next_calculated_release_version = VERSION_CALCULATOR.next_release_version(version: current_version)
+  # Return the formatted release version
+  VERSION_FORMATTER.release_version(next_calculated_release_version)
+end
+
+# Returns the current build code of the app
+#
+def build_code_current
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version:)
+end
+
+# Returns the current internal build code of the app
+#
+def build_code_current_internal
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  version = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version:)
+end
+
+# Returns the build code of the app for the code freeze. It is the release version name plus sets the build number to 0
+#
+def build_code_code_freeze
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  release_version_current = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
+  # Calculate the next release version, which will be used as the basis of the new build code
+  build_code_code_freeze = VERSION_CALCULATOR.next_release_version(version: release_version_current)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version: build_code_code_freeze)
+end
+
+# Returns the internal build code of the app for the code freeze. It is the release version name plus sets the build
+# number to 0
+#
+def build_code_code_freeze_internal
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  release_version_current = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_release_version)
+  # Calculate the next release version, which will be used as the basis of the new build code
+  release_version_next = VERSION_CALCULATOR.next_release_version(version: release_version_current)
+  build_code_code_freeze = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: release_version_next)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version: build_code_code_freeze)
+end
+
+# Returns the build code of the app for the code freeze. It is the hotfix version name plus sets the build number to 0
+#
+def build_code_hotfix(release_version:)
+  version = VERSION_FORMATTER.parse(release_version)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version:)
+end
+
+# Returns the next build code of the app
+#
+def build_code_next
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  build_code_current = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
+  # Calculate the next build code
+  build_code_next = VERSION_CALCULATOR.next_build_number(version: build_code_current)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version: build_code_next)
+end
+
+# Returns the next internal build code of the app
+#
+def build_code_next_internal
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  build_code_current = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
+  # Calculate the next build code
+  build_code_next = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: build_code_current)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version: build_code_next)
+end
+
+# Returns the next internal hotfix build code of the app
+#
+def build_code_hotfix_internal(release_version:)
+  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
+  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
+  # calculator can be used to calculate the next four-part version
+  build_code_current = VERSION_FORMATTER.parse(release_version)
+  # Calculate the next build code
+  build_code_next = INTERNAL_BUILD_CODE_CALCULATOR.next_build_code(version: build_code_current)
+  # Return the formatted build code
+  BUILD_CODE_FORMATTER.build_code(version: build_code_next)
 end
 
 ########################################################################
@@ -118,6 +260,7 @@ import 'lanes/codesign.rb'
 import 'lanes/localization.rb'
 import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
+import 'lanes/release_management_in_ci.rb'
 
 ########################################################################
 
@@ -144,4 +287,29 @@ before_all do |lane|
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
   # rubocop:enable Style/IfUnlessModifier
+end
+
+def compute_release_branch_name(options:, version: release_version_current)
+  branch_option = :branch
+  branch_name = options[branch_option]
+
+  if branch_name.nil?
+    branch_name = release_branch_name(version:)
+    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
+  end
+
+  branch_name
+end
+
+def release_branch_name(version: release_version_current)
+  "release/#{version}"
+end
+
+def editorial_branch_name(version: release_version_current)
+  "release_notes/#{version}"
+end
+
+def ensure_git_branch_is_release_branch
+  # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+  ensure_git_branch(branch: '^release/')
 end

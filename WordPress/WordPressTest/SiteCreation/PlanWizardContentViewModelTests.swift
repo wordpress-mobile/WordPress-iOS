@@ -21,7 +21,7 @@ final class PlanWizardContentViewModelTests: XCTestCase {
 
     func testIsPlanSelectedWithPlanSlugParameters() {
         var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
-        components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.planSlugParameter, value: "free_plan")]
+        components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.OutputParameter.planSlug, value: "free_plan")]
 
         XCTAssertTrue(sut.isPlanSelected(components.url!))
     }
@@ -29,8 +29,8 @@ final class PlanWizardContentViewModelTests: XCTestCase {
     func testIsPlanSelectedWithPlanSlugAndPlanIdParameters() {
         var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
         components.queryItems = [
-            .init(name: PlanWizardContentViewModel.Constants.planSlugParameter, value: "paid_plan"),
-            .init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "1009")
+            .init(name: PlanWizardContentViewModel.Constants.OutputParameter.planSlug, value: "paid_plan"),
+            .init(name: PlanWizardContentViewModel.Constants.OutputParameter.planId, value: "1009")
         ]
 
         XCTAssertTrue(sut.isPlanSelected(components.url!))
@@ -46,7 +46,7 @@ final class PlanWizardContentViewModelTests: XCTestCase {
 
     func testSelectedPlanId() {
         var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
-        components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "125")]
+        components.queryItems = [.init(name: PlanWizardContentViewModel.Constants.OutputParameter.planId, value: "125")]
 
         XCTAssertEqual(sut.selectedPlanId(from: components.url!), 125)
     }
@@ -55,7 +55,7 @@ final class PlanWizardContentViewModelTests: XCTestCase {
         var components = URLComponents(string: PlanWizardContentViewModel.Constants.plansWebAddress)!
         components.queryItems = [
             .init(name: "parameter", value: "5"),
-            .init(name: PlanWizardContentViewModel.Constants.planIdParameter, value: "125"),
+            .init(name: PlanWizardContentViewModel.Constants.OutputParameter.planId, value: "125"),
             .init(name: "parameter2", value: "abc")
         ]
 
@@ -70,7 +70,7 @@ final class PlanWizardContentViewModelTests: XCTestCase {
 
         let url = URLComponents(url: sut.url, resolvingAgainstBaseURL: true)
 
-        let parameter = url?.queryItems?.first(where: { $0.name == PlanWizardContentViewModel.Constants.paidDomainNameParameter })
+        let parameter = url?.queryItems?.first(where: { $0.name == PlanWizardContentViewModel.Constants.InputParameter.paidDomainName })
         XCTAssertEqual(parameter?.value, domainName)
     }
 
@@ -80,7 +80,7 @@ final class PlanWizardContentViewModelTests: XCTestCase {
 
         let url = URLComponents(url: sut.url, resolvingAgainstBaseURL: true)
 
-        let parameter = url?.queryItems?.first(where: { $0.name == PlanWizardContentViewModel.Constants.paidDomainNameParameter })
+        let parameter = url?.queryItems?.first(where: { $0.name == PlanWizardContentViewModel.Constants.InputParameter.paidDomainName })
         XCTAssertEqual(parameter, nil)
     }
 }

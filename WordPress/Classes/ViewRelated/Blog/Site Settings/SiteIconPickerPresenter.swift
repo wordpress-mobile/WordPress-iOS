@@ -1,6 +1,5 @@
 import Foundation
 import SVProgressHUD
-import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
 import UniformTypeIdentifiers
@@ -21,7 +20,6 @@ final class SiteIconPickerPresenter: NSObject {
     // MARK: - Private Properties
 
     private var dataSource: AnyObject?
-    private var mediaCapturePresenter: AnyObject?
 
     // MARK: - Public methods
 
@@ -138,34 +136,25 @@ extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
     }
 }
 
-extension SiteIconPickerPresenter: MediaPickerViewControllerDelegate {
-
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        onCompletion?(nil, nil)
-    }
-
-    /// Retrieves the chosen image and triggers the ImageCropViewController display.
-    ///
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        dataSource = nil
-
-        guard let asset = assets.first else {
+extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        guard let media = selection.first else {
+            onCompletion?(nil, nil)
             return
         }
-        guard let media = asset as? Media else {
-            assertionFailure("Unsupported asset: \(asset)")
-            return
-        }
+
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
 
         showLoadingMessage()
         originalMedia = media
-        MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image, error) in
-            guard let image = image else {
+
+        Task { [weak self] in
+            do {
+                let image = try await MediaImageService.shared.image(for: media, size: .original)
+                self?.showImageCropViewController(image, presentingViewController: viewController)
+            } catch {
                 self?.showErrorLoadingImageMessage()
-                return
             }
-            self?.showImageCropViewController(image, presentingViewController: picker)
-        })
+        }
     }
 }

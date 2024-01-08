@@ -84,7 +84,12 @@ public class NotificationsScreen: ScreenObject {
     }
 
     public func replyToComment(withText text: String) -> Self {
-        tap(element: replyCommentButton, untilAppears: replyTextView)
+        replyCommentButton.tapUntil(
+            element: replyTextView,
+            matches: .exists,
+            failureMessage: "Reply Text View does not exists!"
+        )
+
         replyTextView.typeText(text)
         replyButton.tap()
 
@@ -114,9 +119,9 @@ public class NotificationsScreen: ScreenObject {
 
 
     public func likeComment() -> Self {
-        let isCommentTextDisplayed = app.webViews.staticTexts.firstMatch.waitForExistence(timeout: 5)
+        let isCommentOnTextDisplayed = app.staticTexts["Comment on"].firstMatch.waitForExistence(timeout: 5)
 
-        if isCommentTextDisplayed {
+        if isCommentOnTextDisplayed {
             likeCommentButton.tap()
         }
 

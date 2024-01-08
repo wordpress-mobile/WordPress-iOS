@@ -78,7 +78,7 @@ final class ReaderPostCellActionsTests: CoreDataTestCase {
     }
 
     private func makePost() -> ReaderPost {
-        let builder = ReaderPostBuilder()
+        let builder = ReaderPostBuilder(mainContext)
         let post: ReaderPost = builder.build()
         post.isWPCom = true
         return post

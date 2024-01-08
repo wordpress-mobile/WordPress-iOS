@@ -101,7 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: get_app_version,
+  app_version: release_version_current,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,
@@ -187,8 +187,33 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
+    ensure_git_status_clean
+
+    release_version = release_version_current
+
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: release_version))
+      UI.user_error!("Editorialization branch for version #{release_version} doesn't exist.")
+    end
+
     update_wordpress_appstore_strings(options)
     update_jetpack_appstore_strings(options)
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push changes to remote and continue with the editorialization process?')
+      UI.message("Aborting as requested. Don't forget to push the changes and create the integration PR manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+
+    pr_url = create_release_management_pull_request(
+      base_branch: compute_release_branch_name(options:, version: release_version),
+      title: "Merge editorialized release notes in #{release_version}"
+    )
+
+    message = <<~MESSAGE
+      Release notes and metadata localization sources successfully generated. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'editorialization-completed', style: 'success', message:) if is_ci
   end
 
   # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources
@@ -199,7 +224,7 @@ platform :ios do
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
-    version = options.fetch(:version, get_app_version)
+    version = options.fetch(:version, release_version_current)
 
     files = {
       whats_new: WORDPRESS_RELEASE_NOTES_PATH,
@@ -237,7 +262,7 @@ platform :ios do
     # See details below for why that was done and why we should keep the definition in the codebase for future use.
     # source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     # custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    version = options.fetch(:version, get_app_version)
+    version = options.fetch(:version, release_version_current)
 
     files = {
       whats_new: JETPACK_RELEASE_NOTES_PATH
@@ -354,7 +379,7 @@ platform :ios do
 
     locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
     target_files = {
-      "v#{get_app_version}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
+      "v#{release_version_current}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
       app_store_name: { desc: 'name.txt', max_size: 30 },
       app_store_subtitle: { desc: 'subtitle.txt', max_size: 30 },
       app_store_desc: { desc: 'description.txt', max_size: 4000 },

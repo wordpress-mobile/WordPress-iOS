@@ -1,5 +1,6 @@
 import SwiftUI
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 struct ListStatsView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
@@ -33,6 +34,7 @@ struct ListStatsView: View {
                 }
             }
         }
+        .removableWidgetBackground()
     }
 }
 

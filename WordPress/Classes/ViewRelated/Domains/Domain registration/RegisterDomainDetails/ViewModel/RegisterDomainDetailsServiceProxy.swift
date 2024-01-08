@@ -34,13 +34,13 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
         failure: @escaping (Error) -> Void)
 
      func createTemporaryDomainShoppingCart(
-        siteID: Int,
+        siteID: Int?,
         domainSuggestion: DomainSuggestion,
         privacyProtectionEnabled: Bool,
         success: @escaping (CartResponseProtocol) -> Void,
         failure: @escaping (Error) -> Void)
 
-    func createPersistentDomainShoppingCart(siteID: Int,
+    func createPersistentDomainShoppingCart(siteID: Int?,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
                                             success: @escaping (CartResponseProtocol) -> Void,
@@ -164,7 +164,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
     }
 
     func createTemporaryDomainShoppingCart(
-        siteID: Int,
+        siteID: Int?,
         domainSuggestion: DomainSuggestion,
         privacyProtectionEnabled: Bool,
         success: @escaping (CartResponseProtocol) -> Void,
@@ -177,7 +177,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                          failure: failure)
     }
 
-    func createPersistentDomainShoppingCart(siteID: Int,
+    func createPersistentDomainShoppingCart(siteID: Int?,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
                                             success: @escaping (CartResponseProtocol) -> Void,

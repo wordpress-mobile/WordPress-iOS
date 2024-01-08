@@ -96,10 +96,13 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["site-url-button"]
     }
 
-    private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["switch-site-button"]
+    private let siteActionButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["site-action-button"]
     }
 
+    private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Switch site"]
+    }
     var activityLogCard: XCUIElement { activityLogCardGetter(app) }
     var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
     var blogDetailsRemoveSiteButton: XCUIElement { blogDetailsRemoveSiteButtonGetter(app) }
@@ -121,15 +124,16 @@ public class MySiteScreen: ScreenObject {
     var segmentedControlMenuButton: XCUIElement { segmentedControlMenuButtonGetter(app) }
     var siteTitleButton: XCUIElement { siteTitleButtonGetter(app) }
     var siteUrlButton: XCUIElement { siteUrlButtonGetter(app) }
+    var siteActionButton: XCUIElement { siteActionButtonGetter(app) }
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
     // Timeout duration to overwrite value defined in XCUITestHelpers
-    var duration: TimeInterval = 5.0
+    var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                switchSiteButtonGetter,
+                siteActionButtonGetter,
                 createButtonGetter
             ],
             app: app
@@ -137,6 +141,7 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func showSiteSwitcher() throws -> MySitesScreen {
+        siteActionButton.tap()
         switchSiteButton.tap()
         return try MySitesScreen()
     }
@@ -224,9 +229,9 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func tapFreeToPaidPlansCard() throws -> DomainsSuggestionsScreen {
+    public func tapFreeToPaidPlansCard() throws -> DomainsSelectionScreen {
         freeToPaidPlansCardButton.tap()
-        return try DomainsSuggestionsScreen()
+        return try DomainsSelectionScreen()
     }
 
     @discardableResult

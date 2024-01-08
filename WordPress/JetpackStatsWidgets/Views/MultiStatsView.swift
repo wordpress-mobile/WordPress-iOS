@@ -23,6 +23,7 @@
                 Spacer()
             }
         }
+        .removableWidgetBackground()
     }
 
     /// Constructs a two-card column for the medium size Today widget

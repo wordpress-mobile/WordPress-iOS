@@ -1,4 +1,5 @@
 import WordPressKit
+import JetpackStatsWidgetsCore
 
 /// Type that wraps the backend request for new stats
 class StatsWidgetsService {
@@ -155,7 +156,7 @@ class StatsWidgetsService {
                                                        url: widgetData.url,
                                                        timeZone: widgetData.timeZone,
                                                        date: Date(),
-                                                       stats: ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData)))
+                                                       stats: ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData.map { ThisWeekWidgetStats.Input(periodStartDate: $0.periodStartDate, viewsCount: $0.viewsCount) })))
             completion(.success(newWidgetData))
 
             DispatchQueue.global().async {

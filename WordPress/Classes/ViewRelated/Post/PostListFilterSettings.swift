@@ -6,7 +6,6 @@ import WordPressShared
 class PostListFilterSettings: NSObject {
     fileprivate static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
     fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
-    fileprivate static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
     @objc let blog: Blog
     @objc let postType: PostServiceType
@@ -15,15 +14,6 @@ class PostListFilterSettings: NSObject {
     enum AuthorFilter: UInt {
         case mine = 0
         case everyone = 1
-
-        var stringValue: String {
-            switch self {
-            case .mine:
-                return NSLocalizedString("Me", comment: "Label for the post author filter. This filter shows posts only authored by the current user.")
-            case .everyone:
-                return NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
-            }
-        }
     }
     /// Initializes a new PostListFilterSettings instance
     /// - Parameter blog: the blog which owns the list of posts
@@ -40,11 +30,6 @@ class PostListFilterSettings: NSObject {
         }
 
         return allPostListFilters!
-    }
-
-    func filterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> PostListFilter {
-        let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
-        return availablePostListFilters()[index]
     }
 
     func indexOfFilterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> Int {
@@ -147,13 +132,12 @@ class PostListFilterSettings: NSObject {
             return .everyone
         }
 
-        if let filter = UserPersistentStoreFactory.instance().object(forKey: type(of: self).currentPostAuthorFilterKey) {
-            if (filter as AnyObject).uintValue == AuthorFilter.everyone.rawValue {
-                return .everyone
-            }
+        if let rawValue = UserPersistentStoreFactory.instance().object(forKey: type(of: self).currentPostAuthorFilterKey),
+           let filter = AuthorFilter(rawValue: (rawValue as AnyObject).uintValue) {
+            return filter
         }
 
-        return .mine
+        return .everyone
     }
 
     /// currentPostListFilter: stores the last active AuthorFilter

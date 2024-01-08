@@ -168,14 +168,6 @@ class StatsPeriodHelper {
 }
 
 private extension Date {
-    func adjusted(for period: StatsPeriodUnit, in calendar: Calendar, value: Int) -> Date {
-        guard let adjustedDate = calendar.date(byAdding: period.calendarComponent, value: value, to: self) else {
-            DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
-            return self
-        }
-        return adjustedDate
-    }
-
     func lastDayOfTheWeek(in calendar: Calendar, with offset: Int) -> Date? {
         let components = DateComponents(day: 7 * offset)
 

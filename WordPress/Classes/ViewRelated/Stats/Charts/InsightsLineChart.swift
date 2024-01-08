@@ -1,5 +1,5 @@
 import Foundation
-import Charts
+import DGCharts
 import Kanvas
 
 // MARK: - StatsInsightsFilterDimension
@@ -128,15 +128,6 @@ class InsightsLineChart {
         }
 
         return (thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
-    }
-
-    func primaryLineColor(forFilterDimension filterDimension: StatsInsightsFilterDimension) -> UIColor {
-        switch filterDimension {
-        case .views:
-            return UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
-        case .visitors:
-            return UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
-        }
     }
 }
 

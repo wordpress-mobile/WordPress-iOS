@@ -1,8 +1,9 @@
 import AutomatticTracks
 import UIKit
 import Gridicons
+import WordPressShared
 
-class PostCompactCell: UITableViewCell, ConfigurablePostView {
+class PostCompactCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var badgesLabel: UILabel!
@@ -19,8 +20,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private var iPadReadableLeadingAnchor: NSLayoutConstraint?
     private var iPadReadableTrailingAnchor: NSLayoutConstraint?
-
-    private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
@@ -51,11 +50,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let viewModel = viewModel, let button = sender as? UIButton else {
-            return
-        }
-
-        actionSheetDelegate?.showActionSheet(viewModel, from: button)
+        // Do nothing. The compact cell is only shown in the dashboard, where the more button is hidden.
     }
 
     override func awakeFromNib() {
@@ -203,21 +198,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private enum Constants {
         static let separator = " · "
-        static let contentSpacing: CGFloat = 8
         static let imageRadius: CGFloat = 2
-        static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
         static let margin: CGFloat = 16
-    }
-}
-
-extension PostCompactCell: InteractivePostView {
-    func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
-        // Do nothing, since this cell doesn't support actions in `InteractivePostViewDelegate`.
-    }
-
-    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
-        actionSheetDelegate = delegate
     }
 }
 
@@ -260,10 +243,6 @@ extension PostCompactCell {
         if !post.isScheduled() {
             configureExcerpt()
         }
-    }
-
-    func hideSeparator() {
-        separator.isHidden = true
     }
 
     func disableiPadReadableMargin() {

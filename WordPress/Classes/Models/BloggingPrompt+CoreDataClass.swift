@@ -21,22 +21,25 @@ public class BloggingPrompt: NSManagedObject {
         BloggingPromptsAttribution(rawValue: attribution.lowercased())
     }
 
-    /// Convenience method to map properties from `RemoteBloggingPrompt`.
+    /// Convenience method to map properties from `BloggingPromptRemoteObject`.
     ///
     /// - Parameters:
     ///   - remotePrompt: The remote prompt model to convert
     ///   - siteID: The ID of the site that the prompt is intended for
-    func configure(with remotePrompt: RemoteBloggingPrompt, for siteID: Int32) {
+    func configure(with remotePrompt: BloggingPromptRemoteObject, for siteID: Int32) {
         self.promptID = Int32(remotePrompt.promptID)
         self.siteID = siteID
         self.text = remotePrompt.text
-        self.title = remotePrompt.title
-        self.content = remotePrompt.content
         self.attribution = remotePrompt.attribution
         self.date = remotePrompt.date
         self.answered = remotePrompt.answered
         self.answerCount = Int32(remotePrompt.answeredUsersCount)
         self.displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+        self.additionalPostTags = [String]() // reset previously additional tags.
+
+        if let brandContext = BrandContext(with: remotePrompt) {
+            brandContext.configure(self)
+        }
     }
 
     func textForDisplay() -> String {
@@ -70,6 +73,36 @@ extension BloggingPrompt {
 // MARK: - Private Helpers
 
 private extension BloggingPrompt {
+
+    enum Constants {
+        static let bloganuaryTag = "bloganuary"
+    }
+
+    enum BrandContext {
+        case bloganuary(String)
+
+        init?(with remotePrompt: BloggingPromptRemoteObject) {
+            // Bloganuary context
+            if let bloganuaryId = remotePrompt.bloganuaryId,
+               bloganuaryId.contains(Constants.bloganuaryTag) {
+                self = .bloganuary(bloganuaryId)
+                return
+            }
+
+            return nil
+        }
+
+        /// Configures the given prompt with additional data based on the brand context.
+        ///
+        /// - Parameter prompt: The `BloggingPrompt` instance to configure.
+        func configure(_ prompt: BloggingPrompt) {
+            switch self {
+            case .bloganuary(let id):
+                prompt.additionalPostTags = [Constants.bloganuaryTag, id]
+                prompt.attribution = BloggingPromptsAttribution.bloganuary.rawValue
+            }
+        }
+    }
 
     struct DateFormatters {
         static let local: DateFormatter = {

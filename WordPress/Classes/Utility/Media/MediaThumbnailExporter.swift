@@ -171,17 +171,6 @@ class MediaThumbnailExporter: MediaExporter {
         }
     }
 
-    /// Export an existing image as a thumbnail image, based on the exporter options.
-    ///
-    @discardableResult func exportThumbnail(forImage image: UIImage, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) -> Progress {
-        let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
-        exporter.mediaDirectoryType = .temporary
-        exporter.options = imageExporterOptions
-        return exporter.export(onCompletion: { (export) in
-                                self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
-        }, onError: onError)
-    }
-
     /// Export a known video at the URL, being either a file URL or a remote URL.
     ///
     @discardableResult func exportThumbnail(forVideoURL url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) -> Progress {
@@ -294,21 +283,6 @@ extension MediaThumbnailExporter {
         return try await withTaskCancellationHandler {
             try await withUnsafeThrowingContinuation { continuation in
                 token.progress = exportThumbnail(forVideoURL: url, onCompletion: {
-                    continuation.resume(returning: ($0, $1))
-                }, onError: {
-                    continuation.resume(throwing: $0)
-                })
-            }
-        } onCancel: {
-            token.progress?.cancel()
-        }
-    }
-
-    func exportThumbnail(forImage image: UIImage) async throws -> (ThumbnailIdentifier, MediaExport) {
-        let token = MediaExportCancelationToken()
-        return try await withTaskCancellationHandler {
-            try await withUnsafeThrowingContinuation { continuation in
-                token.progress = exportThumbnail(forImage: image, onCompletion: {
                     continuation.resume(returning: ($0, $1))
                 }, onError: {
                     continuation.resume(throwing: $0)

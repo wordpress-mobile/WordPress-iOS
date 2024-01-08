@@ -3,13 +3,54 @@ import AVFoundation
 
 class MediaSettings: NSObject {
     // MARK: - Constants
+    fileprivate let imageOptimizationKey = "SavedImageOptimizationSetting"
     fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
+    fileprivate let imageQualityKey = "SavedImageQualitySetting"
     fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
     fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
+    fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
 
+    fileprivate let defaultImageOptimization = true
+    fileprivate let defaultMaxImageDimension = 2000
+    fileprivate let defaultImageQuality: ImageQuality = .medium
+    fileprivate let defaultMaxVideoSize: VideoResolution = .sizeOriginal
+    fileprivate let defaultRemoveLocation = true
 
     fileprivate let minImageDimension = 150
     fileprivate let maxImageDimension = 3000
+
+    enum ImageQuality: String {
+        case maximum = "MaximumQuality100"
+        case high = "HighQuality90"
+        case medium = "MediumQuality80"
+        case low = "LowQuality70"
+
+        var doubleValue: Double {
+            switch self {
+            case .maximum:
+                return 1.0
+            case .high:
+                return 0.9
+            case .medium:
+                return 0.8
+            case .low:
+                return 0.7
+            }
+        }
+
+        var description: String {
+            switch self {
+            case .maximum:
+                return NSLocalizedString("appSettings.media.imageQuality.maximum", value: "Maximum", comment: "Indicates an image will use maximum quality when uploaded.")
+            case .high:
+                return NSLocalizedString("appSettings.media.imageQuality.high", value: "High", comment: "Indicates an image will use high quality when uploaded.")
+            case .medium:
+                return NSLocalizedString("appSettings.media.imageQuality.medium", value: "Medium", comment: "Indicates an image will use medium quality when uploaded.")
+            case(.low):
+                return NSLocalizedString("appSettings.media.imageQuality.low", value: "Low", comment: "Indicates an image will use low quality when uploaded.")
+            }
+        }
+    }
 
     enum VideoResolution: String {
         case size640x480 = "AVAssetExportPreset640x480"
@@ -62,23 +103,6 @@ class MediaSettings: NSObject {
                 return 5
             }
         }
-
-        static func videoResolution(from value: Int) -> MediaSettings.VideoResolution {
-            switch value {
-            case 1:
-                return .size640x480
-            case 2:
-                return .size1280x720
-            case 3:
-                return .size1920x1080
-            case 4:
-                return .size3840x2160
-            case 5:
-                return .sizeOriginal
-            default:
-                return .sizeOriginal
-            }
-        }
     }
 
     // MARK: - Internal variables
@@ -110,11 +134,17 @@ class MediaSettings: NSObject {
     /// - Note: if the image doesn't need to be resized, it returns `Int.max`
     ///
     @objc var imageSizeForUpload: Int {
-        if maxImageSizeSetting >= maxImageDimension {
+        // When image optimization is enabled, setting the max image size setting to
+        // the maximum value will be considered as to using the original size.
+        if !imageOptimizationEnabled || maxImageSizeSetting >= maxImageDimension {
             return Int.max
         } else {
             return maxImageSizeSetting
         }
+    }
+
+    var imageQualityForUpload: ImageQuality {
+        return imageOptimizationEnabled ? imageQualitySetting : .high
     }
 
     /// The stored value for the maximum size images can have before uploading.
@@ -134,7 +164,7 @@ class MediaSettings: NSObject {
                 database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
-                return maxImageDimension
+                return defaultMaxImageDimension
             }
         }
         set {
@@ -148,7 +178,7 @@ class MediaSettings: NSObject {
             if let savedRemoveLocation = database.object(forKey: removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
-                return true
+                return defaultRemoveLocation
             }
         }
         set {
@@ -160,12 +190,56 @@ class MediaSettings: NSObject {
         get {
             guard let savedSize = database.object(forKey: maxVideoSizeKey) as? String,
                   let videoSize = VideoResolution(rawValue: savedSize) else {
-                    return .sizeOriginal
+                    return defaultMaxVideoSize
             }
             return videoSize
         }
         set {
             database.set(newValue.rawValue, forKey: maxVideoSizeKey)
+        }
+    }
+
+    var imageOptimizationEnabled: Bool {
+        get {
+            if let savedImageOptimization = database.object(forKey: imageOptimizationKey) as? Bool {
+                return savedImageOptimization
+            } else {
+                return defaultImageOptimization
+            }
+        }
+        set {
+            database.set(newValue, forKey: imageOptimizationKey)
+
+            // If the user changes this setting manually, we disable the image optimization popup.
+            if advertiseImageOptimization {
+                advertiseImageOptimization = false
+            }
+        }
+    }
+
+    var imageQualitySetting: ImageQuality {
+        get {
+            guard let savedQuality = database.object(forKey: imageQualityKey) as? String,
+                  let imageQuality = ImageQuality(rawValue: savedQuality) else {
+                    return defaultImageQuality
+            }
+            return imageQuality
+        }
+        set {
+            database.set(newValue.rawValue, forKey: imageQualityKey)
+        }
+    }
+
+    var advertiseImageOptimization: Bool {
+        get {
+            if let savedAdvertiseImageOptimization = database.object(forKey: advertiseImageOptimizationKey) as? Bool {
+                return savedAdvertiseImageOptimization
+            } else {
+                return true
+            }
+        }
+        set {
+            database.set(newValue, forKey: advertiseImageOptimizationKey)
         }
     }
 }

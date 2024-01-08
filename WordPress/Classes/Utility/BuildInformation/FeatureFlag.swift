@@ -8,11 +8,10 @@ enum FeatureFlag: Int, CaseIterable {
     case siteIconCreator
     case statsNewInsights
     case betaSiteDesigns
-    case personalizeHomeTab
     case commentModerationUpdate
     case compliancePopover
-    case domainFocus
-    case mediaModernization
+    case googleDomainsCard
+    case newTabIcons
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -33,16 +32,14 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.statsRevampV2Enabled
         case .betaSiteDesigns:
             return false
-        case .personalizeHomeTab:
-            return AppConfiguration.isJetpack
         case .commentModerationUpdate:
             return false
         case .compliancePopover:
             return true
-        case .domainFocus:
-            return true
-        case .mediaModernization:
+        case .googleDomainsCard:
             return false
+        case .newTabIcons:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -77,16 +74,14 @@ extension FeatureFlag {
             return "New Cards for Stats Insights"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
-        case .personalizeHomeTab:
-            return "Personalize Home Tab"
         case .commentModerationUpdate:
             return "Comments Moderation Update"
         case .compliancePopover:
             return "Compliance Popover"
-        case .domainFocus:
-            return "Domain Focus"
-        case .mediaModernization:
-            return "Media Modernization"
+        case .googleDomainsCard:
+            return "Google Domains Promotional Card"
+        case .newTabIcons:
+            return "New Tab Icons"
         }
     }
 }

@@ -51,3 +51,18 @@ extension UINavigationController {
         self.pushViewController(viewController, animated: animated)
     }
 }
+
+extension UIViewController {
+    func configureDefaultNavigationBarAppearance() {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.compactAppearance = standardAppearance
+        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+        navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
+    }
+}

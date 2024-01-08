@@ -29,9 +29,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private var receipt: Receipt?
 
     private let insightsStore = StoreContainer.shared.statsInsights
-    private var insightsChangeReceipt: Receipt?
     private let periodStore = StoreContainer.shared.statsPeriod
-    private var periodChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -226,12 +224,6 @@ private extension SiteStatsDetailTableViewController {
         default:
             refreshControl?.endRefreshing()
         }
-    }
-
-    func applyTableUpdates() {
-        tableView.performBatchUpdates({
-            updateStatSectionForFilterChange()
-        })
     }
 
     func clearExpandedRows() {

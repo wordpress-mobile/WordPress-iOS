@@ -22,15 +22,6 @@ enum AccountSettingsState: Equatable {
     var succeeded: Bool {
         return self == .success
     }
-
-    var failureMessage: String? {
-        switch self {
-        case .failure(let error):
-            return error
-        default:
-            return nil
-        }
-    }
 }
 
 enum AccountSettingsAction: Action {

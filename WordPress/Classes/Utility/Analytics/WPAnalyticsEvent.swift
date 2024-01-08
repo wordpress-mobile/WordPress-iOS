@@ -19,6 +19,9 @@ import Foundation
     case mediaLibraryAddedPhotoViaTenor
     case editorAddedPhotoViaTenor
 
+    // Media
+    case siteMediaShareTapped
+
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostPublishDismissed
@@ -227,6 +230,8 @@ import Foundation
     // Domains
     case domainsDashboardViewed
     case domainsDashboardAddDomainTapped
+    case domainsDashboardGetDomainTapped
+    case domainsDashboardGetPlanTapped
     case domainsSearchSelectDomainTapped
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
@@ -236,6 +241,23 @@ import Foundation
     case domainTransferMoreTapped
     case domainTransferButtonTapped
 
+    // Domain Management
+    case meDomainsTapped
+    case allDomainsDomainDetailsWebViewShown
+    case domainsDashboardAllDomainsTapped
+    case domainsDashboardDomainsSearchShown
+    case domainsListShown
+    case allDomainsFindDomainTapped
+    case addDomainTapped
+    case domainsSearchTransferDomainTapped
+    case domainsSearchRowSelected
+    case siteSwitcherSiteSelected
+    case purchaseDomainScreenShown
+    case purchaseDomainGetDomainTapped
+    case purchaseDomainChooseSiteTapped
+    case purchaseDomainCompleted
+    case myDomainsSearchDomainTapped
+
     // My Site
     case mySitePullToRefresh
 
@@ -243,6 +265,11 @@ import Foundation
     case mySiteNoSitesViewDisplayed
     case mySiteNoSitesViewActionTapped
     case mySiteNoSitesViewHidden
+
+    // My Site: Header Actions
+    case mySiteHeaderMoreTapped
+    case mySiteHeaderAddSiteTapped
+    case mySiteHeaderPersonalizeHomeTapped
 
     // Site Switcher
     case mySiteSiteSwitcherTapped
@@ -255,8 +282,11 @@ import Foundation
 
     // Post List
     case postListShareAction
+    case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
+    case postListSetAsRegularPageAction
+    case postListSettingsAction
 
     // Page List
     case pageListEditHomepageTapped
@@ -280,10 +310,14 @@ import Foundation
     case accountCloseCompleted
 
     // App Settings
+    case appSettingsOptimizeImagesChanged
+    case appSettingsMaxImageSizeChanged
+    case appSettingsImageQualityChanged
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
+    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -413,6 +447,12 @@ import Foundation
     case promptsOtherAnswersTapped
     case promptsSettingsShowPromptsTapped
 
+    // Bloganuary Nudges
+    case bloganuaryNudgeCardLearnMoreTapped
+    case bloganuaryNudgeModalShown
+    case bloganuaryNudgeModalDismissed
+    case bloganuaryNudgeModalActionTapped
+
     // Jetpack branding
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
@@ -509,6 +549,14 @@ import Foundation
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
+    // SoTW 2023 Nudge
+    case sotw2023NudgePostEventCardShown
+    case sotw2023NudgePostEventCardCTATapped
+    case sotw2023NudgePostEventCardHideTapped
+
+    // Widgets
+    case widgetsLoadedOnApplicationOpened
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -536,6 +584,9 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
+            // Media
+        case .siteMediaShareTapped:
+            return "site_media_shared_tapped"
         // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
@@ -909,6 +960,10 @@ import Foundation
             return "domains_dashboard_viewed"
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
+        case .domainsDashboardGetDomainTapped:
+            return "domains_dashboard_get_domain_tapped"
+        case .domainsDashboardGetPlanTapped:
+            return "domains_dashboard_get_plan_tapped"
         case .domainsSearchSelectDomainTapped:
             return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:
@@ -926,6 +981,38 @@ import Foundation
         case .domainTransferButtonTapped:
             return "dashboard_card_domain_transfer_button_tapped"
 
+        // Domain Management
+        case .meDomainsTapped:
+            return "me_all_domains_tapped"
+        case .allDomainsDomainDetailsWebViewShown:
+            return "all_domains_domain_details_web_view_shown"
+        case .domainsDashboardAllDomainsTapped:
+            return "domains_dashboard_all_domains_tapped"
+        case .domainsDashboardDomainsSearchShown:
+            return "domains_dashboard_domains_search_shown"
+        case .domainsListShown:
+            return "all_domains_list_shown"
+        case .allDomainsFindDomainTapped:
+            return "domain_management_all_domains_find_domain_tapped"
+        case .addDomainTapped:
+            return "all_domains_add_domain_tapped"
+        case .domainsSearchTransferDomainTapped:
+            return "domains_dashboard_domains_search_transfer_domain_tapped"
+        case .domainsSearchRowSelected:
+            return "domain_management_domains_search_row_selected"
+        case .siteSwitcherSiteSelected:
+            return "site_switcher_site_selected"
+        case .purchaseDomainScreenShown:
+            return "domain_management_purchase_domain_screen_shown"
+        case .purchaseDomainGetDomainTapped:
+            return "domain_management_purchase_domain_get_domain_tapped"
+        case .purchaseDomainChooseSiteTapped:
+            return "domain_management_purchase_domain_choose_site_tapped"
+        case .purchaseDomainCompleted:
+            return "domain_management_purchase_domain_completed"
+        case .myDomainsSearchDomainTapped:
+            return "domain_management_my_domains_search_domain_tapped"
+
         // My Site
         case .mySitePullToRefresh:
             return "my_site_pull_to_refresh"
@@ -937,6 +1024,14 @@ import Foundation
             return "my_site_no_sites_view_action_tapped"
         case .mySiteNoSitesViewHidden:
             return "my_site_no_sites_view_hidden"
+
+        // My Site Header Actions
+        case .mySiteHeaderMoreTapped:
+            return "my_site_header_more_tapped"
+        case .mySiteHeaderAddSiteTapped:
+            return "my_site_header_add_site_tapped"
+        case .mySiteHeaderPersonalizeHomeTapped:
+            return "my_site_header_personalize_home_tapped"
 
         // Site Switcher
         case .mySiteSiteSwitcherTapped:
@@ -957,9 +1052,15 @@ import Foundation
         // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListCommentsAction:
+            return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
+            return "post_list_button_pressed"
+        case .postListSetAsRegularPageAction:
+            return "post_list_button_pressed"
+        case .postListSettingsAction:
             return "post_list_button_pressed"
 
         // Page List
@@ -995,6 +1096,14 @@ import Foundation
             return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
+        case .appSettingsOptimizeImagesChanged:
+            return "app_settings_optimize_images_changed"
+        case .appSettingsMaxImageSizeChanged:
+            return "app_settings_max_image_size_changed"
+        case .appSettingsImageQualityChanged:
+            return "app_settings_image_quality_changed"
+        case .appSettingsOptimizeImagesPopupTapped:
+            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:
@@ -1218,6 +1327,16 @@ import Foundation
         case .promptsSettingsShowPromptsTapped:
             return "blogging_prompts_settings_show_prompts_tapped"
 
+        // Bloganuary Nudges
+        case .bloganuaryNudgeCardLearnMoreTapped:
+            return "bloganuary_nudge_my_site_card_learn_more_tapped"
+        case .bloganuaryNudgeModalShown:
+            return "bloganuary_nudge_learn_more_modal_shown"
+        case .bloganuaryNudgeModalDismissed:
+            return "bloganuary_nudge_learn_more_modal_dismissed"
+        case .bloganuaryNudgeModalActionTapped:
+            return "bloganuary_nudge_learn_more_modal_action_tapped"
+
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:
             return "jetpack_powered_badge_tapped"
@@ -1388,6 +1507,18 @@ import Foundation
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
 
+        // SoTW 2023 Nudge
+        case .sotw2023NudgePostEventCardShown:
+            return "sotw_2023_nudge_post_event_card_shown"
+        case .sotw2023NudgePostEventCardCTATapped:
+            return "sotw_2023_nudge_post_event_card_cta_tapped"
+        case .sotw2023NudgePostEventCardHideTapped:
+            return "sotw_2023_nudge_post_event_card_hide_tapped"
+
+        // Widgets
+        case .widgetsLoadedOnApplicationOpened:
+            return "widgets_loaded_on_application_opened"
+
         } // END OF SWITCH
     }
 
@@ -1408,10 +1539,16 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListCommentsAction:
+            return ["button": "comments"]
         case .postListSetAsPostsPageAction:
             return ["button": "set_posts_page"]
         case .postListSetHomePageAction:
             return ["button": "set_homepage"]
+        case .postListSetAsRegularPageAction:
+            return ["button": "set_regular_page"]
+        case .postListSettingsAction:
+            return ["button": "settings"]
         default:
             return nil
         }

@@ -22,7 +22,6 @@ class MediaRequestAuthenticator {
     /// Errors conditions that this class can find.
     ///
     enum Error: Swift.Error {
-        case cannotFindSiteIDForSiteAvailableThroughWPCom(blog: Blog)
         case cannotBreakDownURLIntoComponents(url: URL)
         case cannotCreateAtomicURL(components: URLComponents)
         case cannotCreateAtomicProxyURL(components: URLComponents)
