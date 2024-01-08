@@ -1,6 +1,6 @@
 24.1
 -----
-
+* [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
 
 24.0
 -----
