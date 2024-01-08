@@ -456,15 +456,6 @@ class MediaCoordinator: NSObject {
         return cachedCoordinator(for: post)?.totalProgress ?? 0
     }
 
-    /// Returns the error associated to media if any
-    ///
-    /// - Parameter media: the media object from where to  fetch the associated error.
-    /// - Returns: the error associated to media if any
-    ///
-    func error(for media: Media) -> NSError? {
-        return coordinator(for: media).error(forMediaID: media.uploadID)
-    }
-
     /// Returns the media object for the specified uploadID.
     ///
     /// - Parameter uploadID: the identifier for an ongoing upload

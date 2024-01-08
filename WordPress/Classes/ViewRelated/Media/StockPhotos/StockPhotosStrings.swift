@@ -9,10 +9,6 @@ extension String {
         return NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")
     }
 
-    static var closePicker: String {
-        return NSLocalizedString("Close", comment: "Dismiss the media picker for Stock Photos")
-    }
-
     static var cancelMoreOptions: String {
         return NSLocalizedString(
             "stockPhotos.strings.dismiss",

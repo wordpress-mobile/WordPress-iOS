@@ -4,6 +4,5 @@ extension ShareAppContentPresenter {
     struct RowConstants {
         static let buttonTitle = AppConstants.Settings.shareButtonTitle
         static let buttonIconImage: UIImage? = .init(systemName: "square.and.arrow.up")
-        static let buttonTintColor: UIColor = .primary
     }
 }

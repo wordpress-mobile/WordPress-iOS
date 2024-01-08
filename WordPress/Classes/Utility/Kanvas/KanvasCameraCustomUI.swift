@@ -7,13 +7,9 @@ public class KanvasCustomUI {
     public static let shared = KanvasCustomUI()
 
     private static let brightBlue = UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightYellow = UIColor.muriel(color: MurielColor(name: .yellow)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightRed = UIColor.muriel(color: MurielColor(name: .red)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange)).color(for: UITraitCollection(userInterfaceStyle: .dark))
-    private static let white = UIColor.white
 
     static private var firstPrimary: UIColor {
         return KanvasCustomUI.primaryColors.first ?? UIColor.blue
@@ -104,72 +100,6 @@ public class KanvasCustomUI {
 
     func cameraImages() -> KanvasImages {
         return KanvasImages(confirmImage: UIImage(named: "stories-confirm-button"), editorConfirmImage: UIImage(named: "stories-confirm-button"), nextImage: UIImage(named: "stories-next-button"))
-    }
-}
-
-enum CustomKanvasFonts: CaseIterable {
-    case libreBaskerville
-    case nunitoBold
-    case pacifico
-    case oswaldUpper
-    case shrikhand
-    case spaceMonoBold
-
-    struct Shadow {
-        let radius: CGFloat
-        let offset: CGPoint
-        let color: UIColor
-    }
-
-    var name: String {
-        switch self {
-        case .libreBaskerville:
-            return "LibreBaskerville-Regular"
-        case .nunitoBold:
-            return "Nunito-Bold"
-        case .pacifico:
-            return "Pacifico-Regular"
-        case .oswaldUpper:
-            return "Oswald-Regular"
-        case .shrikhand:
-            return "Shrikhand-Regular"
-        case .spaceMonoBold:
-            return "SpaceMono-Bold"
-        }
-    }
-
-    var size: Int {
-        switch self {
-        case .libreBaskerville:
-            return 20
-        case .nunitoBold:
-            return 24
-        case .pacifico:
-            return 24
-        case .oswaldUpper:
-            return 22
-        case .shrikhand:
-            return 22
-        case .spaceMonoBold:
-            return 20
-        }
-    }
-
-    var shadow: Shadow? {
-        switch self {
-        case .libreBaskerville:
-            return nil
-        case .nunitoBold:
-            return Shadow(radius: 1, offset: CGPoint(x: 0, y: 2), color: UIColor.black.withAlphaComponent(75))
-        case .pacifico:
-            return Shadow(radius: 5, offset: .zero, color: UIColor.white.withAlphaComponent(50))
-        case .oswaldUpper:
-            return nil
-        case .shrikhand:
-            return Shadow(radius: 1, offset: CGPoint(x: 1, y: 2), color: UIColor.black.withAlphaComponent(75))
-        case .spaceMonoBold:
-            return nil
-        }
     }
 }
 

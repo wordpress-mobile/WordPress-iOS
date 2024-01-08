@@ -20,7 +20,6 @@ final class SiteIconPickerPresenter: NSObject {
     // MARK: - Private Properties
 
     private var dataSource: AnyObject?
-    private var mediaCapturePresenter: AnyObject?
 
     // MARK: - Public methods
 

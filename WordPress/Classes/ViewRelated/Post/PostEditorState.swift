@@ -115,10 +115,6 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var isPostPostShown: Bool {
-        return false
-    }
-
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
@@ -359,27 +355,10 @@ public class PostEditorStateContext {
         return action.publishActionLabel
     }
 
-    var publishQuestionTitleText: String {
-        return action.publishingActionQuestionLabel
-    }
-
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
         return action.publishActionAnalyticsStat
-    }
-
-    // TODO: Remove as dead code?
-    /// Indicates if the editor should be dismissed when the publish button is tapped
-    ///
-    var publishActionDismissesEditor: Bool {
-        return action != .update
-    }
-
-    /// Should post-post be shown for the current editor when publishing has happened
-    ///
-    var isPostPostShown: Bool {
-        return action.isPostPostShown
     }
 
     /// Returns whether the secondary publish button should be displayed, or not
@@ -450,12 +429,4 @@ fileprivate func isFutureDated(_ date: Date?) -> Bool {
     let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
 
     return comparison == .orderedAscending
-}
-
-fileprivate func isPastDated(_ date: Date?) -> Bool {
-    guard let date = date else {
-        return false
-    }
-
-    return date < Date()
 }

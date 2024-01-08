@@ -14,7 +14,7 @@ common_params:
   # Common environment values to use with the `env` key.
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
-    IMAGE_ID: xcode-14.3.1
+    IMAGE_ID: xcode-15.1
 
 steps:
 

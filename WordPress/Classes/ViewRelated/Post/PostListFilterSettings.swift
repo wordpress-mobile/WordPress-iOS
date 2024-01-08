@@ -6,7 +6,6 @@ import WordPressShared
 class PostListFilterSettings: NSObject {
     fileprivate static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
     fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
-    fileprivate static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
     @objc let blog: Blog
     @objc let postType: PostServiceType
@@ -31,11 +30,6 @@ class PostListFilterSettings: NSObject {
         }
 
         return allPostListFilters!
-    }
-
-    func filterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> PostListFilter {
-        let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
-        return availablePostListFilters()[index]
     }
 
     func indexOfFilterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> Int {

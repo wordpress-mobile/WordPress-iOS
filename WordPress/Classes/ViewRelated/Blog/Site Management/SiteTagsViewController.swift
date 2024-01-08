@@ -6,7 +6,6 @@ final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
         static let cellIdentifier = "TitleBadgeDisclosureCell"
         static let accesibilityIdentifier = "SiteTagsList"
-        static let numberOfSections = 1
     }
     private let blog: Blog
 

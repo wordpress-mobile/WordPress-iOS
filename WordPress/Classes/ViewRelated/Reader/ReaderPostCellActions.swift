@@ -159,13 +159,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         saveForLaterAction = saveAction
     }
 
-    fileprivate func visitSiteForPost(_ post: ReaderPost) {
-        guard let origin = origin else {
-            return
-        }
-        ReaderVisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: origin)
-    }
-
     fileprivate func showAttributionForPost(_ post: ReaderPost) {
         guard let origin = origin else {
             return

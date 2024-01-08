@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-12 00:09:06+0000 */
+/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "全部";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "所有 WordPress.com 年繳方案皆隨附一個自訂網域名稱。 立即註冊你的免費網域。";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -1346,7 +1349,7 @@ translators: Block name. %s: The localized block name */
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
-"Caption" = "說明文字";
+"Caption" = "媒體說明文字";
 
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -9445,11 +9448,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "複製網址";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "造訪網站";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "深入瞭解";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示；這個社群挑戰的目的是協助你在新的一年養成寫網誌習慣。";
+"bloganuary.dashboard.card.description" = "Bloganuary 會在 1 月送上網誌提示：這個社群挑戰的目的，是為了協助你在新的一年養成寫網誌的習慣。";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary 正式開跑！";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary 挑戰即將來臨！";
@@ -9804,6 +9813,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "新增";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "選取圖片";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "檢視選擇項目 (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "行銷活動詳細資訊";
@@ -10258,6 +10276,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "已刪除！";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "全部";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "音訊";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "文件";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "圖片";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "影片";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "刪除";
 
@@ -10335,6 +10368,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "拍攝影片";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "第 %1$@ 步，共 %2$@ 步";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d 像素";
@@ -10488,6 +10524,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "你沒有任何網站";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "新增網站";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "網站動作";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "點選以顯示更多網站動作";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "打造個人版首頁";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "變更網站圖示";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "變更網站標題";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "切換網站";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "造訪網站";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
@@ -11062,6 +11122,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "預覽媒體";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "新增";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "取消選取";
 
@@ -11236,6 +11299,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "關閉";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "由 Pexels 提供的相片";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "搜尋免費相片以新增至你的媒體庫！";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "在此討論中";
 
@@ -11382,6 +11451,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "說明";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "搜尋 GIF 以新增至你的媒體庫！";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";

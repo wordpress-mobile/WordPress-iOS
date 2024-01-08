@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-07 10:50:54+0000 */
+/* Translation-Revision-Date: 2024-01-03 08:48:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: es */
@@ -649,6 +649,9 @@ translators: Block name. %s: The localized block name */
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Todo";
 
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Todos los planes anuales de WordPress.com incluyen un nombre de dominio personalizado. Registra tu dominio gratis ahora.";
+
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Todos los planes de WordPress.com incluyen un nombre de dominio personalizado. Registra ahora tu dominio premium gratuito.";
@@ -809,7 +812,7 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
-"Answer Prompt" = "Responder estímulo";
+"Answer Prompt" = "Responder sugerencia";
 
 /* Title of answered Blogging Prompts filter. */
 "Answered" = "Contestada";
@@ -3663,7 +3666,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "Inactivo, actualizaciones automáticas activas";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include a Blogging Prompt" = "Incluir un estímulo para bloguear";
+"Include a Blogging Prompt" = "Incluir una sugerencia de publicación";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluido con el sitio";
@@ -3772,7 +3775,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "Diseño de interiores";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Blogging Prompts" = "Presentamos los estímulos para bloguear";
+"Introducing Blogging Prompts" = "Presentamos las sugerencias de publicación";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Presentando las entradas de historias";
@@ -4007,7 +4010,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.
    Accessibility label for the blogging prompts info button on the prompts header view. */
-"Learn more about prompts" = "Más información sobre los estímulos";
+"Learn more about prompts" = "Más información sobre las sugerencias";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Saber más sobre los perfiles";
@@ -4175,7 +4178,7 @@ translators: Block name. %s: The localized block name */
 "Loading plugins..." = "Cargando plugins…";
 
 /* Displayed while blogging prompts are being loaded. */
-"Loading prompts..." = "Cargando estímulos…";
+"Loading prompts..." = "Cargando sugerencias…";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Cargando hilo…";
@@ -4857,7 +4860,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No primary site address found" = "No se ha encontrado ninguna dirección del sitio principal";
 
 /* Title displayed when there are no blogging prompts to display. */
-"No prompts yet" = "Todavía no hay estímulos";
+"No prompts yet" = "Todavía no hay sugerencias";
 
 /* A message title */
 "No recent posts" = "No hay entradas recientes";
@@ -5691,12 +5694,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Proyectos";
 
 /* Title of the notification presented when a prompt is skipped */
-"Prompt skipped" = "Se ha omitido el estímulo";
+"Prompt skipped" = "Se ha omitido la sugerencia";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
    Title label for the Prompts card in My Sites tab.
    View title for Blogging Prompts list. */
-"Prompts" = "Estímulos";
+"Prompts" = "Sugerencias";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Pública";
@@ -7150,7 +7153,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to hide the keyboard" = "Toca para ocultar el teclado";
 
 /* Title for a push notification with fixed content that invites the user to load today's blogging prompt. */
-"Tap to load today's prompt..." = "Toca para cargar el estímulo de hoy…";
+"Tap to load today's prompt..." = "Toca para cargar la sugerencia de hoy…";
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as not spam." = "Toca para marcar al referente como no spam.";
@@ -7277,7 +7280,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The basics" = "Lo básico";
 
 /* Subtitle displayed on the feature introduction view. */
-"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "El mejor modo de convertirte en un mejor escritor es crear un hábito de escritura y compartir con otros - ¡aquí es donde entran los estímulos! ";
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "El mejor modo de convertirte en un mejor escritor es crear un hábito de escritura y compartir con otros - ¡aquí es donde entran las sugerencias!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "El certificado para este servidor no es válido. Puede que estés conectando con un servidor que aparenta ser «%@», lo que podría poner en peligro tu información confidencial.\n\n¿Deseas confiar en el certificado de todos modos?";
@@ -7472,7 +7475,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "Hubo un error al cargar los plugins";
 
 /* Text displayed when there is a failure loading blogging prompts. */
-"There was an error loading prompts." = "Se ha producido un error al cargar los estímulos.";
+"There was an error loading prompts." = "Se ha producido un error al cargar las sugerencias.";
 
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Se ha producido un error al cargar el comentario.";
@@ -7694,7 +7697,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Today" = "Hoy";
 
 /* Title for a push notification showing today's blogging prompt. */
-"Today's Prompt 💡" = "Estímulo de hoy 💡";
+"Today's Prompt 💡" = "Sugerencia de hoy 💡";
 
 /* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Estadísticas de hoy";
@@ -7832,7 +7835,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Try with the site address" = "Prueba con la dirección del sitio";
 
 /* Destructive menu title to remove the prompt card from the dashboard. */
-"Turn off prompts" = "Desactivar estímulos";
+"Turn off prompts" = "Desactivar las sugerencias";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Desactivar los avisos del sitio";
@@ -8362,7 +8365,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View more" = "Ver más";
 
 /* Menu title to show more prompts. */
-"View more prompts" = "Ver más estímulos";
+"View more prompts" = "Ver más sugerencias";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Ver tu sitio";
@@ -8748,7 +8751,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We’ll notify you when its done." = "Te avisaremos cuando hayamos terminado.";
 
 /* Description of Blogging Prompts displayed in the Feature Introduction view. */
-"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "¡Te mostraremos un nuevo estímulo cada día en tu escritorio para ayudarte a que fluyan esos fluidos creativos!";
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "¡Te mostraremos una nueva sugerencia cada día en tu escritorio para ayudarte a que fluya la creatividad!";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "Volveremos a intentar hacer copia de seguridad de tu sitio.";
@@ -9008,10 +9011,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Siempre puedes acceder con un enlace como el que acabas de usar, pero también puedes configurar una contraseña si lo prefieres.";
 
 /* Note displayed in the Feature Introduction view. */
-"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Puedes gestionar los recordatorios y estímulos para bloguear en cualquier momento desde Mi sitio > Ajustes > Bloguear.";
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Puedes gestionar los recordatorios y las sugerencias de publicación en cualquier momento desde Mi sitio > Ajustes > Bloguear.";
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Puedes gestionar los recordatorios y estímulos para bloguear en cualquier momento desde Mi sitio > Ajustes > Bloguear.";
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Puedes gestionar los recordatorios y las sugerencias de publicación en cualquier momento desde «Mi sitio > Ajustes > Bloguear».";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Puedes editar este bloque usando la versión web del editor.";
@@ -9454,11 +9457,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Copiar URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Visitar sitio";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Más información";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Durante el mes de enero, recibirás sugerencias de publicación de Bloganuary, nuestro reto de la comunidad para que crees un hábito de publicación sólido para el nuevo año.";
+"bloganuary.dashboard.card.description" = "Durante el mes de enero, las sugerencias para escribir en el blog provendrán de Bloganuary, nuestro reto comunitario para crear un hábito de blogueo para el nuevo año.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "¡Bloganuary ya está aquí!";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "¡Bloganuary está a la vuelta de la esquina!";
@@ -9813,6 +9822,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Añadir";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Seleccionar imágenes";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Ver seleccionados (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Detalles de la campaña";
@@ -10267,6 +10285,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "¡Borrado!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Todos";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Documentos";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Imágenes";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Vídeos";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Borrar";
 
@@ -10344,6 +10377,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Grabar vídeo";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ de %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
@@ -10497,6 +10533,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "No tienes sitios";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Añadir sitio";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Acciones del sitio";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Toca para mostrar más acciones del sitio";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalizar Inicio";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Cambiar icono del sitio";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Cambiar título del sitio";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Cambiar de sitio";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Visitar sitio";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Descartar";
@@ -10815,7 +10875,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "prompts.notification.removed.subtitle" = "Visitar los ajustes del sitio para volver a activar";
 
 /* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "Se han ocultado los estímulos para bloguear.";
+"prompts.notification.removed.title" = "Se han ocultado las sugerencias de publicación";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Descartar";
@@ -11071,6 +11131,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Previsualizar medios";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Añadir";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Anular selección";
 
@@ -11245,6 +11308,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Descartar";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Fotos proporcionadas por Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "¡Busca fotos gratuitas que añadir a tu biblioteca de medios!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "En esta conversación";
 
@@ -11391,6 +11460,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Ayuda";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "¡Busca GIFs para añadir a tu biblioteca de medios!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Se eliminarán estos elementos:";

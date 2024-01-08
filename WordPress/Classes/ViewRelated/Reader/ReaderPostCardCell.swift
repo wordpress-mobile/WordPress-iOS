@@ -464,7 +464,6 @@ private extension ReaderPostCardCell {
 
     func configureLabel(_ label: UILabel, text: String?) {
         guard let text else {
-            label.removeFromSuperview()
             return
         }
         label.setText(text)

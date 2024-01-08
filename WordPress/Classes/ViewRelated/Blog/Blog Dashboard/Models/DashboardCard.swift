@@ -133,7 +133,7 @@ enum DashboardCard: String, CaseIterable {
         case .empty:
             return false // Controlled manually based on other cards visibility
         case .personalize:
-            return FeatureFlag.personalizeHomeTab.enabled
+            return true
         case .pages:
             return DashboardPagesListCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .activityLog:
@@ -147,15 +147,21 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    func shouldShow(
+    static func shouldShowDynamicCard(
         for blog: Blog,
-        dynamicCardPayload: DashboardDynamicCardModel.Payload,
+        payload: DashboardDynamicCardModel.Payload,
+        remoteFeatureFlagStore: RemoteFeatureFlagStore,
         isJetpack: Bool = AppConfiguration.isJetpack
     ) -> Bool {
-        return self == .dynamic
-        && isJetpack
+        let remoteFeatureFlagEnabled = {
+            guard let key = payload.remoteFeatureFlag else {
+                return true
+            }
+            return remoteFeatureFlagStore.value(for: key) ?? false
+        }()
+        return isJetpack
         && RemoteDashboardCard.dynamic.supported(by: blog)
-        /* && Check if the current user has `dynamicCardPayload.remoteFeatureFlag` */
+        && remoteFeatureFlagEnabled
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {

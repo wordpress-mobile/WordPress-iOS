@@ -29,7 +29,6 @@ public class PasswordScreen: ScreenObject {
     @discardableResult
     public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
         try tryProceed(password: "pw")
-
         return try LoginEpilogueScreen()
     }
 
@@ -59,6 +58,15 @@ public class PasswordScreen: ScreenObject {
 
         passwordTextField.typeText(password)
         continueButton.tap()
+
+        // iOS 16.4 introduced a prompt to save passwords in the keychain.
+        // Prior to iOS 17.2, we used a test observer (see TestObserver.swift) to disable storing passwords before the tests started.
+        // Xcode 15.1 and iOS 17.2 have what at the time of writing looks like a bug in the Settings app which breaks that approach.
+        // As soon as the passwords screen is pushed in the Settings navigation stack, it's immediately popped back.
+        // For the time being, let's manually dismiss the prompt on demand.
+        if #available(iOS 17.2, *) {
+            app.dismissSavePasswordPrompt()
+        }
     }
 
     @discardableResult

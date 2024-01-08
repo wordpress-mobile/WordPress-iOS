@@ -366,11 +366,6 @@ private extension NoteBlockActionsTableViewCell {
 // MARK: - Private Constants
 //
 private extension NoteBlockActionsTableViewCell {
-    struct Edit {
-        static let normalTitle      = NSLocalizedString("Edit", comment: "Verb, edit a comment")
-        static let normalHint       = NSLocalizedString("Edits a comment", comment: "Edit Action Spoken hint.")
-    }
-
     struct Constants {
         static let buttonSpacing = CGFloat(20)
         static let buttonSpacingCompact = CGFloat(2)
