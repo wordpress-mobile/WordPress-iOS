@@ -39,6 +39,10 @@ public class EditorPostSettings: ScreenObject {
         $0.buttons["Next Month"]
     }
 
+    private let monthLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Month"]
+    }
+
     private let firstCalendarDayButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons.containing(.staticText, identifier: "1").element
     }
@@ -54,6 +58,7 @@ public class EditorPostSettings: ScreenObject {
     var doneButton: XCUIElement { doneButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
+    var monthLabel: XCUIElement { monthLabelGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
     var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
     var settingsTable: XCUIElement { settingsTableGetter(app) }
@@ -139,10 +144,16 @@ public class EditorPostSettings: ScreenObject {
     public func updatePublishDateToFutureDate() -> Self {
         publishDateButton.tap()
         dateSelector.tap()
+        let currentMonth = monthLabel.value as! String
 
         // Selects the first day of the next month
         nextMonthButton.tap()
-        tapUntilCondition(element: firstCalendarDayButton, condition: firstCalendarDayButton.isSelected, description: "First Day button selected")
+
+        // To ensure that the day tap happens on the correct month
+        let nextMonth = monthLabel.value as! String
+        if nextMonth != currentMonth {
+            firstCalendarDayButton.tapUntil(.selected, failureMessage: "First Day button not selected!")
+        }
 
         doneButton.tap()
         return self

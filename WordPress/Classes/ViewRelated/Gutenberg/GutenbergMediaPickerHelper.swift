@@ -4,7 +4,6 @@ import UIKit
 import Photos
 import PhotosUI
 import WordPressShared
-import WPMediaPicker
 import Gutenberg
 import UniformTypeIdentifiers
 
@@ -23,24 +22,7 @@ final class GutenbergMediaPickerHelper: NSObject {
         self.post = post
     }
 
-    func presentMediaPickerFullScreen(animated: Bool,
-                                      filter: WPMediaType,
-                                      dataSourceType: MediaPickerDataSourceType = .device,
-                                      allowMultipleSelection: Bool,
-                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
-        switch dataSourceType {
-        case .device:
-            presentNativePicker(filter: filter, allowMultipleSelection: allowMultipleSelection, completion: callback)
-        case .mediaLibrary:
-            didPickMediaCallback = callback
-            MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection)
-                .showSiteMediaPicker(blog: post.blog, delegate: self)
-        @unknown default:
-            break
-        }
-    }
-
-    private func presentNativePicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+    func presetDevicePhotosPicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
 
         var configuration = PHPickerConfiguration()
@@ -54,6 +36,12 @@ final class GutenbergMediaPickerHelper: NSObject {
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
         context.present(picker, animated: true)
+    }
+
+    func presentSiteMediaPicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+        didPickMediaCallback = completion
+        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection)
+            .showSiteMediaPicker(blog: post.blog, delegate: self)
     }
 
     func presentCameraCaptureFullScreen(animated: Bool,
@@ -74,8 +62,10 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
             switch mediaType {
             case UTType.image.identifier:
                 if let image = info[.originalImage] as? UIImage {
-                    self.didPickMediaCallback?([image])
-                    self.didPickMediaCallback = nil
+                    MediaHelper.advertiseImageOptimization() { [self] in
+                        self.didPickMediaCallback?([image])
+                        self.didPickMediaCallback = nil
+                    }
                 }
 
             case UTType.movie.identifier:
@@ -109,7 +99,20 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         context.dismiss(animated: true)
 
-        didPickMediaCallback?(results.map(\.itemProvider))
-        didPickMediaCallback = nil
+        guard results.count > 0 else {
+            return
+        }
+
+        let mediaFilter = picker.configuration.filter
+        if mediaFilter == PHPickerFilter(.all) || mediaFilter == PHPickerFilter(.image) {
+            MediaHelper.advertiseImageOptimization() { [self] in
+                didPickMediaCallback?(results.map(\.itemProvider))
+                didPickMediaCallback = nil
+            }
+        }
+        else {
+            didPickMediaCallback?(results.map(\.itemProvider))
+            didPickMediaCallback = nil
+        }
     }
 }

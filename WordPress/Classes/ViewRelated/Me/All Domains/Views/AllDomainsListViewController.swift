@@ -1,10 +1,15 @@
 import UIKit
 import Combine
 import AutomatticTracks
+import DesignSystem
 
 final class AllDomainsListViewController: UIViewController {
 
     // MARK: - Types
+
+    enum Constants {
+        static let analyticsSource = "all_domains"
+    }
 
     private enum Layout {
         static let interRowSpacing = Length.Padding.double
@@ -61,12 +66,14 @@ final class AllDomainsListViewController: UIViewController {
         super.viewDidLoad()
         self.viewModel.addDomainAction = { [weak self] in
             self?.navigateToAddDomain()
+            WPAnalytics.track(.addDomainTapped)
         }
         self.title = Strings.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
         self.setupSubviews()
         self.observeState()
         self.viewModel.loadData()
+        WPAnalytics.track(.domainsListShown)
     }
 
     // MARK: - Setup Views
@@ -182,7 +189,7 @@ final class AllDomainsListViewController: UIViewController {
             domain: domain.domain,
             siteSlug: domain.siteSlug,
             type: domain.type,
-            analyticsSource: "all-domains"
+            analyticsSource: Constants.analyticsSource
         )
         destination.configureSandboxStore {
             navigationController.pushViewController(destination, animated: true)
@@ -253,5 +260,9 @@ extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarD
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.viewModel.search(nil)
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        WPAnalytics.track(.myDomainsSearchDomainTapped)
     }
 }

@@ -1,29 +1,18 @@
-* [**] Posts & Pages: Redesigned the posts and pages screen. We’ve consolidated the “default” and “compact” display options (#21804, #21842)
-* [*] Posts & Pages: Moved actions to a context menu and added new actions such as “Comments”, “Settings”, and “Set as regular page”. Made the context menu available via long-press (#21886, #21965, #21963, #21967)
-* [*] Posts & Pages: Added swipe actions - left to view, right to share and/or delete (#21917)
-* [***] Posts & Pages: Added paging, full-text search, and searching via “author” / “tag” filters (#21789)
-* [*] Posts & Pages: Search now works across all authors unless you explicitly add the author filter (#21966)
-* [*] Posts & Pages: Fix an issue with the Pages list not refreshing when the pages are added or modified
-* [*] Posts & Pages: Fix an issue where “View” action was available for Trashed posts (#21958)
-* [*] Posts & Pages: Fix rare crashes in Posts & Pages (#21298)
-* [***] Site Media: Update the design of the Site Media screen with an improved selection mode, updated context menus, a way to share more than one item at a time, better support for animated GIFs, fix a couple of visual issues with state views and search, and more [#21457]
-* [**] Site Media: Improve performance by moving the work to the background, reducing memory usage, prefetching images, decompressing jpegs in the background, canceling unneeded requests, and more [#21470], [#21615], [#21664]
-* [**] Site Media: Add support for selecting site media with a pan gesture [#21702]
-* [*] Site Media: Add storage quota shown proactively in the context menu when adding media [#22013]
-* [*] Site Media: Add aspect ratio mode to Site Media on iPad, which is a new default [#22009]
-* [**] Site Media: Update the design of the Site Media details view that now allows swiping between photos, makes it easier to modify metadata, and delete items [#22008]
-* [*] Site Media: Fix an issue with blank image placeholders on the Site Media screen [#21457]
-* [*] Site Media: Fix an issue with 'you have no media' appears just before the media does [#9922] [#21457]
-* [*] Site Media: Fix an issue with media occasionally flashing white on the Site Media screen
-* [*] Site Media: Fix rare crashes in the Site Media screen and media picker [#21572]
-* [*] Site Media: Fix an issue with sharing PDF and other documents [#22021]
-* [*] Bug fix: Reader now scrolls to the top when tapping the status bar. [#21914]
-* [*] Fix an issue with incorrect description for "Hidden" post privacy status [#21955]
-* [*] [internal] Refactor sending the API requests for searching posts and pages. [#21976]
-* [*] Fix an issue in Menu screen where it fails to create default menu items. [#21949]
-* [*] Fix an issue with GIF uploads [#22025]
-* [*] [internal] Refactor how site's pages are loaded in Site Settings -> Homepage Settings. [#21974]
-* [*] Block Editor: Fix error when pasting deeply nested structure content [https://github.com/WordPress/gutenberg/pull/55613]
-* [*] Block Editor: Fix crash related to accessing undefined value in `TextColorEdit` [https://github.com/WordPress/gutenberg/pull/55664]
-* [***] Added the All Domains screen enabling the users to manage their domains from within the app [#22033]
+* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
+* [***] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
+* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
+* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
+* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
+* [*] Updated Site Domains screen to make domains management more convenient [#22294, #22311]
+* [**] [internal] Adds support for dynamic dashboard cards driven by the backend [#22326]
+* [**] [internal] Add support for the Phase One Fast Media Uploads banner [#22330]
+* [*] [internal] Remove personalizeHomeTab feature flag [#22280]
+* [*] Fix a rare crash in post search related to tags [#22275]
+* [*] Fix a rare crash when deleting posts [#22277]
+* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
+* [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
+* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
+* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
 

@@ -245,8 +245,6 @@ extension WPStyleGuide {
         static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
 
-        static let manageInsightsButtonTintColor = UIColor.textSubtle
-
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
         static let neutralColor = UIColor.muriel(color: MurielColor(name: .blue))

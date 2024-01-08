@@ -1,13 +1,5 @@
-Saat memindahkan pos ke tempat sampah, pesan konfirmasi akan muncul di bagian bawah layar.
+Kami memperbarui editor klasik dengan pemilih media baru untuk Foto dan Media Situs. Namun, Anda masih dapat mengunggah gambar, video, dan lain-lain ke situs Anda.
 
-Kami menerapkan sejumlah perubahan di editor blok.
+Terkait dengan tipe media, kini Anda dapat menambahkan filter media ke layar Media Situs. Jika menggunakan iPhone, Anda pasti juga akan melihat mode rasio aspek yang baru. Kedua pilihan tersedia jika Anda mengetuk menu judul.
 
-- Ikon media sosial dan judul Pola Tersinkron yang nonaktif kini tetap terlihat di tema berbasis blok yang menggunakan mode gelap. Usahamu boleh juga, kawan, tetapi kamuflasemu tak sehebat itu.
-- Di editor Klasik, Anda kini dapat mengonversi konten menjadi blok hanya dengan sekali mengeklik tombol.
-
-Terakhir, kami berhasil mengatasi sejumlah bug.
-
-- Anda tidak akan mengalami masalah login apa pun meski memasukkan alamat email yang salah pada percobaan pertama.
-- Tag HTML yang salah tidak akan muncul pada judul pos Anda—yang akan terlihat hanya teks biasa.
-- Anda akan mendapatkan pesan error yang jauh lebih deskriptif selama autentikasi dua faktor jika Anda memasukkan kode yang salah saat login.
-- Kami menghapus kontrol ekstra dalam proses autentikasi dua faktor yang memperbanyak langkah keamanan yang tak perlu. Anda pun tetap bisa login dengan aman tanpa banyak keribetan.
+Terakhir, kami memperbaiki kerusakan pop-up kepatuhan yang muncul ketika Anda memeriksa statistik selama proses penyiapan. Mantap.

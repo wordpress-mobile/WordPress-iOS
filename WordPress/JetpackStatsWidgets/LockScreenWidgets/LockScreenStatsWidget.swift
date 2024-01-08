@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 @available(iOS 16.0, *)
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
@@ -32,5 +33,6 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         .configurationDisplayName(config.displayName)
         .description(config.description)
         .supportedFamilies(config.supportFamilies)
+        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
     }
 }

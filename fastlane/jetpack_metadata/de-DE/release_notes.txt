@@ -1,14 +1,5 @@
-Wenn du einen Beitrag in den Papierkorb verschiebst, wird dir ab sofort am Ende des Bildschirms eine Bestätigungsnachricht angezeigt.
+Der klassische Editor wurde mit neuen Medienauswahlen für Fotos und Website-Medien ersetzt. Keine Sorge: Du kannst weiterhin Bilder, Videos und mehr auf deine Website hochladen.
 
-Wir haben ein paar Änderungen am Block-Editor vorgenommen.
+Apropos Medientypen: Ab sofort kannst du Medienfilter zum Bildschirm für Website-Medien hinzufügen. iPhone-Benutzern wird auch der neue Modus für das Bildformat auffallen. Beide Optionen sind verfügbar, wenn du auf das Titelmenü tippst.
 
-- Inaktive Social-Icons und Titel der synchronisierten Vorlagen sind in blockbasierten Themes nicht länger unsichtbar, wenn der dunkle Modus verwendet wird. Super, oder?
-- Im klassischen Editor kannst du deine Inhalte per Button-Klick in Blöcke umwandeln.
-
-Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
-
-- Wenn du beim ersten Versuch die falsche Website-Adresse eingibst, sollte es keine Anmeldeprobleme geben.
-- In deinen Beitragstiteln werden keine inkorrekten HTML-Schlagwörter angezeigt, sondern ausschließlich reiner Text.
-- Wenn du bei der Anmeldung den falschen Code eingibst, wird dir während der zweistufigen Authentifizierung eine eindeutigere Fehlermeldung angezeigt.
-- Beim Hinzufügen einer neuen Domain wird dir eine genauere Nachricht zum Verhalten der neuen Domain angezeigt.
-- Es wurden zusätzliche Kontrollen bei der zweistufigen Authentifizierung entfernt, durch die unnötige Sicherheitsmaßnahmen hinzugefügt wurden. Die Anmeldung ist weiterhin sicher, aber mit weniger Kopfschmerzen verbunden.
+Außerdem haben wir das fehlerhafte Compliance-Pop-up korrigiert, das angezeigt wurde, wenn du Statistiken während des Onboarding-Prozesses überprüft hast. Zu guter Letzt wurde ein seltener Fehler während der Abmeldung behoben. Das ist doch super.

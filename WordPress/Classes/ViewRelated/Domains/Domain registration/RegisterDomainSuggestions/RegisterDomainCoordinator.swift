@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressKit
 
 class RegisterDomainCoordinator {
 
@@ -16,19 +17,30 @@ class RegisterDomainCoordinator {
 
     private let crashLogger: CrashLogging
 
+    let analyticsSource: String
+
     var site: Blog?
     var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
-    var domain: FullyQuotedDomainSuggestion?
+    var domain: DomainSuggestion?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
+    /// Initializes a `RegisterDomainCoordinator` with the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - site: An optional `Blog` object representing the blog associated with the domain registration.
+    ///   - domainPurchasedCallback: An optional closure to be called when a domain is successfully purchased.
+    ///   - analyticsSource: A string representing the source for analytics tracking. Defaults to `domains_register` if not provided.
+    ///   - crashLogger: An instance of `CrashLogging` to handle crash logging. Defaults to `.main` if not provided.
     init(site: Blog?,
          domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
+         analyticsSource: String = "domains_register",
          crashLogger: CrashLogging = .main) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
         self.crashLogger = crashLogger
+        self.analyticsSource = analyticsSource
     }
 
     // MARK: Public Functions
@@ -42,7 +54,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success:
                 guard let self else { return }
-                self.presentCheckoutWebview(on: viewController, title: nil, shouldPush: false)
+                self.presentCheckoutWebview(on: viewController, title: nil)
                 onSuccess()
             case .failure:
                 onFailure()
@@ -61,6 +73,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success(let domain):
                 self?.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, blog)
+                onSuccess()
             case .failure:
                 onFailure()
             }
@@ -75,7 +88,7 @@ class RegisterDomainCoordinator {
         createCart { [weak self] result in
             switch result {
             case .success:
-                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle, shouldPush: true)
+                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
                 choicesViewModel?.isGetDomainLoading = false
 
             case .failure:
@@ -88,42 +101,47 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
-        let config = BlogListConfiguration(shouldShowCancelButton: false,
-                                           shouldShowNavBarButtons: false,
-                                           navigationTitle: TextContent.sitePickerNavigationTitle,
-                                           backButtonTitle: TextContent.sitePickerNavigationTitle,
-                                           shouldHideSelfHostedSites: true,
-                                           shouldHideBlogsNotSupportingDomains: true)
-        guard let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil) else {
-            return
-        }
+        let config = BlogListConfiguration(
+            shouldShowCancelButton: false,
+            shouldShowNavBarButtons: false,
+            navigationTitle: TextContent.sitePickerNavigationTitle,
+            backButtonTitle: TextContent.sitePickerNavigationTitle,
+            shouldHideSelfHostedSites: true,
+            shouldHideBlogsNotSupportingDomains: true,
+            analyticsSource: analyticsSource
+        )
+        let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil)
 
         blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self,
-                  let controller,
-                  let selectedBlog else {
+            guard let self else {
                 return
             }
-            self.site = selectedBlog
             controller.showLoading()
             self.createCart { [weak self] result in
+                guard let self else {
+                    return
+                }
                 switch result {
                 case .success(let domain):
-                    self?.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                    controller.hideLoading()
+                    self.site = selectedBlog
+                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
                 case .failure:
                     controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                    controller.hideLoading()
                 }
+                controller.hideLoading()
             }
         }
 
         viewController.navigationController?.pushViewController(blogListViewController, animated: true)
     }
 
+    func trackDomainPurchasingCompleted() {
+        self.track(.purchaseDomainCompleted)
+    }
+
     // MARK: Helpers
 
-    private func createCart(completion: @escaping (Result<FullyQuotedDomainSuggestion, Swift.Error>) -> Void) {
+    private func createCart(completion: @escaping (Result<DomainSuggestion, Swift.Error>) -> Void) {
         guard let domain else {
             completion(.failure(Error.noDomainWhenCreatingCart))
             return
@@ -131,7 +149,7 @@ class RegisterDomainCoordinator {
         let siteID = site?.dotComID?.intValue
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain.remoteSuggestion(),
+                                                 domainSuggestion: domain,
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { _ in
             completion(.success(domain))
@@ -142,8 +160,7 @@ class RegisterDomainCoordinator {
     }
 
     private func presentCheckoutWebview(on viewController: UIViewController,
-                                        title: String?,
-                                        shouldPush: Bool) {
+                                        title: String?) {
         guard let domain,
               let url = checkoutURL() else {
             crashLogger.logMessage("Failed to present domain checkout webview.",
@@ -153,9 +170,9 @@ class RegisterDomainCoordinator {
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
             url: url,
-            source: "domains_register", // TODO: Update source
-            title: title)
-        let navController = LightNavigationController(rootViewController: webViewController)
+            source: analyticsSource,
+            title: title
+        )
 
         // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
         // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
@@ -170,28 +187,24 @@ class RegisterDomainCoordinator {
             }
 
             self.handleWebViewURLChange(newURL, domain: domain.domainName, onCancel: {
-                if shouldPush {
-                    viewController.navigationController?.popViewController(animated: true)
-                } else {
-                    navController.dismiss(animated: true)
-                }
+                viewController.dismiss(animated: true)
             }) { domain in
                 self.domainPurchasedCallback?(viewController, domain)
+                self.trackDomainPurchasingCompleted()
             }
         }
 
-        if let site {
-            WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
-        } else {
-            // TODO: Track showing no site checkout
-        }
+        let properties: [AnyHashable: Any] = {
+            if let site {
+                return WPAnalytics.domainsProperties(for: site, origin: nil as String?)
+            } else {
+                return WPAnalytics.domainsProperties(usingCredit: false, origin: nil, domainOnly: true)
+            }
+        }()
+        self.track(.domainsPurchaseWebviewViewed, properties: properties)
 
         webViewController.configureSandboxStore {
-            if shouldPush {
-                viewController.navigationController?.pushViewController(webViewController, animated: true)
-            } else {
-                viewController.present(navController, animated: true)
-            }
+            viewController.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 
@@ -236,6 +249,22 @@ class RegisterDomainCoordinator {
         if domainRegistrationSucceeded {
             onSuccess(domain)
 
+        }
+    }
+
+    // MARK: - Tracks
+
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
+        let defaultProperties: [AnyHashable: Any] = [WPAppAnalyticsKeySource: analyticsSource]
+
+        let properties = defaultProperties.merging(properties ?? [:]) { first, second in
+            return first
+        }
+
+        if let blog = self.site {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
         }
     }
 }

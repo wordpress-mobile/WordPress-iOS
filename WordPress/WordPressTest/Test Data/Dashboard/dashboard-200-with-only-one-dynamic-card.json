@@ -1,0 +1,23 @@
+{
+    "dynamic": [
+        {
+            "id": "id_12345",
+            "title": "Title 12345",
+            "remote_feature_flag": "feature_flag_12345",
+            "featured_image": "https://example.com/image12345",
+            "url": "https://example.com/url12345",
+            "action": "Action 12345",
+            "order": "top",
+            "rows": [
+                {
+                    "icon": "https://example.com/icon12345",
+                    "title": "Row Title 1"
+                },
+                {
+                    "title": "Row Title 2",
+                    "description": "Row Description 2"
+                }
+            ]
+        }
+    ]
+}

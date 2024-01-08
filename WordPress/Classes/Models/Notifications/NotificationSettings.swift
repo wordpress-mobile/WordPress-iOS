@@ -144,8 +144,6 @@ open class NotificationSettings {
                     return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
                 }
             }
-
-            static let allValues = [ Timeline, Email, Device ]
         }
     }
 

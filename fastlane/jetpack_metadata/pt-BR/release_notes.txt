@@ -1,14 +1,5 @@
-Ao mover um post para a lixeira, você verá uma mensagem de confirmação na parte inferior da tela.
+Atualizamos o editor clássico com novos seletores de mídia para Mídia do site e Fotos. Não se preocupe, você ainda pode fazer upload de imagens, vídeos e muito mais no seu site.
 
-Nós fizemos algumas alterações no editor de blocos.
+E por falar nisso, agora é possível adicionar filtros de mídia à tela Mídia do site. Se você estiver usando um iPhone, notará um novo modo de proporção de tela também. Ambas as opções estão disponíveis ao tocar no menu de título.
 
-- Ícones sociais inativos e títulos de padrões sincronizados não ficam mais invisíveis em temas baseados em blocos que usam o modo escuro. Boa tentativa, pessoal, mas vocês não são tão ninjas quanto pensam.
-- No editor clássico, agora você pode converter seu conteúdo em blocos com o clique de um botão.
-
-Finalmente, cortamos alguns bugs pela raiz.
-
-- Você não terá problemas de login se inserir o endereço do site errado na primeira tentativa.
-- Tags HTML incorretas não aparecerão nos títulos dos seus posts, você verá apenas texto simples.
-- Na autenticação em dois fatores, você receberá uma mensagem de erro muito mais descritiva se inserir o código errado ao fazer login.
-- Ao adicionar um novo domínio, você verá uma mensagem mais precisa descrevendo como o novo domínio se comportará.
-- Removemos controles extras no processo de autenticação em dois fatores que adicionavam medidas de segurança desnecessárias. O login ainda é seguro, mas agora não traz mais dor de cabeça.
+Por fim, corrigimos o pop-up de conformidade corrompido que aparece ao verificar as estatísticas durante o processo de integração. Também corrigimos uma falha rara que ocorria ao fazer logout. Incrível.

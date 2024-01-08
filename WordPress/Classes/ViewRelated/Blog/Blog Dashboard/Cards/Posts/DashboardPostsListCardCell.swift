@@ -72,7 +72,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         frameView.add(subview: tableView)
 
         contentView.addSubview(frameView)
-        contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
+        contentView.pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
     }
 
     func trackPostsDisplayed() {
@@ -109,8 +109,6 @@ extension DashboardPostsListCardCell {
     }
 
     private func addDraftsContextMenu(card: DashboardCard, blog: Blog) {
-        guard FeatureFlag.personalizeHomeTab.enabled else { return }
-
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
                 makeDraftsListMenuAction()
@@ -122,8 +120,6 @@ extension DashboardPostsListCardCell {
     }
 
     private func addScheduledContextMenu(card: DashboardCard, blog: Blog) {
-        guard FeatureFlag.personalizeHomeTab.enabled else { return }
-
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
                 makeScheduledListMenuAction()
@@ -219,11 +215,5 @@ private extension DashboardPostsListCardCell {
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
         static let viewAllDrafts = NSLocalizedString("my-sites.drafts.card.viewAllDrafts", value: "View all drafts", comment: "Title for the View all drafts button in the More menu")
         static let viewAllScheduledPosts = NSLocalizedString("my-sites.scheduled.card.viewAllScheduledPosts", value: "View all scheduled posts", comment: "Title for the View all scheduled drafts button in the More menu")
-    }
-
-    enum Constants {
-        static let iconSize = CGSize(width: 18, height: 18)
-        static let constraintPriority = UILayoutPriority(999)
-        static let numberOfPosts = 3
     }
 }

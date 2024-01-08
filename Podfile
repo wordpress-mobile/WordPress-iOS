@@ -51,7 +51,7 @@ end
 
 def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
-  pod 'WordPressKit', '~> 8.11'
+  pod 'WordPressKit', '~> 9.0', '>= 9.0.2'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
@@ -124,7 +124,6 @@ abstract_target 'Apps' do
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
-  pod 'SDWebImage', '~> 5.11.1'
 
   ## Automattic libraries
   ## ====================
@@ -135,7 +134,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 2.2'
+  pod 'Automattic-Tracks-iOS', '~> 3.0'
   # While in PR
   # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
@@ -143,12 +142,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.10'
-  ## while PR is in review:
-  # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
-  # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
-
-  pod 'WordPressAuthenticator', '~> 7.3'
+  pod 'WordPressAuthenticator', '~> 8.0', '>= 8.0.1'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -413,5 +407,5 @@ post_install do |installer|
 end
 
 post_integrate do
-  workaround_broken_search_paths
+  gutenberg_post_integrate
 end

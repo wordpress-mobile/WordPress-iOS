@@ -62,9 +62,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "Połączony ponownie: %@.";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
 "%d accounts" = "%d konta";
 
@@ -159,10 +156,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Dziennik aktywności";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Dodaj";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Dodaj na początku";
 
@@ -205,9 +198,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumy";
 
 /* Autoapprove every comment
    Browse all themes selection title
@@ -291,9 +281,6 @@
 
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Czy na pewno chcesz usunąć tag?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Czy na pewno usunąć wybrane elementy?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Czy na pewno chcesz przenieść ten wpis do kosza?";
@@ -412,8 +399,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Obliczanie…";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Aparat";
 
 /* Title of an alert letting the user know */
@@ -461,10 +447,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -518,9 +501,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Zmiana hasła";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Zmień ustawienia";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Zmiana nie powiodła się";
@@ -735,10 +715,6 @@
 /* No comment provided by engineer. */
 "Copied block" = "Blok został skopiowany";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Skopiuj odnośnik";
-
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Skopiuj adres URL ze schowka, %s";
 
@@ -872,7 +848,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Usuń";
@@ -939,7 +914,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Odrzuć";
 
@@ -947,12 +921,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Wyświetlana nazwa";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokument, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domeny";
@@ -1008,29 +976,21 @@
 /* Name for the status of a draft post. */
 "Draft" = "Szkic";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Szkice";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Powiel blok";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Edytuj";
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Edytuj przycisk \"Więcej\"";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Edytuj %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edytuj czarną listę słów";
@@ -1139,9 +1099,6 @@
 
 /* Error message informing the user that their site's title could not be changed */
 "Error updating site title" = "Błąd uaktualnienia tytułu strony";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Wszyscy";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Zajawka";
@@ -1408,8 +1365,7 @@
 "History" = "Historia";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Strona główna";
 
 /* Label for Homepage Settings site settings section
@@ -1736,7 +1692,6 @@
 "Max Image Upload Size" = "Maksymalny rozmiar przesyłanego obrazka";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -1744,19 +1699,13 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Rozmiar pamięci podręcznej mediów";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Biblioteka mediów";
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Wgrywanie multimediów";
@@ -1770,9 +1719,6 @@
 
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Nazwa menu";
-
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadane";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
@@ -1799,11 +1745,8 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Przesuń blok w prawo z pozycji %1$s na pozycję %2$s";
 
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Przenieś do kosza";
 
@@ -1820,7 +1763,8 @@
    Title of My Site tab */
 "My Site" = "Moja witryna";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Moje witryny";
 
 /* Siri Suggestion to open My Sites */
@@ -1969,7 +1913,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -2105,8 +2048,7 @@
    Title of pending Comments filter. */
 "Pending" = "Oczekujące";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Oczekuje na przegląd";
 
 /* Noun. Title of the people management feature.
@@ -2122,9 +2064,6 @@
 
 /* Photography site intent topic */
 "Photography" = "Fotografia";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Zdjęcia";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -2216,9 +2155,6 @@
 /* Label for selecting the number of posts per page */
 "Posts per page" = "Wpisów na stronie";
 
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Napędzane przez Tenor";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -2255,8 +2191,7 @@
 "Privacy notice for California users" = "Nota o ochronie prywatności dla użytkowników z Kalifornii";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Prywatny";
 
 /* Error message title informing the user that reader content could not be loaded. */
@@ -2280,19 +2215,16 @@
    Label for the publish date button. */
 "Publish Date" = "Data publikacji";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Opublikuj natychmiast";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Opublikuj teraz";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Opublikowano";
 
 /* Published on [date] */
@@ -2369,8 +2301,7 @@
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Przypomnienia zostały usunięte";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -2423,9 +2354,6 @@
 /* Settings: Comments Approval settings */
 "Require users to log in" = "Wymagaj od użytkowników zalogowania się";
 
-/* Title of the reset button */
-"Reset" = "Resetuj";
-
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Resetuj filtr";
 
@@ -2449,12 +2377,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -2494,14 +2419,10 @@
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Zapisz wpis na później";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Zapisano!";
-
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
 "Saving page…" = "Zapisywanie strony...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Zapisywanie...";
 
@@ -2550,9 +2471,6 @@
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Wybierz %@, aby ustawić nowy tytuł.";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Wybierz więcej";
-
 /* Blog Picker's Title */
 "Select Site" = "Wybierz witrynę";
 
@@ -2584,9 +2502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Sends a email verification link (Magin link) for signing in. */
 "Send email verification link" = "Wyślij wiadomość e-mail z odnośnikiem weryfikacyjnym";
 
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Ustaw jako stronę domową";
-
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Ustaw przypomnienia";
 
@@ -2600,7 +2515,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -2799,8 +2713,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Statyczna strona główna";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -2936,7 +2849,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when site export API failed */
 "The site could not be exported." = "Strona nie może zostać wyeksportowana.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Nazwa użytkownika lub hasło używane przez aplikację mogą być nieaktualne. Proszę zaktualizować hasło w ustawieniach i spróbować ponownie.";
 
 /* Title of alert when theme activation succeeds */
@@ -3025,8 +2938,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kosz";
@@ -3219,8 +3131,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Videos" = "Filmy";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -3726,9 +3636,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "oznaczono jako spam";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Odrzuć";
-
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Odrzuć";
 
@@ -3743,9 +3650,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPressa na swoim urządzeniu";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Koniec";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "odinstalowanie aplikacji WordPressa";
@@ -3797,9 +3701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odrzuć";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
 
 /* No comment provided by engineer. */
 "password" = "hasło";
@@ -3920,9 +3821,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "nieznany adres URL";
-
-/* Label displayed on video media items. */
-"video" = "film";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Odrzuć";

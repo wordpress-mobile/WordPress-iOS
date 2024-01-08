@@ -1,13 +1,5 @@
-When you move a post to the trash, you’ll now see a confirmation message appear at the bottom of the screen.
+We updated the classic editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
 
-We made some changes to the block editor.
+Speaking of media types—you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
 
-- Inactive social icons and Synced Pattern titles are no longer invisible in block-based themes using dark mode. Good try, fellas, but you’re not as ninja as you think.
-- In the Classic editor, you can now convert your content into blocks with the click of a button.
-
-Finally, we squashed a mini-swarm of bugs.
-
-- You shouldn’t run into any login issues if you enter the wrong site address on the first try.
-- Incorrect HTML tags won’t show up in your post titles—you’ll only see plain text.
-- When you’re adding a new domain, you’ll see a more accurate message describing how the new domain will behave.
-- We removed extra controls in the two-factor authentication process that added unnecessary security measures. Logging in is still safe, but now it comes with fewer headaches.
+Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. We also fixed a rare crash that happened while logging out. Sweet.

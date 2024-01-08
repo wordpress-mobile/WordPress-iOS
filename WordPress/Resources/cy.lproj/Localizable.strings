@@ -51,9 +51,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d blwyddyn";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i un ardal dewislen yn y thema hon";
 
@@ -133,9 +130,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Uwch";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumau";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -226,9 +220,6 @@
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Ydych chi'n siŵr eich bod eisiau dileu'r ddewislen?";
 
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Sain, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Dilysu";
 
@@ -302,8 +293,7 @@
 /* Title for a list of different button styles. */
 "Button Style" = "Arddull Botwm";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
 /* Title of an alert letting the user know */
@@ -345,10 +335,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -579,9 +566,6 @@
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Methu Cysylltu";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Cyfrif eitemau cyfrwng...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Gwledydd";
 
@@ -642,7 +626,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Dileu";
@@ -650,10 +633,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Dileu Dewislen";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Dileu'n Barhol";
 
@@ -713,7 +693,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Cau";
 
@@ -721,9 +700,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Enw Dangos";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dogfen: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Parthau";
@@ -749,13 +725,9 @@
 /* Name for the status of a draft post. */
 "Draft" = "Drafft";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Golygu";
@@ -833,9 +805,6 @@
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "Digwyddodd gwall\/n\nwrth gadw";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Pawb";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Esboniwch bwrpas y wefan.";
@@ -995,9 +964,6 @@
 
 /* Hint for image title on image settings. */
 "Image title" = "Teitl delwedd";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Delwedd, %@";
 
 /* Undated post time label */
 "Immediately" = "Ar unwaith";
@@ -1227,7 +1193,6 @@
 "Max Image Upload Size" = "Maint mwyaf Llwytho Delwedd";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -1235,19 +1200,10 @@
 "Me" = "Fi";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Cyfrwng";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Cipio Cyfrwng";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Llyfrgell Cyfrwng";
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Llwytho Cyfryngau";
@@ -1278,24 +1234,15 @@
 "Months and Years" = "Misoedd a Blynyddoedd";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Rhagor";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Symud i'r Drafft";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Symud i'r Sbwriel";
 
@@ -1303,7 +1250,8 @@
    My Profile view title */
 "My Profile" = "Fy Mhroffil";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Gwefannau";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1433,7 +1381,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1535,15 +1482,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Tudalen";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Wedi Adfer Tudalen i'r Drafftiau";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Wedi Adfer Tudalen i'r Cyhoeddwyd";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Wedi Adfer Tudalen i'r Amserlenwyd";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -1576,8 +1514,7 @@
    Title of pending Comments filter. */
 "Pending" = "Dan Ystyriaeth";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Disgwyl adolygiad";
 
 /* Noun. Title of the people management feature.
@@ -1641,15 +1578,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Fformat Cofnod";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Wedi Adfer Cofnod i'r Drafftiau";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Cofnod wedi ei Adfer i Cyhoeddwyd";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Cofnod wedi ei Adfer i Amserlennwyd";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Gweithgaredd Cofnodi";
@@ -1694,8 +1622,7 @@
 "Privacy Policy" = "Polisi Preifatrwydd";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Preifat";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1715,14 +1642,12 @@
    Title for the publish settings view */
 "Publish" = "Cyhoeddi";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Cyhoeddi'n Syth";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Cyhoeddwyd";
 
 /* Published on [date] */
@@ -1790,8 +1715,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Cofnodion sy'n Perthyn";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -1844,9 +1768,6 @@
 /* Setting: WordPress.com Surveys */
 "Research" = "Ymchwil";
 
-/* Title of the reset button */
-"Reset" = "Ailosod";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Newid Maint a Thocio";
 
@@ -1864,12 +1785,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -1877,9 +1795,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Ceisiwch eto";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Ailgynnig llwytho";
 
 /* No comment provided by engineer. */
 "Retry?" = "Ceisio eto?";
@@ -1914,11 +1829,7 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from the post. */
 "Save Draft" = "Cadw'r Drafft";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Cadwyd!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Wrthi'n Cadw...";
 
@@ -1948,9 +1859,6 @@
 
 /* Blog Picker's Title */
 "Select Site" = "Dewiswch wefan";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Dewis cyfrwng";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Dewiswch y cyfrif yr hoffech ei awdurdodi. Sylwch y bydd eich cofnodion yn cael eu rhannu yn awtomatig i'r cyfrif penodol.";
@@ -1995,7 +1903,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -2146,8 +2053,7 @@
    Title of Start Over settings page */
 "Start Over" = "Cychwyn Eto";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -2174,7 +2080,7 @@
    Theme Support action title */
 "Support" = "Cefnogaeth";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Newid Gwefan";
 
 /* Menu item label for linking a specific tag.
@@ -2284,7 +2190,7 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Mae gan y defnyddiwr rôl sydd eisoes wedi'i bennu. Ceisiwch neilltuo rôl gwahanol.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Gall fod yr enw defnyddiwr neu gyfrinair sy'n cael ei gadw yn y app yn hen. Rhowch eich cyfrinair eto yn y gosodiadau a cheisio eto.";
 
 /* Title of alert when theme activation succeeds */
@@ -2329,9 +2235,6 @@
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Bu anhawster wrth geisio cael mynediad i'ch lleoliad. Ceisiwch eto.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Bu anhawster wrth geisio cael mynediad i'ch cyfrwng. Ceisiwch eto.";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Bu gwall wrth lwytho'r cynlluniau";
 
@@ -2340,9 +2243,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad at y Camera i gipio cyfryngau newydd, newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad i lyfrgell cyfryngau eich dyfais er mwyn ychwanegu lluniau a\/neu fideo i'ch cofnodion. Newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Mae'r eitem cyfrwng hwn wedi ei ddileu.";
@@ -2403,8 +2303,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Cyfanswm Dilynwyr WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Dileu";
@@ -2440,9 +2339,6 @@
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "DEFNYDD";
-
-/* An error message. */
-"Unable to Connect" = "Methu Cysylltu";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Methu Llwytho Cofnodion";
@@ -2487,9 +2383,6 @@
 /* Label for size of media when it's not possible to calculate it.
    Unknown Tag Name */
 "Unknown" = "Anhysbys";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Dyddiad creu anhysbys";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Gwall anhysbys";
@@ -2573,15 +2466,10 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Fideo, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "Fideos";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */

@@ -349,7 +349,6 @@ private extension JetpackBrandingMenuCardCell {
 
         // Learn more button
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
-        static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let learnMoreButtonTextColor: UIColor = UIColor.muriel(color: .jetpackGreen, .shade40)
     }
 

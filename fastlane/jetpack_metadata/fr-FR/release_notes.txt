@@ -1,14 +1,5 @@
-Lorsque vous déplacez une publication vers la corbeille, vous verrez désormais un message de confirmation apparaître en bas de l’écran.
+Nous avons mis à jour l’éditeur classique avec de nouveaux sélecteurs de médias pour les photos et les médias du site. Pas d’inquiétude, vous pouvez toujours mettre en ligne des images, des vidéos, et plus encore sur votre site.
 
-Nous avons apporté quelques changements à l’éditeur de blocs.
+En parlant de types de médias : vous pouvez désormais ajouter des filtres médias à l’écran Médias du site. Si vous utilisez un iPhone, vous remarquerez également le nouveau mode Proportions. Les deux options sont disponibles lorsque vous appuyez sur le menu Titre.
 
-- Les icônes de réseaux sociaux inactives et les URL de compositions synchronisées ne sont plus invisibles dans les thèmes reposant sur les blocs qui utilisent le mode sombre. Bien essayé les gars, mais contrairement à ce que vous pensez, vous n’êtes pas des ninjas.
-- Dans l’éditeur classique, vous pouvez désormais convertir votre contenu en blocs d’un simple clic sur un bouton.
-
-Enfin, nous avons corrigé un mini-essaim de bugs.
-
-- Vous ne devriez pas rencontrer de problèmes de connexion si vous saisissez une mauvaise adresse de site la première fois.
-- Les balises HTML incorrectes n’apparaîtront pas dans les titres de vos publications : vous ne verrez que du texte.
-- Au moment de l’authentification à deux facteurs, un message d’erreur bien plus descriptif apparaîtra si vous saisissez le mauvais code lors de la connexion.
-- Lorsque vous ajoutez un nouveau domaine, un message plus précis décrira son futur comportement.
-- Nous avons supprimé des contrôles supplémentaires lors du processus d’authentification à deux facteurs qui ajoutaient des mesures de sécurité inutiles. La connexion est toujours sécurisée, mais elle se fait avec moins de prises de tête.
+Enfin, nous avons réparé la pop-up qui apparaît lorsque vous consultez les statistiques à l’occasion du processus de configuration. Nous avons par ailleurs corrigé un incident rare qui se produisait lors de la déconnexion. Pas mal.

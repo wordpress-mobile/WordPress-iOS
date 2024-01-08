@@ -34,6 +34,10 @@ struct PlanSelectionViewModel {
         static let domainAndPlanPackageParameter = "domainAndPlanPackage"
         static let jetpackAppPlansParameter = "jetpackAppPlans"
     }
+
+    enum Strings {
+        static let title = NSLocalizedString("planSelection.title", value: "Plans", comment: "Title for the plan selection view")
+    }
 }
 
 final class PlanSelectionViewController: WebKitViewController {
@@ -44,13 +48,14 @@ final class PlanSelectionViewController: WebKitViewController {
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(viewModel: PlanSelectionViewModel, customTitle: String?) {
+    init(viewModel: PlanSelectionViewModel, customTitle: String?, analyticsSource: String? = nil) {
         self.viewModel = viewModel
 
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
-        configuration.customTitle = customTitle
+        configuration.customTitle = customTitle ?? PlanSelectionViewModel.Strings.title
+        configuration.analyticsSource = analyticsSource ?? ""
         super.init(configuration: configuration)
     }
 

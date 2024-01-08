@@ -2,13 +2,14 @@ import Foundation
 
 @objc final class AllDomainsAddDomainCoordinator: NSObject {
     static func presentAddDomainFlow(in allDomainsViewController: AllDomainsListViewController) {
-        let coordinator = RegisterDomainCoordinator(site: nil)
-        let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
-            coordinator: coordinator,
+        let analyticsSource = AllDomainsListViewController.Constants.analyticsSource
+        let coordinator = RegisterDomainCoordinator(site: nil, analyticsSource: analyticsSource)
+        let domainSuggestionsViewController = DomainSelectionViewController(
+            service: DomainsServiceAdapter(coreDataStack: ContextManager.shared),
             domainSelectionType: .purchaseFromDomainManagement,
             includeSupportButton: false,
-            title: Strings.searchTitle)
-
+            coordinator: coordinator
+        )
 
         let domainPurchasedCallback = { (domainViewController: UIViewController, domainName: String) in
             domainViewController.dismiss(animated: true) {
@@ -17,8 +18,12 @@ import Foundation
         }
 
         let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
-            customTitle: RegisterDomainCoordinator.TextContent.checkoutTitle,
-            purchaseCallback: domainPurchasedCallback)
+            customTitle: nil,
+            analyticsSource: analyticsSource
+        ) { [weak coordinator] controller, domain in
+            domainPurchasedCallback(controller, domain)
+            coordinator?.trackDomainPurchasingCompleted()
+        }
 
         coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
         coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart // For existing site flow (plans)

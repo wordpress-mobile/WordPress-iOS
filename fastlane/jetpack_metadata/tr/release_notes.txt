@@ -1,14 +1,5 @@
-Bir gönderiyi çöpe taşıdığınızda ekranın altında bir onay mesajı görürsünüz.
+Fotoğraflar ve Site Ortamı için yeni ortam seçicilerle klasik düzenleyiciyi güncelledik. Endişelenmeyin; görselleri, videoları ve dahasını sitenize yüklemeye devam edebilirsiniz.
 
-Blok düzenleyicide bazı değişiklikler yaptık.
+Ortam türleriyle ilgili konuşuyorken artık Site Ortamı ekranına ortam filtreleri ekleyebileceğinizi de paylaşmak isteriz. iPhone kullanıyorsanız yeni en boy oranı modunu da fark edeceksiniz. Başlık menüsüne dokunduğunuzda iki seçenek de kullanılabilir.
 
-- Etkin olmayan sosyal simgeler ve Senkronize Edilmiş Desen başlıkları artık karanlık modu kullanan blok tabanlı temalarda görünmez değil. İyi denemeydi arkadaşlar, ama sandığınız kadar görünmez değilsiniz.
-- Klasik düzenleyicide artık bir düğmeye tıklayarak içeriklerinizi bloklara dönüştürebilirsiniz.
-
-Son olarak birkaç hatayı giderdik.
-
-- İlk denemenizde yanlış site adresini girerseniz herhangi bir oturum açma sorunuyla karşılaşmamalısınız.
-- Yanlış HTML etiketleri, gönderi başlıklarınızda gösterilmez, yalnızca düz metni görürsünüz.
-- İki Faktörlü Kimlik Doğrulama sırasında oturum açarken yanlış kodu girerseniz çok daha açıklayıcı bir hata mesajı alırsınız.
-- Yeni bir alan adı eklerken yeni alan adının nasıl davranacağını açıklayan daha doğru bir mesaj alacaksınız.
-- İki faktörlü kimlik doğrulaması sürecinde gereksiz güvenlik önlemleri ekleyen ekstra kontroller kaldırıldı. Oturum açmak hala güvenlidir ancak artık daha az zahmetlidir.
+Son olarak, siz hazırlık süreci sırasında istatistikleri kontrol ederken görünen bozuk uyumluluk açılır penceresini düzelttik. Ayrıca oturum kapatılırken gerçekleşen nadir bir kilitlenme sorununu da düzelttik. Çok hoş.

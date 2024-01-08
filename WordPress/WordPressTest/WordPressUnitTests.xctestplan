@@ -21,6 +21,8 @@
     "environmentVariableEntries" : [
 
     ],
+    "language" : "en",
+    "region" : "US",
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
@@ -34,6 +36,13 @@
         "containerPath" : "container:..\/WordPressFlux",
         "identifier" : "WordPressFluxTests",
         "name" : "WordPressFluxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
       }
     },
     {

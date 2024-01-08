@@ -30,7 +30,6 @@ extension AppStyleGuide {
 // MARK: - Images
 extension AppStyleGuide {
     static let mySiteTabIcon = UIImage(named: "jetpack-icon-tab-mysites")
-    static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
     static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site-jetpack")
 }
 

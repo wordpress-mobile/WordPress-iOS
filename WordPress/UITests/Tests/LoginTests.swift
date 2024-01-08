@@ -24,7 +24,6 @@ class LoginTests: XCTestCase {
                 siteUrl: WPUITestCredentials.testWPcomPaidSite
             )
             .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
         try TabNavComponent()
             .goToMeScreen()
             .logoutToPrologue()

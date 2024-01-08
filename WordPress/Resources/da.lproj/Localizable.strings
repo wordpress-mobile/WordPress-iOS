@@ -32,10 +32,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogs";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Tilføj";
-
 /* The title on the add category screen */
 "Add a Category" = "Tilføj kategori";
 
@@ -50,9 +46,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avanceret";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albummer";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -155,10 +148,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -266,10 +256,6 @@
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Læs videre";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Kopier link";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
 
@@ -334,15 +320,11 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Slet";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Slet permanent";
 
@@ -386,7 +368,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Afvis";
 
@@ -411,13 +392,9 @@
 /* Name for the status of a draft post. */
 "Draft" = "Kladde";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Rediger";
@@ -480,9 +457,6 @@
 
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Fejl ved fjernelse af %@";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Alle";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Uddrag";
@@ -726,7 +700,6 @@
 "Mark Read" = "Marker som læst";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -734,16 +707,10 @@
 "Me" = "Mig";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Medier";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Mediebibliotek";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Medieindstillinger";
@@ -755,9 +722,6 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadata";
-
 /* Title of Months stats filter. */
 "Months" = "Måneder";
 
@@ -765,29 +729,24 @@
 "Months and Years" = "Måneder og år";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Mere";
 
 /* Action button to display more available options
    Label for the More Options area in post settings. Should use the same translation as core WP. */
 "More Options" = "Flere indstillinger";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Flyt til kladder";
-
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Mit websted";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Mine websteder";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -865,7 +824,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -962,15 +920,11 @@
    Title of pending Comments filter. */
 "Pending" = "Afventer godkendelse";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Afventer godkendelse";
 
 /* Label for date periods. */
 "Period" = "Periode";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Foto";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "Indtast venligst en webstedsadresse.";
@@ -1009,12 +963,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Indlægsformat";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Indlæg genskabt under Kladder";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Indlæg genskab under Udgivet";
-
 /* Title of camera permissions screen */
 "Post to WordPress" = "Udgiv på WordPress";
 
@@ -1048,8 +996,7 @@
 "Privacy Policy" = "Privatlivspolitik";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privat";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
@@ -1063,14 +1010,12 @@
    Title for the publish settings view */
 "Publish" = "Udgiv";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Udgiv med det samme";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Udgivet";
 
 /* Published on [date] */
@@ -1102,8 +1047,7 @@
    The loading view button title displayed when an error occurred */
 "Refresh" = "Genindlæs";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -1138,9 +1082,6 @@
 /* The app successfully sent a comment */
 "Reply Sent!" = "Svar sendt!";
 
-/* Title of the reset button */
-"Reset" = "Nulstil";
-
 /* Title displayed for restore action.
    Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
@@ -1162,12 +1103,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -1198,11 +1136,7 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from the post. */
 "Save Draft" = "Gem kladde";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Gemt!";
-
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Gemmer...";
 
@@ -1240,7 +1174,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -1337,8 +1270,7 @@
 /* Standard post format label */
 "Standard" = "Standard";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -1358,7 +1290,7 @@
    Theme Support action title */
 "Support" = "Support";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Skift websted";
 
 /* Label for selecting the blogs tags
@@ -1409,7 +1341,7 @@
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webstedet på %1$@ benytter WordPress %2$@. Vi anbefaler, at du opdaterer til seneste version, eller mindst %3$@";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brugernavnet eller kodeordet, der er gemt i app'en, er ikke korrekt. Prøv venligst at genindtaste dit kodeord under indstillinger og prøv igen.";
 
 /* Noun. Name of the Themes feature
@@ -1457,8 +1389,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Antal følgere på WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slet";
@@ -1480,9 +1411,6 @@
 
 /* URL text field placeholder */
 "URL" = "URL";
-
-/* An error message. */
-"Unable to Connect" = "Kunne ikke forbinde";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Kunne ikke hente indlæg";
@@ -1559,8 +1487,6 @@
 "Videos" = "Videoer";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -1674,9 +1600,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/adresse-til-websted (URL)";
-
-/* Label displayed on image media items. */
-"image" = "billede";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

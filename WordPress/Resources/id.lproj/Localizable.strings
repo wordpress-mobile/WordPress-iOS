@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-11-02 14:16:53+0000 */
+/* Translation-Revision-Date: 2024-01-04 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -152,9 +152,6 @@
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
-/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
-"%@, %@." = "%1$@, %2$@.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d pos.";
 
@@ -209,9 +206,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d tahun";
-
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
 
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i area menu di tema ini";
@@ -481,13 +475,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Jenis Aktivitas (%1$d)";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Tambah";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Tambahkan %@";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Tambahkan Blok Setelah";
 
@@ -581,9 +568,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add menu item to children" = "Tambahkan item menu ke turunan";
 
-/* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Tambah media baru";
-
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Tambahkan menu baru";
 
@@ -646,9 +630,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
 
-/* Description of albums in the photo libraries */
-"Albums" = "Album";
-
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Perataan";
@@ -661,6 +642,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Semua";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Semua paket tahunan WordPress.com menyertakan nama domain kustom. Daftarkan domain gratis Anda sekarang.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -730,10 +714,10 @@ translators: Block name. %s: The localized block name */
 "Alternatively, you can convert the content to blocks." = "Anda dapat mengonversi konten menjadi blok.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Atau, blok-blok ini bisa dipisahkan lalu disunting secara tersendiri dengan mengetuk \"Pisahkan pola\".";
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Atau, blok ini bisa dipisahkan lalu disunting secara tersendiri dengan mengetuk \"Pisahkan\".";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Atau, blok ini bisa dipisahkan lalu disunting secara tersendiri dengan mengetuk \"Pisahkan pola\".";
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Atau, Anda dapat meratakan konten dengan membatalkan pengelompokan blok.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Atau, Anda bisa memasukkan kata sandi untuk akun ini.";
@@ -882,14 +866,8 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Apakah Anda yakin ingin memutuskan sambungan Jetpack dari situs?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Anda yakin ingin menghapus item ini secara permanen?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Anda yakin ingin menghapus item ini secara permanen?";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Anda yakin ingin menghapus halaman ini secara permanen?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Anda yakin ingin menghapus pos ini secara permanen?";
@@ -921,9 +899,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Anda yakin ingin mengirimnya untuk diulas?";
-
-/* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Apakah Anda ingin membuang halaman ini?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Anda yakin ingin membuang pos ini?";
@@ -964,9 +939,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Keterangan audio. Kosong";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Mengotentikasi";
@@ -1178,10 +1150,7 @@ translators: Block name. %s: The localized block name */
 "Blocks menu" = "Menu blok";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using the web editor." = "Blok bertingkat yang kedalamannya melebihi %d level mungkin tidak dapat ditampilkan dengan benar di editor seluler. Karenanya, kami menyarankan Anda untuk meratakan konten dengan membatalkan pengelompokan blok atau mengedit blok melalui editor web.";
-
-/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor. For this reason, we recommend flattening the content by ungrouping the block or editing the block using your web browser." = "Blok bertingkat yang kedalamannya melebihi %d level mungkin tidak dapat ditampilkan dengan benar di editor seluler. Karenanya, kami menyarankan Anda untuk meratakan konten dengan membatalkan pengelompokan blok atau mengedit blok melalui browser web.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Blok bertingkat yang kedalamannya melebihi %d level mungkin tidak dapat ditampilkan dengan benar di editor seluler.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1259,9 +1228,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the post author in the post detail. */
 "By " = "Oleh ";
 
-/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
-"By %@." = "Oleh %@.";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Dengan melanjutkan, Anda menyetujui _Ketentuan Layanan_ kami.";
 
@@ -1281,8 +1247,7 @@ translators: Block name. %s: The localized block name */
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Menghitung...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Kamera";
 
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
@@ -1333,10 +1298,7 @@ translators: Block name. %s: The localized block name */
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -1352,10 +1314,6 @@ translators: Block name. %s: The localized block name */
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Batal";
-
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Batalkan Unggahan";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -1414,9 +1372,6 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Ganti Kata Sandi";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Ubah Pengaturan";
 
 /* Change Username title. */
 "Change Username" = "Ubah Nama Pengguna";
@@ -1556,9 +1511,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Choose file" = "Pilih berkas";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Pilih dari Perangkat Saya";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Pilih dari halaman beranda yang menampilkan pos terbaru Anda (blog klasik) atau halaman tetap\/statis.";
@@ -1760,9 +1712,6 @@ translators: Block name. %s: The localized block name */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Komunitas & Non-Profit";
 
-/* Accessibility indication that the current Post List style is currently Compact. */
-"Compact" = "Praktis";
-
 /* The action is completed */
 "Completed" = "Selesai";
 
@@ -1948,10 +1897,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Copied block" = "Blok disalin";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Salin Taut";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Salin Tautan ke Komentar";
 
@@ -2059,9 +2004,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Tidak dapat menutup akun secara otomatis";
-
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Menghitung item media...";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Negara";
@@ -2313,7 +2255,6 @@ translators: Block name. %s: The localized block name */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Hapus";
@@ -2321,15 +2262,11 @@ translators: Block name. %s: The localized block name */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Hapus Menu";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Hapus Permanen";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Hapus Permanen?";
 
 /* Button label for deleting the current site
@@ -2448,7 +2385,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Hentikan";
 
@@ -2465,12 +2401,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nama Tampilan";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokumen, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokumen: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Lega rasanya saat satu pekerjaan terselesaikan!";
@@ -2632,8 +2562,7 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Buat draf dan publikasikan artikel.";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Konsep";
 
 /* No comment provided by engineer. */
@@ -2644,10 +2573,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Seret untuk menyetel titik fokus";
-
-/* Label for page duplicate option. Tapping creates a copy of the page.
-   Label for post duplicate option. Tapping creates a copy of the post. */
-"Duplicate" = "Duplikat";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplikasi blok";
@@ -2661,22 +2586,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, ketuk pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Sunting";
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Sunting tombol \"Lagi\"";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Sunting %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edit Daftar Blokir Kata";
@@ -2870,9 +2788,6 @@ translators: Block name. %s: The localized block name */
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Masukkan kata yang berbeda dengan yang di atas dan kami akan mencari alamat yang cocok dengan kata tersebut.";
 
-/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Aktifkan mode edit untuk mengaktifkan fitur hapus banyak objek yang dipilih";
-
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Masukkan kata sandi";
@@ -3028,9 +2943,6 @@ translators: Block name. %s: The localized block name */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Setiap hari pada %@";
 
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Setiap Orang";
-
 /* Example story title description */
 "Example story title" = "Contoh judul cerita";
 
@@ -3039,9 +2951,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Panjang kutipan (kata)";
-
-/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
-"Excerpt. %@." = "Kutipan. %@.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Kutipan merupakan ringkasan pilihan opsional dari konten Anda.";
@@ -3052,8 +2961,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Keluar dari Layar Penuh";
 
-/* Accessibility indication that the current Post List style is currently Expanded.
-   Screen reader text to represent the expanded state of a UI control */
+/* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Diperluas";
 
 /* Accessibility hint */
@@ -3102,9 +3010,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Gagal";
-
-/* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Ekspor Media Gagal";
 
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Gagal menandai Pemberitahuan sebagai sudah dibaca";
@@ -3306,6 +3211,12 @@ translators: Block name. %s: The localized block name */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Sepakbola";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "Karenanya, kami menyarankan Anda untuk mengedit blok melalui editor web.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Karenanya, kami menyarankan Anda untuk mengedit blok melalui browser web.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Demi kenyamanan Anda, kami telah mengisi informasi kontak WordPress.com Anda terlebih dahulu. Harap tinjau untuk memastikan informasi yang ingin Anda gunakan untuk domain ini sudah benar.";
@@ -3624,8 +3535,7 @@ translators: Block name. %s: The localized block name */
 "Home" = "Beranda";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Beranda";
 
 /* Label for Homepage Settings site settings section
@@ -3721,9 +3631,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image title on image settings. */
 "Image title" = "Judul gambar";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Gambar, %@";
 
 /* Undated post time label */
 "Immediately" = "Segera";
@@ -4210,9 +4117,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Approval settings */
 "Links in comments" = "Tautan dalam komentar";
 
-/* The accessibility label for the list style button in the Post List. */
-"List style" = "Buat daftar gaya";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Memuat";
 
@@ -4228,17 +4132,11 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the activity feed for a site */
 "Loading Backups..." = "Memuat Cadangan…";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Memuat GIF...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Memuat Menu...";
 
 /* Text displayed while loading site People. */
 "Loading People..." = "Memuat Orang-orang...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Memuat Foto...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Memuat Paket...";
@@ -4300,8 +4198,7 @@ translators: Block name. %s: The localized block name */
 /* Local Services site intent topic */
 "Local Services" = "Layanan lokal";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Perubahan lokal";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -4465,7 +4362,6 @@ translators: Block name. %s: The localized block name */
 "Max Video Upload Size" = "Ukuran Unggahan Video Maksimal";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -4473,9 +4369,7 @@ translators: Block name. %s: The localized block name */
 "Me" = "Saya";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -4486,13 +4380,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Ukuran Cache Media";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Tangkapan Media";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Pustaka Media";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Opsi Media";
@@ -4515,9 +4402,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Media options" = "Pilihan media";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Pratinjau media gagal.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Media diunggah (%ld file)";
@@ -4556,9 +4440,6 @@ translators: Block name. %s: The localized block name */
    Label for the share message field on the post settings. */
 "Message" = "Pesan";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadata";
-
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
@@ -4578,13 +4459,11 @@ translators: Block name. %s: The localized block name */
 "Months and Years" = "Bulan dan Tahun";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Lainnya";
 
 /* Action button to display more available options
@@ -4642,15 +4521,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Pindahkan item menu";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Pindahkan ke Draf";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Pindahkan ke Sampah";
 
@@ -4682,7 +4554,8 @@ translators: Block name. %s: The localized block name */
    Title of My Site tab */
 "My Site" = "Situs Saya";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Situs Saya";
 
 /* Siri Suggestion to open My Sites */
@@ -4932,9 +4805,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Tidak ditemukan acara yang cocok.";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Tidak ada media yang cocok dengan pencarian Anda";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -4952,8 +4823,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Belum ada notifikasi.";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Tidak ada halaman yang cocok dengan pencarian Anda";
 
 /* Text displayed when search for plugins returns no results */
@@ -4973,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "Tidak ada pos yang baru saja dibuat dengan tag ini.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Tidak ada pos yang cocok dengan pencarian Anda";
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Tidak ada pos.";
@@ -5077,9 +4944,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A message title */
 "Nothing liked yet" = "Belum ada yang menyukai";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Tidak ada yang bisa ditampilkan";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabel Detail Pemberitahuan";
 
@@ -5139,7 +5003,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -5201,9 +5064,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Only show excerpt" = "Hanya tampilkan kutipan";
 
-/* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Hanya tersedia foto-foto yang mana Anda diizinkan untuk mengaksesnya.";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -5237,9 +5097,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Buka Pengaturan";
-
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Buka pemilih media penuh";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Buka di Safari";
@@ -5341,15 +5198,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Halaman";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Halaman Dipulihkan ke Draf";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Laman Dipulihkan ke Dipublikasikan";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Halaman Dipulihkan ke Dijadwalkan";
-
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Pengaturan Halaman";
@@ -5437,8 +5285,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "Tertunda";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Menunggu ulasan";
 
 /* Noun. Title of the people management feature.
@@ -5466,12 +5313,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografi";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Foto";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Foto disediakan oleh Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pilih nama pengguna";
@@ -5660,15 +5501,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format Tulisan";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Pos Dipulihkan ke Draf";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Pos Dipulihkan ke Dipublikasikan";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Pos Dipulihkan ke Dijadwalkan";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Pengaturan Pos";
@@ -5746,9 +5578,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Pos dan Halaman";
 
-/* Title of the Posts Page Badge */
-"Posts page" = "Halaman pos";
-
 /* Message informing the user that their static homepage for posts was set successfully */
 "Posts page successfully updated" = "Halaman pos berhasil diperbarui";
 
@@ -5760,9 +5589,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Postingan yang Anda sukai akan muncul di sini.";
-
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Didukung oleh Tenor";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -5782,17 +5608,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to preview a static content. */
 "Preview" = "Pratampil";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Pratinjau %@";
-
 /* Title for web preview device switching button */
 "Preview Device" = "Pratinjau Perangkat";
 
 /* Title on display preview error */
 "Preview Unavailable" = "Pratinjau Tidak Tersedia";
-
-/* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Pratinjau media";
 
 /* No comment provided by engineer. */
 "Preview page" = "Pratinjau halaman";
@@ -5840,8 +5660,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Privacy notice for California users" = "Pemberitahuan privasi untuk pengguna di California";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
@@ -5891,12 +5710,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for the publish date button. */
 "Publish Date" = "Tanggal Publikasi";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Terbitkan Segera";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publikasikan Sekarang";
 
@@ -5914,8 +5731,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Dipublikasikan";
 
 /* Precedes the name of the blog just posted on */
@@ -6057,8 +5873,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Pengingat dihapus";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -6211,9 +6026,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Kirim ulang";
 
-/* Title of the reset button */
-"Reset" = "Reset";
-
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Atur ulang penyaringan Jenis Aktivitas";
 
@@ -6268,12 +6080,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -6284,9 +6093,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title that triggers a scan */
 "Retry Scan" = "Pindai Kembali";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Coba Unggah Lagi";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "Coba lagi semuanya";
@@ -6385,9 +6191,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Pos yang Disimpan";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Tersimpan!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Menyimpan pos ini untuk nanti.";
 
@@ -6398,7 +6201,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving post…" = "Menyimpan pos…";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Menyimpan...";
 
@@ -6489,20 +6291,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Search or type URL" = "Cari atau ketik URL";
 
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Cari halaman";
-
-/* Text displayed when the search controller will be presented */
-"Search posts" = "Cari pos";
-
 /* No comment provided by engineer. */
 "Search settings" = "Pengaturan pencarian";
-
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
 
 /* Menus search bar placeholder text. */
 "Search..." = "Pencarian...";
@@ -6574,9 +6364,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Pilih Negara";
 
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Pilih Lainnya";
-
 /* Blog Picker's Title */
 "Select Site" = "Pilih Situs";
 
@@ -6597,9 +6384,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Pilih domain";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Pilih media.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Pilih gaya paragraf";
@@ -6704,18 +6488,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Layanan";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Atur Induk";
 
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Jadikan Gambar Unggulan ";
-
-/* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Atur sebagai Beranda";
-
-/* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Atur sebagai Halaman Pos";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Atur sebagai gambar andalan";
@@ -6760,7 +6537,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -7146,8 +6922,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Beranda Statis";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -7177,9 +6952,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Lekat";
-
-/* Accessibility label for a sticky post in the post list. */
-"Sticky." = "Melekat.";
 
 /* User action to stop upload. */
 "Stop upload" = "Berhenti mengunggah";
@@ -7237,7 +7009,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme Support action title */
 "Support" = "Dukungan";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Pindah Situs";
 
 /* Switches the Editor to HTML Mode */
@@ -7325,9 +7097,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label explaining why users might want to add tags. */
 "Tags help tell readers what a post is about. Separate different tags with commas." = "Tag membantu memberi tahu para pembaca tentang isi sebuah pos. Pisahkan tag yang berbeda dengan koma.";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Memotret atau Merekam Video";
-
 /* No comment provided by engineer. */
 "Take a Photo" = "Ambil Foto";
 
@@ -7397,12 +7166,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap to select the previous period" = "Ketuk untuk memilih periode sebelumnya";
-
-/* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Ketuk untuk beralih ke situs lain, atau menambahkan situs baru";
-
-/* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Ketuk untuk melihat media dalam layar penuh";
 
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Ketuk untuk melihat detail selengkapnya.";
@@ -7481,9 +7244,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Koneksi Facebook tidak dapat menemukan Halaman apa pun. Publikasikan tidak dapat terhubung ke Profil Facebook, hanya Halaman yang dipublikasikan.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF tidak bisa ditambahkan ke Pustaka Media.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Akun Google \"%@\" tidak cocok dengan akun apa pun di WordPress.com";
@@ -7612,7 +7372,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Pengguna yang ingin Anda hapus adalah pemilik situs ini. Silakan hubungi dukungan untuk mendapatkan bantuan.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Nama pengguna atau kata sandi yang tersimpan di app mungkin sudah tak berlaku. Silahkan isi ulang kata sandi di pengaturan dan coba lagi.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -7680,9 +7440,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Ada masalah saat menampilkan pos ini.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Terjadi masalah saat memuat item media.";
-
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Terjadi masalah saat memuat data Anda, segarkan halaman untuk mencoba lagi.";
 
@@ -7694,9 +7451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ada masalah saat mencoba mengakses lokasi Anda. Harap coba lagi nanti.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Ada masalah saat mencoba mengakses media Anda. Harap coba lagi nanti.";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Terjadi masalah dengan editor Cerita.  Jika masalah berlanjut, Anda dapat menghubungi kami melalui layar Saya > Bantuan & Dukungan.";
@@ -7767,9 +7521,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Aplikasi ini memerlukan akses ke Kamera untuk memindai kode login. Ketuk tombol Buka Pengaturan untuk mengaktifkannya.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Aplikasi ini memerlukan izin untuk mengakses pustaka perangkat Anda untuk menambahkan foto dan\/atau video ke pos Anda. Harap ubah pengaturan privasi jika Anda ingin mengizinkan ini.";
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Kombinasi warna ini mungkin sulit dibaca. Coba gunakan warna latar belakang yang lebih terang dan\/atau warna teks yang lebih gelap.";
@@ -8012,17 +7763,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Mengubah blok...";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Buang";
-
-/* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Media terpilih di tempat sampah";
-
-/* Title of the trash page confirmation alert. */
-"Trash this page?" = "Hapus halaman ini?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Buang pos ini?";
@@ -8141,9 +7885,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Tidak Dapat Terhubung";
 
-/* An error message. */
-"Unable to Connect" = "Tidak Dapat Terhubung";
-
 /* Title for stories unknown error. */
 "Unable to Create Stories Editor" = "Tidak dapat Membuat Editor Cerita";
 
@@ -8158,9 +7899,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Tidak dapat membuat tautan undangan baru.";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Tidak dapat menghapus semua item media.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Tidak dapat menghapus item media.";
@@ -8224,12 +7962,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Tidak dapat berbagi tautan";
-
-/* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Tidak dapat menghapus halaman saat offline. Silakan coba lagi nanti.";
-
-/* Message that appears when a user tries to trash a post while their device is offline. */
-"Unable to trash posts while offline. Please try again later." = "Tidak dapat membuang pos saat offline. Silakan coba lagi nanti.";
 
 /* Notice title when turning site notifications off fails. */
 "Unable to turn off site notifications" = "Tidak dapat menonaktifkan pemberitahuan situs";
@@ -8344,9 +8076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML Tidak Dikenal";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Tanggal pembuatan tidak diketahui";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Galat tak diketahui";
@@ -8591,15 +8320,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
 "Video not uploaded" = "Video tidak terunggah";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "Video";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -9125,9 +8849,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Bantuan WordPress";
 
-/* Name for the WordPress Media Library */
-"WordPress Media" = "Media WordPress";
-
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Pustaka Media WordPress";
 
@@ -9442,9 +9163,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Akun Anda tidak memiliki izin untuk mengunggah media ke situs ini. Administrator Situs dapat mengubah izin ini.";
 
-/* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Aplikasi Anda tidak memiliki izin akses pustaka media karena adanya pembatasan aktif seperti kontrol orang tua. Harap periksa pengaturan kontrol orang tua di perangkat ini.";
-
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Cadangan Anda sudah dapat diunduh";
 
@@ -9462,9 +9180,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Alamat WordPress.com gratis Anda adalah";
-
-/* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media Anda tidak dapat diekspor. If the problem persists you can contact us via the Me > layar Bantuan & Dukungan.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Domain baru Anda %@ sedang disiapkan. Perlu waktu hingga 30 menit agar domain anda mulai berfungsi.";
@@ -9589,8 +9304,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "Apa pendapat Anda tentang WordPress?";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Optimalkan Gambar";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "Tinggi";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Rendah";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maksimum";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Sedang";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Kualitas";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Kualitas Gambar";
+
+/* Message of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.message" = "Pengoptimalan gambar mengecilkan gambar agar bisa diunggah lebih cepat.\n\nPilihan ini diaktifkan sesuai dengan pengaturan asal, tetapi Anda dapat mengubahnya di pengaturan aplikasi kapan saja.";
+
+/* Title of an alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.title" = "Teruskan pengoptimalan gambar?";
+
+/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOff" = "Tidak, matikan";
+
+/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
+"appSettings.optimizeImagesPopup.turnOn" = "Ya, biarkan";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
@@ -9704,7 +9449,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionCopyURL" = "Salin URL";
 
 /* Context menu button title */
-"blogHeader.actionOpenInBrowser" = "Buka di Browser";
+"blogHeader.actionVisitSite" = "Kunjungi situs";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary telah hadir!";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary segera hadir!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Nyalakan prompt blogging";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Ayo mulai!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Poskan tanggapan Anda.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Baca tanggapan dari blogger lain untuk mendapatkan inspirasi dan menjalin koneksi baru.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Dapatkan prompt baru untuk menginspirasi Anda setiap hari.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Untuk mengikuti Bloganuary, Anda perlu mengaktifkan Prompt Blogging.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary akan menggunakan Prompt Blogging Harian untuk mengirimkan topik bulan Januari kepada Anda.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Ikuti tantangan menulis sebulan penuh dari kami";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Tutup";
@@ -9732,6 +9511,12 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Balasan untuk %1$@";
+
+/* Error message informing a user about an invalid password. */
+"common.reEnterPasswordMessage" = "Nama pengguna atau kata sandi yang disimpan di dalam aplikasi ini mungkin sudah usang. Masukkan kembali kata sandi Anda dalam pengaturan dan coba lagi.";
+
+/* An error message. */
+"common.unableToConnect" = "Tidak Dapat Terhubung";
 
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Cookie ini memungkinkan kami untuk mengoptimalkan performa dengan mengumpulkan informasi tentang cara pengguna berinteraksi dengan situs kami.";
@@ -9880,6 +9665,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Tutup";
 
+/* Search domain - Title for the Suggested domains screen */
+"domain.management.addDomain.search.title" = "Cari domain";
+
+/* Domain management buy domain card button title */
+"domain.management.buy.card.button.title" = "Dapatkan Domain";
+
+/* Domain management buy domain card subtitle */
+"domain.management.buy.card.subtitle" = "Tambahkan situs nanti.";
+
+/* Domain management buy domain card title */
+"domain.management.buy.card.title" = "Beli domain saja";
+
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Kedaluwarsa";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Perpanjangan";
+
+/* The empty state button title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.button.title" = "Cari domain";
+
+/* The empty state description in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.description" = "Ketuk di bawah untuk mencari domain ideal.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "Anda belum memiliki domain";
+
+/* The empty state description in All Domains screen when an error occurs */
+"domain.management.error.empty.state.description" = "Terjadi error saat memuat domain Anda. Jika masalah berlanjut, hubungi staf dukungan kami.";
+
+/* The empty state title in All Domains screen when an error occurs */
+"domain.management.error.empty.state.title" = "Terjadi kesalahan";
+
+/* The empty state button title in All Domains screen when an error occurs */
+"domain.management.error.state.button.title" = "Coba lagi";
+
+/* The empty state description in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.description" = "Periksa koneksi jaringan Anda dan coba lagi.";
+
+/* The empty state title in All Domains screen when the user is offline */
+"domain.management.offline.empty.state.title" = "Tidak ada koneksi internet";
+
+/* Domain management choose site card button title */
+"domain.management.purchase.footer" = "*Domain gratis selama setahun dalam semua paket tahunan berbayar";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Jangan khawatir. Anda bisa dengan mudah menambahkan situs di lain waktu.";
+
+/* Domain management purchase domain screen title. */
+"domain.management.purchase.title" = "Pilih cara menggunakan domain";
+
+/* The search bar title in All Domains screen. */
+"domain.management.search-bar.title" = "Cari domain";
+
+/* The empty state description in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.description" = "Kami tidak dapat menemukan domain yang sesuai dengan pencarian Anda untuk '%@'.";
+
+/* The empty state title in All Domains screen when the are no domains matching the search criteria */
+"domain.management.search.empty.state.title" = "Tidak ada domain yang sesuai.";
+
+/* Domain management choose site card button title */
+"domain.management.site.card.button.title" = "Pilih Situs";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.footer" = "Domain gratis untuk tahun pertama*";
+
+/* Domain management choose site card subtitle */
+"domain.management.site.card.subtitle" = "Gunakan dengan situs yang sudah Anda buat.";
+
+/* Domain management choose site card title */
+"domain.management.site.card.title" = "Situs WordPress.com yang sudah ada";
+
+/* Domain Management Screen Title */
+"domain.management.title" = "Semua Domain";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Diperlukan 30 menit agar domain khusus Anda dapat berfungsi.";
 
@@ -9891,39 +9751,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Selamat, situs Anda sudah aktif!";
-
-/* Status of a domain in `Action Required` state */
-"domain.status.action.required" = "Tindakan Diperlukan";
-
-/* Status of a domain in `Active` state */
-"domain.status.active" = "Aktif";
-
-/* Status of a domain in `Complete Setup` state */
-"domain.status.complete.setup" = "Selesaikan Penyiapan";
-
-/* Status of a domain in `Error` state */
-"domain.status.error" = "Error";
-
-/* Status of a domain in `Expired` state */
-"domain.status.expired" = "Kedaluwarsa";
-
-/* Status of a domain in `Expiring Soon` state */
-"domain.status.expiring.soon" = "Segera Berakhir";
-
-/* Status of a domain in `Failed` state */
-"domain.status.failed" = "Gagal";
-
-/* Status of a domain in `In Progress` state */
-"domain.status.in.progress" = "Sedang Berlangsung";
-
-/* Status of a domain in `Renew` state */
-"domain.status.renew" = "Perpanjang";
-
-/* Status of a domain in `Verify Email` state */
-"domain.status.verify.email" = "Verifikasi email";
-
-/* Status of a domain in `Verifying` state */
-"domain.status.verifying" = "Memverifikasi";
 
 /* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.best-alternative" = "Alternatif Terbaik";
@@ -9946,11 +9773,23 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per tahun";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Checkout";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Abaikan";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Maaf, saat ini domain yang Anda coba tambahkan tidak dapat dibeli di aplikasi Jetpack.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Beli Domain";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Pencarian";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Pilih Situs";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
@@ -9968,6 +9807,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "contoh.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Tambah";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Pilih Gambar";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Tampilan Dipilih (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Detail Kampanye";
@@ -10067,9 +9915,6 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/alamat-situs-saya (URL)";
-
-/* Label displayed on image media items. */
-"image" = "gambar";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Untuk mengambil foto atau video agar dapat digunakan di artikel Anda.";
@@ -10386,17 +10231,23 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Tutup";
-
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "Tambah media baru";
 
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Tambah";
 
+/* Button name in the more menu */
+"mediaLibrary.aspectRatioGrid" = "Kolom Rasio Aspek";
+
+/* Context menu button */
+"mediaLibrary.buttonDelete" = "Hapus";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Pilih";
+
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Bagikan";
 
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Batal";
@@ -10419,6 +10270,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Dihapus!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Semua";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Dokumen";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Gambar";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Video";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Hapus";
 
@@ -10430,6 +10296,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "Tidak ada media yang cocok dengan pencarian Anda";
+
+/* Text displayed in HUD if there was an error attempting to share a group of media items. */
+"mediaLibrary.sharingFailureMessage" = "Tidak dapat membagikan item yang dipilih.";
+
+/* Button name in the more menu */
+"mediaLibrary.squareGrid" = "Kisi Persegi";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
@@ -10451,6 +10323,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Tutup";
+
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Media tidak dapat diekspor. Jika masalah berlanjut, Anda dapat menghubungi kami melalui layar Saya > Bantuan & Dukungan.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Ekspor Media Gagal";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Aplikasi ini memerlukan izin untuk mengakses Kamera untuk menangkap media baru, harap ganti pengaturan privasi jika Anda ingin mengizinkan.";
@@ -10485,6 +10363,12 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Ambil Video";
 
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ dari %2$@";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d piksel";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Aplikasi WordPress sepertinya masih terinstal.";
 
@@ -10497,9 +10381,6 @@ Example: Reply to Pamela Nguyen */
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Anda tidak lagi membutuhkan aplikasi WordPress di perangkat Anda";
 
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Selesai";
-
 /* Footer for the migration done screen. */
 "migration.done.footer" = "Kami sarankan untuk menghapus instalan aplikasi WordPress di perangkat Anda guna mencegah terjadinya konflik data.";
 
@@ -10508,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Kami telah mentransfer semua data dan pengaturan Anda. Semua percis seperti terakhir Anda tinggalkan.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "Waktunya untuk melanjutkan perjalanan WordPress Anda di aplikasi Jetpack!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Terima kasih telah beralih ke Jetpack!";
@@ -10556,6 +10440,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Selamat datang di Jetpack!";
+
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Ayo";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Aplikasi Jetpack memiliki semua fungsionalitas aplikasi WordPress, dan sekarang memiliki akses eksklusif ke Statistik, Pembaca, Notifikasi, dan lainnya.";
@@ -10632,6 +10519,30 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Anda belum memiliki situs";
 
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Tambahkan situs";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Tindakan di Situs";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Ketuk untuk menunjukkan tindakan lain di situs";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalisasikan beranda";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Ubah ikon situs";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Ubah judul situs";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Alihkan sistus";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Kunjungi situs";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
@@ -10647,20 +10558,56 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "dari";
+/* Badge for page cells */
+"pageList.badgeHomepage" = "Beranda";
 
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "lainnya";
+/* Badge for page cells */
+"pageList.badgeLocalChanges" = "Perubahan lokal";
 
-/* Promote the page with Blaze. */
-"pages.blaze.actionTitle" = "Promosikan dengan Blaze";
+/* Badge for page cells */
+"pageList.badgePendingReview" = "Menunggu peninjauan";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Halaman pos";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Pribadi";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Beranda Anda menggunakan templat Tema dan akan dibuka di editor web.";
 
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Beranda";
+
+/* Message informing the user that their static homepage page was set successfully */
+"pages.updatePage.successTitle" = "Halaman berhasil diperbarui.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Hapus Secara Permanen";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Anda yakin ingin menghapus halaman ini secara permanen?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Hapus Permanen?";
+
+/* Menu option for filtering posts by everyone */
+"pagesList.pagesByEveryone" = "Halaman oleh setiap orang";
+
+/* Menu option for filtering posts by me */
+"pagesList.pagesByMe" = "Halaman oleh saya";
+
+/* Trash option in the trash page confirmation alert. */
+"pagesList.trash.actionTitle" = "Pindahkan ke Tempat Sampah";
+
+/* Message of the trash page confirmation alert. */
+"pagesList.trash.alertMessage" = "Apakah Anda ingin membuang halaman ini?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Hapus halaman ini?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "Batal";
 
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
@@ -10701,6 +10648,51 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
 
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.createdTimeAgo" = "Dibuat %@";
+
+/* Status mesasge for post cells */
+"post.deletingPostPermanentlyStatusMessage" = "Menghapus pos...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.editedTimeAgo" = "Diedit %@";
+
+/* Status mesasge for post cells */
+"post.movingToTrashStatusMessage" = "Memindahkan ke tempat sampah...";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.publishedTimeAgo" = "Dipublikasikan %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.scheduledForDate" = "Terjadwal %@";
+
+/* Post status and date for list cells with %@ a placeholder for the date. */
+"post.trashedTimeAgo" = "Dibuang %@";
+
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "Oleh %@";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Kutipan %@";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Melekat";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Title for the 'Trash' post list row swipe action */
+"postList.swipeActionDelete" = "Tempat Sampah";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Hapus";
+
+/* Title for the 'Share' post list row swipe action */
+"postList.swipeActionShare" = "Bagikan";
+
+/* Title for the 'View' post list row swipe action */
+"postList.swipeActionView" = "Lihat";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Tutup";
 
@@ -10719,8 +10711,71 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Atur sebagai Gambar Andalan";
 
+/* Error message on post/page settings screen */
+"postSettings.updateFailedMessage" = "Gagal memperbarui pengaturan pos";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
+
+/* Label for the Post List option that cancels automatic uploading of a post. */
+"posts.cancelUpload.actionTitle" = "Batalkan unggahan";
+
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Komentar";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Hapus secara permanen";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Pindahkan ke draf";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Duplikasi";
+
+/* Opens a submenu for page attributes. */
+"posts.pageAttributes.actionTitle" = "Atribut halaman";
+
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Pratinjau";
+
+/* Label for an option that moves a publishes a post immediately */
+"posts.publish.actionTitle" = "Publikasikan sekarang";
+
+/* Retry uploading the post. */
+"posts.retry.actionTitle" = "Coba ulang";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Atur sebagai beranda";
+
+/* Set the parent page for the selected page. */
+"posts.setParent.actionTitle" = "Atur induk";
+
+/* Set the selected page as a posts page. */
+"posts.setPostsPage.actionTitle" = "Atur sebagai halaman pos";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Tetapkan sebagai halaman biasa";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Pengaturan";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Bagikan";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "Statistik";
+
+/* Label for a option that moves a post to the trash folder */
+"posts.trash.actionTitle" = "Pindahkan ke tempat sampah";
+
+/* Label for the view post button. Tapping displays the post as it appears on the web. */
+"posts.view.actionTitle" = "Lihat";
+
+/* A short message explaining that a page was deleted permanently. */
+"postsList.deletePage.message" = "Halaman yang dihapus permanen";
+
+/* A short message explaining that a post was deleted permanently. */
+"postsList.deletePost.message" = "Pos yang dihapus permanen";
 
 /* A short message explaining that a page was moved to the trash bin. */
 "postsList.movePageToTrash.message" = "Halaman dipindahkan ke tempat sampah";
@@ -10728,8 +10783,11 @@ Example: Reply to Pamela Nguyen */
 /* A short message explaining that a post was moved to the trash bin. */
 "postsList.movePostToTrash.message" = "Pos dipindahkan ke tempat sampah";
 
-/* The title of an 'undo' button. Tapping the button moves a trashed post or page out of the trash folder. */
-"postsList.movePostToTrash.undo" = "Batal";
+/* Menu option for filtering posts by everyone */
+"postsList.postsByEveryone" = "Pos oleh setiap orang";
+
+/* Menu option for filtering posts by me */
+"postsList.postsByMe" = "Pos oleh saya";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Langganan sekarang untuk kesempatan berbagi lebih banyak";
@@ -10947,6 +11005,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Baru";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Transfer domain";
+
+/* The title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.title" = "Ingin mentransfer domain Anda?";
+
 /* Information of what related post are and how they are presented */
 "relatedPostsSettings.optionsFooter" = "Pos Terkait menampilkan konten yang relevan dari situs Anda di bawah pos Anda.";
 
@@ -11046,11 +11110,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Pilih media.";
 
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Ketuk untuk melihat media dalam layar penuh";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Pratinjau media";
+
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Tambah";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Batalkan Pilihan";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Pilih";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Situs Anda belum dapat dilihat pengunjung dan masih bertuliskan “Akan Segera Hadir”.";
 
 /* Text for privacy settings: Hidden */
 "siteVisibility.hidden.title" = "Tersembunyi";
@@ -11211,6 +11293,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Tutup";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Foto disediakan oleh Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Dalam percakapan ini";
 
@@ -11358,6 +11446,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "Bantuan";
 
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";
 
@@ -11372,9 +11463,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "belum dibaca";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "kunjungi halaman dokumentasi kami";

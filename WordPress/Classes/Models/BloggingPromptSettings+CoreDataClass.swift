@@ -48,12 +48,13 @@ public class BloggingPromptSettings: NSManagedObject {
     }
 
     private func updatePromptSettingsIfNecessary(siteID: Int, enabled: Bool) {
-        let service = BlogDashboardPersonalizationService(siteID: siteID)
-        if !service.hasPreference(for: .prompts) {
-            service.setEnabled(enabled, for: .prompts)
+        DispatchQueue.main.async {
+            let service = BlogDashboardPersonalizationService(siteID: siteID)
+            if !service.hasPreference(for: .prompts) {
+                service.setEnabled(enabled, for: .prompts)
+            }
         }
     }
-
 }
 
 extension RemoteBloggingPromptsSettings {

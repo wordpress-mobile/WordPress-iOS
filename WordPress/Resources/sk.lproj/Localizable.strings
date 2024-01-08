@@ -81,9 +81,6 @@
 /* Age between dates over one year. */
 "%d years" = "Počet rokov: %d";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i oblasť pre menu v téme";
 
@@ -204,13 +201,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Záznamy o činnosti";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Pridať";
-
-/* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
-"Add %@" = "Pridať %@";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Pridať obsah do príspevku";
 
@@ -253,9 +243,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Pokročilé";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumy";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -400,9 +387,6 @@
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Určite chcete odpojiť Jetpack z webovej stránky?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Naozaj chcete tieto položky natrvalo odstrániť?";
-
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Naozaj chcete túto položku natrvalo odstrániť?";
 
@@ -445,9 +429,6 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Pridať súbor ako odkaz";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Audio, %@";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Overuje sa";
@@ -562,8 +543,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Prepočítava sa...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Fotoaparát";
 
 /* Title of an alert letting the user know */
@@ -605,10 +585,7 @@
    Cancels an Action
    Cancels an alert.
    Cancels the mark all as read action.
-   Dismiss the post action sheet
    Editing GIF alert cancel action button.
-   Label for a cancel button
-   Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
@@ -624,10 +601,6 @@
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušiť";
-
-/* Label for the Post List option that cancels automatic uploading of a post.
-   Media Library option to cancel an in-progress or failed upload. */
-"Cancel Upload" = "Zrušiť nahrávanie";
 
 /* Menus alert button title to cancel discarding changes and not createa a new menu.
    Menus alert button title to cancel discarding changes and not select a new menu
@@ -706,9 +679,6 @@
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
 "Choose a theme" = "Vyberte tému";
-
-/* Menu option for selecting media from the device's photo library. */
-"Choose from My Device" = "Vybrať z Môjho zariadenia";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymazanie vyrovnávacej pamäte zariadenia";
@@ -905,10 +875,6 @@
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Prispieť";
 
-/* Copy the post url and paste anywhere in phone
-   Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Kopírovať odkaz";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Skopírovať odkaz do komentáru";
 
@@ -968,9 +934,6 @@
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Nepodarilo sa nahrať odporúčaný obrázok";
-
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Počítam množstvo súborov...";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Krajiny";
@@ -1071,7 +1034,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Odstrániť";
@@ -1079,15 +1041,11 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Zmazať menu";
 
-/* Delete option in the confirmation alert when deleting a page from the trash.
-   Delete option in the confirmation alert when deleting a post from the trash.
-   Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post.
+/* Delete option in the confirmation alert when deleting a post from the trash.
    Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Zmazať natrvalo";
 
-/* Title of the confirmation alert when deleting a page from the trash.
-   Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Vymazať na trvalo?";
 
 /* Button label for deleting the current site
@@ -1166,7 +1124,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Zrušiť";
 
@@ -1174,9 +1131,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Zobraziť meno";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Message shown when all tours have been completed */
 "Doesn't it feel good to cross things off a list?" = "Nie je to dobrý pocit odškrtávať veci zo zoznamu?";
@@ -1211,17 +1165,12 @@
 /* Name for the status of a draft post. */
 "Draft" = "Koncept";
 
-/* Title of the drafts filter.  This filter shows a list of draft posts.
-   Title of the drafts header in search list. */
+/* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Edit the post.
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   Label for a button that opens the Edit Page view controller
-   Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
 "Edit" = "Upraviť";
@@ -1409,9 +1358,6 @@
 
 /* Title for the activity detail view */
 "Event" = "Udalosť";
-
-/* Label for the post author filter. This filter shows posts for all users on the blog. */
-"Everyone" = "Každý";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Zhrnutie";
@@ -1672,8 +1618,7 @@
 "Hold for Moderation" = "Podržať pre moderovanie";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen
-   Title of the Homepage Badge */
+   Title for the homepage section in site settings screen */
 "Homepage" = "Domovská stránka";
 
 /* Label for Homepage Settings site settings section
@@ -1718,9 +1663,6 @@
 
 /* Hint for image title on image settings. */
 "Image title" = "Nadpis obrázka";
-
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Obrázok, %@";
 
 /* Undated post time label */
 "Immediately" = "Okamžite";
@@ -1963,14 +1905,8 @@
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Načítavanie Aktivít...";
 
-/* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Nahrávanie GIFov ... ";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítanie menu...";
-
-/* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Nahrávanie fotografií ...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "Načítava sa paušál...";
@@ -2014,8 +1950,7 @@
 /* Status for Media object that is only exists locally. */
 "Local" = "Miestne";
 
-/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Title of the Local Changes Badge */
+/* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Miestne zmeny";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
@@ -2112,7 +2047,6 @@
 "Max Video Upload Size" = "Maximálna veľkosť nahraného videa";
 
 /* Accessibility label for the Me button in My Site.
-   Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
    Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
@@ -2120,22 +2054,13 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Súbory";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Veľkosť cache súborov";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Zachytiť súbor";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Knižnica súborov";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Nastavenia súborov";
@@ -2152,9 +2077,6 @@
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Veľkosť súboru (%1$@) je príliš veľká. Maximálna povolená veľkosť je %2$@";
-
-/* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Náhľad súboru zlyhal.";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Nahrávajú  sa média (%ld súborov)";
@@ -2181,9 +2103,6 @@
    Label for the share message field on the post settings. */
 "Message" = "Správa";
 
-/* Title of section containing image / video metadata such as size and file type */
-"Metadata" = "Metadáta";
-
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Sledujte dobu prevádzky vašej webovej stránky";
 
@@ -2194,13 +2113,11 @@
 "Months and Years" = "Mesiace a roky";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
-   Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options. */
+   Action button to display more available options */
 "More" = "Viac";
 
 /* Action button to display more available options
@@ -2210,15 +2127,8 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Viac článkov";
 
-/* Label for a button that moves a page to the draft folder
-   Label for an option that moves a post to the draft folder */
-"Move to Draft" = "Prejsť na koncept";
-
-/* Label for a button that moves a page to the trash folder
-   Label for a option that moves a post to the trash folder
-   Title for button on the comment details page that moves the comment to trash when tapped.
+/* Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Presunúť do koša";
 
@@ -2234,7 +2144,8 @@
    Title of My Site tab */
 "My Site" = "Moja webová stránka";
 
-/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title for site picker screen.
+   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Moje stránky";
 
 /* Siri Suggestion to open My Sites */
@@ -2358,9 +2269,7 @@
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Zatiaľ žiadne lajky";
 
-/* Message displayed when no results are returned from a media library search. Should match Calypso.
-   Phrase to show when the user search for images but there are no result to show.
-   Phrase to show when the user searches for GIFs but there are no result to show. */
+/* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Žiadne média nezodpovedajú vyhľadávaniu";
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
@@ -2369,8 +2278,7 @@
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Zatiaľ žiadne upozornenia";
 
-/* Displayed when the user is searching the pages list and there are no matching pages
-   Text displayed when there's no matching with the text search */
+/* Text displayed when there's no matching with the text search */
 "No pages matching your search" = "Žiadne stránky nezodpovedajú vyhľadávaniu";
 
 /* Text displayed when search for plugins returns no results */
@@ -2390,9 +2298,6 @@
 
 /* Message shown whent the reader finds no posts for the chosen tag */
 "No posts have been made recently with this tag." = "Žiadne nedávne články s touto značkou.";
-
-/* Displayed when the user is searching the posts list and there are no matching posts */
-"No posts matching your search" = "Žiadne články nezodpovedajú vyhľadávaniu";
 
 /* A message title */
 "No recent posts" = "Žiadne nedávne články";
@@ -2449,9 +2354,6 @@
 /* A message title */
 "Nothing liked yet" = "Žiaden príspevok označený \"Páči sa mi to\"";
 
-/* Default message for empty media picker */
-"Nothing to show" = "Žiadne možnosti";
-
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailná tabuľka notifikácií";
 
@@ -2484,7 +2386,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -2547,9 +2448,6 @@
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
 
-/* Editor button to swich the media picker from quick mode to full picker */
-"Open full media picker" = "Otvoriť výber všetkých médií";
-
 /* No comment provided by engineer. */
 "Open in Safari" = "Otvoriť v Safari";
 
@@ -2602,15 +2500,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
-/* Prompts the user that a restored page was moved to the drafts list. */
-"Page Restored to Drafts" = "Stránka obnovená do konceptov";
-
-/* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Stránka obnovená do publikovaných";
-
-/* Prompts the user that a restored page was moved to the scheduled list. */
-"Page Restored to Scheduled" = "Stránka obnovená do naplánovaných";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Koncept stránky sa nahral";
 
@@ -2661,8 +2550,7 @@
    Title of pending Comments filter. */
 "Pending" = "Čakajúce";
 
-/* Name for the status of a post pending review.
-   Title of the Pending Review Badge */
+/* Name for the status of a post pending review. */
 "Pending review" = "Čakajúce na kontrolu";
 
 /* Noun. Title of the people management feature.
@@ -2681,12 +2569,6 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knižnica fotografií";
-
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Fotky";
-
-/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"Photos provided by Pexels" = "Fotografie poskytnuté službou Pexels";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Vyberte užívateľské meno";
@@ -2778,15 +2660,6 @@
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Pridať formát";
 
-/* Prompts the user that a restored post was moved to the drafts list. */
-"Post Restored to Drafts" = "Článok obnovený ako koncept";
-
-/* Prompts the user that a restored post was moved to the published list. */
-"Post Restored to Published" = "Článok obnovený ako publikovaný";
-
-/* Prompts the user that a restored post was moved to the scheduled list. */
-"Post Restored to Scheduled" = "Článok obnovený ako naplánovaný";
-
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
 "Post Settings" = "Nastavenia článku";
@@ -2858,9 +2731,6 @@
    Title for screen to preview a static content. */
 "Preview" = "Náhľad";
 
-/* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
-"Preview %@" = "Náhľad %@";
-
 /* No comment provided by engineer. */
 "Preview post" = "Predchádzajúce články";
 
@@ -2886,8 +2756,7 @@
 "Privacy Settings" = "Nastavenia súkromia";
 
 /* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Title of the Private Badge */
+   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Súkromné";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
@@ -2910,12 +2779,10 @@
    Title for the publish settings view */
 "Publish" = "Zverejniť";
 
-/* A short phrase indicating a post is due to be immedately published.
-   Label for a button that moves a page to the published folder, publishing with the current date/time. */
+/* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Zverejniť okamžite";
 
 /* Label for a button that publishes the post
-   Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publikovať";
 
@@ -2927,8 +2794,7 @@
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Title of the published filter. This filter shows a list of posts that the user has published.
-   Title of the published header in search list. */
+   Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Zverejnené";
 
 /* Precedes the name of the blog just posted on */
@@ -3016,8 +2882,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Súvisiace články";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -3110,9 +2975,6 @@
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Znovu odoslať";
 
-/* Title of the reset button */
-"Reset" = "Obnoviť";
-
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Resetovať filtre";
 
@@ -3136,12 +2998,9 @@
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
-   Label for a button that attempts to re-upload a page that previously failed to upload.
-   Label for the retry post upload button. Tapping attempts to upload the post again.
    Opens the media library .
    Retries the upload of a user's post.
    Retry updating User's Role
-   Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
@@ -3149,9 +3008,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Obnoviť";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Nahrať znova";
 
 /* User action to retry all failed media uploads. */
 "Retry all" = "Zopakovať všetko";
@@ -3220,9 +3076,6 @@
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Uložený príspevok";
 
-/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
-"Saved!" = "Uložené!";
-
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Uložiť tento príspevok na neskôr.";
 
@@ -3230,7 +3083,6 @@
 "Saving post…" = "Článok sa ukladá...";
 
 /* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Ukladá sa...";
 
@@ -3264,15 +3116,6 @@
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
 
-/* Text displayed when the search controller will be presented */
-"Search pages" = "Vyhľadať stránky";
-
-/* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Vyhľadajte GIFy a pridajte ich do Knižnice médií!";
-
-/* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Vyhľadajte zadarmo fotografie, ktoré si pridáte do Knižnice médií";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Hľadať...";
 
@@ -3300,9 +3143,6 @@
 
 /* No comment provided by engineer. */
 "Select a color" = "Vybrať farbu";
-
-/* Accessibility hint for actions when displaying media items. */
-"Select media." = "Vybrať súbor.";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte štýl odseku";
@@ -3355,8 +3195,7 @@
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
 
-/* Label for a button that opens the Set Parent options view controller
-   Navigation title displayed on the navigation bar */
+/* Navigation title displayed on the navigation bar */
 "Set Parent" = "Nastaviť Nadradený";
 
 /* No comment provided by engineer. */
@@ -3387,7 +3226,6 @@
 /* Accessibility label for share buttons in nav bars
    Button label to share a post
    Button label to share a web page
-   Share the post.
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
@@ -3617,8 +3455,7 @@
    Title of Start Over settings page */
 "Start Over" = "Začať znova";
 
-/* Label for post stats option. Tapping displays statistics for a post.
-   Noun. Abbreviation of Statistics. Name of the Stats feature
+/* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
@@ -3672,7 +3509,7 @@
    Theme Support action title */
 "Support" = "Podpora";
 
-/* Button used to switch site */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Prepnúť webovú stránku";
 
 /* Switches the Editor to HTML Mode */
@@ -3727,9 +3564,6 @@
 /* Displayed when the user views tags in blog settings and there are no tags */
 "Tags created here can be quickly added to new posts" = "Vytvorené značky sa dajp rýchlo pridať do nového článku";
 
-/* Menu option for taking an image or video with the device's camera. */
-"Take Photo or Video" = "Odfotogravovať alebo nasnímať video";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Klepnutím na položku [bookmark-outline] uložte príspevok do svojho zoznamu.";
 
@@ -3783,9 +3617,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Toto používateľské meno nie je povolené.";
-
-/* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "GIF formát sa nepodarilo pripojiť do Knižnice médií. ";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -3854,7 +3685,7 @@
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Používateľ, ktorého sa pokúšate odstrániť, je vlastníkom tejto stránky. Ak potrebujete pomoc, kontaktujte technickú podporu.";
 
-/* Error message informing a user about an invalid password. */
+/* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Používateľské meno alebo heslo v aplikácii už môže byť neaktuálne. Zadajte vaše heslo v nastaveniach a skúste to znova.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
@@ -3910,9 +3741,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Došlo k chybe pri zobrazení tohto príspevku.";
 
-/* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
-"There was a problem loading the media item." = "Pri načítavaní mediálneho súboru sa vyskytol problém.";
-
 /* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
 "There was a problem removing the block for specified site." = "Nastal problém pri odstraňovaní bloku z určenej webovej stránky,";
 
@@ -3921,9 +3749,6 @@
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Došlo k chybe pri pokuse načítať vašu polohu. Skúste to znovu pozdejšie.";
-
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Vyskytol sa problém pri pokuse sprístupniť vaše súbory. Skúste to znovu neskôr.";
 
 /* Message for stories unknown error. */
 "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Vyskytol sa problém so sledovaním webovej stránky. Ak problém aj naďalej trvá, kontaktujte nás cez Profil > Pomocník & Podpora.";
@@ -3957,9 +3782,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do knižnice súborov vo vašom zariadení, aby ste mohli pridať fotografie a\/alebo video do vášho článku. Prosím zmeňte nastavenia súkromia, pokiaľ si prajete ich pridanie.";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Táto e-mailová adresa nie je registrovaná na WordPress.com.";
@@ -4086,8 +3908,7 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Prenos";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
@@ -4152,17 +3973,11 @@
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Nedá sa pripojiť";
 
-/* An error message. */
-"Unable to Connect" = "Nedá sa pripojiť";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nepodarilo sa načítať články";
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nie je možné synchronizovať";
-
-/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
-"Unable to delete all media items." = "Nedajú sa zmazať všetky mediálne súbory.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nedá sa zmazať mediálny súbor.";
@@ -4261,9 +4076,6 @@
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámy kód HTML";
-
-/* Label to use when creation date from media asset is not know. */
-"Unknown creation date" = "Neznámy dátum vytvorenia";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Neznáma chyba";
@@ -4415,15 +4227,10 @@
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export videa bol zrušený.";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Video, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "Videá";
 
 /* Button title. Displays a summary / sharing screen for a specific post.
-   Label for a button that opens the page when tapped.
-   Label for the view post button. Tapping displays the post as it appears on the web.
    Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
@@ -4600,9 +4407,6 @@
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Pomoc WordPress";
-
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress média";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Knižnica médií WordPress";
@@ -4829,9 +4633,6 @@
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
 
-/* Label displayed on audio media items. */
-"audio" = "audio";
-
 /* Used when displaying author of a plugin. */
 "by %@" = "kým %@";
 
@@ -4840,9 +4641,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moja-stranka.sk (URL adresa)";
-
-/* Label displayed on image media items. */
-"image" = "obrázok";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
@@ -4853,20 +4651,11 @@
 /* Later today */
 "later today" = "neskôr dnes";
 
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
-
-/* Label displayed on media items that are not video, image, or audio. */
-"other" = "ďalšie";
-
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "nasledujúce položky budú zmazané:";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "neznáma url adresa";
-
-/* Label displayed on video media items. */
-"video" = "video";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Články";

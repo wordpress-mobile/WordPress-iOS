@@ -41,7 +41,7 @@ static NSInteger HideSearchMinSites = 3;
     return nil;
 }
 
-- (id)initWithConfiguration:(BlogListConfiguration *)configuration
+- (instancetype)initWithConfiguration:(BlogListConfiguration *)configuration
            meScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
@@ -416,6 +416,21 @@ static NSInteger HideSearchMinSites = 3;
     } else {
         DDLogWarn(@"Unable to delete all indexed spotlight items for blog: %@", blog.logDescription);
     }
+}
+
+#pragma mark - Tracks
+
+- (void)trackEvent:(WPAnalyticsEvent)event properties:(NSDictionary<id, id> * _Nullable)properties
+{
+    NSMutableDictionary<id, id> *mergedProperties = [NSMutableDictionary dictionary];
+
+    if (self.configuration.analyticsSource) {
+        mergedProperties[WPAppAnalyticsKeySource] = self.configuration.analyticsSource;
+    }
+
+    [mergedProperties addEntriesFromDictionary:properties ?: @{}];
+
+    [WPAnalytics trackEvent:event properties:mergedProperties];
 }
 
 #pragma mark - Header methods
@@ -803,6 +818,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setSelectedBlog:(Blog *)selectedBlog
 {
     [self setSelectedBlog:selectedBlog animated:[self isViewLoaded]];
+    [self trackEvent:WPAnalyticsEventSiteSwitcherSiteSelected properties:nil];
 }
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated

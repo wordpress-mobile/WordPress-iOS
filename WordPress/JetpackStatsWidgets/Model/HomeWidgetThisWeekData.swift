@@ -1,3 +1,4 @@
+import JetpackStatsWidgetsCore
 
 struct HomeWidgetThisWeekData: HomeWidgetData {
 

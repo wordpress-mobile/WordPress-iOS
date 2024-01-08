@@ -7,6 +7,8 @@ protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapHeaderAvatar()
     func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
+    func didTapLikes()
+    func didTapComments()
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
@@ -34,12 +36,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
-
-    /// The user interface direction for the view's semantic content attribute.
-    ///
-    private var layoutDirection: UIUserInterfaceLayoutDirection {
-        return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
-    }
 
     /// Any interaction with the header is sent to the delegate
     ///

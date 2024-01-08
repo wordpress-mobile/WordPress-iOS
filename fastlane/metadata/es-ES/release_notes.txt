@@ -1,13 +1,5 @@
-Cuando mueves una entrada a la papelera ahora verás aparecer en el fondo de la pantalla un mensaje de confirmación.
+Hemos actualizado el editor clásico con nuevos selectores de medios para fotos y medios del sitio. No te preocupes, puedes seguir subiendo imágenes, vídeos y mucho más a tu sitio.
 
-Hemos realizado algunos cambios en el editor de bloques.
+Hablando de tipos de medios—ahora puedes añadir filtros de medios a la pantalla de medios del sitio. Si utilizas un iPhone, también notarás el nuevo modo de relación de aspecto. Ambas opciones están disponibles cuando tocas el menú del título.
 
-- Los iconos sociales y títulos de patrones sincronizados inacxtivos ya no son visibles en los temas basados en bloques al usar el modo oscuro. Buen intento amigos, pero no sois tan ninjas como pensábais.
-- En el editor clásico ahora puedes convertir tu contenido a bloques con un clic de un botón.
-
-Para finalizar, hemos aplastado un mini enjambre de errores.
-
-- No deberías tener problemas de acceso si introduces la dirección de sitio incorrectamente en el primer intento.
-- Las etiquetas HTML incorrectas no se mostrarán en los títulos de tus entradas - solo las verás en modo texto plano.
-- Durante la identificación en dos factores tendrás un mensaje mucho más descriptivo si introduces el código incorrecto al acceder.
-- Hemos quitado controles adicionales en el proceso de identificación en dos factores porque añadían medidas de seguridad innecesarias. El acceso sigue siendo seguro, pero ahora con menos dolores de cabeza.
+Por último, hemos arreglado la ventana emergente de cumplimiento que aparece mientras compruebas las estadísticas durante el proceso de puesta en marcha. ¡Genial!
