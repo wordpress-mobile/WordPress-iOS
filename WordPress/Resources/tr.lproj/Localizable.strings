@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-16 21:51:11+0000 */
+/* Translation-Revision-Date: 2024-01-03 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: tr */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Tümü";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Tüm WordPress.com yıllık paketleri kişisel bir alan adı içerir. Ücretsiz alan adınızı hemen kaydedin.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9463,6 +9466,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "Yeni yılda blog yazma alışkanlığı oluşturmayı hedefleyen topluluk etkinliğimiz Bloganuary'den Ocak ayı boyunca blog istemleri alacaksınız.";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary burada!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary yaklaşıyor!";
 
@@ -10527,6 +10533,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Hiçbir siteniz yok";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Site ekleyin";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Site eylemleri";

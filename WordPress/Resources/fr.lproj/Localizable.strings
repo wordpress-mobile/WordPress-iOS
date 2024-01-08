@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-19 16:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-03 18:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: fr */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Toutes";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Tous les plans annuels WordPress.com incluent un nom de domaine personnalisé. Enregistrez votre domaine gratuit dès maintenant.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9427,6 +9430,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Lire la suite";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary, c’est parti !";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "C’est bientôt Bloganuary !";
 
@@ -10476,6 +10482,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Vous n’avez pas de sites.";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Ajouter un site";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Afficher les actions du site";

@@ -91,7 +91,6 @@ class PrepublishingHeaderView: UITableViewHeaderFooterView, NibLoadable {
         static let backButtonSize = CGSize(width: 28, height: 28)
         static let imageRadius: CGFloat = 4
         static let leftRightInset: CGFloat = 16
-        static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
         static let close = NSLocalizedString("Close", comment: "Voiceover accessibility label informing the user that this button dismiss the current view")
         static let doubleTapToDismiss = NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it")
     }

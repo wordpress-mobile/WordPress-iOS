@@ -39,14 +39,6 @@ import AutomatticTracks
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
-    private lazy var assetRequestOptions: PHImageRequestOptions = {
-        let requestOptions = PHImageRequestOptions()
-        requestOptions.resizeMode = .fast
-        requestOptions.deliveryMode = .opportunistic
-        requestOptions.isNetworkAccessAllowed = true
-        return requestOptions
-    }()
-
     @objc convenience init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.init(imageView: imageView, gifStrategy: gifStrategy, loadingIndicator: nil)
     }
@@ -314,11 +306,6 @@ import AutomatticTracks
 
             self.errorHandler?(error)
         }
-    }
-
-    private func createError(description: String, key: String = NSLocalizedFailureReasonErrorKey) -> NSError {
-        let userInfo = [key: description]
-        return NSError(domain: ImageLoader.classNameWithoutNamespaces(), code: 0, userInfo: userInfo)
     }
 }
 

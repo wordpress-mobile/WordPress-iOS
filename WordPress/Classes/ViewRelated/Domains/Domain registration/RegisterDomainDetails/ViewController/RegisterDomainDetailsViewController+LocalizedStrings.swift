@@ -49,10 +49,6 @@ enum RegisterDomainDetails {
         static let redemptionError = NSLocalizedString("Problem purchasing your domain. Please try again.",
              comment: "Register Domain - error displayed when there's a problem when purchasing the domain."
         )
-        static let changingPrimaryDomainError = NSLocalizedString("We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased.",
-                                                                  comment: "Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site"
-        )
-
 
         static let statesFetchingError = NSLocalizedString(
             "Error occurred fetching states",

@@ -46,13 +46,6 @@ class BaseDashboardDomainsCardCell: DashboardCollectionViewCell {
         return stackView
     }()
 
-    private lazy var dashboardIcon: UIImageView = {
-        let image = UIImage.gridicon(.domains).withTintColor(.white).withRenderingMode(.alwaysOriginal)
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-
     private lazy var contextMenu: UIMenu = {
         let hideThisAction = UIAction(title: viewModel.strings.hideThis,
                                       image: Style.hideThisImage,

@@ -137,10 +137,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    private lazy var readerCardReadingTimeAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCardReadingTimeAttributes()
-    }()
-
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {

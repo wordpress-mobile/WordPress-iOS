@@ -31,8 +31,6 @@ import UIKit
                 return .bloggingPromptsActionSheetHeader
             case .promptNotification, .promptStaticNotification:
                 return .bloggingPromptsNotification
-            default:
-                return .unknown
             }
         }
     }

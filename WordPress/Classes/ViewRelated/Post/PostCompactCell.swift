@@ -198,7 +198,6 @@ class PostCompactCell: UITableViewCell {
 
     private enum Constants {
         static let separator = " · "
-        static let contentSpacing: CGFloat = 8
         static let imageRadius: CGFloat = 2
         static let opacity: Float = 1
         static let margin: CGFloat = 16
@@ -244,10 +243,6 @@ extension PostCompactCell {
         if !post.isScheduled() {
             configureExcerpt()
         }
-    }
-
-    func hideSeparator() {
-        separator.isHidden = true
     }
 
     func disableiPadReadableMargin() {

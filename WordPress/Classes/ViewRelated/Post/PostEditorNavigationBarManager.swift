@@ -255,7 +255,6 @@ class PostEditorNavigationBarManager {
 
 extension PostEditorNavigationBarManager {
     private enum Fonts {
-        static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static var blogTitle: UIFont {
             WPStyleGuide.navigationBarStandardFont
         }
