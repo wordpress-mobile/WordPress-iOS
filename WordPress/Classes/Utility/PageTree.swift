@@ -110,7 +110,6 @@ final class PageTree {
     /// This function assumes none of array elements already exists in the current page tree.
     func add(_ newPages: [Page]) {
         let newNodes = newPages.map { TreeNode(page: $0) }
-        relocateOrphans(to: newNodes)
 
         // First try to constrcuture a smaller subtree from the given pages, then move the new subtree to the existing
         // page tree (`self`).
@@ -151,6 +150,8 @@ final class PageTree {
     }
 
     private func add(_ newNodes: [TreeNode]) {
+        relocateOrphans(to: newNodes)
+
         newNodes.forEach { newNode in
             let parentID = newNode.pageData.parentID ?? 0
 
@@ -177,13 +178,17 @@ final class PageTree {
 
     /// Move all the nodes in the given argument to the current page tree.
     private func merge(subtree: PageTree) {
-        var parentIDs = subtree.nodes.reduce(into: Set()) { $0.insert($1.pageData.parentID ?? 0) }
+        let subtreeNodes = subtree.nodes
+
+        relocateOrphans(to: subtreeNodes)
+
+        var parentIDs = subtreeNodes.reduce(into: Set()) { $0.insert($1.pageData.parentID ?? 0) }
         // No need to look for root level
         parentIDs.remove(0)
         // Look up parent nodes upfront, to avoid repeated iteration for each node in `subtree`.
         let parentNodes = findNodes(postIDs: parentIDs)
 
-        subtree.nodes.forEach { newNode in
+        subtreeNodes.forEach { newNode in
             let parentID = newNode.pageData.parentID ?? 0
 
             // If the new node is at the root level, then simply add it as a child
