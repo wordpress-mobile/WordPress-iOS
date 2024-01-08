@@ -1,5 +1,7 @@
 #import "LocalCoreDataService.h"
 
+@import CoreData;
+
 @interface LocalCoreDataService ()
 @property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 @end

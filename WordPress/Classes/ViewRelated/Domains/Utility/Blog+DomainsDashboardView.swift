@@ -1,9 +1,5 @@
 /// Collection of convenience properties used in the Domains Dashboard
 extension Blog {
-
-    static let noPrimaryURLFound = NSLocalizedString("No primary site address found",
-                                                     comment: "String to display in place of the site address, in case it was not retrieved from the backend.")
-
     struct DomainRepresentation: Identifiable {
         let domain: Domain
         let id = UUID()

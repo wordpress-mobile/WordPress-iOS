@@ -8,6 +8,8 @@
 
 #import <WordPressShared/NSString+XMLExtensions.h>
 
+@import NSObject_SafeExpectations;
+
 @implementation BlogSyncFacade
 
 - (void)syncBlogsForAccount:(WPAccount *)account

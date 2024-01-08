@@ -657,17 +657,6 @@ import Combine
         tableView.tableHeaderView = tableView.tableHeaderView
     }
 
-
-    // Refresh the header of a site topic when returning in case the
-    // topic's following status changed.
-    private func refreshTableHeaderIfNeeded() {
-        guard let _ = readerTopic else {
-            return
-        }
-        configureStreamHeader()
-    }
-
-
     /// Updates the content based on the values of `readerTopic` and `contentType`
     private func updateContent(synchronize: Bool = true) {
         // if the view has not been loaded yet, this will be called in viewDidLoad

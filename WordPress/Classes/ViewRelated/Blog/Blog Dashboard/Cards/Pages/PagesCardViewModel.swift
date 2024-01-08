@@ -89,11 +89,6 @@ class PagesCardViewModel: NSObject {
         }
     }
 
-    func retry() {
-        showLoadingIfNeeded()
-        sync()
-    }
-
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         performInitialLoading()
