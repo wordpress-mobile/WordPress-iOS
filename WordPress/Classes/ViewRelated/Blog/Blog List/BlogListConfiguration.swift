@@ -8,20 +8,24 @@ import Foundation
     @objc var backButtonTitle: String
     @objc var shouldHideSelfHostedSites: Bool
     @objc var shouldHideBlogsNotSupportingDomains: Bool
+    @objc var analyticsSource: String?
 
-    init(shouldShowCancelButton: Bool,
-         shouldShowNavBarButtons: Bool,
-         navigationTitle: String,
-         backButtonTitle: String,
-         shouldHideSelfHostedSites: Bool,
-         shouldHideBlogsNotSupportingDomains: Bool) {
+    init(
+        shouldShowCancelButton: Bool,
+        shouldShowNavBarButtons: Bool,
+        navigationTitle: String,
+        backButtonTitle: String,
+        shouldHideSelfHostedSites: Bool,
+        shouldHideBlogsNotSupportingDomains: Bool,
+        analyticsSource: String? = nil
+    ) {
         self.shouldShowCancelButton = shouldShowCancelButton
         self.shouldShowNavBarButtons = shouldShowNavBarButtons
         self.navigationTitle = navigationTitle
         self.backButtonTitle = backButtonTitle
         self.shouldHideSelfHostedSites = shouldHideSelfHostedSites
         self.shouldHideBlogsNotSupportingDomains = shouldHideBlogsNotSupportingDomains
-
+        self.analyticsSource = analyticsSource
         super.init()
     }
 

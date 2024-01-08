@@ -1,0 +1,5 @@
+Der klassische Editor wurde mit neuen Medienauswahlen für Fotos und Website-Medien ersetzt. Keine Sorge: Du kannst weiterhin Bilder, Videos und mehr auf deine Website hochladen.
+
+Apropos Medientypen: Ab sofort kannst du Medienfilter zum Bildschirm für Website-Medien hinzufügen. iPhone-Benutzern wird auch der neue Modus für das Bildformat auffallen. Beide Optionen sind verfügbar, wenn du auf das Titelmenü tippst.
+
+Außerdem haben wir das fehlerhafte Compliance-Pop-up korrigiert, das angezeigt wurde, wenn du Statistiken während des Onboarding-Prozesses überprüft hast. Das ist doch super.

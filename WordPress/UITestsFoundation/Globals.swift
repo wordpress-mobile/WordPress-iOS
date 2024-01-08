@@ -62,23 +62,6 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     }
 }
 
-public func tapUntilCondition(element: XCUIElement, condition: Bool, description: String, maxRetries: Int = 10) {
-    var retries = 0
-    while retries < maxRetries {
-        if !condition {
-            element.tap()
-            break
-        }
-
-        usleep(500000) // a 0.5 second delay before retrying
-        retries += 1
-    }
-
-    if retries == maxRetries {
-        XCTFail("Condition \(description) still not met after \(maxRetries) tries.")
-    }
-}
-
 public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {

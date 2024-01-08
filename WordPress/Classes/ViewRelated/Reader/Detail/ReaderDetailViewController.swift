@@ -816,9 +816,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
-        static let bottomMargin: CGFloat = 16
-        static let toolbarHeight: CGFloat = 50
-        static let delay: Double = 50
         static let preferredToolbarHeight: CGFloat = 58.0
     }
 

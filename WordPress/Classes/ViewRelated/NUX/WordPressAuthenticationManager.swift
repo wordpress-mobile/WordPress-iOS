@@ -176,7 +176,7 @@ extension WordPressAuthenticationManager {
                                                   prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
                                                   prologueViewBackgroundColor: prologueViewBackgroundColor,
                                                   prologueBackgroundImage: authenticationHandler?.prologueBackgroundImage,
-                                                  prologueButtonsBlurEffect: authenticationHandler?.prologueButtonsBlurEffect,
+                                                  prologueButtonsBlurEffect: nil,
                                                   navBarBackgroundColor: .appBarBackground,
                                                   navButtonTextColor: .appBarTint,
                                                   navTitleTextColor: .appBarText)
@@ -584,26 +584,6 @@ private extension WordPressAuthenticationManager {
 private extension WordPressAuthenticationManager {
 
     typealias QuickStartOnDismissHandler = (Blog, Bool) -> Void
-
-    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: QuickStartOnDismissHandler?) {
-        // If the quick start prompt has already been dismissed,
-        // then show the My Site screen for the specified blog
-        guard !quickStartSettings.promptWasDismissed(for: blog) else {
-
-            if self.windowManager.isShowingFullscreenSignIn {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-            } else {
-                navigationController.dismiss(animated: true)
-            }
-
-            return
-        }
-
-        // Otherwise, show the Quick Start prompt
-        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-        quickstartPrompt.onDismiss = onDismiss
-        navigationController.pushViewController(quickstartPrompt, animated: true)
-    }
 
     func onDismissQuickStartPromptHandler(type: QuickStartType, onDismiss: @escaping () -> Void) -> QuickStartOnDismissHandler {
         return { [weak self] blog, _ in

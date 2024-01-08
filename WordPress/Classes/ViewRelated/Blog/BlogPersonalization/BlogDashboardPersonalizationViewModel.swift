@@ -83,7 +83,11 @@ private extension DashboardCard {
             return NSLocalizedString("personalizeHome.dashboardCard.activityLog", value: "Recent activity", comment: "Card title for the pesonalization menu")
         case .pages:
             return NSLocalizedString("personalizeHome.dashboardCard.pages", value: "Pages", comment: "Card title for the pesonalization menu")
-        case .quickStart, .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .empty, .freeToPaidPlansDashboardCard, .domainRegistration, .jetpackSocial, .bloganuaryNudge, .googleDomains:
+        case .dynamic, .quickStart, .ghost,
+                .failure, .personalize, .jetpackBadge,
+                .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
+                .domainRegistration, .jetpackSocial, .bloganuaryNudge,
+                .googleDomains:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }

@@ -105,7 +105,6 @@ private extension DomainResultView {
         static let logoToTitleSpacing = 33.0
         static let titleToSubtitleSpacing = 16.0
         static let subtitleToNoticeBoxSpacing = 32.0
-        static let primaryButtonCornerRadius = 7.0
     }
 
     private enum Fonts {

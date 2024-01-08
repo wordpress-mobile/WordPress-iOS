@@ -1,9 +1,26 @@
+24.1
+-----
+
+
 24.0
 -----
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
 * [***] [Jetpack-only] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
 * [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
 * [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
+* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
+* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
+* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
+* [*] [Jetpack-only] Updated Site Domains screen to make domains management more convenient [#22294, #22311]
+* [**] [internal] [Jetpack-only] Adds support for dynamic dashboard cards driven by the backend [#22326]
+* [**] [internal] Add support for the Phase One Fast Media Uploads banner [#22330]
+* [*] [internal] Remove personalizeHomeTab feature flag [#22280]
+* [*] Fix a rare crash in post search related to tags [#22275]
+* [*] Fix a rare crash when deleting posts [#22277]
+* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
+* [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
+* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
+* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
 
 23.9
 -----
@@ -17,6 +34,8 @@
 * [*] [Jetpack-only] Fix an occasional crash when changing Reader comment status [#22155]
 * [*] [Jetpack-only] Fix an occasional crash when logging out after interacting with Reader [#22147]
 * [*] Fix an issue where the Compliance Popover breaks other screens presentation. [#22085]
+* [*] [Jetpack-only] Fix an occassional crash when logging out after interacting with Reader [#22147]
+* [*] [Jetpack-only] Fix an issue where VoiceOver could lose focus when liking posts in Reader. [#22232]
 
 23.8
 -----

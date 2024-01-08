@@ -53,15 +53,6 @@ extension BlogDetailsViewController {
         alertWorkItem = nil
     }
 
-    private var noPresentedViewControllers: Bool {
-        guard let window = WordPressAppDelegate.shared?.window,
-            let rootViewController = window.rootViewController,
-            rootViewController.presentedViewController != nil else {
-            return true
-        }
-        return false
-    }
-
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
 

@@ -17,9 +17,7 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
     private var receipt: Receipt?
 
     private let insightsStore = StoreContainer.shared.statsInsights
-    private var insightsChangeReceipt: Receipt?
     private let periodStore = StoreContainer.shared.statsPeriod
-    private var periodChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -245,28 +243,6 @@ private extension SiteStatsInsightsDetailsTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedDetails()
-    }
-
-    func updateStatSectionForFilterChange() {
-        guard let oldStatSection = statSection else {
-            return
-        }
-
-        switch oldStatSection {
-        case .insightsFollowersWordPress:
-            statSection = .insightsFollowersEmail
-        case .insightsFollowersEmail:
-            statSection = .insightsFollowersWordPress
-        case .insightsCommentsAuthors:
-            statSection = .insightsCommentsPosts
-        case .insightsCommentsPosts:
-            statSection = .insightsCommentsAuthors
-        default:
-            // Return here as `initViewModel` is only needed for filtered cards.
-            return
-        }
-
-        initViewModel()
     }
 }
 

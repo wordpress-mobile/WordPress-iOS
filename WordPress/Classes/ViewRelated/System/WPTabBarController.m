@@ -181,9 +181,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerNavigationController.navigationBar.translucent = NO;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
-        UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-        _readerNavigationController.tabBarItem.image = readerTabBarImage;
-        _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
+        if ([Feature enabled:FeatureFlagNewTabIcons]) {
+            _readerNavigationController.tabBarItem.image = [[UIImage imageNamed:@"tab-bar-reader-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            _readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-reader-selected"];
+        } else {
+            UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+            _readerNavigationController.tabBarItem.image = readerTabBarImage;
+            _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
+        }
         _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
@@ -207,11 +212,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-    NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
-    self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
+    if ([Feature enabled:FeatureFlagNewTabIcons]) {
+        self.notificationsTabBarImage = [[UIImage imageNamed:@"tab-bar-notifications-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-wp";
+        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
+        _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-notifications-selected"];
+    } else {
+        self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
+        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
+        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
+        _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
+    }
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -224,7 +237,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
+        if ([Feature enabled:FeatureFlagNewTabIcons]) {
+            [self configureMeTabImageWithUnselectedPlaceholderImage:[[UIImage imageNamed:@"tab-bar-me-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                           selectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-selected"]];
+        } else {
+            [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
+        }
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
@@ -470,6 +488,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     [self setSelectedIndex:WPTabNotifications];
     [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
+}
+
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+    [generator impactOccurred];
+
+    [self animateSelectedItem:item for:tabBar];
 }
 
 #pragma mark - Zendesk Notifications

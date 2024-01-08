@@ -80,6 +80,14 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
         XCTAssertFalse(shouldShowCard(for: blog))
     }
 
+    func testCardDisplaysWhenJetpackSiteRunsOutOfShares() throws {
+        // Given, when
+        let blog = createTestBlog(hasConnections: true, publicizeInfoState: .exceedingLimit)
+
+        // Then
+        XCTAssertTrue(shouldShowCard(for: blog))
+    }
+
     // MARK: - Card state tests
 
     func testInitialCardState() {
@@ -115,6 +123,27 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(subject.displayState, .none)
     }
+
+    // MARK: Atomic Site Tests
+
+    // In some cases, atomic sites could sometimes get limited sharing from the API.
+    // We'll need to ignore any sharing limit information if it's a Simple or Atomic site.
+    // Refs: p9F6qB-dLk-p2#comment-56603
+    func testCardOutOfSharesDoesNotDisplayForAtomicSites() throws {
+        // Given, when
+        let blog = createTestBlog(isAtomic: true, hasConnections: true, publicizeInfoState: .exceedingLimit)
+
+        // Then
+        XCTAssertFalse(shouldShowCard(for: blog))
+    }
+
+    func testCardNoConnectionDisplaysForAtomicSites() throws {
+        // Given, when
+        let blog = createTestBlog(isAtomic: true)
+
+        // Then
+        XCTAssertTrue(shouldShowCard(for: blog))
+    }
 }
 
 // MARK: - Helpers
@@ -125,13 +154,22 @@ private extension DashboardJetpackSocialCardCellTests {
         return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
     }
 
+    enum PublicizeInfoState {
+        case none
+        case belowLimit
+        case exceedingLimit
+    }
+
     func createTestBlog(isPublicizeSupported: Bool = true,
+                        isAtomic: Bool = false,
                         hasServices: Bool = true,
-                        hasConnections: Bool = false) -> Blog {
+                        hasConnections: Bool = false,
+                        publicizeInfoState: PublicizeInfoState = .none) -> Blog {
         var builder = BlogBuilder(mainContext)
             .withAnAccount()
             .with(dotComID: 12345)
             .with(capabilities: [.PublishPosts])
+            .with(atomic: isAtomic)
 
         if isPublicizeSupported {
             builder = builder.with(modules: ["publicize"])
@@ -143,9 +181,30 @@ private extension DashboardJetpackSocialCardCellTests {
 
         if hasConnections {
             let connection = PublicizeConnection(context: mainContext)
+            connection.status = "ok"
             builder = builder.with(connections: [connection])
         }
-        return builder.build()
+
+        let blog = builder.build()
+
+        switch publicizeInfoState {
+        case .belowLimit:
+            let publicizeInfo = PublicizeInfo(context: mainContext)
+            publicizeInfo.shareLimit = 30
+            publicizeInfo.sharesRemaining = 25
+            blog.publicizeInfo = publicizeInfo
+            break
+        case .exceedingLimit:
+            let publicizeInfo = PublicizeInfo(context: mainContext)
+            publicizeInfo.shareLimit = 30
+            publicizeInfo.sharesRemaining = 0
+            blog.publicizeInfo = publicizeInfo
+            break
+        default:
+            break
+        }
+
+        return blog
     }
 
     func createPublicizeService() -> PublicizeService {
