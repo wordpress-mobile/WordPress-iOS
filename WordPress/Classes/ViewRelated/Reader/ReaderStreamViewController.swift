@@ -32,9 +32,6 @@ import Combine
     /// view controller is very large, with over 2000 lines of code!
     private let siteBlockingController = ReaderPostBlockingController()
 
-    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
-    private let sharingController = PostSharingController()
-
     // MARK: - Services
 
     private lazy var readerPostService = ReaderPostService(coreDataStack: coreDataStack)
@@ -106,7 +103,6 @@ import Combine
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isLoggedIn = false
@@ -137,9 +133,6 @@ import Combine
     private var tagSlug: String? {
         didSet {
             if tagSlug != nil {
-                // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = NSLocalizedString("Topic", comment: "Topic page title")
-
                 fetchTagTopic()
             }
         }
@@ -598,7 +591,7 @@ import Combine
             return
         }
 
-        let isNewHeader = RemoteFeatureFlag.readerImprovements.enabled() && !isContentFiltered
+        let isNewHeader = !isContentFiltered
         let isNewSiteHeader = isNewHeader && ReaderHelpers.isTopicSite(topic)
 
         let headerView = {
@@ -734,13 +727,7 @@ import Combine
             return
         }
 
-        if ReaderHelpers.isTopicTag(topic) {
-            // don't display any title for the tag stream for the new design.
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                return
-            }
-            title = NSLocalizedString("Topic", comment: "Topic page title")
-        } else if RemoteFeatureFlag.readerImprovements.enabled() && ReaderHelpers.topicType(topic) == .site {
+        if ReaderHelpers.isTopicTag(topic) || ReaderHelpers.isTopicSite(topic) {
             title = ""
         } else {
             title = topic.title
@@ -823,8 +810,7 @@ import Combine
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard RemoteFeatureFlag.readerImprovements.enabled(),
-              tableView.numberOfRows(inSection: .zero) > 0 else {
+        guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
             return
         }
@@ -1673,28 +1659,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if RemoteFeatureFlag.readerImprovements.enabled() {
-            let cell = tableConfiguration.postCardCell(tableView)
-            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
-                                                        isLoggedIn: isLoggedIn,
-                                                        showsSeparator: showsSeparator,
-                                                        parentViewController: self)
-            cell.configure(with: viewModel)
-            return cell
-        }
-
-        let cell = tableConfiguration.oldPostCardCell(tableView)
-        configurePostCardCell(cell, post: post)
-
-        if let topic = readerTopic,
-           ReaderHelpers.topicIsDiscover(topic),
-           indexPath.row == 0,
-           shouldShowCommentSpotlight {
-            cell.spotlightIsShown = true
-        } else {
-            cell.spotlightIsShown = false
-        }
-
+        let cell = tableConfiguration.postCardCell(tableView)
+        let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
+                                                    isLoggedIn: isLoggedIn,
+                                                    showsSeparator: showsSeparator,
+                                                    parentViewController: self)
+        cell.configure(with: viewModel)
         return cell
     }
 
@@ -2162,7 +2132,6 @@ private extension ReaderStreamViewController {
     }
 
     enum NoTopicConstants {
-        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"

@@ -1,6 +1,5 @@
 import Foundation
 import SVProgressHUD
-import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
 import UniformTypeIdentifiers
@@ -21,7 +20,6 @@ final class SiteIconPickerPresenter: NSObject {
     // MARK: - Private Properties
 
     private var dataSource: AnyObject?
-    private var mediaCapturePresenter: AnyObject?
 
     // MARK: - Public methods
 
@@ -149,12 +147,14 @@ extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
 
         showLoadingMessage()
         originalMedia = media
-        MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image, error) in
-            guard let image = image else {
+
+        Task { [weak self] in
+            do {
+                let image = try await MediaImageService.shared.image(for: media, size: .original)
+                self?.showImageCropViewController(image, presentingViewController: viewController)
+            } catch {
                 self?.showErrorLoadingImageMessage()
-                return
             }
-            self?.showImageCropViewController(image, presentingViewController: viewController)
-        })
+        }
     }
 }

@@ -156,10 +156,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Dziennik aktywności";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Dodaj";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Dodaj na początku";
 
@@ -202,9 +198,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Albumy";
 
 /* Autoapprove every comment
    Browse all themes selection title
@@ -288,9 +281,6 @@
 
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Czy na pewno chcesz usunąć tag?";
-
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Czy na pewno usunąć wybrane elementy?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Czy na pewno chcesz przenieść ten wpis do kosza?";
@@ -409,8 +399,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Obliczanie…";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Aparat";
 
 /* Title of an alert letting the user know */
@@ -512,9 +501,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Zmiana hasła";
-
-/* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Zmień ustawienia";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Zmiana nie powiodła się";
@@ -862,7 +848,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Usuń";
@@ -929,7 +914,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Odrzuć";
 
@@ -937,12 +921,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Wyświetlana nazwa";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Dokument, %@";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Dokument: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domeny";
@@ -1004,8 +982,7 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Powiel blok";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1014,9 +991,6 @@
 
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Edytuj przycisk \"Więcej\"";
-
-/* Button that displays the media editor to the user */
-"Edit %@" = "Edytuj %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edytuj czarną listę słów";
@@ -1725,19 +1699,13 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Rozmiar pamięci podręcznej mediów";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Biblioteka mediów";
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Wgrywanie multimediów";
@@ -1945,7 +1913,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -2098,9 +2065,6 @@
 /* Photography site intent topic */
 "Photography" = "Fotografia";
 
-/* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Zdjęcia";
-
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
 "Plans" = "Plany";
@@ -2190,9 +2154,6 @@
 
 /* Label for selecting the number of posts per page */
 "Posts per page" = "Wpisów na stronie";
-
-/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
-"Powered by Tenor" = "Napędzane przez Tenor";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -2340,8 +2301,7 @@
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Przypomnienia zostały usunięte";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -2510,9 +2470,6 @@
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Wybierz %@, aby ustawić nowy tytuł.";
-
-/* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Wybierz więcej";
 
 /* Blog Picker's Title */
 "Select Site" = "Wybierz witrynę";
@@ -2981,8 +2938,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kosz";
@@ -3680,9 +3636,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "oznaczono jako spam";
 
-/* Verb. User action to dismiss error alert when failing to load media item. */
-"mediaItemTable.errorAlert.dismissButton" = "Odrzuć";
-
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Odrzuć";
 
@@ -3697,9 +3650,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPressa na swoim urządzeniu";
-
-/* Primary button title in the migration done screen. */
-"migration.done.actions.primary.title" = "Koniec";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "odinstalowanie aplikacji WordPressa";
@@ -3751,9 +3701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odrzuć";
-
-/* Word separating the current index from the total amount. I.e.: 7 of 9 */
-"of" = "z";
 
 /* No comment provided by engineer. */
 "password" = "hasło";
@@ -3874,9 +3821,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "nieznany adres URL";
-
-/* Label displayed on video media items. */
-"video" = "film";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Odrzuć";

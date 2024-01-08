@@ -51,9 +51,6 @@
 /* Age between dates over one year. */
 "%d years" = "%d години";
 
-/* Max image size in pixels (e.g. 300x300px) */
-"%dx%dpx" = "%1$dx%2$dpx";
-
 /* One menu area available in the theme */
 "%i menu area in this theme" = "%i място за меню в тази тема";
 
@@ -133,10 +130,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "История на активността";
 
-/* Accessibility label for add button to add items to the user's media library
-   Remove asset from media picker list */
-"Add" = "Добавяне";
-
 /* The title on the add category screen */
 "Add a Category" = "Добавяне на категория";
 
@@ -161,9 +154,6 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Разширени";
-
-/* Description of albums in the photo libraries */
-"Albums" = "Албуми";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -261,12 +251,6 @@
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Сигурни ли сте, че искате да прекратите връзката на Jetpack със сайта?";
 
-/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
-"Are you sure you want to permanently delete these items?" = "Сигурен ли сте, че желаете безвъзвратно да изтриете избраните елементи?";
-
-/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
-"Audio, %@" = "Аудио, %@";
-
 /* No comment provided by engineer. */
 "Authenticating" = "Разрешаване";
 
@@ -343,8 +327,7 @@
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Пресмятане...";
 
-/* Accessibility label for taking an image or video with the camera on formatting toolbar.
-   Accessibility label for the camera tile in the collection view */
+/* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Камера";
 
 /* Title of an alert letting the user know */
@@ -633,9 +616,6 @@
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Неуспешно свързване";
 
-/* Message to show while media data source is finding the number of items available. */
-"Counting media items..." = "Преброяване на файловете...";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Държава";
 
@@ -700,7 +680,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Изтриване";
@@ -782,7 +761,6 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Премахване";
 
@@ -790,9 +768,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Публично име";
-
-/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
-"Document: %@" = "Документ: %@";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Домейни";
@@ -818,8 +793,7 @@
 /* Name for the status of a draft post. */
 "Draft" = "Чернова";
 
-/* Accessibility label for edit button to enable multi selection mode in the user's media library
-   Editing GIF alert default action button.
+/* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
    User action to edit media details.
@@ -1135,9 +1109,6 @@
 /* Hint for image title on image settings. */
 "Image title" = "Заглавие на изображението";
 
-/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
-"Image, %@" = "Изображение, %@";
-
 /* Undated post time label */
 "Immediately" = "Веднага";
 
@@ -1415,19 +1386,10 @@
 "Me" = "Аз";
 
 /* Noun. Title. Links to the blog's Media library.
-   Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
-   Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Файлове";
-
-/* Title for alert when access to media capture is not granted */
-"Media Capture" = "Описание";
-
-/* Title for alert when a generic error happened when loading media
-   Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Библиотека с медиа файлове";
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Файловете се качват";
@@ -1619,7 +1581,6 @@
    Alert dismissal title
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
-   Confirmation of action
    Default action
    Dismisses the alert
    Marks all notifications as read.
@@ -1972,8 +1933,7 @@
 /* Label for selecting the related posts options */
 "Related Posts" = "Подобни публикации";
 
-/* Add asset to media picker list
-   Alert button to confirm a plugin to be removed
+/* Alert button to confirm a plugin to be removed
    Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
@@ -2059,9 +2019,6 @@
    title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Отново";
-
-/* User action to retry media upload. */
-"Retry Upload" = "Нов опит за качване";
 
 /* No comment provided by engineer. */
 "Retry?" = "Отново?";
@@ -2353,8 +2310,7 @@
    Theme Support action title */
 "Support" = "Помощ";
 
-/* Button used to switch site
-   Title for back button that leads to the site picker screen. */
+/* Title for back button that leads to the site picker screen. */
 "Switch Site" = "Превключване на сайта";
 
 /* Accessibility Identifier for the H1 Aztec Style */
@@ -2536,9 +2492,6 @@
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Възникна проблем докато се опитвахме да получим вашето местоположение. Моля опитайте по-късно.";
 
-/* Explaining to the user there was an generic error accesing media. */
-"There was a problem when trying to access your media. Please try again later." = "Възникна грешка при достъпване на вашите медийни файлове. Моля, опитайте по-късно.";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Възникна грешка при зареждане на плановете";
 
@@ -2550,9 +2503,6 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Това приложение се нуждае от разрешение да използва камерата, за да може да заснема. Моля, променете вашите настройки за поверителност ако искате да разрешите това.";
-
-/* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Това приложение се нуждае от права да достъпва вашите медийни файлове, за да може да се добавят снимки и\/или видео в публикациите ви. Моля, променете вашите настройки за поверителност ако искате да разрешите това.";
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Този сайт няма публикации. Моля опитайте по-късно.";
@@ -2613,8 +2563,7 @@
 /* Label displaying total number of WordPress.com followers. %@ is the total. */
 "Total WordPress.com Followers: %@" = "Общо абонати в WordPress.com: %@";
 
-/* Accessibility label for trash button to delete items from the user's media library
-   Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
 "Trash" = "Кошче";
@@ -2781,9 +2730,6 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Потвърждение на влизането";
 
-/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
-"Video, %@" = "Видео, %@";
-
 /* Period Stats 'Videos' header */
 "Videos" = "Видео клипове";
 
@@ -2885,9 +2831,6 @@
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
-
-/* Name for the WordPress Media Library */
-"WordPress Media" = "WordPress медия";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Медийна библиотека на WordPress";
@@ -2991,14 +2934,8 @@
 /* Age between dates equaling one hour. */
 "an hour" = "1 час";
 
-/* Label displayed on audio media items. */
-"audio" = "аудио";
-
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (Адрес)";
-
-/* Label displayed on image media items. */
-"image" = "изображение";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

@@ -13,7 +13,7 @@ class AllDomainsListViewModel {
         case loading
 
         /// This state is set when the list is empty or an error occurs.
-        case message(AllDomainsListMessageStateViewModel)
+        case message(DomainsStateViewModel)
     }
 
     private enum ViewModelError: Error {
@@ -47,9 +47,13 @@ class AllDomainsListViewModel {
 
     // MARK: - Init
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared, domains: [DomainsService.AllDomainsListItem] = []) {
         if let account = defaultAccount(with: coreDataStack) {
-            self.domainsService = .init(coreDataStack: coreDataStack, account: account)
+            self.domainsService = .init(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi)
+        }
+        self.domains = domains
+        if domains.count > 0 {
+            self.state = self.state(from: domains, searchQuery: lastSearchQuery)
         }
     }
 
@@ -155,9 +159,10 @@ class AllDomainsListViewModel {
     // MARK: - Creating Message State View Models
 
     /// The message to display when the user doesn't have any domains.
-    private func noDomainsMessageViewModel() -> AllDomainsListMessageStateViewModel {
+    private func noDomainsMessageViewModel() -> DomainsStateViewModel {
         let action: () -> Void = { [weak self] in
             self?.addDomainAction?()
+            WPAnalytics.track(.allDomainsFindDomainTapped)
         }
         return .init(
             title: Strings.emptyStateTitle,
@@ -167,27 +172,14 @@ class AllDomainsListViewModel {
     }
 
     /// The  message to display when an error occurs.
-    private func errorMessageViewModel(from error: Error) -> AllDomainsListMessageStateViewModel {
-        let title: String
-        let description: String
-        let button: AllDomainsListMessageStateViewModel.Button = .init(title: Strings.errorStateButtonTitle) { [weak self] in
+    private func errorMessageViewModel(from error: Error) -> DomainsStateViewModel {
+        return DomainsStateViewModel.errorMessageViewModel(from: error) { [weak self] in
             self?.loadData()
         }
-
-        let nsError = error as NSError
-        if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorNotConnectedToInternet {
-            title = Strings.offlineEmptyStateTitle
-            description = Strings.offlineEmptyStateDescription
-        } else {
-            title = Strings.errorEmptyStateTitle
-            description = Strings.errorEmptyStateDescription
-        }
-
-        return .init(title: title, description: description, button: button)
     }
 
     /// The message to display when there are no domains matching the search query.
-    private func noSearchResultsMessageViewModel(searchQuery: String) -> AllDomainsListMessageStateViewModel {
+    private func noSearchResultsMessageViewModel(searchQuery: String) -> DomainsStateViewModel {
         return .init(
             title: Strings.searchEmptyStateTitle,
             description: Strings.searchEmptyStateDescription(searchQuery),

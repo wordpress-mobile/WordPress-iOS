@@ -1,57 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB" customClass="ReaderTagStreamHeader" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Legacy" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-WX-1gb">
-                    <rect key="frame" x="16" y="40" width="343" height="26.333333333333329"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gN8-Rn-2M3">
-                    <rect key="frame" x="160.66666666666666" y="86.333333333333329" width="54" height="41.666666666666671"/>
-                    <color key="tintColor" systemColor="systemBackgroundColor"/>
-                    <state key="normal" title="Button">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapFollowButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="j2i-aS-tUw"/>
-                    </connections>
-                </button>
-            </subviews>
-            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
-            <color key="tintColor" systemColor="linkColor"/>
-            <constraints>
-                <constraint firstItem="gN8-Rn-2M3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="0ga-1S-GtT"/>
-                <constraint firstItem="gN8-Rn-2M3" firstAttribute="top" secondItem="yMm-WX-1gb" secondAttribute="bottom" constant="20" id="554-ja-cGb"/>
-                <constraint firstItem="yMm-WX-1gb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="8dj-78-13r"/>
-                <constraint firstItem="yMm-WX-1gb" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="S6J-qa-Lem"/>
-                <constraint firstAttribute="bottom" secondItem="gN8-Rn-2M3" secondAttribute="bottom" constant="40" id="mzP-6y-xip"/>
-                <constraint firstAttribute="trailingMargin" secondItem="yMm-WX-1gb" secondAttribute="trailing" id="tD0-cD-AwP"/>
-                <constraint firstItem="yMm-WX-1gb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="yft-9s-TNw"/>
-            </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <nil key="simulatedTopBarMetrics"/>
-            <nil key="simulatedBottomBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="followButton" destination="gN8-Rn-2M3" id="Htf-nc-scN"/>
-                <outlet property="titleLabel" destination="yMm-WX-1gb" id="3v5-vk-Kw0"/>
-            </connections>
-            <point key="canvasLocation" x="139" y="155"/>
-        </view>
         <view clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="Zt2-QZ-5QS" userLabel="Improved Reader Tag Stream Header - Vertical" customClass="ReaderTagStreamHeader" customModule="WordPress">
             <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

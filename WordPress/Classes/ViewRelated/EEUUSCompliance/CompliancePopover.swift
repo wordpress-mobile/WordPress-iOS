@@ -1,10 +1,8 @@
 import SwiftUI
+import JetpackStatsWidgetsCore
+import DesignSystem
 
 struct CompliancePopover: View {
-    private enum Constants {
-        static let verticalScrollBuffer = Length.Padding.large
-    }
-
     @StateObject
     var viewModel: CompliancePopoverViewModel
 
@@ -16,7 +14,7 @@ struct CompliancePopover: View {
             footnote
             buttonsHStack
         }
-        .padding(Length.Padding.small)
+        .padding(Length.Padding.medium)
         .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -34,7 +32,7 @@ struct CompliancePopover: View {
     private var analyticsToggle: some View {
         Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
             .foregroundColor(Color.DS.Foreground.primary)
-            .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand))
+            .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack)))
             .padding(.vertical, Length.Padding.single)
     }
 
@@ -48,7 +46,7 @@ struct CompliancePopover: View {
         HStack(spacing: Length.Padding.single) {
             settingsButton
             saveButton
-        }.padding(.top, Length.Padding.small)
+        }.padding(.top, Length.Padding.medium)
     }
 
     private var settingsButton: some View {
@@ -57,13 +55,13 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Padding.single)
-                    .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
+                    .stroke(Color.DS.divider, lineWidth: Length.Border.thin)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }
         }
-        .foregroundColor(Color.DS.Background.brand)
-        .frame(height: Length.Hitbox.minTapDimension)
+        .foregroundColor(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+        .frame(height: Length.Hitbox.minTappableLength)
     }
 
     private var saveButton: some View {
@@ -71,14 +69,14 @@ struct CompliancePopover: View {
             self.viewModel.didTapSave()
         }) {
             ZStack {
-                RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
-                    .fill(Color.DS.Background.brand)
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                 Text(Strings.saveButtonTitle)
                     .font(.body)
             }
         }
         .foregroundColor(.white)
-        .frame(height: Length.Hitbox.minTapDimension)
+        .frame(height: Length.Hitbox.minTappableLength)
     }
 }
 

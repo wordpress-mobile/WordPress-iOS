@@ -17,7 +17,6 @@
 
 #import "CommentService.h"
 #import "CommentsViewController+Network.h"
-#import "Confirmable.h"
 #import "Constants.h"
 #import "CoreDataStack.h"
 #import "Coordinate.h"
@@ -28,13 +27,13 @@
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
-#import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
 #import "MenusService.h"
 #import "MenusViewController.h"
+#import "Media+Extensions.h"
 
 #import "NSObject+Helpers.h"
 
@@ -92,6 +91,7 @@
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
+#import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPAuthTokenIssueSolver.h"
 #import "WPBlogTableViewCell.h"
 #import "WPUploadStatusButton.h"
@@ -113,8 +113,6 @@
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
-
-#import <WPMediaPicker/WPMediaPicker.h>
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>

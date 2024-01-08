@@ -137,10 +137,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    private lazy var readerCardReadingTimeAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCardReadingTimeAttributes()
-    }()
-
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {
@@ -910,30 +906,6 @@ private extension OldReaderPostCardCell {
         reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func followLabel() -> String {
-        return followButtonIsSelected() ? followingLabel() : notFollowingLabel()
-    }
-
-    func followingLabel() -> String {
-        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
-    }
-
-    func notFollowingLabel() -> String {
-        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
-    }
-
-    func followHint() -> String {
-        return followButtonIsSelected() ? unfollow(): follow()
-    }
-
-    func unfollow() -> String {
-        return NSLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
-    }
-
-    func follow() -> String {
-        return NSLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
     }
 
     func followButtonIsSelected() -> Bool {

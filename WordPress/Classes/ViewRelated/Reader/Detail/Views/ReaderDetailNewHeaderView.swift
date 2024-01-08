@@ -112,9 +112,25 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     @Published var relativePostTime = String()
     @Published var siteName = String()
     @Published var postTitle: String? = nil // post title can be empty.
+    @Published var likeCount: Int? = nil
+    @Published var commentCount: Int? = nil
     @Published var tags: [String] = []
 
     @Published var showsAuthorName: Bool = true
+
+    var likeCountString: String? {
+        guard let count = likeCount, count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.likeCountForDisplay(count)
+    }
+
+    var commentCountString: String? {
+        guard let count = commentCount, count > 0 else {
+            return nil
+        }
+        return WPStyleGuide.commentCountForDisplay(count)
+    }
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
@@ -150,6 +166,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
             self.postTitle = post.titleForDisplay() ?? nil
+            self.likeCount = post.likeCount?.intValue
+            self.commentCount = post.commentCount?.intValue
             self.tags = post.tagsForDisplay() ?? []
         }
 
@@ -186,6 +204,14 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         headerDelegate.didTapFollowButton { [weak self] in
             self?.isFollowButtonInteractive = true
         }
+    }
+
+    func didTapLikes() {
+        headerDelegate?.didTapLikes()
+    }
+
+    func didTapComments() {
+        headerDelegate?.didTapComments()
     }
 }
 
@@ -225,6 +251,9 @@ struct ReaderDetailNewHeaderView: View {
                     .fontWeight(.bold)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+            }
+            if viewModel.likeCountString != nil || viewModel.commentCountString != nil {
+                postCounts
             }
             if !viewModel.tags.isEmpty {
                 tagsView
@@ -307,6 +336,28 @@ struct ReaderDetailNewHeaderView: View {
             }
             .offset(x: 2.0, y: 2.0)
         }
+    }
+
+    var postCounts: some View {
+        HStack(spacing: 0) {
+            if let likeCount = viewModel.likeCountString {
+                Group {
+                    Button(action: viewModel.didTapLikes) {
+                        Text(likeCount)
+                    }
+                    if viewModel.commentCountString != nil {
+                        Text(" • ")
+                    }
+                }
+            }
+            if let commentCount = viewModel.commentCountString {
+                Button(action: viewModel.didTapComments) {
+                    Text(commentCount)
+                }
+            }
+        }
+        .font(.footnote)
+        .foregroundStyle(.secondary)
     }
 
     var tagsView: some View {

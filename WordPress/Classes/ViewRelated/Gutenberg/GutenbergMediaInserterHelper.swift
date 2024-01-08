@@ -13,8 +13,6 @@ class GutenbergMediaInserterHelper: NSObject {
     ///
     fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
-    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
-
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg
@@ -38,67 +36,10 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(_ selection: [Any], callback: @escaping MediaPickerDidPickMediaCallback) {
-        if let assets = selection as? [PHAsset] {
-            insertFromDevice(assets: assets, callback: callback)
-        } else if let providers = selection as? [NSItemProvider] {
+        if let providers = selection as? [NSItemProvider] {
             insertItemProviders(providers, callback: callback)
         } else {
             callback(nil)
-        }
-    }
-
-    func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
-        guard (assets as [AsyncImage]).filter({ $0.isEdited }).isEmpty else {
-            insertFromMediaEditor(assets: assets, callback: callback)
-            return
-        }
-
-        var mediaCollection: [MediaInfo] = []
-        let group = DispatchGroup()
-        assets.forEach { asset in
-            group.enter()
-            insertFromDevice(asset: asset, callback: { media in
-                guard let media = media,
-                let selectedMedia = media.first else {
-                    group.leave()
-                    return
-                }
-                mediaCollection.append(selectedMedia)
-                group.leave()
-            })
-        }
-
-        group.notify(queue: .main) {
-            callback(mediaCollection)
-        }
-    }
-
-    func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
-        guard let media = insert(exportableAsset: asset, source: .deviceLibrary) else {
-            callback([])
-            return
-        }
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .fastFormat
-        options.version = .current
-        options.resizeMode = .fast
-        options.isNetworkAccessAllowed = true
-        let mediaUploadID = media.gutenbergUploadID
-        // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
-        PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
-            guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
-                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
-                return
-            }
-            let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
-            let url = URL(fileURLWithPath: filePath)
-            do {
-                try resizedImage.writeJPEGToURL(url)
-                callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
-            } catch {
-                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
-                return
-            }
         }
     }
 
@@ -145,39 +86,6 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
-    func insertFromMediaEditor(assets: [AsyncImage], callback: @escaping MediaPickerDidPickMediaCallback) {
-        var mediaCollection: [MediaInfo] = []
-        let group = DispatchGroup()
-        assets.forEach { asset in
-            group.enter()
-            if let image = asset.editedImage {
-                insertFromImage(image: image, callback: { media in
-                    guard let media = media,
-                    let selectedMedia = media.first else {
-                        group.leave()
-                        return
-                    }
-                    mediaCollection.append(selectedMedia)
-                    group.leave()
-                })
-            } else if let asset = asset as? PHAsset {
-                insertFromDevice(asset: asset, callback: { media in
-                    guard let media = media,
-                    let selectedMedia = media.first else {
-                        group.leave()
-                        return
-                    }
-                    mediaCollection.append(selectedMedia)
-                    group.leave()
-                })
-            }
-        }
-
-        group.notify(queue: .main) {
-            callback(mediaCollection)
-        }
-    }
-
     func syncUploads() {
         for media in post.media {
             if media.remoteStatus == .failed {
@@ -211,6 +119,10 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func retryUploadOf(media: Media) {
         mediaCoordinator.retryMedia(media)
+    }
+
+    func retryFailedMediaUploads() {
+        _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: true)
     }
 
     func hasFailedMedia() -> Bool {

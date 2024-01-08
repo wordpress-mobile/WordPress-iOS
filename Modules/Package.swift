@@ -2,18 +2,24 @@
 
 import PackageDescription
 
-let librarySourceName = "JetpackStatsWidgetsCore"
+let jetpackStatsWidgetsCoreName = "JetpackStatsWidgetsCore"
+let designSystemName = "DesignSystem"
 
 let package = Package(
-    name: librarySourceName,
+    name: "Modules",
+    platforms: [
+        .iOS(.v15),
+    ],
     products: [
-        .library(name: librarySourceName, targets: [librarySourceName]),
+        .library(name: jetpackStatsWidgetsCoreName, targets: [jetpackStatsWidgetsCoreName]),
+        .library(name: designSystemName, targets: [designSystemName]),
     ],
     targets: [
-        .target(name: librarySourceName),
+        .target(name: jetpackStatsWidgetsCoreName),
         .testTarget(
-            name: "\(librarySourceName)Tests",
-            dependencies: [.target(name: librarySourceName)]
-        )
+            name: "\(jetpackStatsWidgetsCoreName)Tests",
+            dependencies: [.target(name: jetpackStatsWidgetsCoreName)]
+        ),
+        .target(name: designSystemName)
     ]
 )

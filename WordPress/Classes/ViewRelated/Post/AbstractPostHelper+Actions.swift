@@ -47,8 +47,8 @@ extension AbstractPostHelper {
 }
 
 private enum Strings {
-    static let swipeActionView = NSLocalizedString("postList.swipeActionView", value: "View", comment: "Swipe action title")
-    static let swipeActionShare = NSLocalizedString("postList.swipeActionShare", value: "Share", comment: "Swipe action title")
-    static let swipeActionTrash = NSLocalizedString("postList.swipeActionDelete", value: "Trash", comment: "Swipe action title")
-    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDelete", value: "Delete", comment: "Swipe action title")
+    static let swipeActionView = NSLocalizedString("postList.swipeActionView", value: "View", comment: "Title for the 'View' post list row swipe action")
+    static let swipeActionShare = NSLocalizedString("postList.swipeActionShare", value: "Share", comment: "Title for the 'Share' post list row swipe action")
+    static let swipeActionTrash = NSLocalizedString("postList.swipeActionDelete", value: "Trash", comment: "Title for the 'Trash' post list row swipe action")
+    static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDeletePermanently", value: "Delete", comment: "Title for the 'Delete' post list row swipe action")
 }

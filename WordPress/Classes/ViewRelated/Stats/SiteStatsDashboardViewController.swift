@@ -158,13 +158,6 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 // MARK: - Private Extension
 
 private extension SiteStatsDashboardViewController {
-
-    struct Constants {
-        static let progressViewInitialProgress = Float(0.03)
-        static let progressViewHideDelay = 1
-        static let progressViewHideDuration = 0.15
-    }
-
     var currentSelectedPeriod: StatsPeriodType {
         get {
             let selectedIndex = filterTabBar?.selectedIndex ?? StatsPeriodType.insights.rawValue

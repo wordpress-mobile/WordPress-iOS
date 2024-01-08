@@ -5,10 +5,6 @@ final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Dependencies
 
-    private var domainPurchasingEnabled: Bool {
-        RemoteFeatureFlag.plansInSiteCreation.enabled()
-    }
-
     override var accessibilityLabel: String? {
         get {
             return [domainLabel.text,
@@ -77,9 +73,7 @@ final class AddressTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
-        if domainPurchasingEnabled {
-            setupSubviews()
-        }
+        setupSubviews()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -93,9 +87,6 @@ final class AddressTableViewCell: UITableViewCell {
             "Selects this domain to use for your site.",
             comment: "Accessibility hint for a domain in the Site Creation domains list."
         )
-        if !domainPurchasingEnabled {
-            self.selectedBackgroundView?.backgroundColor = .clear
-        }
     }
 
     private func setupSubviews() {
@@ -146,7 +137,6 @@ final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Updating UI
 
-    /// This is the new update method and it's called when `domainPurchasing` feature flag is enabled.
     func update(with viewModel: ViewModel) {
         self.domainLabel.text = viewModel.domain
         self.leadingLabel.attributedText = Self.leadingAttributedString(tags: viewModel.tags, cost: viewModel.cost)
@@ -292,13 +282,9 @@ extension AddressTableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        if domainPurchasingEnabled {
-            super.setSelected(selected, animated: animated)
-            self.checkmarkImageView.isHidden = !selected
-            self.dotView.isHidden = !checkmarkImageView.isHidden
-        } else {
-            accessoryType = selected ? .checkmark : .none
-        }
+        super.setSelected(selected, animated: animated)
+        self.checkmarkImageView.isHidden = !selected
+        self.dotView.isHidden = !checkmarkImageView.isHidden
     }
 
     private func styleCheckmark() {

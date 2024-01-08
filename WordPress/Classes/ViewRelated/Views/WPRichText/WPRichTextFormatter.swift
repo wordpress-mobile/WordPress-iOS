@@ -30,15 +30,6 @@ class WPRichTextFormatter {
         ]
     }()
 
-    /// An array of tag names that the formatter can process.
-    ///
-    lazy var tagNames: [String] = {
-        return self.tags.map { tag -> String in
-            return tag.tagName
-        }
-    }()
-
-
     /// Converts the specified HTML formatted string to an NSAttributedString.
     ///
     /// - Parameters:
@@ -272,21 +263,6 @@ class WPRichTextFormatter {
         }
         return (processedString, attachments)
     }
-
-
-    /// Returns the html processor that handles the specified tag.
-    ///
-    /// - Parameters:
-    ///     - tagName: The name of an HTML tag.
-    ///
-    /// - Returns: An HtmlTagProcessor optional.
-    ///
-    func processorForTagName(_ tagName: String) -> HtmlTagProcessor? {
-        return tags.filter({ (item) -> Bool in
-            item.tagName == tagName
-        }).first
-    }
-
 }
 
 

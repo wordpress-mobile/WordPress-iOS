@@ -19,13 +19,6 @@ class TimeSelectionView: UIView {
         titleBar.setSelectedTime(timePicker.date.toLocalTime())
     }
 
-    private lazy var timePickerContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(timePicker)
-        return view
-    }()
-
     private lazy var titleBar: TimeSelectionButton = {
         let button = TimeSelectionButton(selectedTime: selectedTime.toLocalTime(), insets: Self.titleInsets)
         button.translatesAutoresizingMaskIntoConstraints = false

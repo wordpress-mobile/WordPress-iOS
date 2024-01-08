@@ -13,33 +13,43 @@ extension WPAnalytics {
     }
 
     static func domainsProperties(
-        for blog: Blog,
-        origin: SiteCreationWebViewViewOrigin? = .menu
+        usingCredit: Bool? = nil,
+        origin: String? = nil,
+        domainOnly: Bool? = nil
     ) -> [AnyHashable: Any] {
-        domainsProperties(
-            usingCredit: blog.canRegisterDomainWithPaidPlan,
-            origin: origin,
-            domainOnly: false
-        )
-    }
-
-    static func domainsProperties(
-        usingCredit: Bool,
-        origin: SiteCreationWebViewViewOrigin? = nil,
-        domainOnly: Bool = false
-    ) -> [AnyHashable: Any] {
-        var dict: [AnyHashable: Any] = ["using_credit": usingCredit.stringLiteral]
-        if Self.domainPurchasingEnabled, let origin = origin {
-            dict["origin"] = origin.rawValue
+        var dict: [AnyHashable: Any] = [:]
+        if let usingCredit {
+            dict["using_credit"] = usingCredit.stringLiteral
         }
-        if Self.domainManagementEnabled {
+        if Self.domainPurchasingEnabled, let origin = origin {
+            dict["origin"] = origin
+        }
+        if let domainOnly, Self.domainManagementEnabled {
             dict["domain_only"] = domainOnly.stringLiteral
         }
         return dict
     }
+
+    static func domainsProperties(
+        for blog: Blog,
+        origin: String?
+    ) -> [AnyHashable: Any] {
+        Self.domainsProperties(
+            usingCredit: blog.canRegisterDomainWithPaidPlan,
+            origin: origin,
+            domainOnly: nil
+        )
+    }
+
+    static func domainsProperties(
+        for blog: Blog,
+        origin: DomainsAnalyticsWebViewOrigin? = .menu
+    ) -> [AnyHashable: Any] {
+        Self.domainsProperties(for: blog, origin: origin?.rawValue)
+    }
 }
 
-enum SiteCreationWebViewViewOrigin: String {
+enum DomainsAnalyticsWebViewOrigin: String {
     case siteCreation = "site_creation"
     case menu
 }

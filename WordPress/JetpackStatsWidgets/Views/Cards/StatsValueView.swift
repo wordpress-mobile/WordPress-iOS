@@ -30,5 +30,6 @@ struct StatsValueView: View {
             .fontWeight(fontWeight)
             .foregroundColor(foregroundColor)
             .lineLimit(lineLimit)
+            .minimumScaleFactor(0.5)
     }
 }

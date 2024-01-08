@@ -2,6 +2,10 @@ import UIKit
 
 struct CheckoutViewModel {
     let url: URL
+
+    enum Strings {
+        static let title = NSLocalizedString("checkout.title", value: "Checkout", comment: "Title for the checkout view")
+    }
 }
 
 final class CheckoutViewController: WebKitViewController {
@@ -19,7 +23,7 @@ final class CheckoutViewController: WebKitViewController {
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
-        configuration.customTitle = customTitle
+        configuration.customTitle = customTitle ?? CheckoutViewModel.Strings.title
         super.init(configuration: configuration)
     }
 

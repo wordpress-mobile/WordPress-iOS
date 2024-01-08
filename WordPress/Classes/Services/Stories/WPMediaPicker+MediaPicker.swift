@@ -229,30 +229,3 @@ private enum AssetExportError: Error {
     case assetMissingVideoTrack
     case unexpectedAssetType
 }
-
-extension MediaLibraryGroup {
-
-    @objc(getMediaLibraryCountForMediaTypes:ofBlog:success:failure:)
-    func getMediaLibraryCount(forMediaTypes types: Set<NSNumber>, of blog: Blog, success: @escaping (Int) -> Void, failure: @escaping (Error) -> Void) {
-        guard let remote = MediaServiceRemoteFactory().remote(for: blog) else {
-            DispatchQueue.main.async {
-                failure(MediaRepository.Error.remoteAPIUnavailable)
-            }
-            return
-        }
-
-        let mediaTypes = types.compactMap {
-            MediaType(rawValue: $0.uintValue)
-        }
-
-        Task { @MainActor in
-            do {
-                let total = try await remote.getMediaLibraryCount(forMediaTypes: mediaTypes)
-                success(total)
-            } catch {
-                failure(error)
-            }
-        }
-    }
-
-}

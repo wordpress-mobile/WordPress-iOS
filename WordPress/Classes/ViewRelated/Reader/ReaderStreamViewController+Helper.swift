@@ -39,7 +39,7 @@ extension ReaderStreamViewController {
                 return nil
             }
 
-            return RemoteFeatureFlag.readerImprovements.enabled() ? nibViews.last : nibViews.first
+            return nibViews.first
         }
 
         if ReaderHelpers.isTopicList(topic) {
@@ -47,11 +47,7 @@ extension ReaderStreamViewController {
         }
 
         if ReaderHelpers.isTopicSite(topic) && !isContentFiltered {
-            if RemoteFeatureFlag.readerImprovements.enabled() {
-                return ReaderSiteHeaderView()
-            } else {
-                return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
-            }
+            return ReaderSiteHeaderView()
         }
 
         return nil
@@ -154,7 +150,6 @@ extension ReaderStreamViewController {
     private enum UndoCell {
         static let nibName = "ReaderSavedPostUndoCell"
         static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
-        static let height: CGFloat = 44
     }
 
     func setupUndoCell(_ tableView: UITableView) {
@@ -177,13 +172,5 @@ extension ReaderStreamViewController {
 extension ReaderStreamViewController {
     func trackSavedListAccessed() {
         WPAnalytics.trackReader(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
-    }
-}
-
-private extension ReaderStreamViewController {
-
-    struct Constants {
-        // The number of characters allowed for the horizontal layout.
-        static let tagStreamHeaderHorizontalLengthLimit = 10
     }
 }

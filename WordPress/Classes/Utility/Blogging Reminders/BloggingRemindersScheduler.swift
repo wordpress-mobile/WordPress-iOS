@@ -29,9 +29,7 @@ class BloggingRemindersScheduler {
     // MARK: - Error Handling
 
     enum Error: Swift.Error {
-        case cantRetrieveContainerForAppGroup(appGroupName: String)
         case needsPermissionForPushNotifications
-        case noPreviousScheduleAttempt
     }
 
     // MARK: - Schedule Data Containers

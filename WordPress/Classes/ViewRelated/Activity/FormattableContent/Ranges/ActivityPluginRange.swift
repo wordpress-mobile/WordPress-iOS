@@ -17,9 +17,4 @@ class ActivityPluginRange: ActivityRange {
     private var urlString: String {
         return "https://wordpress.com/plugins/\(pluginSlug)/\(siteSlug)"
     }
-
-    private static func urlWith(pluginSlug: String, siteSlug: String) -> URL? {
-        let urlString = "https://wordpress.com/plugins/\(pluginSlug)/\(siteSlug)"
-        return URL(string: urlString)
-    }
 }

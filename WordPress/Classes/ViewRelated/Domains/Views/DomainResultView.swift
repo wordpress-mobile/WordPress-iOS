@@ -55,22 +55,7 @@ struct DomainResultView: View {
 
                         Spacer().frame(height: Metrics.subtitleToNoticeBoxSpacing)
 
-                        HStack() {
-                            Image(uiImage: .gridicon(.infoOutline))
-                                .frame(height: Metrics.iconHeight)
-                                .foregroundColor(Color(UIColor.muriel(color: .gray)))
-                                .accessibility(hidden: true)
-
-                            Spacer().frame(width: Metrics.iconToNoticeSpacing)
-
-                            Text(TextContent.notice)
-                                .font(.footnote)
-                                .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
-                        }
-                        .padding(Metrics.noticeBoxPadding)
-                        .frame(maxWidth: .infinity)
-                        .background(Color(UIColor.tertiaryFill))
-                        .cornerRadius(Metrics.noticeBoxCornerRadius)
+                        DomainSetupNoticeView(noticeText: TextContent.notice)
                     }
                     .frame(width: geometry.size.width)
                     .frame(minHeight: geometry.size.height)
@@ -119,12 +104,7 @@ private extension DomainResultView {
         static let logoHeight = 65.0
         static let logoToTitleSpacing = 33.0
         static let titleToSubtitleSpacing = 16.0
-        static let noticeBoxCornerRadius = 8.0
-        static let noticeBoxPadding = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
-        static let iconHeight = 24.0
-        static let iconToNoticeSpacing = 16.0
         static let subtitleToNoticeBoxSpacing = 32.0
-        static let primaryButtonCornerRadius = 7.0
     }
 
     private enum Fonts {

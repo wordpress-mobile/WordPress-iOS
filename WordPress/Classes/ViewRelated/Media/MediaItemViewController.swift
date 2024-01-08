@@ -196,8 +196,6 @@ final class MediaItemViewController: UITableViewController {
         }
     }
 
-    private var documentInteractionController: UIDocumentInteractionController?
-
     private func presentDocumentViewControllerForMedia() {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
@@ -278,13 +276,18 @@ final class MediaItemViewController: UITableViewController {
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
 
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.delete(media, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self?.media.blog)
-            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-        }, failure: { error in
-            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
-        })
+        let repository = MediaRepository(coreDataStack: ContextManager.shared)
+        let mediaID = TaggedManagedObjectID(media)
+        Task { @MainActor in
+            do {
+                try await repository.delete(mediaID)
+
+                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self.media.blog)
+                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            } catch {
+                SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
+            }
+        }
     }
 
     private func saveChanges() {
@@ -356,10 +359,6 @@ final class MediaItemViewController: UITableViewController {
     }
 
     // MARK: - Sharing Logic
-
-    private func share(media: Any, sender: UIBarButtonItem) {
-        share([media], sender: sender)
-    }
 
     private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
         let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)

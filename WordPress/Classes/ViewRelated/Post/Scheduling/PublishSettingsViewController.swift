@@ -49,7 +49,7 @@ struct PublishSettingsViewModel {
         self.post = post
 
         title = post.postTitle
-        timeZone = post.blog.timeZone
+        timeZone = post.blog.timeZone ?? TimeZone.current
 
         dateFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .long, timeStyle: .none)
         dateTimeFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .medium, timeStyle: .short)

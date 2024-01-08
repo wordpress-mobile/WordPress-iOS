@@ -11,20 +11,10 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var persistenceMock: BlogDashboardPersistenceMock!
     private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
+    private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
     private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
-
-    // FIXME: Accessing WPAccount wordPressComRestApi will crash if WordPressAuthenticationManager has not been initialized!
-    //
-    // This issue doesn't manifest itself when running the whole test suite beceause of the lucky coincidence that a test running before this one sets it up.
-    // But try to comment this class setUp method and run only this test case and you'll get a crash.
-    override class func setUp() {
-        WordPressAuthenticationManager(
-            windowManager: WindowManager(window: UIWindow()),
-            remoteFeaturesStore: RemoteFeatureFlagStore()
-        ).initializeWordPressAuthenticator()
-    }
 
     override func setUp() {
         super.setUp()
@@ -38,6 +28,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         persistenceMock = BlogDashboardPersistenceMock()
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
+        remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
         service = BlogDashboardService(
             managedObjectContext: mainContext,
             // Notice these three boolean make the test run as if the app was Jetpack.
@@ -52,7 +43,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             remoteService: remoteServiceMock,
             persistence: persistenceMock,
             repository: repositoryMock,
-            postsParser: postsParserMock
+            postsParser: postsParserMock,
+            remoteFeatureFlagStore: remoteFeatureFlagStore
         )
 
         // The state of the world these tests assume relies on certain feature flags.
@@ -63,20 +55,19 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         //
         // At the time of writing, the priority was getting some tests for new code to pass under the important Jetpac user path.
         // As such, here are a bunch of global-state feature flags overrides.
-        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
-        try? featureFlags.override(FeatureFlag.domainFocus, withValue: false)
+        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: false)
+        try? featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
 
-        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
-        try? featureFlags.override(FeatureFlag.domainFocus, withValue: FeatureFlag.domainFocus.originalValue)
+        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: FeatureFlag.googleDomainsCard.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -86,7 +77,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity", "dynamic"])
             expect.fulfill()
         }
 
@@ -100,8 +91,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let draftPostsCardItem = cards.first(where: {$0.cardType == .draftPosts})
-            let scheduledPostsCardItem = cards.first(where: {$0.cardType == .scheduledPosts})
+            let draftPostsCardItem = cards.first(where: { $0.cardType == .draftPosts })?.normal()
+            let scheduledPostsCardItem = cards.first(where: { $0.cardType == .scheduledPosts })?.normal()
 
             // Posts section exists
             XCTAssertNotNil(draftPostsCardItem)
@@ -137,7 +128,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let pagesCardItem = cards.first(where: {$0.cardType == .pages})
+            let pagesCardItem = cards.first(where: { $0.cardType == .pages })?.normal()
 
             // Pages section exists
             XCTAssertNotNil(pagesCardItem)
@@ -160,7 +151,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            guard let activityCardItem = cards.first(where: {$0.cardType == .activityLog}) else {
+            guard let activityCardItem = cards.first(where: { $0.cardType == .activityLog })?.normal() else {
                 return XCTFail("Unexpectedly found nil Optional")
             }
 
@@ -200,7 +191,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
-            let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
+            let todaysStatsItem = cards.first(where: { $0.cardType == .todaysStats })?.normal()
 
             // Todays stats section exists
             XCTAssertNotNil(todaysStatsItem)
@@ -420,6 +411,103 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Dynamic Cards
+
+    func testCardsPresenceWhenAllCardsFeatureFlagsAreEnabled() throws {
+        let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
+        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345", "feature_flag_67890", "feature_flag_13579"]
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            XCTAssertEqual(cards[0].dynamic()?.payload.id, "id_12345")
+            XCTAssertEqual(cards[1].dynamic()?.payload.id, "id_67890")
+            XCTAssertEqual(cards[cards.endIndex - 2].dynamic()?.payload.id, "id_13579")
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testCardsPresenceWhenSomeCardsFeatureFlagsAreEnabled() throws {
+        let expect = expectation(description: "2 dynamic cards at the top and one at the bottom should be present")
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
+        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345"]
+        remoteFeatureFlagStore.disabledFeatureFlag = ["feature_flag_67890"]
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let numberOfDynamicCards = cards.compactMap { $0.dynamic() }.count
+            XCTAssertEqual(numberOfDynamicCards, 1)
+            XCTAssertEqual(cards[0].dynamic()?.payload.id, "id_12345")
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testCardsAbsenceWhenRemoteFeatureFlagIsDisabled() throws {
+        let expect = expectation(description: "No dynamic card should be present")
+        remoteServiceMock.respondWith = .withMultipleDynamicCards
+        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345", "feature_flag_67890", "feature_flag_13579"]
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let dynamicCards = cards.compactMap { $0.dynamic() }
+            XCTAssertTrue(dynamicCards.isEmpty)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testDecodingWithDynamicCards() throws {
+        let expect = expectation(description: "Dynamic card should be successfully decoded")
+        remoteServiceMock.respondWith = .withOnlyOneDynamicCard
+        remoteFeatureFlagStore.enabledFeatureFlags = ["feature_flag_12345"]
+        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            do {
+                let card = try XCTUnwrap(cards.first?.dynamic())
+                let payload = card.payload
+                let expected = BlogDashboardRemoteEntity.BlogDashboardDynamic(
+                    id: "id_12345",
+                    remoteFeatureFlag: "feature_flag_12345",
+                    title: "Title 12345",
+                    featuredImage: "https://example.com/image12345",
+                    url: "https://example.com/url12345",
+                    action: "Action 12345",
+                    order: .top,
+                    rows: [
+                        .init(
+                            title: "Row Title 1",
+                            description: nil,
+                            icon: "https://example.com/icon12345"
+                        ),
+                        .init(
+                            title: "Row Title 2",
+                            description: "Row Description 2",
+                            icon: nil
+                        )
+                    ]
+                )
+                XCTAssertEqual(payload, expected)
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     // MARK: - Local Pages
 
     // TODO: Add test to check that local pages are considered if no pages are returned from the endpoint
@@ -432,7 +520,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
     private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
-
+        blog.account = try! WPAccount.lookupDefaultWordPressComAccount(in: context)
         blog.dotComID = id as NSNumber
         blog.isAdmin = isAdmin
         return blog
@@ -443,6 +531,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
+        case withOnlyOneDynamicCard = "dashboard-200-with-only-one-dynamic-card.json"
+        case withMultipleDynamicCards = "dashboard-200-with-multiple-dynamic-cards.json"
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
         case withoutPosts = "dashboard-200-without-posts.json"

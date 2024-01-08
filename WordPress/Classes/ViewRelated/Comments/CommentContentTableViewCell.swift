@@ -9,12 +9,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         case info
     }
 
-    enum RenderMethod {
+    enum RenderMethod: Equatable {
         /// Uses WebKit to render the comment body.
         case web
 
         /// Uses WPRichContent to render the comment body.
-        case richContent
+        case richContent(NSAttributedString)
     }
 
     // MARK: - Public Properties
@@ -87,7 +87,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Constants
 
-    private let customBottomSpacing: CGFloat = 10
     private let contentButtonsTopSpacing: CGFloat = 15
 
     // MARK: Outlets
@@ -149,10 +148,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
         }
-    }
-
-    private var isReactionBarVisible: Bool {
-        return isCommentReplyEnabled || isCommentLikesEnabled
     }
 
     var shouldHideSeparator = false {
@@ -243,12 +238,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     @objc func ensureRichContentTextViewLayout() {
-        guard renderMethod == .richContent,
-              let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
-                  return
-              }
-
-        richContentTextView.updateLayoutForAttachments()
+        switch renderMethod {
+        case .richContent:
+            if let richContentTextView = contentContainerView.subviews.first as? WPRichContentView {
+                richContentTextView.updateLayoutForAttachments()
+            }
+        default:
+            return
+        }
     }
 }
 
@@ -473,9 +470,10 @@ private extension CommentContentTableViewCell {
             switch renderMethod {
             case .web:
                 return WebCommentContentRenderer(comment: comment)
-            case .richContent:
+            case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer(comment: comment)
                 renderer.richContentDelegate = self.richContentDelegate
+                renderer.attributedText = attributedText
                 return renderer
             }
         }()
@@ -528,7 +526,4 @@ private extension String {
                                                         + "%1$d is a placeholder for the number of Likes.")
     static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
                                                 + "%1$d is a placeholder for the number of Likes.")
-
-    // pattern that detects empty HTML elements (including HTML comments within).
-    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 }

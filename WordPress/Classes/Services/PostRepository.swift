@@ -390,7 +390,7 @@ extension PostRepository {
     ///   - statuses: Only fetch pages whose status is included in the given statues.
     ///   - blogID: Object ID of the site.
     /// - Returns: A `Task` instance representing the fetching. The fetch pages API requests will stop if the task is cancelled.
-    func fetchAllPages(statuses: [BasePost.Status], in blogID: TaggedManagedObjectID<Blog>) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
+    func fetchAllPages(statuses: [BasePost.Status], authorUserID: NSNumber? = nil, in blogID: TaggedManagedObjectID<Blog>) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
         Task {
             let pageSize = 100
             var allPages = [TaggedManagedObjectID<Page>]()
@@ -401,7 +401,7 @@ extension PostRepository {
                 let current = try await fetch(
                     type: Page.self,
                     statuses: statuses,
-                    authorUserID: nil,
+                    authorUserID: authorUserID,
                     range: pageRange,
                     deleteOtherLocalPosts: false,
                     in: blogID
@@ -497,9 +497,11 @@ extension PostRepository {
                 purgeExisting: deleteOtherLocalPosts,
                 in: context
             )
-            return updatedPosts.map {
-                guard let post = $0 as? P else {
-                    fatalError("Expecting a \(postType) as \(type), but got \($0)")
+            return updatedPosts.compactMap { aPost -> TaggedManagedObjectID<P>? in
+                guard let post = aPost as? P else {
+                    // FIXME: This issue is tracked in https://github.com/wordpress-mobile/WordPress-iOS/issues/22255
+                    DDLogWarn("Expecting a \(postType) as \(type), but got \(aPost)")
+                    return nil
                 }
                 return TaggedManagedObjectID(post)
             }
