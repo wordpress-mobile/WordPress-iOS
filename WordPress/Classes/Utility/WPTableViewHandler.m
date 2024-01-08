@@ -1,8 +1,8 @@
-#import <CoreData/CoreData.h>
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
+@import CoreData;
 @import NSObject_SafeExpectations;
 
 static NSString * const DefaultCellIdentifier = @"DefaultCellIdentifier";

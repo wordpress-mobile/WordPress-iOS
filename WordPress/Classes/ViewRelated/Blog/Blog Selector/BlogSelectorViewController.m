@@ -1,4 +1,3 @@
-#import <CoreData/CoreData.h>
 #import "BlogSelectorViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPBlogTableViewCell.h"
@@ -7,6 +6,8 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "WordPress-Swift.h"
+
+@import CoreData;
 
 @interface BlogSelectorViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
