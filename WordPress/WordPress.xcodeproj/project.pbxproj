@@ -880,6 +880,7 @@
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
+		3F03F2BD2B45041E00A9CE99 /* XCUIElement+TapUntil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F03F2BC2B45041E00A9CE99 /* XCUIElement+TapUntil.swift */; };
 		3F09CCA82428FF3300D00A8C /* ReaderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */; };
 		3F09CCAA2428FF8300D00A8C /* ReaderTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */; };
 		3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
@@ -6560,6 +6561,7 @@
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		3AB6A3B516053EA8D0BC3B17 /* Pods-JetpackStatsWidgets.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackStatsWidgets.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackStatsWidgets/Pods-JetpackStatsWidgets.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		3C8DE270EF0498A2129349B0 /* Pods-JetpackNotificationServiceExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackNotificationServiceExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackNotificationServiceExtension/Pods-JetpackNotificationServiceExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		3F03F2BC2B45041E00A9CE99 /* XCUIElement+TapUntil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+TapUntil.swift"; sourceTree = "<group>"; };
 		3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewController.swift; sourceTree = "<group>"; };
 		3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabView.swift; sourceTree = "<group>"; };
 		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
@@ -11765,15 +11767,16 @@
 				3FA6405A2670CCD40064401E /* Info.plist */,
 				3F762E9226784A950088CD45 /* Logger.swift */,
 				3FE39A4326F8391D006E2B3A /* Screens */,
-				3FA640592670CCD40064401E /* UITestsFoundation.h */,
 				EA85B7A92A6860370096E097 /* TestObserver.swift */,
+				3FA640592670CCD40064401E /* UITestsFoundation.h */,
 				3F762E9426784B540088CD45 /* WireMock.swift */,
 				3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */,
 				3F6A8CDF2A246357009DBC2B /* XCUIApplication+SavePassword.swift */,
+				D8E7529A2A29DC4C00E73B2D /* XCUIApplication+ScrollDownToElement.swift */,
 				3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */,
+				3F03F2BC2B45041E00A9CE99 /* XCUIElement+TapUntil.swift */,
 				3F762E9A26784D2A0088CD45 /* XCUIElement+Utils.swift */,
 				3F762E9826784CC90088CD45 /* XCUIElementQuery+Utils.swift */,
-				D8E7529A2A29DC4C00E73B2D /* XCUIApplication+ScrollDownToElement.swift */,
 			);
 			path = UITestsFoundation;
 			sourceTree = "<group>";
@@ -22869,6 +22872,7 @@
 				3F2F855A26FAF227000FCDA5 /* EditorNoticeComponent.swift in Sources */,
 				01281E9A2A0456CB00464F8F /* DomainsSelectionScreen.swift in Sources */,
 				3F2F855D26FAF227000FCDA5 /* LoginCheckMagicLinkScreen.swift in Sources */,
+				3F03F2BD2B45041E00A9CE99 /* XCUIElement+TapUntil.swift in Sources */,
 				EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */,
 				D82E087829EEB7AF0098F500 /* DomainsScreen.swift in Sources */,
 				3F6A8CE02A246357009DBC2B /* XCUIApplication+SavePassword.swift in Sources */,

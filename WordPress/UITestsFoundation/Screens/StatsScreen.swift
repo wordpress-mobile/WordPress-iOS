@@ -23,7 +23,7 @@ public class StatsScreen: ScreenObject {
 
     public func verifyStatsLoaded(_ stats: [String]) -> Bool {
         for stat in stats {
-            guard app.staticTexts[stat].waitForExistence(timeout: 3) else {
+            guard app.staticTexts[stat].waitForExistence(timeout: 10) else {
                 Logger.log(message: "Element not found: \(stat)", event: LogEvent.e)
                 return false
             }
@@ -33,7 +33,7 @@ public class StatsScreen: ScreenObject {
 
     public func verifyChartLoaded(_ chartElements: [String]) -> Bool {
         for chartElement in chartElements {
-            guard app.otherElements[chartElement].waitForExistence(timeout: 3) else {
+            guard app.otherElements[chartElement].waitForExistence(timeout: 10) else {
                 Logger.log(message: "Element not found: \(chartElement)", event: LogEvent.e)
                 return false
             }

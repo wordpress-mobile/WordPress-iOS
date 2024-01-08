@@ -21,7 +21,6 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "skippedTests" : [
         "EditorAztecTests",
         "LoginTests\/testEmailMagicLinkLogin()",
