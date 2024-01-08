@@ -13,6 +13,10 @@ class RegisterDomainCoordinator {
     typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
     typealias DomainAddedToCartCallback = ((UIViewController, String, Blog) -> Void)
 
+    // MARK: - Dependencies
+
+    private let domainRegistrationService: RegisterDomainDetailsServiceProxyProtocol
+
     // MARK: Variables
 
     private let crashLogger: CrashLogging
@@ -20,9 +24,10 @@ class RegisterDomainCoordinator {
     let analyticsSource: String
 
     var site: Blog?
+    var domain: DomainSuggestion?
+
     var domainPurchasedCallback: DomainPurchasedCallback?
     var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
-    var domain: DomainSuggestion?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
@@ -36,11 +41,13 @@ class RegisterDomainCoordinator {
     init(site: Blog?,
          domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
          analyticsSource: String = "domains_register",
-         crashLogger: CrashLogging = .main) {
+         crashLogger: CrashLogging = .main,
+         domainRegistrationService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
         self.crashLogger = crashLogger
         self.analyticsSource = analyticsSource
+        self.domainRegistrationService = domainRegistrationService
     }
 
     // MARK: Public Functions
@@ -50,6 +57,7 @@ class RegisterDomainCoordinator {
     func handlePurchaseDomainOnly(on viewController: UIViewController,
                                   onSuccess: @escaping () -> (),
                                   onFailure: @escaping () -> ()) {
+        // TODO: Refactor `handlePurchaseDomainOnly` to use `purchaseDomain` helper.
         createCart { [weak self] result in
             switch result {
             case .success:
@@ -66,6 +74,7 @@ class RegisterDomainCoordinator {
     func addDomainToCartLinkedToCurrentSite(on viewController: UIViewController,
                          onSuccess: @escaping () -> (),
                          onFailure: @escaping () -> ()) {
+        // TODO: Refactor `addDomainToCartLinkedToCurrentSite` to use `purchaseDomain` helper.
         guard let blog = site else {
             return
         }
@@ -83,18 +92,9 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then launches the checkout webview
     /// The checkout webview is configured for the domain management flow
-    func handleNoSiteChoice(on viewController: UIViewController,
-                            choicesViewModel: DomainPurchaseChoicesViewModel?) {
-        createCart { [weak self] result in
-            switch result {
-            case .success:
-                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
-                choicesViewModel?.isGetDomainLoading = false
-
-            case .failure:
-                viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                choicesViewModel?.isGetDomainLoading = false
-            }
+    func handleNoSiteChoice(on viewController: UIViewController, choicesViewModel: DomainPurchaseChoicesViewModel?) {
+        self.purchaseDomain(on: viewController) { _ in
+            choicesViewModel?.isGetDomainLoading = false
         }
     }
 
@@ -117,18 +117,11 @@ class RegisterDomainCoordinator {
                 return
             }
             controller.showLoading()
-            self.createCart { [weak self] result in
-                guard let self else {
-                    return
-                }
-                switch result {
-                case .success(let domain):
-                    self.site = selectedBlog
-                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                case .failure:
-                    controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                }
+            self.purchaseDomain(on: controller) { result in
                 controller.hideLoading()
+                if case .success = result {
+                    self.site = selectedBlog
+                }
             }
         }
 
@@ -140,6 +133,26 @@ class RegisterDomainCoordinator {
     }
 
     // MARK: Helpers
+
+    private func purchaseDomain(on viewController: UIViewController, completion: @escaping (Result<Void, Swift.Error>) -> Void) {
+        self.createCart { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success(let domain):
+                if let site, site.canRegisterDomainWithPaidPlan {
+                    self.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, site)
+                } else {
+                    self.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
+                }
+                completion(.success(()))
+            case .failure(let error):
+                viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                completion(.failure(error))
+            }
+        }
+    }
 
     private func createCart(completion: @escaping (Result<DomainSuggestion, Swift.Error>) -> Void) {
         guard let domain else {
