@@ -196,37 +196,25 @@ class PagesListTests: CoreDataTestCase {
 
         start = CFAbsoluteTimeGetCurrent()
         let original = pages.hierarchySort()
+        let originalIDs = original.map { $0.postID! }
+        let originalLevels = original.map { $0.hierarchyIndex }
         NSLog("hierarchySort took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
         start = CFAbsoluteTimeGetCurrent()
-        let new = try PageTree.hierarchyList(of: pages)
+        let new = PageTree.hierarchyList(of: pages)
+        let newIDs = new.map { $0.postID! }
+        let newLevels = new.map { $0.hierarchyIndex }
         NSLog("PageTree took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
         start = CFAbsoluteTimeGetCurrent()
         _ = pages.sorted { ($0.postID?.int64Value ?? 0) < ($1.postID?.int64Value ?? 0) }
         NSLog("Array.sort took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
-        // Compare the two implementions to make sure their results are similar. The pages don'n't need to be in the exact same order,
-        // but each hierachy level should contain the same child pages in it.
+        let orderDiff = originalIDs.difference(from: newIDs).inferringMoves()
+        XCTAssertTrue(orderDiff.count == 0, "Unexpected order difference: \(orderDiff)", file: file, line: line)
 
-        let originalList = HierarchyList(pages: original)
-        let newList = HierarchyList(pages: new)
-
-        // They have the same hierachy level.
-        XCTAssertEqual(originalList.numberOfLevels, newList.numberOfLevels)
-
-        // For each hierachy level, the same child pages are present in both results, without the need of being in the same order.
-        for level in 1...(originalList.numberOfLevels) {
-            let pagesAtLevelOriginal = originalList.pages(atLevel: level)
-            let pagesAtLevelNew = newList.pages(atLevel: level)
-            XCTAssertEqual(Set(pagesAtLevelOriginal.keys), Set(pagesAtLevelNew.keys), "The parent page ids in each level should be the same")
-
-            for parentPageID in pagesAtLevelOriginal.keys {
-                let childrenPageIDsOriginal = try XCTUnwrap(pagesAtLevelOriginal[parentPageID]).map { $0.postID }
-                let childrenPageIDsNew = try XCTUnwrap(pagesAtLevelNew[parentPageID]).map { $0.postID }
-                XCTAssertEqual(Set(childrenPageIDsOriginal), Set(childrenPageIDsNew), "The children page ids in each level should be the same")
-            }
-        }
+        let levelDiff = originalLevels.difference(from: newLevels).inferringMoves()
+        XCTAssertTrue(orderDiff.count == 0, "Unexpected level difference: \(orderDiff)", file: file, line: line)
     }
 }
 
