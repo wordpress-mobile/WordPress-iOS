@@ -138,24 +138,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     func test_fetchPrompts_givenNoParameters_assignsDefaultValue() throws {
         let expectedDifferenceInDays = 10
-
-        // Skipping this test because of implicit usages of dynamic dates that would be inefficient to remove at this time.
-        // Context: upgrading systems to support Xcode 15.1 before starting the 24.0 release code freeze.
-        // https://github.com/wordpress-mobile/WordPress-iOS/pull/22270
-        //
-        // The issue is that going back 10 days brings the date in 2023 but the year it's checked against is 2024.
-        // The delta is then a negative number of days rather than the expected value.
-        //
-        // See https://buildkite.com/automattic/wordpress-ios/builds/19537
-        let calendar = Calendar.current
-        var dateComponents = DateComponents()
-        dateComponents.year = 2024
-        dateComponents.month = 1
-        dateComponents.day = 11
-        let targetDate = try XCTUnwrap(calendar.date(from: dateComponents))
-        let today = Date()
-        try XCTSkipIf(today < targetDate, "Skipping this test because the date is earlier than 2024/01/11.")
-
         let expectedNumber = 25
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
@@ -163,7 +145,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
         // calculate the difference and ensure that the passed date is 10 days ago.
         let date = try passedDate()
-        let differenceInDays = try XCTUnwrap(Self.calendar.dateComponents([.day], from: date, to: today).day)
+        let differenceInDays = try XCTUnwrap(Self.calendar.dateComponents([.day], from: date, to: Date()).day)
         XCTAssertEqual(differenceInDays, expectedDifferenceInDays)
 
         // ensure that the passed number parameter is correct.
