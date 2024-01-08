@@ -147,4 +147,31 @@ class RouteMatcherTests: XCTestCase {
         XCTAssertEqual(match.values[MatchedRouteURLComponentKey.source.rawValue], "widget")
         XCTAssertEqual(match.source, DeepLinkSource.widget)
     }
+
+    // MARK: - AppBanner
+
+    func testAppBannerRouter() throws {
+        // GIVEN a banner URL with a redirect in a fragment
+        let route = "https://apps.wordpress.com/get/?campaign=qr-code-media#%2Fmedia%2F1234567"
+
+        // WHEN
+        routes = [AppBannerRoute()]
+        matcher = RouteMatcher(routes: routes)
+        let matches = matcher.routesMatching(URL(string: route)!)
+
+        // THEN a match if found
+        let match = try XCTUnwrap(matches.first)
+        XCTAssert(match.values.count == 2)
+        XCTAssertNotNil(match.values[MatchedRouteURLComponentKey.url.rawValue])
+        XCTAssertEqual(match.values[MatchedRouteURLComponentKey.fragment.rawValue], "%2Fmedia%2F1234567")
+
+        // WHEN invoking a URL
+        var router = MockRouter(routes: [])
+        router.completion = { url, source in
+            // THEN it opens a universal link from a fragement and passes the campaign
+            XCTAssertEqual(url, URL(string: "https://wordpress.com/media/1234567?campaign=qr-code-media"))
+            XCTAssertEqual(source, DeepLinkSource.banner(campaign: "qr-code-media"))
+        }
+        AppBannerRoute().perform(match.values, router: router)
+    }
 }

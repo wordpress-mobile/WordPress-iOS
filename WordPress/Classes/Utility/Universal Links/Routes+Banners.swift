@@ -12,7 +12,7 @@ import Foundation
 struct AppBannerRoute: Route {
     let path = "/get"
     let section: DeepLinkSection? = nil
-    let source: DeepLinkSource = .banner
+    let source: DeepLinkSource = .banner()
     let shouldTrack: Bool = false
     let jetpackPowered: Bool = false
 
@@ -28,15 +28,34 @@ extension AppBannerRoute: NavigationAction {
                 return
         }
 
+        let campaign = AppBannerCampaign.getCampaign(from: values)
+
         // Convert the fragment into a URL and ask the link router to handle
         // it like a normal route.
         var components = URLComponents()
         components.scheme = "https"
         components.host = "wordpress.com"
         components.path = fragment
+        if let campaign {
+            components.queryItems = [
+                URLQueryItem(name: "campaign", value: campaign)
+            ]
+        }
 
         if let url = components.url {
-            router.handle(url: url, shouldTrack: true, source: .banner)
+            router.handle(url: url, shouldTrack: true, source: .banner(campaign: campaign))
         }
+    }
+}
+
+enum AppBannerCampaign: String {
+    case qrCodeMedia = "qr-code-media"
+
+    static func getCampaign(from values: [String: String]) -> String? {
+        guard let url = values[MatchedRouteURLComponentKey.url.rawValue],
+              let queryItems = URLComponents(string: url)?.queryItems else {
+            return nil
+        }
+        return queryItems.first(where: { $0.name == "campaign" })?.value
     }
 }

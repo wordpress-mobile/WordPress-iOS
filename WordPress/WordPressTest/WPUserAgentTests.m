@@ -40,13 +40,20 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], defaultUA);
     XCTAssertEqualObjects([self currentUserAgentFromWebView], defaultUA);
 
+    if (@available(iOS 17, *)) {
+        XCTSkip("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.");
+    }
+
     [WPUserAgent useWordPressUserAgentInWebViews];
-    
     XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], wordPressUA);
     XCTAssertEqualObjects([self currentUserAgentFromWebView], wordPressUA);
 }
 
 - (void)testThatOriginalRemovalOfWPUseKeyUserAgentDoesntWork {
+    if (@available(iOS 17, *)) {
+        XCTSkip("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.");
+    }
+
     // get the original user agent
     NSString *originalUserAgentInWebView = [self currentUserAgentFromWebView];
     NSLog(@"OriginalUserAgent (WebView): %@", originalUserAgentInWebView);
@@ -64,7 +71,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     NSString *shouldBeOriginalInWebView = [self currentUserAgentFromWebView];
     NSLog(@"shouldBeOriginal (WebView): %@", shouldBeOriginalInWebView);
     
-    XCTAssertNotEqualObjects(originalUserAgentInWebView, shouldBeOriginalInWebView, "This agent should be the same");
+    XCTAssertNotEqualObjects(originalUserAgentInWebView, shouldBeOriginalInWebView);
 }
 
 - (void)testThatCallingFromAnotherThreadWorks {

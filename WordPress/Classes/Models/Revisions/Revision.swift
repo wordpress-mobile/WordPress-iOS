@@ -31,10 +31,6 @@ class Revision: NSManagedObject {
         return revisionFormatter.date(from: postDateGmt ?? "") ?? Date()
     }
 
-    var revisionModifiedDate: Date {
-        return revisionFormatter.date(from: postModifiedGmt ?? "") ?? Date()
-    }
-
     @objc var revisionDateForSection: String {
         return revisionDate.longUTCStringWithoutTime()
     }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-12 18:15:31+0000 */
+/* Translation-Revision-Date: 2024-01-04 16:02:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: pt_BR */
@@ -9231,8 +9231,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Saiba mais";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Durante o mês de janeiro, as sugestões de publicação virão do Bloganuary, nosso desafio para a comunidade criar um hábito de publicação no ano que se inicia.";
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "O Bloganuary está aqui!";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "O Bloganuary está chegando!";

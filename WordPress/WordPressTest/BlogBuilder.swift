@@ -141,11 +141,12 @@ final class BlogBuilder {
         return self
     }
 
-    func with(domainCount: Int, of type: DomainType) -> Self {
+    func with(domainCount: Int, of type: DomainType, domainName: String = "") -> Self {
         var domains: [ManagedDomain] = []
         for _ in 0..<domainCount {
             let domain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
             domain.domainType = type
+            domain.domainName = domainName
             domains.append(domain)
         }
 

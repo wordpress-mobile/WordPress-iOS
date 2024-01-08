@@ -98,19 +98,18 @@ extension WPStyleGuide {
             let columnWidth = trunc(columnsWidth / numberOfColumns)
             return columnWidth
         }
+
         public static func cellHeightForCellWidth(_ width: CGFloat) -> CGFloat {
             let imageHeight = (width - cellImageInset) * cellImageRatio
             return imageHeight + cellInfoBarHeight
         }
-        public static func cellHeightForFrameWidth(_ width: CGFloat) -> CGFloat {
-            let cellWidth = cellWidthForFrameWidth(width)
-            return cellHeightForCellWidth(cellWidth)
-        }
+
         public static func cellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
             let cellWidth = cellWidthForFrameWidth(width)
             let cellHeight = cellHeightForCellWidth(cellWidth)
             return CGSize(width: cellWidth.zeroIfNaN(), height: cellHeight.zeroIfNaN())
         }
+
         public static func imageWidthForFrameWidth(_ width: CGFloat) -> CGFloat {
             let cellWidth = cellWidthForFrameWidth(width)
             return cellWidth - cellImageInset
@@ -121,7 +120,6 @@ extension WPStyleGuide {
         public static let themeMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
         public static let infoMargins = UIEdgeInsets()
 
-        public static let minimumSearchHeight: CGFloat = 44
         public static let searchAnimationDuration: TimeInterval = 0.2
     }
 

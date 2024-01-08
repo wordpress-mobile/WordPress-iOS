@@ -5,7 +5,6 @@ import Foundation
 ///
 extension MediaHost {
     enum ReaderPostContentProviderError: Swift.Error {
-        case noDefaultWordPressComAccount
         case baseInitializerError(error: Error, readerPostContentProvider: ReaderPostContentProvider)
     }
 

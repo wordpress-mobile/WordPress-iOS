@@ -27,7 +27,6 @@ private enum RangeKeys {
     static let url = "url"
     static let indices = "indices"
     static let id = "id"
-    static let value = "value"
     static let siteId = "site_id"
     static let postId = "post_id"
 }

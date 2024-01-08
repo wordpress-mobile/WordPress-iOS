@@ -57,7 +57,7 @@ extension BlogDashboardRemoteEntity {
     struct BlogDashboardDynamic: Decodable, Hashable {
 
         let id: String
-        let remoteFeatureFlag: String
+        let remoteFeatureFlag: String?
         let title: String?
         let featuredImage: String?
         let url: String?

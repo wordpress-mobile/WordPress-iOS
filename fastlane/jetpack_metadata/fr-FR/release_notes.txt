@@ -1,0 +1,5 @@
+Nous avons mis à jour l’éditeur classique avec de nouveaux sélecteurs de médias pour les photos et les médias du site. Pas d’inquiétude, vous pouvez toujours mettre en ligne des images, des vidéos, et plus encore sur votre site.
+
+En parlant de types de médias : vous pouvez désormais ajouter des filtres médias à l’écran Médias du site. Si vous utilisez un iPhone, vous remarquerez également le nouveau mode Proportions. Les deux options sont disponibles lorsque vous appuyez sur le menu Titre.
+
+Enfin, nous avons réparé la pop-up qui apparaît lorsque vous consultez les statistiques à l’occasion du processus de configuration. Nous avons par ailleurs corrigé un incident rare qui se produisait lors de la déconnexion. Pas mal.

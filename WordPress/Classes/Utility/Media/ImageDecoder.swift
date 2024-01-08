@@ -69,9 +69,3 @@ private extension Data {
         }
     }
 }
-
-private extension UIImage {
-    var sizeInPixels: CGSize {
-        size.scaled(by: scale)
-    }
-}
