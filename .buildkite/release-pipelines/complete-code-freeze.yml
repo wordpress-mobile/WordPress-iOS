@@ -6,5 +6,5 @@ steps:
     agents:
         queue: mac
     env:
-      IMAGE_ID: xcode-14.3.1
+      IMAGE_ID: xcode-15.1
     command: ".buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION"

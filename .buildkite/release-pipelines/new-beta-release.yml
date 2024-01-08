@@ -6,7 +6,7 @@ steps:
     agents:
         queue: mac
     env:
-      IMAGE_ID: xcode-14.3.1
+      IMAGE_ID: xcode-15.1
     command: |
       echo '--- :git: Configure Git for release management'
       .buildkite/commands/configure-git-for-release-management.sh
