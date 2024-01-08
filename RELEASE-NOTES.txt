@@ -17,6 +17,7 @@
 * [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
 * [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
 * [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
+* [**] Fix an issue in Pages List where the pages are not displayed in a hierarchical order [#22338]
 
 23.9
 -----
