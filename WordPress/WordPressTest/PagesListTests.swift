@@ -22,6 +22,11 @@ class PagesListTests: CoreDataTestCase {
         try makeAssertions(pages: pages)
     }
 
+    func testOneNestedListInReversedOrder() throws {
+        let pages = parentPage(childrenCount: 17, additionalLevels: 7).reversed()
+        try makeAssertions(pages: Array(pages))
+    }
+
     func testManyNestedLists() throws {
         let groups = [
             parentPage(childrenCount: 5),
@@ -108,6 +113,32 @@ class PagesListTests: CoreDataTestCase {
         try makeAssertions(pages: pages)
     }
 
+    func testDistantChildAndParentPages() throws {
+        let child = PageBuilder(mainContext).build()
+        child.postID = NSNumber(value: randomID.next())
+        child.parentID = NSNumber(value: randomID.next())
+
+        let parent = PageBuilder(mainContext).build()
+        parent.postID = child.parentID
+        parent.parentID = 0
+
+        let manyPages = parentPage(childrenCount: 17, additionalLevels: 7)
+
+        // Test 1: place the child page at the begining and the parent page at the end.
+        var sorted = try PageTree.hierarchyList(of: [child] + manyPages + [parent])
+        XCTAssertEqual(parent.hierarchyIndex, 0)
+        XCTAssertEqual(child.hierarchyIndex, 1)
+        // The child page should follow the parent page in the sorted list
+        try XCTAssertEqual(XCTUnwrap(sorted.firstIndex(of: parent)) + 1, XCTUnwrap(sorted.firstIndex(of: child)))
+
+        // Test 2: place the child page at the end and the parent page at the begining.
+        sorted = try PageTree.hierarchyList(of: [parent] + manyPages + [child])
+        XCTAssertEqual(parent.hierarchyIndex, 0)
+        XCTAssertEqual(child.hierarchyIndex, 1)
+        // The child page should follow the parent page in the sorted list
+        try XCTAssertEqual(XCTUnwrap(sorted.firstIndex(of: parent)) + 1, XCTUnwrap(sorted.firstIndex(of: child)))
+    }
+
     func testHierachyListRepresentationRoundtrip() throws {
         let roundtrip: (String) throws -> Void = { string in
             let pages = try Array<Page>(hierarchyListRepresentation: string, context: self.mainContext)
@@ -175,10 +206,27 @@ class PagesListTests: CoreDataTestCase {
         _ = pages.sorted { ($0.postID?.int64Value ?? 0) < ($1.postID?.int64Value ?? 0) }
         NSLog("Array.sort took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
-        let originalIDs = original.map { $0.postID! }
-        let newIDs = new.map { $0.postID! }
-        let diff = originalIDs.difference(from: newIDs).inferringMoves()
-        XCTAssertTrue(diff.count == 0, "Unexpected diff: \(diff)", file: file, line: line)
+        // Compare the two implementions to make sure their results are similar. The pages don'n't need to be in the exact same order,
+        // but each hierachy level should contain the same child pages in it.
+
+        let originalList = HierachyList(pages: original)
+        let newList = HierachyList(pages: new)
+
+        // They have the same hierachy level.
+        XCTAssertEqual(originalList.numberOfLevels, newList.numberOfLevels)
+
+        // For each hierachy level, the same child pages are present in both results, without the need of being in the same order.
+        for level in 1...(originalList.numberOfLevels) {
+            let pagesAtLevelOriginal = originalList.pages(atLevel: level)
+            let pagesAtLevelNew = newList.pages(atLevel: level)
+            XCTAssertEqual(Set(pagesAtLevelOriginal.keys), Set(pagesAtLevelNew.keys), "The parent page ids in each level should be the same")
+
+            for parentPageID in pagesAtLevelOriginal.keys {
+                let childrenPageIDsOriginal = try XCTUnwrap(pagesAtLevelOriginal[parentPageID]).map { $0.postID }
+                let childrenPageIDsNew = try XCTUnwrap(pagesAtLevelNew[parentPageID]).map { $0.postID }
+                XCTAssertEqual(Set(childrenPageIDsOriginal), Set(childrenPageIDsNew), "The children page ids in each level should be the same")
+            }
+        }
     }
 }
 
@@ -250,5 +298,33 @@ private extension Array where Element == Page {
         }
 
         self = pages
+    }
+}
+
+private struct HierachyList {
+    let pages: [Page]
+
+    var numberOfLevels: Int {
+        pages.map { $0.hierarchyIndex }.max()! + 1
+    }
+
+    func pages(atLevel level: Int) -> [NSNumber: [Page]] {
+        var result = [NSNumber: [Page]]()
+        for page in pages {
+            guard page.hierarchyIndex + 1 == level else {
+                continue
+            }
+
+            let parentID = page.parentID ?? 0
+            result[parentID, default: []].append(page)
+        }
+        return result
+    }
+
+    func print() {
+        for page in pages {
+            Swift.print(String(repeating: " ", count: page.hierarchyIndex * 2), terminator: "|- ")
+            Swift.print("post id: \(page.postID!), parent id: \(page.parentID ?? 0)")
+        }
     }
 }
