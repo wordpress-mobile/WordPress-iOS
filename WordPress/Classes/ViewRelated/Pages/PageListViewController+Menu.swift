@@ -47,7 +47,12 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func share(_ apost: AbstractPost, fromView view: UIView) {
-        // Not available for pages
+        guard let page = apost as? Page else { return }
+
+        WPAnalytics.track(.postListShareAction, properties: propertiesForAnalytics())
+
+        let shareController = PostSharingController()
+        shareController.sharePage(page, fromView: view, inViewController: self)
     }
 
     func blaze(_ apost: AbstractPost) {
