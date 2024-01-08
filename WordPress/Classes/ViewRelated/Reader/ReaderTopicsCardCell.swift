@@ -82,8 +82,6 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might like")
 
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.defaultReuseID
-
-        static let collectionViewMinHeight: CGFloat = 40.0
     }
 }
 

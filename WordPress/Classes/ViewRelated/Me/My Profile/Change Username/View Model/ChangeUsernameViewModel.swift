@@ -128,10 +128,6 @@ private extension ChangeUsernameViewModel {
         static let highlight = NSLocalizedString("You will not be able to change your username back.", comment: "Paragraph text that needs to be highlighted")
         static let paragraph = NSLocalizedString("You are about to change your username, which is currently %@. %@", comment: "Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name.")
 
-        enum Suggestions {
-            static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
-        }
-
         enum Error {
             static let saveUsername = NSLocalizedString("There was an error saving the username", comment: "Text displayed when there is a failure saving the username.")
         }

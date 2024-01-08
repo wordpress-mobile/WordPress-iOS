@@ -51,7 +51,7 @@ end
 
 def wordpress_kit
   # Anything compatible with 8.9, starting from 8.9.1 which has a breaking change fix
-  pod 'WordPressKit', '~> 9.0'
+  pod 'WordPressKit', '~> 9.0', '>= 9.0.2'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
@@ -142,7 +142,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 8.0'
+  pod 'WordPressAuthenticator', '~> 8.0', '>= 8.0.1'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'

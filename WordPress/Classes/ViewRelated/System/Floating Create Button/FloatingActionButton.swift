@@ -1,8 +1,6 @@
 /// A rounded button with a shadow intended for use as a "Floating Action Button"
 class FloatingActionButton: UIButton {
 
-    private var shadowLayer: CALayer?
-
     private enum Constants {
         static let shadowColor: UIColor = UIColor.gray(.shade20)
         static let shadowRadius: CGFloat = 3

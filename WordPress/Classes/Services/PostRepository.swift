@@ -497,9 +497,11 @@ extension PostRepository {
                 purgeExisting: deleteOtherLocalPosts,
                 in: context
             )
-            return updatedPosts.map {
-                guard let post = $0 as? P else {
-                    fatalError("Expecting a \(postType) as \(type), but got \($0)")
+            return updatedPosts.compactMap { aPost -> TaggedManagedObjectID<P>? in
+                guard let post = aPost as? P else {
+                    // FIXME: This issue is tracked in https://github.com/wordpress-mobile/WordPress-iOS/issues/22255
+                    DDLogWarn("Expecting a \(postType) as \(type), but got \(aPost)")
+                    return nil
                 }
                 return TaggedManagedObjectID(post)
             }

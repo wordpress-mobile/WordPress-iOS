@@ -5,14 +5,6 @@ class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    var starFieldView: StarFieldView = {
-        let config = StarFieldViewConfig(particleImage: JetpackPrologueStyleGuide.Stars.particleImage,
-                                         starColors: JetpackPrologueStyleGuide.Stars.colors)
-        let view = StarFieldView(with: config)
-        view.layer.masksToBounds = true
-        return view
-    }()
-
     private let motion: CMMotionManager? = {
         let motion = CMMotionManager()
         motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
@@ -27,18 +19,13 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var logoImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "jetpack-logo"))
+        let imageView = UIImageView(image: UIImage(named: "wp-jp-circular-lockup"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
     private lazy var gradientLayer: CALayer = {
         makeGradientLayer()
-    }()
-
-    private lazy var logoWidthConstraint: NSLayoutConstraint = {
-        let width = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
-        return logoImageView.widthAnchor.constraint(equalToConstant: width)
     }()
 
     private func makeGradientLayer() -> CAGradientLayer {
@@ -94,24 +81,11 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoWidthConstraint,
-            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 132.35),
+            logoImageView.heightAnchor.constraint(equalToConstant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 135)
         ])
-    }
-
-    private func loadOldPrologueView() {
-        view.addSubview(starFieldView)
-        view.layer.addSublayer(gradientLayer)
-        titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
-        titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
-        titleLabel.font = JetpackPrologueStyleGuide.Title.font
-        // Move the layers to appear below everything else
-        starFieldView.layer.zPosition = Constants.starLayerPosition
-        gradientLayer.zPosition = Constants.gradientLayerPosition
-        addParallax(to: stackView)
-        updateLabel(for: traitCollection)
     }
 
     func updateLabel(for traitCollection: UITraitCollection) {
@@ -124,8 +98,6 @@ class JetpackPrologueViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        logoWidthConstraint.constant = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
 
         guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
             updateLabel(for: traitCollection)
@@ -161,8 +133,6 @@ class JetpackPrologueViewController: UIViewController {
 
     private struct Constants {
         static let parallaxAmount: CGFloat = 30
-        static let starLayerPosition: CGFloat = -100
-        static let gradientLayerPosition: CGFloat = -99
 
         /// New landing screen
 
@@ -172,10 +142,6 @@ class JetpackPrologueViewController: UIViewController {
         static let defaultAngleDegrees: Double = 30.0
         /// Uniform multiplier used to tweak the rate generated from an angle
         static let angleRateMultiplier: CGFloat = 1.3
-        /// Returns the Jetpack logo width depending on the given size class
-        static func logoWidth(for sizeClass: UIUserInterfaceSizeClass) -> CGFloat {
-            return sizeClass == .compact ? 68 : 78
-        }
     }
 }
 

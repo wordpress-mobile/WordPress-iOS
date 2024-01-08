@@ -1,5 +1,18 @@
 import Foundation
 
+/// `BlogDashboardPersonalizable` is a protocol that defines the requirements for personalizing blog dashboard items.
+/// It provides properties to access personalization key and settings scope specific to the blog dashboard.
+protocol BlogDashboardPersonalizable {
+
+    /// The personalization key for the blog dashboard.
+    /// This key is used to identify and retrieve personalization settings specific to a dashboard item.
+    var blogDashboardPersonalizationKey: String? { get }
+
+    /// The scope of the blog dashboard personalization settings.
+    /// This defines the extent to which the personalization settings are applied, such as site-agnostic or site-specific.
+    var blogDashboardPersonalizationSettingsScope: BlogDashboardPersonalizationService.SettingsScope { get }
+}
+
 /// Manages dashboard settings such as card visibility.
 struct BlogDashboardPersonalizationService {
     private enum Constants {
@@ -13,6 +26,47 @@ struct BlogDashboardPersonalizationService {
          siteID: Int) {
         self.repository = repository
         self.siteID = String(siteID)
+    }
+
+    // MARK: - Core API
+
+    func setEnabled(_ isEnabled: Bool, forKey key: String, scope: SettingsScope) {
+        var settings = getSettings(for: key)
+        let lookUpKey = lookUpKey(from: scope)
+        settings[lookUpKey] = isEnabled
+        self.repository.set(settings, forKey: key)
+        NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
+    }
+
+    func isEnabled(_ key: String, scope: SettingsScope) -> Bool {
+        let settings = getSettings(for: key)
+        let key = lookUpKey(from: scope)
+        return settings[key, default: true]
+    }
+
+    func setEnabled(_ isEnabled: Bool, for item: BlogDashboardPersonalizable) {
+        guard let key = item.blogDashboardPersonalizationKey else {
+            return
+        }
+        self.setEnabled(
+            isEnabled,
+            forKey: key,
+            scope: item.blogDashboardPersonalizationSettingsScope
+        )
+    }
+
+    func isEnabled(_ item: BlogDashboardPersonalizable) -> Bool {
+        guard let key = item.blogDashboardPersonalizationKey else {
+            return true
+        }
+        return self.isEnabled(key, scope: item.blogDashboardPersonalizationSettingsScope)
+    }
+
+    private func lookUpKey(from scope: SettingsScope) -> String {
+        switch scope {
+        case .siteSpecific: return siteID
+        case .siteGeneric: return Constants.siteAgnosticVisibilityKey
+        }
     }
 
     // MARK: - Quick Actions
@@ -39,8 +93,7 @@ struct BlogDashboardPersonalizationService {
     // MARK: - Dashboard Cards
 
     func isEnabled(_ card: DashboardCard) -> Bool {
-        let key = lookUpKey(for: card)
-        return getSettings(for: card)[key] ?? true
+        return self.isEnabled(card as BlogDashboardPersonalizable)
     }
 
     func hasPreference(for card: DashboardCard) -> Bool {
@@ -57,72 +110,30 @@ struct BlogDashboardPersonalizationService {
     ///   - isEnabled: A Boolean value indicating whether the `DashboardCard` should be enabled or disabled.
     ///   - card: The `DashboardCard` whose setting needs to be updated.
     func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
-        guard let key = makeKey(for: card) else { return }
-        var settings = getSettings(for: card)
-        let lookUpKey = lookUpKey(for: card)
-        settings[lookUpKey] = isEnabled
-
-        repository.set(settings, forKey: key)
-
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
-        }
+        self.setEnabled(isEnabled, for: card as BlogDashboardPersonalizable)
     }
 
     private func getSettings(for card: DashboardCard) -> [String: Bool] {
-        guard let key = makeKey(for: card) else { return [:] }
+        guard let key = card.blogDashboardPersonalizationKey else {
+            return [:]
+        }
         return repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
     }
 
     private func lookUpKey(for card: DashboardCard) -> String {
-        switch card.settingsType {
-        case .siteSpecific:
-            return siteID
-        case .siteGeneric:
-            return Constants.siteAgnosticVisibilityKey
-        }
+        return lookUpKey(from: card.blogDashboardPersonalizationSettingsScope)
+    }
+
+    // MARK: - Types
+
+    enum SettingsScope {
+        case siteSpecific
+        case siteGeneric
     }
 }
 
 private func makeKey(for action: DashboardQuickAction) -> String {
     "quick-action-\(action.rawValue)-hidden"
-}
-
-private func makeKey(for card: DashboardCard) -> String? {
-    switch card {
-    case .todaysStats:
-        return "todays-stats-card-enabled-site-settings"
-    case .draftPosts:
-        return "draft-posts-card-enabled-site-settings"
-    case .scheduledPosts:
-        return "scheduled-posts-card-enabled-site-settings"
-    case .blaze:
-        return "blaze-card-enabled-site-settings"
-    case .bloganuaryNudge:
-        return "bloganuary-nudge-card-enabled-site-settings"
-    case .prompts:
-        // Warning: there is an irregularity with the prompts key that doesn't
-        // have a "-card" component in the key name. Keeping it like this to
-        // avoid having to migrate data.
-        return "prompts-enabled-site-settings"
-    case .freeToPaidPlansDashboardCard:
-        return "free-to-paid-plans-dashboard-card-enabled-site-settings"
-    case .domainRegistration:
-        return "register-domain-dashboard-card"
-    case .googleDomains:
-        return "google-domains-card-enabled-site-settings"
-    case .activityLog:
-        return "activity-log-card-enabled-site-settings"
-    case .pages:
-        return "pages-card-enabled-site-settings"
-    case .quickStart:
-        // The "Quick Start" cell used to use `BlogDashboardPersonalizationService`.
-        // It no longer does, but it's important to keep the flag around for
-        // users that hidden it using this flag.
-        return "quick-start-card-enabled-site-settings"
-    case .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty:
-        return nil
-    }
 }
 
 extension NSNotification.Name {

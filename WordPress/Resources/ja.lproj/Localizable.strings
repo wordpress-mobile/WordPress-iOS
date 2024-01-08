@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-05 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-04 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ja_JP */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "すべて";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "WordPress.com のすべての年間プランにはカスタムドメイン名が含まれています。 無料ドメインを登録してください。";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9448,11 +9451,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "URL をコピー";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "サイトを表示";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "さらに詳しく";
 
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "1月のブログ作成のプロンプトは Bloganuary より、新年にブログ投稿を習慣付けるためのコミュニティの課題が提示されます。";
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary が登場 !";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "まもなく Bloganuary です !";
@@ -9807,6 +9813,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "追加";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "画像を選択";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "選択した項目を表示 (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "キャンペーン詳細";
@@ -10261,6 +10276,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "削除しました。";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "すべて";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "音声ファイル";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "文書";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "画像";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "動画";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "削除";
 
@@ -10338,6 +10368,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "動画を撮影";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ \/ %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
@@ -10491,6 +10524,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "サイトがありません";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "サイトを追加";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "サイトのアクション";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "タップするとその他のサイトのアクションが表示されます";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "ホームをパーソナライズ";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "サイトアイコンを変更";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "サイトタイトルを変更";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "サイトを切り替え";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "サイトを表示";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
@@ -11062,6 +11119,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "メディアをプレビュー";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "追加";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "選択を解除";
 
@@ -11236,6 +11296,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "写真提供元: Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "無料の写真を検索して、メディアライブラリに追加してください。";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "この会話内";
 
@@ -11382,6 +11448,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "ヘルプ";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "GIF を検索して、メディアライブラリに追加してください。";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "次の項目が削除されます:";

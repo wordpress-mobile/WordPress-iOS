@@ -102,12 +102,6 @@ extension WPStyleGuide {
         ]
     }
 
-    @objc public class func readerCardReadingTimeAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.subtextTextStyle)
-
-        return [.font: font]
-    }
-
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
@@ -438,13 +432,6 @@ extension WPStyleGuide {
         button.setImage(icon, for: .normal)
         applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
     }
-    /// Applies the settings button style to the button passed as an argument
-    class func applyReaderSettingsButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.cog)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button)
-    }
 
     // MARK: - Gap Marker Styles
 
@@ -479,16 +466,7 @@ extension WPStyleGuide {
         public static let subtextTextStyle: UIFont.TextStyle = .caption1
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline
 
-        public static let crossPostTitleTextStyle: UIFont.TextStyle = .body
-        public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .caption1
-        public static let crossPostLineSpacing: CGFloat = 2.0
-
         public static let actionButtonSize: CGSize = CGSize(width: 20, height: 20)
-    }
-
-    public struct Detail {
-        public static let titleTextStyle: UIFont.TextStyle = .title2
-        public static let contentTextStyle: UIFont.TextStyle = .callout
     }
 
     public struct ReaderDetail {
@@ -525,30 +503,10 @@ extension WPStyleGuide {
     }
 
     public struct FollowButton {
-        struct Style {
-            static let followBackgroundColor: UIColor = .primaryButtonBackground
-            static let followTextColor: UIColor = .white
-            static let followingBackgroundColor: UIColor = .clear
-            static let followingIconColor: UIColor = .buttonIcon
-            static let followingTextColor: UIColor = .textSubtle
-
-            static let imageTitleSpace: CGFloat = 2.0
-            static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
-            static let titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
-            static let contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
-        }
-
         struct Text {
             static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
             static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
             static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-        }
-    }
-
-    public struct FollowConversationButton {
-        struct Style {
-            static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
-            static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
         }
     }
 }

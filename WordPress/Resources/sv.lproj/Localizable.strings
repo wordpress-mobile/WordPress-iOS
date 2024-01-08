@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-12 15:08:37+0000 */
+/* Translation-Revision-Date: 2024-01-03 12:51:39+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alla";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Alla årliga WordPress.com-paket inkluderar ett anpassat domännamn. Registrera din gratis domän nu.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9461,7 +9464,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "bloganuary.dashboard.card.button.learnMore" = "Läs mer";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "För månaden januari kommer bloggningsförslagen att komma från Bloganuary – vår communityutmaning avsedd att bygga upp en bloggvana för det nya året.";
+"bloganuary.dashboard.card.description" = "För januari månad kommer bloggningsförslagen från Bloganuary – vår community-utmaning att bygga en bloggvana för det nya året.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary är här!";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary är på väg!";
@@ -10527,6 +10533,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Du har inga webbplatser";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Lägg till webbplats";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Webbplatsåtgärder";

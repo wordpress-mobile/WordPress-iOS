@@ -44,8 +44,6 @@ struct StatsFollowersChartViewModel {
         static let emailGroupTitle = NSLocalizedString("Email", comment: "Title of Stats section that shows email followers.")
         static let socialGroupTitle = NSLocalizedString("Social", comment: "Title of Stats section that shows social followers.")
 
-        static let followersMaxGroupCount = 3
-
         static let wpComColor: UIColor = .muriel(name: .blue, .shade50)
         static let emailColor: UIColor = .muriel(name: .blue, .shade5)
         static let socialColor: UIColor = .muriel(name: .orange, .shade30)

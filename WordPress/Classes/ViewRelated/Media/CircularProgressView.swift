@@ -73,8 +73,6 @@ class CircularProgressView: UIView {
         }
     }
 
-    var errorTintColor = UIColor.white
-
     var state: State = .stopped {
         didSet {
             refreshState()
@@ -220,7 +218,6 @@ class CircularProgressView: UIView {
 final class AccessoryView: UIView {
 
     enum Appearance {
-        static let horizontalPadding: CGFloat = 4.0
         static let verticalSpacing: CGFloat = 3.0
         static let fontSize: CGFloat = 14.0
     }

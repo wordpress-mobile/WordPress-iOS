@@ -104,7 +104,6 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     @IBOutlet weak var disclosureButton: UIButton!
 
     private(set) var rowData: StatsTotalRowData?
-    private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
     private weak var referrerDelegate: StatsTotalRowReferrerDelegate?

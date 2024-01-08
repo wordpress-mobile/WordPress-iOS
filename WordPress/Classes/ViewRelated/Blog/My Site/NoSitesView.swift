@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 protocol NoSitesViewDelegate: AnyObject {
     func didTapAccountAndSettingsButton()
@@ -28,12 +29,12 @@ struct NoSitesView: View {
                 .edgesIgnoringSafeArea(.all)
 
             mainView
-                .padding(.horizontal, Length.Padding.medium)
+                .padding(.horizontal, Length.Padding.large)
 
             if viewModel.isShowingAccountAndSettings {
                 accountAndSettingsButton
-                    .padding(.horizontal, Length.Padding.medium)
-                    .padding(.bottom, Length.Padding.small)
+                    .padding(.horizontal, Length.Padding.large)
+                    .padding(.bottom, Length.Padding.medium)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -70,7 +71,7 @@ struct NoSitesView: View {
             handleAddNewSiteButtonTapped()
         } label: {
             Text(Strings.addNewSite)
-                .padding(.horizontal, Length.Padding.small)
+                .padding(.horizontal, Length.Padding.medium)
                 .padding(.vertical, Length.Padding.single)
                 .foregroundColor(.white)
                 .background(colorScheme == .dark ? Color(uiColor: .listForeground) : .black)
@@ -144,11 +145,7 @@ extension NoSitesView {
     func handleAddNewSiteButtonTapped() {
         WPAnalytics.track(.mySiteNoSitesViewActionTapped)
 
-        guard addNewSiteConfiguration.canCreateWPComSite else {
-            return
-        }
-
-        guard addNewSiteConfiguration.canAddSelfHostedSite else {
+        if addNewSiteConfiguration.canCreateWPComSite && !addNewSiteConfiguration.canAddSelfHostedSite {
             addNewSiteConfiguration.launchSiteCreation()
             return
         }
@@ -174,20 +171,5 @@ extension NoSitesView {
         static let accountAndSettings = NSLocalizedString("mySite.noSites.button.accountAndSettings", value: "Account and settings", comment: "Button title. Displays the account and setting screen.")
         static let createWPComSite = NSLocalizedString("mySite.noSites.actionSheet.createWPComSite", value: "Create WordPress.com site", comment: "Action sheet button title. Launches the flow to create a WordPress.com site.")
         static let addSelfHostedSite = NSLocalizedString("mySite.noSites.actionSheet.addSelfHostedSite", value: "Add self-hosted site", comment: "Action sheet button title. Launches the flow to a add self-hosted site.")
-    }
-}
-
-struct NoSitesView_Previews: PreviewProvider {
-    static var previews: some View {
-        let configuration = AddNewSiteConfiguration(
-            canCreateWPComSite: true,
-            canAddSelfHostedSite: true,
-            launchSiteCreation: {},
-            launchLoginForSelfHostedSite: {}
-        )
-        NoSitesView(
-            viewModel: NoSitesViewModel(appUIType: .simplified, account: nil),
-            addNewSiteConfiguration: configuration
-        )
     }
 }

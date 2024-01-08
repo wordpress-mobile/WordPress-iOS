@@ -29,11 +29,6 @@ final class BlogDashboardViewController: UIViewController {
         return refreshControl
     }()
 
-    /// The "My Site" parent view controller
-    var mySiteViewController: MySiteViewController? {
-        return parent as? MySiteViewController
-    }
-
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
         return view.superview?.superview as? UIScrollView
@@ -321,7 +316,6 @@ extension BlogDashboardViewController {
 
 
     private enum Constants {
-        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 12
         static let verticalSectionInset: CGFloat = 20

@@ -11,8 +11,6 @@ extension WPStyleGuide {
 
     static let aztecFormatBarDividerColor: UIColor = .divider
 
-    static let aztecFormatBarBackgroundColor = UIColor.basicBackground
-
     static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
         get {
             return (UIDevice.isPad()) ? .neutral(.shade0) : .neutral(.shade5)
