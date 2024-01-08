@@ -139,7 +139,7 @@ class PagesListTests: CoreDataTestCase {
         try XCTAssertEqual(XCTUnwrap(sorted.firstIndex(of: parent)) + 1, XCTUnwrap(sorted.firstIndex(of: child)))
     }
 
-    func testHierachyListRepresentationRoundtrip() throws {
+    func testHierarchyListRepresentationRoundtrip() throws {
         let roundtrip: (String) throws -> Void = { string in
             let pages = try Array<Page>(hierarchyListRepresentation: string, context: self.mainContext)
             try XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
@@ -209,8 +209,8 @@ class PagesListTests: CoreDataTestCase {
         // Compare the two implementions to make sure their results are similar. The pages don'n't need to be in the exact same order,
         // but each hierachy level should contain the same child pages in it.
 
-        let originalList = HierachyList(pages: original)
-        let newList = HierachyList(pages: new)
+        let originalList = HierarchyList(pages: original)
+        let newList = HierarchyList(pages: new)
 
         // They have the same hierachy level.
         XCTAssertEqual(originalList.numberOfLevels, newList.numberOfLevels)
@@ -301,7 +301,7 @@ private extension Array where Element == Page {
     }
 }
 
-private struct HierachyList {
+private struct HierarchyList {
     let pages: [Page]
 
     var numberOfLevels: Int {
