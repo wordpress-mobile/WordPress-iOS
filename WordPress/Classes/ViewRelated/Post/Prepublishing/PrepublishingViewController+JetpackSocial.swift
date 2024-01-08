@@ -131,12 +131,6 @@ private extension PrepublishingViewController {
         WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed, properties: ["source": Constants.trackingSource])
     }
 
-    func makeNoConnectionView() -> UIView {
-        let viewModel = makeNoConnectionViewModel()
-        let controller = JetpackSocialNoConnectionView.createHostController(with: viewModel)
-        return controller.view
-    }
-
     func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
         let context = post.managedObjectContext ?? coreDataStack.mainContext
         guard let services = try? PublicizeService.allSupportedServices(in: context) else {

@@ -25,8 +25,6 @@ import Foundation
     private var categoryIndentationDict = [Int: Int]()
     private var selectedCategories = [PostCategory]()
 
-    private var saveButtonItem: UIBarButtonItem?
-
     private var hasSyncedCategories = false
 
     @objc init(blog: Blog, currentSelection: [PostCategory]?, selectionMode: CategoriesSelectionMode) {

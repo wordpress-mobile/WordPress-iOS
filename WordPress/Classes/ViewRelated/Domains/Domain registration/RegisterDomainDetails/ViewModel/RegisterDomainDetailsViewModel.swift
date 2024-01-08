@@ -47,7 +47,7 @@ class RegisterDomainDetailsViewModel {
 
     var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
 
-    let domain: FullyQuotedDomainSuggestion
+    let domain: DomainSuggestion
     let siteID: Int
     let domainPurchasedCallback: ((String) -> Void)
 
@@ -68,7 +68,7 @@ class RegisterDomainDetailsViewModel {
         }
     }
 
-    init(siteID: Int, domain: FullyQuotedDomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
+    init(siteID: Int, domain: DomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
         self.siteID = siteID
         self.domain = domain
         self.domainPurchasedCallback = domainPurchasedCallback
@@ -193,7 +193,7 @@ class RegisterDomainDetailsViewModel {
 
             registerDomainService.purchaseDomainUsingCredits(
                 siteID: siteID,
-                domainSuggestion: domainSuggestion.remoteSuggestion(),
+                domainSuggestion: domainSuggestion,
                 domainContactInformation: contactInformation,
                 privacyProtectionEnabled: privacyEnabled,
                 success: { domain in

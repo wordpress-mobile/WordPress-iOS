@@ -1,0 +1,5 @@
+We hebben de klassieke editor bijgewerkt met nieuwe mediakiezers voor foto's en sitemedia. Geen zorgen, je kan nog steeds afbeeldingen, video's en meer uploaden naar je site.
+
+Over mediatypen gesproken: je kan nu mediafilters toevoegen aan het scherm Sitemedia. Als je een iPhone gebruikt, zie je ook de nieuwe modus voor beeldverhouding. Beide opties zijn beschikbaar als je op het titelmenu tikt.
+
+Tot slot hebben we de defecte pop-up voor naleving gemaakt die verschijnt als je statistieken bekijkt tijdens het onboardingproces. We hebben ook een zeldzame crash bij het uitloggen opgelost. Handig, toch?

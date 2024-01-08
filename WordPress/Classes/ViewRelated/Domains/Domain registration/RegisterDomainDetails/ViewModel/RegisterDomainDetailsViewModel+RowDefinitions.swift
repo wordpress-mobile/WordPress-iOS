@@ -133,12 +133,6 @@ extension RegisterDomainDetailsViewModel {
                 validationRules.forEach { $0.validate(text: value) }
             }
 
-            func validate(forContext context: ValidationRule.Context) {
-                validationRules
-                    .filter { $0.context == context }
-                    .forEach { $0.validate(text: value) }
-            }
-
             func firstRule(forContext context: ValidationRule.Context) -> ValidationRule? {
                 return validationRules.first { $0.context == context }
             }

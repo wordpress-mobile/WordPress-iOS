@@ -32,7 +32,7 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
     func testMappingWithUnregisteredDomain() throws {
         self.assert(
             viewModelFromDomain: try .make(hasRegistration: false),
-            equalTo: .make(expiryDate: nil)
+            equalTo: .make(expiryDate: "Never expires")
         )
     }
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-06 16:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-04 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: he_IL */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "הכל";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "כל התוכניות השנתיות של WordPress.com כוללות דומיין אישי. ניתן לרשום את הדומיין החינמי שלך עכשיו.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9445,11 +9448,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "להעתיק כתובת URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "לבקר באתר";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "למידע נוסף";
 
 /* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "לאורך כל חודש ינואר, יתקבלו מ-Bloganuary הנחיות יומיות לפרסום בבלוג. זהו האתגר הקהילתי שלנו לביסוס הרגלי פרסום בבלוג לשנה החדשה.";
+"bloganuary.dashboard.card.description" = "לאורך כל חודש ינואר יתקבלו מ-Bloganuary הצעות כתיבה יומיות בבלוג. זהו האתגר הקהילתי שלנו לביסוס הרגלי פרסום בבלוג לשנה החדשה.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary כבר כאן!";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary מתקרב!";
@@ -9804,6 +9813,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "להוסיף";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "לבחור תמונות";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "תצוגה נבחרה (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "פרטי הקמפיין";
@@ -10258,6 +10276,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "הפריט נמחק!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "הכל";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "אודיו";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "מסמכים";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "תמונות";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "סרטוני וידאו";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "למחוק";
 
@@ -10335,6 +10368,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "צילום וידאו";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ מתוך %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "פיקסלים.⁦%1$d⁩%2$d";
@@ -10488,6 +10524,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "אין לך עוד אתרים";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "הוספת אתר";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "פעולות באתר";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "יש ללחוץ כדי להציג עוד פעולות באתר";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "להתאים אישית את הלשונית 'בית'";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "לשנות את סמל אתר";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "לשנות את שם האתר";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "להחליף אתר";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "לבקר באתר";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "ביטול";
@@ -11053,6 +11113,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "תצוגה מקדימה של מדיה";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "להוסיף";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "ביטול בחירה";
 
@@ -11227,6 +11290,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "ביטול";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "התמונות מובאות בחסות Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "אפשר לחפש תמונות חינמיות ולהוסיף אותן לספריית המדיה שלך!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "בשיחה הזאת";
 
@@ -11373,6 +11442,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "עזרה";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "אפשר לחפש קובצי GIF ולהוסיף אותם לספריית המדיה שלך!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "פריטים אלה יימחקו:";

@@ -11,7 +11,17 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
     var removalPhaseSelfHosted = false
     var removalPhaseStaticScreens = false
 
+    var enabledFeatureFlags = Set<String>()
+    var disabledFeatureFlag = Set<String>()
+
+    // MARK: - Access Remote Feature Flag Value
+
     override func value(for flagKey: String) -> Bool? {
+        if enabledFeatureFlags.contains(flagKey) {
+            return true
+        } else if disabledFeatureFlag.contains(flagKey) {
+            return false
+        }
         switch flagKey {
         case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey:
             return removalPhaseOne

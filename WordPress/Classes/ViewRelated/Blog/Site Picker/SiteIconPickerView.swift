@@ -9,7 +9,6 @@ struct SiteIconPickerView: View {
 
     @SwiftUI.State private var currentIcon: String? = nil
     @SwiftUI.State private var currentBackgroundColor: UIColor = .init(hexString: "#969CA1") ?? .gray
-    @SwiftUI.State private var scrollOffsetColumn: Int? = nil
 
     private var hasMadeSelection: Bool {
         currentIcon != nil

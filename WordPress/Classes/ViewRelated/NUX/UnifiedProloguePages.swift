@@ -239,11 +239,4 @@ class UnifiedProloguePageViewController: UIViewController {
             return UIView()
         }
     }
-
-    enum Metrics {
-        static let topInset: CGFloat = 96.0
-        static let horizontalInset: CGFloat = 24.0
-        static let titleToContentSpacing: CGFloat = 48.0
-        static let heightRatio: CGFloat = WPDeviceIdentification.isiPad() ? 0.5 : 0.4
-    }
 }

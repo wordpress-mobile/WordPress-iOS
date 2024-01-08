@@ -116,15 +116,6 @@ class DashboardPostsSyncManager {
 }
 
 private extension DashboardPostsSyncManager.PostType {
-    var postServiceType: PostServiceType {
-        switch self {
-        case .post:
-            return .post
-        case .page:
-            return .page
-        }
-    }
-
     func statusesNotBeingSynced(_ statuses: [BasePost.Status], for blog: Blog) -> [BasePost.Status] {
         var currentlySyncing: [BasePost.Status]
         switch self {
