@@ -73,6 +73,9 @@ PUBLIC_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.ne
 INTERNAL_BUILD_CODE_CALCULATOR = Fastlane::Wpmreleasetoolkit::Versioning::DateBuildCodeCalculator.new
 INTERNAL_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.new(xcconfig_path: INTERNAL_CONFIG_FILE)
 
+BUILDKITE_ORGANIZATION = 'automattic'
+BUILDKITE_PIPELINE = 'wordpress-ios'
+
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
   UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?") unless ENV.key?(key)
@@ -257,6 +260,7 @@ import 'lanes/codesign.rb'
 import 'lanes/localization.rb'
 import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
+import 'lanes/release_management_in_ci.rb'
 
 ########################################################################
 
@@ -299,6 +303,10 @@ end
 
 def release_branch_name(version: release_version_current)
   "release/#{version}"
+end
+
+def editorial_branch_name(version: release_version_current)
+  "release_notes/#{version}"
 end
 
 def ensure_git_branch_is_release_branch
