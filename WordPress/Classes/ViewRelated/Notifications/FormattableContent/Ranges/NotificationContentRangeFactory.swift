@@ -74,7 +74,6 @@ struct NotificationContentRangeFactory: FormattableRangesFactory {
     enum RangeKeys {
         static let rawType = "type"
         static let url = "url"
-        static let indices = "indices"
         static let id = "id"
         static let value = "value"
         static let siteId = "site_id"

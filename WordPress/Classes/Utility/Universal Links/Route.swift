@@ -91,7 +91,7 @@ extension Route {
 ///
 enum DeepLinkSource: Equatable {
     case link
-    case banner
+    case banner(campaign: String? = nil)
     case email(campaign: String)
     case widget
     case lockScreenWidget
@@ -122,6 +122,8 @@ enum DeepLinkSource: Equatable {
     var trackingInfo: String? {
         switch self {
         case .email(let campaign):
+            return campaign
+        case .banner(let campaign):
             return campaign
         default:
             return nil

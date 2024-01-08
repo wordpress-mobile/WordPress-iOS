@@ -91,7 +91,6 @@ class JetpackButton: CircularImageButton {
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
         static let maximumFontPointSize: CGFloat = 22
-        static let imageBackgroundViewMultiplier: CGFloat = 0.75
         static var titleFont: UIFont {
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .callout)
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))

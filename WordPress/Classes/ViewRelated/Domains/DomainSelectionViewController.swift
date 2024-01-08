@@ -20,8 +20,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private struct Metrics {
         static let maxLabelWidth            = CGFloat(290)
         static let noResultsTopInset        = CGFloat(64)
-        static let sitePromptEdgeMargin     = CGFloat(50)
-        static let sitePromptBottomMargin   = CGFloat(10)
         static let sitePromptTopMargin      = CGFloat(4)
     }
 
@@ -51,7 +49,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
     private let searchBar = UISearchBar()
-    private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
     private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
     private let domainSelectionType: DomainSelectionType
@@ -476,15 +473,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
-    private func query(from textField: UITextField?) -> String? {
-        guard let text = textField?.text,
-              !text.isEmpty else {
-            return nil
-        }
-
-        return text
-    }
-
     @objc
     private func textChanged(sender: UITextField) {
         search(sender.text)
@@ -868,16 +856,20 @@ private extension DomainSelectionViewController {
 
     private func pushPurchaseDomainChoiceScreen() {
         @ObservedObject var choicesViewModel = DomainPurchaseChoicesViewModel()
-        let view = DomainPurchaseChoicesView(viewModel: choicesViewModel) { [weak self] in
-            guard let self else { return }
-            choicesViewModel.isGetDomainLoading = true
-            self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
-            WPAnalytics.track(.purchaseDomainGetDomainTapped)
-        } chooseSiteAction: { [weak self] in
-            guard let self else { return }
-            self.coordinator?.handleExistingSiteChoice(on: self)
-            WPAnalytics.track(.purchaseDomainChooseSiteTapped)
-        }
+        let view = DomainPurchaseChoicesView(
+            viewModel: choicesViewModel,
+            analyticsSource: coordinator?.analyticsSource,
+            buyDomainAction: { [weak self] in
+                guard let self else { return }
+                choicesViewModel.isGetDomainLoading = true
+                self.coordinator?.handleNoSiteChoice(on: self, choicesViewModel: choicesViewModel)
+                WPAnalytics.track(.purchaseDomainGetDomainTapped)
+            }, chooseSiteAction: { [weak self] in
+                guard let self else { return }
+                self.coordinator?.handleExistingSiteChoice(on: self)
+                WPAnalytics.track(.purchaseDomainChooseSiteTapped)
+            }
+        )
         let hostingController = UIHostingController(rootView: view)
         hostingController.title = Strings.domainChoiceTitle
         self.navigationController?.pushViewController(hostingController, animated: true)

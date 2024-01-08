@@ -520,7 +520,8 @@ class PostCoordinator: NSObject {
             ActionDispatcher.dispatch(NoticeAction.dismiss)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 
-            setPendingDeletion(false, post: post)
+            // No need to notify as the object gets deleted
+            setPendingDeletion(false, post: post, notify: false)
         } catch {
             if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
                 delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
@@ -532,15 +533,17 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func setPendingDeletion(_ isDeleting: Bool, post: AbstractPost) {
+    private func setPendingDeletion(_ isDeleting: Bool, post: AbstractPost, notify: Bool = true) {
         if isDeleting {
             pendingDeletionPostIDs.insert(post.objectID)
         } else {
             pendingDeletionPostIDs.remove(post.objectID)
         }
-        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
-            NSUpdatedObjectsKey: Set([post])
-        ])
+        if notify {
+            NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
+                NSUpdatedObjectsKey: Set([post])
+            ])
+        }
     }
 
     private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {

@@ -8,11 +8,6 @@ import WordPressFlux
 import DesignSystem
 
 class AppSettingsViewController: UITableViewController {
-    enum Sections: Int {
-        case media
-        case other
-    }
-
     fileprivate var handler: ImmuTableViewHandler!
 
     // MARK: - Dependencies

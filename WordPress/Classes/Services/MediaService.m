@@ -82,7 +82,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
             if (error) {
-                [self trackUploadError:error];
+                [self trackUploadError:error blog:blog];
                 DDLogError(@"Error uploading media: %@", error);
             }
             NSError *customError = [self customMediaUploadError:error remote:remote];
@@ -165,11 +165,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 #pragma mark - Private helpers
 
 - (void)trackUploadError:(NSError *)error
+                    blog:(Blog *)blog
 {
     if (error.code == NSURLErrorCancelled) {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled];
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withBlog:blog];
     } else {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error];
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlogID:blog.dotComID];
     }
 }
 

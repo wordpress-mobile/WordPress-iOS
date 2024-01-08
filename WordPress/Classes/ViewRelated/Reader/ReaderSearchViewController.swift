@@ -48,7 +48,6 @@ import Gridicons
     fileprivate var siteSearchController: ReaderSiteSearchViewController? {
         return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
     }
-    fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false

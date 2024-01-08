@@ -6,7 +6,8 @@ gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
 gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic'
 gem 'dotenv'
-gem 'fastlane', '~> 2.216'
+# 2.217.0 includes a fix for Xcode 15 test results parsing in CI
+gem 'fastlane', '~> 2.217'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.

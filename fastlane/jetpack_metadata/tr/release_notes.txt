@@ -1,0 +1,5 @@
+Fotoğraflar ve Site Ortamı için yeni ortam seçicilerle klasik düzenleyiciyi güncelledik. Endişelenmeyin; görselleri, videoları ve dahasını sitenize yüklemeye devam edebilirsiniz.
+
+Ortam türleriyle ilgili konuşuyorken artık Site Ortamı ekranına ortam filtreleri ekleyebileceğinizi de paylaşmak isteriz. iPhone kullanıyorsanız yeni en boy oranı modunu da fark edeceksiniz. Başlık menüsüne dokunduğunuzda iki seçenek de kullanılabilir.
+
+Son olarak, siz hazırlık süreci sırasında istatistikleri kontrol ederken görünen bozuk uyumluluk açılır penceresini düzelttik. Ayrıca oturum kapatılırken gerçekleşen nadir bir kilitlenme sorununu da düzelttik. Çok hoş.

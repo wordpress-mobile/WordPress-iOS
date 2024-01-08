@@ -507,7 +507,6 @@ private extension QuickStartTourGuide {
     }
 
     private struct Constants {
-        static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
         static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)

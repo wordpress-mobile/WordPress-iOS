@@ -153,10 +153,6 @@ import WordPressFlux
         }
     }
 
-    private func isShowingStoryOption() -> Bool {
-        actions.contains(where: { $0 is StoryAction })
-    }
-
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
         let actionSheetVC = CreateButtonActionSheet(headerView: createPromptHeaderView(), actions: actions)
         setupPresentation(on: actionSheetVC, for: traitCollection)

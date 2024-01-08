@@ -4,8 +4,6 @@ import UIKit
 
 extension WPStyleGuide {
 
-    fileprivate static let barTintColor: UIColor = .neutral(.shade10)
-
     public class func configureSearchBar(_ searchBar: UISearchBar, backgroundColor: UIColor, returnKeyType: UIReturnKeyType) {
         searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none

@@ -25,7 +25,6 @@ class ActivityListViewModel: Observable {
     private(set) var before: Date?
     private(set) var selectedGroups: [ActivityGroup] = []
 
-    var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
         didSet {
             if refreshing != oldValue {

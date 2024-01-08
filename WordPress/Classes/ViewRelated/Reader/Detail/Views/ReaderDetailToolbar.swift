@@ -247,6 +247,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
 
         configureActionButtonStyle(reblogButton)
+        prepareReblogForVoiceOver()
     }
 
     private func playLikeButtonAnimation() {
@@ -371,11 +372,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     fileprivate func configureButtonTitles() {
-        guard let post = post else {
-            return
-        }
-
-        let commentCount = post.commentCount()?.intValue ?? 0
         let commentTitle = Constants.commentButtonTitle
 
         likeButton.setTitle(likeButtonTitle, for: .normal)
@@ -386,14 +382,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: true)
         WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: true)
-    }
-
-    private func commentLabel(count: Int) -> String {
-        if traitCollection.horizontalSizeClass == .compact {
-            return count > 0 ? String(count) : ""
-        } else {
-            return WPStyleGuide.commentCountForDisplay(count)
-        }
     }
 
     private func likeLabel(count: Int) -> String {

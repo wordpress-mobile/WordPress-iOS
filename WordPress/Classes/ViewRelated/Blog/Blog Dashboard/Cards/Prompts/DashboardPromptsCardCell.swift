@@ -513,12 +513,6 @@ private extension DashboardPromptsCardCell {
         BlogDashboardAnalytics.trackHideTapped(for: .prompts)
         let service = BlogDashboardPersonalizationService(siteID: siteID)
         service.setEnabled(false, for: .prompts)
-        if !FeatureFlag.personalizeHomeTab.enabled {
-            let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { _ in
-                service.setEnabled(true, for: .prompts)
-            }
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-        }
     }
 
     func learnMoreTapped() {
@@ -547,12 +541,6 @@ private extension DashboardPromptsCardCell {
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
-        static let promptRemovedTitle = NSLocalizedString("prompts.notification.removed.title",
-                                                          value: "Blogging Prompts hidden",
-                                                          comment: "Title of the notification when prompts are hidden from the dashboard card")
-        static let promptRemovedSubtitle = NSLocalizedString("prompts.notification.removed.subtitle",
-                                                             value: "Visit Site Settings to turn back on",
-                                                             comment: "Subtitle of the notification when prompts are hidden from the dashboard card")
     }
 
     struct Style {
