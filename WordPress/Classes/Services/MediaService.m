@@ -424,13 +424,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
 
-    /// Temporary logging to try and narrow down an issue:
-    ///
-    /// REF: https://github.com/wordpress-mobile/WordPress-iOS/issues/15335
-    ///
-    if (blog == nil || blog.objectID == nil) {
-        DDLogError(@"🔴 Error: missing object ID (please contact @diegoreymendez with this log)");
-        DDLogError(@"%@", [NSThread callStackSymbols]);
+    if (blog == nil || blogObjectID == nil) {
+        NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to get blogObjectID for syncMediaLibraryForBlog"}];
+        [WordPressAppDelegate logError:error];
+        return;
     }
 
     [self.managedObjectContext performBlock:^{
