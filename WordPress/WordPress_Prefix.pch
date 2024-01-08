@@ -4,30 +4,10 @@
 
 #ifdef __OBJC__
 	// Core Frameworks
-	#import <Foundation/Foundation.h>
 	#import <UIKit/UIKit.h>
-	#import <CoreLocation/CoreLocation.h>
-	#import <CoreData/CoreData.h>
-    #import <SystemConfiguration/SystemConfiguration.h>
-    #import <MobileCoreServices/MobileCoreServices.h>
 
 	// 3rd Party    
     @import CocoaLumberjack;
-    @import NSObject_SafeExpectations;
-    @import WordPressShared.WPMapFilterReduce;
-
-	// Project-specific
-    #import "WPError.h"
-
-#ifndef IS_IPAD
-#define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-#endif
-#ifndef IS_IPHONE
-#define IS_IPHONE   (!IS_IPAD)
-#endif
-#ifndef IS_RETINA
-#define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
-#endif
 
 #ifndef WPCOM_SCHEME
 #warning WPCOM_SCHEME is not defined for this target configuration! Defaulting to "wordpress".
