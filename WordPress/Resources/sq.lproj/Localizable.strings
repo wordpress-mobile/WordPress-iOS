@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-09 19:17:57+0000 */
+/* Translation-Revision-Date: 2024-01-04 11:04:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sq_AL */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Krejt";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Krejt planet vjetore WordPress.com përmbajnë një emër përkatësie vetjake. Regjistrohuni që tani për të marrë falas përkatësinë tuaj.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9436,8 +9439,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Kopjoji URL-në";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Vizitoni sajtin";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Mësoni më tepër";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Për muajin janar, cytjet për blogim do të vijnë nga Bloganuary — sfida e bashkësisë tonë për të krijuar një zakon blogimi për vitin e ri.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary erdhi!";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary po vjen!";
@@ -9457,6 +9469,12 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* The first line of the description shown in the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.descriptions.first" = "Merrni një cytje të re, për t’ju frymëzuar çdo ditë.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "Për të marrë pjesë në Bloganuary lypset të aktivizoni Cytje Blogimi.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary do të përdorë Cytje të Përditshme Blogimi për t’ju dërguar tema për muajin janar.";
 
 /* The headline text of the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.headline" = "Merrni pjesë te sfida jonë, e gjatë një muaj, për shkrim";
@@ -9783,6 +9801,15 @@ Example: Reply to Pamela Nguyen */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Shtoje";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Përzgjidhni Figura";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "Shihni të Përzgjedhurat (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Hollësi Fushate";
@@ -10234,6 +10261,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "U fshi!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Krejt";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Dokumente";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Figura";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Video";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Fshije";
 
@@ -10311,6 +10353,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Bëni Video";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ nga %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
@@ -10464,6 +10509,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "S’keni ndonjë sajt";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Shtoni sajt";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Veprime Sajti";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Prekeni, që të shfaqen më tepër veprime sajti";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalizoni kreun";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Ndryshoni ikonë sajti";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Ndryshoni titull sajti";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Ndërroni sajt";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Vizitoni sajtin";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
@@ -11035,6 +11104,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Bëni paraparje të medias";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Shtoje";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Shpërzgjidhe";
 
@@ -11209,6 +11281,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Foto të furnizuara nga Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Kërkoni për të gjetur foto të lira që t’i shtoni te Mediateka juaj!";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Në këtë bisedë";
 
@@ -11355,6 +11433,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* View title for Help & Support page. */
 "support.title" = "Ndihmë";
+
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Kërkoni për të gjetur GIF-e që t’i shtoni te Mediateka juaj!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";

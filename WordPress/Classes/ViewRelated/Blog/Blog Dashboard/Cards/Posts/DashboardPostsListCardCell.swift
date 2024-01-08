@@ -109,8 +109,6 @@ extension DashboardPostsListCardCell {
     }
 
     private func addDraftsContextMenu(card: DashboardCard, blog: Blog) {
-        guard FeatureFlag.personalizeHomeTab.enabled else { return }
-
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
                 makeDraftsListMenuAction()
@@ -122,8 +120,6 @@ extension DashboardPostsListCardCell {
     }
 
     private func addScheduledContextMenu(card: DashboardCard, blog: Blog) {
-        guard FeatureFlag.personalizeHomeTab.enabled else { return }
-
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
                 makeScheduledListMenuAction()

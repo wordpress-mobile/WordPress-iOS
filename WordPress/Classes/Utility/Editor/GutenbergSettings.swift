@@ -99,10 +99,6 @@ class GutenbergSettings {
         return database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
     }
 
-    func setShowPhase2Dialog(_ showDialog: Bool, for blog: Blog) {
-        setShowPhase2Dialog(showDialog, forBlogURL: blog.url)
-    }
-
     func setShowPhase2Dialog(_ showDialog: Bool, forBlogURL url: String?) {
         database.set(showDialog, forKey: Key.showPhase2Dialog(forBlogURL: url))
     }

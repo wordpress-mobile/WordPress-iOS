@@ -12,7 +12,6 @@ class RevisionPreviewTextViewManager: NSObject {
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
 
         static let placeholderMediaLink = URL(string: "placeholder://")
-        static let placeholderDocumentLink = URL(string: "documentUploading://")
     }
 }
 

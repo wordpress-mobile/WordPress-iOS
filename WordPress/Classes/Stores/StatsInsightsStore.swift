@@ -838,9 +838,6 @@ extension StatsInsightsStore {
         return state.topTagsAndCategories
     }
 
-    func getPostingActivity() -> StatsPostingStreakInsight? {
-        return state.postingActivity
-    }
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
@@ -945,10 +942,6 @@ extension StatsInsightsStore {
 
     var annualAndMostPopularTimeStatus: StoreFetchingStatus {
         return state.annualAndMostPopularTimeStatus
-    }
-
-    var isFetchingLastPostSummary: Bool {
-        return lastPostSummaryStatus == .loading
     }
 
     var isFetchingOverview: Bool {

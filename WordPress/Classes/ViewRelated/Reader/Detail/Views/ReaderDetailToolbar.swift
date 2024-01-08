@@ -247,6 +247,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
 
         configureActionButtonStyle(reblogButton)
+        prepareReblogForVoiceOver()
     }
 
     private func playLikeButtonAnimation() {
@@ -371,11 +372,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     fileprivate func configureButtonTitles() {
-        guard let post = post else {
-            return
-        }
-
-        let commentCount = post.commentCount()?.intValue ?? 0
         let commentTitle = Constants.commentButtonTitle
 
         likeButton.setTitle(likeButtonTitle, for: .normal)

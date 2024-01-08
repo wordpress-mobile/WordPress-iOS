@@ -104,11 +104,37 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+    attempts = 0
+    begin
+      attempts += 1
+      set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+    rescue StandardError => e
+      if attempts < 2
+        sleep_time = 5
+        UI.message("Failed to set branch protection on GitHub. Retrying in #{sleep_time} seconds in case it was because the API hadn't noticed the new branch yet.")
+        sleep(sleep_time)
+        retry
+      else
+        UI.error("Failed to set branch protection on GitHub after #{attempts} attempts")
+        raise e
+      end
+    end
+
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
+
+    message = <<~MESSAGE
+      Code freeze started successfully.
+
+      Next steps:
+
+      - Checkout `#{release_branch_name}` branch locally
+      - Update pods and release notes
+      - Finalize the code freeze
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message:) if is_ci
   end
 
   # Executes the final steps for the code freeze
@@ -125,7 +151,9 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    UI.important("Completing code freeze for: #{release_version_current}")
+    version = release_version_current
+
+    UI.important("Completing code freeze for: #{version}")
 
     skip_user_confirmation = options[:skip_confirm]
 
@@ -139,7 +167,18 @@ platform :ios do
     end
 
     push_to_git_remote(tags: false)
+
     trigger_beta_build
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} code freeze"
+    )
+
+    message = <<~MESSAGE
+      Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message:) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -148,12 +187,18 @@ platform :ios do
   #
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
-    git_pull
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    release_version = release_version_current
+
+    # Check branch
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+      UI.user_error!("Release branch for version #{release_version} doesn't exist.")
+    end
+
+    ensure_git_branch_is_release_branch # This check is mostly redundant
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -185,6 +230,45 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     trigger_beta_build
+
+    # Create an intermediate branch to avoid conflicts when integrating the changes
+    Fastlane::Helper::GitHelper.create_branch("new_beta/#{release_version}")
+    push_to_git_remote(tags: false)
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge changes from #{build_code_current}"
+    )
+
+    message = <<~MESSAGE
+      Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'beta-completed', style: 'success', message:) if is_ci
+  end
+
+  lane :create_editorial_branch do |options|
+    ensure_git_status_clean
+
+    release_version = release_version_current
+
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+      UI.user_error!("Release branch for version #{release_version} doesn't exist.")
+    end
+
+    ensure_git_branch_is_release_branch # This check is mostly redundant
+
+    git_pull
+
+    Fastlane::Helper::GitHelper.create_branch(editorial_branch_name(version: release_version))
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push editorial branch to remote?')
+      UI.message("Aborting as requested. Don't forget to push the branch to the remote manually.")
+      next
+    end
+
+    # We need to also set upstream so the branch created in our local tracks the remote counterpart.
+    # Otherwise, when the next automation step will run and try to push changes made on that branch, it will fail.
+    push_to_git_remote(tags: false, set_upstream: true)
   end
 
   # Sets the stage to start working on a hotfix
@@ -290,35 +374,44 @@ platform :ios do
     # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
+    skip_user_confirmation = options[:skip_confirm]
+
     UI.important("Finalizing release: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     git_pull
 
-    check_all_translations(interactive: true)
+    check_all_translations(interactive: skip_user_confirmation == false)
 
     download_localized_strings_and_metadata(options)
-    lint_localizations
+    lint_localizations(allow_retry: skip_user_confirmation == false)
 
     bump_build_codes
 
-    # Wrap up
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the release build?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
+
     version = release_version_current
     remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    if prompt_for_confirmation(
-      message: 'Ready to push changes to remote and trigger the release build?',
-      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', false)
+    trigger_release_build
+
+    pr_url = create_release_management_pull_request(
+      base_branch: DEFAULT_BRANCH,
+      title: "Merge #{version} release finalization"
     )
-      push_to_git_remote(tags: false)
-      trigger_release_build
-    else
-      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-      next
-    end
+
+    message = <<~MESSAGE
+      Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
+    MESSAGE
+    buildkite_annotate(context: 'finalization-completed', style: 'success', message:) if is_ci
   end
 
   # Triggers a beta build on CI
@@ -351,8 +444,8 @@ end
 #
 def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
-    buildkite_organization: 'automattic',
-    buildkite_pipeline: 'wordpress-ios',
+    buildkite_organization: BUILDKITE_ORGANIZATION,
+    buildkite_pipeline: BUILDKITE_PIPELINE,
     branch:,
     environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml',
@@ -452,5 +545,20 @@ def commit_version_and_build_files
     path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
     message: 'Bump version number',
     allow_nothing_to_commit: false
+  )
+end
+
+def create_release_management_pull_request(base_branch:, title:)
+  token = ENV.fetch('GITHUB_TOKEN', nil)
+
+  UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
+
+  create_pull_request(
+    api_token: token,
+    repo: 'wordpress-mobile/WordPress-iOS',
+    title:,
+    head: Fastlane::Helper::GitHelper.current_git_branch,
+    base: base_branch,
+    labels: 'Releases'
   )
 end

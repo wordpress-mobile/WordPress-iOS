@@ -443,17 +443,7 @@ private extension WPRichContentView {
     struct Constants {
         static let textContainerInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 16.0, right: 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
-        static let photonQuality = 65
     }
-}
-
-// MARK: - Rich Media Struct
-
-/// A simple struct used to keep references to a rich text image and its associated attachment.
-///
-struct RichMedia {
-    let image: WPRichTextImage
-    let attachment: WPTextAttachment
 }
 
 // This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted

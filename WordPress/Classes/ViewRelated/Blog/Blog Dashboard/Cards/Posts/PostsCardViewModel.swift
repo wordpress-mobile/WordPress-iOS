@@ -272,7 +272,6 @@ private extension PostsCardViewModel {
 
     enum Constants {
         static let numberOfPosts = 3
-        static let numberOfPostsToSync: NSNumber = 3
     }
 
     enum Strings {

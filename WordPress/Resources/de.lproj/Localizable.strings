@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-23 00:55:21+0000 */
+/* Translation-Revision-Date: 2024-01-04 00:31:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: de */
@@ -648,6 +648,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alle";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Alle WordPress.com-Jahrestarife enthalten einen individuellen Domainnamen. Registriere jetzt deine kostenlose Domain.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9463,6 +9466,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "Im Januar erhältst du Blog-Schreibanregungen vom Bloganuary, unserer Community-Challenge. Diese soll dir helfen, Bloggen im neuen Jahr zur Gewohnheit zu machen.";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Der Bloganuary ist da!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Der Bloganuary kommt!";
 
@@ -10528,6 +10534,9 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Du hast keine Websites";
 
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Website hinzufügen";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Website-Aktionen";
 
@@ -10887,9 +10896,19 @@ Tapping on this row allows the user to edit the sharing message. */
 Note: Since the display space is limited, a short or concise translation is preferred. */
 "reader.detail.toolbar.comment.button" = "Kommentar";
 
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Mit einem „Like“ markieren";
+
 /* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
 but tapping on this button will add a Like to the post. */
 "reader.detail.toolbar.like.button.a11y.hint" = "Markiert diesen Beitrag mit einem „Like“.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Mit einem „Like“ markiert";
 
 /* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
 but tapping on this button will remove their like from the post. */
@@ -10926,8 +10945,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "Öffnet die Kommentare für den Beitrag.";
 
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Mit einem „Like“ markieren";
+
 /* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Markiert den Beitrag mit einem „Like“.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Mit einem „Like“ markiert";
 
 /* Accessibility hint for the liked button on the reader post card cell */
 "reader.post.button.liked.accessibility.hint" = "Entfernt das „Like“ für den Beitrag.";

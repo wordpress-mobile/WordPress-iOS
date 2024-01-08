@@ -495,7 +495,6 @@ private extension SupportTableViewController {
         static let closeButton = NSLocalizedString("support.button.close.title", value: "Done", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("support.row.helpCenter.title", value: "WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
         static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact support", comment: "Option in Support view to contact the support team.")
-        static let wpForums = NSLocalizedString("support.row.forums.title", value: "WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let prioritySupportSectionHeader = NSLocalizedString("support.sectionHeader.prioritySupport.title", value: "Priority Support", comment: "Section header in Support view for priority support.")
         static let wpForumsSectionHeader = NSLocalizedString("support.sectionHeader.forum.title", value: "Community Forums", comment: "Section header in Support view for the Forums.")
         static let advancedSectionHeader = NSLocalizedString("support.sectionHeader.advanced.title", value: "Advanced", comment: "Section header in Support view for advanced information.")

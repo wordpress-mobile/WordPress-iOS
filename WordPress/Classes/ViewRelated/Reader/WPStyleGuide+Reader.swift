@@ -102,12 +102,6 @@ extension WPStyleGuide {
         ]
     }
 
-    @objc public class func readerCardReadingTimeAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.fontForTextStyle(Cards.subtextTextStyle)
-
-        return [.font: font]
-    }
-
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
@@ -437,13 +431,6 @@ extension WPStyleGuide {
 
         button.setImage(icon, for: .normal)
         applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
-    }
-    /// Applies the settings button style to the button passed as an argument
-    class func applyReaderSettingsButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.cog)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button)
     }
 
     // MARK: - Gap Marker Styles

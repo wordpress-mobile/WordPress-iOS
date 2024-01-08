@@ -473,7 +473,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self reloadTableViewPreservingSelection];
 }
 
-- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section 
+{
+    [self showDetailViewForSubsection:section userInfo:@{}];
+}
+
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section userInfo:(NSDictionary *)userInfo
 {
     NSIndexPath *indexPath = [self indexPathForSubsection:section];
 
@@ -524,7 +529,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink];
+            BOOL showPicker = userInfo[[BlogDetailsViewController userInfoShowPickerKey]] ?: NO;
+            [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink showPicker: showPicker];
             break;
         case BlogDetailsSubsectionPages:
             self.restorableSelectedIndexPath = indexPath;
@@ -1818,10 +1824,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementPages];
 }
 
-- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source {
+    [self showMediaLibraryFromSource:source showPicker:false];
+}
+
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source showPicker:(BOOL)showPicker
 {
     [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
-    SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog];
+    SiteMediaViewController *controller = [[SiteMediaViewController alloc] initWithBlog:self.blog showPicker:showPicker];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
@@ -2227,6 +2237,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             completion();
         });
     }];
+}
+
+#pragma mark - Constants
+
++ (NSString *)userInfoShowPickerKey {
+    return @"show-picker";
 }
 
 @end

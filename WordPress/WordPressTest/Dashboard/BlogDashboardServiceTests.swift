@@ -55,7 +55,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         //
         // At the time of writing, the priority was getting some tests for new code to pass under the important Jetpac user path.
         // As such, here are a bunch of global-state feature flags overrides.
-        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
         try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: false)
@@ -66,7 +65,6 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         super.tearDown()
         context = nil
 
-        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
         try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: FeatureFlag.googleDomainsCard.originalValue)
