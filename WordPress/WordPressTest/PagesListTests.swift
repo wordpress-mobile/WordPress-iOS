@@ -77,7 +77,7 @@ class PagesListTests: CoreDataTestCase {
         NSLog("\(pages.count) pages used in \(#function)")
 
         measure {
-            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
+            let list = PageTree.hierarchyList(of: pages)
             XCTAssertEqual(list.count, pages.count)
         }
     }
@@ -94,7 +94,7 @@ class PagesListTests: CoreDataTestCase {
         NSLog("\(pages.count) pages used in \(#function)")
 
         measure {
-            let list = (try? PageTree.hierarchyList(of: pages)) ?? []
+            let list = PageTree.hierarchyList(of: pages)
             XCTAssertEqual(list.count, pages.count)
         }
     }
@@ -125,14 +125,14 @@ class PagesListTests: CoreDataTestCase {
         let manyPages = parentPage(childrenCount: 17, additionalLevels: 7)
 
         // Test 1: place the child page at the begining and the parent page at the end.
-        var sorted = try PageTree.hierarchyList(of: [child] + manyPages + [parent])
+        var sorted = PageTree.hierarchyList(of: [child] + manyPages + [parent])
         XCTAssertEqual(parent.hierarchyIndex, 0)
         XCTAssertEqual(child.hierarchyIndex, 1)
         // The child page should follow the parent page in the sorted list
         try XCTAssertEqual(XCTUnwrap(sorted.firstIndex(of: parent)) + 1, XCTUnwrap(sorted.firstIndex(of: child)))
 
         // Test 2: place the child page at the end and the parent page at the begining.
-        sorted = try PageTree.hierarchyList(of: [parent] + manyPages + [child])
+        sorted = PageTree.hierarchyList(of: [parent] + manyPages + [child])
         XCTAssertEqual(parent.hierarchyIndex, 0)
         XCTAssertEqual(child.hierarchyIndex, 1)
         // The child page should follow the parent page in the sorted list
@@ -142,7 +142,7 @@ class PagesListTests: CoreDataTestCase {
     func testHierarchyListRepresentationRoundtrip() throws {
         let roundtrip: (String) throws -> Void = { string in
             let pages = try Array<Page>(hierarchyListRepresentation: string, context: self.mainContext)
-            try XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
+            XCTAssertEqual(PageTree.hierarchyList(of: pages).hierarchyListRepresentation(), string)
         }
 
         try roundtrip("""
