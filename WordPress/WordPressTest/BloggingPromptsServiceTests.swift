@@ -419,7 +419,7 @@ private extension BloggingPromptsServiceTests {
         let month = try XCTUnwrap(Int(components.first ?? ""))
         let day = try XCTUnwrap(Int(components.last ?? ""))
 
-        var dateComponents = Self.calendar.dateComponents(in: .current, from: Date())
+        var dateComponents = DateComponents()
         dateComponents.year = forcedYear
         dateComponents.month = month
         dateComponents.day = day
