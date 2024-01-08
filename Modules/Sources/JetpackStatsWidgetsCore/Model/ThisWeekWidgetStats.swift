@@ -1,39 +1,48 @@
 import Foundation
-import WordPressKit
 
 /// This struct contains data for 'Views This Week' stats to be displayed in the corresponding widget.
 ///
 
-struct ThisWeekWidgetStats: Codable {
-    let days: [ThisWeekWidgetDay]
+public struct ThisWeekWidgetStats: Codable {
+    public let days: [ThisWeekWidgetDay]
 
-    init(days: [ThisWeekWidgetDay]? = []) {
+    public init(days: [ThisWeekWidgetDay]? = []) {
         self.days = days ?? []
     }
 }
 
-struct ThisWeekWidgetDay: Codable, Hashable {
-    let date: Date
-    let viewsCount: Int
-    let dailyChangePercent: Float
+public struct ThisWeekWidgetDay: Codable, Hashable {
+    public let date: Date
+    public let viewsCount: Int
+    public let dailyChangePercent: Float
 
-    init(date: Date, viewsCount: Int, dailyChangePercent: Float) {
+    public init(date: Date, viewsCount: Int, dailyChangePercent: Float) {
         self.date = date
         self.viewsCount = viewsCount
         self.dailyChangePercent = dailyChangePercent
     }
 }
 
-extension ThisWeekWidgetStats {
+public extension ThisWeekWidgetStats {
+    struct Input {
+        public let periodStartDate: Date
+        public let viewsCount: Int
+
+        public init(periodStartDate: Date, viewsCount: Int) {
+            self.periodStartDate = periodStartDate
+            self.viewsCount = viewsCount
+        }
+    }
+
     static var maxDaysToDisplay: Int {
         return 7
     }
 
-    static func daysFrom(summaryData: [StatsSummaryData]) -> [ThisWeekWidgetDay] {
+    static func daysFrom(summaryData: [ThisWeekWidgetStats.Input]) -> [ThisWeekWidgetDay] {
         var days = [ThisWeekWidgetDay]()
 
         for index in 0..<maxDaysToDisplay {
-            guard index + 1 <= summaryData.endIndex else {
+            guard index + 1 < summaryData.endIndex else {
                 break
             }
 
@@ -59,13 +68,13 @@ extension ThisWeekWidgetStats {
 }
 
 extension ThisWeekWidgetStats: Equatable {
-    static func == (lhs: ThisWeekWidgetStats, rhs: ThisWeekWidgetStats) -> Bool {
+    public static func == (lhs: ThisWeekWidgetStats, rhs: ThisWeekWidgetStats) -> Bool {
         return lhs.days.elementsEqual(rhs.days)
     }
 }
 
 extension ThisWeekWidgetDay: Equatable {
-    static func == (lhs: ThisWeekWidgetDay, rhs: ThisWeekWidgetDay) -> Bool {
+    public static func == (lhs: ThisWeekWidgetDay, rhs: ThisWeekWidgetDay) -> Bool {
         return lhs.date == rhs.date &&
         lhs.viewsCount == rhs.viewsCount &&
         lhs.dailyChangePercent == rhs.dailyChangePercent
