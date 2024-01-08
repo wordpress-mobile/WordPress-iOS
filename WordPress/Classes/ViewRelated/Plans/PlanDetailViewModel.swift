@@ -11,13 +11,6 @@ struct PlanDetailViewModel {
         case ready([PlanFeature])
     }
 
-    func withFeatures(_ features: FeaturesViewModel) -> PlanDetailViewModel {
-        return PlanDetailViewModel(
-            plan: plan,
-            features: features
-        )
-    }
-
     var tableViewModel: ImmuTable {
         switch features {
         case .loading, .error:
@@ -65,7 +58,5 @@ struct PlanDetailViewModel {
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
         static let noConnectionTitle = NSLocalizedString("No connection", comment: "An error message title shown when there is no internet connection.")
         static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plans", comment: "An error message shown when there is no internet connection.")
-        static let price = NSLocalizedString("%@ per year", comment: "Plan yearly price")
     }
-
 }

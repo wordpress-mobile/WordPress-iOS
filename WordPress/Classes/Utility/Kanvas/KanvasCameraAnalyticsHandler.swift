@@ -28,10 +28,6 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
         logString(string: "logPhotoCaptured cameraPosition:\(cameraPosition)")
     }
 
-    public func logGifCaptured(cameraPosition: String) {
-        logString(string: "logGifCaptured cameraPosition:\(cameraPosition)")
-    }
-
     public func logVideoCaptured(cameraPosition: String) {
         logString(string: "logVideoCaptured cameraPosition:\(cameraPosition)")
     }
