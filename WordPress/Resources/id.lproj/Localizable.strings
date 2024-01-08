@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-19 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-04 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -642,6 +642,9 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter.
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Semua";
+
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Semua paket tahunan WordPress.com menyertakan nama domain kustom. Daftarkan domain gratis Anda sekarang.";
 
 /* Footer of the free domain registration section for a paid plan.
    Information about redeeming domain credit on site dashboard. */
@@ -9451,6 +9454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary telah hadir!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary segera hadir!";
 
@@ -10512,6 +10518,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Anda belum memiliki situs";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Tambahkan situs";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Tindakan di Situs";
