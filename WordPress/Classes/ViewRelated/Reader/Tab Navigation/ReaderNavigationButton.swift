@@ -29,7 +29,7 @@ struct ReaderNavigationButton: View {
             }
         } label: {
             menuLabel
-        }
+        }.buttonStyle(PlainButtonStyle())
     }
 
     var menuLabel: some View {
