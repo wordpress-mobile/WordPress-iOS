@@ -8,7 +8,7 @@ final class NotificationsViewModelTests: CoreDataTestCase {
     override func tearDown() async throws {
         try await super.tearDown()
         sutUserDefaults.removeObject(
-            forKey: NotificationsViewModel.Constants.lastSeenTime
+            forKey: NotificationsViewModel.Constants.lastSeenKey
         )
     }
 
@@ -22,7 +22,7 @@ final class NotificationsViewModelTests: CoreDataTestCase {
         XCTAssertEqual(sut.lastSeenTime, testString)
         XCTAssertEqual(
             sutUserDefaults.string(
-                forKey: NotificationsViewModel.Constants.lastSeenTime
+                forKey: NotificationsViewModel.Constants.lastSeenKey
             ),
             testString
         )

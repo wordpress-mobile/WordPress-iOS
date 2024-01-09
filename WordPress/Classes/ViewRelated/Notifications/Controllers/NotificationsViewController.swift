@@ -1972,7 +1972,6 @@ private extension NotificationsViewController {
 
     enum Settings {
         static let estimatedRowHeight = CGFloat(70)
-        static let lastSeenTime = "notifications_last_seen_time"
     }
 
     enum Stats {

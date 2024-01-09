@@ -1,6 +1,6 @@
 final class NotificationsViewModel {
     enum Constants {
-        static let lastSeenTime = "notifications_last_seen_time"
+        static let lastSeenKey = "notifications_last_seen_time"
     }
 
     private let userDefaults: UserPersistentRepository
@@ -17,10 +17,10 @@ final class NotificationsViewModel {
     /// The last time when user seen notifications
     var lastSeenTime: String? {
         get {
-            return userDefaults.string(forKey: Constants.lastSeenTime)
+            return userDefaults.string(forKey: Constants.lastSeenKey)
         }
         set {
-            userDefaults.set(newValue, forKey: Constants.lastSeenTime)
+            userDefaults.set(newValue, forKey: Constants.lastSeenKey)
         }
     }
 
