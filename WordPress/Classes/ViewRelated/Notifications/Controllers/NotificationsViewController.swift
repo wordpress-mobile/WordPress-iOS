@@ -431,7 +431,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         showDetails(for: note)
 
-        AppRatingUtility.shared.incrementSignificantEvent()
+        if !note.read {
+            AppRatingUtility.shared.incrementSignificantEvent()
+        }
 
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
