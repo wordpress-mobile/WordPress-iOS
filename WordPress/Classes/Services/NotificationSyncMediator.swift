@@ -19,10 +19,13 @@ import WordPressKit
 //
 let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
 
+protocol NotificationSyncMediatorProtocol {
+    func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
+}
 
 // MARK: - NotificationSyncMediator
 //
-final class NotificationSyncMediator {
+final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Returns the Main Managed Context
     ///
     private let contextManager: CoreDataStackSwift
