@@ -70,7 +70,7 @@ PODS:
     - WordPressKit (~> 9.0.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (9.0.1):
+  - WordPressKit (9.0.2):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -121,7 +121,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 8.0.1, ~> 8.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `87eba2549022571515f256667ce209e6604ea0e0`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `eab6275c5955f8fb5a15f4b01f7a197c4aae261e`)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
@@ -177,7 +177,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.110.0.podspec
   WordPressKit:
-    :commit: 87eba2549022571515f256667ce209e6604ea0e0
+    :commit: eab6275c5955f8fb5a15f4b01f7a197c4aae261e
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -189,7 +189,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.100.2
   WordPressKit:
-    :commit: 87eba2549022571515f256667ce209e6604ea0e0
+    :commit: eab6275c5955f8fb5a15f4b01f7a197c4aae261e
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -223,7 +223,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: fd2e1d340680faffffd9d675fc2df5ed19e26ea2
-  WordPressKit: 304725187d755db8d5ff73a58d27eda0071771c1
+  WordPressKit: 23d0ffb43f2ccdad2debd6799e62d39790a5ffad
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -236,6 +236,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: d3b259c9bf3b4aa64a7b7f2bc5909a0baeb6e1be
+PODFILE CHECKSUM: ad841405d522fbc6b10dc974d36e18db546137e7
 
 COCOAPODS: 1.14.2
