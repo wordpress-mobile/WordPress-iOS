@@ -75,7 +75,6 @@ class FilterSheetViewController: UIViewController {
         return stack
     }()
 
-
     // MARK: Methods
 
     init(filter: FilterProvider,

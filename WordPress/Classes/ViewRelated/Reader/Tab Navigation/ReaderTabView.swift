@@ -3,6 +3,7 @@ import UIKit
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
+    private var mainStackViewTopAnchor: NSLayoutConstraint?
     private let containerView: UIView
     private let buttonContainer: UIView
     private lazy var navigationMenu: UIView = {
@@ -14,6 +15,7 @@ class ReaderTabView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private var isMenuHidden = false
 
     private let viewModel: ReaderTabViewModel
 
@@ -105,6 +107,10 @@ extension ReaderTabView {
                 return
         }
 
+        if let childController = childController as? ReaderStreamViewController {
+            childController.navigationMenuDelegate = self
+        }
+
         containerView.translatesAutoresizingMaskIntoConstraints = false
         childController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -121,6 +127,8 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
+        mainStackViewTopAnchor = mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor)
+        guard let mainStackViewTopAnchor else { return }
         NSLayoutConstraint.activate([
             navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
             navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
@@ -129,7 +137,7 @@ extension ReaderTabView {
             buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
             buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
             buttonContainer.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
-            mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+            mainStackViewTopAnchor,
             mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
@@ -146,6 +154,16 @@ extension ReaderTabView {
         // Remove any filters for selected index, then add new filter to array.
         self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
         self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+    }
+
+    private func updateMenuDisplay(hidden: Bool) {
+        guard isMenuHidden != hidden else { return }
+
+        isMenuHidden = hidden
+        mainStackViewTopAnchor?.constant = hidden ? -buttonContainer.frame.height : 0
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
     }
 }
 
@@ -186,4 +204,42 @@ private extension ReaderTabView {
         static let barHeight: CGFloat = 48
         static let dividerColor: UIColor = .divider
     }
+}
+
+// MARK: - ReaderNavigationMenuDelegate
+
+extension ReaderTabView: ReaderNavigationMenuDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint) {
+        let isContentOffsetNearTop = scrollView.contentOffset.y < scrollView.frame.height / 2
+        let isUserScrollingDown = velocity.y < -400
+        let isUserScrollingUp = velocity.y > 400
+
+        if !isMenuHidden && !isContentOffsetNearTop && isUserScrollingDown {
+            updateMenuDisplay(hidden: true)
+        }
+
+        if isMenuHidden && isUserScrollingUp {
+            updateMenuDisplay(hidden: false)
+        }
+
+        // Accounts for a user scrolling slowly enough to not trigger displaying the menu near the top of the content
+        if isMenuHidden && isContentOffsetNearTop && velocity.y > 0 {
+            updateMenuDisplay(hidden: false)
+        }
+
+    }
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let isTargetContentNearTop = targetContentOffset.pointee.y < scrollView.frame.height / 2
+
+        // Accounts for the case where a user quickly swipes the scroll view without holding their
+        // finger on it.
+        // Note: velocity here is opposite of the velocity in `scrollViewDidScroll`. Postive values
+        // are scrolling down. The scale is also much different.
+        if !isMenuHidden && !isTargetContentNearTop && velocity.y > 0.5 {
+            updateMenuDisplay(hidden: true)
+        }
+    }
+
 }

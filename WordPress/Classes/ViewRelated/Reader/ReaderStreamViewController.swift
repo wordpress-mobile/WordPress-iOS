@@ -48,6 +48,8 @@ import WordPressUI
         return tableViewController.tableView
     }
 
+    weak var navigationMenuDelegate: ReaderNavigationMenuDelegate?
+
     var jetpackBannerView: JetpackBannerView?
 
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
@@ -1505,6 +1507,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
     }
 
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        navigationMenuDelegate?.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    }
+
     // MARK: - Fetched Results Related
 
     func managedObjectContext() -> NSManagedObjectContext {
@@ -2105,5 +2111,8 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         processJetpackBannerVisibility(scrollView)
+
+        let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
+        navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
     }
 }
