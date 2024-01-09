@@ -1,6 +1,7 @@
 24.1
 -----
 * [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
+* [*] Add "Share" action to the site context menu [#22298]
 
 24.0
 -----
