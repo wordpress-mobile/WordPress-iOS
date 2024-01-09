@@ -137,15 +137,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
-    /// The last time when user seen notifications
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
-        }
-    }
+    lazy var viewModel: NotificationsViewModel = {
+        NotificationsViewModel(userDefaults: userDefaults)
+    }()
 
     // MARK: - View Lifecycle
 
@@ -1740,18 +1734,7 @@ private extension NotificationsViewController {
             return
         }
 
-        guard let timestamp = note.timestamp, timestamp != lastSeenTime else {
-            return
-        }
-
-        let mediator = NotificationSyncMediator()
-        mediator?.updateLastSeen(timestamp) { error in
-            guard error == nil else {
-                return
-            }
-
-            self.lastSeenTime = timestamp
-        }
+        viewModel.lastSeenChanged(timestamp: note.timestamp)
     }
 
     func loadNotification(with noteId: String) -> Notification? {
@@ -1801,7 +1784,7 @@ private extension NotificationsViewController {
     }
 
     func resetLastSeenTime() {
-        lastSeenTime = nil
+        viewModel.lastSeenTime = nil
     }
 
     func resetApplicationBadge() {
