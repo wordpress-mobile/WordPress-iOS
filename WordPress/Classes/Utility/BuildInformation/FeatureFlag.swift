@@ -39,7 +39,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .googleDomainsCard:
             return false
         case .newTabIcons:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 
