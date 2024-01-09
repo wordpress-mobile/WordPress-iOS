@@ -254,11 +254,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 //            self.showInlinePrompt()
 //        }
 
-        if !unreadNotificationIds.isEmpty {
-            // Track as significant event for App Rating calculations
-            AppRatingUtility.shared.incrementSignificantEvent()
-        }
-
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
     }
@@ -435,6 +430,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
 
         showDetails(for: note)
+
+        AppRatingUtility.shared.incrementSignificantEvent()
 
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
