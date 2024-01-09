@@ -1,5 +1,10 @@
 import SwiftUI
 
+protocol ReaderNavigationMenuDelegate: AnyObject {
+    func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint)
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+}
+
 struct ReaderNavigationMenu: View {
 
     @ObservedObject var viewModel: ReaderTabViewModel
