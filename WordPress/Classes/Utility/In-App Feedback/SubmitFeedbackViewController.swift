@@ -4,7 +4,13 @@ import DesignSystem
 
 final class SubmitFeedbackViewController: UIViewController {
 
-    // MARK: - Views
+    // MARK: - Public Properties
+
+    private(set) var feedbackWasSubmitted = false
+
+    var onFeedbackSubmitted: ((SubmitFeedbackViewController, String) -> Void)?
+
+    // MARK: - Private Properties
 
     private let textView: UITextView = {
         let textView = UITextView()
@@ -14,14 +20,6 @@ final class SubmitFeedbackViewController: UIViewController {
         textView.textContainerInset = .init(allEdges: Length.Padding.double)
         return textView
     }()
-
-    // MARK: - Properties
-
-    private(set) var feedbackWasSubmitted = false
-
-    var onFeedbackSubmitted: ((SubmitFeedbackViewController, String) -> Void)?
-
-    // MARK: -
 
     private var cancellables = Set<AnyCancellable>()
 

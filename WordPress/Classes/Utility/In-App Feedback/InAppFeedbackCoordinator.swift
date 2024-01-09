@@ -1,7 +1,11 @@
 import Foundation
 import StoreKit
 
-struct InAppFeedbackCoordinator {
+protocol InAppFeedbackPromptPresenting {
+    func showPromptIfNeeded(in controller: UIViewController)
+}
+
+struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
 
     // MARK: - Properties
 
@@ -18,7 +22,7 @@ struct InAppFeedbackCoordinator {
     // MARK: - Showing the Prompt
 
     func shouldShowPromptForAppReview() -> Bool {
-        return true // appRatingUtility.shouldPromptForAppReview()
+        return appRatingUtility.shouldPromptForAppReview()
     }
 
     func showPromptIfNeeded(in controller: UIViewController) {
@@ -104,7 +108,7 @@ struct InAppFeedbackCoordinator {
 
 // MARK: - Strings
 
-extension InAppFeedbackCoordinator {
+extension InAppFeedbackPromptCoordinator {
 
     private enum Strings {
         enum FeedbackAlert {
