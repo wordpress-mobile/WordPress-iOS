@@ -265,7 +265,6 @@
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "ปิด";
@@ -471,8 +470,7 @@
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "แก้ไข";
 
 /* View title when editing a comment. */
@@ -587,8 +585,7 @@
    Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "กำลังติดตาม";
@@ -975,7 +972,6 @@
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -1201,8 +1197,7 @@
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "ผู้อ่าน";
 
 /* Text for the 'Reblog' button. */
@@ -1295,7 +1290,6 @@
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "ลองใหม่";
 
@@ -1426,9 +1420,6 @@
    Continue without making a selection
    Continue without making a selection. */
 "Skip" = "ข้าม";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "การอัปโหลดไฟล์สื่อบางไฟล์ล้มเหลว การกระทำนี้จะลบไฟล์ที่ล้มเหลวทั้งหมดออกจากเรื่อง \nคุณต้องการจะบันทึกหรือไม่?";
 
 /* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
 "Sorry, but your username contains an invalid phrase%@." = "ขอโทษครับ  แต่ชื่อผู้ใช้ของคุณประกอบด้วยสัญญลักษณ์ที่ใช้งานไม่ได้ %@";
@@ -1603,7 +1594,6 @@
 "Theme Activated" = "เปิดใช้งานธีมแล้ว";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
@@ -1662,8 +1652,7 @@
 /* Insights Management 'Today's Stats' title */
 "Today's Stats" = "สถิติวันนี้";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "กระทู้";
 
 /* Topics Filter Tab Title */
@@ -1789,9 +1778,6 @@
 /* Label to show while uploading media to server */
 "Uploading..." = "กำลังอัปโหลด...";
 
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "การอัปโหลดล้มเหลว";
-
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -1907,8 +1893,7 @@
 /* Title of Years stats filter. */
 "Years" = "ปี";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "ใช่";

@@ -3,9 +3,6 @@
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: pl */
 
-/* Per-year postfix shown after a domain's cost. */
-" \/ year" = " \/ rocznie";
-
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Przycisk „Więcej”";
 
@@ -538,8 +535,7 @@
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Wybierz witrynę, którą chcesz otworzyć.";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Wybierz motyw";
 
 /* Select the site's intent. Subtitle */
@@ -577,7 +573,6 @@
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Zamknij";
@@ -629,9 +624,6 @@
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site title" = "Ukończono: sprawdzanie tytułu witryny";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "Ukończono: kontynuuj ustawianie witryny";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Ukończono: obejrzyj swoją stronę";
@@ -749,9 +741,6 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Państwo";
 
-/* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Logowanie awarii";
-
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Raporty o awariach";
 
@@ -766,9 +755,6 @@
 
 /* Create New header text */
 "Create New" = "Utwórz";
-
-/* Title for the site creation flow. */
-"Create New Site" = "Utwórz witrynę";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -985,8 +971,7 @@
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Edytuj";
 
 /* Title for the edit more button section */
@@ -1202,8 +1187,7 @@
    Label for number of followers. */
 "Followers" = "Obserwujący";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Obserwujesz";
@@ -1922,7 +1906,6 @@
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -2230,9 +2213,6 @@
 /* Published on [date] */
 "Published on" = "Opublikowano dnia ";
 
-/* Label that describes in which blog the user is publishing to */
-"Publishing To" = "Publikowanie w ";
-
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikowanie wpisu…";
 
@@ -2254,8 +2234,7 @@
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Czytnik";
 
 /* Real Estate site intent topic */
@@ -2384,7 +2363,6 @@
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Ponów";
 
@@ -2856,7 +2834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Motyw został włączony";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Motywy";
@@ -2925,9 +2902,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
-
-/* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "Narzędzia";
 
 /* Topics Filter Tab Title */
 "Topics" = "Tematy";
@@ -3015,8 +2989,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Przestań obserwować";
 
-/* Accessibility label for unfollowing a site
-   Accessibility label for unfollowing a tag */
+/* Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Przestań obserwować %@";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -3313,8 +3286,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Years stats filter. */
 "Years" = "Lata";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Tak";
@@ -3424,9 +3396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Flagi funkcji";
 
-/* General section title */
-"debugMenu.generalSectionTitle" = "Ogólne";
-
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "np. 1122334455";
 
@@ -3437,7 +3406,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "ellipsisButton.AccessibilityLabel" = "Więcej";
 
 /* Placeholder for the site url textfield.
-   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -3857,9 +3825,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Odwiedzający";
-
-/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "twoja witryna";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domeny";
