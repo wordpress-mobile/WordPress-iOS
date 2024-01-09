@@ -532,7 +532,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     override func fetch(
         cards: [String],
         forBlogID blogID: Int,
-        deviceId: String,
+        deviceId: String?,
         success: @escaping (NSDictionary) -> Void,
         failure: @escaping (Error) -> Void
     ) {
