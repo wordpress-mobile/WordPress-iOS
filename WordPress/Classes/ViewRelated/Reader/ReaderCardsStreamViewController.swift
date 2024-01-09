@@ -46,7 +46,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ReaderWelcomeBanner.displayIfNeeded(in: tableView)
 
         tableView.register(ReaderTopicsCardCell.defaultNib, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
