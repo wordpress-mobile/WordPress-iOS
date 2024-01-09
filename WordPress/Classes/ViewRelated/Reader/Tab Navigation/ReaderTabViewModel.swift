@@ -29,6 +29,11 @@ import WordPressUI
     /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
     var makeReaderContentViewController: (ReaderContent) -> ReaderContentViewController
 
+    /// if items are loaded
+    var itemsLoaded: Bool {
+        return tabItems.count > 0
+    }
+
     /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((FilterProvider, UIView?, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
