@@ -21,8 +21,6 @@ class SiteCreationAnalyticsHelper {
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
     private static let verticalSlugKey = "vertical_slug"
-    private static let variationKey = "variation"
-    private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
 
     // MARK: - Lifecycle

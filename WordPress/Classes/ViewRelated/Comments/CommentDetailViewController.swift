@@ -112,10 +112,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-    private lazy var moderationCell: UITableViewCell = {
-        return $0
-    }(UITableViewCell())
-
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,

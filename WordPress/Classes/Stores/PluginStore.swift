@@ -170,10 +170,6 @@ struct PluginStoreState {
 
     var directoryEntries = [String: PluginDirectoryEntryState]()
     var fetchingDirectoryEntry = [String: Bool]()
-
-    static func emptyState() -> PluginStoreState {
-        return PluginStoreState()
-    }
 }
 
 extension PluginStoreState {

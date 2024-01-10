@@ -454,7 +454,6 @@
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Затваряне";
@@ -796,8 +795,7 @@
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Редакция";
 
 /* Title for the edit more button section */
@@ -825,9 +823,6 @@
 
 /* Title for the editor settings section */
 "Editor" = "Редактор";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "Редактира на коментар";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -975,8 +970,7 @@
    Label for number of followers. */
 "Followers" = "Последователи";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Следван";
@@ -1590,7 +1584,6 @@
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -1889,8 +1882,7 @@
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Четец";
 
 /* Text for the 'Reblog' button. */
@@ -2016,7 +2008,6 @@
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Отново";
 
@@ -2205,9 +2196,6 @@
    Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Пропускане";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Някои качвания на файлове се провалиха. Това действие ще премахне всички провалени файлове от публикацията. Запазване въпреки това?";
 
 /* Invite Validation Alert
    Update User Failed Title */
@@ -2448,7 +2436,6 @@
 "Theme Activated" = "Темата е активирана";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Теми";
@@ -2547,8 +2534,7 @@
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "Включване на HTML";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "Тема";
 
 /* Topics Filter Tab Title */
@@ -2697,9 +2683,6 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Качване...";
-
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "Неуспешно качване";
 
 /* Use the current image */
 "Use" = "Използване";
@@ -2871,8 +2854,7 @@
 /* Title of Years stats filter. */
 "Years" = "Години";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Да";

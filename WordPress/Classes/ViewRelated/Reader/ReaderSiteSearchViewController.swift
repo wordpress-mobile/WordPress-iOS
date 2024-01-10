@@ -8,11 +8,6 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
     // MARK: - Properties
     // MARK: Table / Sync Handlers
 
-    fileprivate lazy var tableHandler: WPTableViewHandler = {
-        let tableHandler = WPTableViewHandler(tableView: self.tableView)
-        return tableHandler
-    }()
-
     fileprivate lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
         syncHelper.delegate = self

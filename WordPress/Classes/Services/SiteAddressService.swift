@@ -20,20 +20,6 @@ protocol SiteAddressService {
     func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion)
 }
 
-// MARK: - MockSiteAddressService
-
-final class MockSiteAddressService: SiteAddressService {
-    func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion) {
-        completion(.success(SiteAddressServiceResult(hasExactMatch: true, domainSuggestions: mockAddresses)))
-    }
-
-    private let mockAddresses: [DomainSuggestion] = {
-        return [ DomainSuggestion(name: "ravenclaw.wordpress.com"),
-                 DomainSuggestion(name: "ravenclaw.com"),
-                 DomainSuggestion(name: "team.ravenclaw.com")]
-    }()
-}
-
 private extension DomainSuggestion {
     init(name: String) {
         try! self.init(json: ["domain_name": name as AnyObject])

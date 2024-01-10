@@ -14,8 +14,10 @@ struct LockScreenUnconfiguredView: View {
                     .minimumScaleFactor(0.8)
                     .multilineTextAlignment(.center)
             }
+            .removableWidgetBackground()
         } else {
             Text("Not implemented for widget family \(family.debugDescription)")
+                .removableWidgetBackground()
         }
     }
 }
