@@ -2,7 +2,7 @@ import Foundation
 import StoreKit
 
 protocol InAppFeedbackPromptPresenting {
-    func showPromptIfNeeded(in controller: UIViewController)
+    func showPromptIfNeeded(in controller: UIViewController) -> Bool
 }
 
 struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
@@ -22,17 +22,18 @@ struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
     // MARK: - Showing the Prompt
 
     func shouldShowPromptForAppReview() -> Bool {
-        return appRatingUtility.shouldPromptForAppReview()
+        return true // appRatingUtility.shouldPromptForAppReview()
     }
 
-    func showPromptIfNeeded(in controller: UIViewController) {
+    func showPromptIfNeeded(in controller: UIViewController) -> Bool {
         guard shouldShowPromptForAppReview() else {
-            return
+            return false
         }
         let alert = self.feedbackAlert(in: controller)
         controller.present(alert, animated: true)
         appRatingUtility.userWasPromptedToReview()
         WPAnalytics.track(.appReviewsSawPrompt)
+        return true
     }
 
     private func feedbackAlert(in controller: UIViewController) -> UIAlertController {

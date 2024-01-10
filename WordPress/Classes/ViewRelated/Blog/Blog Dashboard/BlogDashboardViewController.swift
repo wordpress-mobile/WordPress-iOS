@@ -8,8 +8,6 @@ final class BlogDashboardViewController: UIViewController {
     var blog: Blog
     var presentedPostStatus: String?
 
-    private let inAppFeedbackPresenter: InAppFeedbackPromptPresenting
-
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
@@ -38,21 +36,10 @@ final class BlogDashboardViewController: UIViewController {
 
     // MARK: - Init
 
-    init(blog: Blog,
-         embeddedInScrollView: Bool,
-         inAppFeedbackPresenter: InAppFeedbackPromptPresenting) {
+    @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
         self.embeddedInScrollView = embeddedInScrollView
-        self.inAppFeedbackPresenter = inAppFeedbackPresenter
         super.init(nibName: nil, bundle: nil)
-    }
-
-    @objc convenience init(blog: Blog, embeddedInScrollView: Bool) {
-        self.init(
-            blog: blog,
-            embeddedInScrollView: embeddedInScrollView,
-            inAppFeedbackPresenter: InAppFeedbackPromptCoordinator()
-        )
     }
 
     required init?(coder: NSCoder) {
@@ -97,8 +84,6 @@ final class BlogDashboardViewController: UIViewController {
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
-
-        self.inAppFeedbackPresenter.showPromptIfNeeded(in: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

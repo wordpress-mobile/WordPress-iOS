@@ -3793,8 +3793,10 @@
 		F4FE743529C3767300AC2729 /* AddressTableViewCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FE743329C3767300AC2729 /* AddressTableViewCell+ViewModel.swift */; };
 		F4FF50E72B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */; };
 		F4FF50E82B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */; };
-		F4FF50E92B4D7D590076DB0C /* InAppFeedbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackCoordinator.swift */; };
-		F4FF50EA2B4D7D590076DB0C /* InAppFeedbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackCoordinator.swift */; };
+		F4FF50E92B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */; };
+		F4FF50EA2B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */; };
+		F4FF50EC2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */; };
+		F4FF50ED2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */; };
 		F504D2B025D60C5900A2764C /* StoryPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2AA25D60C5900A2764C /* StoryPoster.swift */; };
 		F504D2B125D60C5900A2764C /* StoryMediaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2AB25D60C5900A2764C /* StoryMediaLoader.swift */; };
 		F504D44825D717F600A2764C /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13ACCD31EE5672100CCE985 /* PostEditor.swift */; };
@@ -9100,7 +9102,8 @@
 		F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeHeaderViewConfiguration.swift; sourceTree = "<group>"; };
 		F4FE743329C3767300AC2729 /* AddressTableViewCell+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressTableViewCell+ViewModel.swift"; sourceTree = "<group>"; };
 		F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitFeedbackViewController.swift; sourceTree = "<group>"; };
-		F4FF50E62B4D7D590076DB0C /* InAppFeedbackCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppFeedbackCoordinator.swift; sourceTree = "<group>"; };
+		F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppFeedbackPromptCoordinator.swift; sourceTree = "<group>"; };
+		F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteOverlaysCoordinator.swift; sourceTree = "<group>"; };
 		F504D2AA25D60C5900A2764C /* StoryPoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryPoster.swift; sourceTree = "<group>"; };
 		F504D2AB25D60C5900A2764C /* StoryMediaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryMediaLoader.swift; sourceTree = "<group>"; };
 		F50B0E7A246212B8006601DD /* NoticeAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAnimator.swift; sourceTree = "<group>"; };
@@ -10335,6 +10338,7 @@
 				3F4A4C222AD3FA2E00DE5DF8 /* MySiteViewModel.swift */,
 				FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */,
 				FA85F5F42A9DFDCC001D8425 /* NoSitesViewModel.swift */,
+				F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -17770,7 +17774,7 @@
 			children = (
 				E14A52361E39F43E00EE203E /* AppRatingsUtility.swift */,
 				F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */,
-				F4FF50E62B4D7D590076DB0C /* InAppFeedbackCoordinator.swift */,
+				F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */,
 			);
 			path = "In-App Feedback";
 			sourceTree = "<group>";
@@ -21437,7 +21441,7 @@
 				7E504D4A21A5B8D400E341A8 /* PostEditorNavigationBarManager.swift in Sources */,
 				F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
 				73CB13972289BEFB00265F49 /* Charts+LargeValueFormatter.swift in Sources */,
-				F4FF50E92B4D7D590076DB0C /* InAppFeedbackCoordinator.swift in Sources */,
+				F4FF50E92B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */,
 				17B7C89E20EC1D0D0042E260 /* UniversalLinkRouter.swift in Sources */,
@@ -22161,6 +22165,7 @@
 				0C71959B2A3CA582002EA18C /* SiteSettingsRelatedPostsView.swift in Sources */,
 				FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */,
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
+				F4FF50EC2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */,
 				F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */,
 				F4FF50E72B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */,
 				FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */,
@@ -23968,7 +23973,7 @@
 				FABB21452602FC2C00C8785C /* WPStyleGuide+FilterTabBar.swift in Sources */,
 				FABB21462602FC2C00C8785C /* PagedViewController.swift in Sources */,
 				FABB21472602FC2C00C8785C /* InvitePersonViewController.swift in Sources */,
-				F4FF50EA2B4D7D590076DB0C /* InAppFeedbackCoordinator.swift in Sources */,
+				F4FF50EA2B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */,
 				FABB21482602FC2C00C8785C /* PushAuthenticationManager.swift in Sources */,
 				FABB21492602FC2C00C8785C /* CommentServiceRemoteFactory.swift in Sources */,
 				FABB214A2602FC2C00C8785C /* SuggestionsTableView.m in Sources */,
@@ -24115,6 +24120,7 @@
 				FABB21AF2602FC2C00C8785C /* SiteDesignPreviewViewController.swift in Sources */,
 				FABB21B02602FC2C00C8785C /* ReaderReblogFormatter.swift in Sources */,
 				803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
+				F4FF50ED2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */,
 				FABB21B12602FC2C00C8785C /* Array.swift in Sources */,
 				FABB21B22602FC2C00C8785C /* NotificationActionParser.swift in Sources */,
 				FABB21B32602FC2C00C8785C /* SiteTagsViewController.swift in Sources */,
