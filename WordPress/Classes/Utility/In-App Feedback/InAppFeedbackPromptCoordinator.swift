@@ -22,7 +22,7 @@ struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
     // MARK: - Showing the Prompt
 
     func shouldShowPromptForAppReview() -> Bool {
-        return true // appRatingUtility.shouldPromptForAppReview()
+        return appRatingUtility.shouldPromptForAppReview()
     }
 
     func showPromptIfNeeded(in controller: UIViewController) -> Bool {

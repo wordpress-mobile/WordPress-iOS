@@ -25,8 +25,8 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         self.defaults = defaults
     }
 
-    func presentIfNeeded() async -> Bool {
-        guard FeatureFlag.compliancePopover.enabled, !defaults.didShowCompliancePopup else {
+    @MainActor func presentIfNeeded() async -> Bool {
+        guard FeatureFlag.compliancePopover.enabled, defaults.didShowCompliancePopup else {
             return false
         }
         return await withCheckedContinuation { continuation in

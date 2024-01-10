@@ -17,7 +17,8 @@ class MySiteOverlaysCoordinator {
 
     // MARK: - API
 
-    func presentOverlayIfNeeded(in viewController: UIViewController) async {
+    /// Ensure only 1 overlay is presented at a time.
+    @MainActor func presentOverlayIfNeeded(in viewController: UIViewController) async {
         if let complianceCoordinator, await complianceCoordinator.presentIfNeeded() {
             self.complianceCoordinator = nil
         } else if let inAppFeedbackCoordinator, inAppFeedbackCoordinator.showPromptIfNeeded(in: viewController) {
