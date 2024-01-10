@@ -21,7 +21,7 @@ class MySiteOverlaysCoordinator {
     @MainActor func presentOverlayIfNeeded(in viewController: UIViewController) async {
         if let complianceCoordinator, await complianceCoordinator.presentIfNeeded() {
             self.complianceCoordinator = nil
-        } else if let inAppFeedbackCoordinator, inAppFeedbackCoordinator.showPromptIfNeeded(in: viewController) {
+        } else if let inAppFeedbackCoordinator, inAppFeedbackCoordinator.presentIfNeeded(in: viewController) {
             self.inAppFeedbackCoordinator = nil
         }
     }

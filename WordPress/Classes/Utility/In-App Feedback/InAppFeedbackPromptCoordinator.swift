@@ -2,7 +2,7 @@ import Foundation
 import StoreKit
 
 protocol InAppFeedbackPromptPresenting {
-    func showPromptIfNeeded(in controller: UIViewController) -> Bool
+    func presentIfNeeded(in controller: UIViewController) -> Bool
 }
 
 struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
@@ -25,7 +25,7 @@ struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
         return appRatingUtility.shouldPromptForAppReview()
     }
 
-    func showPromptIfNeeded(in controller: UIViewController) -> Bool {
+    func presentIfNeeded(in controller: UIViewController) -> Bool {
         guard shouldShowPromptForAppReview() else {
             return false
         }
