@@ -11,7 +11,7 @@ class AppRatingUtility: NSObject {
     /// section so as to trigger the review prompt for a fairly active user who
     /// uses the app in a broad fashion.
     ///
-    @objc var systemWideSignificantEventCountRequiredForPrompt: Int = 5
+    @objc var systemWideSignificantEventCountRequiredForPrompt: Int = 1
 
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
