@@ -19,9 +19,17 @@ extension Array where Element: Hashable {
         return Array(Set(self))
     }
 
+    /// Removes the duplicates from the array while maintaining the original order.
     public func deduplicated() -> [Element] {
-        var seen = Set<Element>()
-        return filter { seen.insert($0).inserted }
+        deduplicated(by: { $0 })
+    }
+}
+
+extension Array {
+    /// Removes the duplicates from the array while maintaining the original order.
+    public func deduplicated<Identifier: Hashable>(by identifier: (Element) -> Identifier) -> [Element] {
+        var seen = Set<Identifier>()
+        return filter { seen.insert(identifier($0)).inserted }
     }
 }
 
