@@ -565,4 +565,15 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     return remoteMedia;
 }
 
+- (NSMutableDictionary *)blogPropertiesToTrack:(Blog *)blog {
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    BOOL isJetpackConnected = blog.jetpack != nil && blog.jetpack.isConnected;
+    
+    properties[WPAppAnalyticsKeyIsJetpack] = @(isJetpackConnected);
+    properties[WPAppAnalyticsKeyIsAtomic] = @(blog.isAtomic);
+    properties[WPAppAnalyticsKeyIsHostedAtWPcom] = @(blog.isHostedAtWPcom);
+
+    return properties;
+}
+
 @end

@@ -103,4 +103,11 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                         success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
+/**
+ * Generates a dictionary of properties for a given blog, used in media event tracking.
+ *
+ * @param blog
+ */
+- (nonnull NSMutableDictionary *)blogPropertiesToTrack:(nonnull Blog *)blog;
+
 @end
