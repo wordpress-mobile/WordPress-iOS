@@ -1,5 +1,0 @@
-Vi har uppdaterat den klassiska redigeraren med nya mediaväljare för foton och webbplatsmedia. Oroa dig inte, du kan fortfarande ladda upp bilder, videoklipp och annat till din webbplats.
-
-På tal om olika typer av media – du kan nu lägga till mediafilter på skärmen Webbplatsmedia. Om du använder en iPhone kommer du även att märka det nya bildförhållandeläget. Båda alternativen är tillgängliga när du trycker på rubrikmenyn.
-
-Slutligen har vi åtgärdat det trasiga popup-fönstret rörande efterlevnad som visas när man kollar statistik under onboardingprocessen. Vi har också åtgärdat en sällsynt krasch som kunde uppstå vid utloggning. Perfekt.

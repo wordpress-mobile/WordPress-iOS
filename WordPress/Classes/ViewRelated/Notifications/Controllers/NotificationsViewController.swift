@@ -20,8 +20,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     // MARK: - Properties
 
-    let formatter = FormattableContentFormatter()
-
     /// Table View
     ///
     @IBOutlet weak var tableView: UITableView!
@@ -1979,7 +1977,6 @@ private extension NotificationsViewController {
     }
 
     enum Stats {
-        static let networkStatusKey = "network_status"
         static let noteTypeKey = "notification_type"
         static let noteTypeUnknown = "unknown"
         static let sourceKey = "source"

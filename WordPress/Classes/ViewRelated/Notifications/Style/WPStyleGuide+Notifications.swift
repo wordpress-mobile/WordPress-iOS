@@ -9,18 +9,12 @@ extension WPStyleGuide {
         // MARK: - Styles Used by NotificationsViewController
         //
 
-        // NoteTableViewHeader
-        public static let sectionHeaderBackgroundColor = UIColor.ungroupedListBackground
-
         // ListTableViewCell
         public static let unreadIndicatorColor = UIColor.primaryLight
 
         // Notification cells
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonReadColor          = UIColor.listSmallIcon
-        public static let noticonUnreadColor        = UIColor.primary
-
-        public static let noteBackgroundReadColor   = UIColor.ungroupedListBackground
 
         // Notification undo overlay
         public static let noteUndoBackgroundColor   = UIColor.error
@@ -169,12 +163,6 @@ extension WPStyleGuide {
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var contentBlockItalicStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: contentBlockParagraph,
-                     .font: contentBlockItalicFont,
-                     .foregroundColor: blockTextColor ]
-        }
-
         public static var contentBlockQuotedStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockItalicFont,
@@ -187,34 +175,10 @@ extension WPStyleGuide {
                      .foregroundColor: blockLinkColor ]
         }
 
-        public static var blockRegularStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: blockParagraph,
-                     .font: blockRegularFont,
-                     .foregroundColor: blockTextColor ]
-        }
-
-        public static var blockBoldStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: blockParagraph,
-                     .font: blockBoldFont,
-                     .foregroundColor: blockTextColor ]
-        }
-
-        public static var blockItalicsStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: blockParagraph,
-                     .font: blockItalicsFont,
-                     .foregroundColor: blockTextColor ]
-        }
-
         public static var blockQuotedStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockItalicsFont,
                      .foregroundColor: blockQuotedColor ]
-        }
-
-        public static var blockMatchStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: blockParagraph,
-                     .font: blockRegularFont,
-                     .foregroundColor: blockLinkColor ]
         }
 
         public static var blockNoticonStyle: [NSAttributedString.Key: Any] {
@@ -302,15 +266,12 @@ extension WPStyleGuide {
         // MARK: - Constants
         //
 
-        public static let headerFontSize            = CGFloat(12)
-        public static let headerLineSize            = CGFloat(16)
         public static let subjectNoticonSize        = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
         public static let contentBlockLineSize      = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
-        public static let maximumCellWidth          = CGFloat(600)
 
 
         // MARK: - Private Propreties

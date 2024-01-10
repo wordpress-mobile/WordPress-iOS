@@ -48,8 +48,6 @@ class InsightsLineChart {
         lineChartStyling = styling
     }
 
-    private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
-
     /// Transforms the raw data into the line chart data and styling.
     /// similar to PeriodChart transform
     /// - Returns: A tuple containing the line chart data and styling.

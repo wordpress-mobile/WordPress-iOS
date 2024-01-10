@@ -34,6 +34,7 @@ struct ListStatsView: View {
                 }
             }
         }
+        .removableWidgetBackground()
     }
 }
 

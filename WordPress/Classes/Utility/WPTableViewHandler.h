@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@import CoreData;
+
 @class WPTableViewHandler;
 
 @protocol WPTableViewHandlerDelegate <NSObject>

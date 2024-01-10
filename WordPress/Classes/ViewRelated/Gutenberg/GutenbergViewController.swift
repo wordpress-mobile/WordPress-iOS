@@ -483,10 +483,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadPublishButton()
     }
 
-    func contentByStrippingMediaAttachments() -> String {
-        return html //TODO: return media attachment stripped version in future
-    }
-
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()
@@ -1102,7 +1098,7 @@ extension GutenbergViewController: NetworkStatusDelegate {
         gutenberg.connectionStatusChange(isConnected: active)
         #if DEBUG || INTERNAL_BUILD
             if active {
-                mediaInserterHelper.retryFailedMediaUploads()
+                mediaInserterHelper.retryFailedMediaUploads(automatedRetry: true)
             }
         #endif
     }
@@ -1347,10 +1343,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    var savingDraftButtonSize: CGSize {
-        return AztecPostViewController.Constants.savingDraftButtonSize
-    }
-
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
@@ -1391,10 +1383,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
 
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
-        navigationItem.titleView = view
     }
 }
 

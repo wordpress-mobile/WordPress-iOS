@@ -177,7 +177,6 @@ private extension ReaderCommentsFollowPresenter {
         // In-app notifications prompt
         static let promptTitle = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
         static let promptMessage = NSLocalizedString("You'll get notifications in the app", comment: "Message for the action with opt-out revert action.")
-        static let enableActionTitle = NSLocalizedString("Enable", comment: "Button title to enable notifications for new comments")
         static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts the previous notification operation")
     }
 

@@ -16,7 +16,6 @@ public protocol NoticeStyle {
 
     // Fonts
     var titleLabelFont: UIFont { get }
-    var messageLabelFont: UIFont { get }
     var actionButtonFont: UIFont? { get }
     var cancelButtonFont: UIFont? { get }
 
@@ -56,7 +55,6 @@ public struct NormalNoticeStyle: NoticeStyle {
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
     public var titleLabelFont: UIFont { return UIFont.boldSystemFont(ofSize: 14.0) }
-    public var messageLabelFont: UIFont { return UIFont.systemFont(ofSize: 14.0) }
     public var actionButtonFont: UIFont? { return UIFont.systemFont(ofSize: 14.0, weight: .medium) }
     public let cancelButtonFont: UIFont? = nil
 
@@ -75,7 +73,6 @@ public struct QuickStartNoticeStyle: NoticeStyle {
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
     public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
-    public var messageLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline) }
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
@@ -98,7 +95,6 @@ public struct ToolTipNoticeStyle: NoticeStyle {
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
     public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.body) }
-    public var messageLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline) }
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 

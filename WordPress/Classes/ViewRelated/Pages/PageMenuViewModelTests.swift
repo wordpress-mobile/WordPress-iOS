@@ -24,7 +24,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.moveToDraft, .duplicate],
+            [.moveToDraft, .duplicate, .share],
             [.blaze],
             [.setParent, .setHomepage, .setPostsPage, .settings],
             [.trash]
@@ -52,7 +52,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.moveToDraft, .duplicate],
+            [.moveToDraft, .duplicate, .share],
             [.setParent, .setHomepage, .setPostsPage, .settings],
             [.trash]
         ]
@@ -79,7 +79,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.moveToDraft, .duplicate],
+            [.moveToDraft, .duplicate, .share],
             [.setParent, .setHomepage, .setPostsPage, .settings],
             [.trash]
         ]
@@ -106,7 +106,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.duplicate],
+            [.duplicate, .share],
             [.blaze],
             [.setParent, .setPostsPage, .settings]
         ]
@@ -133,7 +133,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.moveToDraft, .duplicate],
+            [.moveToDraft, .duplicate, .share],
             [.blaze],
             [.setParent, .setHomepage, .setRegularPage, .settings],
             [.trash]

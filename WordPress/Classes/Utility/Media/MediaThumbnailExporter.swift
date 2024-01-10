@@ -87,7 +87,6 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     public enum ThumbnailExportError: MediaExportError {
         case failedToGenerateThumbnailFileURL
-        case unsupportedThumbnailFromOriginalType
 
         public var errorDescription: String? { description }
 
