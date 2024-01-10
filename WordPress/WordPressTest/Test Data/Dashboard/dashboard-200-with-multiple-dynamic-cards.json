@@ -3,7 +3,6 @@
         {
             "id": "id_12345",
             "title": "Title 12345",
-            "remote_feature_flag": "feature_flag_12345",
             "featured_image": "https://example.com/image12345",
             "url": "https://example.com/url12345",
             "action": "Action 12345",
@@ -24,7 +23,6 @@
         {
             "id": "id_67890",
             "title": "Title 67890",
-            "remote_feature_flag": "feature_flag_67890",
             "featured_image": "https://example.com/image67890",
             "url": "https://example.com/url67890",
             "action": "Action 67890",
@@ -45,7 +43,6 @@
         {
             "id": "id_13579",
             "title": "Title 13579",
-            "remote_feature_flag": "feature_flag_13579",
             "featured_image": "https://example.com/image13579",
             "url": "https://example.com/url13579",
             "action": "Action 13579",

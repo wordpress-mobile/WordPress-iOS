@@ -7,6 +7,8 @@
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
+@import NSObject_SafeExpectations;
+
 @class Comment;
 
 static NSInteger const ImageSizeSmallWidth = 240;

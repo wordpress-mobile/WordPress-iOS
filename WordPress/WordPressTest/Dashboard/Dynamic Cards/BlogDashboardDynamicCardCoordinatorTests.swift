@@ -156,7 +156,6 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
     ) -> BlogDashboardDynamicCardCoordinator {
         let payload = DashboardDynamicCardModel.Payload(
             id: id,
-            remoteFeatureFlag: "default",
             title: "Domain Management",
             featuredImage: "https://wordpress.com",
             url: url,

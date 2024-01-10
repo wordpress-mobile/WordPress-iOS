@@ -15,9 +15,6 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nQë ta ripohoni, ju lutemi, rijepni emrin tuaj të përdoruesit para mbylljes.\n\n";
 
-/* Per-year postfix shown after a domain's cost. */
-" \/ year" = " \/ vit";
-
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Figura “Lazy-load”";
 
@@ -227,10 +224,6 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li fjalë, %2$li shenja";
-
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "Bllok %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Mundësi blloku %s";
@@ -505,9 +498,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Shtoni një temë";
 
-/* Hint for the reader CSS URL field */
-"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Shtoni këtu një URL CSS-je vetjake që të ngarkohet në Lexues. Nëse xhironi Calypso-n lokalisht, kjo mund të ishte diçka si: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Shtoni përkatësi";
 
@@ -651,10 +641,6 @@ translators: Block name. %s: The localized block name */
 
 /* Information about redeeming domain credit on site dashboard. */
 "All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Krejt planet vjetore WordPress.com përmbajnë një emër përkatësie vetjake. Regjistrohuni që tani për të marrë falas përkatësinë tuaj.";
-
-/* Footer of the free domain registration section for a paid plan.
-   Information about redeeming domain credit on site dashboard. */
-"All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Krejt planet WordPress.com përfshijnë një emër vetjak përkatësie. Regjistroni falas që tani përkatësinë tuaj.";
 
 /* An option in a list. Automatically approve all comments */
 "All comments" = "Krejt komentet";
@@ -978,9 +964,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "E vetëadministruar në këtë sajt";
 
-/* Label indicating that a domain name registration will automatically renew */
-"Auto-renew enabled" = "Vetërinovim i aktivizuar";
-
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Miratoji Vetvetiu";
@@ -1109,9 +1092,6 @@ translators: Block name. %s: The localized block name */
 /* translators: displayed right after the block is duplicated. */
 "Block duplicated" = "Blloku u përsëdyt";
 
-/* Popup title about why this post is being opened in block editor */
-"Block editor enabled" = "Përpunuesi me blloqe i aktivizuar";
-
 /* translators: displayed right after the block is grouped */
 "Block grouped" = "Blloku u grupua";
 
@@ -1200,9 +1180,6 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "Sillni te sajti juaj media drejt e nga pajisja apo kamera juaj.";
-
-/* Description of a Quick Start Tour */
-"Browse all our themes to find your perfect fit." = "Shfletoni krejt temat tuaja që të gjeni përputhjen e përsosur.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Mbrojtje Nga Sulme <em>Brute Force<\/em>";
@@ -1496,8 +1473,7 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Zgjidhni një sajt për hapje.";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Zgjidhni një temë";
 
 /* Select the site's intent. Subtitle */
@@ -1586,7 +1562,6 @@ translators: Block name. %s: The localized block name */
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Mbylle";
@@ -1728,22 +1703,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site title" = "E plotësuar: Kontrolloni titullin e sajtit tuaj";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a theme" = "E plotësuar: Zgjidhni një temë";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "E plotësuar: Zgjidhni një ikonë sajti unike";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Connect with other sites" = "I plotësuar: Lidhuni me sajte të tjerë";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "E plotësuar: Vazhdoni me rregullimin e sajtit";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "E plotësuar: Krijoni sajtin tuaj";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Explore plans" = "E plotësuar: Eksploroni plane";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "E plotësuar: Botoni një postim";
@@ -1882,9 +1848,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Vazhdoni me Google";
 
-/* Title of a Quick Start Tour */
-"Continue with site setup" = "Vazhdoni me rregullimin e sajtit";
-
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
 
@@ -1978,15 +1941,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "S’u lidh dot te sajt WordPress. S’ka sajt WordPress të vlefshëm në këtë adresë. Kontrolloni adresën (URL) të sajtit që dhatë.";
 
-/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "S’u lidh dot. Te shërbyesi mungojnë metodat e domosdoshme XML-RPC.";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "S’u bë dot lidhja. Morëm një gabim 403, kur u provua të hyhej në pikëmbarim XMLRPC të sajtit tuaj. Kjo i duhet aplikacionit, që të mund të komunikojë me sajtin tuaj. Lidhuni me strehuesin tuaj që ta zgjidhni këtë problem.";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
-"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "S’u bë dot lidhja. Strehuesi juaj i bllokon kërkesat POST, dhe aplikacionit i duhen që të mund të komunikojë me sajtin tuaj. Lidhuni me strehuesin tuaj që ta zgjidhni këtë problem.";
-
 /* Error message when tag loading failed */
 "Couldn't load tags." = "S’u ngarkuan dot etiketa.";
 
@@ -2018,9 +1972,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Kod Vendi";
 
-/* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Regjistrim Vithisjesh";
-
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Njoftime vithisjesh";
 
@@ -2035,9 +1986,6 @@ translators: Block name. %s: The localized block name */
 
 /* Create New header text */
 "Create New" = "Krijoni të Ri";
-
-/* Title for the site creation flow. */
-"Create New Site" = "Krijoni Sajt të Ri";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -2222,9 +2170,6 @@ translators: Block name. %s: The localized block name */
 /* Navigates to debug menu only available in development builds */
 "Debug" = "Diagnostikim";
 
-/* Debug settings title */
-"Debug Settings" = "Rregullime Diagnostikimi";
-
 /* Only December needs to be translated */
 "December 17, 2017" = "17 Dhjetor, 2017";
 
@@ -2245,9 +2190,6 @@ translators: Block name. %s: The localized block name */
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format Parazgjedhje Postimesh";
-
-/* Placeholder for the reader CSS URL */
-"Default URL" = "URL Parazgjedhje";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Parazgjedhje për Postime të Reja";
@@ -2410,12 +2352,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Përkatësi";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Përkatësitë e blera në këtë sajt do t’i ridrejtojnë vizitorët te %@";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Përkatësitë e blera në këtë sajt do t’i ridrejtojnë vizitorët te ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "S’keni llogari? _Regjistrohuni_";
@@ -2586,8 +2522,7 @@ translators: Block name. %s: The localized block name */
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Përpunoni";
 
 /* Title for the edit more button section */
@@ -2651,9 +2586,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the editor settings section */
 "Editor" = "Redaktor";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "Përpunon një koment";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Përpunon komentin.";
@@ -2781,9 +2713,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Jepni një fjalëkalim për mbrojtjen e këtij postimi";
-
-/* Secondary message shown when there are no domains that match the user entered text. */
-"Enter different words above and we'll look for an address that matches it." = "Jepni më sipër fjalë të ndryshme dhe do të kërkojmë për një adresë që ka të tilla.";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2970,23 +2899,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Zgjerohet për të përzgjedhur një zonë tjetër menuje";
 
-/* Label indicating that a domain name registration has expired. */
-"Expired" = "I skaduar";
-
 /* Title for the error view when the user scanned an expired log in code */
 "Expired log in code" = "Kod hyrjeje i skaduar";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "Skadon më";
 
-/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
-"Expires on %@" = "Skadon më %@";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Shpjegoni se për çfarë është ky sajt.";
-
-/* Title of a Quick Start Tour */
-"Explore plans" = "Eksploroni plane";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3170,8 +3090,7 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Ndjekës";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "E ndiqni";
@@ -3187,9 +3106,6 @@ translators: Block name. %s: The localized block name */
 
 /* Filters Follows Notifications */
 "Follows" = "Ndiqet";
-
-/* Spoken hint describing action for unselected following buttons. */
-"Follows blog" = "Ndjek blogun";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Ndjek blogun.";
@@ -3229,9 +3145,6 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Fototekë e Lirë";
-
-/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Falas për vitin e parë ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Lironi ca hapësirë depozitimi në këtë pajisje duke fshirë kartela të përkohshme mediash. Kjo nuk do të prekë mediat në sajtin tuaj.";
@@ -3321,9 +3234,6 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
 "Get to know the app" = "Njihuni me aplikacionin";
 
-/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Merrni përkatësinë tuaj";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Merrini më shpejtë njoftimet tuaja";
 
@@ -3347,9 +3257,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Shko mbrapsht";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Shko Te Vijuesja";
@@ -3389,17 +3296,11 @@ translators: Block name. %s: The localized block name */
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
 "Guides you through the process of checking your notifications." = "Ju udhëheq përmes procesit të parjes së njoftimeve tuaja.";
 
-/* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
-"Guides you through the process of choosing a theme for your site." = "Ju udhëheq përmes procesit të të zgjedhjes së një teme për sajtin tuaj.";
-
 /* This value is used to set the accessibility hint text for creating a new page for the user's site. */
 "Guides you through the process of creating a new page for your site." = "Ju udhëheq përmes procesit të krijimit të një faqeje të re për sajtin tuaj.";
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Ju udhëheq përmes procesit të krijimit të sajtit tuaj.";
-
-/* This value is used to set the accessibility hint text for exploring plans on the user's site. */
-"Guides you through the process of exploring plans for your site." = "Ju udhëheq përmes procesit të eksplorimit të planeve për sajtin tuaj.";
 
 /* This value is used to set the accessibility hint text for following the sites of other users. */
 "Guides you through the process of following other sites." = "Ju udhëheq përmes procesit të ndjekjes së sajteve të tjerë.";
@@ -3415,9 +3316,6 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for setting the site title. */
 "Guides you through the process of setting a title for your site." = "Ju udhëheq përmes procesit të ujdisjes së titullit të sajtit tuaj.";
-
-/* This value is used to set the accessibility hint text for setting up the user's site. */
-"Guides you through the process of setting up your site." = "Ju udhëheq përmes procesit të ujdisjes së sajtit tuaj.";
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Ju udhëheq përmes procesit të ngarkimit të një ikone për sajtin tuaj.";
@@ -3571,9 +3469,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Përditësimi i ikonës dështoi";
-
-/* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Keni tashmë një sajt, do t’ju duhet të instaloni shtojcën e lirë Jetpack dhe ta lidhni me llogarinë tuaj WordPress.com.";
 
 /* The instructions text about not being able to find the magic link email. */
 "If you can’t find the email, please check your junk or spam email folder" = "Nëse s’e gjeni dot email-in, ju lutemi, shihni te dosja juaj Hedhurina, ose ajo Të padëshiruar";
@@ -3984,9 +3879,6 @@ translators: Block name. %s: The localized block name */
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "Learn about new comments, likes, and follows in seconds." = "Mësoni brenda sekondash rreth komentesh, pëlqimesh dhe ndjekjesh të reja.";
 
-/* Description of a Quick Start Tour */
-"Learn about the marketing and SEO tools in our paid plans." = "Mësoni rreth mjetesh marketingu dhe SEO në planet tona me pagesë.";
-
 /* A button title.
    Link to cookie policy
    Menu title to show the prompts feature introduction modal.
@@ -4152,9 +4044,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Po ngarkohet koment…";
-
-/* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
-"Loading domains" = "Po ngarkohen përkatësi";
 
 /* Displayed while a call is loading the history. */
 "Loading history..." = "Po ngarkohet historiku…";
@@ -4607,9 +4496,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "Lyp Përditësim";
 
-/* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "Nuk skadon kurrë";
-
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "E re";
 
@@ -4683,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* List Editor Empty State Message */
 "No Items" = "S’ka Objekte";
-
-/* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "S’u gjetën sajte Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Pa Menu";
@@ -4903,9 +4786,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Hapësirë e pamjaftueshme për ngarkim";
 
-/* Accessibility label for unselected following buttons. */
-"Not following" = "Nuk e ndiqni";
-
 /* Button label for denying our request to allow push notifications
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
    Phrase displayed to dismiss a quick start tour suggestion. */
@@ -5006,7 +4886,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -5307,9 +5186,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Zgjidhni emër përdoruesi";
-
-/* The item to select during a guided tour. */
-"Plan" = "Plan";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -5627,9 +5503,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Primary Web Site */
 "Primary Site" = "Sajti Parësor";
 
-/* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Adresë parësore sajti";
-
 /* Label for the privacy setting
    Privacy settings section header */
 "Privacy" = "Privatësi";
@@ -5731,9 +5604,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Published on [date] */
 "Published on" = "Botuar më";
 
-/* Label that describes in which blog the user is publishing to */
-"Publishing To" = "Botim Te";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Po botohet faqe…";
 
@@ -5755,9 +5625,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Njoftimet push janë çaktivizuar te rregullimet e iOS-it. Që t’i lejoni sërish, kaloni nën “Lejo Njoftime”.";
 
-/* The menu item to select during a guided tour. */
-"Quick Start" = "Nisje e Shpejtë";
-
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Vlerësonani";
 
@@ -5776,12 +5643,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Lexues";
-
-/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "URL CSS-je Lexuesi";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Reading posts from other sites" = "Lexim postimesh nga sajte të tjerë";
@@ -5943,9 +5806,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Heqja e ndjekësve bën që ata të reshtin së marri përditësime nga sajti juaj. Nëse vendosin kështu, prapë mund të vizitojnë sajtin tuaj dhe ta ndjekin sërish.";
 
-/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
-"Renews on %@" = "Rinovohet më %@";
-
 /* No comment provided by engineer. */
 "Replace Current Block" = "Zëvendëso Bllokun e Tanishëm";
 
@@ -6078,7 +5938,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Riprovo";
 
@@ -6300,9 +6159,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Shihini Krejt";
 
-/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "Shihni Udhëzimet";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "Shihni aty për aty komente dhe njoftime.";
 
@@ -6320,22 +6176,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to create a new post" = "Përzgjidhni %@ që të krijoni një postim të ri";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "Përzgjidhni %@ që të zbuloni tema të reja";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to find other sites." = "Përzgjidhni %@ që të gjenden sajte të tjerë.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Përzgjidhni %@ që të shihni se si po ecën sajti juaj.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "Përzgjidhni %@ që të shihni listën tuaj";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current library." = "Përzgjidhni %@ që të shihni mediatekën tuaj të tanishme.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current plan and other available plans." = "Përzgjidhni %@ që të shihni planin tuaj të tanishëm dhe të tjerë plane të mundshëm.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your page list." = "Përzgjidhni %@ që të shihni listën tuaj të faqeve.";
@@ -6729,10 +6576,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Create new Site Page button title */
 "Site page" = "Faqe sajti";
 
-/* Prologue title label, the 
- force splits it into 2 lines. */
-"Site security and performance\nfrom your pocket" = "Siguri dhe funksionim sajti\nqë nga xhepi";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zonë kohore e sajtit (UTC%1$@%2$d%3$@)";
 
@@ -6783,9 +6626,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "S’u ngarkuan ca të dhëna";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Ngarkimi i disa mediave dështoi. Ky veprim do të sjellë heqjen nga postimi të krejt mediave që dështuan.\nTë ruhet, sido qoftë?";
 
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
@@ -7330,7 +7170,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Sajti te %1$@ përdor %2$@. Këshillojmë ta përditësoni me versionin më të ri, ose të paktën %3$@";
 
-/* Error message shown a URL does not point to an existing site. */
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Sajti në këtë adresë s’është sajt WordPress. Që të lidhemi me të, sajti duhet të përdorë WordPress.";
 
 /* Message shown when site deletion API failed */
@@ -7370,7 +7211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Tema u Aktivizua";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Tema";
@@ -7616,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "Zonë Kohore";
 
-/* Description of a Quick Start Tour */
-"Time to finish setting up your site! Our checklist walks you through the next steps." = "Erdhi koha të përfundohet rregullimi i sajtit tuaj! Lista jonë e hapave ju udhëheq nëpër ata vijuesit.";
-
 /* Error when the uses takes more than 1 minute to submit a security key. */
 "Time's up, but don't worry, your security is our priority. Please try again!" = "Po mbaron koha, por mos u bëni merak, siguria juaj është përparësia jonë. Ju lutemi, riprovoni!";
 
@@ -7670,9 +7507,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Që të shihni statistika në sajtin tuaj, do t;ju duhet të instaloni shtojcën Jetpack.";
 
-/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Që të përdorni këtë aplikacion për %@ do t’ju duhet të keni të instaluar dhe të aktivizuar shtojcën Jetpack.";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -7693,9 +7527,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Aktivizon\/Çaktivizon stilin Listë e Parenditur";
 
-/* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "Mjete";
-
 /* Insights 'Top Commenters' header */
 "Top Commenters" = "Komentuesit Kryesues";
 
@@ -7703,8 +7534,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Shkalla e epërme";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "Temë";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7781,9 +7611,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Riprovoni";
-
-/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Provoni Me Tjetër Llogari";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Provoni të ndryshoni intervalin tuaj të datave";
@@ -7863,9 +7690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Site creation. Seelect a domain, search field placeholder */
 "Type a name for your site" = "Shtypni një emër për sajtin tuaj";
-
-/* Register domain - Search field placeholder for the Suggested Domain screen */
-"Type to get more suggestions" = "Shtypni që të merrni më tepër sugjerime";
 
 /* URL text field placeholder */
 "URL" = "URL";
@@ -7972,12 +7796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 draft post" = "S’arrihet të ngarkohet 1 skicë postimi";
 
-/* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "S’arrihet të ngarkohet 1 skicë postimi, %ld kartela";
-
-/* Alert displayed to the user when a single post and 1 file has failed to upload. */
-"Unable to upload 1 draft post, 1 file" = "S’arrihet të ngarkohet 1 skicë postimi, 1 kartelë";
-
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "S’arrihet të ngarkohet 1 postim";
 
@@ -8032,8 +7850,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Mos e ndiq";
 
-/* Accessibility label for unfollowing a site
-   Accessibility label for unfollowing a tag */
+/* Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Hiqe ndjekjen e %@";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -8048,9 +7865,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
 "Unfollowed site" = "U hoq ndjekje sajti";
-
-/* Spoken hint describing action for selected following buttons. */
-"Unfollows blog" = "E ndal ndjekjen e blogut";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Ndal ndjekjen e blogut.";
@@ -8221,17 +8035,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Uploading…" = "Po ngarkohet…";
 
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "Ngarkimet dështuan";
-
 /* Use the current image */
 "Use" = "Përdore";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "Përdorni %@ që të gjeni sajte dhe etiketa.";
-
-/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Përdor Shitore Bankëprovë";
 
 /* The button's title text to use a security key. */
 "Use a security key" = "Përdorni një kyç sigurie";
@@ -8279,9 +8087,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verifiko Hyrjen";
-
-/* Notice displayed after domain credit redemption success. */
-"Verify your email address - instructions sent to %@" = "Verifikoni adresën tuaj email - udhëzimet u dërguan te %@";
 
 /* Description for the version label in the What's new page. */
 "Version " = "Version ";
@@ -8491,9 +8296,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "S’e krijuam dot kopjeruajtjen tuaj. Ju lutemi, riprovoni më vonë.";
 
-/* Primary message shown when there are no domains that match the user entered text. */
-"We couldn't find any available address with the words you entered - let's try again." = "S’gjetëm dot ndonjë adresë të gatshme me fjalët që dhatë - le të riprovojmë.";
-
 /* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
 "We couldn't publish this page, but we'll try again later." = "S’e botuam dot këtë faqe, por do të riprovojmë më vonë.";
 
@@ -8569,9 +8371,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Sapo dërguam një lidhje magjike te";
 
-/* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kemi bërë përmirësime të mëdha te përpunuesi me blloqe dhe mendojmë se ia vlen të provohet!\n\nE kemi aktivizuar për postime dhe faqe të reja, por nëse doni ta këmbeni me përpunuesin klasik, kaloni te 'Sajti Im' > 'Rregullime Sajti'.";
-
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "Krijuam me sukses një kopjeruajtje të sajtit tuaj, siç qe më %1$@";
 
@@ -8580,9 +8379,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Përdorim mjete të tjera gjurmimi, përfshi disa të tillë nga palë të treta. Lexoni rreth tyre dhe se si t’i mbani nën kontroll.";
-
-/* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "S’qemë në gjendje të pikasim një sajt WordPress te adresa që dhatë. Ju lutemi, sigurohuni se WordPress-i është i instaluar dhe se po xhironi versionin më të ri në qarkullim.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "S’qemë në gjendje t’ju dërgonim një email këtë herë. Ju lutemi, riprovoni më vonë.";
@@ -8671,9 +8467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ju dërguam me email një lidhje regjistrimi për të krijuar llogarinë tuaj të re WordPress.com. Kontrolloni email-et në këtë pajisje dhe prekni lidhjen te email-i i ardhur nga WordPress.com.";
-
-/* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
-"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Patëm probleme me ndryshimin e përkatësisë parësore në sajtin tuaj — por mos u bëni merak, përkatësia juaj u ble me sukses.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -8952,8 +8745,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Years stats filter. */
 "Years" = "Vite";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Po";
@@ -9052,9 +8844,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Keni 1 sajt WordPress të fshehur.";
 
-/* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "Me planin tuaj keni të përfshirë një regjistrim përkatësie falas për një vit";
-
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Keni përmirësime me pagesë aktive në sajtin tuaj. Ju lutemi, para se të fshini sajtin, anulojini përmirësimet tuaja.";
 
@@ -9139,9 +8928,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Keni bërë ndryshime të paruajtura në këtë postim";
 
-/* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Përkatësitë e Sajtit Tuaj";
-
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikona e Sajtit Tuaj";
 
@@ -9169,9 +8955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Kopjeruajtja juaj e parë do të jetë gati së shpejti";
 
-/* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Adresa juaj falas WordPress.com është";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Përkatësia juaj e re %@ po ujdiset. Mund të duhen deri në 30 minuta që përkatësia juaj të fillojë të funksionojë.";
 
@@ -9186,9 +8969,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
-
-/* Footer of the primary site section in the Domains Dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Adresa juaj parësore e sajtit është ajo që vizitorët do të shohin në shtyllën e tyre të adresave, kur të vizitojnë sajtin tuaj.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";
@@ -9246,12 +9026,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "Po e ndiqni këtë bisedë. Kurdo që bëhet një koment i ri, do të merrni një email.";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Për faqe të reja tanimë po përdorni përpunuesin me blloqe — bukur! Nëse do të donit ta ndryshonit me përpunuesin klasik, shkoni te ‘Sajti Im’ > ‘Rregullime Sajti’.";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Për postime të reja tanimë po përdorni përpunuesin me blloqe — bukur! Nëse do të donit ta ndryshonit me përpunuesin klasik, shkoni te ‘Sajti Im’ > ‘Rregullime Sajti’.";
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENT]";
@@ -9638,19 +9412,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Shihni statistika";
 
-/* General section title */
-"debugMenu.generalSectionTitle" = "Të përgjithshme";
-
-/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
-"debugMenu.remoteConfig.footer" = "Parametrat e anashkaluar tregohen me një shenjë.";
-
-/* Hint for overriding remote config params */
-"debugMenu.remoteConfig.hint" = "Anashkaloni parametrin e zgjedhur duke përcaktuar këtu një vlerë të re.";
-
-/* Placeholder for overriding remote config params */
-"debugMenu.remoteConfig.placeholder" = "Pa vlerë të largët, apo fillestare";
-
-/* Remote Config debug menu title */
+/* Remote Config Debug Menu screen title
+   Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Formësim Së Largëti";
 
 /* Remove current quick start tour menu item */
@@ -9798,7 +9561,6 @@ Example: Reply to Pamela Nguyen */
 "ellipsisButton.AccessibilityLabel" = "Më tepër";
 
 /* Placeholder for the site url textfield.
-   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -10206,9 +9968,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
-
-/* Products header text in Me Screen. */
-"me.products.header" = "Produkte";
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "S’arrihet të njëkohësohet media";
@@ -10844,12 +10603,6 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
 
-/* Subtitle of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.subtitle" = "Për t’i aktivizuar, vizitoni Rregullime Sajti";
-
-/* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "Cytje Blogimi të fshehura";
-
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
 
@@ -11395,9 +11148,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Support email label. */
 "support.row.email.title" = "Email";
 
-/* Option in Support view to view the Forums. */
-"support.row.forums.title" = "Forume WordPress";
-
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Qendër Ndihme WordPress";
 
@@ -11613,9 +11363,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Mësoni më tepër";
-
-/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "sajti juaj";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} të Bëni hyrjen me Google.";

@@ -316,11 +316,14 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         }
     }
 
-    func copyLink(_ post: AbstractPost) {
-        copyPostLink(post)
-    }
-
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        if post.status == .draft ||
+            post.status == .scheduled {
+            deletePost(post)
+            completion()
+            return
+        }
+
         let cancelText: String
         let deleteText: String
         let messageText: String

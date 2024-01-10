@@ -109,8 +109,13 @@ extension WPTabBarController {
 
     @objc func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
 
-        guard let index = tabBar.items?.firstIndex(of: item), tabBar.subviews.count > index + 1,
-              let imageView = tabBar.subviews[index + 1].subviews.last as? UIImageView else {
+        guard let index = tabBar.items?.firstIndex(of: item), tabBar.subviews.count > index + 1 else {
+            return
+        }
+
+        let button = tabBar.subviews[(index + 1)]
+
+        guard let imageView = button.subviews.lazy.compactMap({ $0 as? UIImageView }).first else {
             return
         }
 

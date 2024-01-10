@@ -1,5 +1,0 @@
-We updated the Classic Editor with new media pickers for Photos and Site Media. Don’t worry, you can still upload images, videos, and more to your site.
-
-Speaking of media types – you can now add media filters to the Site Media screen. If you’re using an iPhone, you’ll notice the new aspect ratio mode, too. Both options are available when you tap the title menu.
-
-Finally, we fixed the broken compliance pop-up that appears while you’re checking stats during the onboarding process. Sweet.

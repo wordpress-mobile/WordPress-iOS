@@ -544,7 +544,6 @@ private extension DashboardPromptsCardCell {
     }
 
     struct Style {
-        static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
         static var avatarPlaceholderImage: UIImage {
             // this needs to be computed so the color is correct depending on the user interface style.
             return UIImage(color: .init(light: .quaternarySystemFill, dark: .systemGray4))
@@ -558,7 +557,6 @@ private extension DashboardPromptsCardCell {
         static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
-        static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
         static let dailyPromptTag = "dailyprompt"
