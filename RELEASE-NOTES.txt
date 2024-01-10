@@ -2,6 +2,7 @@
 -----
 * [**] Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
 * [**] Improve media previews on long-press: load higher-resolution thumbnails and increase the preview size, add support for GIFs and video playback, enable for documents and other files [#22274]
+* [*] Add prefetching to Site Media details screen [#22292]
 * [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
 * [*] Add "Share" action to the site context menu [#22298]
 
@@ -10,7 +11,6 @@
 * [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
 * [***] [Jetpack-only] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
 * [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
-* [**] Add prefetching to Site Media details screen [#22292]
 * [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
 * [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
 * [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
