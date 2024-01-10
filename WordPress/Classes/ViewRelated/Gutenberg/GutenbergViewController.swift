@@ -1098,7 +1098,7 @@ extension GutenbergViewController: NetworkStatusDelegate {
         gutenberg.connectionStatusChange(isConnected: active)
         #if DEBUG || INTERNAL_BUILD
             if active {
-                mediaInserterHelper.retryFailedMediaUploads()
+                mediaInserterHelper.retryFailedMediaUploads(automatedRetry: true)
             }
         #endif
     }

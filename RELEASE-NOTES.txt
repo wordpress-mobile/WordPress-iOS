@@ -1,5 +1,6 @@
 24.1
 -----
+* [**] Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
 * [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
 * [*] Add "Share" action to the site context menu [#22298]
 
