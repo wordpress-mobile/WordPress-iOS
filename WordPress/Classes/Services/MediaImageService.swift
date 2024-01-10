@@ -308,10 +308,14 @@ extension MediaImageService {
     }
 
     @MainActor
+    static func getThumbnailSize(for media: Media, size: ImageSize) -> CGSize {
+        getThumbnailSize(for: SafeMedia(media), size: size)
+    }
+
+    @MainActor
     fileprivate static func getThumbnailSize(for media: SafeMedia, size: ImageSize) -> CGSize {
         let mediaSize = media.size ?? CGSize(width: 1024, height: 1024) // rhs should never happen
         return MediaImageService.getThumbnailSize(for: mediaSize, size: size)
-
     }
 
     /// Returns an optimal target size in pixels for a thumbnail of the given
