@@ -122,8 +122,8 @@ class GutenbergMediaInserterHelper: NSObject {
         mediaCoordinator.retryMedia(media)
     }
 
-    func retryFailedMediaUploads() {
-        _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: true)
+    func retryFailedMediaUploads(automatedRetry: Bool = false) {
+        _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry)
     }
 
     func hasFailedMedia() -> Bool {
