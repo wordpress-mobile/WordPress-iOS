@@ -143,8 +143,4 @@ extern NSString * const WPAppAnalyticsValueSiteTypeP2;
  */
 + (void)track:(WPAnalyticsStat)stat error:(NSError *)error;
 
-/**
- *  @brief      Track Anaylytics with associate error that is translated to properties, along with available blog details
- */
-+ (void)track:(WPAnalyticsStat)stat error:(NSError *)error withBlogID:(NSNumber *)blogID;
 @end

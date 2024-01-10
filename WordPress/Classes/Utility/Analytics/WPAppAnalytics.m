@@ -342,18 +342,14 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [WPAnalytics track:stat withProperties:properties];
 }
 
-+ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error withBlogID:(NSNumber *)blogID {
++ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
     NSError *err = [self sanitizedErrorFromError:error];
     NSDictionary *properties = @{
                                  @"error_code": [@(err.code) stringValue],
                                  @"error_domain": err.domain,
                                  @"error_description": err.description
     };
-    [self track:stat withProperties: properties withBlogID:blogID];
-}
-
-+ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
-    [self track:stat error:error withBlogID:nil];
+    [self track:stat withProperties: properties];
 }
 
 /**
