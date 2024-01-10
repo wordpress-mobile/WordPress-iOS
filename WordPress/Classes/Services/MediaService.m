@@ -78,11 +78,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
     remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
     NSManagedObjectID *mediaObjectID = media.objectID;
+    NSMutableDictionary *blogPropertiesToTrack = [self blogPropertiesToTrack:blog];
 
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
             if (error) {
-                [self trackUploadError:error blog:blog];
+                [self trackUploadError:error blogPropertiesToTrack:blogPropertiesToTrack blog:blog];
                 DDLogError(@"Error uploading media: %@", error);
             }
             NSError *customError = [self customMediaUploadError:error remote:remote];
@@ -132,7 +133,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
-            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withProperties:blogPropertiesToTrack withBlog:blog];
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
@@ -153,7 +154,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     };
 
     [self.managedObjectContext performBlock:^{
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withProperties:blogPropertiesToTrack withBlog:blog];
     }];
 
     [remote uploadMedia:remoteMedia
@@ -165,12 +166,14 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 #pragma mark - Private helpers
 
 - (void)trackUploadError:(NSError *)error
+   blogPropertiesToTrack:(NSMutableDictionary *)properties
                     blog:(Blog *)blog
 {
     if (error.code == NSURLErrorCancelled) {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withBlog:blog];
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withProperties:properties withBlog:blog];
     } else {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlogID:blog.dotComID];
+        properties[@"error"] = error;
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed withProperties:properties withBlogID:blog.dotComID];
     }
 }
 
