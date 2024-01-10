@@ -613,7 +613,7 @@ class AbstractPostListViewController: UIViewController,
             bottomSheet.show(from: self)
         }
 
-        func showPublshingConfirmation() {
+        func showPublishingConfirmation() {
             let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
 
             let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
@@ -630,7 +630,7 @@ class AbstractPostListViewController: UIViewController,
         if let post = post as? Post {
             showPrepublishingFlow(for: post)
         } else {
-            showPublshingConfirmation()
+            showPublishingConfirmation()
         }
     }
 
