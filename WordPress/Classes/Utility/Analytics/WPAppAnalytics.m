@@ -342,18 +342,20 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [WPAnalytics track:stat withProperties:properties];
 }
 
-+ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error withBlogID:(NSNumber *)blogID {
++ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error withProperties:(NSDictionary *)properties withBlogID:(NSNumber *)blogID {
+
+    NSMutableDictionary *mutableProperties = [properties mutableCopy];
+
     NSError *err = [self sanitizedErrorFromError:error];
-    NSDictionary *properties = @{
-                                 @"error_code": [@(err.code) stringValue],
-                                 @"error_domain": err.domain,
-                                 @"error_description": err.description
-    };
-    [self track:stat withProperties: properties withBlogID:blogID];
+    mutableProperties[@"error_code"] = [@(err.code) stringValue];
+    mutableProperties[@"error_domain"] = err.domain;
+    mutableProperties[@"error_description"] = err.description;
+
+    [self track:stat withProperties:mutableProperties withBlogID:blogID];
 }
 
 + (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
-    [self track:stat error:error withBlogID:nil];
+    [self track:stat error:error withProperties:nil withBlogID:nil];
 }
 
 /**
