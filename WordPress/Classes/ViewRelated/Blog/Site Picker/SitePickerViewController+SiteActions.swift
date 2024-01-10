@@ -21,13 +21,11 @@ extension SitePickerViewController {
     }
 
     private func makePrimarySection() -> UIMenu {
-        var menuItems = [
+        let menuItems = [
             MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
             MenuItem.addSite({ [weak self] in self?.addSiteTapped()} ),
+            MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() })
         ]
-        if numberOfBlogs() > 1 {
-            menuItems.append(MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() }))
-        }
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
 
@@ -111,10 +109,6 @@ extension SitePickerViewController {
     }
 
     // MARK: - Helpers
-
-    private func numberOfBlogs() -> Int {
-        defaultAccount()?.blogs?.count ?? 0
-    }
 
     private func defaultAccount() -> WPAccount? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
