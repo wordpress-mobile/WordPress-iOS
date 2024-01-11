@@ -6,6 +6,8 @@
 * [*] Add prefetching to Site Media details screen [#22292]
 * [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
 * [*] Add "Share" action to the site context menu [#22298]
+* [*] Update the post "Publish" context action for Contributors to  "Submit for Review" instead of "Publish" [#22358]
+* [**] Add a pre-publishing sheet to the "Publish" flow invoked from the post context menu as a replacement for a simple confirmation sheet [#22358]
 * [**] Block Editor: Media uploads that failed due to lack of internet connectivity automatically retry once a connection is re-established [https://github.com/wordpress-mobile/WordPress-iOS/pull/22238]
 * [**] Block Editor: Manually retrying a single failed media upload will retry all failed media uploads in a post [https://github.com/wordpress-mobile/WordPress-iOS/pull/22240]
 

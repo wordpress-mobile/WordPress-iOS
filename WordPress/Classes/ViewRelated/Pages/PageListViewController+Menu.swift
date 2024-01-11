@@ -24,10 +24,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         copyPage(page)
     }
 
-    func publish(_ apost: AbstractPost) {
-        publishPost(apost)
-    }
-
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         guard let page = post as? Page else { return }
         trashPage(page, completion: completion)

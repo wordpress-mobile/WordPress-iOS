@@ -128,11 +128,7 @@ extension PostEditor {
     }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return [.visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-
-        return [.visibility, .schedule, .tags, .categories]
+        PrepublishingIdentifier.defaultIdentifiers
     }
 }
 
