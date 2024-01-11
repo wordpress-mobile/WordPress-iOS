@@ -73,6 +73,16 @@ import SVProgressHUD
         }
     }
 
+    @objc func sharePage(_ page: Page, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+
+        sharePost(
+            page.titleForDisplay(),
+            summary: page.contentPreviewForDisplay(),
+            link: page.permaLink,
+            fromView: anchorView,
+            inViewController: viewController)
+    }
+
     @objc func sharePost(_ post: Post, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
 
         sharePost(

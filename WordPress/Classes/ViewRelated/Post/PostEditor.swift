@@ -77,12 +77,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// Error domain used when reporting error to Crash Logger
     var errorDomain: String { get }
 
-    /// Returns true if the site mode is on
-    var isSingleSiteMode: Bool { get }
-
-    /// Returns the media attachment removed version of html
-    func contentByStrippingMediaAttachments() -> String
-
     /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
 
@@ -125,10 +119,6 @@ extension PostEditor {
         return postIsReblogged ? BlogQuery().hostedByWPCom(true).count(in: mainContext) : Blog.count(in: mainContext)
     }
 
-    var isSingleSiteMode: Bool {
-        return currentBlogCount <= 1 || post.hasRemote()
-    }
-
     var alertBarButtonItem: UIBarButtonItem? {
         return navigationBarManager.closeBarButtonItem
     }
@@ -138,11 +128,7 @@ extension PostEditor {
     }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return [.visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-
-        return [.visibility, .schedule, .tags, .categories]
+        PrepublishingIdentifier.defaultIdentifiers
     }
 }
 

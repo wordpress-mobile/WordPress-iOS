@@ -204,10 +204,6 @@ extension UIColor {
         return .systemBackground
     }
 
-    static var ungroupedListUnread: UIColor {
-        return UIColor(light: .primary(.shade0), dark: muriel(color: .gray, .shade80))
-    }
-
     /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
         return .secondaryLabel
@@ -253,20 +249,6 @@ extension UIColor {
 
     static var authButtonViewBackground: UIColor {
         return UIColor(light: .white, dark: .black)
-    }
-
-    // MARK: - Quick Action Buttons
-
-    static var quickActionButtonBackground: UIColor {
-        .clear
-    }
-
-    static var quickActionButtonBorder: UIColor {
-        .systemGray3
-    }
-
-    static var quickActionSelectedBackground: UIColor {
-        UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others

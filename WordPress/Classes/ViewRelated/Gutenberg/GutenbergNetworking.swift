@@ -107,11 +107,6 @@ struct GutenbergNetworkRequest {
         }
         return false
     }
-
-    private var selfHostedPath: String {
-        let removedEditContext = path.replacingOccurrences(of: "context=edit", with: "context=view")
-        return "wp-json\(removedEditContext)"
-    }
 }
 
 /// Helper to get an error instance with the real HTTP Status code, taken from the response object.

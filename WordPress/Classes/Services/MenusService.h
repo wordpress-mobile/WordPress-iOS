@@ -1,5 +1,7 @@
 #import "LocalCoreDataService.h"
 
+@import CoreData;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class Blog;

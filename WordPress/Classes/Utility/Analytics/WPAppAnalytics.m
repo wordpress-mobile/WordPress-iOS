@@ -10,6 +10,8 @@
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 
+@import NSObject_SafeExpectations;
+
 NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
 NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated  = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID                            = @"blog_id";

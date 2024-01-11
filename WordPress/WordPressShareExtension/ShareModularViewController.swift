@@ -982,7 +982,6 @@ fileprivate extension ShareModularViewController {
         static let modulesReuseIdentifier  = String(describing: ShareModularViewController.self)
         static let siteRowHeight           = CGFloat(74.0)
         static let defaultRowHeight        = CGFloat(44.0)
-        static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
         static let unknownDefaultCategoryID     = NSNumber(value: -1)
         static let unknownDefaultCategoryName   = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")

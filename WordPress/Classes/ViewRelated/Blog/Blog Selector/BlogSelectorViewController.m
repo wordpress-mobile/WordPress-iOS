@@ -7,6 +7,8 @@
 #import "AccountService.h"
 #import "WordPress-Swift.h"
 
+@import CoreData;
+
 @interface BlogSelectorViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;

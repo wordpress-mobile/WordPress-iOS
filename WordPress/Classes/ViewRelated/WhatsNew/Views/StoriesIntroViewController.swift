@@ -66,11 +66,6 @@ class StoriesIntroViewController: WhatIsNewViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Whether the user has already seen and acknowledged the Stories Intro screen.
-    var acknowledged: Bool {
-        return UserDefaults.standard.storiesIntroWasAcknowledged
-    }
-
     // MARK: - Analytics
 
     /// To be called when the view controller from `makeController` is shown.

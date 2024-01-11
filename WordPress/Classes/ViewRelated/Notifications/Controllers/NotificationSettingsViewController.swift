@@ -31,7 +31,6 @@ class NotificationSettingsViewController: UIViewController {
         return view
     }()
 
-
     // MARK: - Private Constants
 
     fileprivate let blogReuseIdentifier = WPBlogTableViewCell.classNameWithoutNamespaces()
@@ -39,10 +38,8 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate let defaultReuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
     fileprivate let switchReuseIdentifier = SwitchTableViewCell.classNameWithoutNamespaces()
 
-    fileprivate let emptyCount = 0
     fileprivate let loadMoreRowIndex = 3
     fileprivate let loadMoreRowCount = 4
-
 
     // MARK: - Private Properties
 

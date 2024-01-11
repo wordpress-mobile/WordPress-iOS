@@ -209,7 +209,6 @@ private extension ChangeUsernameViewController {
         static let username = NSLocalizedString("Username", comment: "The header and main title")
 
         enum Alert {
-            static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
             static let title = NSLocalizedString("Careful!", comment: "Alert title.")
             static let message = NSLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")

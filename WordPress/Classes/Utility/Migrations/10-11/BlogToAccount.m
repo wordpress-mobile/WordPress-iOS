@@ -4,6 +4,8 @@
 #import "Constants.h"
 #import "WordPress-Swift.h"
 
+@import NSObject_SafeExpectations;
+
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
 }

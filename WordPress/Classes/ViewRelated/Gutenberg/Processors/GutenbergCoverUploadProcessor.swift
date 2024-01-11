@@ -49,21 +49,6 @@ class GutenbergCoverUploadProcessor: Processor {
     func process(_ text: String) -> String {
         return coverBlockProcessor.process(text)
     }
-
-    private func processInnerBlocks(_ outerBlock: GutenbergBlock) -> String {
-        var block = "<!-- wp:cover "
-        let attributes = outerBlock.attributes
-
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: [.sortedKeys]),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            block += jsonString
-        }
-
-        block += " -->"
-        block += coverBlockProcessor.process(outerBlock.content)
-        block += "<!-- /wp:cover -->"
-        return block
-    }
 }
 
 // Image Support

@@ -269,6 +269,7 @@ import Foundation
     // My Site: Header Actions
     case mySiteHeaderMoreTapped
     case mySiteHeaderAddSiteTapped
+    case mySiteHeaderShareSiteTapped
     case mySiteHeaderPersonalizeHomeTapped
 
     // Site Switcher
@@ -1030,6 +1031,8 @@ import Foundation
             return "my_site_header_more_tapped"
         case .mySiteHeaderAddSiteTapped:
             return "my_site_header_add_site_tapped"
+        case .mySiteHeaderShareSiteTapped:
+            return "my_site_header_share_site_tapped"
         case .mySiteHeaderPersonalizeHomeTapped:
             return "my_site_header_personalize_home_tapped"
 

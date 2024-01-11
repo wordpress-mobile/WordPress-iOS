@@ -24,10 +24,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         copyPage(page)
     }
 
-    func publish(_ apost: AbstractPost) {
-        publishPost(apost)
-    }
-
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         guard let page = post as? Page else { return }
         trashPage(page, completion: completion)
@@ -47,7 +43,12 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func share(_ apost: AbstractPost, fromView view: UIView) {
-        // Not available for pages
+        guard let page = apost as? Page else { return }
+
+        WPAnalytics.track(.postListShareAction, properties: propertiesForAnalytics())
+
+        let shareController = PostSharingController()
+        shareController.sharePage(page, fromView: view, inViewController: self)
     }
 
     func blaze(_ apost: AbstractPost) {
@@ -104,6 +105,13 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     private func trashPage(_ page: Page, completion: @escaping () -> Void) {
+        if page.status == .draft ||
+            page.status == .scheduled {
+            deletePost(page)
+            completion()
+            return
+        }
+
         let isPageTrashed = page.status == .trash
         let actionText = isPageTrashed ? Strings.DeletePermanently.actionText : Strings.Trash.actionText
         let titleText = isPageTrashed ? Strings.DeletePermanently.titleText : Strings.Trash.titleText

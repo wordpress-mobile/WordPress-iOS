@@ -519,9 +519,6 @@
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Rozdeliť vlákna komentárov do viacej stránok.";
 
-/* Description of a Quick Start Tour */
-"Browse all our themes to find your perfect fit." = "Prehliadajte všetky naše témy, aby ste našli takú, ktorá sa vám perfektne hodí.";
-
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Ochrana pred útokom hrubou silou";
 
@@ -676,8 +673,7 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupov";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Vyberte tému";
 
 /* Label for button that clears all media cache. */
@@ -706,7 +702,6 @@
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Zavrieť";
@@ -869,9 +864,6 @@
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Čítať ďalej";
 
-/* Title of a Quick Start Tour */
-"Continue with site setup" = "Pokračovať s nastaveniami webovej stránky";
-
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Prispieť";
 
@@ -920,15 +912,6 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nepodarilo sa pripojiť k webovej stránke WordPress. Neexistuje žiadna platná webová stránka WordPress na tejto adrese. Skontrolujte adresu webovej stránky (URL), ktorú ste zadali. ";
 
-/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "Nepodarilo sa pripojiť. Požadované XML-RPC metódy chybájú na serveri. ";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Nepodarilo sa pripojiť. Vyskytla sa chyba 403 pri pokuse pripojiť sa na koncový bod webovej stránky XMLRPC. Aplikácia ho potrebuje na komunikáciu s webovou stránkou. Kontaktujte svojho poskytovateľa hostingu a vyriešte problém.";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
-"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Nepodarilo sa pripojiť. Váš host blokuje žiadosti článku. Aplikácia žiadosti potrebuje na komunikáciu s webovou stránkou. Kontaktujte svojho hostiteľa a vyriešte problém.";
-
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Značky sa nepodarilo načítať. Ťuknutím to zopakujte.";
 
@@ -944,9 +927,6 @@
 
 /* The button title text for creating a new account. */
 "Create Account" = "Vytvoriť účet";
-
-/* Title for the site creation flow. */
-"Create New Site" = "Vytvoriť novú webovú stránku";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -1171,8 +1151,7 @@
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Upraviť";
 
 /* Title for the edit more button section */
@@ -1200,9 +1179,6 @@
 
 /* Title for the editor settings section */
 "Editor" = "Editor";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "Upraviť komentár";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Upravuje komentár.";
@@ -1264,9 +1240,6 @@
 
 /* No comment provided by engineer. */
 "Enter a password" = "Zadajte heslo";
-
-/* Secondary message shown when there are no domains that match the user entered text. */
-"Enter different words above and we'll look for an address that matches it." = "Zadajte rôzne slová a vyhľadáme adresu, ktorá sa zhoduje.";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -1466,17 +1439,13 @@
    Label for number of followers. */
 "Followers" = "Odberatelia";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Nasledujúce";
 
 /* Filters Follows Notifications */
 "Follows" = "Odbery";
-
-/* Spoken hint describing action for unselected following buttons. */
-"Follows blog" = "Sledovať blog";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Sledovať blog.";
@@ -1520,9 +1489,6 @@
 
 /* Cancel */
 "Give Up" = "Vzdať sa";
-
-/* No comment provided by engineer. */
-"Go back" = "Späť";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Prejsť na nasledujúce";
@@ -1922,9 +1888,6 @@
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Načítavanie štatistík...";
-
-/* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
-"Loading domains" = "Načítavajú sa domény";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Načítanie menu...";
@@ -2340,9 +2303,6 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Nedostatok miesta na nahranie";
 
-/* Accessibility label for unselected following buttons. */
-"Not following" = "Nesledované";
-
 /* Button label for denying our request to allow push notifications
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
    Phrase displayed to dismiss a quick start tour suggestion. */
@@ -2395,7 +2355,6 @@
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -2821,9 +2780,6 @@
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Push notifikácie boli vypnuté v iOS nastaveniach. Prepnite možnosť \"Povoliť upozornenia\" a zapnite ich späť.";
 
-/* The menu item to select during a guided tour. */
-"Quick Start" = "Rýchly štart";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Prečítať na ";
 
@@ -2839,8 +2795,7 @@
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Čítačka";
 
 /* Title for a list of ssettings for editing a blog's Reblog and Like settings. */
@@ -3005,7 +2960,6 @@
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Obnoviť";
 
@@ -3131,12 +3085,6 @@
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Zvoľte %@ a vytvorte nový článok ";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "Zvoľte %@ a objavte nové témy";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "Zvoľte %@ a zobrazte váš zoznam";
 
 /* Blog Picker's Title */
 "Select Site" = "Vybrať webovú stránku";
@@ -3349,9 +3297,6 @@
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Niektoré nahrávania súborov zlyhali. Táto akcia vymaže všetky neúspešne nahrané súbory. \nZachrániť niektoré?";
 
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
@@ -3695,7 +3640,6 @@
 "Theme Activated" = "Téma aktivovaná";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Témy";
@@ -3838,9 +3782,6 @@
    Title for the time zone selector */
 "Time Zone" = "Časová zóna";
 
-/* Description of a Quick Start Tour */
-"Time to finish setting up your site! Our checklist walks you through the next steps." = "Čas na ukončenie nastavení webovej stránky. Zoznám vám ukáže ďalšie kroky.";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tipy ako využiť služby WordPress.com čo najlepšie.";
 
@@ -3889,8 +3830,7 @@
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Najvyššia úroveň";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "Téma";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -4006,12 +3946,6 @@
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 draft post" = "Nepodarilo sa nahrať 1 koncept príspevku";
 
-/* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "Nepodarilo sa nahrať 1 koncept príspevku, %ld súborov";
-
-/* Alert displayed to the user when a single post and 1 file has failed to upload. */
-"Unable to upload 1 draft post, 1 file" = "Nepodarilo sa nahrať 1 koncept príspevku, 1 súbor";
-
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nepodarilo sa nahrať 1 článok";
 
@@ -4060,9 +3994,6 @@
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
 "Unfollowed site" = "Sledovanie webovej stránky zrušené";
-
-/* Spoken hint describing action for selected following buttons. */
-"Unfollows blog" = "Zrušiť sledovanie blogu";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Prestať sledovať tento blog.";
@@ -4175,9 +4106,6 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Nahráva sa...";
-
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "Nahrávanie zlyhalo";
 
 /* Use the current image */
 "Use" = "Použiť";
@@ -4316,9 +4244,6 @@
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Máme problémy s načítaním dát";
-
-/* Primary message shown when there are no domains that match the user entered text. */
-"We couldn't find any available address with the words you entered - let's try again." = "Nevedeli sme nájsť žiadnu dostupnú adresu obsahujúca slová, ktoré ste zadali - skúste neskôr ešte raz.";
 
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Máme problém s načítavaním pripojenia pre %@";
@@ -4481,8 +4406,7 @@
 /* Title of Years stats filter. */
 "Years" = "Roky";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Áno";
