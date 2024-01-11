@@ -7,6 +7,7 @@ protocol SiteMediaPageViewControllerDelegate: AnyObject {
 
 final class SiteMediaPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     private weak var siteMediaDelegate: SiteMediaPageViewControllerDelegate?
+    private var prefetchingTask: Task<Void, Error>?
 
     init(media: Media, delegate: SiteMediaPageViewControllerDelegate) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -70,15 +71,35 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
         guard let media = siteMediaDelegate?.siteMediaPageViewController(self, getMediaBeforeMedia: current) else {
             return nil
         }
+        if let previous = siteMediaDelegate?.siteMediaPageViewController(self, getMediaBeforeMedia: media) {
+            startPrefetching(for: previous)
+        }
         return makePageViewController(with: media)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let current = (viewController as! MediaItemViewController).media
-        guard let media = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: current) else {
+         guard let media = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: current) else {
             return nil
         }
+        if let next = siteMediaDelegate?.siteMediaPageViewController(self, getMediaAfterMedia: media) {
+            startPrefetching(for: next)
+        }
         return makePageViewController(with: media)
+    }
+
+    private func startPrefetching(for media: Media) {
+        if let task = prefetchingTask {
+            // Give the task a chance to complete and/or the new task
+            // to subscribe to the underlying network task
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                task.cancel()
+            }
+        }
+        guard media.mediaType == .image else { return }
+        prefetchingTask = Task {
+            _ = try await MediaImageService.shared.image(for: media, size: .large)
+        }
     }
 
     // MARK: - UIPageViewControllerDelegate
