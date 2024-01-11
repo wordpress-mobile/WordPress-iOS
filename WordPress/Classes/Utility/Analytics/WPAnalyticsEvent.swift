@@ -284,6 +284,7 @@ import Foundation
     // Post List
     case postListItemSelected
     case postListShareAction
+    case postListBlazeAction
     case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
@@ -1058,6 +1059,8 @@ import Foundation
             return "post_list_item_selected"
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListBlazeAction:
+            return "post_list_button_pressed"
         case .postListCommentsAction:
             return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
@@ -1545,6 +1548,8 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListBlazeAction:
+            return ["button": "blaze"]
         case .postListCommentsAction:
             return ["button": "comments"]
         case .postListSetAsPostsPageAction:

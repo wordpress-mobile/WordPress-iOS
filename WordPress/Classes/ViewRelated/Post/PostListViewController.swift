@@ -368,6 +368,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     }
 
     func blaze(_ post: AbstractPost) {
+        WPAnalytics.track(.postListBlazeAction, properties: propertiesForAnalytics())
         BlazeEventsTracker.trackEntryPointTapped(for: .postsList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
