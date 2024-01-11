@@ -167,10 +167,24 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (void)trackUploadError:(NSError *)error
                     blog:(Blog *)blog
 {
-    if (error.code == NSURLErrorCancelled) {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withBlog:blog];
-    } else {
-        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlogID:blog.dotComID];
+    switch (error.code) {
+        case NSURLErrorCancelled:
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled withBlog:blog];
+            break;
+        case NSURLErrorNetworkConnectionLost:
+        case NSURLErrorNotConnectedToInternet:
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadPaused error:error withBlogID:blog.dotComID];
+            break;
+        case NSURLErrorTimedOut:
+            if (ReachabilityUtils.isInternetReachable) {
+                [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlogID:blog.dotComID];
+            } else {
+                [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadPaused error:error withBlogID:blog.dotComID];
+            }
+            break;
+        default:
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error withBlogID:blog.dotComID];
+            break;
     }
 }
 
