@@ -374,6 +374,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
             present(navigationController, animated: true)
         case .pages:
             let page = pages[indexPath.row]
+            WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
             edit(page)
         }
     }

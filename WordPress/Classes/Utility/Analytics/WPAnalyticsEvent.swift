@@ -282,6 +282,7 @@ import Foundation
     case siteSwitcherToggleBlogVisible
 
     // Post List
+    case postListItemSelected
     case postListShareAction
     case postListCommentsAction
     case postListSetAsPostsPageAction
@@ -1053,6 +1054,8 @@ import Foundation
             return "site_switcher_toggle_blog_visible"
 
         // Post List
+        case .postListItemSelected:
+            return "post_list_item_selected"
         case .postListShareAction:
             return "post_list_button_pressed"
         case .postListCommentsAction:
