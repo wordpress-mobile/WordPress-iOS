@@ -307,15 +307,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         editDuplicatePost(post)
     }
 
-    func publish(_ post: AbstractPost) {
-        publishPost(post) {
-            BloggingRemindersFlow.present(from: self,
-                                          for: post.blog,
-                                          source: .publishFlow,
-                                          alwaysShow: false)
-        }
-    }
-
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         if post.status == .draft ||
             post.status == .scheduled {

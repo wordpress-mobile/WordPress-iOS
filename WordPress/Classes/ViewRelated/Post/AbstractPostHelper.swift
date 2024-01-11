@@ -1,6 +1,10 @@
 import Foundation
 
 enum AbstractPostHelper {
+    static func editorPublishAction(for post: AbstractPost) -> PostEditorAction {
+        post.blog.isPublishingPostsAllowed() ? .publish : .submitForReview
+    }
+
     static func getLocalizedStatusWithDate(for post: AbstractPost) -> String? {
         let timeZone = post.blog.timeZone
 
