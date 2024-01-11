@@ -1,10 +1,13 @@
 24.1
 -----
+* [**] Block Editor: Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
 * [**] Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
 * [**] Improve media previews on long-press: load higher-resolution thumbnails and increase the preview size, add support for GIFs and video playback, enable for documents and other files [#22274]
 * [*] Add prefetching to Site Media details screen [#22292]
 * [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
 * [*] Add "Share" action to the site context menu [#22298]
+* [**] Block Editor: Media uploads that failed due to lack of internet connectivity automatically retry once a connection is re-established [https://github.com/wordpress-mobile/WordPress-iOS/pull/22238]
+* [**] Block Editor: Manually retrying a single failed media upload will retry all failed media uploads in a post [https://github.com/wordpress-mobile/WordPress-iOS/pull/22240]
 
 24.0
 -----
