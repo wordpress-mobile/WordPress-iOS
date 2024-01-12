@@ -32,12 +32,17 @@ extension SitePickerViewController {
     }
 
     private func makeSecondarySection() -> UIMenu {
-        UIMenu(options: .displayInline, children: [
-            MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction,
-            UIMenu(title: Strings.siteIcon, image: UIImage(systemName: "photo.circle"), children: [
-                makeSiteIconMenu() ?? UIMenu()
-            ])
-        ])
+        var menuItems: [UIMenuElement] = [
+            MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction
+        ]
+        if siteIconShouldAllowDroppedImages() {
+            menuItems.append(
+                UIMenu(title: Strings.siteIcon, image: UIImage(systemName: "photo.circle"), children: [
+                    makeSiteIconMenu() ?? UIMenu()
+                ])
+            )
+        }
+        return UIMenu(options: .displayInline, children: menuItems)
     }
 
     private func makeTertiarySection() -> UIMenu {
