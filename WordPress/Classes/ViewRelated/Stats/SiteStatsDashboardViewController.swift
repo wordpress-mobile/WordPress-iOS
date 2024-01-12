@@ -41,7 +41,13 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
 }
 
 fileprivate extension StatsPeriodType {
-    static let allPeriods = StatsPeriodType.allCases
+    static var displayedPeriods: [StatsPeriodType] {
+        if RemoteFeatureFlag.statsTrafficTab.enabled() {
+            return [.traffic, .insights]
+        } else {
+            return [.insights, .days, .weeks, .months, .years]
+        }
+    }
 
     var analyticsAccessEvent: WPAnalyticsStat {
         switch self {
@@ -165,11 +171,12 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 private extension SiteStatsDashboardViewController {
     var currentSelectedPeriod: StatsPeriodType {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? StatsPeriodType.insights.rawValue
-            return StatsPeriodType(rawValue: selectedIndex) ?? .insights
+            let selectedIndex = filterTabBar?.selectedIndex ?? 0
+            return StatsPeriodType.displayedPeriods[selectedIndex]
         }
         set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
+            let index = StatsPeriodType.displayedPeriods.firstIndex(of: newValue) ?? 0
+            filterTabBar?.setSelectedIndex(index)
             let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
             updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
@@ -184,13 +191,13 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = StatsPeriodType.allPeriods
+        filterTabBar.items = StatsPeriodType.displayedPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
+        currentSelectedPeriod = StatsPeriodType.displayedPeriods[filterBar.selectedIndex]
 
         configureNavBar()
     }
@@ -220,7 +227,7 @@ private extension SiteStatsDashboardViewController {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
               let periodType = StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
-            return .insights
+            return StatsPeriodType.displayedPeriods[0]
         }
 
         return periodType
