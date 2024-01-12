@@ -79,6 +79,7 @@ class SiteStatsDashboardViewController: UIViewController {
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
     private var pageViewController: UIPageViewController?
+    private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
 
     @objc lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -172,10 +173,10 @@ private extension SiteStatsDashboardViewController {
     var currentSelectedPeriod: StatsPeriodType {
         get {
             let selectedIndex = filterTabBar?.selectedIndex ?? 0
-            return StatsPeriodType.displayedPeriods[selectedIndex]
+            return displayedPeriods[selectedIndex]
         }
         set {
-            let index = StatsPeriodType.displayedPeriods.firstIndex(of: newValue) ?? 0
+            let index = displayedPeriods.firstIndex(of: newValue) ?? 0
             filterTabBar?.setSelectedIndex(index)
             let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
             updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
@@ -191,13 +192,13 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = StatsPeriodType.displayedPeriods
+        filterTabBar.items = displayedPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        currentSelectedPeriod = StatsPeriodType.displayedPeriods[filterBar.selectedIndex]
+        currentSelectedPeriod = displayedPeriods[filterBar.selectedIndex]
 
         configureNavBar()
     }
@@ -227,7 +228,7 @@ private extension SiteStatsDashboardViewController {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
               let periodType = StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
-            return StatsPeriodType.displayedPeriods[0]
+            return displayedPeriods[0]
         }
 
         return periodType
