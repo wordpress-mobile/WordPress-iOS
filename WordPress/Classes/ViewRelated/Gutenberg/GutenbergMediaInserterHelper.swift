@@ -91,6 +91,9 @@ class GutenbergMediaInserterHelper: NSObject {
             if media.remoteStatus == .failed {
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .uploading, progress: 0, url: media.absoluteThumbnailLocalURL, serverID: nil)
                 let finalState: Gutenberg.MediaUploadState = ReachabilityUtils.isInternetReachable() ? .failed : .paused
+                if finalState == .paused {
+                    trackPausedMediaOf(media)
+                }
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: finalState, progress: 0, url: nil, serverID: nil)
             }
         }
@@ -225,6 +228,7 @@ class GutenbergMediaInserterHelper: NSObject {
             case NSURLErrorNetworkConnectionLost: fallthrough
             case NSURLErrorNotConnectedToInternet: fallthrough
             case NSURLErrorTimedOut where !ReachabilityUtils.isInternetReachable():
+                trackPausedMediaOf(media)
                 // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: nil, serverID: nil)
             default:
@@ -233,6 +237,11 @@ class GutenbergMediaInserterHelper: NSObject {
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
         }
+    }
+
+    private func trackPausedMediaOf(_ media: Media) {
+        let info = MediaAnalyticsInfo(origin: .editor(.none), selectionMethod: mediaSelectionMethod)
+        mediaCoordinator.trackPausedUploadOf(media, analyticsInfo: info)
     }
 }
 
