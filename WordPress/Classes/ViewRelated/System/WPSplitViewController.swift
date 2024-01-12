@@ -512,6 +512,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
 
                 if (!isShowingInitialDetail && detailNavigationStackHasBeenModified) || forceKeepDetail {
                     primaryViewController.viewControllers.append(contentsOf: secondaryViewController.viewControllers)
+                    secondaryViewController.viewControllers = [] // This prevents a crash that manifests on Xcode 15.0 / iOS 17.0
                 }
             }
 
