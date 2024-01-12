@@ -442,6 +442,16 @@ class MediaCoordinator: NSObject {
                              with: media.blog)
     }
 
+    func trackPausedUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
+        guard let info = analyticsInfo else {
+            return
+        }
+
+        let event = info.pausedEvent
+        let properties = info.properties(for: media)
+        WPAppAnalytics.track(event, withProperties: properties, with: media.blog)
+    }
+
     // MARK: - Progress
 
     /// - returns: The current progress for the specified media object.
