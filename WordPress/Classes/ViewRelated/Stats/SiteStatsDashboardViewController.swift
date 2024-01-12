@@ -6,6 +6,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     case weeks
     case months
     case years
+    case traffic
 
     // This is public as it is needed by FilterTabBarItem.
     var title: String {
@@ -15,6 +16,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
         case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
         case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
+        case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
         }
     }
 
@@ -30,6 +32,8 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
             self = .years
         case "insights":
             self = .insights
+        case "traffic":
+            self = .traffic
         default:
             return nil
         }
@@ -46,6 +50,7 @@ fileprivate extension StatsPeriodType {
         case .weeks:    return .statsPeriodWeeksAccessed
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
+        case .traffic:  return .statsPeriodDaysAccessed // TODO
         }
     }
 }
@@ -252,6 +257,13 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
             insightsTableViewController.refreshInsights()
+        case .traffic:
+            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+                let viewController = UIViewController() // TODO
+                pageViewController?.setViewControllers([viewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
         default:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([periodTableViewController],
