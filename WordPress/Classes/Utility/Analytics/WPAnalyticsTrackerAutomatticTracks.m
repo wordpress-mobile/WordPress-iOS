@@ -1220,8 +1220,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_load_more_triggered";
             break;
         case WPAnalyticsStatPostListNoResultsButtonPressed:
-            eventName = @"post_list_button_pressed";
-            eventProperties = @{ TracksEventPropertyButtonKey : @"no_results" };
+            eventName = @"post_list_create_post_tapped";
             break;
         case WPAnalyticsStatPostListOpenedCellMenu:
             eventName = @"post_list_cell_menu_opened";

@@ -5,10 +5,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     func edit(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
 
-        let didOpenEditor = PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
-        if didOpenEditor {
-            WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
-        }
+        PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
     }
 
     func view(_ apost: AbstractPost) {
