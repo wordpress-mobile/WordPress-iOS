@@ -56,7 +56,7 @@ fileprivate extension StatsPeriodType {
         case .weeks:    return .statsPeriodWeeksAccessed
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
-        case .traffic:  return .statsPeriodDaysAccessed // TODO
+        case .traffic:  return .noStat // TODO
         }
     }
 }
