@@ -948,9 +948,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaServiceUploadFailed:
             eventName = @"media_service_upload_failed";
             break;
-        case WPAnalyticsStatMediaServiceUploadPaused:
-            eventName = @"media_service_upload_paused";
-            break;
         case WPAnalyticsStatMediaServiceUploadSuccessful:
             eventName = @"media_service_upload_successful";
             break;
