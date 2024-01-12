@@ -34,6 +34,7 @@ actor PostSearchSuggestionsService {
             .sorted { ($0.score, $0.token.value) > ($1.score, $1.token.value) }
             .map { $0.token }
             .prefix(3))
+            .deduplicated(by: \.id)
     }
 
     private struct RankedToken {
