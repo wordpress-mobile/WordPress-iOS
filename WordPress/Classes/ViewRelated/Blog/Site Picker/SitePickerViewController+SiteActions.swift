@@ -13,11 +13,12 @@ extension SitePickerViewController {
     }
 
     private func makeSections() -> [UIMenu] {
-        [
+        let sections = [
             makePrimarySection(),
             makeSecondarySection(),
             makeTertiarySection()
         ]
+        return sections.compactMap { $0 }
     }
 
     private func makePrimarySection() -> UIMenu {
@@ -31,7 +32,11 @@ extension SitePickerViewController {
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
 
-    private func makeSecondarySection() -> UIMenu {
+    private func makeSecondarySection() -> UIMenu? {
+        guard blog.isAdmin else {
+            return nil
+        }
+
         var menuItems: [UIMenuElement] = [
             MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction
         ]
