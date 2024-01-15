@@ -236,7 +236,7 @@ extension ReaderTabView: ReaderNavigationMenuDelegate {
 
         // Accounts for the case where a user quickly swipes the scroll view without holding their
         // finger on it.
-        // Note: velocity here is opposite of the velocity in `scrollViewDidScroll`. Postive values
+        // Note: velocity here is opposite of the velocity in `scrollViewDidScroll`. Positive values
         // are scrolling down. The scale is also much different.
         if !isMenuHidden && !isTargetContentNearTop && velocity.y > 0.5 {
             updateMenuDisplay(hidden: true)
