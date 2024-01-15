@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -267,7 +268,7 @@ private extension SiteStatsDashboardViewController {
             insightsTableViewController.refreshInsights()
         case .traffic:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
-                let viewController = UIViewController() // TODO
+                let viewController = UIHostingController(rootView: TrafficView())
                 pageViewController?.setViewControllers([viewController],
                                                        direction: .forward,
                                                        animated: false)
