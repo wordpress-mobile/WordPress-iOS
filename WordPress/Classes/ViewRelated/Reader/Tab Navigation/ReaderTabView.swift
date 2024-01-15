@@ -161,7 +161,7 @@ extension ReaderTabView {
 
         isMenuHidden = hidden
         mainStackViewTopAnchor?.constant = hidden ? -buttonContainer.frame.height : 0
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: Appearance.hideShowBarDuration) {
             self.layoutIfNeeded()
         }
     }
@@ -203,6 +203,7 @@ private extension ReaderTabView {
     enum Appearance {
         static let barHeight: CGFloat = 48
         static let dividerColor: UIColor = .divider
+        static let hideShowBarDuration: CGFloat = 0.2
     }
 }
 
