@@ -8,7 +8,6 @@ struct ColorGallery: View {
             Group {
                 foregroundSection
                 backgroundSection
-                dividerSection
             }
         }
         .navigationTitle("Colors")
@@ -85,16 +84,6 @@ struct ColorGallery: View {
                 with: "Brand",
                 hexString: hexString(for: .DS.Background.brand(isJetpack: true)),
                 color: Color.DS.Background.brand(isJetpack: true)
-            )
-        }
-    }
-
-    private var dividerSection: some View {
-        Section(header: sectionTitle("Divider")) {
-            listItem(
-                with: "Divider",
-                hexString: hexString(for: .DS.divider),
-                color: Color.DS.divider
             )
         }
     }
