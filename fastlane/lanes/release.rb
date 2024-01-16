@@ -334,6 +334,13 @@ platform :ios do
     UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
     commit_version_and_build_files
+
+    unless options[:skip_confirm] || UI.confirm('Ready to push changes to remote?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
+    end
+
+    push_to_git_remote(tags: false)
   end
 
   # Finalizes a hotfix, by triggering a release build on CI

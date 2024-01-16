@@ -28,16 +28,13 @@ actor PostSearchSuggestionsService {
         let tokens = await [authors, tags]
         let selectedTokenIDs = Set(selectedTokens.map(\.id))
 
-        let output = Array(tokens
+        return Array(tokens
             .flatMap { $0 }
             .filter { !selectedTokenIDs.contains($0.token.id) }
             .sorted { ($0.score, $0.token.value) > ($1.score, $1.token.value) }
             .map { $0.token }
             .prefix(3))
-
-        // Remove duplicates
-        var encounteredIDs = Set<AnyHashable>()
-        return output.filter { encounteredIDs.insert($0.id).inserted }
+            .deduplicated(by: \.id)
     }
 
     private struct RankedToken {
