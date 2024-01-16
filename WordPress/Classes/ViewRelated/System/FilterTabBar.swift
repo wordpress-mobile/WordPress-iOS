@@ -216,6 +216,7 @@ class FilterTabBar: UIControl {
     }
 
     var tabButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsets
+    var tabSeparatorPadding: CGFloat = AppearanceMetrics.buttonPadding
 
     // MARK: - Initialization
     required init?(coder aDecoder: NSCoder) {
@@ -514,8 +515,8 @@ class FilterTabBar: UIControl {
         let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - buttonInsets.left)
         let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + buttonInsets.right)
 
-        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
-        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
+        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant + tabSeparatorPadding)
+        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant - tabSeparatorPadding)
 
         selectionIndicatorLeadingConstraint?.isActive = true
         selectionIndicatorTrailingConstraint?.isActive = true
@@ -527,6 +528,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
+        static let buttonPadding: CGFloat = 0.0
         static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 2.0, bottom: 10.0, right: 2.0)
     }
 

@@ -123,6 +123,7 @@ private extension StatsBarChartCell {
         filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .caption2)
         filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .caption2)
         filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
+        filterTabBar.tabSeparatorPadding = Length.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
