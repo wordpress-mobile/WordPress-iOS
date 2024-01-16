@@ -215,6 +215,8 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var tabButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsets
+
     // MARK: - Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -308,7 +310,7 @@ class FilterTabBar: UIControl {
 
         tab.contentEdgeInsets = item.attributedTitle != nil ?
             AppearanceMetrics.buttonInsetsAttributedTitle :
-            AppearanceMetrics.buttonInsets
+            tabButtonInsets
 
         tab.sizeToFit()
 
@@ -507,7 +509,7 @@ class FilterTabBar: UIControl {
 
         let buttonInsets = tab.currentAttributedTitle != nil ?
             AppearanceMetrics.buttonInsetsAttributedTitle :
-            AppearanceMetrics.buttonInsets
+            tabButtonInsets
 
         let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - buttonInsets.left)
         let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + buttonInsets.right)

@@ -113,15 +113,16 @@ private extension StatsBarChartCell {
         contentStackView.addArrangedSubview(filterTabBar)
         filterTabBar.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
         filterTabBar.tabBarHeight = 40
-        filterTabBar.equalWidthFill = .fillProportionally
+        filterTabBar.equalWidthFill = .fillEqually
         filterTabBar.equalWidthSpacing = Length.Padding.single
         filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.tintColor = UIColor.DS.Foreground.primary
         filterTabBar.selectedTitleColor = UIColor.DS.Foreground.primary
         filterTabBar.deselectedTabColor = UIColor.DS.Foreground.secondary
         filterTabBar.tabSeparatorPlacement = .top
-        filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .footnote)
-        filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .footnote)
+        filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .caption2)
+        filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .caption2)
+        filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
