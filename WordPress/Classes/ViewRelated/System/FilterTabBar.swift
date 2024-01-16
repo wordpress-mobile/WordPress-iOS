@@ -201,6 +201,20 @@ class FilterTabBar: UIControl {
     var topTabSeparatorPlacementConstraints: [NSLayoutConstraint] = []
     var bottomTabSeparatorPlacementConstraints: [NSLayoutConstraint] = []
 
+    // MARK: - Tab Fonts
+
+    var tabsSelectedFont: UIFont = TabBarButton.defaultSelectedFont {
+        didSet {
+            tabs.forEach { ($0 as? TabBarButton)?.selectedFont = tabsSelectedFont  }
+        }
+    }
+
+    var tabsFont: UIFont = TabBarButton.defaultFont {
+        didSet {
+            tabs.forEach { ($0 as? TabBarButton)?.font = tabsFont  }
+        }
+    }
+
     // MARK: - Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -278,6 +292,8 @@ class FilterTabBar: UIControl {
         tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
+        tab.font = tabsFont
+        tab.selectedFont = tabsSelectedFont
 
         tab.setAttributedTitle(item.attributedTitle, for: .normal)
         tab.titleLabel?.lineBreakMode = .byWordWrapping
@@ -520,6 +536,21 @@ class FilterTabBar: UIControl {
 }
 
 private class TabBarButton: UIButton {
+    static let defaultSelectedFont = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+    static let defaultFont = WPStyleGuide.fontForTextStyle(.subheadline, maximumPointSize: TabFont.maxSize)
+
+    var selectedFont: UIFont = TabBarButton.defaultSelectedFont {
+        didSet {
+            setFont()
+        }
+    }
+
+    var font: UIFont = TabBarButton.defaultFont {
+        didSet {
+            setFont()
+        }
+    }
+
     private enum TabFont {
         static let maxSize: CGFloat = 28.0
     }
@@ -544,9 +575,9 @@ private class TabBarButton: UIButton {
 
     private func setFont() {
         if isSelected {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+            titleLabel?.font = selectedFont
         } else {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, maximumPointSize: TabFont.maxSize)
+            titleLabel?.font = font
         }
     }
 
