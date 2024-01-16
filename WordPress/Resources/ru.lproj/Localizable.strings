@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-20 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-08 10:28:13+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ru */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nВведите ваше имя пользователя для подтверждения закрытия.\n\n";
-
-/* Per-year postfix shown after a domain's cost. */
-" \/ year" = " в год";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Ленивая загрузка\" изображений";
@@ -227,10 +224,6 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li слов, %2$li символов";
-
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "Блок %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "настройки блока %s";
@@ -505,9 +498,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Добавить тему";
 
-/* Hint for the reader CSS URL field */
-"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Добавить домен";
 
@@ -649,9 +639,8 @@ translators: Block name. %s: The localized block name */
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Все";
 
-/* Footer of the free domain registration section for a paid plan.
-   Information about redeeming domain credit on site dashboard. */
-"All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Все тарифы WordPress.com включают возможность зарегистрировать пользовательское имя домена. Сделайте это сейчас.";
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Все годовые тарифные планы WordPress.com включают пользовательский домен. Зарегистрируйте ваш бесплатный домен.";
 
 /* An option in a list. Automatically approve all comments */
 "All comments" = "Все комментарии";
@@ -975,9 +964,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Автоматически управляется на этом сайте";
 
-/* Label indicating that a domain name registration will automatically renew */
-"Auto-renew enabled" = "Автоматическое продление включено";
-
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Одобрять автоматически";
@@ -1109,9 +1095,6 @@ translators: Block name. %s: The localized block name */
 /* translators: displayed right after the block is duplicated. */
 "Block duplicated" = "Блок продублирован";
 
-/* Popup title about why this post is being opened in block editor */
-"Block editor enabled" = "Редактор блоков включен";
-
 /* translators: displayed right after the block is grouped */
 "Block grouped" = "Блок сгруппирован";
 
@@ -1200,9 +1183,6 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "Загрузка на сайт файлов с устройства или сделанных на камеру фото и видео.";
-
-/* Description of a Quick Start Tour */
-"Browse all our themes to find your perfect fit." = "Посмотрите все наши темы, чтобы найти свой идеал.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Защита от атак методом перебора";
@@ -1496,8 +1476,7 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Выберите сайт, чтобы открыть его.";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Выберите тему";
 
 /* Select the site's intent. Subtitle */
@@ -1586,7 +1565,6 @@ translators: Block name. %s: The localized block name */
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Закрыть";
@@ -1728,22 +1706,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site title" = "Готово: проверка названия сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a theme" = "Готово: выбор темы";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Готово: Уникальный значок сайта выбран";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Connect with other sites" = "Завершено: подключение к другим сайтам";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "Готово: продолжение настроек сайта";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Готово: создание сайта";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Explore plans" = "Готово: ознакомление с тарифами";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Готово: публикация записи";
@@ -1882,9 +1851,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Продолжить с Google";
 
-/* Title of a Quick Start Tour */
-"Continue with site setup" = "Продолжить настройку сайта";
-
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Продолжение через Apple";
 
@@ -1979,13 +1945,13 @@ translators: Block name. %s: The localized block name */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Невозможно подключиться к сайту WordPress. По этому адресу не обнаружена установка WordPress. Перепроверьте введенный адрес (URL).";
 
 /* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "Невозможно подключиться. Требуемые XML-RPC методы отсутствуют на сервере.";
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Не удалось подключиться. На сервере отсутствуют необходимые методы XML-RPC. Пожалуйста, свяжитесь с вашим хостинг-провайдером, чтобы решить эту проблему.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Невозможно подключиться. Получена ошибка 403 при подключении к XMLRPC вашего сайта. Обратитесь в тех.поддержку хостинга.";
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Невозможно подключиться. Получена ошибка 403 при подключении к XMLRPC вашего сайта. Обратитесь в тех.поддержку хостинга.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
-"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Невозможно подключиться. Ваш хостинг блокирует POST-запросы XML-RPC, они требуются для обмена информацией с вашим сайтом. Обратитесь в тех. поддержку хостинга.";
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Невозможно подключиться. Ваш хостинг блокирует POST-запросы XML-RPC, они требуются для обмена информацией с вашим сайтом. Обратитесь в тех. поддержку хостинга.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Ошибка загрузки меток.";
@@ -2018,9 +1984,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Код страны";
 
-/* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Журнал падений";
-
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Отчеты о падениях";
 
@@ -2035,9 +1998,6 @@ translators: Block name. %s: The localized block name */
 
 /* Create New header text */
 "Create New" = "Создать";
-
-/* Title for the site creation flow. */
-"Create New Site" = "Создать новый сайт";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -2225,9 +2185,6 @@ translators: Block name. %s: The localized block name */
 /* Navigates to debug menu only available in development builds */
 "Debug" = "Отладка";
 
-/* Debug settings title */
-"Debug Settings" = "Настройки отладки";
-
 /* Only December needs to be translated */
 "December 17, 2017" = "Декабрь 17, 2017";
 
@@ -2248,9 +2205,6 @@ translators: Block name. %s: The localized block name */
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Основной формат записей";
-
-/* Placeholder for the reader CSS URL */
-"Default URL" = "URL по умолчанию";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Параметры по умолчанию для новых записей";
@@ -2416,12 +2370,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Домены";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Домены зарегистрированные на этом сайте направят пользователей на %@";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Домены зарегистрированные на этом сайте направят пользователей на ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Нет учетной записи? _Зарегистрироваться_";
@@ -2592,8 +2540,7 @@ translators: Block name. %s: The localized block name */
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Изменить";
 
 /* Title for the edit more button section */
@@ -2657,9 +2604,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the editor settings section */
 "Editor" = "Редактор";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "Изменить комментарий";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Редактировать комментарий.";
@@ -2787,9 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Введите пароль для защиты этой записи";
-
-/* Secondary message shown when there are no domains that match the user entered text. */
-"Enter different words above and we'll look for an address that matches it." = "Введите другие слова выше и мы поищем адреса совпадающие с ними.";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2976,23 +2917,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Разверните для выбора другой области меню";
 
-/* Label indicating that a domain name registration has expired. */
-"Expired" = "Просрочено";
-
 /* Title for the error view when the user scanned an expired log in code */
 "Expired log in code" = "Истёк срок действия кода для входа";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "Истекает";
 
-/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
-"Expires on %@" = "Истекает %@";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Объясните, о чём этот сайт.";
-
-/* Title of a Quick Start Tour */
-"Explore plans" = "Посмотрите тарифы";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3092,6 +3024,9 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Тип файла";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Тип файла не поддерживается в качестве медиафайла.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Кино и телевидение";
 
@@ -3179,8 +3114,7 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Читатели";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Наблюдается";
@@ -3197,9 +3131,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Follows Notifications */
 "Follows" = "Читатели";
 
-/* Spoken hint describing action for unselected following buttons. */
-"Follows blog" = "Подписка на блог";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Подписаться на блог.";
 
@@ -3208,6 +3139,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Font Size" = "Размер шрифта";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Размер шрифта: %1$s";
 
 /* Food site intent topic */
 "Food" = "Еда";
@@ -3238,9 +3172,6 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Свободная фототека";
-
-/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Бесплатно за первый год ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Освободите место на этом устройстве, удалив временные мультимедиа файлы. Это не затронет медиафайлы на вашем сайте.";
@@ -3330,9 +3261,6 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
 "Get to know the app" = "Изучите приложение";
 
-/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Получите собственный домен";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Получайте уведомления быстрее";
 
@@ -3356,9 +3284,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Назад";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Перейти к подписанным сайтам";
@@ -3398,17 +3323,11 @@ translators: Block name. %s: The localized block name */
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
 "Guides you through the process of checking your notifications." = "Руководство по проверке уведомлений.";
 
-/* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
-"Guides you through the process of choosing a theme for your site." = "Гид по процессу выбора темы для вашего сайта.";
-
 /* This value is used to set the accessibility hint text for creating a new page for the user's site. */
 "Guides you through the process of creating a new page for your site." = "Гид по процессу создания новой страницы сайта.";
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Гид по процессу создания сайта.";
-
-/* This value is used to set the accessibility hint text for exploring plans on the user's site. */
-"Guides you through the process of exploring plans for your site." = "Гид по тарифам для вашего сайта.";
 
 /* This value is used to set the accessibility hint text for following the sites of other users. */
 "Guides you through the process of following other sites." = "Гид по процессу подписки на другие сайты.";
@@ -3424,9 +3343,6 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for setting the site title. */
 "Guides you through the process of setting a title for your site." = "Гид по процессу установки названия вашего сайта.";
-
-/* This value is used to set the accessibility hint text for setting up the user's site. */
-"Guides you through the process of setting up your site." = "Гид по процессу настройки сайта.";
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Гид по процессу загрузки значка для вашего сайта.";
@@ -3580,9 +3496,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Не удалось обновить значок";
-
-/* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Если у вас уже есть сайт, вам необходимо установить бесплатный плагин Jetpack и подключить его к вашей учетной записи WordPress.com.";
 
 /* The instructions text about not being able to find the magic link email. */
 "If you can’t find the email, please check your junk or spam email folder" = "Если не удаётся найти письмо, проверьте папку спама или нежелательной почты.";
@@ -3993,9 +3906,6 @@ translators: Block name. %s: The localized block name */
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "Learn about new comments, likes, and follows in seconds." = "Узнавайте о новых комментариях, отметках нравится и подписчиках за секунды.";
 
-/* Description of a Quick Start Tour */
-"Learn about the marketing and SEO tools in our paid plans." = "Узнайте об инструментах маркетинга и SEO на платных тарифах.";
-
 /* A button title.
    Link to cookie policy
    Menu title to show the prompts feature introduction modal.
@@ -4161,9 +4071,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Загрузка комментария...";
-
-/* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
-"Loading domains" = "Загрузка доменов";
 
 /* Displayed while a call is loading the history. */
 "Loading history..." = "Загрузка истории ...";
@@ -4616,8 +4523,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "Требует обновления";
 
-/* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "Бессрочно";
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Сетевое соединение потеряно, работа в автономном режиме";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Сетевое соединение восстановлено";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Новые";
@@ -4692,9 +4602,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* List Editor Empty State Message */
 "No Items" = "Нет элементов";
-
-/* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "Нет сайтов с Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Меню отсутствует";
@@ -4912,9 +4819,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Недостаточно места для загрузки";
 
-/* Accessibility label for unselected following buttons. */
-"Not following" = "Нет подписки";
-
 /* Button label for denying our request to allow push notifications
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
    Phrase displayed to dismiss a quick start tour suggestion. */
@@ -5015,7 +4919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -5319,9 +5222,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Выберите имя пользователя";
-
-/* The item to select during a guided tour. */
-"Plan" = "Тариф";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -5639,9 +5539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Primary Web Site */
 "Primary Site" = "Основной сайт";
 
-/* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Основной адрес сайта";
-
 /* Label for the privacy setting
    Privacy settings section header */
 "Privacy" = "Приватность";
@@ -5743,9 +5640,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Published on [date] */
 "Published on" = "Опубликовано";
 
-/* Label that describes in which blog the user is publishing to */
-"Publishing To" = "Публикация на";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Публикация страницы...";
 
@@ -5767,9 +5661,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Push-уведомления отключены в настройках iOS. Включите \"Разрешить уведомления\".";
 
-/* The menu item to select during a guided tour. */
-"Quick Start" = "Быстрый старт";
-
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Оцените нас";
 
@@ -5788,12 +5679,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Новости";
-
-/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "URL CSS Чтива";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Reading posts from other sites" = "Чтение записей с других сайтов";
@@ -5955,9 +5842,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Если вы удалите подписчиков, они перестанут получать обновления с вашего сайта. При желании они по-прежнему смогут посещать ваш сайт и повторно подписаться на него.";
 
-/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
-"Renews on %@" = "Будет продлен %@";
-
 /* No comment provided by engineer. */
 "Replace Current Block" = "Заменить текущий блок";
 
@@ -6090,7 +5974,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Повторить";
 
@@ -6143,6 +6026,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Магазин-песочница";
 
 /* Menus save button title
    Save Action
@@ -6312,9 +6198,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Посмотреть все";
 
-/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "См. инструкции";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "Следите в реальном времени за комментариями и уведомлениями.";
 
@@ -6332,22 +6215,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to create a new post" = "Выберите %@ для создания новой записи";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "Выберите %@ для поиска новых тем";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to find other sites." = "Нажмите %@, чтобы найти другие сайты.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Выберите %@ для просмотра статистики сайта.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "Выберите %@ для просмотра списка";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current library." = "Нажмите %@, чтобы открыть библиотеку.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current plan and other available plans." = "Выберите %@ для просмотра вашего текущего тарифа и других доступных тарифов.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your page list." = "Выберите %@ для просмотра списка страниц.";
@@ -6741,10 +6615,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Create new Site Page button title */
 "Site page" = "Страница сайта";
 
-/* Prologue title label, the 
- force splits it into 2 lines. */
-"Site security and performance\nfrom your pocket" = "Безопасность и производительность сайта\nв вашем кармане";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Часовой пояс сайта (UTC%1$@%2$d%3$@)";
 
@@ -6798,9 +6668,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Некоторые данные не загружены";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Произошел сбой при загрузке некоторых медиафайлов. Это действие удалит из записи все медиафайлы, которые не удалось загрузить.\nВсе равно сохранить?";
 
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
@@ -7345,7 +7212,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Сайт по адресу %1$@ использует WordPress %2$@. Рекомендуем обновить его до текущей версии или хотя бы до %3$@";
 
-/* Error message shown a URL does not point to an existing site. */
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Сайт по этому адресу не является сайтом на WordPress. Мы не можем подключиться к нему.";
 
 /* Message shown when site deletion API failed */
@@ -7385,7 +7253,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Тема подключена";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Темы";
@@ -7631,9 +7498,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "Часовой пояс";
 
-/* Description of a Quick Start Tour */
-"Time to finish setting up your site! Our checklist walks you through the next steps." = "Пора завершить настройки сайта! Наш список ведет вас к следующему шагу.";
-
 /* Error when the uses takes more than 1 minute to submit a security key. */
 "Time's up, but don't worry, your security is our priority. Please try again!" = "Время вышло, но не волнуйтесь, ваша безопасность — наш приоритет. Пожалуйста, попробуйте еще раз!";
 
@@ -7685,9 +7549,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Для сбора и просмотра статистики на сайте требуется установить плагин Jetpack.";
 
-/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Чтобы использовать это приложение для %@, нужно установить и подключить плагин Jetpack.";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -7708,9 +7569,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Переход к неупорядоченному списку";
 
-/* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "Инструменты";
-
 /* Insights 'Top Commenters' header */
 "Top Commenters" = "Наиболее активные комментаторы";
 
@@ -7718,8 +7576,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Верхний уровень";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "Тема";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7796,9 +7653,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Попробуйте еще раз.";
-
-/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Использовать другую учётную запись";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Попробуйте задать иной диапазон дат";
@@ -7878,9 +7732,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Site creation. Seelect a domain, search field placeholder */
 "Type a name for your site" = "Выберите название для вашего сайта";
-
-/* Register domain - Search field placeholder for the Suggested Domain screen */
-"Type to get more suggestions" = "Пишите для получения еще предложений";
 
 /* URL text field placeholder */
 "URL" = "URL-адрес";
@@ -7987,12 +7838,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 draft post" = "Невозможно загрузить 1 запись черновика";
 
-/* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "Невозможно загрузить 1 запись черновика, %ld файлов";
-
-/* Alert displayed to the user when a single post and 1 file has failed to upload. */
-"Unable to upload 1 draft post, 1 file" = "Невозможно загрузить 1 запись черновика, 1 файл";
-
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Невозможно загрузить 1 запись";
 
@@ -8047,8 +7892,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Отменить подписку";
 
-/* Accessibility label for unfollowing a site
-   Accessibility label for unfollowing a tag */
+/* Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Отписаться от %@";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -8063,9 +7907,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
 "Unfollowed site" = "Отписались от сайта";
-
-/* Spoken hint describing action for selected following buttons. */
-"Unfollows blog" = "Отписаться от блога";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Отписаться от блога.";
@@ -8236,17 +8077,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Uploading…" = "Загрузка...";
 
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "Сбой загрузок";
-
 /* Use the current image */
 "Use" = "Использовать";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "Используйте %@ для поиска сайтов и меток.";
-
-/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Использовать магазин-песочницу";
 
 /* The button's title text to use a security key. */
 "Use a security key" = "Использовать ключ безопасности";
@@ -8294,9 +8129,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Проверка данных при входе";
-
-/* Notice displayed after domain credit redemption success. */
-"Verify your email address - instructions sent to %@" = "Проверьте ваш адрес электронной почты, инструкции отосланы на %@";
 
 /* Description for the version label in the What's new page. */
 "Version " = "Версия";
@@ -8506,9 +8338,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Не удалось создать резервную копию. Попробуйте позже.";
 
-/* Primary message shown when there are no domains that match the user entered text. */
-"We couldn't find any available address with the words you entered - let's try again." = "Мы не нашли доступных адресов с введенным ключевым словом, попробуйте еще.";
-
 /* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
 "We couldn't publish this page, but we'll try again later." = "Невозможно опубликовать страницу, но мы попробуем ещё раз позже.";
 
@@ -8584,9 +8413,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Только что мы отправили специальную ссылку на";
 
-/* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Мы значительно улучшили редактор блоков. Вы должны его попробовать!\n\nМы включили редактор блоков для новых записей и страниц. Если вы захотите вернуться на классический редактор, то перейдите в 'Мой сайт' > 'Настройки сайта'.";
-
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "Мы создали резервную копию вашего сайта на %@";
 
@@ -8595,9 +8421,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Мы используем другие инструменты отслеживания, включая и инструменты третьих сторон. Прочитайте о них и как их контролировать.";
-
-/* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Мы не смогли найти сайт WordPress по указанному вами адресу. Убедитесь, что WordPress установлен и вы используете самую последнюю версию.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Мы не смогли отправить вам сообщение по эл.почте. Попробуйте еще раз позже.";
@@ -8686,9 +8509,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Мы отослали вам ссылку для создания учётной записи WordPress.com. Проверьте почту на вашем устройстве и нажмите на ссылку, полученную с WordPress.com.";
-
-/* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
-"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Возникла проблема смены основного домена для вашего сайта, но не волнуйтесь, ваш домен был успешно зарегистрирован.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -8921,6 +8741,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Работа у нас";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Автономная работа";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Карта мира с представлением просмотров по странам.";
 
@@ -8967,8 +8790,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Years stats filter. */
 "Years" = "Годы";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Да";
@@ -9068,7 +8890,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You have 1 hidden WordPress site." = "У вас 1 скрытый сайт WordPress.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "На вашем тарифе возможно зарегистрировать бесплатно домен сроком на 1 год";
+"You have a free one-year domain registration with your plan." = "На вашем тарифе возможно зарегистрировать бесплатно домен сроком на 1 год.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "На вашем сайте есть активные платные услуги. Если вы хотите удалить свой сайт, отключите платные услуги.";
@@ -9154,9 +8976,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Вы внесли, но не сохранили изменения в эту запись";
 
-/* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Домены вашего сайта";
-
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Значок вашего сайта";
 
@@ -9184,9 +9003,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Ваша первая резервная копия скоро будет готова";
 
-/* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Адрес вашего сайта (бесплатный) на WordPress.com -";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Ваш новый домен %@ настраивается, это может занять до 30 минут пока он станет доступен.";
 
@@ -9201,9 +9017,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Ваши записи, страницы и настройки будут отправлены вам по электронной почте %@.";
-
-/* Footer of the primary site section in the Domains Dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Основной домен — это адрес, который будут видеть пользователи в браузере при посещении вашего сайта.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Восстановление занимает больше времени чем обычно, проверьте снова через несколько минут.";
@@ -9261,12 +9074,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "Вы подписаны на эту беседу. Вы получите сообщение по Email при появлении новых комментариев.";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Сейчас вы используете редактор блоков для новых страниц. Отлично! Если захотите изменить редактор на классический, то сделайте это в 'Мой сайт'>'Настройки сайта',";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Сейчас вы используете редактор блоков для новых записей. Отлично! Если захотите изменить редактор на классический, то сделайте это в 'Мой сайт'>'Настройки сайта',";
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
@@ -9463,6 +9270,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "В январе подсказки по ведению блога будут рассылаться через Bloganuary — челлендж сообщества, призванный выработать привычку ежедневно вести блог в новом году.";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary уже идёт!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary уже на пороге!";
 
@@ -9499,6 +9309,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Оценить как полезное";
+
+/* Title for the checkout view */
+"checkout.title" = "Оформление заказа";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "комментарий";
@@ -9650,26 +9463,57 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Просмотр статистики";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Аналитика";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Отметки возможностей";
 
-/* General section title */
-"debugMenu.generalSectionTitle" = "Общее";
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL CSS Чтива";
 
-/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
-"debugMenu.remoteConfig.footer" = "Переопределенные параметры обозначаются галочкой.";
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL по умолчанию";
 
-/* Hint for overriding remote config params */
-"debugMenu.remoteConfig.hint" = "Выберите новое значение здесь, чтобы переопределить выбранный параметр.";
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Добавьте сюда собственный URL-адрес CSS для загрузки в Чтиво. Если вы используете Calypso локально, это может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
-/* Placeholder for overriding remote config params */
-"debugMenu.remoteConfig.placeholder" = "Нет удаленного значения или значения по умолчанию";
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Текущее значение";
 
-/* Remote Config debug menu title */
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Значение по умолчанию";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Удаленная конфигурация";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Удаленная конфигурация, значение";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Сброс";
+
+/* Remote Config Debug Menu screen title
+   Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Удаленная настройка";
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Удалить текущий тур";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Журналирование";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Быстрый старт";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Настройки";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Разработчику";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "За неделю";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Свернуть";
@@ -9688,6 +9532,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Срок истек";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Бессрочно";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Продление";
@@ -9782,6 +9629,15 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "в год";
 
+/* Help button */
+"domainSelection.helpButton.title" = "Помощь";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Домены зарегистрированные на этом сайте направят пользователей на %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Поиск доменов";
+
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Оформить";
 
@@ -9813,7 +9669,6 @@ Example: Reply to Pamela Nguyen */
 "ellipsisButton.AccessibilityLabel" = "Ещё";
 
 /* Placeholder for the site url textfield.
-   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -10225,9 +10080,6 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
 
-/* Products header text in Me Screen. */
-"me.products.header" = "Товары";
-
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Невозможно синхронизировать медиа";
 
@@ -10528,6 +10380,9 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "У вас нет сайтов";
 
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Добавить сайт";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Действия с сайтом";
 
@@ -10653,6 +10508,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
+
+/* Title for the plan selection view */
+"planSelection.title" = "Тарифы";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Создана %@";
@@ -10861,12 +10719,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Посмотреть все ответы";
-
-/* Subtitle of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.subtitle" = "Посетите настройки сайта, чтобы снова включить";
-
-/* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "Подсказки для ведения блога скрыты";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Закрыть";
@@ -11091,6 +10943,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Другие домены для %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Бесплатный домен WordPress.com";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Получите бесплатную регистрацию домена на один год или перенесите его с любым годовым платным планом.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Получите собственный домен";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Основной домен — это адрес, который будут видеть пользователи в браузере при посещении вашего сайта.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Основной домен";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Просто найти домен";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Улучшение тарифа";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Домены";
@@ -11413,9 +11289,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Support email label. */
 "support.row.email.title" = "Электронная почта";
 
-/* Option in Support view to view the Forums. */
-"support.row.forums.title" = "Форумы WordPress";
-
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Помощь WordPress";
 
@@ -11608,6 +11481,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, сайты, сайт, блоги, блог";
 
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Что-то пошло не так, пожалуйста, повторите попытку позже.";
+
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Перейти в приложение Jetpack";
 
@@ -11631,9 +11507,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Подробнее";
-
-/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "ваш сайт";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Войти через Google.";

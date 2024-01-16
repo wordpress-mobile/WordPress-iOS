@@ -43,13 +43,9 @@ extension UIColor {
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
-    class func brand(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .brand, shade)
-    }
 
     /// Muriel error color
     static var error = muriel(color: .error)
-    static var errorDark = muriel(color: .error, .shade70)
     class func error(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: .error, shade)
     }
@@ -64,15 +60,9 @@ extension UIColor {
 
     /// Muriel editor primary color
     static var editorPrimary = muriel(color: .editorPrimary)
-    class func editorPrimary(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .editorPrimary, shade)
-    }
 
     /// Muriel success color
     static var success = muriel(color: .success)
-    class func success(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .success, shade)
-    }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)
@@ -197,10 +187,6 @@ extension UIColor {
         return .separator
     }
 
-    static var primaryButtonBorder: UIColor {
-        return .opaqueSeparator
-    }
-
     /// WP color for table foregrounds (cells, etc)
     static var listForeground: UIColor {
         return .secondarySystemGroupedBackground
@@ -218,10 +204,6 @@ extension UIColor {
         return .systemBackground
     }
 
-    static var ungroupedListUnread: UIColor {
-        return UIColor(light: .primary(.shade0), dark: muriel(color: .gray, .shade80))
-    }
-
     /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
         return .secondaryLabel
@@ -230,10 +212,6 @@ extension UIColor {
     /// For small icons, such as the badges on notification gravatars
     static var listSmallIcon: UIColor {
         return .systemGray
-    }
-
-    static var buttonIcon: UIColor {
-        return .systemGray2
     }
 
     /// For icons that are present in a toolbar or similar view
@@ -271,20 +249,6 @@ extension UIColor {
 
     static var authButtonViewBackground: UIColor {
         return UIColor(light: .white, dark: .black)
-    }
-
-    // MARK: - Quick Action Buttons
-
-    static var quickActionButtonBackground: UIColor {
-        .clear
-    }
-
-    static var quickActionButtonBorder: UIColor {
-        .systemGray3
-    }
-
-    static var quickActionSelectedBackground: UIColor {
-        UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others

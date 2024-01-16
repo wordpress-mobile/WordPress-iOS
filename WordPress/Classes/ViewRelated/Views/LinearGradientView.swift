@@ -19,10 +19,6 @@ class LinearGradientView: UIView {
         contentMode = .redraw
     }
 
-    private func configure() {
-        contentMode = .redraw
-    }
-
     override func draw(_ rect: CGRect) {
         guard
             let context = UIGraphicsGetCurrentContext(),

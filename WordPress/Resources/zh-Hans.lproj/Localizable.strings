@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-19 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_CN */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n如果您确认关闭账户，请在关闭之前重新输入您的用户名。\n";
-
-/* Per-year postfix shown after a domain's cost. */
-" \/ year" = " \/年";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "“延迟加载”图片";
@@ -227,10 +224,6 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
-
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "%s 区块";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
@@ -505,9 +498,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "添加主题";
 
-/* Hint for the reader CSS URL field */
-"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "添加域";
 
@@ -649,9 +639,8 @@ translators: Block name. %s: The localized block name */
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "全部";
 
-/* Footer of the free domain registration section for a paid plan.
-   Information about redeeming domain credit on site dashboard. */
-"All WordPress.com plans include a custom domain name. Register your free premium domain now." = "全部 WordPress.com 套餐包含自定义域名。立即注册您的免费高级域。";
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "所有 WordPress.com 年度套餐均包含一个自定义域名。 立即注册您的免费域名。";
 
 /* An option in a list. Automatically approve all comments */
 "All comments" = "所有评论";
@@ -975,9 +964,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "已自动托管在此站点上";
 
-/* Label indicating that a domain name registration will automatically renew */
-"Auto-renew enabled" = "已启用自动续订";
-
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "自动审核";
@@ -1109,9 +1095,6 @@ translators: Block name. %s: The localized block name */
 /* translators: displayed right after the block is duplicated. */
 "Block duplicated" = "区块已复制";
 
-/* Popup title about why this post is being opened in block editor */
-"Block editor enabled" = "已启用区块编辑器";
-
 /* translators: displayed right after the block is grouped */
 "Block grouped" = "已分组区块";
 
@@ -1200,9 +1183,6 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "将媒体直接从您的设备或照相机中传输到站点。";
-
-/* Description of a Quick Start Tour */
-"Browse all our themes to find your perfect fit." = "浏览我们所有的主题，寻找最适合您的主题。";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "防范暴力攻击";
@@ -1496,8 +1476,7 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "选择要打开的站点。";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "选择主题";
 
 /* Select the site's intent. Subtitle */
@@ -1586,7 +1565,6 @@ translators: Block name. %s: The localized block name */
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "关闭";
@@ -1728,22 +1706,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site title" = "已完成：检查您的站点标题";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a theme" = "已完成：选择主题";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "已完成：选择唯一站点图标";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Connect with other sites" = "已完成：连接其他站点";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "已完成：继续设置站点";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "已完成：创建您的站点";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Explore plans" = "已完成：了解套餐";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "已完成：发布文章";
@@ -1882,9 +1851,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "继续使用 Google";
 
-/* Title of a Quick Start Tour */
-"Continue with site setup" = "继续设置站点";
-
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "继续使用 Apple";
 
@@ -1978,15 +1944,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "无法连接到 WordPress 站点。此地址下没有任何有效的 WordPress 站点。请检查您输入的站点地址 (URL)。";
 
-/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "无法连接。服务器上没有所需的 XML-RPC 方法。";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "无法连接。尝试访问您站点的 XMLRPC 终端时收到 403 错误。与您的站点进行通信所需要的应用程序。请联系您的托管服务提供商以解决此问题。";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
-"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "无法连接。您的主机会阻止 POST 请求，而应用程序需要通过该请求与您的站点通信。请联系您的托管服务提供商以解决此问题。";
-
 /* Error message when tag loading failed */
 "Couldn't load tags." = "无法加载标签。";
 
@@ -2018,9 +1975,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Country Code */
 "Country Code" = "国家\/地区代码";
 
-/* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "崩溃记录";
-
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "崩溃报告";
 
@@ -2035,9 +1989,6 @@ translators: Block name. %s: The localized block name */
 
 /* Create New header text */
 "Create New" = "新建";
-
-/* Title for the site creation flow. */
-"Create New Site" = "创建新站点";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -2225,9 +2176,6 @@ translators: Block name. %s: The localized block name */
 /* Navigates to debug menu only available in development builds */
 "Debug" = "调试";
 
-/* Debug settings title */
-"Debug Settings" = "调试设置";
-
 /* Only December needs to be translated */
 "December 17, 2017" = "2017 年 12 月 17 日";
 
@@ -2248,9 +2196,6 @@ translators: Block name. %s: The localized block name */
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "默认文章形式";
-
-/* Placeholder for the reader CSS URL */
-"Default URL" = "默认 URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章的默认设置";
@@ -2416,12 +2361,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "域";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "在此站点上购买的域会将用户重定向至 %@";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "在此站点上购买的域名会将用户重定向至 ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "还没有账户？_注册_";
@@ -2592,8 +2531,7 @@ translators: Block name. %s: The localized block name */
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "编辑";
 
 /* Title for the edit more button section */
@@ -2654,9 +2592,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the editor settings section */
 "Editor" = "编辑器";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "编辑评论";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "编辑该评论。";
@@ -2784,9 +2719,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "输入密码以保护这篇文章";
-
-/* Secondary message shown when there are no domains that match the user entered text. */
-"Enter different words above and we'll look for an address that matches it." = "在上面输入不同的字词，我们会查找与其相符的地址。";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2973,23 +2905,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "展开以选择其他菜单区域";
 
-/* Label indicating that a domain name registration has expired. */
-"Expired" = "已到期";
-
 /* Title for the error view when the user scanned an expired log in code */
 "Expired log in code" = "登录代码已过期";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "到期日期";
 
-/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
-"Expires on %@" = "到期 %@";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "描述该站点。";
-
-/* Title of a Quick Start Tour */
-"Explore plans" = "了解各个套餐";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3176,8 +3099,7 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "粉丝";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "关注中";
@@ -3193,9 +3115,6 @@ translators: Block name. %s: The localized block name */
 
 /* Filters Follows Notifications */
 "Follows" = "关注";
-
-/* Spoken hint describing action for unselected following buttons. */
-"Follows blog" = "关注博客";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "关注博客。";
@@ -3235,9 +3154,6 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "免费照片库";
-
-/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "第一年免费 ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "删除临时媒体文件，释放此设备的存储空间。此操作不会影响您站点上的媒体。";
@@ -3327,9 +3243,6 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
 "Get to know the app" = "了解此应用程序";
 
-/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "获取您的域名";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "更快收到通知";
 
@@ -3353,9 +3266,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "返回";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往关注的站点";
@@ -3395,17 +3305,11 @@ translators: Block name. %s: The localized block name */
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
 "Guides you through the process of checking your notifications." = "指导您检查通知。";
 
-/* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
-"Guides you through the process of choosing a theme for your site." = "指导您完成为站点选择主题的流程。";
-
 /* This value is used to set the accessibility hint text for creating a new page for the user's site. */
 "Guides you through the process of creating a new page for your site." = "指导您完成为站点创建新页面的流程。";
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "指导您完成创建站点的流程。";
-
-/* This value is used to set the accessibility hint text for exploring plans on the user's site. */
-"Guides you through the process of exploring plans for your site." = "指导您完成探索站点套餐的流程。";
 
 /* This value is used to set the accessibility hint text for following the sites of other users. */
 "Guides you through the process of following other sites." = "指导您完成关注其他站点的流程。";
@@ -3421,9 +3325,6 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for setting the site title. */
 "Guides you through the process of setting a title for your site." = "指导您完成设置站点标题的流程。";
-
-/* This value is used to set the accessibility hint text for setting up the user's site. */
-"Guides you through the process of setting up your site." = "指导您完成设置站点的流程。";
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "指导您完成为站点上传图标的流程。";
@@ -3577,9 +3478,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "图标更新失败";
-
-/* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "如果您已经拥有一个站点，则需要安装免费的 Jetpack 插件并将其连接到您的 WordPress.com 账户。";
 
 /* The instructions text about not being able to find the magic link email. */
 "If you can’t find the email, please check your junk or spam email folder" = "如果您找不到该电子邮件，请检查您的垃圾邮件文件夹";
@@ -3990,9 +3888,6 @@ translators: Block name. %s: The localized block name */
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "Learn about new comments, likes, and follows in seconds." = "详细了解新的评论、赞，并快速关注。";
 
-/* Description of a Quick Start Tour */
-"Learn about the marketing and SEO tools in our paid plans." = "了解付费套餐中的营销和 SEO 工具。";
-
 /* A button title.
    Link to cookie policy
    Menu title to show the prompts feature introduction modal.
@@ -4158,9 +4053,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "正在加载评论...";
-
-/* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
-"Loading domains" = "正在加载域";
 
 /* Displayed while a call is loading the history. */
 "Loading history..." = "正在加载历史记录...";
@@ -4613,9 +4505,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "需要更新";
 
-/* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "永不到期";
-
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "新";
 
@@ -4689,9 +4578,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* List Editor Empty State Message */
 "No Items" = "没有条目";
-
-/* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "未找到Jetpack站点";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "无菜单";
@@ -4909,9 +4795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "空间不足，无法上传";
 
-/* Accessibility label for unselected following buttons. */
-"Not following" = "不关注";
-
 /* Button label for denying our request to allow push notifications
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
    Phrase displayed to dismiss a quick start tour suggestion. */
@@ -5012,7 +4895,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -5316,9 +5198,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "选择用户名";
-
-/* The item to select during a guided tour. */
-"Plan" = "套餐";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -5636,9 +5515,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Primary Web Site */
 "Primary Site" = "主站点";
 
-/* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "主站点地址";
-
 /* Label for the privacy setting
    Privacy settings section header */
 "Privacy" = "隐私";
@@ -5740,9 +5616,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Published on [date] */
 "Published on" = "发布于";
 
-/* Label that describes in which blog the user is publishing to */
-"Publishing To" = "发布位置";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "正在发布页面...";
 
@@ -5764,9 +5637,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "推送通知功能已在 iOS 设置中关闭。切换“允许接收通知”以开启此功能。";
 
-/* The menu item to select during a guided tour. */
-"Quick Start" = "快速启动";
-
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "给我们评分";
 
@@ -5785,12 +5655,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "读者";
-
-/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "阅读器 CSS URL";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Reading posts from other sites" = "阅读其他站点的文章";
@@ -5952,9 +5818,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "删除粉丝后，他们将不再接收来自您站点的更新。 但他们仍然可以访问您的站点，也可以再次关注站点。";
 
-/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
-"Renews on %@" = "续订日期：%@";
-
 /* No comment provided by engineer. */
 "Replace Current Block" = "替换现有区块";
 
@@ -6087,7 +5950,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "重试";
 
@@ -6309,9 +6171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "查看全部";
 
-/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "请参阅说明";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "实时查看评论和通知。";
 
@@ -6329,22 +6188,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to create a new post" = "选择“%@”，撰写一篇新文章";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "选择“%@”，发现新的主题";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to find other sites." = "选择“%@”，查找其他站点。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "选择“%@”，查看您站点的效果。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "选择“%@”，查看您的清单";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current library." = "选择 %@ 以查看您当前的库。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current plan and other available plans." = "选择“%@”，查看您的当前套餐和其他可用套餐。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your page list." = "选择“%@”以查看您的页面列表。";
@@ -6738,10 +6588,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Create new Site Page button title */
 "Site page" = "站点页面";
 
-/* Prologue title label, the 
- force splits it into 2 lines. */
-"Site security and performance\nfrom your pocket" = "站点安全和性能\n一切在您的口袋中掌握";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "站点时区 (UTC%1$@%2$d%3$@)";
 
@@ -6795,9 +6641,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "有些数据尚未加载";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒体上传失败。该操作将从文章中删除所有失败的媒体。\n仍要保存？";
 
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
@@ -7342,7 +7185,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "这个网站%1$@使用WordPress%2$@。我们推荐升级到最新版本，或者%3$@以上版本";
 
-/* Error message shown a URL does not point to an existing site. */
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "此地址下的站点不是 WordPress 站点。站点必须使用 WordPress，我们才能建立连接。";
 
 /* Message shown when site deletion API failed */
@@ -7382,7 +7226,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "主题已激活";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "主题";
@@ -7628,9 +7471,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "时区";
 
-/* Description of a Quick Start Tour */
-"Time to finish setting up your site! Our checklist walks you through the next steps." = "是时候完成站点设置了！我们的清单将指引您进入下一步。";
-
 /* Error when the uses takes more than 1 minute to submit a security key. */
 "Time's up, but don't worry, your security is our priority. Please try again!" = "时间到了，请别担心，我们会优先保证您的安全。 请重试！";
 
@@ -7682,9 +7522,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "要在您的网站上使用“统计”功能，您需要安装Jetpack插件。";
 
-/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "要将此应用用于 %@，您需要安装并启用 Jetpack 插件。";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -7705,9 +7542,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "切换无序的列表样式";
 
-/* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "工具";
-
 /* Insights 'Top Commenters' header */
 "Top Commenters" = "热门评论者";
 
@@ -7715,8 +7549,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "最上级";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "主题";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7793,9 +7626,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "重试";
-
-/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "使用其他账户尝试";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "尝试调整您的时间范围过滤器。";
@@ -7875,9 +7705,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Site creation. Seelect a domain, search field placeholder */
 "Type a name for your site" = "为您的站点输入名称";
-
-/* Register domain - Search field placeholder for the Suggested Domain screen */
-"Type to get more suggestions" = "输入以获取更多建议";
 
 /* URL text field placeholder */
 "URL" = "URL";
@@ -7984,12 +7811,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 draft post" = "1 篇草稿文章上传失败";
 
-/* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "1 篇草稿文章、%ld 个文件上传失败";
-
-/* Alert displayed to the user when a single post and 1 file has failed to upload. */
-"Unable to upload 1 draft post, 1 file" = "1 篇草稿文章、1 个文件上传失败";
-
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "无法上传 1 篇文章";
 
@@ -8044,8 +7865,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "取消关注";
 
-/* Accessibility label for unfollowing a site
-   Accessibility label for unfollowing a tag */
+/* Accessibility label for unfollowing a tag */
 "Unfollow %@" = "取消关注 %@";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -8060,9 +7880,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
 "Unfollowed site" = "已取消关注的站点";
-
-/* Spoken hint describing action for selected following buttons. */
-"Unfollows blog" = "取消关注博客";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "取消关注该博客。";
@@ -8233,17 +8050,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Uploading…" = "正在上传…";
 
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "上传失败";
-
 /* Use the current image */
 "Use" = "使用";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "使用“%@”查找站点和标签。";
-
-/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "使用沙盒商店";
 
 /* The button's title text to use a security key. */
 "Use a security key" = "使用安全密钥";
@@ -8291,9 +8102,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "验证登录";
-
-/* Notice displayed after domain credit redemption success. */
-"Verify your email address - instructions sent to %@" = "请验证您的电子邮件地址（说明已发送至 %@）";
 
 /* Description for the version label in the What's new page. */
 "Version " = "版本";
@@ -8503,9 +8311,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "我们无法创建备份，请稍后重试。";
 
-/* Primary message shown when there are no domains that match the user entered text. */
-"We couldn't find any available address with the words you entered - let's try again." = "我们未找到任何与您输入的字词相关的可用地址 - 请重试。";
-
 /* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
 "We couldn't publish this page, but we'll try again later." = "我们无法发布此页面，但我们稍后会重试。";
 
@@ -8581,9 +8386,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "我们刚刚发送了一个免密链接至";
 
-/* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "我们对区块编辑器进行了重大改进，绝对值得一试！\n\n我们已为新文章和页面启用该编辑器，但是，如果您想改用经典编辑器，请转到“我的站点”>“站点设置”。";
-
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "我们已成功在 %@ 前为您的站点创建备份";
 
@@ -8592,9 +8394,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "我们使用其他跟踪工具，其中包括来自第三方的工具。了解这些工具及其使用方法。";
-
-/* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "我们无法通过您输入的地址检测到 WordPress 站点。请确认 WordPress 已安装且运行的是最新的可用版本。";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "此时，我们无法向您发送电子邮件。请稍后重试。";
@@ -8683,9 +8482,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送了注册链接，供您创建新的 WordPress.com 账户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
-
-/* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
-"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "在您的站点上更改主域名时出现问题，但不必担心，您已成功购买域。";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -8964,8 +8760,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Years stats filter. */
 "Years" = "年";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "是";
@@ -9064,9 +8859,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "您有 1 个隐藏的 WordPress 站点。";
 
-/* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "您的套餐中包括为期一年的免费域名注册";
-
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "您的站点上具有活动的高级套餐升级。在删除站点前，请先取消升级。";
 
@@ -9151,9 +8943,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
 
-/* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "您的站点域名";
-
 /* The item to select during a guided tour. */
 "Your Site Icon" = "您的站点图标";
 
@@ -9181,9 +8970,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "您的第一个备份即将准备就绪";
 
-/* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "您的免费 WordPress.com 地址是";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "您的新域 %@ 正在设置中。 最多可能需花费 30 分钟时间，您的域才能开始运行。";
 
@@ -9198,9 +8984,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "文章、页面和设置将通过邮件发送给您（地址为：%@）。";
-
-/* Footer of the primary site section in the Domains Dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "主域名是访客访问您的站点时，其浏览器中所显示的地址。";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "您的恢复时间比平时要长，请几分钟后再次检查。";
@@ -9258,12 +9041,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "您已关注此对话。当有新评论时，您将会收到电子邮件。";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "您现在正在使用区块编辑器创建新页面，太棒了！如果您想要改为使用经典编辑器，请转至“我的站点”>“站点设置”。";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "您现在正在使用区块编辑器发布新文章-太好了！ 如果您想更改为经典编辑器，请转到“我的网站”>“网站设置”。";
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[评论]";
@@ -9453,6 +9230,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "了解更多";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary 上线了！";
 
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary 即将上线！";
@@ -9644,19 +9424,8 @@ Example: Reply to Pamela Nguyen */
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能标志";
 
-/* General section title */
-"debugMenu.generalSectionTitle" = "常规";
-
-/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
-"debugMenu.remoteConfig.footer" = "覆盖的参数由复选标记表示。";
-
-/* Hint for overriding remote config params */
-"debugMenu.remoteConfig.hint" = "通过在此处定义新值来覆盖所选参数。";
-
-/* Placeholder for overriding remote config params */
-"debugMenu.remoteConfig.placeholder" = "没有远程或默认值";
-
-/* Remote Config debug menu title */
+/* Remote Config Debug Menu screen title
+   Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "远程配置";
 
 /* Remove current quick start tour menu item */
@@ -9804,7 +9573,6 @@ Example: Reply to Pamela Nguyen */
 "ellipsisButton.AccessibilityLabel" = "更多";
 
 /* Placeholder for the site url textfield.
-   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -10216,9 +9984,6 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
 
-/* Products header text in Me Screen. */
-"me.products.header" = "产品";
-
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "无法同步媒体";
 
@@ -10518,6 +10283,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "您没有任何站点";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "添加站点";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "站点操作";
@@ -10852,12 +10620,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "查看所有回复";
-
-/* Subtitle of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.subtitle" = "访问“站点设置”以重新打开";
-
-/* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "已隐藏博客提示";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "忽略";
@@ -11404,9 +11166,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Support email label. */
 "support.row.email.title" = "电子邮件";
 
-/* Option in Support view to view the Forums. */
-"support.row.forums.title" = "WordPress 论坛";
-
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress 帮助中心";
 
@@ -11622,9 +11381,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "详细了解";
-
-/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "您的站点";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} 使用 Google 登录。";

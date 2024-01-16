@@ -6,8 +6,6 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var lastPostDetails: StatsPostDetails?
-    private var postTitle = StatSection.noPostTitle
 
     private let outerStackView = UIStackView()
     private let postStackView = UIStackView()

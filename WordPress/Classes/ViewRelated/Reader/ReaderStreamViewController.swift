@@ -103,7 +103,6 @@ import Combine
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isLoggedIn = false
@@ -657,17 +656,6 @@ import Combine
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
-
-
-    // Refresh the header of a site topic when returning in case the
-    // topic's following status changed.
-    private func refreshTableHeaderIfNeeded() {
-        guard let _ = readerTopic else {
-            return
-        }
-        configureStreamHeader()
-    }
-
 
     /// Updates the content based on the values of `readerTopic` and `contentType`
     private func updateContent(synchronize: Bool = true) {
@@ -2133,7 +2121,6 @@ private extension ReaderStreamViewController {
     }
 
     enum NoTopicConstants {
-        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"

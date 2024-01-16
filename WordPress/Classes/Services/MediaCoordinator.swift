@@ -442,6 +442,16 @@ class MediaCoordinator: NSObject {
                              with: media.blog)
     }
 
+    func trackPausedUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
+        guard let info = analyticsInfo else {
+            return
+        }
+
+        let event = info.pausedEvent
+        let properties = info.properties(for: media)
+        WPAppAnalytics.track(event, withProperties: properties, with: media.blog)
+    }
+
     // MARK: - Progress
 
     /// - returns: The current progress for the specified media object.
@@ -454,15 +464,6 @@ class MediaCoordinator: NSObject {
     ///
     func totalProgress(for post: AbstractPost) -> Double {
         return cachedCoordinator(for: post)?.totalProgress ?? 0
-    }
-
-    /// Returns the error associated to media if any
-    ///
-    /// - Parameter media: the media object from where to  fetch the associated error.
-    /// - Returns: the error associated to media if any
-    ///
-    func error(for media: Media) -> NSError? {
-        return coordinator(for: media).error(forMediaID: media.uploadID)
     }
 
     /// Returns the media object for the specified uploadID.
@@ -818,22 +819,7 @@ extension Media {
         let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
         // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
 
-        // If we still have enough data to know this is a Swift Error, let's do the actual right thing here:
-        if let afError = error as? AFError {
-            guard
-                case .multipartEncodingFailed = afError,
-                case .multipartEncodingFailed(let encodingFailure) = afError else {
-                    return false
-            }
-
-            switch encodingFailure {
-            case .bodyPartFileNotReachableWithError,
-                 .bodyPartFileNotReachable:
-                return true
-            default:
-                return false
-            }
-        } else if let nsError = error as NSError?,
+        if let nsError = error as NSError?,
             nsError.domain == multipartEncodingFailedSampleError.domain,
             nsError.code == multipartEncodingFailedSampleError.code {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.

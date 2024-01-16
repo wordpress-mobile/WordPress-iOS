@@ -5,14 +5,6 @@ class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    var starFieldView: StarFieldView = {
-        let config = StarFieldViewConfig(particleImage: JetpackPrologueStyleGuide.Stars.particleImage,
-                                         starColors: JetpackPrologueStyleGuide.Stars.colors)
-        let view = StarFieldView(with: config)
-        view.layer.masksToBounds = true
-        return view
-    }()
-
     private let motion: CMMotionManager? = {
         let motion = CMMotionManager()
         motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
@@ -96,19 +88,6 @@ class JetpackPrologueViewController: UIViewController {
         ])
     }
 
-    private func loadOldPrologueView() {
-        view.addSubview(starFieldView)
-        view.layer.addSublayer(gradientLayer)
-        titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
-        titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
-        titleLabel.font = JetpackPrologueStyleGuide.Title.font
-        // Move the layers to appear below everything else
-        starFieldView.layer.zPosition = Constants.starLayerPosition
-        gradientLayer.zPosition = Constants.gradientLayerPosition
-        addParallax(to: stackView)
-        updateLabel(for: traitCollection)
-    }
-
     func updateLabel(for traitCollection: UITraitCollection) {
         let contentSize = traitCollection.preferredContentSizeCategory
 
@@ -154,8 +133,6 @@ class JetpackPrologueViewController: UIViewController {
 
     private struct Constants {
         static let parallaxAmount: CGFloat = 30
-        static let starLayerPosition: CGFloat = -100
-        static let gradientLayerPosition: CGFloat = -99
 
         /// New landing screen
 

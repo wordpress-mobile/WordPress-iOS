@@ -483,10 +483,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadPublishButton()
     }
 
-    func contentByStrippingMediaAttachments() -> String {
-        return html //TODO: return media attachment stripped version in future
-    }
-
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()
@@ -853,11 +849,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message = error.localizedDescription
             if media.canRetry {
                 let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                    #if DEBUG || INTERNAL_BUILD
-                        self.mediaInserterHelper.retryFailedMediaUploads()
-                    #else
-                        self.mediaInserterHelper.retryUploadOf(media: media)
-                    #endif
+                    self.mediaInserterHelper.retryFailedMediaUploads()
                 }
                 alertController.addAction(retryUploadAction)
             }
@@ -1100,11 +1092,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         gutenberg.connectionStatusChange(isConnected: active)
-        #if DEBUG || INTERNAL_BUILD
-            if active {
-                mediaInserterHelper.retryFailedMediaUploads()
-            }
-        #endif
+        if active {
+            mediaInserterHelper.retryFailedMediaUploads(automatedRetry: true)
+        }
     }
 }
 
@@ -1347,10 +1337,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    var savingDraftButtonSize: CGSize {
-        return AztecPostViewController.Constants.savingDraftButtonSize
-    }
-
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
@@ -1391,10 +1377,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
 
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
-        navigationItem.titleView = view
     }
 }
 

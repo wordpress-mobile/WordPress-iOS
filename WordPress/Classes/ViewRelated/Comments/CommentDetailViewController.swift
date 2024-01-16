@@ -112,10 +112,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-    private lazy var moderationCell: UITableViewCell = {
-        return $0
-    }(UITableViewCell())
-
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
@@ -188,14 +184,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
-        return appearance
-    }()
-
-    /// opaque navigation bar style.
-    /// this is used for iOS 14 and below, since scrollEdgeAppearance only applies for large title bars, except on iOS 15 where it applies for all navbars.
-    private lazy var opaqueBarAppearance: UINavigationBarAppearance = {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
         return appearance
     }()
 

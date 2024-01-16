@@ -15,7 +15,6 @@ class AbstractPostListViewController: UIViewController,
 {
     typealias SyncPostResult = (posts: [AbstractPost], hasMore: Bool)
 
-    private static let postsControllerRefreshInterval = TimeInterval(300)
     private static let httpErrorCodeForbidden = 403
     private static let postsFetchRequestBatchSize = 10
     private static let pagesNumberOfLoadedElement = 100
@@ -597,24 +596,51 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Actions
 
-    @objc func publishPost(_ post: AbstractPost, completion: (() -> Void)? = nil) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
+    func publish(_ post: AbstractPost) {
+        let action = AbstractPostHelper.editorPublishAction(for: post)
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
-
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(cancelTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
-            WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
-
-            PostCoordinator.shared.publish(post)
-            completion?()
+        func showPrepublishingFlow(for post: Post) {
+            let prepublishing = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
+                switch result {
+                case .completed(let post):
+                    self?.didConfirmPublish(for: post)
+                case .dismissed:
+                    break
+                }
+            }
+            let navigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: false)
+            let bottomSheet = BottomSheetViewController(childViewController: navigationController, customHeaderSpacing: 0)
+            bottomSheet.show(from: self)
         }
 
-        present(alertController, animated: true)
+        func showPublishingConfirmation() {
+            let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
+
+            let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+            let alertController = UIAlertController(title: action.publishingActionQuestionLabel, message: nil, preferredStyle: style)
+
+            alertController.addCancelActionWithTitle(cancelTitle)
+            alertController.addDefaultActionWithTitle(action.publishingActionQuestionLabel) { [unowned self] _ in
+                self.didConfirmPublish(for: post)
+            }
+
+            present(alertController, animated: true)
+        }
+
+        if let post = post as? Post {
+            showPrepublishingFlow(for: post)
+        } else {
+            showPublishingConfirmation()
+        }
+    }
+
+    private func didConfirmPublish(for post: AbstractPost) {
+        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
+        PostCoordinator.shared.publish(post)
+
+        if post is Post {
+            BloggingRemindersFlow.present(from: self, for: post.blog, source: .publishFlow, alwaysShow: false)
+        }
     }
 
     @objc func moveToDraft(_ post: AbstractPost) {

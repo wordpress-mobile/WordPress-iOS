@@ -1,10 +1,6 @@
 import Foundation
 
 extension CGFloat {
-    static func interpolated(from fromValue: CGFloat, to toValue: CGFloat, progress: CGFloat) -> CGFloat {
-        return fromValue.interpolated(to: toValue, with: progress)
-    }
-
     /// Interpolates a CGFloat
     /// - Parameters:
     ///   - toValue: The to value

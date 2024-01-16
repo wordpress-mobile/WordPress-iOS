@@ -20,8 +20,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     // MARK: - Properties
 
-    let formatter = FormattableContentFormatter()
-
     /// Table View
     ///
     @IBOutlet weak var tableView: UITableView!
@@ -1800,20 +1798,6 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         controller.view.backgroundColor = .basicBackground
         return controller
     }
-
-    private func fetchFirstNotification() -> Notification? {
-        let context = managedObjectContext()
-        guard let fetchRequest = self.fetchRequest() else {
-            return nil
-        }
-        fetchRequest.fetchLimit = 1
-
-        if let results = try? context.fetch(fetchRequest) as? [Notification] {
-            return results.first
-        }
-
-        return nil
-    }
 }
 
 // MARK: - Details Navigation Datasource
@@ -1971,7 +1955,6 @@ private extension NotificationsViewController {
     }
 
     enum Stats {
-        static let networkStatusKey = "network_status"
         static let noteTypeKey = "notification_type"
         static let noteTypeUnknown = "unknown"
         static let sourceKey = "source"
@@ -1982,7 +1965,6 @@ private extension NotificationsViewController {
     enum Syncing {
         static let minimumPullToRefreshDelay = TimeInterval(1.5)
         static let pushMaxWait = TimeInterval(1.5)
-        static let syncTimeout = TimeInterval(10)
         static let undoTimeout = TimeInterval(4)
     }
 

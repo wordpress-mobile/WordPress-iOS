@@ -69,9 +69,14 @@ class MySitesCoordinator: NSObject {
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
-        let tabBarImage = AppStyleGuide.mySiteTabIcon
-        navigationController.tabBarItem.image = tabBarImage
-        navigationController.tabBarItem.selectedImage = tabBarImage
+        if FeatureFlag.newTabIcons.enabled {
+            navigationController.tabBarItem.image = UIImage(named: "tab-bar-home-unselected")?.withRenderingMode(.alwaysOriginal)
+            navigationController.tabBarItem.selectedImage = UIImage(named: "tab-bar-home-selected")
+        } else {
+            let tabBarImage = AppStyleGuide.mySiteTabIcon
+            navigationController.tabBarItem.image = tabBarImage
+            navigationController.tabBarItem.selectedImage = tabBarImage
+        }
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")

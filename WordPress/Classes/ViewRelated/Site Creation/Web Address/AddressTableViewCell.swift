@@ -303,21 +303,6 @@ extension AddressTableViewCell {
         self.textLabel?.attributedText = AddressTableViewCell.processName(model?.domainName)
     }
 
-    public func addBorder(isFirstCell: Bool = false, isLastCell: Bool = false) {
-        if isFirstCell {
-            let border = addTopBorder(withColor: .divider)
-            borders.append(border)
-        }
-
-        if isLastCell {
-            let border = addBottomBorder(withColor: .divider)
-            borders.append(border)
-        } else {
-            let border = addBottomBorder(withColor: .divider, leadingMargin: 20)
-            borders.append(border)
-        }
-    }
-
     public static func processName(_ domainName: String?) -> NSAttributedString? {
         guard let name = domainName,
               let customName = name.components(separatedBy: ".").first else {

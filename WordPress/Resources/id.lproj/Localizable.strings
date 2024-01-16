@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-12-19 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-04 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nUntuk mengonfirmasi, silakan masukkan lagi nama pengguna Anda sebelum menutup.\n\n";
-
-/* Per-year postfix shown after a domain's cost. */
-" \/ year" = " \/ tahu";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
@@ -227,10 +224,6 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kata, %2$li karakter";
-
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s pilihan blok";
@@ -505,9 +498,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Tambahkan Topik";
 
-/* Hint for the reader CSS URL field */
-"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Tambah domain";
 
@@ -643,9 +633,8 @@ translators: Block name. %s: The localized block name */
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Semua";
 
-/* Footer of the free domain registration section for a paid plan.
-   Information about redeeming domain credit on site dashboard. */
-"All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Semua paket WordPress.com menyertakan nama domain kustom. Daftarkan domain premium gratis Anda sekarang.";
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Semua paket tahunan WordPress.com menyertakan nama domain kustom. Daftarkan domain gratis Anda sekarang.";
 
 /* An option in a list. Automatically approve all comments */
 "All comments" = "Semua komentar";
@@ -969,9 +958,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Dikelola secara otomatis di situs ini";
 
-/* Label indicating that a domain name registration will automatically renew */
-"Auto-renew enabled" = "Perpanjangan otomatis diaktifkan";
-
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Otomatis Setujui";
@@ -1103,9 +1089,6 @@ translators: Block name. %s: The localized block name */
 /* translators: displayed right after the block is duplicated. */
 "Block duplicated" = "Blok diduplikasi";
 
-/* Popup title about why this post is being opened in block editor */
-"Block editor enabled" = "Penyunting blok diaktifkan";
-
 /* translators: displayed right after the block is grouped */
 "Block grouped" = "Blok dikelompokkan";
 
@@ -1194,9 +1177,6 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "Masukkan media langsung dari perangkat atau kamera ke situs Anda.";
-
-/* Description of a Quick Start Tour */
-"Browse all our themes to find your perfect fit." = "Jelajahi semua tema kami untuk menemukan yang paling cocok.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Perlindungan Terhadap Serangan Paksa";
@@ -1490,8 +1470,7 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Pilih situs yang ingin dibuka";
 
-/* Title for the screen to pick a theme and homepage for a site.
-   Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Pilih tema";
 
 /* Select the site's intent. Subtitle */
@@ -1580,7 +1559,6 @@ translators: Block name. %s: The localized block name */
    Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismiss the media picker for Stock Photos
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Tutup";
@@ -1722,22 +1700,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site title" = "Selesai: Periksa judul situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a theme" = "Selesai: Pilih tema";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Selesai: Memilih ikon unik untuk situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Connect with other sites" = "Selesai: Hubungkan dengan situs lainnya";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "Selesai: Lanjutkan penyiapan situs";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Selesai: Buat situs Anda";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Explore plans" = "Selesai: Jelajahi paket";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Selesai: Publikasikan pos";
@@ -1876,9 +1845,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Lanjutkan dengan Google";
 
-/* Title of a Quick Start Tour */
-"Continue with site setup" = "Lanjutkan penyiapan situs";
-
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
@@ -1972,15 +1938,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Tidak dapat terhubung ke situs WordPress. Tidak ada situs WordPress yang valid di alamat ini. Periksa alamat situs (URL) yang Anda masukkan.";
 
-/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "Tidak dapat terhubung. Metode XML-RPC yang diperlukan tidak ditemukan di server.";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Tidak dapat terhubung. Kami menerima error 403 saat mencoba mengakses titik akhir XMLRPC situs Anda. Aplikasi ini memerlukannya agar dapat berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
-
-/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
-"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Tidak dapat terhubung. Host Anda memblokir permintaan POST, dan aplikasi memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
-
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Tidak bisa memuat tag.";
 
@@ -2012,9 +1969,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Kode Negara";
 
-/* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Pembuatan Log Crash";
-
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Laporan masalah crash";
 
@@ -2029,9 +1983,6 @@ translators: Block name. %s: The localized block name */
 
 /* Create New header text */
 "Create New" = "Buat Baru";
-
-/* Title for the site creation flow. */
-"Create New Site" = "Buat Situs Baru";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -2219,9 +2170,6 @@ translators: Block name. %s: The localized block name */
 /* Navigates to debug menu only available in development builds */
 "Debug" = "Debug";
 
-/* Debug settings title */
-"Debug Settings" = "Pengaturan Debug";
-
 /* Only December needs to be translated */
 "December 17, 2017" = "17 Desember 2017";
 
@@ -2242,9 +2190,6 @@ translators: Block name. %s: The localized block name */
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format Pos Default";
-
-/* Placeholder for the reader CSS URL */
-"Default URL" = "URL Asal";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Default untuk Pos Baru";
@@ -2410,12 +2355,6 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domain";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domain yang dibeli di situs ini akan mengalihkan ke %@";
-
-/* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domain yang dibeli di situs ini akan mengalihkan pengguna ke ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Belum memiliki akun? _Daftar_";
@@ -2586,8 +2525,7 @@ translators: Block name. %s: The localized block name */
 /* Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
-   User action to edit media details.
-   Verb, edit a comment */
+   User action to edit media details. */
 "Edit" = "Sunting";
 
 /* Title for the edit more button section */
@@ -2651,9 +2589,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the editor settings section */
 "Editor" = "Penyunting";
-
-/* Edit Action Spoken hint. */
-"Edits a comment" = "Edit komentar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Menyunting komentar.";
@@ -2781,9 +2716,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Masukkan kata sandi untuk melindungi pos ini";
-
-/* Secondary message shown when there are no domains that match the user entered text. */
-"Enter different words above and we'll look for an address that matches it." = "Masukkan kata yang berbeda dengan yang di atas dan kami akan mencari alamat yang cocok dengan kata tersebut.";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2970,23 +2902,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Perluas untuk memilih area menu yang berbeda";
 
-/* Label indicating that a domain name registration has expired. */
-"Expired" = "Kedaluwarsa";
-
 /* Title for the error view when the user scanned an expired log in code */
 "Expired log in code" = "Kode login kedaluwarsa";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "Kedaluwarsa pada";
 
-/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
-"Expires on %@" = "Kedaluwarsa pada %@";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Jelaskan tentang apa situs ini.";
-
-/* Title of a Quick Start Tour */
-"Explore plans" = "Pelajari paket";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3173,8 +3096,7 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Pengikut";
 
-/* Accessibility label for following buttons.
-   Title of the Following Reader tab
+/* Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Mengikuti";
@@ -3190,9 +3112,6 @@ translators: Block name. %s: The localized block name */
 
 /* Filters Follows Notifications */
 "Follows" = "Mengikuti";
-
-/* Spoken hint describing action for unselected following buttons. */
-"Follows blog" = "Mengikuti blog";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Mengikuti blog.";
@@ -3232,9 +3151,6 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Pustaka Foto Gratis";
-
-/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Gratis untuk tahun pertama ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Kosongkan sebagian ruang penyimpanan di perangkat ini dengan menghapus file media sementara. Tindakan ini tidak akan memengaruhi media di situs Anda.";
@@ -3324,9 +3240,6 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
 "Get to know the app" = "Kenali aplikasinya";
 
-/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Dapatkan domain Anda";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Dapatkan pemberitahuan lebih cepat";
 
@@ -3350,9 +3263,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Kembali";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Buka yang Diikuti";
@@ -3392,17 +3302,11 @@ translators: Block name. %s: The localized block name */
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
 "Guides you through the process of checking your notifications." = "Memandu Anda dalam proses pemeriksaan pemberitahuan. ";
 
-/* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
-"Guides you through the process of choosing a theme for your site." = "Memandu Anda melalui proses pemilihan tema untuk situs Anda.";
-
 /* This value is used to set the accessibility hint text for creating a new page for the user's site. */
 "Guides you through the process of creating a new page for your site." = "Memandu Anda melalui proses pembuatan halaman baru untuk situs Anda.";
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Memandu Anda melalui proses pembuatan situs Anda.";
-
-/* This value is used to set the accessibility hint text for exploring plans on the user's site. */
-"Guides you through the process of exploring plans for your site." = "Memandu Anda melalui proses penjelajahan paket untuk situs Anda.";
 
 /* This value is used to set the accessibility hint text for following the sites of other users. */
 "Guides you through the process of following other sites." = "Memandu Anda melalui proses untuk mengikuti situs lain.";
@@ -3418,9 +3322,6 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for setting the site title. */
 "Guides you through the process of setting a title for your site." = "Memandu Anda melalui proses pembuatan judul untuk situs Anda.";
-
-/* This value is used to set the accessibility hint text for setting up the user's site. */
-"Guides you through the process of setting up your site." = "Memandu Anda melalui proses penyiapan situs Anda.";
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Memandu Anda melalui proses pengunggahan ikon untuk situs Anda.";
@@ -3574,9 +3475,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Pembaruan ikon gagal";
-
-/* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Jika Anda sudah memiliki situs, Anda perlu memasang plugin Jetpack gratis ini dan menghubungkannya ke akun WordPress.com Anda.";
 
 /* The instructions text about not being able to find the magic link email. */
 "If you can’t find the email, please check your junk or spam email folder" = "Jika tidak dapat menemukan emailnya, periksa tong sampah atau folder email spam Anda";
@@ -3987,9 +3885,6 @@ translators: Block name. %s: The localized block name */
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "Learn about new comments, likes, and follows in seconds." = "Ketahui komentar, suka, dan pengikut baru dengan cepat.";
 
-/* Description of a Quick Start Tour */
-"Learn about the marketing and SEO tools in our paid plans." = "Pelajari alat pemasaran dan SEO di paket berbayar kami.";
-
 /* A button title.
    Link to cookie policy
    Menu title to show the prompts feature introduction modal.
@@ -4155,9 +4050,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Memuat komentar...";
-
-/* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
-"Loading domains" = "Memuat domain";
 
 /* Displayed while a call is loading the history. */
 "Loading history..." = "Memuat riwayat...";
@@ -4610,9 +4502,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "Perlu Pembaruan";
 
-/* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "Tidak pernah kedaluwarsa";
-
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Baru";
 
@@ -4686,9 +4575,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* List Editor Empty State Message */
 "No Items" = "Tak ada Item";
-
-/* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "Situs Jetpack tidak ditemukan";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Tidak Ada Menu";
@@ -4906,9 +4792,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Tidak cukup ruang untuk unggah.";
 
-/* Accessibility label for unselected following buttons. */
-"Not following" = "Tidak mengikuti";
-
 /* Button label for denying our request to allow push notifications
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
    Phrase displayed to dismiss a quick start tour suggestion. */
@@ -5009,7 +4892,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
@@ -5313,9 +5195,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pilih nama pengguna";
-
-/* The item to select during a guided tour. */
-"Plan" = "Paket";
 
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
@@ -5633,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Primary Web Site */
 "Primary Site" = "Situs Utama";
 
-/* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Alamat situs utama";
-
 /* Label for the privacy setting
    Privacy settings section header */
 "Privacy" = "Privasi";
@@ -5737,9 +5613,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Published on [date] */
 "Published on" = "Dipublikasikan pada";
 
-/* Label that describes in which blog the user is publishing to */
-"Publishing To" = "Memublikasikan ke";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Menerbitkan halaman...";
 
@@ -5761,9 +5634,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Pemberitahuan push telah dinonaktifkan di pengaturan iOS Aktifkan kembali “Izinkan Pemberitahuan”.";
 
-/* The menu item to select during a guided tour. */
-"Quick Start" = "Mulai Cepat";
-
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Beri Rating";
 
@@ -5782,12 +5652,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS.
-   Title of the Reader section of the debug screen used in debug builds of the app */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Pembaca";
-
-/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "URL CSS Pembaca";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Reading posts from other sites" = "Membaca pos dari situs lainnya";
@@ -5949,9 +5815,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Jika pengikut dibuang, mereka akan berhenti menerima pembaruan dari situs Anda. Mereka tetap bebas mengunjungi dan mengikuti kembali situs Anda.";
 
-/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
-"Renews on %@" = "Diperbarui pada %@";
-
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ganti Blok Saat Ini";
 
@@ -6084,7 +5947,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry. Verb – retry a failed media upload.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
-   title for action that tries to connect to the reader after a loading error.
    User action to retry media upload. */
 "Retry" = "Coba Lagi";
 
@@ -6306,9 +6168,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Lihat Semuanya";
 
-/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "Lihat Instruksi";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "Lihat komentar dan pemberitahuan secara real-time.";
 
@@ -6326,22 +6185,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to create a new post" = "Pilih %@ untuk membuat pos baru";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "Pilih %@ untuk menemukan tema baru";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to find other sites." = "Pilih %@ untuk menemukan situs lainnya.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Pilih %@ untuk melihat kinerja situs Anda.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "Pilih %@ untuk melihat daftar periksa";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current library." = "Pilih %@ untuk melihat pustaka Anda saat ini.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current plan and other available plans." = "Pilih %@ untuk melihat paket Anda saat ini dan paket lain yang tersedia.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your page list." = "Pilih %@ untuk melihat daftar halaman Anda.";
@@ -6735,10 +6585,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Create new Site Page button title */
 "Site page" = "Halaman situs";
 
-/* Prologue title label, the 
- force splits it into 2 lines. */
-"Site security and performance\nfrom your pocket" = "Keamanan dan performa situs\ndari saku Anda";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Atur zona waktu (UTC%1$@%2$d%3$@)";
 
@@ -6792,9 +6638,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Sejumlah data belum dimuat";
-
-/* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Gagal mengunggah beberapa media. Tindakan ini akan menghapus semua media yang gagal dari pos tersebut.\nTetap simpan?";
 
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
@@ -7339,7 +7182,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Situs di %1$@ menggunakan WordPress %2$@. Kami merekomendasikan agar diperbarui ke versi terbaru, atau sekurang-kurangnya %3$@";
 
-/* Error message shown a URL does not point to an existing site. */
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Situs di alamat ini bukan situs WordPress. Agar kami dapat menghubungkannya, situs harus menggunakan WordPress.";
 
 /* Message shown when site deletion API failed */
@@ -7379,7 +7223,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Tema Diaktifkan";
 
 /* Noun. Name of the Themes feature
-   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Tema";
@@ -7625,9 +7468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "Zona Waktu";
 
-/* Description of a Quick Start Tour */
-"Time to finish setting up your site! Our checklist walks you through the next steps." = "Waktunya menyelesaikan penyiapan situs Anda! Daftar periksa kami memberikan panduan bagi Anda untuk langkah selanjutnya.";
-
 /* Error when the uses takes more than 1 minute to submit a security key. */
 "Time's up, but don't worry, your security is our priority. Please try again!" = "Waktu habis, tetapi jangan khawatir, keamanan Anda menjadi prioritas kami. Coba lagi!";
 
@@ -7679,9 +7519,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Untuk menggunakan statistik di situs, Anda perlu menginstal plugin Jetpack.";
 
-/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Untuk menggunakan aplikasi ini untuk %@ Anda perlu memasang dan mengaktifkan plugin Jetpack.";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -7702,9 +7539,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Mengaktifkan dan menonaktifkan gaya daftar yang tidak diurutkan";
 
-/* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "Alat";
-
 /* Insights 'Top Commenters' header */
 "Top Commenters" = "Komentator Teratas";
 
@@ -7712,8 +7546,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Level teratas";
 
-/* Shortened version of the main title to be used in back navigation
-   Topic page title */
+/* Shortened version of the main title to be used in back navigation */
 "Topic" = "Topik";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7787,9 +7620,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Coba Lagi";
-
-/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Coba dengan Akun Lain";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Coba sesuaikan penyaring rentang tanggal";
@@ -7869,9 +7699,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Site creation. Seelect a domain, search field placeholder */
 "Type a name for your site" = "Ketik nama untuk situs Anda";
-
-/* Register domain - Search field placeholder for the Suggested Domain screen */
-"Type to get more suggestions" = "Ketik untuk mendapatkan lebih banyak saran";
 
 /* URL text field placeholder */
 "URL" = "URL";
@@ -7978,12 +7805,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 draft post" = "Gagal mengunggah 1 pos konsep";
 
-/* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "Gagal mengunggah 1 pos konsep, %ld file";
-
-/* Alert displayed to the user when a single post and 1 file has failed to upload. */
-"Unable to upload 1 draft post, 1 file" = "Gagal mengunggah 1 pos konsep, 1 file";
-
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Gagal mengunggah 1 pos";
 
@@ -8038,8 +7859,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Batal Mengikuti";
 
-/* Accessibility label for unfollowing a site
-   Accessibility label for unfollowing a tag */
+/* Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Batal Mengikuti %@";
 
 /* Title for a button that unsubscribes the user from the post. */
@@ -8054,9 +7874,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
 "Unfollowed site" = "Batal mengikuti situs";
-
-/* Spoken hint describing action for selected following buttons. */
-"Unfollows blog" = "Berhenti mengikuti blog";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Berhenti mengikuti blog.";
@@ -8227,17 +8044,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Uploading…" = "Mengunggah…";
 
-/* Title for alert when trying to save post with failed media items */
-"Uploads failed" = "Unggahan gagal";
-
 /* Use the current image */
 "Use" = "Gunakan";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Use %@ to find sites and tags." = "Gunakan %@ untuk menemukan situs dan tag.";
-
-/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Gunakan Toko Sandbox";
 
 /* The button's title text to use a security key. */
 "Use a security key" = "Gunakan kunci keamanan";
@@ -8285,9 +8096,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verifikasi Log In";
-
-/* Notice displayed after domain credit redemption success. */
-"Verify your email address - instructions sent to %@" = "Verifikasi alamat email Anda - instruksi dikirim ke %@";
 
 /* Description for the version label in the What's new page. */
 "Version " = "Versi:";
@@ -8497,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Kami tidak dapat membuat cadangan Anda. Silakan coba lagi nanti.";
 
-/* Primary message shown when there are no domains that match the user entered text. */
-"We couldn't find any available address with the words you entered - let's try again." = "Kami tidak dapat menemukan alamat yang tersedia dengan kata yang Anda masukkan - mari kita coba lagi.";
-
 /* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
 "We couldn't publish this page, but we'll try again later." = "Kami tidak dapat memublikasikan halaman ini, namun kami akan mencoba lagi nanti.";
 
@@ -8575,9 +8380,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Kami baru saja mengirimkan tautan ajaib ke ";
 
-/* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kami membuat peningkatan besar untuk penyunting blok dan merasa itu layak dicoba!\n\nKami mengaktifkannya untuk pos dan halaman baru tetapi jika Anda ingin mengganti ke penyunting klasik, buka 'Situs Saya' > 'Pengaturan Situs'.";
-
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "Kami berhasil membuat cadangan situs Anda pada %@";
 
@@ -8586,9 +8388,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Kami menggunakan alat pelacakan lainnya, termasuk beberapa dari pihak ketiga. Baca tentang hal ini dan cara mengontrolnya.";
-
-/* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Kami tidak dapat mendeteksi situs WordPress di alamat yang Anda masukkan. Pastikan WordPress terpasang dan Anda menjalankan versi terbaru yang tersedia.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Kami tidak dapat mengirimkan email kepada Anda. Coba lagi nanti.";
@@ -8677,9 +8476,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kami telah mengirimi Anda email berisi tautan pendaftaran untuk membuat akun WordPress.com baru. Periksa email Anda di perangkat ini, dan ketuk tautan dalam email yang Anda terima dari WordPress.com";
-
-/* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
-"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Kami mengalami masalah saat mengubah domain utama di situs Anda — tetapi jangan khawatir, domain Anda telah berhasil dibeli.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -8958,8 +8754,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Years stats filter. */
 "Years" = "Tahun";
 
-/* Accept Action
-   Button title. Confirms that the user wants to proceed with a pending action.
+/* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ya";
@@ -9058,9 +8853,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Anda memiliki 1 situs WordPress tersembunyi.";
 
-/* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "Anda memiliki registrasi domain gratis selama satu tahun dengan paket Anda";
-
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Anda memiliki peningkatan premium aktif dalam situs Anda. Batalkan peningkatan sebelum menghapus situs Anda.";
 
@@ -9145,9 +8937,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
 
-/* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Domain Situs Anda";
-
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikon Situs Anda";
 
@@ -9175,9 +8964,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Pencadangan pertama Anda akan segera tersedia";
 
-/* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Alamat WordPress.com gratis Anda adalah";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Domain baru Anda %@ sedang disiapkan. Perlu waktu hingga 30 menit agar domain anda mulai berfungsi.";
 
@@ -9192,9 +8978,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Pos, laman, dan pengaturan Anda akan dikirim melalui alamat email %@.";
-
-/* Footer of the primary site section in the Domains Dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Alamat situs utama adalah yang akan muncul pada kotak alamat browser saat pengunjung mengunjungi situs web Anda.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Pemulihan Anda memerlukan waktu lebih lama dari biasanya, periksa lagi dalam beberapa menit.";
@@ -9252,12 +9035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "Anda mengikuti percakapan ini. Anda akan menerima email setiap kali ada komentar baru.";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Saat ini Anda menggunakan penyunting blok untuk halaman baru — hebat! Jika Anda ingin mengubah ke penyunting klasik, buka ‘Situs Saya’ > ‘Pengaturan Situs’.";
-
-/* Popup content about why this post is being opened in block editor */
-"You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Saat ini Anda menggunakan penyunting blok untuk pos baru — hebat! Jika Anda ingin mengubah ke penyunting klasik, buka ‘Situs Saya’ > ‘Pengaturan Situs’.";
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTAR]";
@@ -9451,6 +9228,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
 
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary telah hadir!";
+
 /* Title for the Bloganuary dashboard card. */
 "bloganuary.dashboard.card.title" = "Bloganuary segera hadir!";
 
@@ -9638,19 +9418,8 @@ Example: Reply to Pamela Nguyen */
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Bendera Fitur";
 
-/* General section title */
-"debugMenu.generalSectionTitle" = "Umum";
-
-/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
-"debugMenu.remoteConfig.footer" = "Parameter yang ditolak ditandai dengan tanda centang.";
-
-/* Hint for overriding remote config params */
-"debugMenu.remoteConfig.hint" = "Tolak parameter terpilih dengan menentukan nilai baru di sini.";
-
-/* Placeholder for overriding remote config params */
-"debugMenu.remoteConfig.placeholder" = "Tidak ada nilai jarak jauh atau default";
-
-/* Remote Config debug menu title */
+/* Remote Config Debug Menu screen title
+   Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Konfigurasi Jarak Jauh";
 
 /* Remove current quick start tour menu item */
@@ -9798,7 +9567,6 @@ Example: Reply to Pamela Nguyen */
 "ellipsisButton.AccessibilityLabel" = "Lainnya";
 
 /* Placeholder for the site url textfield.
-   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "contoh.com";
 
@@ -10210,9 +9978,6 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "ditandai sebagai spam";
 
-/* Products header text in Me Screen. */
-"me.products.header" = "Produk";
-
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "Tidak dapat menyinkronkan media";
 
@@ -10512,6 +10277,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Anda belum memiliki situs";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Tambahkan situs";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Tindakan di Situs";
@@ -10846,12 +10614,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Lihat semua tanggapan";
-
-/* Subtitle of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
-
-/* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "Prompt Blogging tersembunyi";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Tutup";
@@ -11398,9 +11160,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Support email label. */
 "support.row.email.title" = "E-mail";
 
-/* Option in Support view to view the Forums. */
-"support.row.forums.title" = "Forum WordPress";
-
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Pusat Bantuan WordPress";
 
@@ -11616,9 +11375,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Baca selengkapnya";
-
-/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "situs Anda";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Login dengan Google.";

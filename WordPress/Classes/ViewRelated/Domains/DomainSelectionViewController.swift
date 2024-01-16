@@ -20,8 +20,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private struct Metrics {
         static let maxLabelWidth            = CGFloat(290)
         static let noResultsTopInset        = CGFloat(64)
-        static let sitePromptEdgeMargin     = CGFloat(50)
-        static let sitePromptBottomMargin   = CGFloat(10)
         static let sitePromptTopMargin      = CGFloat(4)
     }
 
@@ -473,15 +471,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     private func setupTableSeparator() {
         table.separatorColor = .divider
         table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
-    }
-
-    private func query(from textField: UITextField?) -> String? {
-        guard let text = textField?.text,
-              !text.isEmpty else {
-            return nil
-        }
-
-        return text
     }
 
     @objc

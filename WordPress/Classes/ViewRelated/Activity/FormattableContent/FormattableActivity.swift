@@ -3,7 +3,6 @@ class FormattableActivity {
     let activity: Activity
 
     private let formatter = FormattableContentFormatter()
-    private var cachedContentGroup: FormattableContentGroup? = nil
 
     private var contentGroup: FormattableContentGroup? {
         guard let content = activity.content as? [String: AnyObject], content.isEmpty == false else {

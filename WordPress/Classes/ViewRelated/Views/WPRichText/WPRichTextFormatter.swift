@@ -30,15 +30,6 @@ class WPRichTextFormatter {
         ]
     }()
 
-    /// An array of tag names that the formatter can process.
-    ///
-    lazy var tagNames: [String] = {
-        return self.tags.map { tag -> String in
-            return tag.tagName
-        }
-    }()
-
-
     /// Converts the specified HTML formatted string to an NSAttributedString.
     ///
     /// - Parameters:

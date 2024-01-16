@@ -1309,7 +1309,6 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecFormatBarDisabledColor    = UIColor.neutral(.shade10)
         static let aztecFormatBarDividerColor     = UIColor.divider
         static let aztecCursorColor               = UIColor.primary
-        static let aztecFormatBarBackgroundColor  = UIColor.basicBackground
         static let aztecFormatBarInactiveColor    = UIColor.toolbarInactive
         static let aztecFormatBarActiveColor      = UIColor.primary
 

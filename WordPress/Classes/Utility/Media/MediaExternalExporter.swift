@@ -1,18 +1,5 @@
 import Foundation
 
-enum MediaExternalExporterError: MediaExportError {
-    case unknownError
-
-    public var errorDescription: String? { description }
-
-    var description: String {
-        switch self {
-        case .unknownError:
-            return NSLocalizedString("The item could not be added to the Media Library.", comment: "Message shown when an asset failed to load while trying to add it to the Media library.")
-        }
-    }
-}
-
 /// Media export handling assets from external sources i.e.: Stock Photos
 ///
 class MediaExternalExporter: MediaExporter {
@@ -46,12 +33,15 @@ class MediaExternalExporter: MediaExporter {
             return downloadGif(from: asset.largeURL, onCompletion: onCompletion, onError: onError)
         }
 
-        WPImageSource.shared().downloadImage(for: asset.largeURL, withSuccess: { (image) in
-            self.imageDownloaded(image: image, error: nil, onCompletion: onCompletion, onError: onError)
-        }) { (error) in
-            self.imageDownloaded(image: nil, error: error, onCompletion: onCompletion, onError: onError)
+        Task {
+            do {
+                let options = ImageRequestOptions(isMemoryCacheEnabled: false)
+                let image = try await ImageDownloader.shared.image(from: asset.largeURL, options: options)
+                self.exportImage(image, onCompletion: onCompletion, onError: onError)
+            } catch {
+                onError(ExportError.downloadError(error as NSError))
+            }
         }
-
         return Progress.discreteCompletedProgress()
     }
 
@@ -92,21 +82,6 @@ class MediaExternalExporter: MediaExporter {
         }
 
         return
-    }
-
-    /// Helper method to tackle the unlike posibility of both image and error being nil.
-    /// This shouln't happen since both image and error are being guarded propertly in `WPImageSource`.
-    /// `WPImageSource` needs better Swift compatibility.
-    ///
-    private func imageDownloaded(image: UIImage?, error: Error?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
-        if let image = image {
-            exportImage(image, onCompletion: onCompletion, onError: onError)
-        } else if let error = error {
-            let exportError = ExportError.downloadError(error as NSError)
-            onError(exportError)
-        } else {
-            onError(MediaExternalExporterError.unknownError)
-        }
     }
 
     private func exportImage(_ image: UIImage, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {

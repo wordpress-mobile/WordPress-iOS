@@ -249,7 +249,11 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
             do {
                 self.pages = try await buildPageTree(pageIDs: pageIDs)
-                    .hierarchyList(in: coreDataStack.mainContext)
+                    .map { pageID, hierarchyIndex in
+                        let page = try coreDataStack.mainContext.existingObject(with: pageID)
+                        page.hierarchyIndex = hierarchyIndex
+                        return page
+                    }
             } catch {
                 DDLogError("Failed to reload published pages: \(error)")
             }
@@ -263,7 +267,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
     /// Build page hierachy in background, which should not take long (less than 2 seconds for 6000+ pages).
     @MainActor
-    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> PageTree {
+    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
         assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
 
         let coreDataStack = ContextManager.shared
@@ -278,9 +282,9 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
             pages = pages.setHomePageFirst()
 
-            let tree = PageTree()
-            tree.add(pages)
-            return tree
+            // The `hierarchyIndex` is not a managed property, so it needs to be returend along with the page object id.
+            return PageTree.hierarchyList(of: pages)
+                .map { (TaggedManagedObjectID($0), $0.hierarchyIndex) }
         }
     }
 
@@ -370,6 +374,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
             present(navigationController, animated: true)
         case .pages:
             let page = pages[indexPath.row]
+            WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
             edit(page)
         }
     }
@@ -462,7 +467,13 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
         request.predicate = filter.predicate(for: blog, author: .everyone)
         request.sortDescriptors = filter.sortDescriptors
         do {
-            var pages = try await buildPageTree(request: request).hierarchyList(in: ContextManager.shared.mainContext)
+            let context = ContextManager.shared.mainContext
+            var pages = try await buildPageTree(request: request)
+                .map { pageID, hierarchyIndex in
+                    let page = try context.existingObject(with: pageID)
+                    page.hierarchyIndex = hierarchyIndex
+                    return page
+                }
             if let index = pages.firstIndex(of: page) {
                 pages = pages.remove(from: index)
             }

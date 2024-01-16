@@ -48,8 +48,6 @@ class InsightsLineChart {
         lineChartStyling = styling
     }
 
-    private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
-
     /// Transforms the raw data into the line chart data and styling.
     /// similar to PeriodChart transform
     /// - Returns: A tuple containing the line chart data and styling.
@@ -128,15 +126,6 @@ class InsightsLineChart {
         }
 
         return (thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
-    }
-
-    func primaryLineColor(forFilterDimension filterDimension: StatsInsightsFilterDimension) -> UIColor {
-        switch filterDimension {
-        case .views:
-            return UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
-        case .visitors:
-            return UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
-        }
     }
 }
 

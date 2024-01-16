@@ -2,31 +2,6 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 @objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
@@ -37,7 +12,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var descriptionLabelTopConstraint: NSLayoutConstraint!
 
     open weak var delegate: ReaderStreamHeaderDelegate?
-    fileprivate var defaultBlavatar = "blavatar-default"
 
     // MARK: - Lifecycle Methods
 

@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "Confirmable.h"
 
 // Typedef's
 typedef NS_ENUM(NSInteger, SettingsTextModes) {
@@ -18,7 +17,7 @@ typedef void (^SettingsTextOnDismiss)(void);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
-@interface SettingsTextViewController : UITableViewController<Confirmable>
+@interface SettingsTextViewController : UITableViewController
 
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///

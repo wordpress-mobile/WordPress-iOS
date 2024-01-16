@@ -4,10 +4,6 @@ import WordPressKit
 /// Service allowing updating of homepage settings
 ///
 struct HomepageSettingsService {
-    public enum ResponseError: Error {
-        case decodingFailed
-    }
-
     let blog: Blog
 
     fileprivate let coreDataStack: CoreDataStack

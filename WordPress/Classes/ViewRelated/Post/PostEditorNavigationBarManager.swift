@@ -4,7 +4,6 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
-    var savingDraftButtonSize: CGSize { get }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton)
@@ -12,7 +11,6 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
 }
 
 class ExtendedTouchAreaButton: UIButton {
@@ -247,15 +245,10 @@ class PostEditorNavigationBarManager {
         publishButton.sizeToFit()
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
-
-    func reloadTitleView(_ view: UIView) {
-        delegate?.navigationBarManager(self, reloadTitleView: view)
-    }
 }
 
 extension PostEditorNavigationBarManager {
     private enum Fonts {
-        static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static var blogTitle: UIFont {
             WPStyleGuide.navigationBarStandardFont
         }

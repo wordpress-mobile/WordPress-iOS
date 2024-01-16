@@ -6,6 +6,7 @@ import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticAbout
+import UIDeviceIdentifier
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -344,10 +345,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         pingHubManager = PingHubManager()
     }
 
-    private func setupShortcutCreator() {
-        shortcutCreator = WP3DTouchShortcutCreator()
-    }
-
     private func setupNoticePresenter() {
         noticePresenter = NoticePresenter()
     }
@@ -640,20 +637,6 @@ extension WordPressAppDelegate {
 #endif
         default:
             return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
-        }
-    }
-
-    var isWelcomeScreenVisible: Bool {
-        get {
-            guard let presentedViewController = window?.rootViewController?.presentedViewController as? UINavigationController else {
-                return false
-            }
-
-            guard let visibleViewController = presentedViewController.visibleViewController else {
-                return false
-            }
-
-            return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
         }
     }
 

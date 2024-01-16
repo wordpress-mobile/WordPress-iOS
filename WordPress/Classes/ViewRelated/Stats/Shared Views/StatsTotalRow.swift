@@ -104,7 +104,6 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     @IBOutlet weak var disclosureButton: UIButton!
 
     private(set) var rowData: StatsTotalRowData?
-    private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
     private weak var referrerDelegate: StatsTotalRowReferrerDelegate?
@@ -335,13 +334,16 @@ private extension StatsTotalRow {
     }
 
     func downloadImageFrom(_ iconURL: URL) {
-        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
-            self.imageView.image = image
-            self.imageView.backgroundColor = .clear
-        }, failure: { error in
-            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageView.isHidden = true
-        })
+        Task { @MainActor [weak self] in
+            do {
+                let image = try await ImageDownloader.shared.image(from: iconURL)
+                self?.imageView.image = image
+                self?.imageView.backgroundColor = .clear
+            } catch {
+                DDLogInfo("Error downloading image: \(error.localizedDescription). From URL: \(iconURL).")
+                self?.imageView.isHidden = true
+            }
+        }
     }
 
     func configureDataBar() {

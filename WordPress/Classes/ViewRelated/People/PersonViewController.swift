@@ -165,7 +165,6 @@ final class PersonViewController: UITableViewController {
 
     // MARK: - Constants
     private let sectionHeaderHeight      = CGFloat(20)
-    private let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
     private let roleSegueIdentifier      = "editRole"
     private let userInfoCellIdentifier   = "userInfoCellIdentifier"
     private let actionCellIdentifier     = "actionCellIdentifier"
