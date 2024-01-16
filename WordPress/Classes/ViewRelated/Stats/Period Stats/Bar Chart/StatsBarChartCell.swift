@@ -118,6 +118,7 @@ private extension StatsBarChartCell {
         filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.tintColor = UIColor.DS.Foreground.primary
         filterTabBar.selectedTitleColor = UIColor.DS.Foreground.primary
+        filterTabBar.tabSeparatorPlacement = .top
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
