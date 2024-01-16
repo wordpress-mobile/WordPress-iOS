@@ -696,7 +696,7 @@ private extension NotificationsViewController {
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
         resetNotifications()
-        resetLastSeenTime()
+        viewModel.didChangeDefaultAccount()
         resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
@@ -1781,10 +1781,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetLastSeenTime() {
-        viewModel.lastSeenTime = nil
     }
 
     func resetApplicationBadge() {

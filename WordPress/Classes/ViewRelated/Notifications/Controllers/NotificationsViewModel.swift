@@ -15,7 +15,7 @@ final class NotificationsViewModel {
     }
 
     /// The last time when user seen notifications
-    var lastSeenTime: String? {
+    private(set) var lastSeenTime: String? {
         get {
             return userDefaults.string(forKey: Constants.lastSeenKey)
         }
@@ -38,5 +38,9 @@ final class NotificationsViewModel {
 
             self?.lastSeenTime = timestamp
         }
+    }
+
+    func didChangeDefaultAccount() {
+        lastSeenTime = nil
     }
 }
