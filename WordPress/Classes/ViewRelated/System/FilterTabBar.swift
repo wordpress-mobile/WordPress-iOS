@@ -188,6 +188,19 @@ class FilterTabBar: UIControl {
         }
     }
 
+    enum TabSeparatorPlacement {
+        case top
+        case bottom
+    }
+
+    var tabSeparatorPlacement: TabSeparatorPlacement = .bottom {
+        didSet {
+            activateTabSeparatorPlacementConstraints()
+        }
+    }
+    var topTabSeparatorPlacementConstraints: [NSLayoutConstraint] = []
+    var bottomTabSeparatorPlacementConstraints: [NSLayoutConstraint] = []
+
     // MARK: - Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -210,16 +223,13 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             divider.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
             divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
         ])
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-            scrollView.topAnchor.constraint(equalTo: topAnchor)
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
 
         scrollView.addSubview(stackView)
@@ -234,16 +244,17 @@ class FilterTabBar: UIControl {
 
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor)
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         ])
 
         addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
-            selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
         ])
+
+        createTopTabSeparatorPlacementConstraints()
+        createBottomTabSeparatorPlacementConstraints()
+        activateTabSeparatorPlacementConstraints()
     }
 
     // MARK: - Tabs
@@ -302,6 +313,8 @@ class FilterTabBar: UIControl {
         return mutableString
     }
 
+    // MARK: - Tab Sizing Constraints
+
     private func updateTabSizingConstraints() {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
@@ -322,6 +335,41 @@ class FilterTabBar: UIControl {
         case .fitting:
             stackView.distribution = .fill
             NSLayoutConstraint.deactivate([stackViewWidthConstraint])
+        }
+    }
+
+    // MARK: - Tab Placement Constraints
+
+    private func createTopTabSeparatorPlacementConstraints() {
+        topTabSeparatorPlacementConstraints = [
+            divider.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor),
+            stackView.topAnchor.constraint(equalTo: divider.bottomAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            selectionIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor)
+        ]
+    }
+
+    private func createBottomTabSeparatorPlacementConstraints() {
+        bottomTabSeparatorPlacementConstraints = [
+            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: divider.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ]
+    }
+
+    private func activateTabSeparatorPlacementConstraints() {
+        switch tabSeparatorPlacement {
+        case .top:
+            NSLayoutConstraint.deactivate(bottomTabSeparatorPlacementConstraints)
+            NSLayoutConstraint.activate(topTabSeparatorPlacementConstraints)
+        case .bottom:
+            NSLayoutConstraint.deactivate(topTabSeparatorPlacementConstraints)
+            NSLayoutConstraint.activate(bottomTabSeparatorPlacementConstraints)
         }
     }
 
