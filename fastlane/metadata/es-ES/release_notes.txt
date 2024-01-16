@@ -1,5 +1,0 @@
-Hemos actualizado el editor clásico con nuevos selectores de medios para fotos y medios del sitio. No te preocupes, puedes seguir subiendo imágenes, vídeos y mucho más a tu sitio.
-
-Hablando de tipos de medios—ahora puedes añadir filtros de medios a la pantalla de medios del sitio. Si utilizas un iPhone, también notarás el nuevo modo de relación de aspecto. Ambas opciones están disponibles cuando tocas el menú del título.
-
-Por último, hemos arreglado la ventana emergente de cumplimiento que aparece mientras compruebas las estadísticas durante el proceso de puesta en marcha. ¡Genial!

@@ -139,9 +139,6 @@ private extension GridCell {
         // heading
         static let headingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline), size: 17)
 
-        // sub-heading
-        static let subHeadingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline), size: 15)
-
         // main stack view
         static let mainStackViewInsets = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 0)
 

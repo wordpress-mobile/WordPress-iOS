@@ -33,8 +33,4 @@ final class ShadowView: UIView {
         maskPath.addPath(shadowPath)
         shadowMaskLayer.path = maskPath
     }
-
-    func clearShadow() {
-        shadowLayer.removeFromSuperlayer()
-    }
 }

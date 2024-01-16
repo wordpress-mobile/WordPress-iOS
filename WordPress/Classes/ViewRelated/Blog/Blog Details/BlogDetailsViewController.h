@@ -7,7 +7,6 @@
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
-    BlogDetailsSectionCategoryQuickAction,
     BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
     BlogDetailsSectionCategoryQuickStart,
@@ -172,6 +171,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
+- (void)showDetailViewForSubsection:(BlogDetailsSubsection)section userInfo:(nonnull NSDictionary *)userInfo;
 - (NSIndexPath * _Nonnull)indexPathForSubsection:(BlogDetailsSubsection)subsection;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
@@ -186,4 +186,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)updateTableView:(nullable void(^)(void))completion;
 - (void)preloadMetadata;
 - (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
+
++ (nonnull NSString *)userInfoShowPickerKey;
+
 @end

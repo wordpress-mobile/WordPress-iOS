@@ -13,7 +13,6 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
     private var indentationIconView = UIImageView()
-    private var cancellables: [AnyCancellable] = []
 
     // MARK: - Properties
 

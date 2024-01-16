@@ -9,7 +9,6 @@ class AppFeedbackPromptView: UIView {
     private let leftButton = RoundedButton()
     private let rightButton = RoundedButton()
     private let buttonStack = UIStackView()
-    private var onRequestingFeedback = false
 
     // MARK: - UIView's Methods
 

@@ -17,7 +17,6 @@
 
 #import "CommentService.h"
 #import "CommentsViewController+Network.h"
-#import "Confirmable.h"
 #import "Constants.h"
 #import "CoreDataStack.h"
 #import "Coordinate.h"
@@ -92,6 +91,7 @@
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
+#import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPAuthTokenIssueSolver.h"
 #import "WPBlogTableViewCell.h"
 #import "WPUploadStatusButton.h"

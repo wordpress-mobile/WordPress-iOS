@@ -69,10 +69,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     ///
     fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
 
-    /// A Reader Detail VC to display post content if needed
-    ///
-    private var readerDetailViewController: ReaderDetailViewController?
-
     /// Previous NavBar Navigation Button
     ///
     var previousNavigationButton: UIButton!
@@ -548,33 +544,6 @@ extension NotificationDetailsViewController {
         NotificationReplyStore.shared.store(reply: reply, for: notificationId)
     }
 }
-
-
-
-// MARK: - Reader Helpers
-//
-private extension NotificationDetailsViewController {
-    func attachReaderViewIfNeeded() {
-        guard shouldAttachReaderView,
-            let postID = note.metaPostID,
-            let siteID = note.metaSiteID else {
-                readerDetailViewController?.remove()
-                return
-        }
-
-        readerDetailViewController?.remove()
-        let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        add(readerDetailViewController)
-        readerDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(readerDetailViewController.view)
-        self.readerDetailViewController = readerDetailViewController
-    }
-
-    var shouldAttachReaderView: Bool {
-        return note.kind == .newPost
-    }
-}
-
 
 // MARK: - Suggestions View Helpers
 //
@@ -1456,12 +1425,6 @@ private extension NotificationDetailsViewController {
         return NotificationActionsService(coreDataStack: ContextManager.shared)
     }
 
-    enum DisplayError: Error {
-        case missingParameter
-        case unsupportedFeature
-        case unsupportedType
-    }
-
     enum ContentMedia {
         static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
         static let duration                 = TimeInterval(0.25)
@@ -1477,7 +1440,6 @@ private extension NotificationDetailsViewController {
     enum Settings {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
-        static let expirationFiveMinutes    = TimeInterval(60 * 5)
     }
 
     enum Assets {

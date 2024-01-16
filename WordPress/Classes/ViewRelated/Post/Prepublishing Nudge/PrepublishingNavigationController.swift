@@ -86,10 +86,6 @@ class PrepublishingNavigationController: LightNavigationController {
         navigationBar.scrollEdgeAppearance = appearance
         navigationBar.compactAppearance = appearance
     }
-
-    private enum Constants {
-        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 300.0)
-    }
 }
 
 

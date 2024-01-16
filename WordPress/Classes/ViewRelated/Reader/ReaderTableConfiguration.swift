@@ -11,7 +11,6 @@ final class ReaderTableConfiguration {
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
 
-    private let oldRowHeight = CGFloat(300.0)
     private let rowHeight = CGFloat(415.0)
 
     func setup(_ tableView: UITableView) {
@@ -63,7 +62,7 @@ final class ReaderTableConfiguration {
     }
 
     func estimatedRowHeight() -> CGFloat {
-        return RemoteFeatureFlag.readerImprovements.enabled() ? rowHeight : oldRowHeight
+        return rowHeight
     }
 
     func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {
@@ -72,10 +71,6 @@ final class ReaderTableConfiguration {
 
     func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
         return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
-    }
-
-    func oldPostCardCell(_ tableView: UITableView) -> OldReaderPostCardCell {
-        return tableView.dequeueReusableCell(withIdentifier: oldReaderCardCellReuseIdentifier) as! OldReaderPostCardCell
     }
 
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {

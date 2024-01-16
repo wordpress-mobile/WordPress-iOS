@@ -37,12 +37,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
     ///
     private var post: ReaderPost?
 
-    /// The user interface direction for the view's semantic content attribute.
-    ///
-    private var layoutDirection: UIUserInterfaceLayoutDirection {
-        return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
-    }
-
     /// Any interaction with the header is sent to the delegate
     ///
     weak var delegate: ReaderDetailHeaderViewDelegate?

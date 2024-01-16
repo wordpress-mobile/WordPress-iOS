@@ -5,13 +5,9 @@ import Gridicons
 import WordPressShared
 import SVProgressHUD
 import WordPressFlux
+import DesignSystem
 
 class AppSettingsViewController: UITableViewController {
-    enum Sections: Int {
-        case media
-        case other
-    }
-
     fileprivate var handler: ImmuTableViewHandler!
 
     // MARK: - Dependencies
@@ -306,14 +302,14 @@ class AppSettingsViewController: UITableViewController {
 
     func pushDebugMenu() -> ImmuTableAction {
         return { [weak self] row in
-            let controller = DebugMenuViewController(style: .insetGrouped)
+            let controller = DebugMenuViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
     func pushDesignSystemGallery() -> ImmuTableAction {
         return { [weak self] row in
-            let controller = UIHostingController(rootView: ColorGallery())
+            let controller = UIHostingController(rootView: DesignSystemGallery())
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -539,6 +535,7 @@ private extension AppSettingsViewController {
 
         let designSystem = NavigationItemRow(
             title: NSLocalizedString("Design System", comment: "Navigates to design system gallery only available in development builds"),
+            icon: UIImage(systemName: "paintpalette"),
             action: pushDesignSystemGallery()
         )
 

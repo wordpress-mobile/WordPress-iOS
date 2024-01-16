@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import WordPressUI
+import DesignSystem
 
 final class RegisterDomainTransferFooterView: UIView {
 

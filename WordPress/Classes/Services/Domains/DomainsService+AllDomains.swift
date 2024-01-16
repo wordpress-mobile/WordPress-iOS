@@ -1,7 +1,11 @@
 import Foundation
 import WordPressKit
 
-extension DomainsService {
+protocol DomainsServiceAllDomainsFetching {
+    func fetchAllDomains(resolveStatus: Bool, noWPCOM: Bool, completion: @escaping (DomainsServiceRemote.AllDomainsEndpointResult) -> Void)
+}
+
+extension DomainsService: DomainsServiceAllDomainsFetching {
 
     /// Makes a GET request to `/v1.1/all-domains` endpoint and returns a list of domain objects.
     ///

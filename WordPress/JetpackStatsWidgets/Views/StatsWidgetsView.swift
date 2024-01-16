@@ -27,7 +27,6 @@ struct StatsWidgetsView: View {
                 case .systemSmall:
                     SingleStatView(viewData: viewData)
                         .widgetURL(viewData.statsURL?.appendingSource(.homeScreenWidget))
-                        .padding()
 
                 case .systemMedium:
                     MultiStatsView(viewData: viewData)

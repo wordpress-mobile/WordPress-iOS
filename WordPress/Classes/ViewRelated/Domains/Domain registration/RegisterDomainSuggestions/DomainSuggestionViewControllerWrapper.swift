@@ -2,14 +2,14 @@ import SwiftUI
 import UIKit
 import WordPressKit
 
-/// Makes RegisterDomainSuggestionsViewController available to SwiftUI
+/// Makes DomainSelectionViewController available to SwiftUI
 struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
     private let blog: Blog
     private let domainSelectionType: DomainSelectionType
     private let onDismiss: () -> Void
 
-    private var domainSuggestionViewController: RegisterDomainSuggestionsViewController
+    private var domainSuggestionViewController: DomainSelectionViewController
 
     init(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) {
         self.blog = blog
@@ -22,10 +22,10 @@ struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
         )
     }
 
-    func makeUIViewController(context: Context) -> LightNavigationController {
-        let navigationController = LightNavigationController(rootViewController: domainSuggestionViewController)
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: domainSuggestionViewController)
         return navigationController
     }
 
-    func updateUIViewController(_ uiViewController: LightNavigationController, context: Context) { }
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) { }
 }

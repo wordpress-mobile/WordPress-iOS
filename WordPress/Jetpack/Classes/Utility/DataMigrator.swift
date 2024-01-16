@@ -116,7 +116,6 @@ private extension DataMigrator {
     /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
     struct DefaultsWrapper {
         static let dictKey = "defaults_staging_dictionary"
-        let defaultsDict: [String: Any]
     }
 
     /// Convenience wrapper to check whether the export data is ready to be imported.

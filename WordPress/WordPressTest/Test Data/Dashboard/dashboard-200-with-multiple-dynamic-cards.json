@@ -1,0 +1,175 @@
+{
+    "dynamic": [
+        {
+            "id": "id_12345",
+            "title": "Title 12345",
+            "featured_image": "https://example.com/image12345",
+            "url": "https://example.com/url12345",
+            "action": "Action 12345",
+            "order": "top",
+            "rows": [
+                {
+                    "icon": "https://example.com/icon12345",
+                    "title": "Row Title 1",
+                    "description": "Row Description 1"
+                },
+                {
+                    "icon": "https://example.com/icon67890",
+                    "title": "Row Title 2",
+                    "description": "Row Description 2"
+                }
+            ]
+        },
+        {
+            "id": "id_67890",
+            "title": "Title 67890",
+            "featured_image": "https://example.com/image67890",
+            "url": "https://example.com/url67890",
+            "action": "Action 67890",
+            "order": "top",
+            "rows": [
+                {
+                    "icon": "https://example.com/icon54321",
+                    "title": "Row Title 3",
+                    "description": "Row Description 3"
+                },
+                {
+                    "icon": "https://example.com/icon98765",
+                    "title": "Row Title 4",
+                    "description": "Row Description 4"
+                }
+            ]
+        },
+        {
+            "id": "id_13579",
+            "title": "Title 13579",
+            "featured_image": "https://example.com/image13579",
+            "url": "https://example.com/url13579",
+            "action": "Action 13579",
+            "order": "bottom",
+            "rows": [
+                {
+                    "icon": "https://example.com/icon24680",
+                    "title": "Row Title 5",
+                    "description": "Row Description 5"
+                },
+                {
+                    "icon": "https://example.com/icon112233",
+                    "title": "Row Title 6",
+                    "description": "Row Description 6"
+                }
+            ]
+        }
+    ],
+    "posts": {
+        "has_published": true,
+        "draft": [{
+            "id": 3246,
+            "title": "Foo",
+            "content": "",
+            "featured_image": null,
+            "date": "2022-01-13 00:30:56"
+        }, {
+            "id": 3120,
+            "title": "Bar",
+            "content": "",
+            "featured_image": null,
+            "date": "2021-03-05 21:04:44"
+        }, {
+            "id": 3109,
+            "title": "Foobar",
+            "content": "",
+            "featured_image": null,
+            "date": "0000-00-00 00:00:00"
+        }],
+        "scheduled": [{
+            "id": 3109,
+            "title": "Foobar",
+            "content": "",
+            "featured_image": null,
+            "date": "0000-00-00 00:00:00"
+        }]
+    },
+    "todays_stats": {
+        "views": 0,
+        "visitors": 0,
+        "likes": 0,
+        "comments": 0
+    },
+    "pages": [
+        {
+            "id": 0,
+            "title": "string",
+            "date": "0000-00-00 00:00:00",
+            "modified": "0000-00-00 00:00:00",
+            "status": "publish"
+        },
+        {
+            "id": 1,
+            "title": "string",
+            "date": "0000-00-00 00:00:00",
+            "modified": "0000-00-00 00:00:00",
+            "status": "publish"
+        }
+    ],
+    "activity": {
+        "current": {
+            "orderedItems": [
+                {
+                    "summary": "Setting changed",
+                    "content": {
+                        "text": "Encouraged search engines to index the site"
+                    },
+                    "name": "setting__changed_blog_public",
+                    "actor": {
+                        "type": "Person",
+                        "name": "John Doe",
+                        "external_user_id": 0,
+                        "wpcom_user_id": 1,
+                        "icon": null,
+                        "role": "administrator"
+                    },
+                    "type": "Announce",
+                    "published": "2023-03-13T16:03:15.230+00:00",
+                    "generator": {
+                        "jetpack_version": 0,
+                        "blog_id": 1
+                    },
+                    "is_rewindable": false,
+                    "rewind_id": "",
+                    "gridicon": "cog",
+                    "status": null,
+                    "activity_id": "",
+                    "is_discarded": false
+                },
+                {
+                    "summary": "Setting changed Two",
+                    "content": {
+                        "text": "Encouraged search engines to index the site"
+                    },
+                    "name": "setting__changed_blog_public",
+                    "actor": {
+                        "type": "Person",
+                        "name": "John Doe",
+                        "external_user_id": 0,
+                        "wpcom_user_id": 1,
+                        "icon": null,
+                        "role": "administrator"
+                    },
+                    "type": "Announce",
+                    "published": "2023-03-13T16:03:15.230+00:00",
+                    "generator": {
+                        "jetpack_version": 0,
+                        "blog_id": 1
+                    },
+                    "is_rewindable": false,
+                    "rewind_id": "",
+                    "gridicon": "cog",
+                    "status": null,
+                    "activity_id": "",
+                    "is_discarded": false
+                }
+            ]
+        }
+    }
+}
