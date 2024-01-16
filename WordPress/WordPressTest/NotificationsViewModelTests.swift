@@ -12,12 +12,13 @@ final class NotificationsViewModelTests: CoreDataTestCase {
         )
     }
 
-    func testLastSeenTimeIsUpdatedWhenSet() {
+    func testLastSeenChangedUpdatesDefaults() {
         let sut = NotificationsViewModel(
-            userDefaults: sutUserDefaults
+            userDefaults: sutUserDefaults,
+            notificationMediator: mediator
         )
         let testString = "Last Week"
-        sut.lastSeenTime = testString
+        sut.lastSeenChanged(timestamp: testString)
 
         XCTAssertEqual(sut.lastSeenTime, testString)
         XCTAssertEqual(
@@ -36,6 +37,17 @@ final class NotificationsViewModelTests: CoreDataTestCase {
         let timestamp = "11/12/2023 07:50"
         sut.lastSeenChanged(timestamp: timestamp)
         XCTAssertEqual(sut.lastSeenTime, timestamp)
+    }
+
+    func testDidChangeDefaultAccountNullifiesLastSeenTime() {
+        let sut = NotificationsViewModel(
+            userDefaults: sutUserDefaults,
+            notificationMediator: mediator
+        )
+        let timestamp = "11/12/2023 07:50"
+        sut.lastSeenChanged(timestamp: timestamp)
+        sut.didChangeDefaultAccount()
+        XCTAssertNil(sut.lastSeenTime)
     }
 }
 
