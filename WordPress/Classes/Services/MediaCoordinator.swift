@@ -819,22 +819,7 @@ extension Media {
         let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
         // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
 
-        // If we still have enough data to know this is a Swift Error, let's do the actual right thing here:
-        if let afError = error as? AFError {
-            guard
-                case .multipartEncodingFailed = afError,
-                case .multipartEncodingFailed(let encodingFailure) = afError else {
-                    return false
-            }
-
-            switch encodingFailure {
-            case .bodyPartFileNotReachableWithError,
-                 .bodyPartFileNotReachable:
-                return true
-            default:
-                return false
-            }
-        } else if let nsError = error as NSError?,
+        if let nsError = error as NSError?,
             nsError.domain == multipartEncodingFailedSampleError.domain,
             nsError.code == multipartEncodingFailedSampleError.code {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
