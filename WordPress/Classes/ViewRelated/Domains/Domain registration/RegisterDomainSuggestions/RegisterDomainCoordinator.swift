@@ -137,13 +137,22 @@ class RegisterDomainCoordinator {
     // MARK: Helpers
 
     private func purchaseDomain(for site: Blog?, on viewController: UIViewController, completion: @escaping (Result<Void, Swift.Error>) -> Void) {
+        guard let domain else {
+            completion(.failure(Error.noDomainWhenCreatingCart))
+            return
+        }
+        if let site, site.canRegisterDomainWithPaidPlan {
+            self.presentDomainRegistration(for: site, domain: domain, on: viewController)
+            completion(.success(()))
+            return
+        }
         self.createCart { [weak self] result in
             guard let self else {
                 return
             }
             switch result {
             case .success(let domain):
-                if let site, site.canRegisterDomainWithPaidPlan {
+                if let site, !site.hasDomains {
                     self.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, site)
                 } else {
                     self.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
@@ -232,6 +241,24 @@ class RegisterDomainCoordinator {
             return url
         } else {
             return URL(string: Constants.noSiteCheckoutWebAddress)
+        }
+    }
+
+    private func presentDomainRegistration(
+        for site: Blog,
+        domain: DomainSuggestion,
+        on viewController: UIViewController
+    ) {
+        guard let siteID = site.dotComID?.intValue else {
+            return
+        }
+        let destination = RegisterDomainDetailsViewController()
+        destination.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self else {
+                return
+            }
+            self.domainPurchasedCallback?(viewController, name)
+            self.trackDomainPurchasingCompleted()
         }
     }
 
