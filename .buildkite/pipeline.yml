@@ -53,6 +53,8 @@ steps:
         command: ".buildkite/commands/build-for-testing.sh jetpack"
         env: *common_env
         plugins: *common_plugins
+        artifact_paths:
+          - lint.json
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"

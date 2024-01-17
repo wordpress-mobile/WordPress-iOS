@@ -195,7 +195,12 @@ end
 
 desc 'Checks the source for style errors'
 task lint: %w[dependencies:lint:check] do
-  swiftlint %w[lint --quiet]
+  if ENV['CI']
+    # Output to file in CI for later processing
+    swiftlint %w[lint --quiet --reporter json --output lint.json]
+  else
+    swiftlint %w[lint --quiet]
+  end
 end
 
 namespace :lint do
