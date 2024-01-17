@@ -71,7 +71,6 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'Alamofire', '4.8.0'
   pod 'Reachability', '3.2'
 
   wordpress_kit
