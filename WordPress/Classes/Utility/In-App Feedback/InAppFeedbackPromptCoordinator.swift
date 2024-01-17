@@ -10,12 +10,10 @@ struct InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
     // MARK: - Properties
 
     private let appRatingUtility: AppRatingUtility
-    private let userDefaults: UserDefaults
 
     // MARK: - Init
 
-    init(utility: AppRatingUtility = .shared, userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
+    init(utility: AppRatingUtility = .shared) {
         self.appRatingUtility = utility
     }
 
