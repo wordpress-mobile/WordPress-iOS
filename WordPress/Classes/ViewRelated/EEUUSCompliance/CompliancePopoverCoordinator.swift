@@ -12,7 +12,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     private let complianceService: ComplianceLocationService
     private let defaults: UserDefaults
-    private let isFeatureFlagEnabled: () -> Bool
+    private let isFeatureFlagEnabled: Bool
 
     // MARK: - Views
 
@@ -25,7 +25,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     init(
         defaults: UserDefaults = UserDefaults.standard,
         complianceService: ComplianceLocationService = .init(),
-        isFeatureFlagEnabled: @autoclosure @escaping () -> Bool = FeatureFlag.compliancePopover.enabled
+        isFeatureFlagEnabled: Bool = FeatureFlag.compliancePopover.enabled
     ) {
         self.defaults = defaults
         self.complianceService = complianceService
@@ -35,7 +35,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     // MARK: - API
 
     func presentIfNeeded(completion: ((Bool) -> Void)? = nil) {
-        guard isFeatureFlagEnabled(), !defaults.didShowCompliancePopup else {
+        guard isFeatureFlagEnabled, !defaults.didShowCompliancePopup else {
             completion?(false)
             return
         }
