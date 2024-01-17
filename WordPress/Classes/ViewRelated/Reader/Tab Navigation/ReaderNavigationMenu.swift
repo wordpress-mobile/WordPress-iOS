@@ -21,6 +21,15 @@ struct ReaderNavigationMenu: View {
                     streamFilterView
                 }
             }
+            .mask({
+                HStack(spacing: .zero) {
+                    Rectangle().fill(.black)
+                    LinearGradient(gradient: Gradient(colors: [.black, .clear]),
+                                   startPoint: .leading,
+                                   endPoint: .trailing)
+                               .frame(width: 16)
+                }
+            })
             Spacer()
             Button {
                 viewModel.navigateToSearch()
