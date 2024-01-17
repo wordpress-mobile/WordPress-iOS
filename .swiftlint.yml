@@ -6,6 +6,7 @@ opt_in_rules:
   - discarded_notification_center_observer
   - weak_delegate
   - vertical_whitespace
+  - duplicate_imports
 
 overridden_super_call:
   severity: error
