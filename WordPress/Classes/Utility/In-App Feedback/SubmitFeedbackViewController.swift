@@ -112,12 +112,12 @@ private extension SubmitFeedbackViewController {
         static let submit = NSLocalizedString(
             "submit.feedback.submit.button",
             value: "Submit",
-            comment: ""
+            comment: "The button title for the Submit button in the In-App Feedback screen"
         )
         static let title = NSLocalizedString(
             "submit.feedback.title",
             value: "Feedback",
-            comment: ""
+            comment: "The title for the the In-App Feedback screen"
         )
     }
 }
