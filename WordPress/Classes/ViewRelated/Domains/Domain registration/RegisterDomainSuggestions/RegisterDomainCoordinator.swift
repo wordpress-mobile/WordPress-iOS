@@ -136,6 +136,18 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
+    /// Initiates the process of purchasing a domain for a specified site.
+    ///
+    /// - Parameters:
+    ///   - site: The blog site for which the domain is being purchased. Optional.
+    ///   - viewController: The UIViewController from which the domain registration or checkout process is presented.
+    ///   - completion: A closure that is called upon the completion of the purchase attempt.
+    ///     It returns a `Result` indicating either success or failure.
+    ///
+    /// The method follows this logic:
+    /// - The "Register Domain" screen is presented when `site.canRegisterDomainWithPaidPlan` is `true`.
+    /// - If the site does not have any domains (`!site.hasDomains`), the Plans web view is shown.
+    /// - For sites with existing domains, the Checkout web view is presented,
     private func purchaseDomain(for site: Blog?, on viewController: UIViewController, completion: @escaping (Result<Void, Swift.Error>) -> Void) {
         guard let domain else {
             completion(.failure(Error.noDomainWhenCreatingCart))
