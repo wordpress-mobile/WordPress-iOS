@@ -37,8 +37,8 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
                 }
                 DispatchQueue.main.async {
                     self.presentPopover()
+                    continuation.resume(returning: Self.window != nil)
                 }
-                continuation.resume(returning: true)
             }
         }
     }
