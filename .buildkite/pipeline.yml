@@ -105,6 +105,19 @@ steps:
   #################
   - group: "Linters"
     steps:
+      - label: "🔍 SwiftLint via Danger"
+        command: |
+          echo "--- :rubygems: Setting up Gems"
+          install_gems
+
+          echo "--- :cocoapods: Install SwiftLint via CocoaPods"
+          install_cocoapods
+
+          echo "--- Running Danger for SwiftLint annotations"
+          bundle exec danger --fail-on-errors=true --remove-previous-comments --danger_id=pr-check --dangerfile=danger_swiftlint.rb
+        env: *common_env
+        plugins: *common_plugins
+
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
