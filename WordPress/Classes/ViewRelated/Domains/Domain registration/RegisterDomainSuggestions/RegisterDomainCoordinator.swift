@@ -23,7 +23,9 @@ class RegisterDomainCoordinator {
 
     let analyticsSource: String
 
+    // TODO: This can cause Core Data crashes. Pass `NSManagedObjectID` instead.
     var site: Blog?
+
     var domain: DomainSuggestion?
 
     var domainPurchasedCallback: DomainPurchasedCallback?
