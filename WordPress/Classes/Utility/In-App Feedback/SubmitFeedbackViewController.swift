@@ -25,13 +25,6 @@ final class SubmitFeedbackViewController: UIViewController {
 
     // MARK: - View Lifecycle
 
-    deinit {
-        guard !feedbackWasSubmitted else {
-            return
-        }
-        WPAnalytics.track(.appReviewsCanceledFeedbackScreen)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
@@ -39,6 +32,16 @@ final class SubmitFeedbackViewController: UIViewController {
         self.textView.becomeFirstResponder()
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        guard !feedbackWasSubmitted else {
+            return
+        }
+        WPAnalytics.track(.appReviewsCanceledFeedbackScreen)
+    }
+
+    // MARK: - Setup Views
 
     private func setupSubviews() {
         self.setupNavigationItems()
