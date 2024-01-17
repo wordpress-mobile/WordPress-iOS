@@ -64,7 +64,6 @@ struct BloggingRemindersScheduleFormatter {
         }
     }
 
-
 }
 
 // MARK: - Private type methods and properties

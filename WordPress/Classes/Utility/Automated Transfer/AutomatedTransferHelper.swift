@@ -31,7 +31,6 @@ class AutomatedTransferHelper {
                                                 message: nil,
                                                 preferredStyle: .alert)
 
-
         alertController.addCancelActionWithTitle(Constants.PromptMessages.alertCancel, handler: { _ in
             WPAnalytics.track(.automatedTransferDialogCancelled)
             DDLogInfo("[AT] User canceled.")
@@ -50,7 +49,6 @@ class AutomatedTransferHelper {
 
         // fake coefficient, just so it doesn't look weird empty!
         SVProgressHUD.showProgress(0.02, status: Constants.PluginNameStrings.progressHudTitle(plugin.name))
-
 
         verifyEligibility(retryingAfterFailure: retryingAfterFailure, success: {
                 DDLogInfo("[AT] Site was confirmed eligible, proceeding to initiating AT process.")
@@ -101,7 +99,6 @@ class AutomatedTransferHelper {
                 case .unknown:
                     errorMessage = Constants.EligibilityErrors.eligibilityEligibilityGenericError
                 }
-
 
                 // If the AT process is kicked off *right* after purchasing a domain, it can take
                 // a while for the eligiblity check to return a new, correct value.
@@ -230,7 +227,6 @@ class AutomatedTransferHelper {
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
         }
 
-
         automatedTransferService.fetchAutomatedTransferStatus(siteID: site.siteID, success: { (status) in
             DDLogInfo("[AT] Received AT status update: \(status)")
 
@@ -257,7 +253,6 @@ class AutomatedTransferHelper {
                 let progressFraction = Float(step) / Float(totalSteps)
                 SVProgressHUD.showProgress(progressFraction, status: Constants.PluginNameStrings.progressHudTitle(self.plugin.name))
             }
-
 
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.refreshInterval)) {
                 DDLogInfo("[AT] Scheduling status update.")
@@ -412,6 +407,5 @@ class AutomatedTransferHelper {
         static let afterDomainPurchaseMaxRetries = 14
         // It takes a bit longer to issue the SSL certificate for the new domain for AT process. We're more lenient here because of this.
     }
-
 
 }

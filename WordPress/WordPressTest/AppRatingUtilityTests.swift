@@ -6,7 +6,6 @@ class AppRatingUtilityTests: XCTestCase {
     fileprivate var defaults: UserDefaults!
     fileprivate var utility: AppRatingUtility!
 
-
     override func setUp() {
         let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)

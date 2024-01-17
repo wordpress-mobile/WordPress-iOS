@@ -15,7 +15,6 @@ class NSMutableAttributedStringTests: XCTestCase {
             .foregroundColor: UIColor.black
         ]
 
-
         let attributedMessage = NSMutableAttributedString(string: message, attributes: regularStyle)
         let rawMessage = attributedMessage.string as NSString
 
@@ -41,7 +40,6 @@ class NSMutableAttributedStringTests: XCTestCase {
         XCTAssert(isEqual(boldEffectiveStyle, boldStyle), "Invalid Style Detected")
         XCTAssert(boldExpectedRange.location == boldEffectiveRange.location, "Invalid effective range")
     }
-
 
     ///
     ///

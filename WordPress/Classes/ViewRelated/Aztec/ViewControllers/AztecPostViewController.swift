@@ -218,7 +218,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         return label
     }()
 
-
     /// Raw HTML Editor
     ///
     private var htmlTextView: UITextView {
@@ -246,7 +245,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.accessibilityIdentifier = "aztec-html-text-view"
     }
-
 
     /// Title's UITextView
     ///
@@ -295,21 +293,17 @@ class AztecPostViewController: UIViewController, PostEditor {
         return titlePlaceholderLabel
     }()
 
-
     /// Title's Height Constraint
     ///
     fileprivate var titleHeightConstraint: NSLayoutConstraint!
-
 
     /// Title's Top Constraint
     ///
     fileprivate var titleTopConstraint: NSLayoutConstraint!
 
-
     /// Placeholder's Top Constraint
     ///
     fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
-
 
     /// Separator View
     ///
@@ -349,7 +343,6 @@ class AztecPostViewController: UIViewController, PostEditor {
             refreshTitlePosition()
         }
     }*/
-
 
     /// Post being currently edited
     ///
@@ -392,11 +385,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var currentSelectedAttachment: MediaAttachment?
 
-
     /// Last Interface Element that was a First Responder
     ///
     fileprivate var lastFirstResponder: UIView?
-
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -407,7 +398,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Current keyboard rect used to help size the inline media picker
     ///
     fileprivate var currentKeyboardFrame: CGRect = .zero
-
 
     /// Method of selecting media for upload, used for analytics
     ///
@@ -493,7 +483,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         cancelAllPendingMediaRequests()
     }
 
-
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -568,7 +557,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         present(alert, animated: true)
     }
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -589,14 +577,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         htmlTextView.isScrollEnabled = true
     }
 
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         stopListeningToNotifications()
         rememberFirstResponder()
     }
-
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -673,7 +659,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         scrollInsets.right = -rightMargin
         referenceView.scrollIndicatorInsets = scrollInsets
     }
-
 
     // MARK: - Construction Helpers
 
@@ -981,7 +966,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 }
 
-
 // MARK: - Format Bar Updating
 
 extension AztecPostViewController {
@@ -1037,7 +1021,6 @@ extension AztecPostViewController {
     }
 }
 
-
 // MARK: - SDK Workarounds!
 //
 extension AztecPostViewController {
@@ -1067,7 +1050,6 @@ extension AztecPostViewController {
     }
 }
 
-
 // MARK: - AztecNavigationControllerDelegate Conformance
 
 extension AztecPostViewController: AztecNavigationControllerDelegate {
@@ -1079,7 +1061,6 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
         restoreFirstResponder()
     }
 }
-
 
 // MARK: - Actions
 //
@@ -1120,7 +1101,6 @@ extension AztecPostViewController {
         displayMoreSheet()
     }
 }
-
 
 // MARK: - Private Helpers
 //
@@ -1273,7 +1253,6 @@ private extension AztecPostViewController {
     }
 }
 
-
 // MARK: - PostEditorStateContextDelegate & support methods
 //
 extension AztecPostViewController: PostEditorStateContextDelegate {
@@ -1319,7 +1298,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
-
 
 // MARK: - UITextViewDelegate methods
 //
@@ -1437,7 +1415,6 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 }
 
-
 // MARK: - UITextFieldDelegate methods
 //
 extension AztecPostViewController {
@@ -1447,7 +1424,6 @@ extension AztecPostViewController {
     }
 }
 
-
 // MARK: - TextViewFormattingDelegate methods
 //
 extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
@@ -1455,7 +1431,6 @@ extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
         updateFormatBar()
     }
 }
-
 
 // MARK: - HTML Mode Switch methods
 //
@@ -1466,7 +1441,6 @@ extension AztecPostViewController {
         titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
     }
 }
-
 
 // MARK: - FormatBarDelegate Conformance
 //
@@ -1563,12 +1537,10 @@ extension AztecPostViewController {
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
-
     @objc func toggleUnderline() {
         trackFormatBarAnalytics(stat: .editorTappedUnderline)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
-
 
     @objc func toggleStrikethrough() {
         trackFormatBarAnalytics(stat: .editorTappedStrikethrough)
@@ -1627,12 +1599,10 @@ extension AztecPostViewController {
         })
     }
 
-
     @objc func toggleBlockquote() {
         trackFormatBarAnalytics(stat: .editorTappedBlockquote)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
-
 
     func listTypeForSelectedText() -> TextList.Style? {
         var identifiers = Set<FormattingIdentifier>()
@@ -2086,7 +2056,6 @@ extension AztecPostViewController {
 
         headerButton.alternativeIcons = alternativeIcons
 
-
         let listButton = makeToolbarButton(identifier: .unorderedlist)
         var listIcons = [String: UIImage]()
         for list in Constants.lists {
@@ -2116,13 +2085,11 @@ extension AztecPostViewController {
     }
 }
 
-
 // MARK: - UINavigationControllerDelegate Conformance
 //
 extension AztecPostViewController: UINavigationControllerDelegate {
 
 }
-
 
 // MARK: - UIPopoverPresentationControllerDelegate
 //
@@ -2334,7 +2301,6 @@ extension AztecPostViewController {
         }
         return attachment
     }
-
 
     /// Returns an `ImageAttachment` for use as a placeholder until the related document has been
     /// uploaded.
@@ -2927,7 +2893,6 @@ extension AztecPostViewController {
         }
     }
 }
-
 
 // MARK: - TextViewAttachmentDelegate Conformance
 //

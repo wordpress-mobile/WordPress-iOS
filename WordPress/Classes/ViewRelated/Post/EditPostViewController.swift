@@ -51,7 +51,6 @@ class EditPostViewController: UIViewController {
         self.init(post: post, blog: post.blog, loadAutosaveRevision: loadAutosaveRevision)
     }
 
-
     /// Initialize as an editor to create a new post for the provided blog
     ///
     /// - Parameter blog: blog to create a new post for

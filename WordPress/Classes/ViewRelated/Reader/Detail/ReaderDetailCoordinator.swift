@@ -335,7 +335,6 @@ class ReaderDetailCoordinator {
                                     })
     }
 
-
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost from a URL.
@@ -483,7 +482,6 @@ class ReaderDetailCoordinator {
             presentWebViewController(url)
         }
     }
-
 
     /// Called after the webView fully loads
     func webViewDidLoad() {
@@ -635,11 +633,9 @@ class ReaderDetailCoordinator {
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
         let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
-
         var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
-
 
         // Track related post tapped
         if let simplePost = remoteSimplePost {
@@ -768,7 +764,6 @@ extension ReaderDetailCoordinator {
 
         return ReaderDetailViewController.controllerWithPost(post)
     }
-
 
     func encodeRestorableState(with coder: NSCoder) {
         if let post = post {

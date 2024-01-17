@@ -201,7 +201,6 @@ import AutomatticTracks
         return true
     }
 
-
     private enum NewPostKey {
         static let title = "title"
         static let content = "content"

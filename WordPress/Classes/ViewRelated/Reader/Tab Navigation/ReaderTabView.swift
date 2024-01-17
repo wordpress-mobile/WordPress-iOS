@@ -1,6 +1,5 @@
 import UIKit
 
-
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
@@ -310,7 +309,6 @@ private extension ReaderTabView {
         static let dividerColor: UIColor = .divider
     }
 }
-
 
 // MARK: - Accessibility
 

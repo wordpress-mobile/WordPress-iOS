@@ -9,8 +9,6 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var blog: Blog?
 
-
-
     // MARK: - General
 
     /// Represents the Blog Name.
@@ -153,8 +151,6 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var pingbackOutboundEnabled: Bool
 
-
-
     // MARK: - Related Posts
 
     /// When set to true, Related Posts will be allowed.
@@ -172,8 +168,6 @@ open class BlogSettings: NSManagedObject {
     /// Indicates whether related posts should show thumbnails.
     ///
     @NSManaged var relatedPostsShowThumbnails: Bool
-
-
 
     // MARK: - Sharing
 

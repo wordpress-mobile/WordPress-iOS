@@ -4,8 +4,6 @@ import UserNotifications
 import CocoaLumberjack
 import UserNotifications
 
-
-
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
@@ -22,7 +20,6 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc static let shared = PushNotificationsManager()
 
-
     /// Stores the Apple's Push Notifications Token
     ///
     @objc var deviceToken: String? {
@@ -33,7 +30,6 @@ final public class PushNotificationsManager: NSObject {
             UserPersistentStoreFactory.instance().set(newValue, forKey: Device.tokenKey)
         }
     }
-
 
     /// Stores the WordPress.com Device identifier
     ///
@@ -46,13 +42,11 @@ final public class PushNotificationsManager: NSObject {
         }
     }
 
-
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
     @objc var sharedApplication: UIApplication {
         return UIApplication.shared
     }
-
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
@@ -61,7 +55,6 @@ final public class PushNotificationsManager: NSObject {
     }
 
     private var didRegisterForRemoteNotifications = false
-
 
     /// Enables or disables remote notifications based on current settings.
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
@@ -95,7 +88,6 @@ final public class PushNotificationsManager: NSObject {
             }
         }
     }
-
 
     // MARK: - Token Setup
 
@@ -135,7 +127,6 @@ final public class PushNotificationsManager: NSObject {
         })
     }
 
-
     /// Perform cleanup when the registration for iOS notifications failed
     ///
     /// - Parameter error: Details the reason of failure
@@ -144,7 +135,6 @@ final public class PushNotificationsManager: NSObject {
         DDLogError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
-
 
     /// Unregister the device from WordPress.com notifications
     ///
@@ -173,7 +163,6 @@ final public class PushNotificationsManager: NSObject {
             DDLogError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
         })
     }
-
 
     // MARK: - Handling Notifications
 
@@ -246,7 +235,6 @@ final public class PushNotificationsManager: NSObject {
     }
 }
 
-
 // MARK: - Handlers: Should be private, but... are open due to Unit Testing requirements!
 //
 extension PushNotificationsManager {
@@ -282,7 +270,6 @@ extension PushNotificationsManager {
 
         return true
     }
-
 
     /// Handles a WordPress.com Push Authentication Notification
     ///
@@ -341,7 +328,6 @@ extension PushNotificationsManager {
         return true
     }
 
-
     /// Handles a Notification while in Inactive Mode
     ///
     /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
@@ -367,7 +353,6 @@ extension PushNotificationsManager {
 
         return true
     }
-
 
     /// Handles a Notification while in Active OR Background Modes
     ///
@@ -406,7 +391,6 @@ extension PushNotificationsManager {
         return true
     }
 }
-
 
 // MARK: - Nested Types
 //

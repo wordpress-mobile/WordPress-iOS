@@ -19,7 +19,6 @@ public class FormattableMediaItem {
     ///
     public private(set) var size: CGSize?
 
-
     /// Designated Initializer.
     ///
     init?(dictionary: [String: AnyObject]) {
@@ -41,7 +40,6 @@ public class FormattableMediaItem {
     }
 }
 
-
 // MARK: - NotificationRange Parsers
 //
 extension FormattableMediaItem {
@@ -55,7 +53,6 @@ extension FormattableMediaItem {
         return parsed ?? []
     }
 }
-
 
 // MARK: - FormattableMediaContent Types
 //

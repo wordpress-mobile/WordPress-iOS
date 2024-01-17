@@ -51,7 +51,6 @@ extension UIView {
     // Private class used so we can locate an existing blanking view
     private class BlankingView: UIView {}
 
-
     /// Hides this view by inserting a snapshot into the view hierarchy.
     ///
     /// - Parameter afterScreenUpdates: A Boolean value that specifies whether
@@ -71,7 +70,6 @@ extension UIView {
 
         addSubview(blankingView)
     }
-
 
     /// Animates away any existing blanking snapshot.
     @objc func fadeOutAndRemoveBlankingSnapshot() {

@@ -47,7 +47,6 @@ import Foundation
         return postSubscription?.sendPosts ?? false
     }
 
-
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
     convenience init(remoteInfo: RemoteReaderSiteInfo, context: NSManagedObjectContext) {
         self.init(context: context)

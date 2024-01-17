@@ -31,7 +31,6 @@ final class StatsInsightsStoreTests: XCTestCase {
         XCTAssertEqual(sut.followersTotalsStatus, .idle)
     }
 
-
     // MARK: - FollowersTotalsStatusShouldBeLoading
 
     func testFollowersTotalsStatusStatusShouldBeLoadingWhenDotComFollowersStatusLoading() throws {
@@ -86,7 +85,6 @@ final class StatsInsightsStoreTests: XCTestCase {
         XCTAssertEqual(sut.followersTotalsStatus, .loading)
     }
 
-
     // MARK: - FollowersTotalsStatusShouldBeError
 
     func testFollowersTotalsStatusStatusShouldBeErrorWhenEmailFollowersStatusErrorDotComFollowersStatusSuccess() throws {
@@ -112,7 +110,6 @@ final class StatsInsightsStoreTests: XCTestCase {
         sut.state.emailFollowersStatus = .idle
         XCTAssertEqual(sut.followersTotalsStatus, .error)
     }
-
 
     // MARK: - FollowersTotalsStatusShouldBeSuccess
 

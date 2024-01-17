@@ -12,7 +12,6 @@ protocol ReaderFollowedInterestsService: AnyObject {
     /// - Parameter completion: Called after a fetch, will return nil if the user has no interests or an error occurred
     func fetchFollowedInterestsRemotely(completion: @escaping ([ReaderTagTopic]?) -> Void)
 
-
     /// Follow the provided interests
     /// If the user is not logged into a WP.com account, the interests will only be saved locally.
     func followInterests(_ interests: [RemoteReaderInterest],

@@ -47,7 +47,6 @@ enum ReaderSaveForLaterOrigin {
     }
 }
 
-
 private let readerSaveForLaterSourceKey = "source"
 
 extension ReaderSaveForLaterAction {

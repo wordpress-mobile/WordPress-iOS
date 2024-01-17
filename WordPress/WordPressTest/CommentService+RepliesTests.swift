@@ -20,7 +20,6 @@ final class CommentService_RepliesTests: CoreDataTestCase {
     private var commentService: CommentService!
     private var accountService: AccountService!
 
-
     override func setUp() {
         super.setUp()
 

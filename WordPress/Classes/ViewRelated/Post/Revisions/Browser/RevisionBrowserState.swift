@@ -9,7 +9,6 @@ class RevisionBrowserState {
     private (set) var currentIndex: Int
     private (set) var onRevisionSelected: RevisionSelectedBlock
 
-
     init(revisions: [Revision], currentIndex: Int, onRevisionSelected: @escaping RevisionSelectedBlock) {
         self.revisions = revisions
         self.currentIndex = currentIndex

@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-
 class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
     fileprivate var imageURL: URL?

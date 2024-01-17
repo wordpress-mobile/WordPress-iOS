@@ -9,7 +9,6 @@ class RevisionDiffViewController: UIViewController, StoryboardLoadable {
 
     var revision: Revision?
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()

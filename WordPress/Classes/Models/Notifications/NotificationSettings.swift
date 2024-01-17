@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// The goal of this class is to encapsulate all of the User's Notification Settings in a generic way.
 /// Settings are grouped into different Channels. A Channel is considered anything that might produce
 /// Notifications: a WordPress blog, Third Party Sites or WordPress.com.
@@ -35,7 +34,6 @@ open class NotificationSettings {
         Keys.weeklyRoundup,
     ]
 
-
     /// Designated Initializer
     ///
     /// - Parameters:
@@ -49,7 +47,6 @@ open class NotificationSettings {
         self.blog    = blog
         self.blogManagedObjectID = blog?.objectID
     }
-
 
     /// Returns the localized description for any given preference key
     ///
@@ -66,7 +63,6 @@ open class NotificationSettings {
     static func isLocallyStored(_ preferenceKey: String) -> Bool {
         return Self.locallyStoredKeys.contains(preferenceKey)
     }
-
 
     /// Returns an array of the sorted Preference Keys
     ///
@@ -89,7 +85,6 @@ open class NotificationSettings {
         case other
         case wordPressCom
 
-
         /// Returns the localized description of the current enum value
         ///
         func description() -> String {
@@ -104,13 +99,11 @@ open class NotificationSettings {
         }
     }
 
-
     /// Contains the Notification Settings collection for a specific communications stream.
     ///
     open class Stream {
         open var kind: Kind
         open var preferences: [String: Bool]?
-
 
         /// Designated Initializer
         ///
@@ -123,14 +116,12 @@ open class NotificationSettings {
             self.preferences    = preferences
         }
 
-
         /// Enumerates all of the possible Stream Kinds
         ///
         public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
-
 
             /// Returns the localized description of the current enum value
             ///
@@ -210,7 +201,6 @@ open class NotificationSettings {
         ]
     }
 }
-
 
 /// Swift requires this method to be implemented globally. Sorry about that!
 ///

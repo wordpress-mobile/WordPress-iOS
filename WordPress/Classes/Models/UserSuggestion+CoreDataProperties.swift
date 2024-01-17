@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 extension UserSuggestion {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<UserSuggestion> {

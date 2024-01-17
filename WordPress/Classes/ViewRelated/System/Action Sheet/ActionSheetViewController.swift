@@ -97,7 +97,6 @@ class ActionSheetViewController: UIViewController {
             return button(buttonInfo)
         })
 
-
         let buttonConstraints = buttonViews.flatMap { button in
             [
                 button.heightAnchor.constraint(equalToConstant: Constants.Button.height),

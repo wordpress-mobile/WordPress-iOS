@@ -36,7 +36,6 @@ extension WPStyleGuide {
         return imageView
     }
 
-
     /// Creates an icon for the specified service, or a the default social icon.
     ///
     /// - Parameters:
@@ -76,7 +75,6 @@ extension WPStyleGuide {
 
         return UIImage(named: "icon-\(service)") ?? iconForService(service)
     }
-
 
     /// Get's the tint color to use for the specified service when it is connected.
     ///

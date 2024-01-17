@@ -40,7 +40,6 @@ open class SwitchTableViewCell: WPTableViewCell {
         self.init(style: .default, reuseIdentifier: nil)
     }
 
-
     // MARK: - UITapGestureRecognizer Helpers
     @IBAction func rowWasPressed(_ recognizer: UITapGestureRecognizer) {
         // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
@@ -49,14 +48,10 @@ open class SwitchTableViewCell: WPTableViewCell {
         switchDidChange(flipSwitch)
     }
 
-
-
     // MARK: - UISwitch Helpers
     @IBAction func switchDidChange(_ theSwitch: UISwitch) {
         onChange?(theSwitch.isOn)
     }
-
-
 
     // MARK: - Private Helpers
     fileprivate func setupSubviews() {

@@ -138,7 +138,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-
     private lazy var commentService: CommentService = {
         return .init(coreDataStack: ContextManager.shared)
     }()
@@ -370,7 +369,6 @@ private extension CommentDetailViewController {
         // get rid of the separator line for the last cell.
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
-
         // assign 20pt leading inset to the table view, as per the design.
         tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
                                                    leading: Constants.tableHorizontalInset,
@@ -566,8 +564,6 @@ private extension CommentDetailViewController {
                                                           commentID: NSNumber(value: comment.commentID),
                                                           source: .commentNotification)
     }
-
-
 
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {

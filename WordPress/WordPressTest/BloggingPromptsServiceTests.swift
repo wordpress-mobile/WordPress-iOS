@@ -361,7 +361,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     }
 }
 
-
 // MARK: - Helpers
 
 private extension BloggingPromptsServiceTests {

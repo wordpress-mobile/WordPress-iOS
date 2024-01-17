@@ -29,7 +29,6 @@ class RegisterDomainDetailsSectionTests: XCTestCase {
             onChange: self.changeHandler
         )
 
-
         //we're handling more complicated cases than just "is empty"
         section.updateValue("invalidEmail", at: emailRowIndex)
         XCTAssert(section.rows[emailRowIndex].editableRow?.isValid(inContext: .clientSide) == false)

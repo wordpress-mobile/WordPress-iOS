@@ -70,9 +70,7 @@ private struct Config {
     }
 }
 
-
 // ===========================================================================
-
 
 private extension CGRect {
     init(center: CGPoint, size: CGSize) {

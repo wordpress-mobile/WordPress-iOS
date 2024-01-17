@@ -10,7 +10,6 @@ protocol ReaderTopicCollectionViewCoordinatorDelegate: AnyObject {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState)
 }
 
-
 /// The topics coordinator manages the layout and configuration of a topics chip group collection view.
 /// When created it will link to a collectionView and perform all the necessary configuration to
 /// display the group with expanding/collapsing support.

@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// The purpose of this class is to simply display a regular TableViewCell, with a Checkmark as accessoryType.
 ///
 @objc class CheckmarkTableViewCell: WPTableViewCell {
@@ -32,7 +31,6 @@ import Foundation
     public convenience init() {
         self.init(style: .default, reuseIdentifier: nil)
     }
-
 
     // MARK: Private methods
 

@@ -64,7 +64,6 @@ extension WPTabBarController {
     }
 }
 
-
 // MARK: - Reader Navigation
 extension WPTabBarController {
 
