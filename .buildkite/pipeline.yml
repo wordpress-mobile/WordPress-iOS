@@ -26,3 +26,23 @@ steps:
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
+
+  - label: "🔍 SwiftLint"
+    command: |
+      echo "--- :rubygems: Setting up Gems"
+      bundle install
+
+      echo "--- Annotate PR via Danger"
+      bundle exec danger --fail-on-errors=true --remove-previous-comments --danger_id=pr-check --dangerfile=Dangerfile-SwiftLint
+    plugins:
+      - docker#v5.8.0:
+          image: public.ecr.aws/docker/library/ruby:3.2.2
+          propagate-environment: true
+          environment:
+            - DANGER_GITHUB_API_TOKEN
+    if: "build.pull_request.id != null"
+    agents:
+      queue: "default"
+    retry:
+      manual:
+        permit_on_passed: true
