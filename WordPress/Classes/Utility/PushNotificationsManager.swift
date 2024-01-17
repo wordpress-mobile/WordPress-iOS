@@ -4,8 +4,6 @@ import UserNotifications
 import CocoaLumberjack
 import UserNotifications
 
-
-
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
