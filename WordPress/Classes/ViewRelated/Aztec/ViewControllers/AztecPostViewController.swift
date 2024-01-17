@@ -8,6 +8,7 @@ import WordPressShared
 import MobileCoreServices
 import WordPressEditor
 import AVKit
+import MobileCoreServices
 import AutomatticTracks
 import MediaEditor
 import UniformTypeIdentifiers
