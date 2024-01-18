@@ -13,7 +13,6 @@ final class Tooltip: UIView {
             dark: .white
         )
 
-
         enum Spacing {
             static let contentStackViewInterItemSpacing: CGFloat = 4
             static let buttonsStackViewInterItemSpacing: CGFloat = 16

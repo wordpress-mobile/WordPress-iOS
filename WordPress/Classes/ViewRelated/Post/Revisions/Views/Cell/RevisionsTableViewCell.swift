@@ -49,7 +49,6 @@ class RevisionsTableViewCell: UITableViewCell {
         }
     }
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
         setupStyles()
@@ -70,7 +69,6 @@ class RevisionsTableViewCell: UITableViewCell {
         }
     }
 }
-
 
 private extension RevisionsTableViewCell {
     private func setupStyles() {

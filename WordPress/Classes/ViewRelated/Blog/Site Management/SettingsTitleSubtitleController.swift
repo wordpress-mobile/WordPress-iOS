@@ -3,7 +3,6 @@ import UIKit
 /// Types the closures than can be provided as completion blocks
 typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Content) -> Void)
 
-
 /**
  Presents a view controller with a textfiled and a textview, that can be used to create / edit a title and subtitle pair.
 */
@@ -25,7 +24,6 @@ final class SettingsTitleSubtitleController: UITableViewController {
             self.titleErrorFooter = titleErrorFooter
         }
     }
-
 
     /// String literals to be presented in an action confirmation alert
     struct Confirmation {
@@ -96,13 +94,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
         super.init(style: .grouped)
     }
 
-
     /// Closure to be executed when the right bar button item is tapped. If there was a Confirmation passed in this VC's constructor, this closure will be called only after users confirm an alert.
     ///
     func setAction(_ closure: @escaping SettingsTitleSubtitleAction) {
         action = closure
     }
-
 
     /// Closure to be executed when the users tap the Back button, only if there is valid text in the Title textfield
     ///

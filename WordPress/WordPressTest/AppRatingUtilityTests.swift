@@ -7,7 +7,6 @@ class AppRatingUtilityTests: XCTestCase {
     fileprivate var utility: AppRatingUtility!
     private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
 
-
     override func setUp() {
         let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)

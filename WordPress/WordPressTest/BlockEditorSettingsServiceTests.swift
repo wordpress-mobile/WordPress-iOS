@@ -193,7 +193,6 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
         XCTAssertNotEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-
     func testFetchBlockEditorSettingsThemeJSONChangeSettings() {
         setData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""

@@ -95,7 +95,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         return view
     }()
 
-
     // MARK: - View lifecycle
 
     init(domain: String, continueButtonPressed: @escaping (String) -> Void) {

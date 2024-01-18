@@ -22,7 +22,6 @@ class StatsWidgetsService {
 
     private var state: State = .ready
 
-
     func fetchStats(for widgetData: HomeWidgetData,
                     completion: @escaping (Result<ResultType, Error>) -> Void) {
 
@@ -170,7 +169,6 @@ class StatsWidgetsService {
 enum StatsWidgetsError: Error {
     case nilStats
 }
-
 
 private extension Date {
     func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {

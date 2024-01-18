@@ -279,7 +279,6 @@ class AppRatingUtility: NSObject {
         return total
     }
 
-
     // MARK: - Debug
 
     override var debugDescription: String {

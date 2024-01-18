@@ -237,8 +237,6 @@ enum ImageDimensionFormat {
     }
 }
 
-
-
 // MARK: - Private: Extensions
 private extension Data {
     func headerData(with length: Int) -> Data {

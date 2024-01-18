@@ -2,7 +2,6 @@ import Foundation
 import WordPressShared
 import UIKit
 
-
 /// This ViewController allows the user to resize and crop any given UIImage.
 ///
 class ImageCropViewController: UIViewController, UIScrollViewDelegate {
@@ -21,7 +20,6 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         self.init(nibName: nibName, bundle: nil)
         rawImage = image
     }
-
 
     // MARK: - UIViewController Methods
 
@@ -63,7 +61,6 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         overlayView.maskShape = maskShape
     }
 
-
     // MARK: - UIScrollViewDelegate Methods
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -74,7 +71,6 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         // NO-OP:
         // Required to enable scrollView Zooming
     }
-
 
     // MARK: - Action Handlers
     @IBAction func cropWasPressed() {

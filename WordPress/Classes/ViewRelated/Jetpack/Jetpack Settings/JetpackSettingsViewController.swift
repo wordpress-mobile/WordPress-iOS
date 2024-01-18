@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-
 /// The purpose of this class is to render and modify the Jetpack Settings associated to a site.
 ///
 open class JetpackSettingsViewController: UITableViewController {

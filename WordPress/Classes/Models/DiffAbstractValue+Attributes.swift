@@ -19,14 +19,12 @@ extension DiffAbstractValue {
     }
 }
 
-
 extension Array where Element == DiffAbstractValue {
     func toAttributedString() -> NSAttributedString? {
         return sorted { $0.index < $1.index }
             .reduce(NSMutableAttributedString(), combine)
             .copy() as? NSAttributedString
     }
-
 
     private func combine(left: NSMutableAttributedString, with right: DiffAbstractValue) -> NSMutableAttributedString {
         guard let value = right.value else {

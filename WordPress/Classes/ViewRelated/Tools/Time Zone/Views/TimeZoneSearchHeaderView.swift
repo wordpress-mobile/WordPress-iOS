@@ -41,7 +41,6 @@ final class TimeZoneSearchHeaderView: UIView {
     }
 }
 
-
 // MARK: - Constants
 
 private extension TimeZoneSearchHeaderView {

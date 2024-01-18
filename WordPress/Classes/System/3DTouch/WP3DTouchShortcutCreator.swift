@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 public protocol ApplicationShortcutsProvider {
     var shortcutItems: [UIApplicationShortcutItem]? { get set }
     var is3DTouchAvailable: Bool { get }

@@ -2,7 +2,6 @@
 class RevisionsTableViewFooter: UIView {
     private var footerLabel: UILabel!
 
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -11,7 +10,6 @@ class RevisionsTableViewFooter: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     // MARK: Public methods
 
@@ -25,7 +23,6 @@ class RevisionsTableViewFooter: UIView {
         footerLabel.text = String.localizedStringWithFormat(text, stringDate)
     }
 }
-
 
 private extension RevisionsTableViewFooter {
     private func setupUI() {

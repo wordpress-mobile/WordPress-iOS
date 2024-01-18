@@ -176,7 +176,6 @@ import WordPressFlux
                     return
             }
 
-
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
                                                             remoteURLString: remoteURL,
                                                             width: Int(mediaUploadOp.width),

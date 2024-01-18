@@ -64,8 +64,6 @@ class BlogSettingsDiscussionTests: CoreDataTestCase {
         XCTAssert(settings.commentsThreadingDepth == 2)
     }
 
-
-
     // MARK: - Typealiases
     typealias Sorting = BlogSettings.CommentsSorting
 

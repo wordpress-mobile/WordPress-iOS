@@ -25,7 +25,6 @@ import WordPressKit
 
     // MARK: - Publicize Related Methods
 
-
     /// Syncs the list of Publicize services.  The list is expected to very rarely change.
     ///
     /// - Parameters:
@@ -45,7 +44,6 @@ import WordPressKit
         }, failure: failure)
     }
 
-
     /// Fetches the current user's list of keyring connections. Nothing is saved to core data.
     /// The success block should accept an array of `KeyringConnection` objects.
     ///
@@ -64,7 +62,6 @@ import WordPressKit
         },
         failure: failure)
     }
-
 
     /// Creates a new publicize connection for the specified `Blog`, using the specified
     /// keyring.  Optionally the connection can target a particular external user account.
@@ -118,7 +115,6 @@ import WordPressKit
                 failure?(error)
             })
     }
-
 
     /// Update the specified `PublicizeConnection`.  The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
@@ -197,7 +193,6 @@ import WordPressKit
         }, on: .main)
     }
 
-
     /// Update the specified `PublicizeConnection`.  The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
     ///
@@ -240,7 +235,6 @@ import WordPressKit
                 },
                 failure: failure)
     }
-
 
     /// Deletes the specified `PublicizeConnection`.  The delete from core data is performed
     /// optimistically.  The caller's `failure` block should be responsible for resyncing
@@ -292,9 +286,7 @@ import WordPressKit
         }, on: .main)
     }
 
-
     // MARK: - Private PublicizeService Methods
-
 
     /// Called when syncing Publicize services. Merges synced and cached data, removing
     /// anything that does not exist on the server.  Saves the context.
@@ -320,7 +312,6 @@ import WordPressKit
             }
         }, completion: success, on: .main)
     }
-
 
     /// Composes a new `PublicizeService`, or updates an existing one, with data represented by the passed `RemotePublicizeService`.
     ///
@@ -350,9 +341,7 @@ import WordPressKit
         return pubService!
     }
 
-
     // MARK: - Private PublicizeConnection Methods
-
 
     /// Composes a new `PublicizeConnection`, with data represented by the passed `RemotePublicizeConnection`.
     /// Throws an error if unable to find a `Blog` for the `blogObjectID`
@@ -374,7 +363,6 @@ import WordPressKit
 
         return pubConn.objectID
     }
-
 
     // MARK: Sharing Button Related Methods
 
@@ -398,7 +386,6 @@ import WordPressKit
             failure: failure)
     }
 
-
     /// Pushes changes to the specified blog's `SharingButton`s back up to the blog.
     ///
     /// - Parameters:
@@ -420,7 +407,6 @@ import WordPressKit
             },
             failure: failure)
     }
-
 
     /// Called when syncing sharng buttons. Merges synced and cached data, removing
     /// anything that does not exist on the server.  Saves the context.
@@ -480,7 +466,6 @@ import WordPressKit
         return shareButton!
     }
 
-
     /// Composes `RemoteSharingButton` objects from properties on an array of `SharingButton`s.
     ///
     /// - Parameters:
@@ -502,9 +487,7 @@ import WordPressKit
         }
     }
 
-
     // MARK: Private Instance Methods
-
 
     /// Returns the remote to use with the service.
     ///

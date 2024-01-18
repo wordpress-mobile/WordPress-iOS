@@ -35,7 +35,6 @@ class BackupListViewController: BaseActivityListViewController {
             return nil
         }
 
-
         let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
         self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
     }

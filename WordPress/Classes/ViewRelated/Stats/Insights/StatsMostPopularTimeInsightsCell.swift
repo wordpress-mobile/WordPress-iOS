@@ -1,6 +1,5 @@
 import UIKit
 
-
 class StatsMostPopularTimeInsightsCell: StatsBaseCell {
     private var data: StatsMostPopularTimeData? = nil
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?

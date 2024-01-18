@@ -60,7 +60,6 @@ import AutomatticTracks
         imageView.addLoadingIndicator(self.loadingIndicator, style: .fullView)
     }
 
-
     /// Removes the gif animation and prevents it from animate again.
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
@@ -207,7 +206,6 @@ import AutomatticTracks
 
         return photonURL
     }
-
 
     /// Triggers the image dimensions fetcher if the `imageDimensionsHandler` property is set
     private func calculateImageDimensionsIfNeeded(from request: URLRequest) {

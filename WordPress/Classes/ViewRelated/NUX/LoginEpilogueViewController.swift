@@ -2,7 +2,6 @@ import UIKit
 import WordPressShared
 import WordPressAuthenticator
 
-
 // MARK: - LoginEpilogueViewController
 //
 class LoginEpilogueViewController: UIViewController {
@@ -64,7 +63,6 @@ class LoginEpilogueViewController: UIViewController {
             refreshInterface(with: credentials)
         }
     }
-
 
     // MARK: - Lifecycle Methods
 

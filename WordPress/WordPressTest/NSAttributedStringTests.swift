@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-
 // MARK: - NSAttributedString Unit Tests
 //
 open class NSAttributedStringTests: XCTestCase {

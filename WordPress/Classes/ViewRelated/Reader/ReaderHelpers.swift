@@ -3,7 +3,6 @@ import WordPressShared
 import WordPressFlux
 import AutomatticTracks
 
-
 // MARK: - Reader Notifications
 
 extension NSNotification.Name {
@@ -84,7 +83,6 @@ struct ReaderPostMenuButtonTitles {
 ///
 @objc open class ReaderHelpers: NSObject {
 
-
     // MARK: - Topic Helpers
 
     public static let discoverSiteID = NSNumber(value: 53424024)
@@ -100,7 +98,6 @@ struct ReaderPostMenuButtonTitles {
         return topic.isKind(of: ReaderDefaultTopic.self)
     }
 
-
     /// Check if the specified topic is a list
     ///
     /// - Parameters:
@@ -111,7 +108,6 @@ struct ReaderPostMenuButtonTitles {
     @objc open class func isTopicList(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderListTopic.self)
     }
-
 
     /// Check if the specified topic is a site topic
     ///
@@ -124,7 +120,6 @@ struct ReaderPostMenuButtonTitles {
         return topic.isKind(of: ReaderSiteTopic.self)
     }
 
-
     /// Check if the specified topic is a tag topic
     ///
     /// - Parameters:
@@ -135,7 +130,6 @@ struct ReaderPostMenuButtonTitles {
     @objc open class func isTopicTag(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderTagTopic.self)
     }
-
 
     /// Check if the specified topic is a search topic
     ///
@@ -148,7 +142,6 @@ struct ReaderPostMenuButtonTitles {
         return topic.isKind(of: ReaderSearchTopic.self)
     }
 
-
     /// Check if the specified topic is for Freshly Pressed
     ///
     /// - Parameters:
@@ -159,7 +152,6 @@ struct ReaderPostMenuButtonTitles {
     @objc open class func topicIsFreshlyPressed(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/freshly-pressed")
     }
-
 
     /// Check if the specified topic is for Discover
     ///
@@ -172,7 +164,6 @@ struct ReaderPostMenuButtonTitles {
         return topic.path.contains("/read/sites/53424024/posts")
     }
 
-
     /// Check if the specified topic is for Following
     ///
     /// - Parameters:
@@ -183,7 +174,6 @@ struct ReaderPostMenuButtonTitles {
     @objc open class func topicIsFollowing(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/following")
     }
-
 
     /// Check if the specified topic is for Posts I Like
     ///
@@ -207,7 +197,6 @@ struct ReaderPostMenuButtonTitles {
         //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
         return topic.path.hasSuffix("/mock")
     }
-
 
     // MARK: Analytics Helpers
 
@@ -244,7 +233,6 @@ struct ReaderPostMenuButtonTitles {
             WPAnalytics.track(stat!, withProperties: properties)
         }
     }
-
 
     @objc open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
         var properties = [AnyHashable: Any]()
@@ -495,8 +483,6 @@ struct ReaderPostMenuButtonTitles {
         }
     }
 
-
-
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -622,7 +608,6 @@ extension ReaderHelpers {
         return mutableItems
     }
 }
-
 
 /// Typed topic type
 enum ReaderTopicType {

@@ -269,6 +269,7 @@ import Foundation
     // My Site: Header Actions
     case mySiteHeaderMoreTapped
     case mySiteHeaderAddSiteTapped
+    case mySiteHeaderShareSiteTapped
     case mySiteHeaderPersonalizeHomeTapped
 
     // Site Switcher
@@ -281,7 +282,9 @@ import Foundation
     case siteSwitcherToggleBlogVisible
 
     // Post List
+    case postListItemSelected
     case postListShareAction
+    case postListBlazeAction
     case postListCommentsAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
@@ -1030,6 +1033,8 @@ import Foundation
             return "my_site_header_more_tapped"
         case .mySiteHeaderAddSiteTapped:
             return "my_site_header_add_site_tapped"
+        case .mySiteHeaderShareSiteTapped:
+            return "my_site_header_share_site_tapped"
         case .mySiteHeaderPersonalizeHomeTapped:
             return "my_site_header_personalize_home_tapped"
 
@@ -1050,7 +1055,11 @@ import Foundation
             return "site_switcher_toggle_blog_visible"
 
         // Post List
+        case .postListItemSelected:
+            return "post_list_item_selected"
         case .postListShareAction:
+            return "post_list_button_pressed"
+        case .postListBlazeAction:
             return "post_list_button_pressed"
         case .postListCommentsAction:
             return "post_list_button_pressed"
@@ -1469,7 +1478,6 @@ import Foundation
         case .supportChatbotEnded:
             return "support_chatbot_ended"
 
-
         // Jetpack plugin connection to user's WP.com account
         case .jetpackPluginConnectUserAccountStarted:
             return "jetpack_plugin_connect_user_account_started"
@@ -1539,6 +1547,8 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListBlazeAction:
+            return ["button": "blaze"]
         case .postListCommentsAction:
             return ["button": "comments"]
         case .postListSetAsPostsPageAction:

@@ -1,6 +1,5 @@
 import Gridicons
 
-
 class RevisionOperation: NSObject {
     @IBOutlet private (set) var internalView: RevisionOperationView!
 
@@ -14,7 +13,6 @@ class RevisionOperation: NSObject {
         internalView.type = type
     }
 }
-
 
 class RevisionOperationView: UIView {
     @IBOutlet private var imageView: CircularImageView!
@@ -34,13 +32,11 @@ class RevisionOperationView: UIView {
         }
     }
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
         numbersLabel.textColor = .neutral(.shade40)
     }
-
 
     enum OperationType {
         case add

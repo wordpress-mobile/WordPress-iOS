@@ -85,7 +85,6 @@ class SiteIntentDataTests: XCTestCase {
         XCTAssertEqual(fooSearchResult[1], expectedFoodVertical)
     }
 
-
     /// Tests that the output isn't changed when whitespace is searched
     func testWhitespaceFiltering() throws {
         // Given

@@ -318,7 +318,6 @@ extension BlogDashboardViewController {
         )
     }
 
-
     private enum Constants {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 12

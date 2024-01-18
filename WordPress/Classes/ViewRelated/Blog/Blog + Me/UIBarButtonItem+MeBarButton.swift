@@ -111,7 +111,6 @@ fileprivate extension UIBarButtonItem {
     }
 }
 
-
 /// Accessibility
 private extension UIBarButtonItem {
     /// Adds accessibility traits for the `Me` bar button item

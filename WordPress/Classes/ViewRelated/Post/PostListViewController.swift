@@ -215,6 +215,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             return
         }
 
+        WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }
 
@@ -251,7 +252,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         guard let post = post as? Post else {
             return
         }
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
     }
 
@@ -305,15 +305,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
 
     func duplicate(_ post: AbstractPost) {
         editDuplicatePost(post)
-    }
-
-    func publish(_ post: AbstractPost) {
-        publishPost(post) {
-            BloggingRemindersFlow.present(from: self,
-                                          for: post.blog,
-                                          source: .publishFlow,
-                                          alwaysShow: false)
-        }
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
@@ -377,6 +368,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     }
 
     func blaze(_ post: AbstractPost) {
+        WPAnalytics.track(.postListBlazeAction, properties: propertiesForAnalytics())
         BlazeEventsTracker.trackEntryPointTapped(for: .postsList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }

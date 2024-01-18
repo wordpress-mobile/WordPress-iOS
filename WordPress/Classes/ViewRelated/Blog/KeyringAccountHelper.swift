@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// KeyringAccount is used to normalize the list of avaiable accounts while
 /// preserving the owning keyring connection.
 ///

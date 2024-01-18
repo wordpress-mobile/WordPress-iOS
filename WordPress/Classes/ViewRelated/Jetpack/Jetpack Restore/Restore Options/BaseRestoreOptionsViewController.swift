@@ -222,7 +222,6 @@ class BaseRestoreOptionsViewController: UITableViewController {
         )
     }
 
-
     // MARK: - Private Helpers
 
     @objc private func cancelTapped() {

@@ -28,6 +28,7 @@ final class ImageView: UIView {
 
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.accessibilityIgnoresInvertColors = true
 
         backgroundColor = .secondarySystemBackground
     }
@@ -96,11 +97,7 @@ final class ImageView: UIView {
                 makeSpinner().startAnimating()
             }
         case .success(let image):
-            if let gif = image as? AnimatedImage, let data = gif.gifData {
-                imageView.animate(withGIFData: data)
-            } else {
-                imageView.image = image
-            }
+            imageView.configure(image: image)
             imageView.isHidden = false
             backgroundColor = .clear
         case .failure:
@@ -131,5 +128,17 @@ final class ImageView: UIView {
         pinSubviewAtCenter(errorView)
         self.errorView = errorView
         return errorView
+    }
+}
+
+extension GIFImageView {
+    /// If the image is an instance of `AnimatedImage` type, plays it as an
+    /// animated image.
+    func configure(image: UIImage) {
+        if let gif = image as? AnimatedImage, let data = gif.gifData {
+            self.animate(withGIFData: data)
+        } else {
+            self.image = image
+        }
     }
 }

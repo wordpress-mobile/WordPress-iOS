@@ -1,0 +1,11 @@
+name: ☢️ Danger
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, review_requested, review_request_removed, labeled, unlabeled, milestoned, demilestoned]
+
+jobs:
+  dangermattic:
+    uses: Automattic/dangermattic/.github/workflows/reusable-run-danger.yml@trunk
+    secrets:
+      github-token: ${{ secrets.DANGERMATTIC_GITHUB_TOKEN }}

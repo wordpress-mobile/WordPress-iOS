@@ -6,6 +6,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     case weeks
     case months
     case years
+    case traffic
 
     // This is public as it is needed by FilterTabBarItem.
     var title: String {
@@ -15,6 +16,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
         case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
         case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
+        case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
         }
     }
 
@@ -30,6 +32,8 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
             self = .years
         case "insights":
             self = .insights
+        case "traffic":
+            self = .traffic
         default:
             return nil
         }
@@ -37,7 +41,13 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
 }
 
 fileprivate extension StatsPeriodType {
-    static let allPeriods = StatsPeriodType.allCases
+    static var displayedPeriods: [StatsPeriodType] {
+        if RemoteFeatureFlag.statsTrafficTab.enabled() {
+            return [.traffic, .insights]
+        } else {
+            return [.insights, .days, .weeks, .months, .years]
+        }
+    }
 
     var analyticsAccessEvent: WPAnalyticsStat {
         switch self {
@@ -46,6 +56,7 @@ fileprivate extension StatsPeriodType {
         case .weeks:    return .statsPeriodWeeksAccessed
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
+        case .traffic:  return .noStat // TODO
         }
     }
 }
@@ -68,6 +79,7 @@ class SiteStatsDashboardViewController: UIViewController {
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
     private var pageViewController: UIPageViewController?
+    private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
 
     @objc lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -160,11 +172,12 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 private extension SiteStatsDashboardViewController {
     var currentSelectedPeriod: StatsPeriodType {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? StatsPeriodType.insights.rawValue
-            return StatsPeriodType(rawValue: selectedIndex) ?? .insights
+            let selectedIndex = filterTabBar?.selectedIndex ?? 0
+            return displayedPeriods[selectedIndex]
         }
         set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
+            let index = displayedPeriods.firstIndex(of: newValue) ?? 0
+            filterTabBar?.setSelectedIndex(index)
             let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
             updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
@@ -179,13 +192,13 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = StatsPeriodType.allPeriods
+        filterTabBar.items = displayedPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
+        currentSelectedPeriod = displayedPeriods[filterBar.selectedIndex]
 
         configureNavBar()
     }
@@ -215,7 +228,7 @@ private extension SiteStatsDashboardViewController {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
               let periodType = StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
-            return .insights
+            return displayedPeriods[0]
         }
 
         return periodType
@@ -252,6 +265,13 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
             insightsTableViewController.refreshInsights()
+        case .traffic:
+            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+                let viewController = UIViewController() // TODO
+                pageViewController?.setViewControllers([viewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
         default:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([periodTableViewController],

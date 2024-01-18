@@ -56,7 +56,6 @@ struct WeeklyRoundupDebugScreen: View {
                 }))
                 .padding()
 
-
                 Spacer()
                     .frame(height: 16)
             }

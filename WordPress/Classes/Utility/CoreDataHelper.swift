@@ -28,7 +28,6 @@ extension NSManagedObject {
     }
 }
 
-
 // MARK: - NSManagedObjectContext Helpers!
 //
 extension NSManagedObjectContext {
@@ -44,7 +43,6 @@ extension NSManagedObjectContext {
 
         return loadObjects(ofType: type, with: request)
     }
-
 
     /// Returns the number of entities found that match with a given predicate.
     ///
@@ -171,7 +169,6 @@ extension NSPersistentStoreCoordinator {
         return result
     }
 }
-
 
 // MARK: - ContextManager Helpers
 extension ContextManager {

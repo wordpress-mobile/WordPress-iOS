@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension FileManager {
 
     /// This method calculates the accumulated size of a directory on the volume in bytes.
@@ -30,7 +29,6 @@ extension FileManager {
             errorDidOccur = error
             return false
         }
-
 
         // We have to enumerate all directory contents, including subdirectories.
         guard let enumerator = enumerator(at: directoryURL,

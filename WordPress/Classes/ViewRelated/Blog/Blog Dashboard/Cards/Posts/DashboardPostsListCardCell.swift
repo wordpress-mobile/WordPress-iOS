@@ -32,7 +32,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         return tableView
     }()
 
-
     // MARK: Private Variables
 
     private var viewModel: PostsCardViewModel?

@@ -25,6 +25,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case wordPressSotWCard
     case inAppRating
+    case statsTrafficTab
 
     var defaultValue: Bool {
         switch self {
@@ -74,6 +75,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .inAppRating:
             return true
+        case .statsTrafficTab:
+            return false
         }
     }
 
@@ -126,6 +129,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wp_sotw_2023_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
+        case .statsTrafficTab:
+            return "stats_traffic_tab"
         }
     }
 
@@ -177,6 +182,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "SoTW Nudge Card for WordPress App"
         case .inAppRating:
             return "In-App Rating and Feedback"
+        case .statsTrafficTab:
+            return "Stats Traffic Tab"
         }
     }
 

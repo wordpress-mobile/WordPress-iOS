@@ -12,7 +12,6 @@ protocol ContentCoordinator {
     func displayScanWithSiteID(_ siteID: NSNumber?) throws
 }
 
-
 /// `ContentCoordinator` is intended to be used to easily navigate and display common elements natively
 /// like Posts, Site streams, Comments, etc...
 ///

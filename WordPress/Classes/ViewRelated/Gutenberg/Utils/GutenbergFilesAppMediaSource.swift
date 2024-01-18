@@ -14,7 +14,7 @@ class GutenbergFilesAppMediaSource: NSObject {
     func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerCallback = callback
         let documentTypes = GutenbergFilesAppMediaSource.getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
-        let docPicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
+        let docPicker = UIDocumentPickerViewController(forOpeningContentTypes: documentTypes.compactMap(UTType.init), asCopy: true)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
         origin.present(docPicker, animated: true)

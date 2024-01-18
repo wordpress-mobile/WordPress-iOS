@@ -442,6 +442,16 @@ class MediaCoordinator: NSObject {
                              with: media.blog)
     }
 
+    func trackPausedUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
+        guard let info = analyticsInfo else {
+            return
+        }
+
+        let event = info.pausedEvent
+        let properties = info.properties(for: media)
+        WPAppAnalytics.track(event, withProperties: properties, with: media.blog)
+    }
+
     // MARK: - Progress
 
     /// - returns: The current progress for the specified media object.
@@ -809,25 +819,18 @@ extension Media {
         let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
         // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
 
-        // If we still have enough data to know this is a Swift Error, let's do the actual right thing here:
-        if let afError = error as? AFError {
-            guard
-                case .multipartEncodingFailed = afError,
-                case .multipartEncodingFailed(let encodingFailure) = afError else {
-                    return false
-            }
-
-            switch encodingFailure {
-            case .bodyPartFileNotReachableWithError,
-                 .bodyPartFileNotReachable:
-                return true
-            default:
-                return false
-            }
-        } else if let nsError = error as NSError?,
+        if let nsError = error as NSError?,
             nsError.domain == multipartEncodingFailedSampleError.domain,
             nsError.code == multipartEncodingFailedSampleError.code {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
+            return true
+        } else if let nsError = error as NSError?,
+            nsError.domain == "Alamofire.AFError",
+            nsError.code == 2 /* AFError.multipartEncodingFailed */ {
+            // Check if the original error is `AFError.multipartEncodingFailed`.
+            // We will soon remove Alamofire from the app, and the above `if` statement will be delete along with Alamofire,
+            // which is why actual values—instead of `AFError` references-are used here.
+
             return true
         } else if let nsError = error as NSError?,
             nsError.domain == MediaServiceErrorDomain,

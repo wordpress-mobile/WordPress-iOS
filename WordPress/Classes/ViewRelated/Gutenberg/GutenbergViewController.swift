@@ -849,11 +849,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             message = error.localizedDescription
             if media.canRetry {
                 let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                    #if DEBUG || INTERNAL_BUILD
-                        self.mediaInserterHelper.retryFailedMediaUploads()
-                    #else
-                        self.mediaInserterHelper.retryUploadOf(media: media)
-                    #endif
+                    self.mediaInserterHelper.retryFailedMediaUploads()
                 }
                 alertController.addAction(retryUploadAction)
             }
@@ -1096,11 +1092,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         gutenberg.connectionStatusChange(isConnected: active)
-        #if DEBUG || INTERNAL_BUILD
-            if active {
-                mediaInserterHelper.retryFailedMediaUploads()
-            }
-        #endif
+        if active {
+            mediaInserterHelper.retryFailedMediaUploads(automatedRetry: true)
+        }
     }
 }
 

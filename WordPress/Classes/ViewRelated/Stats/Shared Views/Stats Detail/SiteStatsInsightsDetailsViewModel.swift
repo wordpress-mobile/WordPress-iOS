@@ -285,7 +285,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                         rows.append(referrersRow)
                     }
 
-
                     // Countries
                     let map = countriesMap(topCountries: viewsAndVisitorsData.topCountries)
                     let isMapShown = !map.data.isEmpty
@@ -875,7 +874,6 @@ private extension SiteStatsInsightsDetailsViewModel {
         guard let searchTerms = periodStore.getTopSearchTerms() else {
             return []
         }
-
 
         var mappedSearchTerms = searchTerms.searchTerms.map { StatsTotalRowData(name: $0.term,
                 data: $0.viewsCount.abbreviatedString(),
