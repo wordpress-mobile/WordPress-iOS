@@ -133,7 +133,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
-            return blog?.hasDomains == true ? .two : .normal
+            return blog == nil ? .normal : .two
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
@@ -270,7 +270,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
-                                                   blog: Blog? = nil,
+                                                   blog: Blog?,
                                                    onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                                    onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase(blog: blog)

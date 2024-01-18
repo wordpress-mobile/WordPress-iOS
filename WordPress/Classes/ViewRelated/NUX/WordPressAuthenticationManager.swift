@@ -362,12 +362,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.onBlogSelected = onBlogSelected
 
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
+        let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
 
         epilogueViewController.onCreateNewSite = { [weak navigationController] in
             guard let navigationController else { return }
 
             let source = "login_epilogue"
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, blog: blog, onDidDismiss: {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: self.firstBlog()) != .two else {
                     return
                 }

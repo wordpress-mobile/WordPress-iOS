@@ -87,7 +87,8 @@ class PostSignUpInterstitialViewController: UIViewController {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
         let source = "post_signup"
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
+        let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, blog: blog, onDidDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: nil) != .two else {
                 return
             }

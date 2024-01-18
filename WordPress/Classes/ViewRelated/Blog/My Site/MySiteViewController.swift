@@ -575,7 +575,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     func launchSiteCreation(source: String) {
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, blog: viewModel.mainBlog, onDidDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: self.blog) != .two else {
                 return
             }
