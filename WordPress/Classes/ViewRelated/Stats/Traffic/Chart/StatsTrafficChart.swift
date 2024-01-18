@@ -106,8 +106,7 @@ private final class StatsTrafficBarChartDataTransformer {
 
         for (x, data) in summaryData.enumerated() {
             let dateInterval = data.periodStartDate.timeIntervalSince1970
-            let offset = dateInterval - firstDateInterval
-            xAxisIndexToDate[x] = offset
+            xAxisIndexToDate[x] = dateInterval
 
             // If the chart has no data, show "stub" bars
             let emptyChartBarHeight = StatsTrafficBarChartView.emptyChartBarHeight
@@ -122,7 +121,7 @@ private final class StatsTrafficBarChartDataTransformer {
             commentEntries.append(commentEntry)
         }
 
-        let horizontalAxisFormatter = StatsTrafficHorizontalAxisFormatter(initialDateInterval: firstDateInterval, period: data.period, xAxisIndexToDate: xAxisIndexToDate)
+        let horizontalAxisFormatter = StatsTrafficHorizontalAxisFormatter(period: data.period, xAxisIndexToDate: xAxisIndexToDate)
 
         var chartData = [BarChartData]()
 
@@ -171,21 +170,17 @@ class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
 
     // MARK: Properties
 
-    private let initialDateInterval: TimeInterval
     private let period: StatsPeriodUnit
-    private let periodHelper = StatsPeriodHelper()
     private let xAxisIndexToDate: [Int: TimeInterval]
 
-    private lazy var formatter = DateFormatter()
+    private lazy var calendar = Calendar.current
 
     // MARK: HorizontalAxisFormatter
 
     init(
-        initialDateInterval: TimeInterval,
         period: StatsPeriodUnit = .day,
         xAxisIndexToDate: [Int: TimeInterval] = [:]
     ) {
-        self.initialDateInterval = initialDateInterval
         self.period = period
         self.xAxisIndexToDate = xAxisIndexToDate
     }
@@ -193,40 +188,53 @@ class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
     // MARK: AxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        updateFormatterTemplate()
-
         guard let value = xAxisIndexToDate[Int(value)] else {
             return ""
         }
 
-        let adjustedValue = initialDateInterval + (value < 0 ? 0 : value)
-        let date = Date(timeIntervalSince1970: adjustedValue)
+        let date = Date(timeIntervalSince1970: value)
 
         switch period {
-            // TODO
         case .day:
-            return "\(date.dateAndTimeComponents().day ?? 0)"
+            return labelForDay(date)
         case .week:
-            return "\(date.dateAndTimeComponents().weekday ?? 0)"
+            return labelForWeek(date)
         case .month:
-            return "\(date.dateAndTimeComponents().month ?? 0)"
+            return labelForMonth(date)
         case .year:
-            return "\(date.dateAndTimeComponents().year ?? 0)"
+            return labelForYear(date)
 
         }
     }
 
-    private func updateFormatterTemplate() {
-        formatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
+    private func labelForDay(_ date: Date) -> String {
+        let dayComponent = calendar.component(.day, from: date)
+        return "\(dayComponent)"
     }
 
-    private func formattedDate(forWeekContaining date: Date) -> String {
-        let week = periodHelper.weekIncludingDate(date)
-        guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
+    private func labelForWeek(_ date: Date) -> String {
+        guard
+            let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
+            let endOfWeek = calendar.date(byAdding: .day, value: 6, to: startOfWeek) else {
             return ""
         }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d"
+        dateFormatter.locale = .current
+        return "\(dateFormatter.string(from: startOfWeek))-\(dateFormatter.string(from: endOfWeek))"
+    }
 
-        return "\(formatter.string(from: weekStart)) to \(formatter.string(from: weekEnd))"
+    private func labelForMonth(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "LLLL"
+        dateFormatter.locale = .current
+        let fullMonthName = dateFormatter.string(from: date)
+        return String(fullMonthName.prefix(1))
+    }
+
+    private func labelForYear(_ date: Date) -> String {
+        let dayComponent = calendar.component(.year, from: date)
+        return "\(dayComponent)"
     }
 }
 
