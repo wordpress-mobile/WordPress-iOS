@@ -74,7 +74,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .wordPressSotWCard:
             return true
         case .inAppRating:
-            return true
+            return false
         case .statsTrafficTab:
             return false
         }
