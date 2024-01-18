@@ -1,7 +1,7 @@
 import UIKit
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
-    func presentIfNeeded()
+    func presentIfNeeded() async -> Bool
     func navigateToSettings()
     func dismiss()
 }
@@ -25,16 +25,20 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         self.defaults = defaults
     }
 
-    func presentIfNeeded() {
-        guard FeatureFlag.compliancePopover.enabled/*, !defaults.didShowCompliancePopup */else {
-            return
+    @MainActor func presentIfNeeded() async -> Bool {
+        guard FeatureFlag.compliancePopover.enabled, defaults.didShowCompliancePopup else {
+            return false
         }
-        complianceService.getIPCountryCode { [weak self] result in
-            guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
-                return
-            }
-            DispatchQueue.main.async {
-                self.presentPopover()
+        return await withCheckedContinuation { continuation in
+            self.complianceService.getIPCountryCode { [weak self] result in
+                guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                    continuation.resume(returning: false)
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.presentPopover()
+                    continuation.resume(returning: Self.window != nil)
+                }
             }
         }
     }

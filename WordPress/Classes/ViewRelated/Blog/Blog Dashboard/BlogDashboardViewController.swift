@@ -34,6 +34,8 @@ final class BlogDashboardViewController: UIViewController {
         return view.superview?.superview as? UIScrollView
     }
 
+    // MARK: - Init
+
     @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
         self.embeddedInScrollView = embeddedInScrollView
@@ -47,6 +49,8 @@ final class BlogDashboardViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
