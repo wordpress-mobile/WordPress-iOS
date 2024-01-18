@@ -10,6 +10,19 @@ struct ReaderNavigationMenu: View {
     @ObservedObject var viewModel: ReaderTabViewModel
     @State var selectedItem: ReaderTabItem?
 
+    private var filters: [FilterProvider] {
+        if let activeStreamFilter = viewModel.activeStreamFilter,
+           let activeFilterProvider = viewModel.streamFilters.first(where: { $0.id == activeStreamFilter.filterID }) {
+            return [activeFilterProvider]
+        }
+
+        return viewModel.streamFilters
+    }
+
+    private var hasActiveFilter: Bool {
+        return viewModel.activeStreamFilter != nil
+    }
+
     var body: some View {
         HStack(spacing: 8.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -21,6 +34,7 @@ struct ReaderNavigationMenu: View {
                     streamFilterView
                 }
             }
+            .animation(.easeInOut, value: filters)
             .mask({
                 HStack(spacing: .zero) {
                     Rectangle().fill(.black)
@@ -43,21 +57,20 @@ struct ReaderNavigationMenu: View {
 
     @ViewBuilder
     var streamFilterView: some View {
-        // If there's an active stream filter, show that instead.
-        if let activeTopic = viewModel.activeStreamFilter?.topic {
+        ForEach(filters) { filter in
             Button {
-                viewModel.resetStreamFilter()
-            } label: {
-                streamFilterChip(title: activeTopic.title, isSelected: true)
-            }
-        } else {
-            ForEach(viewModel.streamFilters) { filter in
-                Button {
+                if hasActiveFilter {
+                    viewModel.resetStreamFilter()
+                } else {
                     viewModel.didTapStreamFilterButton(with: filter)
-                } label: {
-                    streamFilterChip(title: filter.title)
                 }
+            } label: {
+                streamFilterChip(title: viewModel.activeStreamFilter?.topic.title ?? filter.title, isSelected: hasActiveFilter)
             }
+            .transition(
+                .asymmetric(insertion: .slide, removal: .move(edge: .leading))
+                .combined(with: .opacity)
+            )
         }
     }
 
@@ -83,10 +96,6 @@ struct ReaderNavigationMenu: View {
         .background(isSelected ? Colors.StreamFilter.selectedBackground : Colors.StreamFilter.background)
         .clipShape(Capsule())
 
-    }
-
-    private var hasActiveFilter: Bool {
-        return viewModel.activeStreamFilter != nil
     }
 
     struct Colors {
