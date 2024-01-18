@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-03 12:51:39+0000 */
+/* Translation-Revision-Date: 2024-01-11 11:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sv_SE */
@@ -1944,6 +1944,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Det gick inte att ansluta till WordPress-webbplatsen. Det finns ingen giltig WordPress-webbplats på adressen. Kontrollera adressen (URL) du angav.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Det gick inte att ansluta. XML-RPC-metoder som krävs saknas på servern. Kontakta ditt webbhotell för att lösa detta problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Det gick inte att ansluta. När vi försökte ansluta till XMLRPC-ändpunkten för din webbplats fick vi felkod 403. Appen behöver denna kanal för att kommunicera med webbplatsen. Kontakta ditt webbhotell för att lösa problemet.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Det gick inte att ansluta. Din webbserver blockerar POST-transaktioner, vilket appen behöver för att kommunicera med webbplatsen. Kontakta ditt webbhotell för att lösa problemet.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Det gick inte att ladda etiketterna.";
 
@@ -3015,6 +3024,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtyp";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Filtypen stöds inte som en mediafil.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film och tv";
 
@@ -3127,6 +3139,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Typsnittsstorlek";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Textstorlek, %1$s";
 
 /* Food site intent topic */
 "Food" = "Mat";
@@ -4507,6 +4522,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Uppdatering finns";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Nätverksanslutning förlorad, arbetar offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Nätverksanslutningen har återupprättats";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nya";
@@ -6005,6 +6026,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandlådebutik";
 
 /* Menus save button title
    Save Action
@@ -8717,6 +8741,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Jobba med oss";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Arbetar offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Världskarta med antal visningar per land.";
 
@@ -8861,6 +8888,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Du har 1 dold WordPress-webbplats.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Ditt paket inkluderar en gratis domännamnsregistrering i ett år.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Du har aktiva premium-uppgraderingar på din webbplats. Avbryt dina uppgraderingar innan du ta bort webbplatsen.";
@@ -9280,6 +9310,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Betygsätt som användbart";
 
+/* Title for the checkout view */
+"checkout.title" = "Kassa";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "kommentera";
 
@@ -9430,8 +9463,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Visa statistik";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analys";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Funktionsflaggor";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "CSS-URL för läsaren";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Standard-URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Lägg till en anpassad CSS-URL här som ska hämtas i läsaren. Om du kör Calypso lokalt kan länken se ut ungefär så här: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Nuvarande värde";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Standardvärde";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Fjärrkonfiguration";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Fjärrkonfigurationsvärde";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Återställ";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9439,6 +9499,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Ta bort aktuell rundtur";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Loggning";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Snabbstart";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "﻿Inställningar";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Utvecklare";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Veckosammanfattning";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dölj detta";
@@ -9457,6 +9532,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Löpt ut";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Löper aldrig ut";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Förnyas";
@@ -9550,6 +9628,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per år";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Hjälp";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domäner köpta på denna webbplats kommer att omdirigera till %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Sök domäner";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Kassa";
@@ -10422,6 +10509,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Paket";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Skapades %@";
 
@@ -10853,6 +10943,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Övriga domäner för %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Din gratis WordPress.com-domän";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Få en gratis domänregistrering eller -överföring i ett år med ett valfritt årligt betalpaket.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Skaffa din domän";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Din primära webbplatsadress är vad besökarna kommer att se i sitt adressfält när de besöker din webbplats.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Primär domän";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Sök bara efter en domän";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Uppgradera till ett paket";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domäner";
@@ -11366,6 +11480,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, webbplatser, webbplats, bloggar, blogg";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Något gick fel, försök igen senare.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Byt till Jetpack-appen";

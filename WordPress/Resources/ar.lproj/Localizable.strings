@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-03 15:54:27+0000 */
+/* Translation-Revision-Date: 2024-01-11 13:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: ar */
@@ -1944,6 +1944,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "يتعذر الاتصال بموقع ووردبريس. لا يوجد موقع ووردبريس صالح على هذا العنوان. تحقق من عنوان الموقع (URL) الذي أدخلته.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "تعذر الاتصال. تكون طرق XML-RPC المطلوبة مفقودة على الخادم. يرجى الاتصال بمزوِّد خدمة الاستضافة لديك لحل هذه المشكلة.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "تعذر الاتصال. تلقينا الخطأ 403 عند محاولة الوصول إلى نقطة نهاية XMLRPC في موقعك. يحتاج التطبيق إلى ذلك للاتصال بموقعك. يرجى الاتصال بمزوِّد خدمة الاستضافة لديك لحل هذه المشكلة.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "تعذر الاتصال. يحظر مضيفك طلبات POST، ويحتاج التطبيق إلى ذلك للاتصال بموقعك. يرجى الاتصال بمزوِّد خدمة الاستضافة لديك لحل هذه المشكلة.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "تعذّر تحميل الوسوم.";
 
@@ -3015,6 +3024,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "نوع الملف";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "نوع الملف غير مدعوم كملف وسائط.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "الفيلم والتليفزيون";
 
@@ -3127,6 +3139,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "حجم الخط";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "حجم الخط، ⁦%1$s⁩";
 
 /* Food site intent topic */
 "Food" = "طعام";
@@ -4507,6 +4522,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "بحاجة إلى تحديث";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "فقدان الاتصال بالشبكة، العمل من دون اتصال بالإنترنت";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "أعيد إنشاء الاتصال بالشبكة";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "جديد";
@@ -6005,6 +6026,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "متجر Sandbox";
 
 /* Menus save button title
    Save Action
@@ -8714,6 +8738,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "العمل معنا";
 
+/* No comment provided by engineer. */
+"Working Offline" = "العمل من دون اتصال بالإنترنت";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "تُظهر خريطة العالم المشاهدات حسب البلد.";
 
@@ -8858,6 +8885,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "لديك موقع WordPress واحد مخفى.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "لديك تسجيل نطاق مجاني مدته عام واحد ضمن خطتك.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "لديك ترقيات متميزة نشطة على موقعك. يرجى إلغاء ترقياتك قبل حذف موقعك.";
@@ -9271,6 +9301,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "التقييم بأنه مفيد";
 
+/* Title for the checkout view */
+"checkout.title" = "السداد";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "التعليق";
 
@@ -9421,8 +9454,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "عرض الإحصاءات";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "التحليلات";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "تمييز العلامات";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "عنوان URL لـ CSS في القارئ";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "عنوان URL الافتراضي";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "أضف عنوان URL الخاص بـ CSS المخصص هنا ليتم تحميله في القارئ. إذا كنتَ تقوم بتشغيل Calypso محليًا، فقد يبدو هذا مثل: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "القيمة الحالية";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "القيمة الافتراضية";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "تكوين بعيد";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "قيمة التكوين البعيد";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "إعادة التعيين";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9430,6 +9490,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "إزالة الجولة الحالية";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "تسجيل الدخول";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "البدء السريع";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "الإعدادات";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "المطور";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "موجز أسبوعي";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
@@ -9448,6 +9523,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "منتهي الصلاحية";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "لا تنتهي الصلاحية أبدًا";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "التجديدات";
@@ -9541,6 +9619,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "سنوياً";
+
+/* Help button */
+"domainSelection.helpButton.title" = "مساعدة";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "النطاقات التي تم شراؤها على هذا الموقع سيتم توجيهها إلى %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "البحث عن النطاقات";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "السداد";
@@ -10413,6 +10500,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
 
+/* Title for the plan selection view */
+"planSelection.title" = "الخطط";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "%@ الذي تم إنشاؤه";
 
@@ -10806,6 +10896,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "النطاقات الأخرى لـ %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "نطاق ووردبريس.كوم المجاني الخاص بك";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "احصل على تسجيل نطاق مجاني مدته عام أو نقل نطاق مع أي خطة سنوية.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "الحصول على نطاقك";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "رابط الموقع الأساسي هو العنوان الذي سيراه الزائرون في شريط العناوين بمتصفحاتهم عند زيارة موقعك.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "النطاق الأساسي";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "البحث عن نطاق فحسب";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "الترقية إلى خطة";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "النطاقات";
@@ -11307,6 +11421,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "ووردبريس، المواقع، الموقع، المدونات، المدونة";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "حدث خطأ ما، ترجى المحاولة مجددًا في وقت لاحق.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "التبديل إلى تطبيق Jetpack";

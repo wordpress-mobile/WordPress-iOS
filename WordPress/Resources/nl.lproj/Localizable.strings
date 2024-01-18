@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-03 14:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-16 10:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: nl */
@@ -1938,6 +1938,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Kan geen verbinding maken met de WordPress-site. Er is geen geldige WordPress-site op dit adres. Controleer of je het goede websiteadres (URL) hebt opgegeven.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Kan geen verbinding maken. Vereiste XML-RPC-methoden ontbreken op de server. Neem contact op met je hostingprovider om het probleem op te lossen.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Kan geen verbinding maken. Er is een 403-fout opgetreden tijdens onze poging om het XMLRPC-eindpunt van je site te openen. De app heeft dat nodig om met je site te communiceren. Neem contact op met je hostingprovider om het probleem op te lossen.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Kan geen verbinding maken. Je host blokkeert POST-aanvragen. De app heeft deze nodig om te communiceren met je site. Neem contact op met je hostingprovider om het probleem op te lossen.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Kon tags niet laden.";
 
@@ -3121,6 +3130,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Lettertype grootte";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Lettergrootte, %1$s";
 
 /* Food site intent topic */
 "Food" = "Eten";
@@ -4501,6 +4513,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Heeft update nodig";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Netwerkverbinding verbroken, offline werken";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Netwerk opnieuw verbonden";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nieuw";
@@ -5996,6 +6014,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandbox Store";
 
 /* Menus save button title
    Save Action
@@ -8698,6 +8719,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Werk met ons samen";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Werk offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Wereldkaart die het aantal weergaven per land toont.";
 
@@ -8842,6 +8866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Je hebt 1 verborgen WordPress-site.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Je hebt een gratis eenjarige domeinregistratie met je abonnement";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Je hebt actieve premium upgrades op je site. Annuleer je upgrades voordat je je site verwijdert.";
@@ -9369,12 +9396,27 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Statistieken weergeven";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analyses";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Functievlaggen";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Voeg een aangepaste CSS URL toe om in de Reader te laden. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Externe configuratie";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Externe configuratiewaarde";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Snelstart";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
@@ -9474,6 +9516,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per jaar";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Help";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domeinen aangeschaft op deze site, zullen gebruikers omleiden naar %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Domeinen zoeken";
 
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Negeer";
@@ -9905,6 +9956,9 @@ Example: Reply to Pamela Nguyen */
 /* An error message the app shows if media import fails */
 "mediaExporter.error.unsupportedContentType" = "HTTP inhoudstype niet ondersteund";
 
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Je hebt een betaald abonnement nodig om video's te uploaden die langer duren dan 5 minuten.";
+
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
 
@@ -9967,6 +10021,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Maak een foto";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Foto nemen of video maken";
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video maken";
@@ -10102,6 +10159,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Je Google-domeinen opnieuw claimen";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "WordPress.com-site maken";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Accountinstellingen";
@@ -10512,6 +10572,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "JouwSitenaam.com";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Jouw gratis WordPress.com domein";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Krijg een jaar lang gratis domeinregistratie of -overdracht bij elk betaald jaarabonnement.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Krijg jouw domein.";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Je primaire site-adres is wat je bezoekers zien in hun adresbalk wanneer ze je website bezoeken.";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Klik om media op volledig scherm te bekijken";
