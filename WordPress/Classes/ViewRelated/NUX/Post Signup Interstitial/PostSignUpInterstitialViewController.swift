@@ -88,7 +88,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         })
         let source = "post_signup"
         JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
-            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: nil) != .two else {
                 return
             }
 

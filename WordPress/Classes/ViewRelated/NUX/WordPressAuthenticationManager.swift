@@ -368,7 +368,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
             let source = "login_epilogue"
             JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
-                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: self.firstBlog()) != .two else {
                     return
                 }
 

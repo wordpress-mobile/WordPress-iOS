@@ -124,7 +124,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
 
     static func siteCreationPhase(
         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-        blog: Blog? = nil
+        blog: Blog?
     ) -> SiteCreationPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
@@ -270,9 +270,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
+                                                   blog: Blog? = nil,
                                                    onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                                    onDidDismiss: JetpackOverlayDismissCallback? = nil) {
-        let phase = siteCreationPhase()
+        let phase = siteCreationPhase(blog: blog)
         let coordinator = JetpackDefaultOverlayCoordinator()
         //
         let viewModel = JetpackFullscreenOverlaySiteCreationViewModel(
