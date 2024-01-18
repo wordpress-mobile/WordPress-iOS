@@ -28,7 +28,11 @@ class DashboardTests: XCTestCase {
             .searchDomain()
             .selectDomain()
             .goToPlanSelection()
-            .assertScreenIsLoaded()
+            .verifyPlanSelectionScreenLoaded()
+            .selectPlan()
+            .purchase()
+            .verifyDomainResultScreenLoaded()
+            .dismissResultScreen()
     }
 
     func testPagesCardHeaderNavigation() throws {

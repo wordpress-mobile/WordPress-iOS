@@ -17,6 +17,9 @@ struct Environment {
     /// The base url to use for WP.com api requests
     let wordPressComApiBase: String
 
+    /// The WordPress.com base url to use for web views
+    let wordPressComURL: String
+
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
     var mainContext: NSManagedObjectContext {
@@ -34,11 +37,12 @@ struct Environment {
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
         contextManager: CoreDataStack = ContextManager.shared,
-        wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
-
+        wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString,
+        wordPressComURL: String = "https://wordpress.com/") {
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
         self.wordPressComApiBase = wordPressComApiBase
+        self.wordPressComURL = wordPressComURL
     }
 }
 
@@ -49,12 +53,14 @@ extension Environment {
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
         contextManager: CoreDataStack = Environment.current.contextManager,
-        wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
+        wordPressComApiBase: String = Environment.current.wordPressComApiBase,
+        wordPressComURL: String = Environment.current.wordPressComURL) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
             contextManager: contextManager,
-            wordPressComApiBase: wordPressComApiBase
+            wordPressComApiBase: wordPressComApiBase,
+            wordPressComURL: wordPressComURL
         )
         return current
     }

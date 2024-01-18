@@ -101,6 +101,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Configure WPCom API overrides
         configureWordPressComApi()
+        configureWordPressComURL()
 
         configureWordPressAuthenticator()
 
@@ -523,6 +524,12 @@ extension WordPressAppDelegate {
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url") {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
+        }
+    }
+
+    @objc func configureWordPressComURL() {
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-base-url") {
+            Environment.replaceEnvironment(wordPressComURL: baseUrl)
         }
     }
 }
