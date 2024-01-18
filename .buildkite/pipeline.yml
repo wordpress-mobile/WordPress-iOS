@@ -28,9 +28,13 @@ steps:
               context: "Jetpack Build for Testing"
 
   - label: "🔍 SwiftLint"
+    depends_on: build_jetpack
     command: |
       echo "--- :rubygems: Setting up Gems"
       bundle install
+
+      echo "--- 📦 Download lint result"
+      download_artifact lint.json
 
       echo "--- Annotate PR via Danger"
       bundle exec danger --fail-on-errors=true --remove-previous-comments --danger_id=pr-check --dangerfile=Dangerfile-SwiftLint
