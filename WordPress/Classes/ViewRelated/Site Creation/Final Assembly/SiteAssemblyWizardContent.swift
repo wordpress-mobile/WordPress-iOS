@@ -319,6 +319,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
+        // Disable the prompt for WordPress when the blog has no domains.
+        guard AppConfiguration.isJetpack || blog.hasDomains else {
+            return
+        }
+
         let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in

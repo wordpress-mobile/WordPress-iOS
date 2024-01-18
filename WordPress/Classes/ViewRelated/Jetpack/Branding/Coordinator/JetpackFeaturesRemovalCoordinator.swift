@@ -122,7 +122,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         return .normal
     }
 
-    static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
+    static func siteCreationPhase(
+        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        blog: Blog? = nil
+    ) -> SiteCreationPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
         }
@@ -130,7 +133,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
-            return .two
+            return blog?.hasDomains == true ? .two : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
