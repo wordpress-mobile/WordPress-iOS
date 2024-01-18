@@ -1,0 +1,9 @@
+Agora você pode adquirir um plano do WordPress com um domínio gratuito no painel de domínios. Também fizemos algumas melhorias na tela Domínios do site para facilitar ainda mais o gerenciamento dos domínios.
+
+Ao editar blocos de texto no editor, o teclado do dispositivo não desaparecerá mais no meio da edição. Além disso, o editor irá direto para um novo bloco quando você o adicionar. Mão na massa!
+
+Com saudade de fazer login usando chaves de segurança? Não mais! Reativamos chaves de segurança para autenticação em dois fatores durante o login. Só quem tem acesso à sua conta é você.
+
+Atualizamos as cores da tela de login para combinar com o WordPress e o Jetpack. Afinal, a união faz a força.
+
+Por fim, fizemos várias correções em códigos e resolvemos muitos problemas raros (e outros não tão raros) que causavam falhas no app. Esses problemas eram majoritariamente relacionados à edição de tags e categorias, uso de tags duplicadas, exclusão de posts e edição de posts excluídos. Um dia normal de trabalho.
