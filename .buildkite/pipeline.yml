@@ -37,6 +37,9 @@ steps:
     agents:
       queue: default
     command: |
+      echo '--- Test Ruby'
+      which ruby
+
       echo "--- :rubygems: Setting up Gems"
       install_gems
 
