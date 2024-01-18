@@ -115,7 +115,21 @@ steps:
         notify:
           - github_commit_status:
               context: "Lint Translations"
+
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: *common_plugins
         env: *common_env
+
+      - label: ':swift: SwiftLint'
+        command: .buildkite/commands/swiftlint.sh
+        agents:
+          queue: default
+        plugins:
+          - docker#v5.8.0:
+              # TODO: Ensure the same version as local is used, i.e. with Buildkite env vars injection during pipeline upload
+              image: ghcr.io/realm/swiftlint:latest
+              mount-buildkite-agent: true # Needed for calling `buildkite-agent annotate`
+        notify:
+          - github_commit_status:
+              context: SwiftLint
