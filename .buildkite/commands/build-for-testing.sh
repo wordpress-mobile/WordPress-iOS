@@ -24,8 +24,18 @@ echo "--- :swift: Setting up Swift Packages"
 install_swiftpm_dependencies
 
 echo "--- :hammer_and_wrench: Building"
+set +e
 bundle exec fastlane build_${APP}_for_testing
+BUILD_EXIT_STATUS=$?
+set -e
+
+echo "Build completed if $BUILD_EXIT_STATUS. Proceeding to upload artifacts regardless of the outcome. The step will exit with the build return code afterwards."
+
+echo "--- :arrow_up: Upload Lint Data"
+upload_artifact lint.json
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf build-products-${APP}.tar DerivedData/Build/Products/
 upload_artifact build-products-${APP}.tar
+
+exit $BUILD_EXIT_STATUS
