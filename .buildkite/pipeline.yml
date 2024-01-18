@@ -38,7 +38,7 @@ steps:
       queue: default
     command: |
       echo "--- :rubygems: Setting up Gems"
-      bundle install
+      install_gems
 
       echo "--- 📦 Download lint result"
       download_artifact lint.json
