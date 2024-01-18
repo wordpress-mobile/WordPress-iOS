@@ -1965,7 +1965,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+            navigationMenuDelegate?.didTapDiscoverBlogs()
             return
         }
 

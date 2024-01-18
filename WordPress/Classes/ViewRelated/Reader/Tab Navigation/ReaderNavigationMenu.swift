@@ -3,21 +3,18 @@ import SwiftUI
 protocol ReaderNavigationMenuDelegate: AnyObject {
     func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint)
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    func didTapDiscoverBlogs()
 }
 
 struct ReaderNavigationMenu: View {
 
     @ObservedObject var viewModel: ReaderTabViewModel
-    @State var selectedItem: ReaderTabItem?
 
     var body: some View {
         HStack(spacing: 8.0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    if let selectedItem {
-                        ReaderNavigationButton(viewModel: viewModel, selectedItem: selectedItem)
-                    }
-
+                    ReaderNavigationButton(viewModel: viewModel)
                     streamFilterView
                 }
             }

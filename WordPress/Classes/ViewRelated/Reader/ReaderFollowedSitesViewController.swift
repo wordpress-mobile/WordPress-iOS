@@ -379,7 +379,11 @@ private extension ReaderFollowedSitesViewController {
     }
 
     struct NoResultsText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
+        static let loadingTitle = NSLocalizedString(
+           "reader.followed.blogs.loading",
+            value: "Fetching blogs...",
+            comment: "A short message to inform the user data for their followed sites is being fetched.."
+        )
     }
 
     func startListeningToNotifications() {
