@@ -20,10 +20,7 @@ class StatsTrafficBarChartView: BarChartView {
         static let barWidth                 = 0.9 // Proportional to full width
     }
 
-    /// Height for "stub" bars when a chart is empty, which is the height of the default chart.
-    /// The value is just shy of the default height to prevent the chart height from automatically expanding.
-    ///
-    static let emptyChartBarHeight = Double(Constants.verticalAxisLabelCount - 1) - 0.01
+    static let emptyChartBarHeight = 0.01
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
