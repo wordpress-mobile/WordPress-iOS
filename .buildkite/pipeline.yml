@@ -28,7 +28,11 @@ steps:
               context: "Jetpack Build for Testing"
 
   - label: "🔍 SwiftLint"
-    depends_on: build_jetpack
+    depends_on:
+      - step: build_jetpack
+        # A SwiftLint error violation will fail the build.
+        # This allows this step to run anyway.
+        allow_failure: true
     command: |
       echo "--- :rubygems: Setting up Gems"
       bundle install
