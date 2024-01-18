@@ -1,0 +1,5 @@
+Cuando edites bloques de texto en el editor, el teclado de tu dispositivo ya no desaparecerá durante la edición. El editor también se desplazará directamente a un nuevo bloque cuando lo añadas. Sigue escribiendo, colega.
+
+¿Echas de menos acceder con tus claves de seguridad? No pasa nada: hemos vuelto a habilitar las claves de seguridad para la autenticación de dos factores durante el acceso. La única persona que accede a tu cuenta eres tú.
+
+Por último, hemos resuelto varios problemas raros (y no tan raros) que provocaban bloqueos en la aplicación. Estos problemas estaban relacionados principalmente con la edición de etiquetas y categorías, el uso de etiquetas duplicadas, la eliminación de entradas y la edición de entradas eliminadas. Forma parte del trabajo.
