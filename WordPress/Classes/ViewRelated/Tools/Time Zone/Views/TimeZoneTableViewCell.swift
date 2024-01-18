@@ -87,7 +87,6 @@ class TimeZoneTableViewCell: WPTableViewCell {
     }
 }
 
-
 // MARK: - Constants
 
 private extension TimeZoneTableViewCell {

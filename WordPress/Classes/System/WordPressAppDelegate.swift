@@ -563,7 +563,6 @@ extension WordPressAppDelegate {
         setupFancyButtonAppearance()
     }
 
-
     /// Setup: FancyAlertView's Appearance
     ///
     private func setupFancyAlertAppearance() {
@@ -607,7 +606,6 @@ extension WordPressAppDelegate {
         appearance.disabledBorderColor = .neutral(.shade10)
     }
 }
-
 
 // MARK: - Helpers
 

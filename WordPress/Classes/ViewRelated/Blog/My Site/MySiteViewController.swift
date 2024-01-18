@@ -385,7 +385,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
 
-
         case .dashboard:
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep

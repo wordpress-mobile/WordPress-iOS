@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// The purpose of this class is to display a UIPickerView instance inside a UITableView,
 /// and wrap up all of the Picker Delegate / DataSource methods
 ///
@@ -12,7 +11,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
     ///
     @objc open var onChange: ((_ newValue: Int) -> ())?
 
-
     /// String Format, to be applied to the Row Titles
     ///
     @objc open var textFormat: String? {
@@ -21,7 +19,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         }
     }
 
-
     /// Currently Selected Value
     ///
     open var selectedValue: Int? {
@@ -29,7 +26,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
             refreshSelectedValue()
         }
     }
-
 
     /// Specifies the Minimum Possible Value
     ///
@@ -47,8 +43,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         }
     }
 
-
-
     // MARK: - Initializers
 
     public required init(coder aDecoder: NSCoder) {
@@ -60,8 +54,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }
-
-
 
     // MARK: - Private Helpers
 
@@ -96,8 +88,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         picker.selectRow(row, inComponent: 0, animated: false)
     }
 
-
-
     // MARK: UIPickerView Methods
 
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -120,8 +110,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         let value = row + minimumValue
         onChange?(value)
     }
-
-
 
     // MARK: - Private Properties
     fileprivate let picker                      = UIPickerView()

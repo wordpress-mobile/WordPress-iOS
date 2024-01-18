@@ -3,7 +3,6 @@ import XCTest
 import WordPressFlux
 import CoreData
 
-
 class MockTopicService: ReaderTopicService {
 
     var success = true
@@ -24,7 +23,6 @@ class MockTopicService: ReaderTopicService {
         success()
     }
 }
-
 
 class ReaderTabItemsStoreTests: CoreDataTestCase {
 

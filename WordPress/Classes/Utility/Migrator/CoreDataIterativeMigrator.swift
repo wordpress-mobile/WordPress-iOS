@@ -137,7 +137,6 @@ class CoreDataIterativeMigrator: NSObject {
     }
 }
 
-
 // MARK: - File helpers
 //
 private extension CoreDataIterativeMigrator {
@@ -213,7 +212,6 @@ private extension CoreDataIterativeMigrator {
         }
     }
 }
-
 
 // MARK: - Private helper functions
 //

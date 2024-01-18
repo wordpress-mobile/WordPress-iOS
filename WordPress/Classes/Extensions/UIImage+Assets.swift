@@ -1,6 +1,5 @@
 import Foundation
 
-
 // MARK: - WordPress Named Assets
 //
 @objc

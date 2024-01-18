@@ -88,7 +88,6 @@ class PrepublishingNavigationController: LightNavigationController {
     }
 }
 
-
 // MARK: - DrawerPresentable
 
 extension PrepublishingNavigationController: DrawerPresentable {

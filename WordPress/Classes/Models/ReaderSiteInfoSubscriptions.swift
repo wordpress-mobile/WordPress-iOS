@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 @objc public class ReaderSiteInfoSubscriptionPost: NSManagedObject {
     @NSManaged open var siteTopic: ReaderSiteTopic
     @NSManaged open var sendPosts: Bool
@@ -22,7 +21,6 @@ import CoreData
         return subscription
     }
 }
-
 
 @objc public class ReaderSiteInfoSubscriptionEmail: NSManagedObject {
     @NSManaged open var siteTopic: ReaderSiteTopic

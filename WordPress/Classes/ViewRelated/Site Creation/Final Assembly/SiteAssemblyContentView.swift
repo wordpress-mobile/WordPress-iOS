@@ -510,7 +510,6 @@ final class SiteAssemblyContentView: UIView {
                     self.completionDescription.text = self.shouldShowDomainPurchase() ? Strings.Paid.description : Strings.Free.description
                     self.noticeView.isHidden = !self.shouldShowDomainPurchase()
 
-
                     if let buttonView = self.buttonContainerView {
                         self.accessibilityElements = [ self.completionLabel, buttonView ]
                     } else {

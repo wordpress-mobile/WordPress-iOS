@@ -149,7 +149,6 @@ extension MediaPickerMenu {
         presentingViewController?.present(alert, animated: true)
     }
 
-
     private final class ImagePickerDelegate: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         weak var delegate: ImagePickerControllerDelegate?
 
@@ -194,7 +193,6 @@ extension MediaPickerMenu {
         presentingViewController?.present(navigation, animated: true)
     }
 }
-
 
 // MARK: - MediaPickerMenu (Stock Photo)
 

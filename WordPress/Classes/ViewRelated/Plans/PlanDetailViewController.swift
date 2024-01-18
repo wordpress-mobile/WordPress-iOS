@@ -211,7 +211,6 @@ private extension PlanDetailViewController {
         }
     }
 
-
     func noResultsCell() -> UITableViewCell {
         let cell = UITableViewCell()
         addNoResultsTo(cell: cell)

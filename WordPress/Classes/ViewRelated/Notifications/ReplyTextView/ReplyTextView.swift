@@ -12,7 +12,6 @@ import Gridicons
     @objc optional func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?)
 }
 
-
 // MARK: - ReplyTextView
 //
 @objc open class ReplyTextView: UIView, UITextViewDelegate {
@@ -86,7 +85,6 @@ import Gridicons
         return textView.isFirstResponder
     }
 
-
     // MARK: - Public Methods
     @objc open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
         guard let replacementText = replacement,
@@ -142,7 +140,6 @@ import Gridicons
     open func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? true
     }
-
 
     // MARK: - IBActions
     @IBAction fileprivate func btnReplyPressed() {
@@ -363,7 +360,6 @@ import Gridicons
     @IBOutlet private weak var replyButton: UIButton!
 }
 
-
 // MARK: - Layout Calculated Properties
 //
 private extension ReplyTextView {
@@ -399,7 +395,6 @@ private extension ReplyTextView {
         return lineHeight * CGFloat(maximumNumberOfVisibleLines) + contentPadding
     }
 }
-
 
 // MARK: - Settings
 //

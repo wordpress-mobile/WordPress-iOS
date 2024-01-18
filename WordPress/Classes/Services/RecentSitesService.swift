@@ -1,12 +1,10 @@
 import Foundation
 
-
 /// Recent Sites Notifications
 ///
 extension NSNotification.Name {
     static let WPRecentSitesChanged = NSNotification.Name(rawValue: "RecentSitesChanged")
 }
-
 
 /// Keep track of recently used sites
 ///

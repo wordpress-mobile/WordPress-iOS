@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 extension WPStyleGuide {
     // MARK: - Styles Used by the WordPress Share Extension
     //

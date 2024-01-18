@@ -27,7 +27,6 @@ import WordPressShared
         }
     }
 
-
     // MARK: - Configuration
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {

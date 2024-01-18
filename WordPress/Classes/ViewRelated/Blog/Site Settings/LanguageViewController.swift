@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// This class will display the Blog's Language setting, and will allow the user to pick a new value.
 /// Upon selection, WordPress.com backend will get hit, and the new value will be persisted.
 ///
@@ -9,8 +8,6 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     /// Callback to be executed whenever the Blog's selected language changes.
     ///
     @objc var onChange: ((NSNumber) -> Void)?
-
-
 
     /// Designated Initializer
     ///
@@ -39,8 +36,6 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         tableView.reloadDataPreservingSelection()
         tableView.deselectSelectedRowWithAnimationAfterDelay(true)
     }
-
-
 
     // MARK: - UITableViewDataSource Methods
     open override func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,8 +72,6 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         pressedLanguageRow()
     }
 
-
-
     // MARK: - Private Methods
     fileprivate func configureTableViewCell(_ cell: UITableViewCell) {
         let languageId = blog.settings!.languageID.intValue
@@ -94,12 +87,10 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         navigationController?.pushViewController(selector, animated: true)
     }
 
-
     @objc func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int) {
         _ = navigationController?.popToViewController(self, animated: true)
         onChange?(languageId as NSNumber)
     }
-
 
     // MARK: - Private Constants
     fileprivate let reuseIdentifier = "reuseIdentifier"

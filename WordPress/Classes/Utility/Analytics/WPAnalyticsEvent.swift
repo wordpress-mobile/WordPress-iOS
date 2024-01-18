@@ -1478,7 +1478,6 @@ import Foundation
         case .supportChatbotEnded:
             return "support_chatbot_ended"
 
-
         // Jetpack plugin connection to user's WP.com account
         case .jetpackPluginConnectUserAccountStarted:
             return "jetpack_plugin_connect_user_account_started"

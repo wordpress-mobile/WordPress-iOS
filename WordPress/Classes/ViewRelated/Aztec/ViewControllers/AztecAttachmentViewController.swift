@@ -3,7 +3,6 @@ import UIKit
 import WordPressShared
 import Aztec
 
-
 class AztecAttachmentViewController: UITableViewController {
 
     @objc var attachment: ImageAttachment? {
@@ -26,7 +25,6 @@ class AztecAttachmentViewController: UITableViewController {
     @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
-
 
     // MARK: - Initialization
 
@@ -110,7 +108,6 @@ class AztecAttachmentViewController: UITableViewController {
                 footerText: nil)
             ])
     }
-
 
     // MARK: - Actions
 

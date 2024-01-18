@@ -13,14 +13,10 @@ open class Tracks {
     fileprivate static let version      = "1.0"
     fileprivate static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
 
-
-
     // MARK: - Initializers
     init(appGroupName: String) {
         uploader = Uploader(appGroupName: appGroupName)
     }
-
-
 
     // MARK: - Public Methods
     open func track(_ eventName: String, properties: [String: Any]? = nil) {
@@ -76,8 +72,6 @@ open class Tracks {
         return payload
     }
 
-
-
     /// Private Internal Helper:
     /// Encapsulates all of the Backend Tracks Interaction, and deals with NSURLSession's API.
     ///
@@ -92,12 +86,10 @@ open class Tracks {
                                     "Accept": "application/json",
                                     "User-Agent": "WPiOS App Extension"]
 
-
         // MARK: - Deinitializers
         deinit {
             session.finishTasksAndInvalidate()
         }
-
 
         // MARK: - Initializers
         init(appGroupName: String) {
@@ -113,8 +105,6 @@ open class Tracks {
             // URL Session
             session = Foundation.URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue.main)
         }
-
-
 
         // MARK: - Public Methods
         func send(_ event: [String: Any]) {
@@ -138,8 +128,6 @@ open class Tracks {
             let task = session.downloadTask(with: request)
             task.resume()
         }
-
-
 
         // MARK: - NSURLSessionDelegate
         @objc func URLSession(_ session: Foundation.URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {

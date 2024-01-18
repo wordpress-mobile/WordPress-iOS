@@ -118,7 +118,6 @@ extension ReaderStreamViewController {
     }
 }
 
-
 // MARK: - No Results for saved posts
 extension ReaderStreamViewController {
 
@@ -143,7 +142,6 @@ extension ReaderStreamViewController {
     }
 }
 
-
 // MARK: - Undo cell for saved posts
 extension ReaderStreamViewController {
 
@@ -166,7 +164,6 @@ extension ReaderStreamViewController {
         cell.delegate = self
     }
 }
-
 
 // MARK: - Tracks
 extension ReaderStreamViewController {

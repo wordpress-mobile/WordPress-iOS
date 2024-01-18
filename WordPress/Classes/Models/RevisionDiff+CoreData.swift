@@ -14,7 +14,6 @@ extension RevisionDiff {
     @NSManaged public func removeFromContentDiffs(_ values: NSSet)
 }
 
-
 // MARK: Generated accessors for titleDiffs
 //
 extension RevisionDiff {
@@ -30,7 +29,6 @@ extension RevisionDiff {
     @objc(removeTitleDiffs:)
     @NSManaged public func removeFromTitleDiffs(_ values: NSSet)
 }
-
 
 extension RevisionDiff {
     func remove<T: DiffAbstractValue>(_ type: T.Type) -> RevisionDiff {

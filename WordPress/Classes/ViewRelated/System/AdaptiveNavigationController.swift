@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// This UINavigationController subclass will take care, automatically, of hiding the UINavigationBar
 /// whenever:
 ///
@@ -17,7 +16,6 @@ class AdaptiveNavigationController: UINavigationController {
     /// Insets to be applied on the SourceView's Coordinates, in order to fine tune the Popover's arrow position.
     ///
     private let sourceInsets = CGVector(dx: -10, dy: 0)
-
 
     /// This is the main method of this helper: we'll set both, the Presentation Style, Presentation Delegate,
     /// and SourceView parameters, accordingly.
@@ -37,7 +35,6 @@ class AdaptiveNavigationController: UINavigationController {
         presentationController.delegate = self
     }
 }
-
 
 // MARK: - UIPopoverPresentationControllerDelegate Methods
 //

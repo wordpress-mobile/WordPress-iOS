@@ -92,8 +92,6 @@ extension PublishingEditor {
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-
-
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,

@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 extension InviteLinks {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<InviteLinks> {

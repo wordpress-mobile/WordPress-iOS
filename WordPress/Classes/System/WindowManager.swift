@@ -123,7 +123,6 @@ class WindowManager: NSObject {
         overlayingWindow = window
     }
 
-
     /// Removes the temporary overlaying window if it exists. And makes the main window the key window again.
     ///
     func clearOverlayingWindow() {

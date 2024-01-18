@@ -25,7 +25,6 @@ class SiteSuggestionService {
             isBelowThrottleThreshold = false
         }
 
-
         if isBelowThrottleThreshold, let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
             completion(suggestions)
         } else if ReachabilityUtils.isInternetReachable() {

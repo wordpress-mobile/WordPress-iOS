@@ -1,7 +1,6 @@
 import Foundation
 import WordPressKit
 
-
 /// Provides service remote instances for CommentService
 @objc class CommentServiceRemoteFactory: NSObject {
 

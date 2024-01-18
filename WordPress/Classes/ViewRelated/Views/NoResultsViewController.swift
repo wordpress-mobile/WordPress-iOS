@@ -470,7 +470,6 @@ private extension NoResultsViewController {
         resetTitleViewConstraints()
         titleOnlyLabel?.translatesAutoresizingMaskIntoConstraints = false
 
-
         let availableWidth = view.frame.width - TitleLabelConstraints.leading + TitleLabelConstraints.trailing
 
         if availableWidth < TitleLabelConstraints.maxWidth {

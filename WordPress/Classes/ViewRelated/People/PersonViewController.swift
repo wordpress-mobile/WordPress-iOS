@@ -37,7 +37,6 @@ final class PersonViewController: UITableViewController {
         }
     }
 
-
     /// Blog to which the Person belongs
     ///
     private let blog: Blog
@@ -161,8 +160,6 @@ final class PersonViewController: UITableViewController {
         }
     }
 
-
-
     // MARK: - Constants
     private let sectionHeaderHeight      = CGFloat(20)
     private let roleSegueIdentifier      = "editRole"
@@ -198,8 +195,6 @@ final class PersonViewController: UITableViewController {
         return model
     }()
 }
-
-
 
 // MARK: - Private Helpers: Actions
 //
@@ -399,8 +394,6 @@ private extension PersonViewController {
     }
 }
 
-
-
 // MARK: - Private Helpers: Configuring table cells
 //
 private extension PersonViewController {
@@ -501,8 +494,6 @@ private extension PersonViewController {
     }
 }
 
-
-
 // MARK: - Private Helpers: Refreshing Interface
 //
 private extension PersonViewController {
@@ -520,8 +511,6 @@ private extension PersonViewController {
         imageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
 }
-
-
 
 // MARK: - Private Computed Properties
 //

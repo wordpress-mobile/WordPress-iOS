@@ -634,7 +634,6 @@ private extension SiteStatsDetailsViewModel {
             return []
         }
 
-
         var mappedSearchTerms = searchTerms.searchTerms.map { StatsTotalRowData(name: $0.term,
                                                                                 data: $0.viewsCount.abbreviatedString(),
                                                                                 statSection: .periodSearchTerms) }

@@ -33,7 +33,6 @@ import CocoaLumberjack
         }
     }
 
-
     /// Find and return the ReaderSearchSuggestion matching the specified search phrase.
     ///
     /// - Parameters:

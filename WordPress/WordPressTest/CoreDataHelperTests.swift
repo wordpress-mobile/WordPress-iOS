@@ -4,7 +4,6 @@ import CoreData
 
 @testable import WordPress
 
-
 // MARK: - CoreData Helper Tests
 //
 class CoreDataHelperTests: XCTestCase {
@@ -17,7 +16,6 @@ class CoreDataHelperTests: XCTestCase {
         super.setUp()
         stack = DummyStack()
     }
-
 
     /// Verifies that newFetchRequest effectively returns a new Request associated to the Stack's
     /// specialized type.
@@ -188,13 +186,11 @@ class CoreDataHelperTests: XCTestCase {
                 return
         }
 
-
         XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriGood))
         XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad1))
         XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad2))
     }
 }
-
 
 // MARK: - Testing Helpers
 //
@@ -210,14 +206,12 @@ extension CoreDataHelperTests {
     }
 }
 
-
 // MARK: - Dummy Sample Entity
 //
 class DummyEntity: NSManagedObject {
     @NSManaged var key: String
     @NSManaged var value: Int
 }
-
 
 // MARK: - InMemory Stack with Dynamic Model
 //

@@ -11,7 +11,6 @@ extension WordPressComRestApi {
                                    baseUrlString: Environment.current.wordPressComApiBase)
     }
 
-
     /// Returns the default API the default WP.com account using the given context
     @objc public static func defaultApi(in context: NSManagedObjectContext,
                                         userAgent: String? = WPUserAgent.wordPress(),

@@ -226,5 +226,4 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                      failure: failure)
     }
 
-
 }

@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressKit
 
-
 @objc public enum GravatarServiceError: Int, Error {
     case invalidAccountInfo
 }
@@ -36,7 +35,6 @@ open class GravatarService {
             onCompletion(nil)
         })
     }
-
 
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///

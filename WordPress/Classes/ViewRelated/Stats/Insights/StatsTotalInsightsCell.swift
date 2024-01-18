@@ -1,7 +1,6 @@
 import UIKit
 import WordPressShared
 
-
 struct StatsTotalInsightsData {
     var count: Int
     var difference: Int? = nil

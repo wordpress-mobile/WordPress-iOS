@@ -2,7 +2,6 @@ import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
 
-
 struct HomeWidgetThisWeek: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
