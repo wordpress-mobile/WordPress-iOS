@@ -34,8 +34,14 @@ steps:
         # This allows this step to run anyway.
         allow_failure: true
     plugins: *common_plugins
+    # We cannot run on Docker because we need to download artifact but cannot add our CI pluging in a straightforward way.
+    # We cannot use the default queue because it doesn't have Ruby.
+    # It would be overkill to use the macOS queue for running a couple of Ruby scripts.
+    # So, we're left with the Android queue, even though it looks out of place here.
+    #
+    # If we were to move forward with this approach, we might want to build a dedicated queue (queue: ruby?) or perhaps a Docker image with the Buildkite CLI available.
     agents:
-      queue: default
+      queue: android
     command: |
       echo '--- Test Ruby'
       which ruby
