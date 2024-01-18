@@ -183,7 +183,7 @@ extension ReaderTabViewModel {
         bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
 
-        WPAnalytics.track(.readerFilterSheetDisplayed)
+        WPAnalytics.track(.readerFilterSheetDisplayed, properties: ["source": filter.reuseIdentifier])
     }
 
     func presentManage(from: UIViewController) {
