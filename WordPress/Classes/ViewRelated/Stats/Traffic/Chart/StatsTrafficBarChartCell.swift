@@ -1,7 +1,8 @@
 import UIKit
 import DesignSystem
+import Inject
 
-final class StatsBarChartCell: UITableViewCell {
+final class StatsTrafficBarChartCell: UITableViewCell {
 
     // MARK: - UI
 
@@ -13,7 +14,7 @@ final class StatsBarChartCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let differenceLabel = UILabel()
 
-    private let chartView = UIView()
+    private let chartContainerView = UIView()
 
     private let filterTabBar = FilterTabBar()
 
@@ -21,8 +22,7 @@ final class StatsBarChartCell: UITableViewCell {
 
     private var tabsData = [BarChartTabData]()
     private var chartData: [BarChartDataConvertible] = []
-    private var chartStyling: [BarChartStyling] = []
-    private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+    private var chartStyling: [TrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
 
     // MARK: - Configure
@@ -38,23 +38,23 @@ final class StatsBarChartCell: UITableViewCell {
 
     func configure(tabsData: [BarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
-                   barChartStyling: [BarChartStyling] = [],
-                   period: StatsPeriodUnit? = nil,
-                   statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil) {
+                   barChartStyling: [TrafficBarChartStyling] = [],
+                   period: StatsPeriodUnit? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
-        self.statsBarChartViewDelegate = statsBarChartViewDelegate
         self.period = period
 
         updateLabels()
         updateButtons()
+        updateChartView()
     }
 }
 
-private extension StatsBarChartCell {
+private extension StatsTrafficBarChartCell {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         updateLabels()
+        updateChartView()
     }
 
     func updateLabels() {
@@ -67,11 +67,36 @@ private extension StatsBarChartCell {
     func updateButtons() {
         filterTabBar.items = tabsData
     }
+
+    func updateChartView() {
+        let filterSelectedIndex = filterTabBar.selectedIndex
+
+        guard chartData.count > filterSelectedIndex, chartStyling.count > filterSelectedIndex else {
+            return
+        }
+
+        let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
+                                                              styling: chartStyling[filterSelectedIndex],
+                                                              analyticsGranularity: period?.analyticsGranularity)
+        let chartView =  Inject.ViewHost(StatsTrafficBarChartView(configuration: configuration))
+
+        resetChartContainerView()
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        chartContainerView.addSubview(chartView)
+        chartContainerView.accessibilityElements = [chartView]
+        chartContainerView.pinSubviewToAllEdges(chartView)
+    }
+
+    func resetChartContainerView() {
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
+    }
 }
 
 // MARK: - Setup Views
 
-private extension StatsBarChartCell {
+private extension StatsTrafficBarChartCell {
     func setupViews() {
         setupContentView()
         setupContentStackView()
@@ -88,6 +113,7 @@ private extension StatsBarChartCell {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.axis = .vertical
         contentStackView.alignment = .leading
+        contentStackView.spacing = Length.Padding.split
         contentView.addSubview(contentStackView)
         contentView.pinSubviewToAllEdges(contentStackView)
     }
@@ -113,9 +139,8 @@ private extension StatsBarChartCell {
     }
 
     func setupChart() {
-        chartView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-        chartView.backgroundColor = .red
-        contentStackView.addArrangedSubview(chartView)
+        contentStackView.addArrangedSubview(chartContainerView)
+        chartContainerView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
 
     func setupButtons() {
@@ -139,7 +164,7 @@ private extension StatsBarChartCell {
 
 // MARK: - Difference
 
-private extension StatsBarChartCell {
+private extension StatsTrafficBarChartCell {
     enum DifferenceStrings {
         static let weekHigher = NSLocalizedString("stats.traffic.label.weekDifference.higher",
                                                   value: "%@ higher than the previous 7-days\n",

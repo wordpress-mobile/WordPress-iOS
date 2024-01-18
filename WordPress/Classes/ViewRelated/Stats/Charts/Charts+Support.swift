@@ -54,6 +54,26 @@ protocol BarChartStyling {
     var yAxisValueFormatter: AxisValueFormatter { get }
 }
 
+/// Describes the visual appearance of a BarChartView.
+///
+protocol TrafficBarChartStyling {
+
+    /// This corresponds to the primary bar color.
+    var primaryBarColor: UIColor { get }
+
+    /// This corresponds to the color of labels on the chart
+    var labelColor: UIColor { get }
+
+    /// This corresponds to the color of lines on the chart
+    var lineColor: UIColor { get }
+
+    /// Formatter for x-axis values
+    var xAxisValueFormatter: AxisValueFormatter { get }
+
+    /// Formatter for y-axis values
+    var yAxisValueFormatter: AxisValueFormatter { get }
+}
+
 protocol LineChartStyling {
 
     /// This corresponds to the primary bar color.
