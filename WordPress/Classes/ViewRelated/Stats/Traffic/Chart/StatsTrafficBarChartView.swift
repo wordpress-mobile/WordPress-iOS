@@ -19,6 +19,7 @@ class StatsTrafficBarChartView: BarChartView {
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = 0.9 // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
+        static let labelFont                = UIFont.systemFont(ofSize: 10)
     }
 
     static let emptyChartBarHeight = 0.01
@@ -127,6 +128,7 @@ private extension StatsTrafficBarChartView {
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
+        xAxis.labelFont = Constants.labelFont
         xAxis.labelTextColor = .init(color: styling.labelColor)
         xAxis.valueFormatter = styling.xAxisValueFormatter
         xAxis.avoidFirstLastClippingEnabled = true
@@ -140,6 +142,7 @@ private extension StatsTrafficBarChartView {
         rightAxis.gridLineWidth = Constants.gridLineWidth
         rightAxis.axisMinimum = 0.0
         rightAxis.drawLabelsEnabled = true
+        rightAxis.labelFont = Constants.labelFont
         rightAxis.labelTextColor = .init(color: styling.labelColor)
         rightAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         rightAxis.valueFormatter = styling.yAxisValueFormatter
