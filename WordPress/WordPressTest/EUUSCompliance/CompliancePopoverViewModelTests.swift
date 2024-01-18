@@ -81,7 +81,7 @@ private class MockCompliancePopoverCoordinator: CompliancePopoverCoordinatorProt
     private(set) var presentIfNeededCallCount = 0
     private(set) var dismissCallCount = 0
 
-    func presentIfNeeded() {
+    func presentIfNeeded(completion: ((Bool) -> Void)? = nil) {
         presentIfNeededCallCount += 1
     }
 
