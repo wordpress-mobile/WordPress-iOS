@@ -18,6 +18,7 @@ class StatsTrafficBarChartView: BarChartView {
         static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = 0.9 // Proportional to full width
+        static let gridLineWidth            = CGFloat(0.5)
     }
 
     static let emptyChartBarHeight = 0.01
@@ -96,10 +97,7 @@ private extension StatsTrafficBarChartView {
         dragXEnabled = false
         dragYEnabled = false
         pinchZoomEnabled = false
-
-        drawBordersEnabled = true
-        borderColor = .init(color: styling.lineColor)
-        borderLineWidth = 0.5
+        drawBordersEnabled = false
         drawGridBackgroundEnabled = false
 
         minOffset = 0
@@ -125,8 +123,6 @@ private extension StatsTrafficBarChartView {
     }
 
     func configureXAxis() {
-        xAxis.axisLineColor = .init(color: styling.lineColor)
-        xAxis.axisLineWidth = 0.5
         xAxis.drawAxisLineEnabled = false
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
@@ -137,12 +133,13 @@ private extension StatsTrafficBarChartView {
     }
 
     func configureYAxis() {
+        rightAxis.drawAxisLineEnabled = true
         rightAxis.axisLineColor = .init(color: styling.lineColor)
-        rightAxis.axisMinimum = 0.0
-        rightAxis.drawAxisLineEnabled = false
-        rightAxis.drawLabelsEnabled = true
-        rightAxis.drawZeroLineEnabled = false
+        rightAxis.axisLineWidth = Constants.gridLineWidth
         rightAxis.gridColor = .init(color: styling.lineColor)
+        rightAxis.gridLineWidth = Constants.gridLineWidth
+        rightAxis.axisMinimum = 0.0
+        rightAxis.drawLabelsEnabled = true
         rightAxis.labelTextColor = .init(color: styling.labelColor)
         rightAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         rightAxis.valueFormatter = styling.yAxisValueFormatter
