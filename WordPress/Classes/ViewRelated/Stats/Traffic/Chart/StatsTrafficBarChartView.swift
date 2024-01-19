@@ -31,10 +31,6 @@ class StatsTrafficBarChartView: BarChartView {
     ///
     private var styling: TrafficBarChartStyling
 
-    /// This informs the analytics event captured via user interaction.
-    ///
-    private var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
-
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
@@ -44,7 +40,6 @@ class StatsTrafficBarChartView: BarChartView {
     init(configuration: StatsTrafficBarChartConfiguration) {
         self.barChartData = configuration.data
         self.styling = configuration.styling
-        self.analyticsGranularity = configuration.analyticsGranularity
 
         super.init(frame: .zero)
 
@@ -54,7 +49,6 @@ class StatsTrafficBarChartView: BarChartView {
     func update(configuration: StatsTrafficBarChartConfiguration) {
         self.barChartData = configuration.data
         self.styling = configuration.styling
-        self.analyticsGranularity = configuration.analyticsGranularity
 
         initialize()
     }

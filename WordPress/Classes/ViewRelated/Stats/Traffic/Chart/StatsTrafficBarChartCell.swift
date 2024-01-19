@@ -82,8 +82,7 @@ private extension StatsTrafficBarChartCell {
         }
 
         let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
-                                                              styling: chartStyling[filterSelectedIndex],
-                                                              analyticsGranularity: period?.analyticsGranularity)
+                                                              styling: chartStyling[filterSelectedIndex])
 
 
         if chartView == nil {
