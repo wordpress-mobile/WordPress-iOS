@@ -33,7 +33,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     }
 
     @MainActor func presentIfNeeded() async -> Bool {
-        guard isFeatureFlagEnabled, defaults.didShowCompliancePopup else {
+        guard isFeatureFlagEnabled, !defaults.didShowCompliancePopup else {
             return false
         }
         return await withCheckedContinuation { continuation in
