@@ -17,6 +17,9 @@ steps:
         agents:
           queue: default
         plugins:
+          - automattic/git-s3-cache#1.1.4:
+              bucket: "a8c-repo-mirrors"
+              repo: "automattic/wordpress-ios/"
           - docker#v5.8.0:
               # TODO: Ensure the same version as local is used, i.e. with Buildkite env vars injection during pipeline upload
               image: ghcr.io/realm/swiftlint:latest
