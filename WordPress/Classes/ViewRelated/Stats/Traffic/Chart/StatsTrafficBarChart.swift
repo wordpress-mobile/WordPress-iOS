@@ -32,21 +32,7 @@ private final class StatsTrafficBarChartDataTransformer {
     private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
 
     static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [TrafficBarChartStyling]) {
-        let summaryData: [StatsSummaryData]
-
-        switch data.period {
-        case .day:
-            summaryData = data.summaryData.suffix(7)
-        case .week:
-            // TODO
-            summaryData = data.summaryData.suffix(5)
-        case .month:
-            summaryData = data.summaryData.suffix(12)
-        default:
-            summaryData = data.summaryData
-        }
-
-        let firstDateInterval: TimeInterval = summaryData.first?.periodStartDate.timeIntervalSince1970 ?? 0
+        let summaryData = data.summaryData
 
         let totalViews = summaryData.compactMap({$0.viewsCount}).reduce(0, +)
         let totalVisitors = summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
