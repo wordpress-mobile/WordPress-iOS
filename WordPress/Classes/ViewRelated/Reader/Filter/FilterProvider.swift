@@ -87,6 +87,12 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
     }
 }
 
+extension FilterProvider: Equatable {
+    static func == (lhs: FilterProvider, rhs: FilterProvider) -> Bool {
+        return lhs.title == rhs.title
+    }
+}
+
 extension FilterProvider {
 
     func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
