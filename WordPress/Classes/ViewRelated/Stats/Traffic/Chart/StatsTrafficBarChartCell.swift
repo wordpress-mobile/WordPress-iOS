@@ -152,6 +152,7 @@ private extension StatsTrafficBarChartCell {
 
     func setupChart() {
         contentStackView.addArrangedSubview(chartContainerView)
+        chartContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         chartContainerView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
 
