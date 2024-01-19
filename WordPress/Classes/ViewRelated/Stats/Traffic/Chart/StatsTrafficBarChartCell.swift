@@ -203,7 +203,7 @@ private extension StatsTrafficBarChartCell {
 
     func differenceAttributedString(_ data: BarChartTabData) -> NSAttributedString? {
         guard let differenceText = differenceText(data) else {
-            return nil
+            return .init(string: " ")
         }
 
         let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .footnote), NSAttributedString.Key.foregroundColor: UIColor.DS.Foreground.secondary]
