@@ -57,20 +57,25 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     var willDisplayPostSignupFlow: Bool = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
-    private var complianceCoordinator: CompliancePopoverCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
     private let viewModel: MySiteViewModel
 
+    // MARK: - Dependencies
+
+    private let overlaysCoordinator: MySiteOverlaysCoordinator
+
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
+    init(meScenePresenter: ScenePresenter,
+         blogService: BlogService? = nil,
+         overlaysCoordinator: MySiteOverlaysCoordinator = .init()) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.viewModel = MySiteViewModel()
-
+        self.overlaysCoordinator = overlaysCoordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -189,8 +194,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-        complianceCoordinator = CompliancePopoverCoordinator()
-        complianceCoordinator?.presentIfNeeded()
+        Task { @MainActor in
+            await overlaysCoordinator.presentOverlayIfNeeded(in: self)
+        }
     }
 
     override func viewDidLayoutSubviews() {

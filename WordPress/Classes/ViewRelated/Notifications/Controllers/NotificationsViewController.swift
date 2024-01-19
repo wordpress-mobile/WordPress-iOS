@@ -247,10 +247,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-            setupAppRatings()
-            self.showInlinePrompt()
         }
+        // TODO: Remove this when In-App Rating project is shipped
+//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+//            setupAppRatings()
+//            self.showInlinePrompt()
+//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -428,6 +430,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
 
         showDetails(for: note)
+
+        if !note.read {
+            AppRatingUtility.shared.incrementSignificantEvent()
+        }
 
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()

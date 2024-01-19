@@ -408,14 +408,8 @@ extension WordPressAppDelegate {
         }
 
         let utility = AppRatingUtility.shared
-        utility.register(section: "notifications", significantEventCount: 5)
-        utility.systemWideSignificantEventCountRequiredForPrompt = 10
+        utility.systemWideSignificantEventCountRequiredForPrompt = 20
         utility.setVersion(version)
-        if AppConfiguration.isWordPress {
-            utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
-                DDLogError("Was unable to retrieve data about throttling")
-            })
-        }
     }
 
     @objc func configureAppCenterSDK() {

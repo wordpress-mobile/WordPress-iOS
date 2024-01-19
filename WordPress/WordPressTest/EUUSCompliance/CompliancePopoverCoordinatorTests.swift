@@ -21,50 +21,38 @@ final class CompliancePopoverCoordinatorTests: XCTestCase {
 
     // MARK: - Tests
 
-    func testPopoverIsShown() {
+    func testPopoverIsShown() async {
         // Given
-        let expectation = expectation(description: "Should display popover")
         self.defaults.didShowCompliancePopupOverride = false
 
         // When
-        self.coordinator.presentIfNeeded { shown in
-            XCTAssertTrue(shown)
-            expectation.fulfill()
-        }
+        let presented = await coordinator.presentIfNeeded()
 
         // Then
-        wait(for: [expectation], timeout: 1)
+        XCTAssertTrue(presented)
     }
 
-    func testPopoverIsNotShownWhenShownBefore() {
+    func testPopoverIsNotShownWhenShownBefore() async {
         // Given
-        let expectation = expectation(description: "Should not display popover")
         self.defaults.didShowCompliancePopupOverride = true
 
         // When
-        coordinator.presentIfNeeded { shown in
-            XCTAssertFalse(shown)
-            expectation.fulfill()
-        }
+        let presented = await coordinator.presentIfNeeded()
 
         // Then
-        wait(for: [expectation], timeout: 1)
+        XCTAssertFalse(presented)
     }
 
-    func testPopoverIsNotShownForNonEUCountry() {
+    func testPopoverIsNotShownForNonEUCountry() async {
         // Given
-        let expectation = expectation(description: "Should not display popover for non-EU country")
         self.service.countryCode = "MA"
         self.defaults.didShowCompliancePopupOverride = true
 
         // When
-        coordinator.presentIfNeeded { shown in
-            XCTAssertFalse(shown)
-            expectation.fulfill()
-        }
+        let presented = await coordinator.presentIfNeeded()
 
         // Then
-        wait(for: [expectation], timeout: 1)
+        XCTAssertFalse(presented)
     }
 
     // MARK: - Helpers

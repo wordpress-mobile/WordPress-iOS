@@ -79,6 +79,12 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self initStats];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    // Track as significant event for App Rating calculations
+    [[AppRatingUtility shared] incrementSignificantEvent];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
