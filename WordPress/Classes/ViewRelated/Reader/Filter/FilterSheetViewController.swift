@@ -30,16 +30,16 @@ class FilterSheetViewController: UIViewController {
         return tableView
     }()
 
-    private lazy var emptyView: EmptyActionView = {
-        let view = EmptyActionView { [weak self] in
-            self?.tappedEmptyAddButton()
-        }
-
-        // Hide the button if the user is not logged in
-        view.button.isHidden = !ReaderHelpers.isLoggedIn()
-
-        return view
-    }()
+    private lazy var emptyView = EmptyFilterView(
+        viewModel: EmptyFilterViewModel(
+            filterType: filterProvider.filterType,
+            suggestedButtonTap: { [weak self] in
+                self?.tappedSuggestedButton()
+            }, searchButtonTap: { [weak self] in
+                self?.tappedEmptyAddButton()
+            }
+        )
+    )
 
     private lazy var ghostableTableView: UITableView = {
         let tableView = UITableView()
@@ -121,6 +121,16 @@ private extension FilterSheetViewController {
             value: "Filter by tag",
             comment: "Title for a filter sheet on the Reader to filter the stream by tag"
         )
+        static let selectInterestsTitle = NSLocalizedString(
+            "reader.filterSheet.select.tags.title",
+            value: "Suggested tags",
+            comment: "Screen title. Reader select interests title label text."
+        )
+        static let selectInterestsLoading = NSLocalizedString(
+            "reader.filterSheet.select.tags.loading",
+            value: "Following new tags...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
     }
 
     func configureViews() {
@@ -144,6 +154,7 @@ private extension FilterSheetViewController {
                 /// Loading state
                 self.emptyView.isHidden = true
                 self.tableView.isHidden = true
+                self.headerLabelView.isHidden = false
                 self.updateGhostableTableViewOptions(cellClass: self.filterProvider.cellClass,
                                                      identifier: self.filterProvider.reuseIdentifier)
             } else {
@@ -152,26 +163,55 @@ private extension FilterSheetViewController {
                 self.ghostableTableView.isHidden = true
 
                 let isEmpty = self.filterProvider.items.isEmpty
-                if isEmpty {
-                    self.refreshEmpty()
-                }
                 self.emptyView.isHidden = !isEmpty
                 self.tableView.isHidden = isEmpty
+                self.headerLabelView.isHidden = isEmpty
             }
         }
     }
 
+    func tappedSuggestedButton() {
+        guard filterProvider.filterType == .tag else {
+            assertionFailure("Unsupported suggested button action")
+            return
+        }
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: Strings.selectInterestsTitle,
+            subtitle: nil,
+            buttonTitle: nil,
+            loading: Strings.selectInterestsLoading
+        )
+        let controller = ReaderSelectInterestsViewController(configuration: configuration)
+
+        controller.didSaveInterests = { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
+            self?.refresh()
+        }
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+
+        present(navController, animated: true, completion: nil)
+    }
+
     func tappedEmptyAddButton() {
-        filterProvider.showAdd(on: self, sceneDelegate: self)
+        switch filterProvider.filterType {
+        case .blog:
+            let searchController = ReaderSearchViewController.controller()
+            searchController.onViewWillDisappear = { [weak self] in
+                self?.refresh()
+            }
+            let navController = UINavigationController(rootViewController: searchController)
+            navController.modalPresentationStyle = .formSheet
+            present(navController, animated: true)
+            break
+        case .tag:
+            filterProvider.showAdd(on: self, sceneDelegate: self)
+        }
     }
 
     func refresh() {
         filterProvider.refresh()
-    }
-
-    func refreshEmpty() {
-        emptyView.title = filterProvider.emptyTitle
-        emptyView.labelText = filterProvider.emptyActionTitle
     }
 
     func updateGhostableTableViewOptions(cellClass: UITableViewCell.Type, identifier: String) {

@@ -85,6 +85,11 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
             }
         }
     }
+
+    struct ReuseIdentifiers {
+        static let blogs = "blogs"
+        static let tags = "tags"
+    }
 }
 
 extension FilterProvider: Equatable {
@@ -140,7 +145,7 @@ extension ReaderSiteTopic {
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
                               cellClass: SiteTableViewCell.self,
-                              reuseIdentifier: "Sites",
+                              reuseIdentifier: FilterProvider.ReuseIdentifiers.blogs,
                               emptyTitle: emptyTitle,
                               emptyActionTitle: emptyActionTitle,
                               section: .sites,
@@ -283,7 +288,7 @@ extension ReaderTagTopic {
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",
                               cellClass: UITableViewCell.self,
-                              reuseIdentifier: "Tags",
+                              reuseIdentifier: FilterProvider.ReuseIdentifiers.tags,
                               emptyTitle: emptyTitle,
                               emptyActionTitle: emptyActionTitle,
                               section: .tags,

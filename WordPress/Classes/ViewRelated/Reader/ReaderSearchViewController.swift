@@ -66,6 +66,8 @@ import Gridicons
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
+    var onViewWillDisappear: (() -> Void)?
+
     /// A convenience method for instantiating the controller from the storyboard.
     ///
     /// - Returns: An instance of the controller.
@@ -140,6 +142,7 @@ import Gridicons
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
+        configureNavigationBar()
     }
 
 
@@ -169,6 +172,7 @@ import Gridicons
 
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        onViewWillDisappear?()
     }
 
 
@@ -264,6 +268,16 @@ import Gridicons
         jpSiteSearchController.view.isHidden = true
     }
 
+    private func configureNavigationBar() {
+        guard isModal() else {
+            return
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(doneButtonPressed))
+    }
+
     // MARK: - Actions
 
 
@@ -339,6 +353,10 @@ import Gridicons
             streamController?.view.isHidden = true
             jpSiteSearchController.view.isHidden = false
         }
+    }
+
+    @objc private func doneButtonPressed() {
+        dismiss(animated: true)
     }
 
     // MARK: - Autocomplete
