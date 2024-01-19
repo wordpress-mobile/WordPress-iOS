@@ -78,9 +78,9 @@ struct EmptyFilterViewModel {
             comment: "Suggested tags button text for an empty filter sheet on the Reader"
         )
         static let tagsSearchButton = NSLocalizedString(
-            "reader.filterSheet.empty.tags.search",
-            value: "Search for a tag",
-            comment: "Search tags button text for an empty filter sheet on the Reader"
+            "reader.filterSheet.empty.tags.subscribe",
+            value: "Subscribe to a tag",
+            comment: "Subscribe to a tag button text for an empty filter sheet on the Reader"
         )
         static let blogSearchButton = NSLocalizedString(
             "reader.filterSheet.empty.blogs.search",
