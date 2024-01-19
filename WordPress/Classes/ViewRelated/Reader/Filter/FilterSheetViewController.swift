@@ -1,6 +1,11 @@
 import WordPressUI
 import WordPressFlux
 
+protocol FilterSheetViewControllerDelegate {
+    func didSelectTopic(_ topic: ReaderAbstractTopic)
+    func didTapEdit()
+}
+
 class FilterSheetViewController: UIViewController {
 
     // MARK: Properties
@@ -11,6 +16,8 @@ class FilterSheetViewController: UIViewController {
 
     // closure that's called when a filter item is selected.
     private let changedFilter: (ReaderAbstractTopic) -> Void
+
+    private let onEditButtonTap: (UIViewController) -> Void
 
     private var receipt: Receipt?
 
@@ -54,6 +61,7 @@ class FilterSheetViewController: UIViewController {
         let labelView = UIView()
         let label = UILabel()
         label.font = HeaderConstants.font
+        label.adjustsFontForContentSizeCategory = true
         label.text = viewTitle
         label.translatesAutoresizingMaskIntoConstraints = false
         labelView.addSubview(label)
@@ -61,15 +69,43 @@ class FilterSheetViewController: UIViewController {
         return labelView
     }()
 
-    private lazy var stackView: UIStackView = {
+    private lazy var editButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(Strings.editButtonTitle, for: .normal)
+        button.tintColor = .label
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+
+        button.configuration = .plain()
+        button.configuration?.contentInsets = .init(top: HeaderConstants.insets.top,
+                                                    leading: HeaderConstants.insets.left,
+                                                    bottom: HeaderConstants.insets.bottom,
+                                                    trailing: HeaderConstants.insets.right)
+        button.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
+
+        return button
+    }()
+
+    private lazy var headerStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             headerLabelView,
+            UIView(),
+            editButton
+        ])
+
+        stack.axis = .horizontal
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [
+            headerStackView,
             tableView,
             ghostableTableView,
             emptyView
         ])
 
-        stack.setCustomSpacing(HeaderConstants.spacing, after: headerLabelView)
+        stack.setCustomSpacing(HeaderConstants.spacing, after: headerStackView)
         stack.axis = .vertical
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -79,11 +115,13 @@ class FilterSheetViewController: UIViewController {
 
     init(filter: FilterProvider,
          viewTitle: String? = nil,
-         changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+         changedFilter: @escaping (ReaderAbstractTopic) -> Void,
+         onEditButtonTap: @escaping (UIViewController) -> Void) {
         let defaultTitle = filter.section == .sites ? Strings.blogFilterTitle : Strings.tagFilterTitle
         self.viewTitle = viewTitle ?? defaultTitle
         self.filterProvider = filter
         self.changedFilter = changedFilter
+        self.onEditButtonTap = onEditButtonTap
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -130,6 +168,11 @@ private extension FilterSheetViewController {
             "reader.filterSheet.select.tags.loading",
             value: "Subscribing to new tags...",
             comment: "Label displayed to the user while loading their selected interests"
+        )
+        static let editButtonTitle = NSLocalizedString(
+            "reader.filterSheet.button.edit",
+            value: "Edit",
+            comment: "Title for a button that allows user to edit their subscribed list from the filter sheet"
         )
     }
 
@@ -223,6 +266,11 @@ private extension FilterSheetViewController {
         ghostableTableView.removeGhostContent()
         ghostableTableView.isHidden = false
         ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+    }
+
+    @objc
+    func didTapEditButton() {
+        onEditButtonTap(self)
     }
 }
 
