@@ -362,7 +362,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.onBlogSelected = onBlogSelected
 
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
-        let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
 
         epilogueViewController.onCreateNewSite = { [weak navigationController] in
             guard let navigationController else { return }
