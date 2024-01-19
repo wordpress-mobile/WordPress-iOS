@@ -13,23 +13,27 @@ extension StatsTrafficBarChartFilterDimension {
         switch self {
         case .views:
             return NSLocalizedString(
-                "Bar Chart depicting Views for selected period, Visitors superimposed",
-                comment: "This description is used to set the accessibility label for the Period chart, with Views selected."
+                "stats.traffic.accessibilityLabel.views",
+                value: "Bar Chart depicting Views for selected period",
+                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Views selected."
             )
         case .visitors:
             return NSLocalizedString(
-                "Bar Chart depicting Visitors for the selected period.",
-                comment: "This description is used to set the accessibility label for the Period chart, with Visitors selected."
+                "stats.traffic.accessibilityLabel.visitors",
+                value: "Bar Chart depicting Visitors for the selected period.",
+                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected."
             )
         case .likes:
             return NSLocalizedString(
-                "Bar Chart depicting Likes for the selected period.",
-                comment: "This description is used to set the accessibility label for the Period chart, with Likes selected."
+                "stats.traffic.accessibilityLabel.likes",
+                value: "Bar Chart depicting Likes for the selected period.",
+                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected."
             )
         case .comments:
             return NSLocalizedString(
-                "Bar Chart depicting Comments for the selected period.",
-                comment: "This description is used to set the accessibility label for the Period chart, with Comments selected."
+                "stats.traffic.accessibilityLabel.comments",
+                value: "Bar Chart depicting Comments for the selected period.",
+                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected."
             )
         }
     }
