@@ -25,15 +25,15 @@ class StatsTrafficBarChartView: BarChartView {
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
-    private let barChartData: BarChartDataConvertible
+    private var barChartData: BarChartDataConvertible
 
     /// This influences the visual appearance of the chart to be rendered.
     ///
-    private let styling: TrafficBarChartStyling
+    private var styling: TrafficBarChartStyling
 
     /// This informs the analytics event captured via user interaction.
     ///
-    private let analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
+    private var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
 
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
@@ -47,6 +47,14 @@ class StatsTrafficBarChartView: BarChartView {
         self.analyticsGranularity = configuration.analyticsGranularity
 
         super.init(frame: .zero)
+
+        initialize()
+    }
+
+    func update(configuration: StatsTrafficBarChartConfiguration) {
+        self.barChartData = configuration.data
+        self.styling = configuration.styling
+        self.analyticsGranularity = configuration.analyticsGranularity
 
         initialize()
     }

@@ -23,6 +23,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [TrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
+    private var chartView: StatsTrafficBarChartView?
 
     // MARK: - Configure
 
@@ -35,7 +36,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
         super.init(coder: coder)
     }
 
-    internal override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         updateChartView()
@@ -83,13 +84,20 @@ private extension StatsTrafficBarChartCell {
         let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
                                                               styling: chartStyling[filterSelectedIndex],
                                                               analyticsGranularity: period?.analyticsGranularity)
-        let chartView = StatsTrafficBarChartView(configuration: configuration)
 
-        resetChartContainerView()
-        chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartContainerView.addSubview(chartView)
-        chartContainerView.accessibilityElements = [chartView]
-        chartContainerView.pinSubviewToAllEdges(chartView)
+
+        if chartView == nil {
+            let chartView = StatsTrafficBarChartView(configuration: configuration)
+
+            resetChartContainerView()
+            chartView.translatesAutoresizingMaskIntoConstraints = false
+            chartContainerView.addSubview(chartView)
+            chartContainerView.accessibilityElements = [chartView]
+            chartContainerView.pinSubviewToAllEdges(chartView)
+            self.chartView = chartView
+        } else {
+            self.chartView?.update(configuration: configuration)
+        }
     }
 
     func resetChartContainerView() {
