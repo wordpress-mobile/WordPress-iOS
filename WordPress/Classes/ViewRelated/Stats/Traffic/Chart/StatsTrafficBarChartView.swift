@@ -128,6 +128,7 @@ private extension StatsTrafficBarChartView {
         dataSet.setColor(.init(color: styling.primaryBarColor))
         dataSet.drawValuesEnabled = false
         dataSet.axisDependency = .right
+        dataSet.highlightEnabled = false
         barChartData.barChartData.barWidth = Constants.barWidth
         xAxis.setLabelCount(dataSet.count, force: false)
     }
