@@ -2,56 +2,15 @@ import Foundation
 import DGCharts
 import DesignSystem
 
-// MARK: - StatsTrafficBarChartFilterDimension
-
-enum StatsTrafficBarChartFilterDimension: Int, CaseIterable {
-    case views = 0, visitors, likes, comments
-}
-
-extension StatsTrafficBarChartFilterDimension {
-    var accessibleDescription: String {
-        switch self {
-        case .views:
-            return NSLocalizedString(
-                "stats.traffic.accessibilityLabel.views",
-                value: "Bar Chart depicting Views for selected period",
-                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Views selected."
-            )
-        case .visitors:
-            return NSLocalizedString(
-                "stats.traffic.accessibilityLabel.visitors",
-                value: "Bar Chart depicting Visitors for the selected period.",
-                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected."
-            )
-        case .likes:
-            return NSLocalizedString(
-                "stats.traffic.accessibilityLabel.likes",
-                value: "Bar Chart depicting Likes for the selected period.",
-                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected."
-            )
-        case .comments:
-            return NSLocalizedString(
-                "stats.traffic.accessibilityLabel.comments",
-                value: "Bar Chart depicting Comments for the selected period.",
-                comment: "This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected."
-            )
-        }
-    }
-}
-
-// MARK: - StatsTrafficBarChart
-
 final class StatsTrafficBarChart {
 
     private let rawChartData: StatsSummaryTimeIntervalData
-    private var filterDimension: StatsTrafficBarChartFilterDimension
 
     private(set) var barChartData: [BarChartDataConvertible]
     private(set) var barChartStyling: [TrafficBarChartStyling]
 
-    init(data: StatsSummaryTimeIntervalData, filterDimension: StatsTrafficBarChartFilterDimension = .views) {
+    init(data: StatsSummaryTimeIntervalData) {
         rawChartData = data
-        self.filterDimension = filterDimension
 
         let (data, styling) = StatsTrafficBarChartDataTransformer.transform(data: data)
 
@@ -70,14 +29,6 @@ private struct StatsTrafficBarChartData: BarChartDataConvertible {
 // MARK: - StatsTrafficBarChartDataTransformer
 
 private final class StatsTrafficBarChartDataTransformer {
-    /// A formatter for the Chart values with no decimals
-    ///
-    /// The Charts' default formatter has a single decimal defined. This causes VoiceOver to
-    /// sometimes read the decimal part. For example, VoiceOver would says “29.0” for a visitors
-    /// value.
-    ///
-    /// - SeeAlso: ChartUtils.defaultValueFormatter()
-    ///
     private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
 
     static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [TrafficBarChartStyling]) {
@@ -170,7 +121,7 @@ private struct DefaultStatsTrafficBarChartStyling: TrafficBarChartStyling {
     let yAxisValueFormatter: AxisValueFormatter = StatsTrafficVerticalAxisFormatter()
 }
 
-class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
+final class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
 
     // MARK: Properties
 
@@ -244,7 +195,7 @@ class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
 
 // MARK: - VerticalAxisFormatter
 
-class StatsTrafficVerticalAxisFormatter: AxisValueFormatter {
+final class StatsTrafficVerticalAxisFormatter: AxisValueFormatter {
 
     // MARK: Properties
 
