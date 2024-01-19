@@ -229,7 +229,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         if configuration.dismissalActionHandler == nil {
             configuration.dismissalActionHandler = { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.dismissTapped()
@@ -254,6 +254,10 @@ final class SiteAssemblyWizardContent: UIViewController {
         errorStateViewController.didMove(toParent: self)
 
         self.errorStateViewController = errorStateViewController
+    }
+
+    private func shouldPresentJetpackFeaturesRemovalOverlay() -> Bool {
+        AppConfiguration.isWordPress && Blog.count(in: ContextManager.sharedInstance().mainContext) == 1
     }
 }
 
@@ -309,6 +313,20 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let self = self else {
                 return
             }
+            if AppConfiguration.isWordPress && Blog.count(in: ContextManager.sharedInstance().mainContext) == 1 {
+                let viewModel = JetpackFullscreenOverlayGeneralViewModel(
+                    phase: .four,
+                    source: .phaseFourOverlay,
+                    blog: blog,
+                    coordinator: JetpackDefaultOverlayCoordinator()
+                )
+                let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
+                let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+                JetpackFeaturesRemovalCoordinator.presentOverlay(
+                    navigationViewController: navigationViewController,
+                    in: RootViewCoordinator.sharedPresenter.rootViewController
+                )
+            }
             let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
             self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
@@ -320,7 +338,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         }
 
         // Disable the prompt for WordPress when the blog has no domains.
-        guard AppConfiguration.isJetpack || blog.hasDomains else {
+        guard AppConfiguration.isJetpack || isDashboardEnabled(for: blog) else {
             return
         }
 
@@ -332,5 +350,9 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             }
         }
         rootViewController.present(quickstartPrompt, animated: true)
+    }
+
+    private func isDashboardEnabled(for blog: Blog) -> Bool {
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
 }

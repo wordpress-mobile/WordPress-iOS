@@ -368,8 +368,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             guard let navigationController else { return }
 
             let source = "login_epilogue"
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, blog: blog, onDidDismiss: {
-                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: self.firstBlog()) != .two else {
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
+                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                     return
                 }
 

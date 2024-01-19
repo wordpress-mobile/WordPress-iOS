@@ -2,9 +2,8 @@ extension BlogListViewController {
     @objc
     func launchSiteCreation() {
         let source = "my_sites"
-        let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, blog: self.selectedBlog, onDidDismiss: {
-            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase(blog: self.selectedBlog) != .two else {
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                 return
             }
 

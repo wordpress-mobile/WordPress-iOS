@@ -122,10 +122,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         return .normal
     }
 
-    static func siteCreationPhase(
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-        blog: Blog?
-    ) -> SiteCreationPhase {
+    static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
         }
@@ -133,7 +130,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
-            return blog == nil ? .normal : .two
+            return Self.hasBlog() ? .two : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
@@ -270,10 +267,9 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
-                                                   blog: Blog?,
                                                    onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                                    onDidDismiss: JetpackOverlayDismissCallback? = nil) {
-        let phase = siteCreationPhase(blog: blog)
+        let phase = siteCreationPhase()
         let coordinator = JetpackDefaultOverlayCoordinator()
         //
         let viewModel = JetpackFullscreenOverlaySiteCreationViewModel(
@@ -294,12 +290,16 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         presentOverlay(navigationViewController: navigationViewController, in: viewController)
     }
 
-    private static func presentOverlay(navigationViewController: UINavigationController,
-                                       in viewController: UIViewController,
-                                       fullScreen: Bool = false) {
+    static func presentOverlay(navigationViewController: UINavigationController,
+                               in viewController: UIViewController,
+                               fullScreen: Bool = false) {
         let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
 
         viewController.present(navigationViewController, animated: true)
+    }
+
+    private static func hasBlog() -> Bool {
+        Blog.count(in: ContextManager.sharedInstance().mainContext) > 0
     }
 }
