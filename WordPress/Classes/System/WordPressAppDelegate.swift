@@ -521,8 +521,8 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressComApi() {
-        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url") {
-            Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
+            Environment.replaceEnvironment(wordPressComApiBase: url)
         }
     }
 }
