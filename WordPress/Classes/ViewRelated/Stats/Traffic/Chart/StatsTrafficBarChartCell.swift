@@ -36,6 +36,12 @@ final class StatsTrafficBarChartCell: UITableViewCell {
         super.init(coder: coder)
     }
 
+    internal override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateChartView()
+    }
+
     func configure(tabsData: [BarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
                    barChartStyling: [TrafficBarChartStyling] = [],
