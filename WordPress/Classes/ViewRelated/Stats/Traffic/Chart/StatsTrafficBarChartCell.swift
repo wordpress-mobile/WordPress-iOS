@@ -160,8 +160,8 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.selectedTitleColor = UIColor.DS.Foreground.primary
         filterTabBar.deselectedTabColor = UIColor.DS.Foreground.secondary
         filterTabBar.tabSeparatorPlacement = .top
-        filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .caption2)
-        filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .caption2)
+        filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
+        filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
         filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
         filterTabBar.tabSeparatorPadding = Length.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
