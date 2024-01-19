@@ -10,8 +10,9 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Dependencies
 
-    private let complianceService = ComplianceLocationService()
+    private let complianceService: ComplianceLocationService
     private let defaults: UserDefaults
+    private let isFeatureFlagEnabled: Bool
 
     // MARK: - Views
 
@@ -21,12 +22,18 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Init
 
-    init(defaults: UserDefaults = UserDefaults.standard) {
+    init(
+        defaults: UserDefaults = UserDefaults.standard,
+        complianceService: ComplianceLocationService = .init(),
+        isFeatureFlagEnabled: Bool = FeatureFlag.compliancePopover.enabled
+    ) {
         self.defaults = defaults
+        self.complianceService = complianceService
+        self.isFeatureFlagEnabled = isFeatureFlagEnabled
     }
 
     @MainActor func presentIfNeeded() async -> Bool {
-        guard FeatureFlag.compliancePopover.enabled, defaults.didShowCompliancePopup else {
+        guard isFeatureFlagEnabled, defaults.didShowCompliancePopup else {
             return false
         }
         return await withCheckedContinuation { continuation in
@@ -56,8 +63,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     // MARK: - Helpers
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
-        let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && !defaults.didShowCompliancePopup
+        return Self.gdprCountryCodes.contains(countryCode)
     }
 
     private func dismiss(completion: (() -> Void)? = nil) {
