@@ -195,7 +195,19 @@ private extension FilterSheetViewController {
     }
 
     func tappedEmptyAddButton() {
-        filterProvider.showAdd(on: self, sceneDelegate: self)
+        switch filterProvider.filterType {
+        case .blog:
+            let searchController = ReaderSearchViewController.controller()
+            searchController.onViewWillDisappear = { [weak self] in
+                self?.refresh()
+            }
+            let navController = UINavigationController(rootViewController: searchController)
+            navController.modalPresentationStyle = .formSheet
+            present(navController, animated: true)
+            break
+        case .tag:
+            filterProvider.showAdd(on: self, sceneDelegate: self)
+        }
     }
 
     func refresh() {
