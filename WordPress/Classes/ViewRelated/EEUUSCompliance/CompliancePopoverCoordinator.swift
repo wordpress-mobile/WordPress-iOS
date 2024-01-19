@@ -1,7 +1,7 @@
 import UIKit
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
-    func presentIfNeeded()
+    func presentIfNeeded(completion: ((Bool) -> Void)?)
     func navigateToSettings()
     func dismiss()
 }
@@ -10,8 +10,9 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Dependencies
 
-    private let complianceService = ComplianceLocationService()
+    private let complianceService: ComplianceLocationService
     private let defaults: UserDefaults
+    private let isFeatureFlagEnabled: Bool
 
     // MARK: - Views
 
@@ -21,20 +22,31 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Init
 
-    init(defaults: UserDefaults = UserDefaults.standard) {
+    init(
+        defaults: UserDefaults = UserDefaults.standard,
+        complianceService: ComplianceLocationService = .init(),
+        isFeatureFlagEnabled: Bool = FeatureFlag.compliancePopover.enabled
+    ) {
         self.defaults = defaults
+        self.complianceService = complianceService
+        self.isFeatureFlagEnabled = isFeatureFlagEnabled
     }
 
-    func presentIfNeeded() {
-        guard FeatureFlag.compliancePopover.enabled/*, !defaults.didShowCompliancePopup */else {
+    // MARK: - API
+
+    func presentIfNeeded(completion: ((Bool) -> Void)? = nil) {
+        guard isFeatureFlagEnabled, !defaults.didShowCompliancePopup else {
+            completion?(false)
             return
         }
-        complianceService.getIPCountryCode { [weak self] result in
+        self.complianceService.getIPCountryCode { [weak self] result in
             guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                completion?(false)
                 return
             }
             DispatchQueue.main.async {
                 self.presentPopover()
+                completion?(Self.window != nil)
             }
         }
     }
@@ -52,8 +64,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     // MARK: - Helpers
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
-        let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && !defaults.didShowCompliancePopup
+        return Self.gdprCountryCodes.contains(countryCode)
     }
 
     private func dismiss(completion: (() -> Void)? = nil) {

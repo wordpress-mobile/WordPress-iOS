@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-04 02:58:06+0000 */
+/* Translation-Revision-Date: 2024-01-10 12:00:01+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: en_AU */
@@ -1944,6 +1944,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
 
@@ -3015,6 +3024,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "File type";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "File type not supported as a media file.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
 
@@ -3127,6 +3139,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Font Size, %1$s";
 
 /* Food site intent topic */
 "Food" = "Food";
@@ -4507,6 +4522,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Needs Update";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Network connection lost, working offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Network connection re-established";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "New";
@@ -6005,6 +6026,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandbox Store";
 
 /* Menus save button title
    Save Action
@@ -8717,6 +8741,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Working Offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
@@ -8861,6 +8888,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "You have 1 hidden WordPress site.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "You have a free one-year domain registration with your plan.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site.";
@@ -9280,6 +9310,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Rate as helpful";
 
+/* Title for the checkout view */
+"checkout.title" = "Checkout";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "comment";
 
@@ -9430,8 +9463,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "View stats";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analytics";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "Reader CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Default URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Current Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Default Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Remote Config";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Remote Config Value";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Reset";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9439,6 +9499,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Remove Current Tour";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Logging";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Quick Start";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Settings";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Developer";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Weekly Roundup";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
@@ -9457,6 +9532,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Expired";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Never expires";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Renews";
@@ -9550,6 +9628,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per year";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Help";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domains purchased on this site will redirect to %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Search domains";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Checkout";
@@ -10422,6 +10509,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Plans";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Created %@";
 
@@ -10853,6 +10943,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Other domains for %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Your Free WordPress.com domain";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Get a free one-year domain registration or transfer with any annual paid plan.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Get your domain";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Primary domain";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Just search for a domain";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Upgrade to a plan";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
@@ -11366,6 +11480,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Something went wrong, please try again later.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Switch to the Jetpack app";

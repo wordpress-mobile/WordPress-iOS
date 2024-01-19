@@ -1,0 +1,9 @@
+Vous pouvez désormais obtenir un plan WordPress avec un domaine gratuit dans la section Domaine du tableau de bord. Nous avons également apporté des améliorations à l’écran Domaines du site pour qu’il soit plus facile pour vous de gérer vos domaines.
+
+Lorsque vous éditez des blocs Paragraphe dans l’éditeur, le clavier de votre appareil ne disparaîtra plus en pleine édition. L’éditeur ira directement jusqu’au nouveau bloc lors de son insertion. Écrivez sans attendre, l’ami.
+
+Vous aimez vous connecter avec vos clés de sécurité ? Nous avons pensé à vous : nous avons réactivé les clés de sécurité pour l’authentification à deux facteurs lors de la connexion. La seule personne qui a accès à votre compte, c’est vous.
+
+Nous avons mis à jour les couleurs de l’écran de connexion pour correspondre à WordPress et Jetpack. Après tout, le travail d’équipe, y’a que ça de vrai !
+
+Enfin, nous avons corrigé des bouts de code et nous sommes attaqués à plusieurs problèmes rares (ou pas) qui faisaient planter l’application. Ces problèmes étaient liés pour la plupart à l’édition d’étiquettes et de catégories, à l’utilisation d’étiquettes dupliquées, à la suppression d’articles et à l’édition d’articles supprimés. Tout ça en une journée de travail.

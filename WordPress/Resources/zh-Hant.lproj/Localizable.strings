@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: zh_TW */
@@ -1944,6 +1944,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "無法連線至 WordPress 網站。此地址沒有有效的 WordPress 網站。請檢查你輸入的網站地址 (URL)。";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "無法連線。 伺服器缺少必要的 XML-RPC 方式。 請聯絡主機服務提供者解決此問題。";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "無法連線。 嘗試存取網站的 XMLRPC 終端時發生 403 錯誤。 此應用程式需要 XMLRPC 終端才能與你的網站通訊。 請聯絡主機服務提供者解決此問題。";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "無法連線。 你的主機服務提供者封鎖了 POST 請求，但此應用程式需要使用 POST 請求才能與你的網站通訊。 請聯絡主機服務提供者解決此問題。";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "無法載入標籤。";
 
@@ -3012,6 +3021,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "檔案類型";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "媒體檔案不支援的檔案類型。";
+
 /* Film & Television site intent topic */
 "Film & Television" = "電影和電視";
 
@@ -3124,6 +3136,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "字體大小";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "字型大小，%1$s";
 
 /* Food site intent topic */
 "Food" = "飲食";
@@ -4504,6 +4519,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "需要更新";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "網路連線中斷，離線作業";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "重新建立網路連線";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "新增";
@@ -6002,6 +6023,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "沙盒商店";
 
 /* Menus save button title
    Save Action
@@ -8711,6 +8735,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "與我們合作";
 
+/* No comment provided by engineer. */
+"Working Offline" = "離線作業";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "依國家顯示世界地圖的檢視次數。";
 
@@ -8855,6 +8882,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "你有 1 個隱藏的 WordPress 網站。";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "你的方案已包含一年免費網域註冊。";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "你的網站已啟用進階版升級服務。刪除網站前，請先取消升級。";
@@ -9271,6 +9301,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "將此資訊評為「有幫助」";
 
+/* Title for the checkout view */
+"checkout.title" = "結帳";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "留言";
 
@@ -9421,8 +9454,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "檢視統計資料";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "分析";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能旗標";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "讀取器 CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "預設 URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "目前的值";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "預設值";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "遠端設定";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "遠端設定值";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "重設";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9430,6 +9490,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "移除目前的導覽";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "記錄";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "快速入門";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "設定";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "開發人員";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "每週綜合整理";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隱藏此訊息";
@@ -9448,6 +9523,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "已到期";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "永不過期";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "續訂";
@@ -9541,6 +9619,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "每年";
+
+/* Help button */
+"domainSelection.helpButton.title" = "說明";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "在此網站購買的網域將重新導向至 %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "搜尋網域";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "結帳";
@@ -10413,6 +10500,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";
 
+/* Title for the plan selection view */
+"planSelection.title" = "方案";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "已建立：%@";
 
@@ -10844,6 +10934,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "其他適合「%1$@」的網域";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "免費 WordPress.com 網域";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "任何年繳方案使用者，均享一年的免費網域註冊或轉移。";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "取得你的網域";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "你的主要網站位址，是訪客造訪你的網站時在瀏覽器上看到的位址。";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "主要網域";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "先搜尋可用網域名稱";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "升級方案";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "網域";
@@ -11357,6 +11471,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, 網站, 網站, 網誌, 網誌";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "發生錯誤，請稍後再試一次。";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "切換至 Jetpack 應用程式";

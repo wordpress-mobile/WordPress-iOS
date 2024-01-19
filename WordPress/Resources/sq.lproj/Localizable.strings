@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-04 11:04:02+0000 */
+/* Translation-Revision-Date: 2024-01-18 07:27:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: sq_AL */
@@ -1941,6 +1941,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "S’u lidh dot te sajt WordPress. S’ka sajt WordPress të vlefshëm në këtë adresë. Kontrolloni adresën (URL) të sajtit që dhatë.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "S’u bë dot lidhja. Te shërbyesi mungon metodë XML-RPC e domosdoshme. Ju lutemi, për të zgjidhur këtë problem, lidhuni me shërbimin tuaj të strehimit.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "S’u bë dot lidhja. Morëm një gabim 403, kur u provua të hyhej në pikëmbarim XMLRPC të sajtit tuaj. Kjo i duhet aplikacionit, që të mund të komunikojë me sajtin tuaj. Ju lutemi, lidhuni me shërbimin strehues tuaj që ta zgjidhni këtë problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "S’u bë dot lidhja. Strehuesi juaj i bllokon kërkesat POST, dhe aplikacionit i duhen që të mund të komunikojë me sajtin tuaj. Ju lutemi, lidhuni me shërbimin strehues tuaj që ta zgjidhni këtë problem.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "S’u ngarkuan dot etiketa.";
 
@@ -3006,6 +3015,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Lloj kartele";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Lloj kartelash i pambuluar si kartelë media.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Televizion";
 
@@ -3115,6 +3127,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Madhësi Shkronjash";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Madhësi Shkronjash, %1$s";
 
 /* Food site intent topic */
 "Food" = "Ushqim";
@@ -4495,6 +4510,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Lyp Përditësim";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Humbi lidhja me rrjetin, po punohet pa u lidhur";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Lidhja me rrjetin u rivendos";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "E re";
@@ -5990,6 +6011,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Shitore Bankëprovë";
 
 /* Menus save button title
    Save Action
@@ -8699,6 +8723,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Punoni Me Ne";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Punim i Palidhur";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Hartë e botës që tregon parje sipas vendesh.";
 
@@ -8843,6 +8870,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Keni 1 sajt WordPress të fshehur.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Me planin tuaj keni të përfshirë një regjistrim përkatësie falas për një vit.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Keni përmirësime me pagesë aktive në sajtin tuaj. Ju lutemi, para se të fshini sajtin, anulojini përmirësimet tuaja.";
@@ -9262,6 +9292,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Vlerësojeni si të dobishme";
 
+/* Title for the checkout view */
+"checkout.title" = "Përfundim Blerjeje";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "koment";
 
@@ -9412,12 +9445,45 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Shihni statistika";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Statistika";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL CSS-je Lexuesi";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL Parazgjedhje";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Shtoni këtu një URL CSS-je vetjake që të ngarkohet në Lexues. Nëse xhironi Calypso-n lokalisht, kjo mund të ishte diçka si: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Vlerë e Tanishme";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Vlerë Parazgjedhje";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Formësim Së Largëti";
+
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Formësim Së Largëti";
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Hiqe Turin e Tanishëm";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Nisje e Shpejtë";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Rregullime";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Zhvillues";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Përmbledhje Javore";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Fshihe këtë";
@@ -9436,6 +9502,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "E skaduar";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "S’skadon kurrë";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Rinovohet më";
@@ -9529,6 +9598,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "në vit";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Ndihmë";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Përkatësitë e blera në këtë sajt do t’i ridrejtojnë vizitorët te %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Kërkoni te përkatësitë";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Përfundim Blerjeje";
@@ -10395,6 +10473,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numër telefoni";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Plane";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Krijuar %@";
 
@@ -10826,6 +10907,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "EmriiSajtitTuaj.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Përkatësi të tjera për %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Përkatësia juaj Falas WordPress.com";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Merrni një regjistrim përkatësie falas për një vit, ose kaloni në çfarëdo plani vjetor me pagesë.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Merrni përkatësinë tuaj";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Adresa juaj parësore e sajtit është ajo që vizitorët do të shohin në shtyllën e tyre të adresave, kur të vizitojnë sajtin tuaj.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Përkatësia parësore";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Thjesht kërko për një përkatësi";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Përmirësojeni me një plan";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Përkatësi";
@@ -11339,6 +11444,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sajte, sajt, blogje, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Diç shkoi ters, ju lutemi, riprovoni më vonë.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Kaloni te aplikacioni Jetpack";
