@@ -1,6 +1,5 @@
 import UIKit
 import DesignSystem
-import Inject
 
 final class StatsTrafficBarChartCell: UITableViewCell {
 
@@ -84,7 +83,7 @@ private extension StatsTrafficBarChartCell {
         let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
                                                               styling: chartStyling[filterSelectedIndex],
                                                               analyticsGranularity: period?.analyticsGranularity)
-        let chartView =  Inject.ViewHost(StatsTrafficBarChartView(configuration: configuration))
+        let chartView = StatsTrafficBarChartView(configuration: configuration)
 
         resetChartContainerView()
         chartView.translatesAutoresizingMaskIntoConstraints = false
