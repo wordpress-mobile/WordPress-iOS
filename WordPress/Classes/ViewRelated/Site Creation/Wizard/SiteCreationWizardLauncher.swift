@@ -7,7 +7,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     let steps: [SiteCreationStep] = {
-        if RemoteFeatureFlag.plansInSiteCreation.enabled() {
+        if RemoteFeatureFlag.plansInSiteCreation.enabled() && !AppConfiguration.isWordPress {
             return [
                 .intent,
                 .design,
