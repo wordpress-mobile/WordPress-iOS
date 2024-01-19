@@ -161,7 +161,7 @@ private final class StatsTrafficBarChartDataTransformer {
 private struct DefaultStatsTrafficBarChartStyling: TrafficBarChartStyling {
     let primaryBarColor: UIColor = UIColor(red: 6/255, green: 116/255, blue: 196/255, alpha: 1.0)
     let labelColor: UIColor = UIColor.DS.Foreground.secondary
-    let lineColor: UIColor = UIColor.DS.Foreground.quaternary
+    let lineColor: UIColor = UIColor.DS.Foreground.tertiary
     let xAxisValueFormatter: AxisValueFormatter
     let yAxisValueFormatter: AxisValueFormatter = StatsTrafficVerticalAxisFormatter()
 }

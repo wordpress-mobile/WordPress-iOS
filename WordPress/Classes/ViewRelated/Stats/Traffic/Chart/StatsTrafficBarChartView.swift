@@ -12,14 +12,13 @@ class StatsTrafficBarChartView: BarChartView {
 
     private struct Constants {
         static let intrinsicHeight          = CGFloat(175)
-        static let presentationDelay        = TimeInterval(0.01)
         static let topOffsetSansLegend      = Length.Padding.single
         static let extraRightOffset         = Length.Padding.single
-        static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
-        static let barWidth                 = 0.9 // Proportional to full width
+        static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
         static let labelFont                = UIFont.systemFont(ofSize: 10)
+        static let tickLineHeight           = CGFloat(8)
     }
 
     static let emptyChartBarHeight = 0.01
@@ -59,6 +58,12 @@ class StatsTrafficBarChartView: BarChartView {
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: Constants.intrinsicHeight)
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        addXAxisTicks()
+    }
 }
 
 // MARK: - Private behavior
@@ -71,6 +76,7 @@ private extension StatsTrafficBarChartView {
 
         configureXAxis()
         configureYAxis()
+        addXAxisTicks()
     }
 
     func configureAndPopulateData() {
@@ -124,14 +130,16 @@ private extension StatsTrafficBarChartView {
     }
 
     func configureXAxis() {
-        xAxis.drawAxisLineEnabled = false
+        xAxis.drawAxisLineEnabled = true
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
         xAxis.labelFont = Constants.labelFont
         xAxis.labelTextColor = .init(color: styling.labelColor)
         xAxis.valueFormatter = styling.xAxisValueFormatter
-        xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.avoidFirstLastClippingEnabled = false
+        xAxis.axisLineWidth = Constants.tickLineHeight
+        xAxis.axisLineColor = styling.lineColor
     }
 
     func configureYAxis() {
@@ -166,6 +174,44 @@ private extension StatsTrafficBarChartView {
         applyStyling()
         prepareForVoiceOver()
         configureAndPopulateData()
+    }
+
+
+    /// Adds X axis ticks below each bar
+    func addXAxisTicks() {
+        guard
+            let dataSets = barChartData.barChartData.dataSets as? [BarChartDataSet],
+            let dataSet = dataSets.first
+        else {
+            return
+        }
+
+        // valueToPixelMatrix allows to convert relative x-axis bar position into pixels
+        guard let valueToPixelMatrix = xAxisRenderer.transformer?.valueToPixelMatrix else { return }
+
+        // Axis line dash lengths array describes
+        // line length in px in odd array position and
+        // spacing in px after the line in even array position
+        var axisLineDashLengths: [CGFloat] = []
+
+        var previousValue: CGFloat?
+        for i in 0...dataSet.count {
+            // Position in px of chart bar of provided index
+            let position = CGPoint(x: CGFloat(i), y: 0)
+                .applying(valueToPixelMatrix)
+
+            if i == 0 {
+                // Do not show any tick at the start of x axis and shift to the first chart bar position
+                axisLineDashLengths.append(contentsOf: [0, position.x])
+            } else if let previousValue {
+                // Add a tick and shift to the next position
+                axisLineDashLengths.append(contentsOf: [Constants.gridLineWidth, position.x - previousValue - Constants.gridLineWidth])
+            }
+
+            previousValue = position.x
+        }
+
+        xAxis.axisLineDashLengths = axisLineDashLengths
     }
 }
 
