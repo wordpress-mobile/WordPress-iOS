@@ -13,7 +13,7 @@ class StatsTrafficBarChartView: BarChartView {
     private struct Constants {
         static let intrinsicHeight          = CGFloat(175)
         static let topOffsetSansLegend      = Length.Padding.single
-        static let extraRightOffset         = Length.Padding.single
+        static let trailingOffset           = Length.Padding.large
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
@@ -129,7 +129,6 @@ private extension StatsTrafficBarChartView {
 
     func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
-        extraRightOffset = Constants.extraRightOffset
     }
 
     func configureXAxis() {
@@ -154,10 +153,14 @@ private extension StatsTrafficBarChartView {
         rightAxis.axisMinimum = 0.0
         rightAxis.drawLabelsEnabled = true
         rightAxis.labelFont = Constants.labelFont
+        rightAxis.labelPosition = .outsideChart
+        rightAxis.labelAlignment = .left
         rightAxis.labelTextColor = .init(color: styling.labelColor)
         rightAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         rightAxis.valueFormatter = styling.yAxisValueFormatter
         extraTopOffset = Constants.topOffsetSansLegend
+        rightAxis.minWidth = Constants.trailingOffset
+        rightAxis.maxWidth = Constants.trailingOffset
     }
 
     func configureYAxisMaximum() {
