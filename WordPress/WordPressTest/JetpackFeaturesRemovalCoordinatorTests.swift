@@ -8,7 +8,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
     override func setUp() {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
-        let account = AccountBuilder(contextManager.mainContext).build()
+        let account = AccountBuilder(contextManager.mainContext).with(username: "test-account-JetpackFeaturesRemovalCoordinatorTests").build()
         UserSettings.defaultDotComUUID = account.uuid
     }
 
@@ -250,7 +250,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(phase, .one)
     }
 
-    func testSiteCreationPhaseTwo() {
+    func testSiteCreationPhaseTwo() throws {
         // Given
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
@@ -258,8 +258,9 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
         store.update(using: remote, waitOn: self)
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
-
         // Then
         XCTAssertEqual(phase, .two)
 
@@ -273,7 +274,29 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(phase, .two)
     }
 
-    func testSiteCreationPhaseTwoPrecedence() {
+    func testSiteCreationPhaseNormalWhenUserHasNoBlog() throws {
+        // Given
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+
+        // When
+        var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
+        let remote = MockFeatureFlagRemote(flags: flags)
+        store.update(using: remote, waitOn: self)
+        var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
+        // Then
+        XCTAssertEqual(phase, .normal)
+
+        // When
+        flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true, phaseSelfHosted: false)
+        remote.flags = flags
+        store.update(using: remote, waitOn: self)
+        phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
+
+        // Then
+        XCTAssertEqual(phase, .normal)
+    }
+
+    func testSiteCreationPhaseTwoPrecedence() throws {
         // Given
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
@@ -281,6 +304,8 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         var flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
         store.update(using: remote, waitOn: self)
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
