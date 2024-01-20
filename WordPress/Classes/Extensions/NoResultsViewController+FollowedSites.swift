@@ -9,7 +9,7 @@ extension NoResultsViewController {
         )
         static let noFollowedSitesSubtitle = NSLocalizedString(
             "reader.no.blogs.subtitle",
-            value: "Subscribe to blogs in For You and you’ll see their latest posts here. Or search for a blog that you like already.",
+            value: "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.",
             comment: "Subtitle for the no followed blogs result screen"
         )
         static let noFollowedSitesButtonTitle = NSLocalizedString(
