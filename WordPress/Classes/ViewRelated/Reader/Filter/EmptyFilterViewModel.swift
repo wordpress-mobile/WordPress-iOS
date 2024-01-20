@@ -69,7 +69,7 @@ struct EmptyFilterViewModel {
         )
         static let blogBody = NSLocalizedString(
             "reader.filterSheet.empty.blogs.body",
-            value: "Subscribe to blogs in For You and you’ll see their latest posts here. Or search for a blog that you like already.",
+            value: "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.",
             comment: "Body text for an empty filter sheet on the Reader for blogs"
         )
         static let tagsSuggestedButton = NSLocalizedString(
