@@ -63,14 +63,14 @@ PODS:
   - WordPress-Aztec-iOS (1.19.9)
   - WordPress-Editor-iOS (1.19.9):
     - WordPress-Aztec-iOS (= 1.19.9)
-  - WordPressAuthenticator (8.0.1):
+  - WordPressAuthenticator (9.0.0):
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
-    - WordPressKit (~> 9.0.0)
+    - WordPressKit (~> 11.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (9.0.3):
+  - WordPressKit (11.0.0):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -119,8 +119,8 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (>= 8.0.1, ~> 8.0)
-  - WordPressKit (>= 9.0.3, ~> 9.0)
+  - WordPressAuthenticator (~> 9.0)
+  - WordPressKit (~> 11.0)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `47c5cbfc781b6aa7f577fbc413236c739e4332b4`)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
@@ -129,6 +129,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -157,7 +158,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -217,8 +217,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: fd2e1d340680faffffd9d675fc2df5ed19e26ea2
-  WordPressKit: 4d41fd70b83876ee5db4617868767b33f3ae1bc4
+  WordPressAuthenticator: e3c18f1b63222742a565fea3faf1a55a144ce8c4
+  WordPressKit: 57712035a44595cf49b0c9f0ad5b8b899a8cbe6a
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -231,6 +231,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 9ed23c1a12abf7621d4b831f7aebac740c8fab7d
+PODFILE CHECKSUM: 279f947a0d32a604be76b08f7eaa40d45c77ca51
 
 COCOAPODS: 1.14.2

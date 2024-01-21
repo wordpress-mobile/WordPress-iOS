@@ -13,6 +13,7 @@
 * [**] Block Editor: Media uploads that failed due to lack of internet connectivity automatically retry once a connection is re-established [https://github.com/wordpress-mobile/WordPress-iOS/pull/22238]
 * [**] Block Editor: Manually retrying a single failed media upload will retry all failed media uploads in a post [https://github.com/wordpress-mobile/WordPress-iOS/pull/22240]
 * [*] [internal] Drop iOS 14 Support: Remove deprecated UIDocumentPickerViewController API [#22286]
+* [***] [internal] Refactor WP.com sign in API requests [#22421]
 * [*] Add In-App Feedback Prompt. [#22050]
 
 24.0
