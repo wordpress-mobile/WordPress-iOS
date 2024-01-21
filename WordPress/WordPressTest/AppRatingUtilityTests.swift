@@ -5,14 +5,16 @@ import OHHTTPStubs
 class AppRatingUtilityTests: XCTestCase {
     fileprivate var defaults: UserDefaults!
     fileprivate var utility: AppRatingUtility!
+    private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
 
     override func setUp() {
         let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)
         self.defaults = UserDefaults()
-        self.utility = AppRatingUtility(defaults: self.defaults)
+        self.utility = AppRatingUtility(defaults: self.defaults, featureFlagStore: remoteFeatureFlagsStore)
         self.utility.setVersion("1.0")
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
+        remoteFeatureFlagsStore.inAppRating = true
         super.setUp()
     }
 
@@ -174,88 +176,6 @@ class AppRatingUtilityTests: XCTestCase {
 
         self.utility.incrementSignificantEvent()
         XCTAssertTrue(self.utility.shouldPromptForAppReview())
-    }
-
-    func testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesEverythingIsEnabled() {
-        self.utility.register(section: "notifications", significantEventCount: 1)
-        self.utility.setVersion("4.7")
-        self.utility.incrementSignificantEvent(section: "notifications")
-        XCTAssertTrue(self.utility.shouldPromptForAppReview(section: "notifications"))
-
-        self.stubAppReviewCheckWithFile("app-review-prompt-all-enabled.json")
-        let expect = self.expectation(description: "remote check")
-        self.utility.checkIfAppReviewPromptsHaveBeenDisabled(success: {() -> Void in
-            expect.fulfill()
-        }, failure: {() -> Void in
-            XCTAssert(false, "This callback shouldn't get called")
-            expect.fulfill()
-        })
-        self.waitForExpectations(timeout: 2.0, handler: nil)
-
-        // We shouldn't disable the check when the remote check indicates everything is enabled
-        XCTAssertTrue(self.utility.shouldPromptForAppReview(section: "notifications"))
-    }
-
-    func testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesNotificationsAreDisabled() {
-        self.utility.register(section: "notifications", significantEventCount: 1)
-        self.utility.setVersion("4.7")
-        self.utility.incrementSignificantEvent(section: "notifications")
-        XCTAssertTrue(self.utility.shouldPromptForAppReview(section: "notifications"))
-
-        self.stubAppReviewCheckWithFile("app-review-prompt-notifications-disabled.json")
-        let expect = self.expectation(description: "remote check")
-        self.utility.checkIfAppReviewPromptsHaveBeenDisabled(success: {() -> Void in
-            expect.fulfill()
-        }, failure: {() -> Void in
-            XCTAssert(false, "This callback shouldn't get called")
-            expect.fulfill()
-        })
-        self.waitForExpectations(timeout: 2.0, handler: nil)
-
-        // We should disable the check when the remote check indicates notifications is disabled
-        XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
-    }
-
-    func testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesEverythingIsDisabled() {
-        self.utility.register(section: "notifications", significantEventCount: 1)
-        self.utility.setVersion("4.7")
-        self.utility.incrementSignificantEvent(section: "notifications")
-        XCTAssertTrue(self.utility.shouldPromptForAppReview(section: "notifications"))
-
-        self.stubAppReviewCheckWithFile("app-review-prompt-global-disable.json")
-        let expect = self.expectation(description: "remote check")
-        self.utility.checkIfAppReviewPromptsHaveBeenDisabled(success: {() -> Void in
-            expect.fulfill()
-        }, failure: {() -> Void in
-            XCTAssert(false, "This callback shouldn't get called")
-            expect.fulfill()
-        })
-        self.waitForExpectations(timeout: 2.0, handler: nil)
-
-        // We should disable the check when the remote check indicates notifications is disabled
-        XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
-    }
-
-    func testAppReviewPromptRemoteDisableForGlobalPromptWhenRemoteCheckIndicatesEverythingIsDisabled() {
-        self.utility.register(section: "notifications", significantEventCount: 1)
-        self.utility.systemWideSignificantEventCountRequiredForPrompt = 2
-        self.utility.setVersion("4.7")
-        self.utility.incrementSignificantEvent(section: "notifications")
-        self.utility.incrementSignificantEvent()
-        XCTAssertTrue(self.utility.shouldPromptForAppReview())
-
-        self.stubAppReviewCheckWithFile("app-review-prompt-global-disable.json")
-        let expect = self.expectation(description: "remote check")
-        self.utility.checkIfAppReviewPromptsHaveBeenDisabled(success: {() -> Void in
-            expect.fulfill()
-        }, failure: {() -> Void in
-            XCTAssert(false, "This callback shouldn't get called")
-            expect.fulfill()
-        })
-        self.waitForExpectations(timeout: 5.0, handler: nil)
-
-        // We should disable the check when the remote check indicates notifications is disabled
-        XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
     }
 
     func testAppReviewNotPromptedSystemWideWhenDisabledLocally() {

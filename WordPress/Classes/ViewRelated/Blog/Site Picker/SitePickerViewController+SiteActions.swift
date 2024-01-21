@@ -65,7 +65,7 @@ extension SitePickerViewController {
         }
         let viewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         if let popover = viewController.popoverPresentationController {
-            popover.barButtonItem = navigationItem.rightBarButtonItem
+            popover.sourceView = blogDetailHeaderView.titleView.siteActionButton
         }
         present(viewController, animated: true, completion: nil)
         WPAnalytics.trackEvent(.mySiteHeaderShareSiteTapped)
