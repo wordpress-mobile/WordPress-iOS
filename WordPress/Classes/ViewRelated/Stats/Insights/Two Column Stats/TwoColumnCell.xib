@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -87,6 +87,7 @@
                     <constraint firstAttribute="trailing" secondItem="Xi5-qb-AP6" secondAttribute="trailing" id="CoM-nd-zod"/>
                     <constraint firstItem="Cm8-Qw-O9e" firstAttribute="top" secondItem="Xi5-qb-AP6" secondAttribute="bottom" id="Gh9-Ce-AED"/>
                     <constraint firstAttribute="trailing" secondItem="Cm8-Qw-O9e" secondAttribute="trailing" id="PzX-nO-5NH"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="53U-Zk-ZGa" secondAttribute="bottom" constant="16" id="dAN-gY-FfT"/>
                     <constraint firstItem="Xi5-qb-AP6" firstAttribute="top" secondItem="NTK-eu-Zrd" secondAttribute="bottom" id="iPV-uy-osI"/>
                     <constraint firstAttribute="trailing" secondItem="NTK-eu-Zrd" secondAttribute="trailing" id="jHo-RQ-WZe"/>
                     <constraint firstItem="Xi5-qb-AP6" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="qSe-fz-ZVi"/>
@@ -95,6 +96,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="5pF-Tt-Ldy"/>
             <connections>
+                <outlet property="bottomConstraint" destination="dAN-gY-FfT" id="b6R-58-irc"/>
                 <outlet property="bottomSeparatorLine" destination="Cm8-Qw-O9e" id="aJ6-i9-r5U"/>
                 <outlet property="rowsStackView" destination="53U-Zk-ZGa" id="T8V-zp-KCA"/>
                 <outlet property="topConstraint" destination="iPV-uy-osI" id="l7A-y2-I2i"/>
