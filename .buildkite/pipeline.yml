@@ -13,7 +13,7 @@ steps:
   - group: "Linters"
     steps:
       - label: ':swift: SwiftLint'
-        command: .buildkite/commands/swiftlint.sh
+        command: .buildkite/commands/swiftlint.sh --strict
         agents:
           queue: default
         plugins:
