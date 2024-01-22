@@ -1,3 +1,7 @@
+24.2
+-----
+
+
 24.1
 -----
 * [*] Block Editor: Fix missing custom color indicator for custom gradients [https://github.com/WordPress/gutenberg/pull/57605]
