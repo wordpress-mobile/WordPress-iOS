@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 
 class StatsBaseCell: UITableViewCell {
 
@@ -96,7 +97,7 @@ class StatsBaseCell: UITableViewCell {
             topConstraint.isActive = false
 
             // Create a new constraint between the stackView containing the heading label and the first item of the existing top constraint
-            headingBottomConstraint = stackView.bottomAnchor.constraint(equalTo: anchor, constant: -(Metrics.padding + constant))
+            headingBottomConstraint = stackView.bottomAnchor.constraint(equalTo: anchor, constant: -(Metrics.bottomSpacing + constant))
             headingBottomConstraint?.isActive = true
         }
     }
@@ -184,10 +185,11 @@ class StatsBaseCell: UITableViewCell {
     }
 
     enum Metrics {
-        static let padding: CGFloat = 16.0
-        static let stackSpacing: CGFloat = 8.0
-        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -8.0, bottom: 0, right: 8.0)
-        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: 8.0, bottom: 0, right: -8.0)
+        static let padding: CGFloat = Length.Padding.double
+        static let bottomSpacing: CGFloat = Length.Padding.split
+        static let stackSpacing: CGFloat = Length.Padding.single
+        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -Length.Padding.single, bottom: 0, right: Length.Padding.single)
+        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: Length.Padding.single, bottom: 0, right: -Length.Padding.single)
     }
 
     private enum LocalizedText {
