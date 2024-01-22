@@ -1,5 +1,6 @@
 import Foundation
 import Gridicons
+import DesignSystem
 
 extension WPStyleGuide {
     // MARK: - Styles Used by Stats
@@ -84,6 +85,16 @@ extension WPStyleGuide {
         static func configureLabelAsCellRowTitle(_ label: UILabel) {
             label.textColor = defaultTextColor
             label.numberOfLines = 0
+        }
+
+        static func configureLabelAsCellValueTitle(_ label: UILabel) {
+            label.font = TextStyle.footnote.uiFont
+            label.textColor = UIColor.DS.Foreground.secondary
+        }
+
+        static func configureLabelAsCellValue(_ label: UILabel) {
+            label.font = TextStyle.heading2.uiFont.semibold()
+            label.textColor = UIColor.DS.Foreground.primary
         }
 
         static func configureLabelAsData(_ label: UILabel) {
@@ -229,7 +240,7 @@ extension WPStyleGuide {
         static let separatorColor = UIColor.divider
         static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let verticalSeparatorColor = UIColor.neutral(.shade5)
+        static let verticalSeparatorColor = UIColor.DS.Foreground.quaternary
 
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
