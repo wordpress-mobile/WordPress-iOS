@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - UIKit.UIFont: TextStyle
-extension TextStyle {
+public extension TextStyle {
     var uiFont: UIFont {
         switch self {
         case .heading1:
