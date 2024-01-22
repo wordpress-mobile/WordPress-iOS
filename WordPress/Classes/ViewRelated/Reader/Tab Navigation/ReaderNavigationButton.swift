@@ -30,7 +30,11 @@ struct ReaderNavigationButton: View {
             if let selectedItem = viewModel.selectedItem {
                 menuLabel(for: selectedItem)
             }
-        }.buttonStyle(PlainButtonStyle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .onTapGesture {
+            WPAnalytics.track(.readerDropdownOpened)
+        }
     }
 
     private func menuLabel(for item: ReaderTabItem) -> some View {
@@ -55,8 +59,10 @@ struct ReaderNavigationButton: View {
 
     private func menuButton(for item: ReaderTabItem) -> some View {
         let index = viewModel.tabItems.firstIndex(of: item) ?? 0
+        let eventId = item.dropdownEventId
         return Button {
             viewModel.showTab(at: index)
+            WPAnalytics.track(.readerDropdownItemTapped, properties: ["id": eventId])
         } label: {
             HStack {
                 Text(item.title)
@@ -97,6 +103,32 @@ private extension ReaderTabItem {
             return Image("reader-menu-star-outline")
         default:
             return nil
+        }
+    }
+
+    var dropdownEventId: String {
+        if let topic = content.topic as? ReaderTeamTopic,
+           topic.slug == ReaderTeamTopic.a8cSlug {
+            return "a8c"
+        }
+
+        if content.topic is ReaderListTopic {
+            return "list"
+        }
+
+        if content.type == .saved {
+            return "saved"
+        }
+
+        switch content.topicType {
+        case .discover:
+            return "discover"
+        case .following:
+            return "following"
+        case .likes:
+            return "liked"
+        default:
+            return "unknown"
         }
     }
 
