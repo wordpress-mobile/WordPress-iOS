@@ -3,7 +3,6 @@ import SwiftUI
 struct ReaderNavigationButton: View {
 
     @ObservedObject var viewModel: ReaderTabViewModel
-    @State var selectedItem: ReaderTabItem
 
     var body: some View {
         Menu {
@@ -28,16 +27,18 @@ struct ReaderNavigationButton: View {
                 }
             }
         } label: {
-            menuLabel
+            if let selectedItem = viewModel.selectedItem {
+                menuLabel(for: selectedItem)
+            }
         }.buttonStyle(PlainButtonStyle())
     }
 
-    var menuLabel: some View {
+    private func menuLabel(for item: ReaderTabItem) -> some View {
         HStack(spacing: 4.0) {
-            selectedItem.image
+            item.image
                 .frame(width: 24.0, height: 24.0)
                 .foregroundColor(Colors.primary)
-            Text(selectedItem.title)
+            Text(item.title)
                 .foregroundStyle(Colors.primary)
                 .font(.subheadline.weight(.semibold))
                 .frame(minHeight: 24.0)
@@ -46,7 +47,7 @@ struct ReaderNavigationButton: View {
                 .foregroundColor(Colors.primary)
         }
         .padding(.vertical, 6.0)
-        .padding(.leading, selectedItem.image == nil ? 16.0 : 8.0)
+        .padding(.leading, item.image == nil ? 16.0 : 8.0)
         .padding(.trailing, 12.0)
         .background(Colors.background)
         .clipShape(Capsule())
@@ -55,7 +56,6 @@ struct ReaderNavigationButton: View {
     private func menuButton(for item: ReaderTabItem) -> some View {
         let index = viewModel.tabItems.firstIndex(of: item) ?? 0
         return Button {
-            selectedItem = item
             viewModel.showTab(at: index)
         } label: {
             HStack {

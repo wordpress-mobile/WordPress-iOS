@@ -22,6 +22,9 @@ import WordPressFlux
     /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
+    var selectedItem: ReaderTabItem? {
+        tabItems[safe: selectedIndex]
+    }
 
     /// completion handler for a tap on a tab on the toolbar
     var setContent: ((ReaderContent) -> Void)?

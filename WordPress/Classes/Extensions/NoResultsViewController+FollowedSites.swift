@@ -2,11 +2,21 @@ import Foundation
 
 extension NoResultsViewController {
     private struct Constants {
-        static let noFollowedSitesTitle = NSLocalizedString("No followed sites", comment: "Title for the no followed sites result screen")
-        static let noFollowedSitesSubtitle = NSLocalizedString("When you follow sites, you’ll see their content here.", comment: "Subtitle for the no followed sites result screen")
-        static let noFollowedSitesButtonTitle = NSLocalizedString("Discover Sites", comment: "Title for button on the no followed sites result screen")
-
-        static let noFollowedSitesImage = "wp-illustration-following-empty-results"
+        static let noFollowedSitesTitle = NSLocalizedString(
+            "reader.no.blogs.title",
+            value: "No blog subscriptions",
+            comment: "Title for the no followed blogs result screen"
+        )
+        static let noFollowedSitesSubtitle = NSLocalizedString(
+            "reader.no.blogs.subtitle",
+            value: "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.",
+            comment: "Subtitle for the no followed blogs result screen"
+        )
+        static let noFollowedSitesButtonTitle = NSLocalizedString(
+            "reader.no.blogs.button",
+            value: "Discover Blogs",
+            comment: "Title for button on the no followed blogs result screen"
+        )
     }
 
     class func noFollowedSitesController(showActionButton showButton: Bool) -> NoResultsViewController {
@@ -23,11 +33,23 @@ extension NoResultsViewController {
                              buttonTitle: showButton ? Constants.noFollowedSitesButtonTitle : nil,
                              attributedSubtitle: subtitleText,
                              attributedSubtitleConfiguration: { (attributedText: NSAttributedString) -> NSAttributedString? in
-                                return subtitleText },
-                             image: Constants.noFollowedSitesImage)
-        controller.labelStackViewSpacing = 12
+                                return subtitleText })
+        controller.hideImageView()
+        controller.labelStackViewSpacing = 8
         controller.labelButtonStackViewSpacing = 18
+        controller.loadViewIfNeeded()
+        controller.setupReaderButtonStyles()
 
         return controller
     }
+}
+
+extension NoResultsViewController {
+
+    func setupReaderButtonStyles() {
+        actionButton.primaryNormalBackgroundColor = .text
+        actionButton.primaryTitleColor = .systemBackground
+        actionButton.primaryHighlightBackgroundColor = .text
+    }
+
 }

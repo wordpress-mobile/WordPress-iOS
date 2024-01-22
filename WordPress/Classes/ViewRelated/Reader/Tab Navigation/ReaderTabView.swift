@@ -10,8 +10,7 @@ class ReaderTabView: UIView {
         if !viewModel.itemsLoaded {
             viewModel.fetchReaderMenu()
         }
-        let view = UIView.embedSwiftUIView(ReaderNavigationMenu(viewModel: viewModel,
-                                                                selectedItem: viewModel.tabItems[safe: viewModel.selectedIndex]))
+        let view = UIView.embedSwiftUIView(ReaderNavigationMenu(viewModel: viewModel))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -241,6 +240,13 @@ extension ReaderTabView: ReaderNavigationMenuDelegate {
         if !isMenuHidden && !isTargetContentNearTop && velocity.y > 0.5 {
             updateMenuDisplay(hidden: true)
         }
+    }
+
+    func didTapDiscoverBlogs() {
+        guard let discoverIndex else {
+            return
+        }
+        viewModel.showTab(at: discoverIndex)
     }
 
 }

@@ -119,8 +119,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: WPStyleGuide.serifFontForTextStyle(.title3),
-
+            .font: UIFont.preferredFont(forTextStyle: .title3).semibold(),
         ]
     }
 
@@ -130,9 +129,8 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: fontForTextStyle(.subheadline),
-            .foregroundColor: UIColor(light: .muriel(color: .gray, .shade40),
-                                      dark: .muriel(color: .gray, .shade20))
+            .font: UIFont.preferredFont(forTextStyle: .callout),
+            .foregroundColor: UIColor.secondaryLabel
         ]
     }
 
