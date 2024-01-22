@@ -51,7 +51,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         settingsPresenter.presentExpectation = expectation(description: "Settings screen was presented")
         // When
         let controller = UIViewController()
-        viewModel.presentManage(from: controller)
+        viewModel.presentManage(filter: makeFilterProvider(), from: controller)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
