@@ -480,10 +480,10 @@ private extension SiteStatsPeriodViewModel {
 
     func clicksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodClicks))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                  dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
+                                                 statSection: StatSection.periodClicks,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
