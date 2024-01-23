@@ -83,9 +83,6 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
-
-        var tableRows = [ImmuTableRow]()
-
         if !store.containsCachedData && store.fetchingOverviewHasFailed {
             return ImmuTable.Empty
         }
@@ -103,7 +100,9 @@ class SiteStatsPeriodViewModel: Observable {
                     StatsGhostTopImmutableRow()]
         }
 
-        tableRows.append(contentsOf: blocks(for: .summary,
+        var sections: [ImmuTableSection] = []
+
+        sections.append(.init(rows: blocks(for: .summary,
                                             type: .period,
                                             status: store.summaryStatus,
                                             checkingCache: { [weak self] in
@@ -114,8 +113,8 @@ class SiteStatsPeriodViewModel: Observable {
             }, loading: {
                 return [PeriodEmptyCellHeaderRow(),
                         StatsGhostChartImmutableRow()]
-        }, error: summaryErrorBlock))
-        tableRows.append(contentsOf: blocks(for: .topPostsAndPages,
+        }, error: summaryErrorBlock)))
+        sections.append(.init(rows: blocks(for: .topPostsAndPages,
                                             type: .period,
                                             status: store.topPostsAndPagesStatus,
                                             block: { [weak self] in
@@ -124,8 +123,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodPostsAndPages)
             }, error: {
                 return errorBlock(.periodPostsAndPages)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topReferrers,
+        })))
+        sections.append(.init(rows: blocks(for: .topReferrers,
                                             type: .period,
                                             status: store.topReferrersStatus,
                                             block: { [weak self] in
@@ -134,8 +133,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodReferrers)
             }, error: {
                 return errorBlock(.periodReferrers)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topClicks,
+        })))
+        sections.append(.init(rows: blocks(for: .topClicks,
                                             type: .period,
                                             status: store.topClicksStatus,
                                             block: { [weak self] in
@@ -144,8 +143,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodClicks)
             }, error: {
                 return errorBlock(.periodClicks)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topAuthors,
+        })))
+        sections.append(.init(rows: blocks(for: .topAuthors,
                                             type: .period,
                                             status: store.topAuthorsStatus,
                                             block: { [weak self] in
@@ -154,8 +153,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodAuthors)
             }, error: {
                 return errorBlock(.periodAuthors)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topCountries,
+        })))
+        sections.append(.init(rows: blocks(for: .topCountries,
                                             type: .period,
                                             status: store.topCountriesStatus,
                                             block: { [weak self] in
@@ -164,8 +163,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodCountries)
             }, error: {
                 return errorBlock(.periodCountries)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topSearchTerms,
+        })))
+        sections.append(.init(rows: blocks(for: .topSearchTerms,
                                             type: .period,
                                             status: store.topSearchTermsStatus,
                                             block: { [weak self] in
@@ -174,8 +173,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodSearchTerms)
             }, error: {
                 return errorBlock(.periodSearchTerms)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topPublished,
+        })))
+        sections.append(.init(rows: blocks(for: .topPublished,
                                             type: .period,
                                             status: store.topPublishedStatus,
                                             block: { [weak self] in
@@ -184,8 +183,8 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodPublished)
             }, error: {
                 return errorBlock(.periodPublished)
-        }))
-        tableRows.append(contentsOf: blocks(for: .topVideos,
+        })))
+        sections.append(.init(rows: blocks(for: .topVideos,
                                             type: .period,
                                             status: store.topVideosStatus,
                                             block: { [weak self] in
@@ -194,9 +193,9 @@ class SiteStatsPeriodViewModel: Observable {
                 return loadingBlock(.periodVideos)
             }, error: {
                 return errorBlock(.periodVideos)
-        }))
+        })))
         if SiteStatsInformation.sharedInstance.supportsFileDownloads {
-            tableRows.append(contentsOf: blocks(for: .topFileDownloads,
+            sections.append(.init(rows: blocks(for: .topFileDownloads,
                                                 type: .period,
                                                 status: store.topFileDownloadsStatus,
                                                 block: { [weak self] in
@@ -205,12 +204,9 @@ class SiteStatsPeriodViewModel: Observable {
                     return loadingBlock(.periodFileDownloads)
                 }, error: {
                     return errorBlock(.periodFileDownloads)
-            }))
+            })))
         }
 
-        tableRows.append(TableFooterRow())
-
-        let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
         return ImmuTable(sections: sections)
     }
 
