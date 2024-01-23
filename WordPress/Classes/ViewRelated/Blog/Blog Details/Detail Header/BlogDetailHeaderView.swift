@@ -119,9 +119,9 @@ class BlogDetailHeaderView: UIView {
         assert(delegate != nil)
 
         if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
-            titleView.siteActionButton.showsMenuAsPrimaryAction = true
-            titleView.siteActionButton.menu = siteActionsMenu
-            titleView.siteActionButton.addAction(UIAction { _ in
+            titleView.siteSwitcherButton.menu = siteActionsMenu
+            titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
+            titleView.siteSwitcherButton.addAction(UIAction { _ in
                 WPAnalytics.trackEvent(.mySiteHeaderMoreTapped)
             }, for: .menuActionTriggered)
         }
@@ -214,7 +214,7 @@ extension BlogDetailHeaderView {
             let stackView = UIStackView(arrangedSubviews: [
                 siteIconView,
                 titleStackView,
-                siteActionButton
+                siteSwitcherButton
             ])
 
             stackView.alignment = .center
@@ -280,9 +280,9 @@ extension BlogDetailHeaderView {
             return button
         }()
 
-        let siteActionButton: UIButton = {
+        let siteSwitcherButton: UIButton = {
             let button = UIButton(frame: .zero)
-            let image = UIImage(named: "more-horizontal-mobile")?.withRenderingMode(.alwaysTemplate)
+            let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
 
             button.setImage(image, for: .normal)
             button.contentMode = .center
@@ -359,8 +359,8 @@ extension BlogDetailHeaderView {
 
         private func setupConstraintsForSiteSwitcher() {
             NSLayoutConstraint.activate([
-                siteActionButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
-                siteActionButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
+                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
             ])
         }
     }
