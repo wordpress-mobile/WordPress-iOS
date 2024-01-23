@@ -467,6 +467,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
     }()
 
     let dataRows: [StatsTotalRowData]
+    var statSection: StatSection? = nil
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
@@ -476,7 +477,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(dataRows: dataRows, siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+        cell.configure(dataRows: dataRows, statSection: statSection, siteStatsPeriodDelegate: siteStatsPeriodDelegate)
     }
 }
 
