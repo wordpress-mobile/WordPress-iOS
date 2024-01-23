@@ -91,6 +91,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         }
     }
 
+    // TODO: Replace with a new Date Picker
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
 

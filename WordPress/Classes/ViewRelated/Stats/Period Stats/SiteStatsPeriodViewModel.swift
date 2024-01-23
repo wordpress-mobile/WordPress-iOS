@@ -102,6 +102,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         var sections: [ImmuTableSection] = []
 
+        // TODO: Replace with a new Bar Chart
         sections.append(.init(rows: blocks(for: .summary,
                                             type: .period,
                                             status: store.summaryStatus,
@@ -114,6 +115,7 @@ class SiteStatsPeriodViewModel: Observable {
                 return [PeriodEmptyCellHeaderRow(),
                         StatsGhostChartImmutableRow()]
         }, error: summaryErrorBlock)))
+
         sections.append(.init(rows: blocks(for: .topPostsAndPages,
                                             type: .period,
                                             status: store.topPostsAndPagesStatus,
