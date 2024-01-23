@@ -438,10 +438,10 @@ private extension SiteStatsPeriodViewModel {
 
     func referrersTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodReferrers))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
+                                                 statSection: StatSection.periodReferrers,
                                                  siteStatsPeriodDelegate: periodDelegate,
                                                  siteStatsReferrerDelegate: referrerDelegate))
 
