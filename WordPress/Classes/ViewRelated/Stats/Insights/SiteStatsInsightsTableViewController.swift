@@ -138,8 +138,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [InsightCellHeaderRow.self,
-                ViewsVisitorsRow.self,
+        return [ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
