@@ -49,6 +49,10 @@ def wordpress_ui
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
+def gravatar
+  pod 'Gravatar', path: '../Gravatar-SDK-iOS', :testspecs => ['Tests']
+end
+
 def wordpress_kit
   pod 'WordPressKit', '~> 11.0'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
@@ -129,6 +133,7 @@ abstract_target 'Apps' do
   wordpress_kit
   wordpress_shared
   kanvas
+  gravatar
 
   # Production
 
