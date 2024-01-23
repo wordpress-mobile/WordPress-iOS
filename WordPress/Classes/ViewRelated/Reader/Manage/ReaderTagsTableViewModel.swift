@@ -65,7 +65,11 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
             return nil
         }
 
-        let title = NSLocalizedString("Discover more topics", comment: "Button title. Tapping shows the Follow Topics screen.")
+        let title = NSLocalizedString(
+            "reader.tags.discover.more.tags",
+            value: "Discover more tags",
+            comment: "Button title. Tapping shows the Subscribe to Tags screen."
+        )
         footer.actionButton.setTitle(title, for: .normal)
 
         footer.actionButtonHandler = { [weak self] in
@@ -96,15 +100,27 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for subscribing to a new tag.
     private func showAddTag() {
 
-        let placeholder = NSLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
+        let placeholder = NSLocalizedString(
+            "reader.tags.add.tag.placeholder",
+            value: "Add any tag",
+            comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe."
+        )
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
-        controller.title = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
+        controller.title = NSLocalizedString(
+            "reader.tags.add.tag.title",
+            value: "Add a Tag",
+            comment: "Title of a feature to add a new tag to the tags subscribed by the user."
+        )
         controller.onValueChanged = { [weak self] value in
             self?.follow(tagName: value)
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
-        controller.actionText = NSLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
+        controller.actionText = NSLocalizedString(
+            "reader.tags.add.tag.action",
+            value: "Add Tag",
+            comment: "Button Title. Tapping subscribes the user to a new tag."
+        )
         controller.onActionPress = { [weak self] in
             self?.dismissModal()
         }
@@ -121,10 +137,18 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for selecting topics to follow.
     private func showSelectInterests() {
         let configuration = ReaderSelectInterestsConfiguration(
-            title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
+            title: NSLocalizedString(
+                "reader.select.interests.title",
+                value: "Subscribe to tags",
+                comment: "Screen title. Reader select interests title label text."
+            ),
             subtitle: nil,
             buttonTitle: nil,
-            loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
+            loading: NSLocalizedString(
+                "reader.select.interests.loading",
+                value: "Subscribing to new tags...",
+                comment: "Label displayed to the user while loading their selected interests"
+            )
         )
 
         let topics = tableViewHandler.resultsController?.fetchedObjects as? [ReaderTagTopic] ?? []
