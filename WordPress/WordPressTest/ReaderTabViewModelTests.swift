@@ -3,43 +3,6 @@ import XCTest
 import WordPressFlux
 import CoreData
 
-
-class MockItemsStore: ItemsStore {
-    let changeDispatcher = Dispatcher<Void>()
-
-    var items: [ReaderTabItem] = [ReaderTabItem(ReaderContent(topic: nil, contentType: .saved))]
-
-    var newItems = [ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing))]
-
-    var getItemsExpectation: XCTestExpectation?
-
-    func getItems() {
-        items = newItems
-        getItemsExpectation?.fulfill()
-        emitChange()
-    }
-}
-
-class MockContentController: UIViewController, ReaderContentViewController {
-
-    var setContentExpectation: XCTestExpectation?
-
-    func setContent(_ content: ReaderContent) {
-        setContentExpectation?.fulfill()
-    }
-}
-
-class MockSettingsPresenter: ScenePresenter {
-
-    var presentExpectation: XCTestExpectation?
-
-    var presentedViewController: UIViewController?
-
-    func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        presentExpectation?.fulfill()
-    }
-}
-
 class ReaderTabViewModelTests: CoreDataTestCase {
 
     var makeContentControllerExpectation: XCTestExpectation?
@@ -156,6 +119,43 @@ class ReaderTabViewModelTests: CoreDataTestCase {
             }
         }
     }
+
+    // MARK: Persisted index
+
+    func testPersistedSelectedIndex() {
+        // Given
+        let expectedSelectedIndex = 1
+        viewModel.selectedIndex = expectedSelectedIndex
+        let getItemsExpectation = expectation(description: "Items were fetched")
+        store.getItemsExpectation = getItemsExpectation
+
+        // When
+        viewModel.onTabBarItemsDidChange { items, index in
+            XCTAssertEqual(index, expectedSelectedIndex)
+        }
+
+        // Then
+        viewModel.fetchReaderMenu()
+
+        wait(for: [getItemsExpectation], timeout: 1)
+    }
+
+    func testOutOfBoundsSelectedIndex() {
+        // Given
+        viewModel.selectedIndex = 99 // invalid, out-of-bounds index
+        let getItemsExpectation = expectation(description: "Items were fetched")
+        store.getItemsExpectation = getItemsExpectation
+
+        // When
+        viewModel.onTabBarItemsDidChange { items, index in
+            XCTAssertEqual(index, 0) // the index should reset to 0.
+        }
+
+        // Then
+        viewModel.fetchReaderMenu()
+
+        wait(for: [getItemsExpectation], timeout: 1)
+    }
 }
 
 
@@ -179,5 +179,43 @@ extension ReaderTabViewModelTests {
                        section: .sites) { completion in
             completion(.success([]))
         }
+    }
+}
+
+// MARK: - Mocks
+
+class MockItemsStore: ItemsStore {
+    let changeDispatcher = Dispatcher<Void>()
+
+    var items: [ReaderTabItem] = [ReaderTabItem(ReaderContent(topic: nil, contentType: .saved))]
+
+    var newItems = [ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing))]
+
+    var getItemsExpectation: XCTestExpectation?
+
+    func getItems() {
+        items = newItems
+        getItemsExpectation?.fulfill()
+        emitChange()
+    }
+}
+
+class MockContentController: UIViewController, ReaderContentViewController {
+
+    var setContentExpectation: XCTestExpectation?
+
+    func setContent(_ content: ReaderContent) {
+        setContentExpectation?.fulfill()
+    }
+}
+
+class MockSettingsPresenter: ScenePresenter {
+
+    var presentExpectation: XCTestExpectation?
+
+    var presentedViewController: UIViewController?
+
+    func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        presentExpectation?.fulfill()
     }
 }
