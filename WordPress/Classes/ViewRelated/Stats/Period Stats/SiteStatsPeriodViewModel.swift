@@ -559,10 +559,10 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodSearchTerms))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                  dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
+                                                 statSection: StatSection.periodSearchTerms,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
