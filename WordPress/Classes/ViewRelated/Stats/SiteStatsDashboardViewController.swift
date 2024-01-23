@@ -77,7 +77,7 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
-    private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
+    private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
     private var pageViewController: UIPageViewController?
     private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
 
@@ -117,7 +117,7 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func configurePeriodTableViewController() {
-        periodTableViewController.bannerView = jetpackBannerView
+        periodTableViewControllerDeprecated.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
@@ -243,7 +243,7 @@ private extension SiteStatsDashboardViewController {
     }
 
     func restoreSelectedDateFromUserDefaults() {
-        periodTableViewController.selectedDate = getLastSelectedDateFromUserDefaults()
+        periodTableViewControllerDeprecated.selectedDate = getLastSelectedDateFromUserDefaults()
         removeLastSelectedDateFromUserDefaults()
     }
 
@@ -274,19 +274,19 @@ private extension SiteStatsDashboardViewController {
             }
         default:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
-                pageViewController?.setViewControllers([periodTableViewController],
+                pageViewController?.setViewControllers([periodTableViewControllerDeprecated],
                                                        direction: .forward,
                                                        animated: false)
             }
 
-            if periodTableViewController.selectedDate == nil
+            if periodTableViewControllerDeprecated.selectedDate == nil
                 || selectedPeriodChanged {
 
-                periodTableViewController.selectedDate = StatsDataHelper.currentDateForSite()
+                periodTableViewControllerDeprecated.selectedDate = StatsDataHelper.currentDateForSite()
             }
 
             let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-            periodTableViewController.selectedPeriod = selectedPeriod
+            periodTableViewControllerDeprecated.selectedPeriod = selectedPeriod
         }
     }
 
