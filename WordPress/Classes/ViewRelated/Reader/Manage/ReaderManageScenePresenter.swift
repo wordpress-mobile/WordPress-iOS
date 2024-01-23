@@ -20,11 +20,15 @@ class ReaderManageScenePresenter {
         var tabbedItem: TabbedViewController.TabbedItem {
             switch self {
             case .tags:
-                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Topics", comment: "Followed Topics Title"),
+                return TabbedViewController.TabbedItem(title: NSLocalizedString("reader.manage.tab.tags",
+                                                                                value: "Tags",
+                                                                                comment: "Manage tags tab title"),
                                                                viewController: makeViewController(),
                                                                accessibilityIdentifier: "FollowedTags")
             case .sites:
-                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"),
+                return TabbedViewController.TabbedItem(title: NSLocalizedString("reader.manage.tab.blogs",
+                                                                                value: "Blogs",
+                                                                                comment: "Manage blogs tab title"),
                                                                 viewController: makeViewController(),
                                                                 accessibilityIdentifier: "FollowedSites")
             }
