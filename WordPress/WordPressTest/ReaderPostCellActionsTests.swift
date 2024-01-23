@@ -7,7 +7,7 @@ final class ReaderPostCellActionsTests: CoreDataTestCase {
     // MARK: - Constants
 
     private enum Constants {
-        static let blockAndReportActions = ["Block this site", "Block this user", "Report this post", "Report this user"]
+        static let blockAndReportActions = ["Block this blog", "Block this user", "Report this post", "Report this user"]
     }
 
     // MARK: - Tests
