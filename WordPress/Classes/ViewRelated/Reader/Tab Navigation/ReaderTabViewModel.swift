@@ -7,6 +7,7 @@ import WordPressUI
     /// tab bar items
     private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
+    private let persistentRepository: UserPersistentRepository
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
 
     var tabItems: [ReaderTabItem] = [] {
@@ -24,6 +25,10 @@ import WordPressUI
     var selectedIndex = 0
     var selectedItem: ReaderTabItem? {
         tabItems[safe: selectedIndex]
+    }
+
+    var lastVisitedIndex: Int {
+        persistentRepository.integer(forKey: Constants.lastVisitedStreamIndexKey)
     }
 
     /// completion handler for a tap on a tab on the toolbar
@@ -66,12 +71,17 @@ import WordPressUI
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ItemsStore,
-         settingsPresenter: ScenePresenter) {
+         settingsPresenter: ScenePresenter,
+         persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
         self.tabItemsStore = tabItemsStore
         self.settingsPresenter = settingsPresenter
+        self.persistentRepository = persistentRepository
         super.init()
+
+        // show the last visited index.
+        selectedIndex = lastVisitedIndex
 
         subscription = tabItemsStore.onChange { [weak self] in
             guard let viewModel = self else {
@@ -101,6 +111,10 @@ extension ReaderTabViewModel {
 // MARK: - Tab selection
 extension ReaderTabViewModel {
 
+    private enum Constants {
+        static let lastVisitedStreamIndexKey = "readerLastVisitedStreamIndexDefaultsKey"
+    }
+
     func showTab(at index: Int) {
         guard index < tabItems.count else {
             return
@@ -113,6 +127,9 @@ extension ReaderTabViewModel {
 
         // reload filters for the new stream.
         reloadStreamFilters()
+
+        // save the last visited index.
+        persistentRepository.set(index, forKey: Constants.lastVisitedStreamIndexKey)
 
         didSelectIndex?(index)
     }
