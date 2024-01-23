@@ -25,6 +25,8 @@ PODS:
   - Down (0.6.6)
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
+  - Gravatar (0.1.0)
+  - Gravatar/Tests (0.1.0)
   - Gridicons (1.2.0)
   - Gutenberg (1.111.0)
   - JTAppleCalendar (8.0.5)
@@ -77,7 +79,8 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.3.0)
-  - WordPressUI (1.15.0)
+  - WordPressUI (1.15.0):
+    - Gravatar (~> 0.1.0)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -105,6 +108,8 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
+  - Gravatar (from `../Gravatar-SDK-iOS`)
+  - Gravatar/Tests (from `../Gravatar-SDK-iOS`)
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.111.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
@@ -122,7 +127,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 9.0)
   - WordPressKit (~> 11.0)
   - WordPressShared (~> 2.3)
-  - WordPressUI (~> 1.15)
+  - WordPressUI (from `../WordPressUI-iOS`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -159,7 +164,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -174,8 +178,12 @@ EXTERNAL SOURCES:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  Gravatar:
+    :path: "../Gravatar-SDK-iOS"
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.111.0.podspec
+  WordPressUI:
+    :path: "../WordPressUI-iOS"
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -193,6 +201,7 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
+  Gravatar: f640ab5703eb4496304d2a767629876bf8c03091
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   Gutenberg: c222e0a909a508ecb1cc130278c17c0193cb64fc
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
@@ -215,7 +224,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: e3c18f1b63222742a565fea3faf1a55a144ce8c4
   WordPressKit: 57712035a44595cf49b0c9f0ad5b8b899a8cbe6a
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
-  WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
+  WordPressUI: 01b8d3169ecc7ed240c17555dd4d9a28f0dd04ee
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -226,6 +235,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 9331d9b30992bbe14cbb7d537bbad3042f3ff457
+PODFILE CHECKSUM: 46f264fb566b65e488403ea3e738ed6fbac04d95
 
 COCOAPODS: 1.14.2
