@@ -78,7 +78,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
-    private lazy var trafficTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
+    private lazy var trafficTableViewController = SiteStatsPeriodTableViewController()
     private var pageViewController: UIPageViewController?
     private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
 

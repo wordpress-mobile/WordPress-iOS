@@ -13,7 +13,7 @@ protocol SiteStatsReferrerDelegate: AnyObject {
     func showReferrerDetails(_ data: StatsTotalRowData)
 }
 
-class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
+final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     weak var bannerView: JetpackBannerView?
@@ -56,6 +56,16 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
+    init() {
+        super.init(nibName: nil, bundle: nil)
+
+        tableStyle = .insetGrouped
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -63,7 +73,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
 
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
@@ -81,7 +91,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
@@ -162,7 +172,7 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -171,7 +181,7 @@ private extension SiteStatsPeriodTableViewController {
 
     @objc func userInitiatedRefresh() {
         clearExpandedRows()
-        refreshControl?.beginRefreshing()
+        refreshControl.beginRefreshing()
         refreshData()
     }
 
@@ -179,7 +189,7 @@ private extension SiteStatsPeriodTableViewController {
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod,
             viewIsVisible() else {
-                refreshControl?.endRefreshing()
+            refreshControl.endRefreshing()
                 return
         }
         addViewModelListeners()
