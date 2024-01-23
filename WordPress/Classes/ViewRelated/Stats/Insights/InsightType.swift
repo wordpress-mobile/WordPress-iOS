@@ -26,37 +26,22 @@ enum InsightType: Int, SiteStatsPinnable {
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static var defaultInsights: [InsightType] {
-        if AppConfiguration.statsRevampV2Enabled {
-            return [.viewsVisitors,
-                    .likesTotals,
-                    .commentsTotals,
-                    .followersTotals,
-                    .mostPopularTime,
-                    .latestPostSummary]
-        } else {
-            return [.mostPopularTime,
-                    .allTimeStats,
-                    .todaysStats,
-                    .followers,
-                    .comments]
-        }
+        return [.viewsVisitors,
+                .likesTotals,
+                .commentsTotals,
+                .followersTotals,
+                .mostPopularTime,
+                .latestPostSummary]
     }
 
     // This property is here to update the default list on existing installations.
     // If the list saved on UserDefaults matches the old one, it will be updated to the new one above.
     static var oldDefaultInsights: [InsightType] {
-        if AppConfiguration.statsRevampV2Enabled {
-            return [.mostPopularTime,
-                    .allTimeStats,
-                    .todaysStats,
-                    .followers,
-                    .comments]
-        } else {
-            return [.latestPostSummary,
-                    .todaysStats,
-                    .allTimeStats,
-                    .followersTotals]
-        }
+        return [.mostPopularTime,
+                .allTimeStats,
+                .todaysStats,
+                .followers,
+                .comments]
     }
 
     static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }

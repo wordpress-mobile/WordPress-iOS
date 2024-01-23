@@ -70,11 +70,9 @@ class SiteStatsInsightsViewModel: Observable {
             self?.emitChange()
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            periodChangeReceipt = self.periodStore.onChange { [weak self] in
-                self?.updateMostRecentChartData(self?.periodStore.getSummary())
-                self?.emitChange()
-            }
+        periodChangeReceipt = self.periodStore.onChange { [weak self] in
+            self?.updateMostRecentChartData(self?.periodStore.getSummary())
+            self?.emitChange()
         }
     }
 
@@ -222,13 +220,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.followersTotalsStatus,
                                         block: {
-                    if AppConfiguration.statsRevampV2Enabled {
-                        return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-                    } else {
-                                            return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
-                                                                     statSection: .insightsFollowerTotals,
-                                                                     siteStatsInsightsDelegate: nil)
-                    }
+                    return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: {
@@ -241,14 +233,8 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.annualAndMostPopularTimeStatus,
                                         block: {
-                    if AppConfiguration.statsRevampV2Enabled {
-                        return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
-                                                 siteStatsInsightsDelegate: nil)
-                    } else {
-                        return TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
-                                                 statSection: .insightsMostPopularTime,
-                                                 siteStatsInsightsDelegate: nil)
-                    }
+                    return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
+                                             siteStatsInsightsDelegate: nil)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: {
@@ -368,19 +354,10 @@ class SiteStatsInsightsViewModel: Observable {
         }))
 
         tableRows.append(TableFooterRow())
+        tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
 
-        if AppConfiguration.statsRevampV2Enabled {
-            // Remove any header rows for the new appearance
-            tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
-
-            let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
-            return ImmuTable(sections: sections)
-        }
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
+        let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
+        return ImmuTable(sections: sections)
     }
 
     func fetchingFailed() -> Bool {
@@ -786,7 +763,7 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                                    showTotalCount: AppConfiguration.statsRevampV2Enabled ? false : true)
+                                    showTotalCount: false)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -815,8 +792,8 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: AppConfiguration.statsRevampV2Enabled ? "" : followerType.itemSubtitle,
-                       dataSubtitle: AppConfiguration.statsRevampV2Enabled ? "" : followerType.dataSubtitle,
+                       itemSubtitle: "",
+                       dataSubtitle: "",
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }

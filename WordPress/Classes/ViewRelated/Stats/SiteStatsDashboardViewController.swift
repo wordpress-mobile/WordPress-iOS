@@ -112,7 +112,7 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureInsightsTableView() {
-        insightsTableViewController.tableStyle = AppConfiguration.statsRevampV2Enabled ? .insetGrouped : .grouped
+        insightsTableViewController.tableStyle = .insetGrouped
         insightsTableViewController.bannerView = jetpackBannerView
     }
 
