@@ -612,10 +612,10 @@ private extension SiteStatsPeriodViewModel {
 
     func videosTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodVideos))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                  dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
+                                                 statSection: StatSection.periodVideos,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
