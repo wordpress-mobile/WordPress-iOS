@@ -505,10 +505,10 @@ private extension SiteStatsPeriodViewModel {
 
     func authorsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodAuthors))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                  dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
+                                                 statSection: StatSection.periodAuthors,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
