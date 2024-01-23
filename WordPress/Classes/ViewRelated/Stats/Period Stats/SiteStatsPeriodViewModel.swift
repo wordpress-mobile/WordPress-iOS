@@ -525,13 +525,14 @@ private extension SiteStatsPeriodViewModel {
 
     func countriesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodCountries))
         let map = countriesMap()
-        if !map.data.isEmpty {
-            tableRows.append(CountriesMapRow(countriesMap: map))
+        let isMapShown = !map.data.isEmpty
+        if isMapShown {
+            tableRows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
         }
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
+                                           statSection: isMapShown ? nil : .periodCountries,
                                            dataRows: countriesDataRows(),
                                            siteStatsPeriodDelegate: periodDelegate))
         return tableRows
