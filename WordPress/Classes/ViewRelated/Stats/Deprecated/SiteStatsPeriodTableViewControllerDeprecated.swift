@@ -39,7 +39,7 @@ class SiteStatsPeriodTableViewControllerDeprecated: UITableViewController, Story
     private let store = StoreContainer.shared.statsPeriod
     private var changeReceipt: Receipt?
 
-    private var viewModel: SiteStatsPeriodViewModel?
+    private var viewModel: SiteStatsPeriodViewModelDeprecated?
     private var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
@@ -107,11 +107,11 @@ private extension SiteStatsPeriodTableViewControllerDeprecated {
                 return
         }
 
-        viewModel = SiteStatsPeriodViewModel(store: store,
-                                             selectedDate: selectedDate,
-                                             selectedPeriod: selectedPeriod,
-                                             periodDelegate: self,
-                                             referrerDelegate: self)
+        viewModel = SiteStatsPeriodViewModelDeprecated(store: store,
+                                                       selectedDate: selectedDate,
+                                                       selectedPeriod: selectedPeriod,
+                                                       periodDelegate: self,
+                                                       referrerDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
