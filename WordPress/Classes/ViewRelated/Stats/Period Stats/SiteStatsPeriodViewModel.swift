@@ -210,10 +210,8 @@ class SiteStatsPeriodViewModel: Observable {
 
         tableRows.append(TableFooterRow())
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
+        let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
+        return ImmuTable(sections: sections)
     }
 
     // MARK: - Refresh Data

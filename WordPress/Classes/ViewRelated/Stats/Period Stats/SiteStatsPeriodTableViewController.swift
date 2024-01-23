@@ -92,6 +92,8 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 0 else { return nil }
+
         guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
