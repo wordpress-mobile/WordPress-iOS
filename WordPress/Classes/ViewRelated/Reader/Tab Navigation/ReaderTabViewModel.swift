@@ -80,16 +80,22 @@ import WordPressUI
         self.persistentRepository = persistentRepository
         super.init()
 
-        // show the last visited index.
+        // show the last visited index as default.
         selectedIndex = lastVisitedIndex
 
         subscription = tabItemsStore.onChange { [weak self] in
-            guard let viewModel = self else {
+            guard let self else {
                 return
             }
-            viewModel.tabItems = viewModel.tabItemsStore.items
-            viewModel.reloadStreamFilters()
-            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItemsStore.items, viewModel.selectedIndex) }
+            self.tabItems = self.tabItemsStore.items
+            self.reloadStreamFilters()
+
+            // reset if the selectedIndex is out of bounds to avoid showing a blank screen.
+            if self.selectedIndex >= self.tabItems.count {
+                self.selectedIndex = 0
+            }
+
+            self.onTabBarItemsDidChange.forEach { $0(self.tabItemsStore.items, self.selectedIndex) }
         }
         addNotificationsObservers()
         observeNetworkStatus()
