@@ -4,17 +4,17 @@ class ReaderReblogPresenter {
 
     private struct NoSitesConfiguration {
         static let noSitesTitle = NSLocalizedString(
-            "reader.reblog.no.sites.title",
+            "reader.reblog.no.blogs.title",
             value: "No available WordPress.com blogs",
             comment: "A short message that informs the user no WordPress.com blogs could be found."
         )
         static let noSitesSubtitle = NSLocalizedString(
-            "reader.reblog.no.sites.subtitle",
+            "reader.reblog.no.blogs.subtitle",
             value: "Once you create a WordPress.com blog, you can reblog content that you like to your own blog.",
             comment: "A subtitle with more detailed info for the user when no WordPress.com blogs could be found."
         )
         static let manageSitesLabel = NSLocalizedString(
-            "reader.reblog.manage.sites",
+            "reader.reblog.manage.blogs",
             value: "Manage Blogs",
             comment: "Button title. Tapping lets the user manage the blogs they follow."
         )

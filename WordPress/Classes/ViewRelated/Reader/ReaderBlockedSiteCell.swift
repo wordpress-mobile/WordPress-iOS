@@ -20,7 +20,7 @@ open class ReaderBlockedSiteCell: UITableViewCell {
 
     @objc open func setSiteName(_ name: String) {
         let format = NSLocalizedString(
-            "reader.blocked.site.message",
+            "reader.blocked.blog.message",
             value: "The blog %@ will no longer appear in your reader. Tap to undo.",
             comment: "Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog."
         )

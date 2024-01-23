@@ -51,7 +51,7 @@ enum ReaderPostMenuSource {
 struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
     static let blockSite = NSLocalizedString(
-        "reader.post.menu.block.site",
+        "reader.post.menu.block.blog",
         value: "Block this blog",
         comment: "The title of a button that triggers blocking a blog from the user's reader."
     )
@@ -586,12 +586,12 @@ struct ReaderPostMenuButtonTitles {
         )
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString(
-            "reader.notice.site.blocked.success",
+            "reader.notice.blog.blocked.success",
             value: "Blocked blog",
             comment: "Notice title when blocking a site succeeds."
         )
         static let blockSiteFail = NSLocalizedString(
-            "reader.notice.site.blocked.failure",
+            "reader.notice.blog.blocked.failure",
             value: "Unable to block blog",
             comment: "Notice title when blocking a blog fails."
         )
@@ -614,7 +614,7 @@ struct ReaderPostMenuButtonTitles {
         static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
         static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
         static let unknownSiteText = NSLocalizedString(
-            "reader.notice.subscribe.site.unknown",
+            "reader.notice.subscribe.blog.unknown",
             value: "this blog",
             comment: """
                 A default value used to fill in the site name when the followed site somehow has missing site name or URL.
