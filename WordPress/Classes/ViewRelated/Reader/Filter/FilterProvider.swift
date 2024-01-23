@@ -139,8 +139,16 @@ extension ReaderSiteTopic {
             }
         }
 
-        let emptyTitle = NSLocalizedString("Add a site", comment: "No Tags View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific site by following it.", comment: "No Sites View Label")
+        let emptyTitle = NSLocalizedString(
+            "reader.no.tags.title",
+            value: "Add a blog",
+            comment: "No Tags View Button Label"
+        )
+        let emptyActionTitle = NSLocalizedString(
+            "reader.no.tags.action",
+            value: "You can subscribe to posts on a specific blog by subscribing to it.",
+            comment: "No Sites View Label"
+        )
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
@@ -282,8 +290,16 @@ extension ReaderTagTopic {
             }
         }
 
-        let emptyTitle = NSLocalizedString("Add a topic", comment: "No Topics View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a topic.", comment: "No Topics View Label")
+        let emptyTitle = NSLocalizedString(
+            "reader.no.tags.title",
+            value: "Add a tag",
+            comment: "No Tags View Button Label"
+        )
+        let emptyActionTitle = NSLocalizedString(
+            "reader.no.tags.action",
+            value: "You can subscribe to posts on a specific subject by adding a tag.",
+            comment: "No Topics View Label"
+        )
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",

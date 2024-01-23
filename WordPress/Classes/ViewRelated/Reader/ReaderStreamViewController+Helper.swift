@@ -68,7 +68,11 @@ extension ReaderStreamViewController {
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Welcome to the Reader", comment: "A message title"),
-                message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment: "A message explaining the Following topic in the reader")
+                message: NSLocalizedString(
+                    "reader.no.results.response.message",
+                    value: "Recent posts from blogs and sites you subscribe to will appear here.",
+                    comment: "A message explaining the Following topic in the reader"
+                )
             )
         }
 
@@ -92,7 +96,11 @@ extension ReaderStreamViewController {
         if ReaderHelpers.isTopicSite(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No posts", comment: "A message title"),
-                message: NSLocalizedString("This site has not posted anything yet. Try back later.", comment: "Message shown when the reader finds no posts for the chosen site")
+                message: NSLocalizedString(
+                    "reader.no.results.blog.response.message",
+                    value: "This blog has not posted anything yet. Try back later.",
+                    comment: "Message shown when the reader finds no posts for the chosen blog"
+                )
             )
         }
 
@@ -100,7 +108,11 @@ extension ReaderStreamViewController {
         if ReaderHelpers.isTopicList(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No recent posts", comment: "A message title"),
-                message: NSLocalizedString("The sites in this list have not posted anything recently.", comment: "Message shown when the reader finds no posts for the chosen list")
+                message: NSLocalizedString(
+                    "reader.no.results.list.response.message",
+                    value: "The blogs in this list have not posted anything recently.",
+                    comment: "Message shown when the reader finds no posts for the chosen list"
+                )
             )
         }
 
