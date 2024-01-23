@@ -236,7 +236,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
 
         blogNameButton.isAccessibilityElement = true
         blogNameButton.accessibilityTraits = [.staticText, .button]
-        blogNameButton.accessibilityHint = NSLocalizedString("Shows the site's posts.", comment: "Accessibility hint for the site name and URL button on Reader's Post Details.")
+        blogNameButton.accessibilityHint = NSLocalizedString(
+            "reader.blog.name.accessibility.hint",
+            value: "Shows the blog's posts.",
+            comment: "Accessibility hint for the blog name and URL button on Reader's Post Details."
+        )
         if let label = blogNameLabel(post) {
             blogNameButton.accessibilityLabel = label
         }

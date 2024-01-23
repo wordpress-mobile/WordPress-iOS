@@ -128,7 +128,7 @@ private extension FilterSheetViewController {
         )
         static let selectInterestsLoading = NSLocalizedString(
             "reader.filterSheet.select.tags.loading",
-            value: "Following new tags...",
+            value: "Subscribing to new tags...",
             comment: "Label displayed to the user while loading their selected interests"
         )
     }

@@ -116,12 +116,12 @@ struct ReaderSiteHeader: View {
 
     struct Constants {
         static let defaultSiteImage = "blavatar-default"
-        static let countsFormat = NSLocalizedString("reader.site.header.counts",
-                                                    value: "%1$@ posts • %2$@ followers",
+        static let countsFormat = NSLocalizedString("reader.site.header.values",
+                                                    value: "%1$@ posts • %2$@ subscribers",
                                                     comment: "The formatted number of posts and followers for a site. " +
-                                                    "'%1$@' is a placeholder for the site post count. " +
-                                                    "'%2$@' is a placeholder for the site follower count. " +
-                                                    "Example: `5,000 posts • 10M followers`")
+                                                    "'%1$@' is a placeholder for the blog post count. " +
+                                                    "'%2$@' is a placeholder for the blog subscriber count. " +
+                                                    "Example: `5,000 posts • 10M subscribers`")
     }
 
 }

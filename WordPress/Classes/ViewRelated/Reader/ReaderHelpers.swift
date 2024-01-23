@@ -49,7 +49,11 @@ enum ReaderPostMenuSource {
 // Titles for post menu options
 struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
-    static let blockSite = NSLocalizedString("Block this site", comment: "The title of a button that triggers blocking a site from the user's reader.")
+    static let blockSite = NSLocalizedString(
+        "reader.post.menu.block.site",
+        value: "Block this blog",
+        comment: "The title of a button that triggers blocking a blog from the user's reader."
+    )
     static let blockUser = NSLocalizedString(
         "reader.post.menu.block.user",
         value: "Block this user",
@@ -63,10 +67,26 @@ struct ReaderPostMenuButtonTitles {
     )
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
-    static let unfollow = NSLocalizedString("Unfollow site", comment: "Verb. An option to unfollow a site.")
-    static let follow = NSLocalizedString("Follow site", comment: "Verb. An option to follow a site.")
-    static let subscribe = NSLocalizedString("Turn on site notifications", comment: "Verb. An option to switch on site notifications.")
-    static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
+    static let unfollow = NSLocalizedString(
+        "reader.post.menu.unsubscribe.blog",
+        value: "Unsubscribe from blog",
+        comment: "Verb. An option to unsubscribe from a blog."
+    )
+    static let follow = NSLocalizedString(
+        "reader.post.menu.subscribe.blog",
+        value: "Subscribe to blog",
+        comment: "Verb. An option to subscribe to a blog."
+    )
+    static let subscribe = NSLocalizedString(
+        "reader.post.menu.notifications.on",
+        value: "Turn on blog notifications",
+        comment: "Verb. An option to switch on blog notifications."
+    )
+    static let unsubscribe = NSLocalizedString(
+        "reader.post.menu.notifications.off",
+        value: "Turn off blog notifications",
+        comment: "Verb. An option to switch off site notifications."
+    )
     static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
     static let followConversation = NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
@@ -505,18 +525,62 @@ struct ReaderPostMenuButtonTitles {
         static let unseenFail = NSLocalizedString("Unable to mark post unseen", comment: "Notice title when updating a post's unseen status failed.")
         static let seenSuccess = NSLocalizedString("Marked post as seen", comment: "Notice title when updating a post's seen status succeeds.")
         static let unseenSuccess = NSLocalizedString("Marked post as unseen", comment: "Notice title when updating a post's unseen status succeeds.")
-        static let followSuccess = NSLocalizedString("Following %1$@", comment: "Notice title when following a site succeeds. %1$@ is a placeholder for the site name.")
-        static let unfollowSuccess = NSLocalizedString("Unfollowed site", comment: "Notice title when unfollowing a site succeeds.")
-        static let followFail = NSLocalizedString("Unable to follow site", comment: "Notice title when following a site fails.")
-        static let unfollowFail = NSLocalizedString("Unable to unfollow site", comment: "Notice title when unfollowing a site fails.")
-        static let notificationOnFail = NSLocalizedString("Unable to turn on site notifications", comment: "Notice title when turning site notifications on fails.")
-        static let notificationOffFail = NSLocalizedString("Unable to turn off site notifications", comment: "Notice title when turning site notifications off fails.")
-        static let notificationOnSuccess = NSLocalizedString("Turned on site notifications", comment: "Notice title when turning site notifications on succeeds.")
-        static let notificationOffSuccess = NSLocalizedString("Turned off site notifications", comment: "Notice title when turning site notifications off succeeds.")
-        static let enableNotifications = NSLocalizedString("Enable site notifications?", comment: "Message prompting user to enable site notifications.")
+        static let followSuccess = NSLocalizedString(
+            "reader.notice.subscribe.success",
+            value: "Subscribed to %1$@",
+            comment: "Notice title when following a blog succeeds. %1$@ is a placeholder for the site name."
+        )
+        static let unfollowSuccess = NSLocalizedString(
+            "reader.notice.unsubscribe.success",
+            value: "Unsubscribed from blog",
+            comment: "Notice title when unfollowing a blog succeeds."
+        )
+        static let followFail = NSLocalizedString(
+            "reader.notice.subscribe.failure",
+            value: "Unable to subscribe to blog",
+            comment: "Notice title when subscribing to a blog fails."
+        )
+        static let unfollowFail = NSLocalizedString(
+            "reader.notice.unsubscribe.failure",
+            value: "Unable to unsubscribe from blog",
+            comment: "Notice title when unsubscribing to a blog fails."
+        )
+        static let notificationOnFail = NSLocalizedString(
+            "reader.notice.enable.notification.failure",
+            value: "Unable to turn on blog notifications",
+            comment: "Notice title when turning blog notifications on fails."
+        )
+        static let notificationOffFail = NSLocalizedString(
+            "reader.notice.disable.notification.failure",
+            value: "Unable to turn off blog notifications",
+            comment: "Notice title when turning blog notifications off fails."
+        )
+        static let notificationOnSuccess = NSLocalizedString(
+            "reader.notice.enable.notification.success",
+            value: "Turned on blog notifications",
+            comment: "Notice title when turning blog notifications on succeeds."
+        )
+        static let notificationOffSuccess = NSLocalizedString(
+            "reader.notice.disable.notification.success",
+            value: "Turned off blog notifications",
+            comment: "Notice title when turning blog notifications off succeeds."
+        )
+        static let enableNotifications = NSLocalizedString(
+            "reader.notice.enable.notification.prompt",
+            value: "Enable blog notifications?",
+            comment: "Message prompting user to enable blog notifications."
+        )
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
-        static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
-        static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
+        static let blockSiteSuccess = NSLocalizedString(
+            "reader.notice.site.blocked.success",
+            value: "Blocked blog",
+            comment: "Notice title when blocking a site succeeds."
+        )
+        static let blockSiteFail = NSLocalizedString(
+            "reader.notice.site.blocked.failure",
+            value: "Unable to block blog",
+            comment: "Notice title when blocking a blog fails."
+        )
         static let blockUserSuccess = NSLocalizedString(
             "Blocked user",
             value: "Blocked user",
@@ -536,11 +600,11 @@ struct ReaderPostMenuButtonTitles {
         static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
         static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
         static let unknownSiteText = NSLocalizedString(
-            "reader.notice.follow.site.unknown",
-            value: "this site",
+            "reader.notice.subscribe.site.unknown",
+            value: "this blog",
             comment: """
                 A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-                Example: given a notice format "Following %@" and empty site name, this will be "Following this site".
+                Example: given a notice format "Following %@" and empty site name, this will be "Following this blog".
                 """
         )
     }
