@@ -75,7 +75,6 @@ class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
     }
 }
 
-
 // MARK: - MockFollowedInterestsService
 class MockFollowedInterestsService: ReaderFollowedInterestsService {
 

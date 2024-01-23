@@ -933,7 +933,6 @@ private extension OldReaderPostCardCell {
     }
 }
 
-
 /// Extension providing getters to some private outlets, for testability
 extension OldReaderPostCardCell {
 

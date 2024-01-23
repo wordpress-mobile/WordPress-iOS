@@ -100,14 +100,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
-    private var barButtonTintColor: UIColor {
-        .listIcon
-    }
-
     private var navBarTitleColor: UIColor {
         .text
     }
-
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
@@ -398,10 +393,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         if UIAccessibility.isBoldTextEnabled {
             bar.tintColor = .listIcon
         }
-    }
-
-    private func styleBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = barButtonTintColor
     }
 
     private func styleToolBarButton(_ button: UIBarButtonItem) {

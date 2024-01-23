@@ -9,7 +9,6 @@ class NotificationSettingsService {
     public typealias Channel    = NotificationSettings.Channel
     public typealias Stream     = NotificationSettings.Stream
 
-
     /// Designated Initializer
     ///
     /// - Parameter managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
@@ -37,7 +36,6 @@ class NotificationSettingsService {
         self.coreDataStack = coreDataStack
         self.remoteApi = wordPressComRestApi
     }
-
 
     /// This method will retrieve all of the Notification Settings for the default WordPress.com account
     ///
@@ -132,7 +130,6 @@ class NotificationSettingsService {
             })
     }
 
-
     /// Registers a given Push Notifications Token against the WordPress.com backend.
     ///
     /// - Parameters:
@@ -152,7 +149,6 @@ class NotificationSettingsService {
                                                                        failure: failure)
     }
 
-
     /// Unregisters the given deviceID for Push Notification Events.
     ///
     /// - Parameters:
@@ -168,7 +164,6 @@ class NotificationSettingsService {
 
         notificationsServiceRemote?.unregisterDeviceForPushNotifications(deviceId, success: success, failure: failure)
     }
-
 
     /// Static Helper that will parse RemoteNotificationSettings instances into a collection of
     /// NotificationSettings instances.
@@ -195,7 +190,6 @@ class NotificationSettingsService {
         return parsed
     }
 
-
     /// Helper method to convert RemoteNotificationSettings.Channel into a NotificationSettings.Channel enum.
     ///
     /// - Parameter remote: An instance of the RemoteNotificationSettings.Channel enum
@@ -212,7 +206,6 @@ class NotificationSettingsService {
             return .wordPressCom
         }
     }
-
 
     /// Helper method that will parse RemoteNotificationSettings.Stream instances into a collection of
     /// NotificationSettings.Stream instances.
@@ -233,7 +226,6 @@ class NotificationSettingsService {
         return parsed
     }
 
-
     /// Helper method that filters the Blog associated with a specific Channel, if any.
     ///
     /// - Parameters:
@@ -252,7 +244,6 @@ class NotificationSettingsService {
             return nil
         }
     }
-
 
     /// Transforms a collection of Settings into a format that's the one expected by the backend,
     /// depending on whether the channel is a Site (will post the Site ID), Other or WordPress.com
@@ -304,7 +295,6 @@ class NotificationSettingsService {
             return [ "wpcom": wrappedSettings ]
         }
     }
-
 
     // MARK: - Private Properties
     fileprivate var remoteApi: WordPressComRestApi?

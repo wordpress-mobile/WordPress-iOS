@@ -360,7 +360,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
             return
         }
 
-
         trackDomainsSelection(selectedDomain)
 
         let onFailure: () -> () = { [weak self] in

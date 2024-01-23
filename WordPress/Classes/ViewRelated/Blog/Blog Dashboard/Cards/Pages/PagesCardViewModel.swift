@@ -89,11 +89,6 @@ class PagesCardViewModel: NSObject {
         }
     }
 
-    func retry() {
-        showLoadingIfNeeded()
-        sync()
-    }
-
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         performInitialLoading()
@@ -345,7 +340,6 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
         }
         return snapshot
     }
-
 
     /// Returns items that need to be reloaded. These are items that haven't changed position, but their date was updated.
     /// - Parameters:

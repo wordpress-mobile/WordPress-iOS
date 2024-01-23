@@ -173,7 +173,6 @@ class PostTagPickerViewController: UIViewController {
     }
 }
 
-
 // MARK: - Tags Loading
 
 private extension PostTagPickerViewController {

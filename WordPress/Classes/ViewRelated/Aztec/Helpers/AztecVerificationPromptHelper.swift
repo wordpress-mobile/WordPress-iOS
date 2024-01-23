@@ -1,6 +1,5 @@
 import UIKit
 
-
 typealias VerificationPromptCompletion = (Bool) -> ()
 
 protocol VerificationPromptHelper {

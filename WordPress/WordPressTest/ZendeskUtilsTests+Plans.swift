@@ -4,7 +4,6 @@ import ZendeskCoreSDK
 @testable import WordPress
 @testable import WordPressKit
 
-
 class ZendeskUtilsPlans: XCTestCase {
 
     class MockPlanServiceRemote: PlanServiceRemote {

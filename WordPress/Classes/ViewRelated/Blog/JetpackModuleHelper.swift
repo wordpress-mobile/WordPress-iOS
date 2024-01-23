@@ -15,7 +15,6 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 
     private var noResultsViewController: NoResultsViewController?
 
-
     /// Creates a Jetpack Module Wall that gives the user the option to enable a module
     /// - Parameters:
     ///   - viewController: a UIViewController that conforms to JetpackModuleHelperDelegate
@@ -28,7 +27,6 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
         self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
         self.blogService = BlogService(coreDataStack: ContextManager.shared)
     }
-
 
     /// Show the No Results View Controller
     /// - Parameters:

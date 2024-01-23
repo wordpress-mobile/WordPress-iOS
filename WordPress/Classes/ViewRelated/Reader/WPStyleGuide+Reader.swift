@@ -24,7 +24,6 @@ extension WPStyleGuide {
         return Cards.contentTextStyle
     }
 
-
     // MARK: - Reader Card Styles
 
     @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
@@ -207,7 +206,6 @@ extension WPStyleGuide {
         label.textColor = .textSubtle
     }
 
-
     // MARK: - Button Styles and Text
     class func applyReaderStreamActionButtonStyle(_ button: UIButton) {
         let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
@@ -221,7 +219,6 @@ extension WPStyleGuide {
                                             imageColor: tintColor,
                                             disabledColor: disabledColor)
     }
-
 
     class func applyReaderActionButtonStyle(_ button: UIButton,
                                             titleColor: UIColor = .listIcon,
@@ -451,7 +448,6 @@ extension WPStyleGuide {
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
         return .primaryLight
     }
-
 
     // MARK: - Metrics
 

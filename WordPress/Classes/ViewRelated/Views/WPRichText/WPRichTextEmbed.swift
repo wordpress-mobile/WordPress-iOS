@@ -23,7 +23,6 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
         }
     }
 
-
     // MARK: LifeCycle
 
     override init(frame: CGRect) {
@@ -54,7 +53,6 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
         super.encode(with: aCoder)
     }
 
-
     // MARK: Configuration
 
     @objc func configureWebView() {
@@ -73,7 +71,6 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
         let script = WKUserScript(source: scriptText, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         contentController.addUserScript(script)
     }
-
 
     // MARK: Public Methods
 

@@ -395,8 +395,6 @@ class PostCoordinator: NSObject {
             aztecProcessors.append(documentUploadProcessor)
         }
 
-
-
         // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
         postContent = gutenbergProcessors.reduce(postContent) { (content, processor) -> String in
             return processor.process(content)

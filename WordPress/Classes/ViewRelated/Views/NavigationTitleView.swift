@@ -6,7 +6,6 @@ open class NavigationTitleView: UIView {
     @objc public let titleLabel       = UILabel(frame: defaultTitleFrame)
     @objc public let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)
 
-
     // MARK: - UIView's Methods
     convenience init() {
         self.init(frame: NavigationTitleView.defaultViewFrame)
@@ -27,7 +26,6 @@ open class NavigationTitleView: UIView {
         super.init(coder: aDecoder)!
         setupSubviews()
     }
-
 
     // MARK: - Helpers
     fileprivate func setupSubviews() {

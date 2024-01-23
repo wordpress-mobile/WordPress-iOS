@@ -35,7 +35,6 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         setNeedsSaveButtonIsEnabled()
     }
 
-
     // MARK: - Private methods
 
     private func save() {
@@ -46,7 +45,6 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
     private func setNeedsSaveButtonIsEnabled() {
         saveBarButtonItem.isEnabled = currentValue.isValidPassword()
     }
-
 
     // MARK: - UITextFieldDelegate
 
@@ -71,7 +69,6 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         }
         return isValidPassword
     }
-
 
     // MARK: - Constants
 

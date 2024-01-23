@@ -22,7 +22,6 @@ extension RemoteBlog {
         case viewStats          = "view_stats"
     }
 
-
     /// Returns true if a given capability is enabled. False otherwise
     ///
     public func isUserCapableOf(_ capability: Capability) -> Bool {

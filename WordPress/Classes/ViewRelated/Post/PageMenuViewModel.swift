@@ -57,6 +57,10 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.duplicate)
         }
 
+        if page.status == .publish && page.hasRemote() {
+            buttons.append(.share)
+        }
+
         if page.status != .trash && page.isFailed {
             buttons.append(.retry)
         }

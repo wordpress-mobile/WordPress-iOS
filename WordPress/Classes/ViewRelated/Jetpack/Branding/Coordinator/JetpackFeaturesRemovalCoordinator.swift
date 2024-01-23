@@ -95,7 +95,6 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
-
         if AccountHelper.noWordPressDotComAccount {
             let selfHostedRemoval = RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.enabled(using: featureFlagStore)
             return selfHostedRemoval ? .selfHosted : .normal
@@ -193,7 +192,6 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
         return currentAppUIType != .simplified
     }
-
 
     /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase regardless of the app UI state.
     private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {

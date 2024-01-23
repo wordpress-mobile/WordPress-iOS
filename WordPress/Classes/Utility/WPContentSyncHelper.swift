@@ -1,7 +1,6 @@
 import UIKit
 import CocoaLumberjack
 
-
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
@@ -10,7 +9,6 @@ import CocoaLumberjack
     @objc optional func syncContentFailed(_ syncHelper: WPContentSyncHelper)
     @objc optional func hasNoMoreContent(_ syncHelper: WPContentSyncHelper)
 }
-
 
 class WPContentSyncHelper: NSObject {
 
@@ -34,18 +32,15 @@ class WPContentSyncHelper: NSObject {
         }
     }
 
-
     // MARK: - Syncing
 
     @objc @discardableResult func syncContent() -> Bool {
         return syncContentWithUserInteraction(false)
     }
 
-
     @objc @discardableResult func syncContentWithUserInteraction() -> Bool {
         return syncContentWithUserInteraction(true)
     }
-
 
     @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
         guard !isSyncing else {
@@ -65,7 +60,6 @@ class WPContentSyncHelper: NSObject {
 
         return true
     }
-
 
     @objc @discardableResult func syncMoreContent() -> Bool {
         guard !isSyncing else {

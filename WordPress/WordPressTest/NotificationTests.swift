@@ -2,8 +2,6 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-
-
 /// Notifications Tests
 ///
 class NotificationTests: CoreDataTestCase {
@@ -72,7 +70,6 @@ class NotificationTests: CoreDataTestCase {
         let snippetBlock: NotificationTextContent? = header?.blockOfKind(.text)
         XCTAssertNotNil(snippetBlock?.text)
     }
-
 
     func testLikeNotificationContainsUserContentGroupsInTheBody() throws {
         let note = try utility.loadLikeNotification()
@@ -192,7 +189,6 @@ class NotificationTests: CoreDataTestCase {
         let note = try utility.loadCommentNotification()
         XCTAssertFalse(note.isUnapprovedComment)
     }
-
 
     func testFooterContentIsIdentifiedAndCreated() throws {
         let note = try loadCommentNotification()

@@ -24,6 +24,7 @@ extension SitePickerViewController {
     private func makePrimarySection() -> UIMenu {
         let menuItems = [
             MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
+            MenuItem.shareSite { [weak self] in self?.buttonShareSiteTapped() },
             MenuItem.addSite({ [weak self] in self?.addSiteTapped()} ),
             MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() })
         ]
@@ -52,6 +53,22 @@ extension SitePickerViewController {
         UIMenu(options: .displayInline, children: [
             MenuItem.personalizeHome({ [weak self] in self?.personalizeHomeTapped() }).toAction
         ])
+    }
+
+    // MARK: - Actions
+
+    private func buttonShareSiteTapped() {
+        guard let urlString = blog.homeURL as String?,
+              let url = URL(string: urlString) else {
+            assertionFailure("Site has no URL")
+            return
+        }
+        let viewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if let popover = viewController.popoverPresentationController {
+            popover.sourceView = blogDetailHeaderView.titleView.siteActionButton
+        }
+        present(viewController, animated: true, completion: nil)
+        WPAnalytics.trackEvent(.mySiteHeaderShareSiteTapped)
     }
 
     // MARK: - Add site
@@ -127,6 +144,7 @@ extension SitePickerViewController {
 
 private enum MenuItem {
     case visitSite(_ handler: () -> Void)
+    case shareSite(_ handler: () -> Void)
     case addSite(_ handler: () -> Void)
     case switchSite(_ handler: () -> Void)
     case siteTitle(_ handler: () -> Void)
@@ -135,6 +153,7 @@ private enum MenuItem {
     var title: String {
         switch self {
         case .visitSite: return Strings.visitSite
+        case .shareSite: return Strings.shareSite
         case .addSite: return Strings.addSite
         case .switchSite: return Strings.switchSite
         case .siteTitle: return Strings.siteTitle
@@ -145,6 +164,7 @@ private enum MenuItem {
     var icon: UIImage? {
         switch self {
         case .visitSite: return UIImage(systemName: "safari")
+        case .shareSite: return UIImage(systemName: "square.and.arrow.up")
         case .addSite: return UIImage(systemName: "plus")
         case .switchSite: return UIImage(systemName: "arrow.triangle.swap")
         case .siteTitle: return UIImage(systemName: "character")
@@ -155,6 +175,7 @@ private enum MenuItem {
     var toAction: UIAction {
         switch self {
         case .visitSite(let handler),
+             .shareSite(let handler),
              .addSite(let handler),
              .switchSite(let handler),
              .siteTitle(let handler),
@@ -167,6 +188,7 @@ private enum MenuItem {
 private enum Strings {
     static let visitSite = NSLocalizedString("mySite.siteActions.visitSite", value: "Visit site", comment: "Menu title for the visit site option")
     static let addSite = NSLocalizedString("mySite.siteActions.addSite", value: "Add site", comment: "Menu title for the add site option")
+    static let shareSite = NSLocalizedString("mySite.siteActions.shareSite", value: "Share site", comment: "Menu title for the share site option")
     static let switchSite = NSLocalizedString("mySite.siteActions.switchSite", value: "Switch site", comment: "Menu title for the switch site option")
     static let siteTitle = NSLocalizedString("mySite.siteActions.siteTitle", value: "Change site title", comment: "Menu title for the change site title option")
     static let siteIcon = NSLocalizedString("mySite.siteActions.siteIcon", value: "Change site icon", comment: "Menu title for the change site icon option")

@@ -9,7 +9,6 @@ protocol ReaderSearchSuggestionsDelegate: AnyObject {
     func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String)
 }
 
-
 /// Displays a list of previously saved reader searches, sorted by most recent,
 /// and filtered by the value of `phrase`.
 ///
@@ -56,7 +55,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         return 5
     }
 
-
     /// A convenience method for instantiating the controller from the storyboard.
     ///
     /// - Returns: An instance of the controller.
@@ -68,9 +66,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         return controller
     }
 
-
     // MARK: - Lifecycle Methods
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +89,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         updateHeightConstraint()
     }
 
-
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         coordinator.animate(alongsideTransition: { (_) in
@@ -101,9 +96,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
             })
     }
 
-
     // MARK: - Instance Methods
-
 
     @objc func updateHeightConstraint() {
         clearButton.isHidden = suggestionsCount() == 0 || !phrase.isEmpty
@@ -117,11 +110,9 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         stackViewHeightConstraint.constant = height
     }
 
-
     @objc func suggestionsCount() -> Int {
         return tableViewHandler.resultsController?.fetchedObjects?.count ?? 0
     }
-
 
     @objc func predicateForFetchRequest() -> NSPredicate? {
         if phrase.isEmpty {
@@ -129,7 +120,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         }
         return NSPredicate(format: "searchPhrase BEGINSWITH[cd] %@", phrase)
     }
-
 
     @objc func updatePredicateAndRefresh() {
         tableViewHandler.resultsController?.fetchRequest.predicate = predicateForFetchRequest()
@@ -141,7 +131,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         tableView.reloadData()
     }
 
-
     @objc func clearSearchHistory() {
         let service = ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance())
         service.deleteAllSuggestions()
@@ -151,9 +140,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         WPAnalytics.trackReader(.readerSearchHistoryCleared)
     }
 
-
     // MARK: - Actions
-
 
     @IBAction func handleClearButtonTapped(_ sender: UIButton) {
         let alert = UIAlertController(title: NSLocalizedString("Clear Search History", comment: "Title of an alert prompt."),
@@ -169,12 +156,10 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 }
 
-
 extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
-
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
@@ -182,7 +167,6 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         return request
     }
-
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         guard let suggestions = tableViewHandler.resultsController?.fetchedObjects as? [ReaderSearchSuggestion] else {
@@ -193,18 +177,15 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         cell.textLabel?.textColor = .neutral(.shade70)
     }
 
-
     func tableViewDidChangeContent(_ tableView: UITableView) {
         updateHeightConstraint()
     }
-
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         configureCell(cell, at: indexPath)
         return cell
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -214,17 +195,14 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         delegate?.searchSuggestionsController(self, selectedItem: suggestion.searchPhrase)
     }
 
-
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
 
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle.delete
     }
-
 
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,
@@ -235,7 +213,6 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         managedObjectContext().delete(suggestion)
         ContextManager.sharedInstance().save(managedObjectContext())
     }
-
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return NSLocalizedString("Delete", comment: "Title of a delete button")

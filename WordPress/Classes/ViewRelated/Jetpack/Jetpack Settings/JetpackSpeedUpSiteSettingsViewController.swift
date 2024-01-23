@@ -72,7 +72,6 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
                                               "network will boost the loading speed of your site.",
                                               comment: "Footer for the Serve images from our servers setting")),
 
-
             ImmuTableSection(
                 headerText: "",
                 rows: [lazyLoadImages],

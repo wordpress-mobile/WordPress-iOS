@@ -119,7 +119,6 @@ private extension WhatIsNewScenePresenter {
         return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, announcementCellType: AnnouncementCell.self)
     }
 
-
     /// Creates a WhatIsNewView using custom layout for dashboard announcement
     /// Treats feature titles and subtitles of value "." as empty strings.
     private func makeCustomWhatIsNewView() -> WhatIsNewView {
@@ -153,7 +152,6 @@ private extension WhatIsNewScenePresenter {
         static let disclaimerTitle = NSLocalizedString("NEW!", comment: "Title for disclaimer in the dashboard's custom What's New page.")
     }
 }
-
 
 private extension UserDefaults {
 }

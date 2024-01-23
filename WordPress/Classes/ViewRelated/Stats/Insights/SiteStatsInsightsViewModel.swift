@@ -555,7 +555,6 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
-
     func createMostPopularStatsRowData() -> StatsMostPopularTimeData? {
         guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
               let dayString = mostPopularStats.formattedMostPopularDay(),
@@ -844,7 +843,6 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
         return insightsStore
     }
 
-
     /// Splits the SummaryData into an array of 2 weeks, one for the current week and one for the previous week
     ///
     /// - Parameters:
@@ -929,7 +927,6 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
         let prevWeekTimeIntervalData = StatsSummaryTimeIntervalData(period: .day,
                 periodEndDate: prevWeekData.last!.periodStartDate,
                 summaryData: Array(prevWeekData))
-
 
         let thisWeekData = summaryData[half ..< Constants.fourteenDays]
         let thisWeekTimeIntervalData = StatsSummaryTimeIntervalData(period: .day,

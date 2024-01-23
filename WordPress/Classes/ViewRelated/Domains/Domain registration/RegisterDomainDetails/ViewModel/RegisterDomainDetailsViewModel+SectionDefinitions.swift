@@ -142,7 +142,6 @@ extension RegisterDomainDetailsViewModel {
             }
         }
 
-
         func validationErrors(forContext context: ValidationRule.Context) -> [String] {
             var result: [String] = []
             for row in rows {

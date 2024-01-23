@@ -199,7 +199,6 @@ enum ReaderActionsVisibility: Equatable {
     }
 }
 
-
 // MARK: - Saved Posts
 extension ReaderPostCellActions {
 

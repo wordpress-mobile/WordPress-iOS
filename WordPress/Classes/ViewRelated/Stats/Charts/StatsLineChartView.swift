@@ -57,7 +57,6 @@ class StatsLineChartView: LineChartView {
         return data?.dataSets.first
     }
 
-
     // MARK: StatsLineChartView
 
     override var bounds: CGRect {

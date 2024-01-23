@@ -31,7 +31,6 @@ extension NotificationsViewController {
         }
     }
 
-
     fileprivate func configureControllerCompletion(_ controller: JetpackLoginViewController, withBlog blog: Blog) {
         controller.completionBlock = { [weak self, weak controller] in
             if AccountHelper.isDotcomAvailable() {

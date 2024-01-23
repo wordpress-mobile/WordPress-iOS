@@ -54,7 +54,6 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
     }
 }
 
-
 private extension RevisionPreviewViewController {
     private func setupAztec() {
         textView.load(WordPressPlugin())
@@ -89,7 +88,6 @@ private extension RevisionPreviewViewController {
         updateTitleHeight()
     }
 }
-
 
 // Aztec editor implementation for the title Label and text view.
 // Like the post editor, title and content are separate views.

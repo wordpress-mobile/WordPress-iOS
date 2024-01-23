@@ -92,8 +92,6 @@ extension PublishingEditor {
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-
-
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
@@ -182,6 +180,9 @@ extension PublishingEditor {
             } else {
                 self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
             }
+
+            // Track as significant event for App Rating calculations
+            AppRatingUtility.shared.incrementSignificantEvent()
         }
 
         if action.isAsync,

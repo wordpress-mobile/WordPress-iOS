@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
 @objc open class WPTextAttachmentManager: NSObject {
@@ -11,7 +10,6 @@ import UIKit
     @objc fileprivate(set) open weak var textView: UITextView?
     @objc let layoutManager: NSLayoutManager
     @objc let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
-
 
     /// Designaged initializer.
     ///
@@ -31,7 +29,6 @@ import UIKit
         enumerateAttachments()
     }
 
-
     /// Returns the custom view for the specified WPTextAttachment or nil if not found.
     ///
     /// - Parameters:
@@ -42,7 +39,6 @@ import UIKit
     @objc open func viewForAttachment(_ attachment: WPTextAttachment) -> UIView? {
         return attachmentViews[attachment]?.view
     }
-
 
     /// Updates the layout of any custom attachment views.  Call this method after
     /// making changes to the alignment or size of an attachment's custom view,
@@ -133,7 +129,6 @@ import UIKit
         layoutAttachmentViews()
     }
 
-
     /// Resets the attachment manager. Any custom views for WPTextAttachments are
     /// removed from the UITextView, their exclusion paths are removed from
     /// textStorage.
@@ -146,7 +141,6 @@ import UIKit
         attachments.removeAll()
     }
 }
-
 
 /// A UITextView does not register as delegate to its NSLayoutManager so the
 /// WPTextAttachmentManager does in order to be notified of any changes to the size
@@ -161,7 +155,6 @@ extension WPTextAttachmentManager: NSLayoutManagerDelegate {
         layoutAttachmentViews()
     }
 }
-
 
 /// A WPTextAttachmentManagerDelegate provides custom views for WPTextAttachments to
 /// its WPTextAttachmentManager.
@@ -178,7 +171,6 @@ extension WPTextAttachmentManager: NSLayoutManagerDelegate {
     ///
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView?
 }
-
 
 /// A convenience class for grouping a custom view with its attachment and
 /// exclusion path.

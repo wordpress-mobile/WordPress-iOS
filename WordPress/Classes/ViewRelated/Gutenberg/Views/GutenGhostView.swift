@@ -27,7 +27,6 @@ class GutenGhostView: UIView {
         }
     }
 
-
     @IBOutlet var buttonsViews: [UIView]! {
         didSet {
             buttonsViews.forEach { (view) in
@@ -56,12 +55,6 @@ class GutenGhostView: UIView {
         didSet {
             toolbarBackgroundView.isGhostableDisabled = true
             toolbarBackgroundView.backgroundColor = .ghostToolbarBackground
-        }
-    }
-
-    var hidesToolbar: Bool = false {
-        didSet {
-            toolbarViews.forEach({ $0.isHidden = hidesToolbar })
         }
     }
 

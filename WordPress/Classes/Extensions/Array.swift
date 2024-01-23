@@ -85,5 +85,4 @@ extension Array {
         return result
     }
 
-
 }

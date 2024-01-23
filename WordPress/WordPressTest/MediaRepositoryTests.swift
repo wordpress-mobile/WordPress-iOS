@@ -49,7 +49,6 @@ class MediaRepositoryTests: CoreDataTestCase {
         }
     }
 
-
     // MARK: - Deleting Media
 
     func testDeletingMediaSuccess_WhenItsSynced() async throws {

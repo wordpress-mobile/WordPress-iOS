@@ -1,12 +1,10 @@
 import UIKit
 import Gridicons
 
-
 class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfigurable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var lastPostDetails: StatsPostDetails?
 
     private let outerStackView = UIStackView()
     private let postStackView = UIStackView()

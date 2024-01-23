@@ -3,6 +3,7 @@
 #import "WordPress-Swift.h"
 
 @import WordPressKit;
+@import NSObject_SafeExpectations;
 
 @implementation PostHelper
 

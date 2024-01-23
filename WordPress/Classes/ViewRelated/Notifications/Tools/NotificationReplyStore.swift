@@ -1,6 +1,5 @@
 import Foundation
 
-
 // MARK: - NotificationReplyStore
 //
 class NotificationReplyStore {
@@ -26,7 +25,6 @@ class NotificationReplyStore {
         purgeOldReplies(now: now)
     }
 
-
     /// Retrieves the cached reply, for the specified notificationID (if any).
     ///
     func loadReply(for notificationID: String) -> String? {
@@ -47,7 +45,6 @@ class NotificationReplyStore {
         timestamps = [:]
     }
 }
-
 
 // MARK: - Private Methods
 //
@@ -88,7 +85,6 @@ private extension NotificationReplyStore {
     }
 }
 
-
 // MARK: - Private Calculated Properties
 //
 private extension NotificationReplyStore {
@@ -117,7 +113,6 @@ private extension NotificationReplyStore {
         }
     }
 }
-
 
 // MARK: - Private Structures
 //

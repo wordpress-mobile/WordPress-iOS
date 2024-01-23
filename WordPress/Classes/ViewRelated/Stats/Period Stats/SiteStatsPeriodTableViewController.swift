@@ -1,7 +1,6 @@
 import UIKit
 import WordPressFlux
 
-
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)

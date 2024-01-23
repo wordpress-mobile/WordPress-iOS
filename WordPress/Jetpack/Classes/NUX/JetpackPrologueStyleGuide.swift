@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 struct JetpackPrologueStyleGuide {
     // Background color
     static let backgroundColor = UIColor.clear
@@ -17,7 +16,6 @@ struct JetpackPrologueStyleGuide {
     static let continueHighlightedFillColor = continueFillColor.withAlphaComponent(0.9)
     static let continueTextColor = UIColor.white
     static let continueHighlightedTextColor = whiteWithAlpha07
-
 
     // Enter your site address button
     static let siteFillColor = UIColor.clear
@@ -38,16 +36,6 @@ struct JetpackPrologueStyleGuide {
     struct Title {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         static let textColor: UIColor = .white
-    }
-
-    struct Stars {
-        static let particleImage = UIImage(named: "circle-particle")
-
-        static let colors = [
-            UIColor(red: 0.05, green: 0.27, blue: 0.44, alpha: 1.00),
-            UIColor(red: 0.64, green: 0.68, blue: 0.71, alpha: 1.00),
-            UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 1.00)
-        ]
     }
 
     static let continueButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: continueFillColor,

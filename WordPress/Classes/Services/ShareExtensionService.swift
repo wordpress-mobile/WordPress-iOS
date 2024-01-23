@@ -81,7 +81,6 @@ open class ShareExtensionService: NSObject {
         userDefaults.set(maximumMediaDimension, forKey: AppConfiguration.Extension.Share.maximumMediaDimensionKey)
     }
 
-
     /// Sets the recently used sites.
     ///
     /// - Parameter recentSites: An array of URL's representing the recently used sites.

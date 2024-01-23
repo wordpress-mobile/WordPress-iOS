@@ -3,7 +3,6 @@ import WordPressAuthenticator
 import Gridicons
 import UIKit
 
-
 // MARK: - WordPressAuthenticationManager
 //
 @objc
@@ -66,8 +65,8 @@ extension WordPressAuthenticationManager {
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
-                                                   wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
-                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
+                                                   wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
+                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
                                                    wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
                                                    googleLoginClientId: ApiCredentials.googleLoginClientId,
                                                    googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
@@ -162,7 +161,6 @@ extension WordPressAuthenticationManager {
             return color
         }()
 
-
         /// Uses the same prologueButtonsBackgroundColor but we need to be able to return nil
         let prologueViewBackgroundColor: UIColor? = authenticationHandler?.prologueButtonsBackgroundColor
 
@@ -182,7 +180,6 @@ extension WordPressAuthenticationManager {
                                                   navTitleTextColor: .appBarText)
     }
 }
-
 
 // MARK: - Static Methods
 //
@@ -223,7 +220,6 @@ extension WordPressAuthenticationManager {
     }
 }
 
-
 // MARK: - Notification Handlers
 //
 extension WordPressAuthenticationManager {
@@ -237,7 +233,6 @@ extension WordPressAuthenticationManager {
     }
 
 }
-
 
 // MARK: - WordPressAuthenticator Delegate
 //
@@ -566,7 +561,6 @@ private extension WordPressAuthenticationManager {
         navigationController.pushViewController(viewController, animated: true)
     }
 
-
     /// To prevent a weird jump from the MySite tab to the reader/notifications tab
     /// We'll pre-switch to the users selected tab before the login flow dismisses
     private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
@@ -576,7 +570,6 @@ private extension WordPressAuthenticationManager {
             RootViewCoordinator.sharedPresenter.showNotificationsTab()
         }
     }
-
 
 }
 
@@ -611,7 +604,6 @@ private extension WordPressAuthenticationManager {
         }
     }
 }
-
 
 // MARK: - WordPressAuthenticatorManager
 //

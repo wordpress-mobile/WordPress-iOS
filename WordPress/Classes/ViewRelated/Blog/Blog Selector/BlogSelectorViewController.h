@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+@import CoreData;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -21,6 +21,13 @@ enum PrepublishingIdentifier {
     case tags
     case categories
     case autoSharing
+
+    static var defaultIdentifiers: [PrepublishingIdentifier] {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
+            return [.visibility, .schedule, .tags, .categories, .autoSharing]
+        }
+        return [.visibility, .schedule, .tags, .categories]
+    }
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -535,7 +542,6 @@ extension Set {
         return Array(self)
     }
 }
-
 
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {

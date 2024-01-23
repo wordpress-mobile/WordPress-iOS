@@ -147,7 +147,6 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         let listener = SyncManagerListenerMock()
         manager.addListener(listener)
 
-
         // When
         manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses)
         wait(for: [expectation(that: \.postsSyncedCalled, on: listener, willEqual: true)], timeout: 0.1)

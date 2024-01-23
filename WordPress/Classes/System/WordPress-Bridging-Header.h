@@ -1,6 +1,4 @@
 #import "SFHFKeychainUtils.h"
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
 // WordPress Module
 

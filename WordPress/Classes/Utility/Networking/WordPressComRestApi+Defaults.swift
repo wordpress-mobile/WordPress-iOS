@@ -8,9 +8,8 @@ extension WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: oAuthToken,
                                    userAgent: userAgent,
                                    localeKey: localeKey,
-                                   baseUrlString: Environment.current.wordPressComApiBase)
+                                   baseURL: Environment.current.wordPressComApiBase)
     }
-
 
     /// Returns the default API the default WP.com account using the given context
     @objc public static func defaultApi(in context: NSManagedObjectContext,

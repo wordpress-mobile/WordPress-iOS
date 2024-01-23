@@ -88,7 +88,6 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         fixDefaultAccountIfNeeded(context)
     }
 
-
     // MARK: - Private Helpers
 
     fileprivate func legacyDefaultWordPressAccount(_ context: NSManagedObjectContext) -> NSManagedObject? {
@@ -145,7 +144,6 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let defaults = UserPersistentStoreFactory.instance()
         defaults.set(uuid, forKey: defaultDotcomUUIDKey)
     }
-
 
     // MARK: Invalid Default WordPress Account Fix
 

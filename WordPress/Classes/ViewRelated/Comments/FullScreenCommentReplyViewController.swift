@@ -5,7 +5,6 @@ import Gridicons
 /// After instantiating using `newEdit()` the class expects the `content` and `onExitFullscreen`
 /// properties to be set.
 
-
 /// Keeps track of the position of the suggestions view
 fileprivate enum SuggestionsPosition: Int {
     case hidden
@@ -122,7 +121,6 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         //If the user just changes the selection, then hide the suggestions
         suggestionsTableView?.hideSuggestions()
     }
-
 
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard shouldShowSuggestions else {
@@ -287,7 +285,6 @@ private extension FullScreenCommentReplyViewController {
         let margin = suggestionViewMargin
         let suggestionsHeight = suggestions.frame.height
 
-
         // Calculates the height of the view minus the keyboard if its visible
         let calculatedViewHeight = (view.frame.height - keyboardFrame.height)
 
@@ -345,7 +342,6 @@ private extension FullScreenCommentReplyViewController {
             suggestionsTop,
         ])
     }
-
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {

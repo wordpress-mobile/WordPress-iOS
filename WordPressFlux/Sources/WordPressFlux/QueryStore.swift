@@ -97,12 +97,10 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
         return activeQueryReferences.map({ $0.query })
     }
 
-
     override public init(initialState: State, dispatcher: ActionDispatcher = .global) {
         self.initialState = initialState
         super.init(initialState: initialState, dispatcher: dispatcher)
     }
-
 
     /// Registers a query with the store.
     ///
@@ -140,8 +138,6 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     open func logError(_ error: String) {
         NSLog(error)
     }
-
-
 
 }
 

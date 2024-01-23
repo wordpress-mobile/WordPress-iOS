@@ -21,7 +21,6 @@ final class ReaderShowMenuAction {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
-
         // Block site button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
             let handler: (UIAlertAction) -> Void = { action in

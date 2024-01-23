@@ -85,7 +85,6 @@ class AccountServiceTests: CoreDataTestCase {
 
         accountService.setDefaultWordPressComAccount(account)
 
-
         accountService.removeDefaultWordPressComAccount()
 
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext), "No default account should be set")

@@ -25,7 +25,6 @@ struct AllDomainsListItemViewModel {
 
     typealias Row = AllDomainsListCardView.ViewModel
     typealias Domain = DomainsService.AllDomainsListItem
-    typealias Status = Domain.Status
     typealias StatusType = DomainsService.AllDomainsListItem.StatusType
 
     // MARK: - Properties

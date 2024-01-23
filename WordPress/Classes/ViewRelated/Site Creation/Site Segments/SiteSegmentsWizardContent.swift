@@ -202,7 +202,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         ])
         errorVC.didMove(toParent: self)
 
-
         errorStateViewController = errorVC
     }
 

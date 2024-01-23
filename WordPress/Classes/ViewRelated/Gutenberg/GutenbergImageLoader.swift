@@ -75,5 +75,4 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
         return 100
     }
 
-
 }

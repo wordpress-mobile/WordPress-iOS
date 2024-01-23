@@ -22,7 +22,6 @@ extension ReaderTopicService: ReaderInterestsService {
         }
     }
 
-
     /// Creates a new WP.com API instances that allows us to specify the LocaleKeyV2
     private func apiRequest() -> WordPressComRestApi {
         let token = coreDataStack.performQuery { context in

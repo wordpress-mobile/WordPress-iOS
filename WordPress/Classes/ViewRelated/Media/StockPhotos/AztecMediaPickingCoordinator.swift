@@ -67,7 +67,7 @@ final class AztecMediaPickingCoordinator {
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
         let docTypes = blog.allowedTypeIdentifiers
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+        let docPicker = UIDocumentPickerViewController(forOpeningContentTypes: docTypes.compactMap(UTType.init), asCopy: true)
         docPicker.delegate = origin
         docPicker.allowsMultipleSelection = true
         origin.present(docPicker, animated: true)
