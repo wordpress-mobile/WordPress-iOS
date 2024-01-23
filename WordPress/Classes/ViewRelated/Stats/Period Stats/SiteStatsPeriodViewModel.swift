@@ -633,10 +633,10 @@ private extension SiteStatsPeriodViewModel {
 
     func fileDownloadsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(statSection: StatSection.periodFileDownloads))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),
+                                                 statSection: StatSection.periodFileDownloads,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
