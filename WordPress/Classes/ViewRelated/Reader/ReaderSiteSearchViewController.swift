@@ -255,23 +255,23 @@ private extension ReaderSiteSearchViewController {
 
     struct StatusText {
         static let loadingTitle = NSLocalizedString(
-            "reader.site.search.loading.title",
+            "reader.blog.search.loading.title",
             value: "Fetching blogs...",
             comment: "A brief prompt when the user is searching for blogs in the Reader."
         )
         static let loadingFailedTitle = NSLocalizedString(
-            "reader.site.search.loading.error",
+            "reader.blog.search.loading.error",
             value: "Problem loading blogs",
             comment: "Error message title informing the user that a search for sites in the Reader could not be loaded."
         )
         static let loadingFailedMessage = NSLocalizedString("Sorry. Your search results could not be loaded.", comment: "A short error message leting the user know the requested search could not be performed.")
         static let noResultsTitle = NSLocalizedString(
-            "reader.site.search.no.results.title",
+            "reader.blog.search.no.results.title",
             value: "No blogs found",
             comment: "A message title"
         )
         static let messageFormat = NSLocalizedString(
-            "reader.site.search.no.results.message.format",
+            "reader.blog.search.no.results.message.format",
             value: "No blogs found matching %@ in your language.",
             comment: "Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase."
         )

@@ -88,7 +88,7 @@ import Gridicons
 
         let count = numberFormatter.string(from: topic.subscriberCount) ?? "0"
         let pattern = NSLocalizedString(
-            "reader.site.stream.subscribers",
+            "reader.blog.stream.subscribers",
             value: "%@ subscribers",
             comment: "The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers`"
         )
