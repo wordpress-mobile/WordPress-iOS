@@ -1,6 +1,9 @@
 24.1
 -----
 
+24.0.1
+-----
+* [**] Fix crash when RichText values are not defined [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6563]
 
 24.0
 -----
