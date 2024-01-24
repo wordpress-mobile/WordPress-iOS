@@ -26,7 +26,7 @@ extension BlogDetailsViewController {
         guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
-            let url = Gravatar.gravatarUrl(for: email),
+            let url = GravatarURL.gravatarUrl(for: email),
             let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
                 return
         }

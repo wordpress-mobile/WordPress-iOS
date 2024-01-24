@@ -40,7 +40,7 @@ extension WPTabBarController {
         guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
-            let url = Gravatar.gravatarUrl(for: email) else {
+            let url = GravatarURL.gravatarUrl(for: email) else {
                 return
         }
 

@@ -98,7 +98,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     // MARK: - Public Methods
 
     @objc func downloadGravatarWithURL(_ url: URL?) {
-        let gravatar = url.flatMap { Gravatar($0) }
+        let gravatar = url.flatMap { GravatarURL($0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }

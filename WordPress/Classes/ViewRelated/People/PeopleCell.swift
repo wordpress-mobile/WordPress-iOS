@@ -35,7 +35,7 @@ class PeopleCell: WPTableViewCell {
     }
 
     @objc func setAvatarURL(_ avatarURL: URL?) {
-        let gravatar = avatarURL.flatMap { Gravatar($0) }
+        let gravatar = avatarURL.flatMap { GravatarURL($0) }
         let placeholder = UIImage(named: "gravatar")!
         avatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
