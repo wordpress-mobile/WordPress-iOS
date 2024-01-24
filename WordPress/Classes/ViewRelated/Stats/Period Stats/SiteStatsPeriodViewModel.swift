@@ -88,16 +88,13 @@ class SiteStatsPeriodViewModel: Observable {
         }
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
-            return [CellHeaderRow(statSection: section),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
+            return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: section)]
         }
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
+            return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
-            return [CellHeaderRow(statSection: section),
-                    StatsGhostTopImmutableRow()]
+            return [StatsGhostTopImmutableRow()]
         }
 
         var sections: [ImmuTableSection] = []
@@ -112,8 +109,7 @@ class SiteStatsPeriodViewModel: Observable {
                                             block: { [weak self] in
                                                 return self?.overviewTableRows() ?? summaryErrorBlock()
             }, loading: {
-                return [PeriodEmptyCellHeaderRow(),
-                        StatsGhostChartImmutableRow()]
+                return [StatsGhostChartImmutableRow()]
         }, error: summaryErrorBlock)))
 
         sections.append(.init(rows: blocks(for: .topPostsAndPages,
@@ -259,7 +255,6 @@ private extension SiteStatsPeriodViewModel {
 
     func overviewTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(PeriodEmptyCellHeaderRow())
 
         let periodSummary = store.getSummary()
         let summaryData = periodSummary?.summaryData ?? []

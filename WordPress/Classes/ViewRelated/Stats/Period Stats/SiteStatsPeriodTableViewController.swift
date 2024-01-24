@@ -105,6 +105,14 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return UITableView.automaticDimension
+        } else {
+            return super.tableView(tableView, heightForHeaderInSection: section)
+        }
+    }
+
 }
 
 extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
