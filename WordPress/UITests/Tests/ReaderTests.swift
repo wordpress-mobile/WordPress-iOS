@@ -18,59 +18,62 @@ class ReaderTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
-//    func testViewPost() throws {
-//        try ReaderScreen()
-//            .openLastPost()
-//            .verifyPostContentEquals(.expectedPostContent)
-//    }
+    func testViewPost() throws {
+        try ReaderScreen()
+            .switchToStream(.subscriptions)
+            .openLastPost()
+            .verifyPostContentEquals(.expectedPostContent)
+    }
 
-//    func testViewPostInSafari() throws {
-//        try ReaderScreen()
-//            .openLastPostInSafari()
-//            .verifyPostContentEquals(.expectedPostContent)
-//    }
+    func testViewPostInSafari() throws {
+        try ReaderScreen()
+            .switchToStream(.subscriptions)
+            .openLastPostInSafari()
+            .verifyPostContentEquals(.expectedPostContent)
+    }
 
-//    func testAddCommentToPost() throws {
-//        try ReaderScreen()
-//            .openLastPostComments()
-//            .verifyCommentsListEmpty()
-//            .replyToPost(.commentContent)
-//            .verifyCommentSent(.commentContent)
-//    }
+    func testAddCommentToPost() throws {
+        try ReaderScreen()
+            .switchToStream(.subscriptions)
+            .openLastPostComments()
+            .verifyCommentsListEmpty()
+            .replyToPost(.commentContent)
+            .verifyCommentSent(.commentContent)
+    }
 
-//    func testFollowNewTopicOnDiscover() throws {
-//        try ReaderScreen()
-//            .openDiscoverTab()
-//            .selectTopic()
-//            .verifyTopicLoaded()
-//            .followTopic()
-//            .verifyTopicFollowed()
-//    }
+    func testFollowNewTopicOnDiscover() throws {
+        try ReaderScreen()
+            .switchToStream(.discover)
+            .selectTopic()
+            .verifyTopicLoaded()
+            .followTopic()
+            .verifyTopicFollowed()
+    }
 
-//    func testSavePost() throws {
-//        // Get saved post label
-//        let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
-//            .openSavedTab()
-//            .verifySavedPosts(state: .withoutPosts)
-//            .openFollowingTab()
-//            .saveFirstPost()
-//
-//        // Open saved posts tab and validate that the correct saved post is displayed
-//        updatedReaderScreen
-//            .openSavedTab()
-//            .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
-//    }
+    func testSavePost() throws {
+        // Get saved post label
+        let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
+            .switchToStream(.saved)
+            .verifySavedPosts(state: .withoutPosts)
+            .switchToStream(.subscriptions)
+            .saveFirstPost()
 
-//    func testLikePost() throws {
-//        try ReaderScreen()
-//            .openLikesTab()
-//            .verifyLikedPosts(state: .withoutPosts)
-//            .openFollowingTab()
-//            .likeFirstPost()
-//            .verifyPostLikedOnFollowingTab()
-//            .openLikesTab()
-//            .verifyLikedPosts(state: .withPosts)
-//    }
+        // Open saved posts tab and validate that the correct saved post is displayed
+        updatedReaderScreen
+            .switchToStream(.saved)
+            .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
+    }
+
+    func testLikePost() throws {
+        try ReaderScreen()
+            .switchToStream(.liked)
+            .verifyLikedPosts(state: .withoutPosts)
+            .switchToStream(.subscriptions)
+            .likeFirstPost()
+            .verifyPostLikedOnFollowingTab()
+            .switchToStream(.liked)
+            .verifyLikedPosts(state: .withPosts)
+    }
 }
 
 private extension String {
