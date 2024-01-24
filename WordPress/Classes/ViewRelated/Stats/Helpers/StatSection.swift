@@ -34,42 +34,44 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static var allInsights: [StatSection] {
-        return [.insightsViewsVisitors,
-                .insightsLikesTotals,
-                .insightsCommentsTotals,
-                .insightsFollowerTotals,
-                .insightsMostPopularTime,
-                .insightsLatestPostSummary,
-                .insightsAllTime,
-                .insightsAnnualSiteStats,
-                .insightsTodaysStats,
-                .insightsPostingActivity,
-                .insightsTagsAndCategories,
-                .insightsFollowersWordPress,
-                .insightsFollowersEmail,
-                .insightsPublicize]
-    }
-
-    static let allPeriods = [StatSection.periodOverviewViews,
-                             .periodOverviewVisitors,
-                             .periodOverviewLikes,
-                             .periodOverviewComments,
-                             .periodPostsAndPages,
-                             .periodReferrers,
-                             .periodClicks,
-                             .periodAuthors,
-                             .periodCountries,
-                             .periodSearchTerms,
-                             .periodPublished,
-                             .periodVideos,
-                             .periodFileDownloads
+    static let allInsights: [StatSection] = [
+        .insightsViewsVisitors,
+        .insightsLikesTotals,
+        .insightsCommentsTotals,
+        .insightsFollowerTotals,
+        .insightsMostPopularTime,
+        .insightsLatestPostSummary,
+        .insightsAllTime,
+        .insightsAnnualSiteStats,
+        .insightsTodaysStats,
+        .insightsPostingActivity,
+        .insightsTagsAndCategories,
+        .insightsFollowersWordPress,
+        .insightsFollowersEmail,
+        .insightsPublicize
     ]
 
-    static let allPostStats = [StatSection.postStatsGraph,
-                               .postStatsMonthsYears,
-                               .postStatsAverageViews,
-                               .postStatsRecentWeeks
+    static let allPeriods: [StatSection] = [
+        .periodOverviewViews,
+        .periodOverviewVisitors,
+        .periodOverviewLikes,
+        .periodOverviewComments,
+        .periodPostsAndPages,
+        .periodReferrers,
+        .periodClicks,
+        .periodAuthors,
+        .periodCountries,
+        .periodSearchTerms,
+        .periodPublished,
+        .periodVideos,
+        .periodFileDownloads
+    ]
+
+    static let allPostStats: [StatSection] = [
+        .postStatsGraph,
+        .postStatsMonthsYears,
+        .postStatsAverageViews,
+        .postStatsRecentWeeks
     ]
 
     // MARK: - String Accessors
