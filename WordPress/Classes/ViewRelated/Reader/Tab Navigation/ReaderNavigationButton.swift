@@ -71,6 +71,7 @@ struct ReaderNavigationButton: View {
                 item.image
             }
         }
+        .accessibilityIdentifier(item.accessibilityIdentifier)
     }
 
     struct Colors {
