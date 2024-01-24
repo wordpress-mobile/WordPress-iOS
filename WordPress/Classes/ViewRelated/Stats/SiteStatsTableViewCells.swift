@@ -97,28 +97,6 @@ struct TableFooterRow: ImmuTableRow {
 
 // MARK: - Insights Rows
 
-struct InsightCellHeaderRow: ImmuTableRow {
-
-    typealias CellType = StatsCellHeader
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let statSection: StatSection
-    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-    }
-}
-
 struct GrowAudienceRow: ImmuTableRow {
 
     typealias CellType = GrowAudienceCell
@@ -171,11 +149,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
 struct LatestPostSummaryRow: ImmuTableRow {
 
     static var cell: ImmuTableCell {
-        if AppConfiguration.statsRevampV2Enabled {
-            return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
-        } else {
-            return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
-        }
+        return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
     }
 
     let summaryData: StatsLastPostInsight?
@@ -374,23 +348,20 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         cell.textLabel?.adjustsFontForContentSizeCategory = true
-        cell.textLabel?.textColor = AppConfiguration.statsRevampV2Enabled || enabled ? .text : .textPlaceholder
+        cell.textLabel?.textColor = enabled ? .text : .textPlaceholder
         cell.selectionStyle = .none
 
         cell.accessibilityLabel = title
         cell.isAccessibilityElement = true
 
-        let canTap = AppConfiguration.statsRevampV2Enabled ? action != nil : enabled
+        let canTap = action != nil
         cell.accessibilityTraits = canTap ? .button : .notEnabled
         cell.accessibilityHint = canTap && enabled ? disabledHint : enabledHint
+        cell.accessoryView = canTap ? UIImageView(image: UIImage(systemName: Constants.plusIconName)) : nil
 
-        if AppConfiguration.statsRevampV2Enabled {
-            cell.accessoryView = canTap ? UIImageView(image: UIImage(systemName: Constants.plusIconName)) : nil
-
-            let editingImageView = UIImageView(image: UIImage(systemName: Constants.minusIconName))
-            editingImageView.tintColor = .textSubtle
-            cell.editingAccessoryView = editingImageView
-        }
+        let editingImageView = UIImageView(image: UIImage(systemName: Constants.minusIconName))
+        editingImageView.tintColor = .textSubtle
+        cell.editingAccessoryView = editingImageView
     }
 
     private enum Constants {

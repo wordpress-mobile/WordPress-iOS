@@ -34,59 +34,44 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static var allInsights: [StatSection] {
-        if AppConfiguration.statsRevampV2Enabled {
-            return [.insightsViewsVisitors,
-                    .insightsLikesTotals,
-                    .insightsCommentsTotals,
-                    .insightsFollowerTotals,
-                    .insightsMostPopularTime,
-                    .insightsLatestPostSummary,
-                    .insightsAllTime,
-                    .insightsAnnualSiteStats,
-                    .insightsTodaysStats,
-                    .insightsPostingActivity,
-                    .insightsTagsAndCategories,
-                    .insightsFollowersWordPress,
-                    .insightsFollowersEmail,
-                    .insightsPublicize]
-        } else {
-            return [.insightsLatestPostSummary,
-                    .insightsAllTime,
-                    .insightsFollowerTotals,
-                    .insightsMostPopularTime,
-                    .insightsTagsAndCategories,
-                    .insightsAnnualSiteStats,
-                    .insightsCommentsAuthors,
-                    .insightsCommentsPosts,
-                    .insightsFollowersWordPress,
-                    .insightsFollowersEmail,
-                    .insightsTodaysStats,
-                    .insightsPostingActivity,
-                    .insightsPublicize,
-                    .insightsAddInsight]
-        }
-    }
-
-    static let allPeriods = [StatSection.periodOverviewViews,
-                             .periodOverviewVisitors,
-                             .periodOverviewLikes,
-                             .periodOverviewComments,
-                             .periodPostsAndPages,
-                             .periodReferrers,
-                             .periodClicks,
-                             .periodAuthors,
-                             .periodCountries,
-                             .periodSearchTerms,
-                             .periodPublished,
-                             .periodVideos,
-                             .periodFileDownloads
+    static let allInsights: [StatSection] = [
+        .insightsViewsVisitors,
+        .insightsLikesTotals,
+        .insightsCommentsTotals,
+        .insightsFollowerTotals,
+        .insightsMostPopularTime,
+        .insightsLatestPostSummary,
+        .insightsAllTime,
+        .insightsAnnualSiteStats,
+        .insightsTodaysStats,
+        .insightsPostingActivity,
+        .insightsTagsAndCategories,
+        .insightsFollowersWordPress,
+        .insightsFollowersEmail,
+        .insightsPublicize
     ]
 
-    static let allPostStats = [StatSection.postStatsGraph,
-                               .postStatsMonthsYears,
-                               .postStatsAverageViews,
-                               .postStatsRecentWeeks
+    static let allPeriods: [StatSection] = [
+        .periodOverviewViews,
+        .periodOverviewVisitors,
+        .periodOverviewLikes,
+        .periodOverviewComments,
+        .periodPostsAndPages,
+        .periodReferrers,
+        .periodClicks,
+        .periodAuthors,
+        .periodCountries,
+        .periodSearchTerms,
+        .periodPublished,
+        .periodVideos,
+        .periodFileDownloads
+    ]
+
+    static let allPostStats: [StatSection] = [
+        .postStatsGraph,
+        .postStatsMonthsYears,
+        .postStatsAverageViews,
+        .postStatsRecentWeeks
     ]
 
     // MARK: - String Accessors
@@ -112,18 +97,14 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            if AppConfiguration.statsRevampV2Enabled {
-                switch self {
-                case .insightsCommentsAuthors:
-                    return InsightsHeaders.topCommenters
-                case .insightsCommentsPosts:
-                    return InsightsHeaders.posts
-                default:
-                    return InsightsHeaders.comments
-                }
+            switch self {
+            case .insightsCommentsAuthors:
+                return InsightsHeaders.topCommenters
+            case .insightsCommentsPosts:
+                return InsightsHeaders.posts
+            default:
+                return InsightsHeaders.comments
             }
-
-            return InsightsHeaders.comments
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return InsightsHeaders.followers
         case .insightsTodaysStats:
@@ -405,13 +386,7 @@
         static let viewsVisitors = NSLocalizedString("Views & Visitors", comment: "Insights views and visitors header")
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
-        static var mostPopularTime: String {
-            if AppConfiguration.statsRevampV2Enabled {
-                return NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
-            } else {
-                return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
-            }
-        }
+        static let mostPopularTime = NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
         static let likesTotals = NSLocalizedString("Total Likes", comment: "Insights 'Total Likes' header")
         static let commentsTotals = NSLocalizedString("Total Comments", comment: "Insights 'Total Comments' header")
         static let followerTotals = NSLocalizedString("Total Followers", comment: "Insights 'Total Followers' header")

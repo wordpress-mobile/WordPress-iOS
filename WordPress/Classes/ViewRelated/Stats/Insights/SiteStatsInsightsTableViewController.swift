@@ -69,10 +69,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         sendScrollEventsToBanner()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
-
-        if AppConfiguration.statsRevampV2Enabled {
-            tableView.cellLayoutMarginsFollowReadableWidth = true
-        }
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         displayEmptyViewIfNecessary()
     }
@@ -121,10 +118,7 @@ private extension SiteStatsInsightsTableViewController {
                                                pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
-
-        if AppConfiguration.statsRevampV2Enabled {
-            viewModel?.startFetchingPeriodOverview()
-        }
+        viewModel?.startFetchingPeriodOverview()
     }
 
     func addViewModelListeners() {
@@ -144,8 +138,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [InsightCellHeaderRow.self,
-                ViewsVisitorsRow.self,
+        return [ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
@@ -423,14 +416,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            switch statSection {
-            case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
-                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
-            default:
-                segueToDetails(statSection: statSection, selectedDate: selectedDate)
-            }
-        } else {
+        switch statSection {
+        case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
+            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+        default:
             segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
     }
