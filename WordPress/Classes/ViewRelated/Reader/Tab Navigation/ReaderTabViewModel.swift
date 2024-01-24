@@ -7,6 +7,7 @@ import WordPressFlux
     /// tab bar items
     private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
+    private let persistentRepository: UserPersistentRepository
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
 
     var tabItems: [ReaderTabItem] = [] {
@@ -24,6 +25,10 @@ import WordPressFlux
     var selectedIndex = 0
     var selectedItem: ReaderTabItem? {
         tabItems[safe: selectedIndex]
+    }
+
+    var lastVisitedIndex: Int {
+        persistentRepository.integer(forKey: Constants.lastVisitedStreamIndexKey)
     }
 
     /// completion handler for a tap on a tab on the toolbar
@@ -66,20 +71,31 @@ import WordPressFlux
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ItemsStore,
-         settingsPresenter: ScenePresenter) {
+         settingsPresenter: ScenePresenter,
+         persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
         self.tabItemsStore = tabItemsStore
         self.settingsPresenter = settingsPresenter
+        self.persistentRepository = persistentRepository
         super.init()
 
+        // show the last visited index as default.
+        selectedIndex = lastVisitedIndex
+
         subscription = tabItemsStore.onChange { [weak self] in
-            guard let viewModel = self else {
+            guard let self else {
                 return
             }
-            viewModel.tabItems = viewModel.tabItemsStore.items
-            viewModel.reloadStreamFilters()
-            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItemsStore.items, viewModel.selectedIndex) }
+            self.tabItems = self.tabItemsStore.items
+            self.reloadStreamFilters()
+
+            // reset if the selectedIndex is out of bounds to avoid showing a blank screen.
+            if self.selectedIndex >= self.tabItems.count {
+                self.selectedIndex = 0
+            }
+
+            self.onTabBarItemsDidChange.forEach { $0(self.tabItemsStore.items, self.selectedIndex) }
         }
         addNotificationsObservers()
         observeNetworkStatus()
@@ -103,6 +119,10 @@ extension ReaderTabViewModel {
 // MARK: - Tab selection
 extension ReaderTabViewModel {
 
+    private enum Constants {
+        static let lastVisitedStreamIndexKey = "readerLastVisitedStreamIndexDefaultsKey"
+    }
+
     func showTab(at index: Int) {
         guard index < tabItems.count else {
             return
@@ -115,6 +135,9 @@ extension ReaderTabViewModel {
 
         // reload filters for the new stream.
         reloadStreamFilters()
+
+        // save the last visited index.
+        persistentRepository.set(index, forKey: Constants.lastVisitedStreamIndexKey)
 
         didSelectIndex?(index)
     }
