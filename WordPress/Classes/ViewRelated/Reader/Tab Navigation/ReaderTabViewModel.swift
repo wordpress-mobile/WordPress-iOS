@@ -1,5 +1,5 @@
 import WordPressFlux
-
+import Combine
 
 @objc class ReaderTabViewModel: NSObject, ObservableObject {
 
@@ -54,11 +54,25 @@ import WordPressFlux
     /// Settings
     private let settingsPresenter: ScenePresenter
 
+    private var receipts = [Receipt]()
+
     /// The available filters for the current stream.
     @Published var streamFilters = [FilterProvider]() {
         didSet {
+            // clear the receipts each time we replace these with new filters.
+            receipts = []
+
             // refresh the filter list immediately upon update.
-            streamFilters.forEach { $0.refresh() }
+            streamFilters.forEach { [weak self] filter in
+                filter.refresh()
+
+                // listen to internal filter changes so that we can "force" the view model
+                // to push changes down to the SwiftUI view. This is to ensure that the strings
+                // are up-to-date (e.g., after subscribing to new blogs or tags from the manage flow.)
+                self?.receipts.append(filter.onChange {
+                    self?.objectWillChange.send()
+                })
+            }
         }
     }
 
@@ -212,8 +226,17 @@ extension ReaderTabViewModel {
         WPAnalytics.track(.readerFilterSheetDisplayed, properties: ["source": filter.reuseIdentifier])
     }
 
-    func presentManage(from: UIViewController) {
-        settingsPresenter.present(on: from, animated: true, completion: nil)
+    func presentManage(filter: FilterProvider, from: UIViewController) {
+        guard let managePresenter = settingsPresenter as? ReaderManageScenePresenter else {
+            settingsPresenter.present(on: from, animated: true, completion: nil)
+            return
+        }
+
+        managePresenter.present(on: from, selectedSection: filter.section, animated: true) {
+            // on completion, ensure that the FilterProvider is refreshed so the latest changes
+            // can be reflected on the UI.
+            filter.refresh()
+        }
     }
 
     func didTapStreamFilterButton(with filter: FilterProvider) {
@@ -251,7 +274,9 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
     private func makeFilterSheetViewController(filter: FilterProvider,
                                                completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
-        return FilterSheetViewController(filter: filter, changedFilter: completion)
+        return FilterSheetViewController(filter: filter, changedFilter: completion) { [weak self] viewController in
+            self?.presentManage(filter: filter, from: viewController)
+        }
     }
 }
 
