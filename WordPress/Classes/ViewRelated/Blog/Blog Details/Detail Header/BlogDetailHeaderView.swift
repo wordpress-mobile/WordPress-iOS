@@ -290,7 +290,7 @@ extension BlogDetailHeaderView {
             button.tintColor = .secondaryLabel
             button.accessibilityLabel = NSLocalizedString("mySite.siteActions.button", value: "Site Actions", comment: "Button that reveals more site actions")
             button.accessibilityHint = NSLocalizedString("mySite.siteActions.hint", value: "Tap to show more site actions", comment: "Accessibility hint for button used to show more site actions")
-            button.accessibilityIdentifier = .siteActionAccessibilityId
+            button.accessibilityIdentifier = .switchSiteAccessibilityId
 
             return button
         }()
@@ -370,7 +370,7 @@ private extension String {
     // MARK: Accessibility Identifiers
     static let siteTitleAccessibilityId = "site-title-button"
     static let siteUrlAccessibilityId = "site-url-button"
-    static let siteActionAccessibilityId = "site-action-button"
+    static let switchSiteAccessibilityId = "switch-site-button"
 }
 
 private enum Strings {
