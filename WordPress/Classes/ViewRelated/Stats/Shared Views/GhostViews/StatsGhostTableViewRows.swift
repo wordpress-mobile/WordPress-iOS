@@ -30,6 +30,7 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
 
     var hideTopBorder = false
     var hideBottomBorder = false
+    var statSection: StatSection? = nil
 
     func configureCell(_ cell: UITableViewCell) {
         DispatchQueue.main.async {
@@ -39,6 +40,7 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
         if let detailCell = cell as? StatsGhostTopCell {
             detailCell.topBorder?.isHidden = hideTopBorder
             detailCell.bottomBorder?.isHidden = hideBottomBorder
+            detailCell.statSection = statSection
         }
     }
 }

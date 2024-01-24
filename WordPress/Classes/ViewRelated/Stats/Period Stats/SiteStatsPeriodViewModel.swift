@@ -94,7 +94,7 @@ class SiteStatsPeriodViewModel: Observable {
             return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
-            return [StatsGhostTopImmutableRow()]
+            return [StatsGhostTopImmutableRow(statSection: section)]
         }
 
         var sections: [ImmuTableSection] = []
