@@ -31,6 +31,7 @@ struct ReaderNavigationButton: View {
                 menuLabel(for: selectedItem)
             }
         }
+        .accessibilityIdentifier("reader-navigation-button")
         .buttonStyle(PlainButtonStyle())
         .onTapGesture {
             WPAnalytics.track(.readerDropdownOpened)
