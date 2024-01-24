@@ -72,10 +72,6 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private func configureHeading(with topConstraint: NSLayoutConstraint) {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return
-        }
-
         contentView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -102,10 +98,6 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private func updateHeader() {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return
-        }
-
         if headingBottomConstraint == nil && headingLabel.superview == nil {
             configureHeading(with: topConstraint)
         }
