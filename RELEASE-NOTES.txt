@@ -22,6 +22,7 @@
 * [*] [internal] Drop iOS 14 Support: Remove deprecated UIDocumentPickerViewController API [#22286]
 * [***] [internal] Refactor WP.com sign in API requests [#22421]
 * [*] Add In-App Feedback Prompt. [#22050]
+* [**] Disabled the ability of creating new Story posts. [#22453]
 
 24.0
 -----
