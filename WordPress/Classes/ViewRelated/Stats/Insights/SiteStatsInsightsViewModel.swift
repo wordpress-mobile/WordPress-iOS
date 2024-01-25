@@ -239,7 +239,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                             statSection: .insightsTagsAndCategories,
                                                                             siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTopImmutableRow()
+                    return StatsGhostTopImmutableRow(statSection: .insightsTagsAndCategories)
                 }, error: {
                     errorBlock(.insightsTagsAndCategories)
                 }))
@@ -313,7 +313,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                             statSection: .insightsPublicize,
                                                                             siteStatsInsightsDelegate: nil)
                 }, loading: {
-                    return StatsGhostTopImmutableRow()
+                    return StatsGhostTopImmutableRow(statSection: .insightsPublicize)
                 }, error: {
                     errorBlock(.insightsPublicize)
                 }))
