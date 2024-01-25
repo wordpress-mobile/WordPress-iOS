@@ -7,9 +7,16 @@ struct SiteMonitoringView: View {
     }
 }
 
+enum SiteMonitoringTab: Int {
+    case metrics
+    case phpLogs
+    case webServerLogs
+}
+
 final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView> {
 
-    init() {
+    init(selectedTab: SiteMonitoringTab? = nil) {
+        // TODO: Open the selected tab if passed
         super.init(rootView: .init())
     }
 
