@@ -34,10 +34,6 @@ import SwiftUI
             PlansTracker.trackPurchaseResult(source: "plan_selection")
         }
 
-        let domainAddedToCart = plansFlowAfterDomainAddedToCartBlock(customTitle: nil, purchaseCallback: purchaseCallback)
-
-        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart
-
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         dashboardViewController.present(navigationController, animated: true)
     }

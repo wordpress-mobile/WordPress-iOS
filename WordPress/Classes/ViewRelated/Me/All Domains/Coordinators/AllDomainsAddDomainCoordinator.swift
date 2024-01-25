@@ -17,16 +17,7 @@ import Foundation
             }
         }
 
-        let domainAddedToCart = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
-            customTitle: nil,
-            analyticsSource: analyticsSource
-        ) { [weak coordinator] controller, domain in
-            domainPurchasedCallback(controller, domain)
-            coordinator?.trackDomainPurchasingCompleted()
-        }
-
         coordinator.domainPurchasedCallback = domainPurchasedCallback // For no site flow (domain only)
-        coordinator.domainAddedToCartAndLinkedToSiteCallback = domainAddedToCart // For existing site flow (plans)
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true

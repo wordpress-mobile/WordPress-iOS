@@ -13,13 +13,12 @@ class RegisterDomainCoordinator {
     typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
     typealias DomainAddedToCartCallback = ((UIViewController, String, Blog) -> Void)
 
-    // MARK: - Dependencies
+    // MARK: Dependencies
 
     private let domainRegistrationService: RegisterDomainDetailsServiceProxyProtocol
+    private let crashLogger: CrashLogging
 
     // MARK: Variables
-
-    private let crashLogger: CrashLogging
 
     let analyticsSource: String
 
@@ -29,9 +28,10 @@ class RegisterDomainCoordinator {
     var domain: DomainSuggestion?
 
     var domainPurchasedCallback: DomainPurchasedCallback?
-    var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
+
+    // MARK: - Init
 
     /// Initializes a `RegisterDomainCoordinator` with the specified parameters.
     ///
@@ -52,7 +52,7 @@ class RegisterDomainCoordinator {
         self.domainRegistrationService = domainRegistrationService
     }
 
-    // MARK: Public Functions
+    // MARK: - Public Functions
 
     /// Adds the selected domain to the cart then launches the checkout webview.
     /// This flow support purchasing domains only, without plans.
