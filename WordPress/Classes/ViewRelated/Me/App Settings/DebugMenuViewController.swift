@@ -45,6 +45,9 @@ struct DebugMenuView: View {
         NavigationLink(Strings.readerCssTitle) {
             readerSettings
         }
+        NavigationLink(Strings.binaryPreferences) {
+            BinaryPreferencesDebugView()
+        }
     }
 
     @ViewBuilder private func makeQuickStart(with blog: Blog) -> some View {
@@ -218,4 +221,5 @@ private enum Strings {
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
+    static let binaryPreferences = NSLocalizedString("debugMenu.binaryPreferences", value: "Binary Preferences", comment: "Binary Preferences debug menu item")
 }
