@@ -4,22 +4,22 @@ PODS:
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
-  - AppCenter (5.0.3):
-    - AppCenter/Analytics (= 5.0.3)
-    - AppCenter/Crashes (= 5.0.3)
-  - AppCenter/Analytics (5.0.3):
+  - AppCenter (5.0.4):
+    - AppCenter/Analytics (= 5.0.4)
+    - AppCenter/Crashes (= 5.0.4)
+  - AppCenter/Analytics (5.0.4):
     - AppCenter/Core
-  - AppCenter/Core (5.0.3)
-  - AppCenter/Crashes (5.0.3):
+  - AppCenter/Core (5.0.4)
+  - AppCenter/Crashes (5.0.4):
     - AppCenter/Core
-  - AppCenter/Distribute (5.0.3):
+  - AppCenter/Distribute (5.0.4):
     - AppCenter/Core
   - Automattic-Tracks-iOS (3.2.0):
     - Sentry (~> 8.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
-  - CocoaLumberjack/Core (3.8.0)
-  - CocoaLumberjack/Swift (3.8.0):
+  - CocoaLumberjack/Core (3.8.2)
+  - CocoaLumberjack/Swift (3.8.2):
     - CocoaLumberjack/Core
   - CropViewController (2.5.3)
   - Down (0.6.6)
@@ -32,7 +32,7 @@ PODS:
     - CropViewController
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
-  - NSObject-SafeExpectations (0.0.4)
+  - NSObject-SafeExpectations (0.0.6)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
   - OHHTTPStubs/Core (9.1.0)
@@ -58,7 +58,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
-  - SwiftLint (0.53.0)
+  - SwiftLint (0.54.0)
   - UIDeviceIdentifier (2.3.0)
   - WordPress-Aztec-iOS (1.19.9)
   - WordPress-Editor-iOS (1.19.9):
@@ -79,14 +79,14 @@ PODS:
   - WordPressShared (2.2.0)
   - WordPressUI (1.15.0)
   - wpxmlrpc (0.10.0)
-  - ZendeskCommonUISDK (6.1.2)
+  - ZendeskCommonUISDK (6.1.4)
   - ZendeskCoreSDK (2.5.1)
-  - ZendeskMessagingAPISDK (3.8.3):
-    - ZendeskSDKConfigurationsSDK (= 1.1.9)
-  - ZendeskMessagingSDK (3.8.3):
-    - ZendeskCommonUISDK (= 6.1.2)
-    - ZendeskMessagingAPISDK (= 3.8.3)
-  - ZendeskSDKConfigurationsSDK (1.1.9)
+  - ZendeskMessagingAPISDK (3.8.5):
+    - ZendeskSDKConfigurationsSDK (= 1.1.11)
+  - ZendeskMessagingSDK (3.8.5):
+    - ZendeskCommonUISDK (= 6.1.4)
+    - ZendeskMessagingAPISDK (= 3.8.5)
+  - ZendeskSDKConfigurationsSDK (1.1.11)
   - ZendeskSupportProvidersSDK (5.3.0):
     - ZendeskCoreSDK (~> 2.5.1)
   - ZendeskSupportSDK (5.3.0):
@@ -107,7 +107,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-70a8cb738351dccc3cb5e80c6e193d7600350f82.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-0ff93914ce5537cb689c144cb7429721e374ac27.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -175,7 +175,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-70a8cb738351dccc3cb5e80c6e193d7600350f82.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-0ff93914ce5537cb689c144cb7429721e374ac27.podspec
   WordPressShared:
     :commit: 47c5cbfc781b6aa7f577fbc413236c739e4332b4
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -192,19 +192,19 @@ SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
-  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
+  AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
   Automattic-Tracks-iOS: baa126f98d2ce26fd54ee2534bef6e2d46480a5c
-  CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
+  CocoaLumberjack: f8d89a516e7710fdb2e9b8f1560b16ec6040eef0
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 8081efd62996d2a27f12a14977b27730cdb417f0
+  Gutenberg: a76a5a91977d4f3fe402fd3ed39850bc04e80eca
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
-  NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
+  NSObject-SafeExpectations: c01c8881cbd97efad6f668286b913cd0b7d62ab5
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
@@ -214,7 +214,7 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  SwiftLint: 5ce4d6a8ff83f1b5fd5ad5dbf30965d35af65e44
+  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
@@ -223,11 +223,11 @@ SPEC CHECKSUMS:
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
-  ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
+  ZendeskCommonUISDK: ba160fe413b491af9e7bfcb9808afcd494dc83a5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
-  ZendeskMessagingAPISDK: db91be0c5cb88229d22f0e560ed99ba6e1dce02e
-  ZendeskMessagingSDK: ce2750c0a3dbd40918ea2e2d44dd0dbe34d21bc8
-  ZendeskSDKConfigurationsSDK: f91f54f3b41aa36ffbc43a37af9956752a062055
+  ZendeskMessagingAPISDK: 410f9bcf07c79fe98d6f251da102368d6b356c54
+  ZendeskMessagingSDK: 95d396c981dacfab83cc7b9736e8561d51a3052b
+  ZendeskSDKConfigurationsSDK: ebced171fd1f4eb57760e8537d8cfa6a450122be
   ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
