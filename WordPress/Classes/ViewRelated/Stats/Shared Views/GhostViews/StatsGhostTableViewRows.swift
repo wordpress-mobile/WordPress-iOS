@@ -1,12 +1,22 @@
-protocol StatsRowGhostable: ImmuTableRow { }
+protocol StatsRowGhostable: ImmuTableRow {
+    var statSection: StatSection? { get }
+}
 extension StatsRowGhostable {
     var action: ImmuTableAction? {
+        return nil
+    }
+
+    var statSection: StatSection? {
         return nil
     }
 
     func configureCell(_ cell: UITableViewCell) {
         DispatchQueue.main.async {
             cell.startGhostAnimation(style: GhostCellStyle.muriel)
+        }
+
+        if let detailCell = cell as? StatsBaseCell {
+            detailCell.statSection = statSection
         }
     }
 }
@@ -15,6 +25,8 @@ struct StatsGhostGrowAudienceImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostGrowAudienceCell.defaultNib, StatsGhostGrowAudienceCell.self)
     }()
+
+    var statSection: StatSection? = nil
 }
 
 struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {

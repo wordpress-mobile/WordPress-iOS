@@ -147,7 +147,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                    isNudgeCompleted: isNudgeCompleted,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostGrowAudienceImmutableRow()
+                    return StatsGhostGrowAudienceImmutableRow(statSection: InsightType.growAudience.statSection)
                 }, error: {
                     errorBlock(nil)
                 }))
