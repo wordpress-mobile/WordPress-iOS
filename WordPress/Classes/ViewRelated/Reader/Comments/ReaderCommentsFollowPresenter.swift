@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 /// Methods used by the Reader in the Follow Conversation flow to:
 /// - subscribe to post comments

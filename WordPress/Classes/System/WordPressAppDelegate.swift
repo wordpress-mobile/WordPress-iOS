@@ -7,6 +7,7 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticAbout
 import UIDeviceIdentifier
+import WordPressUI
 
 #if APPCENTER_ENABLED
 import AppCenter

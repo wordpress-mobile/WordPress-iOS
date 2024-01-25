@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressUI
 
 class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]

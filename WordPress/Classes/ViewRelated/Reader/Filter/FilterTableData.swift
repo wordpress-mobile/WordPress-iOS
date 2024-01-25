@@ -1,3 +1,5 @@
+import WordPressUI
+
 struct TableDataItem {
     let topic: ReaderAbstractTopic
     let configure: (UITableViewCell) -> Void
