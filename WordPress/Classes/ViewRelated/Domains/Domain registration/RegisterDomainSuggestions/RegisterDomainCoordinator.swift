@@ -136,7 +136,7 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
-    /// Initiates the process of purchasing a domain for a specified site.
+    /// Initiates the process of purchasing a domain with or without a site.
     ///
     /// - Parameters:
     ///   - site: The blog site for which the domain is being purchased. Optional.
@@ -165,7 +165,7 @@ class RegisterDomainCoordinator {
             switch result {
             case .success(let domain):
                 if let site, !site.hasDomains {
-                    self.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, site)
+                    self.presentPlansWebview(for: site, domain: domain, on: viewController)
                 } else {
                     self.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
                 }
@@ -193,6 +193,8 @@ class RegisterDomainCoordinator {
             completion(.failure(error))
         })
     }
+
+    // MARK: - Presenting Checkout Web View
 
     private func presentCheckoutWebview(on viewController: UIViewController,
                                         title: String?) {
@@ -256,24 +258,6 @@ class RegisterDomainCoordinator {
         }
     }
 
-    private func presentDomainRegistration(
-        for site: Blog,
-        domain: DomainSuggestion,
-        on viewController: UIViewController
-    ) {
-        guard let siteID = site.dotComID?.intValue else {
-            return
-        }
-        let destination = RegisterDomainDetailsViewController()
-        destination.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
-            guard let self = self else {
-                return
-            }
-            self.domainPurchasedCallback?(viewController, name)
-            self.trackDomainPurchasingCompleted()
-        }
-    }
-
     /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
     /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
     /// through said web view.
@@ -303,6 +287,46 @@ class RegisterDomainCoordinator {
             onSuccess(domain)
 
         }
+    }
+
+    // MARK: - Presenting Domain Registration View
+
+    private func presentDomainRegistration(
+        for site: Blog,
+        domain: DomainSuggestion,
+        on viewController: UIViewController
+    ) {
+        guard let siteID = site.dotComID?.intValue else {
+            return
+        }
+        let destination = RegisterDomainDetailsViewController()
+        destination.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self else {
+                return
+            }
+            self.domainPurchasedCallback?(viewController, name)
+            self.trackDomainPurchasingCompleted()
+        }
+    }
+
+    // MARK: - Presenting Plans
+
+    private func presentPlansWebview(
+        for site: Blog,
+        domain: DomainSuggestion,
+        on viewController: UIViewController
+    ) {
+        let presentPlansFlow = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
+            customTitle: nil,
+            analyticsSource: analyticsSource
+        ) { [weak self] controller, domain in
+            guard let self else {
+                return
+            }
+            self.domainPurchasedCallback?(controller, domain)
+            self.trackDomainPurchasingCompleted()
+        }
+        presentPlansFlow(viewController, domain.domainName, site)
     }
 
     // MARK: - Tracks
