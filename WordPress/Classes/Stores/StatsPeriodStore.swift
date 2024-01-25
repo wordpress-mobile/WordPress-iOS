@@ -18,16 +18,6 @@ enum PeriodType: CaseIterable {
 enum PeriodAction: Action {
 
     // Period overview
-    case receivedSummary(_ summary: StatsSummaryTimeIntervalData?, _ error: Error?)
-    case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?)
-    case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?)
-    case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?)
-    case receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?, _ error: Error?)
-    case receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?, _ error: Error?)
-    case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?)
-    case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?)
-    case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?)
-    case receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?)
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
@@ -42,7 +32,6 @@ enum PeriodAction: Action {
     case refreshFileDownloads(date: Date, period: StatsPeriodUnit)
 
     // Post Stats
-    case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?)
     case refreshPostStats(postID: Int)
 }
 
@@ -197,46 +186,24 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .receivedSummary(let summary, let error):
-            receivedSummary(summary, error)
-        case .receivedPostsAndPages(let postsAndPages, let error):
-            receivedPostsAndPages(postsAndPages, error)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
-        case .receivedReferrers(let referrers, let error):
-            receivedReferrers(referrers, error)
         case .refreshReferrers(let date, let period):
             refreshReferrers(date: date, period: period)
-        case .receivedClicks(let clicks, let error):
-            receivedClicks(clicks, error)
         case .refreshClicks(let date, let period):
             refreshClicks(date: date, period: period)
-        case .receivedPublished(let published, let error):
-            receivedPublished(published, error)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
-        case .receivedAuthors(let authors, let error):
-            receivedAuthors(authors, error)
         case .refreshAuthors(let date, let period):
             refreshAuthors(date: date, period: period)
-        case .receivedSearchTerms(let searchTerms, let error):
-            receivedSearchTerms(searchTerms, error)
         case .refreshSearchTerms(let date, let period):
             refreshSearchTerms(date: date, period: period)
-        case .receivedVideos(let videos, let error):
-            receivedVideos(videos, error)
         case .refreshVideos(let date, let period):
             refreshVideos(date: date, period: period)
-        case .receivedCountries(let countries, let error):
-            receivedCountries(countries, error)
         case .refreshCountries(let date, let period):
             refreshCountries(date: date, period: period)
-        case .receivedFileDownloads(let downloads, let error):
-            receivedFileDownloads(downloads, error)
         case .refreshFileDownloads(let date, let period):
             refreshFileDownloads(date: date, period: period)
-        case .receivedPostStats(let postStats, let postId, let error):
-            receivedPostStats(postStats, postId, error)
         case .refreshPostStats(let postID):
             refreshPostStats(postID: postID)
         case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
