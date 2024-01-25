@@ -263,7 +263,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createCommentsRow()
                 }, loading: {
-                    return StatsGhostTabbedImmutableRow()
+                    return StatsGhostTabbedImmutableRow(statSection: .insightsCommentsAuthors)
                 }, error: {
                     errorBlock(.insightsCommentsPosts)
                 }))
@@ -274,7 +274,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createFollowersRow()
                 }, loading: {
-                    return StatsGhostTabbedImmutableRow()
+                    return StatsGhostTabbedImmutableRow(statSection: .insightsFollowersWordPress)
                 }, error: {
                     errorBlock(.insightsFollowersWordPress)
                 }))
