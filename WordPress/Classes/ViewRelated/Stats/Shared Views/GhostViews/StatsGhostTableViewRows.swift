@@ -73,6 +73,8 @@ struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostPostingActivityCell.defaultNib, StatsGhostPostingActivityCell.self)
     }()
+
+    var statSection: StatSection? = nil
 }
 
 struct StatsGhostChartImmutableRow: StatsRowGhostable {

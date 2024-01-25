@@ -298,7 +298,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createPostingActivityRow()
                 }, loading: {
-                    return StatsGhostPostingActivitiesImmutableRow()
+                    return StatsGhostPostingActivitiesImmutableRow(statSection: .insightsPostingActivity)
                 }, error: {
                     errorBlock(.insightsPostingActivity)
                 }))
