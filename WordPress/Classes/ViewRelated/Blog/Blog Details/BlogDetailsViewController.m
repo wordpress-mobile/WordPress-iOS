@@ -842,7 +842,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (BlogDetailsRow *)siteMonitoringRow
 {
      __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Monitoring", @"Noun. Links to a blog's Site Monitoring screen.")
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[BlogDetailsViewControllerStrings siteMonitoringRowTitle]
                                         accessibilityIdentifier:@"Site Monitoring Row"
                                                           image:[UIImage imageNamed:@"tool"]
                                                        callback:^{
