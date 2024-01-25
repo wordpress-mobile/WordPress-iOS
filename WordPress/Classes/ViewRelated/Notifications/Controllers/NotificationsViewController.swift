@@ -537,11 +537,8 @@ private extension NotificationsViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
 
-        // Don't show 'Notifications' in the next-view back button
-        // we are using a space character because we need a non-empty string to ensure a smooth
-        // transition back, with large titles enabled.
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
+        navigationItem.backButtonDisplayMode = .minimal
     }
 
     func updateNavigationItems() {

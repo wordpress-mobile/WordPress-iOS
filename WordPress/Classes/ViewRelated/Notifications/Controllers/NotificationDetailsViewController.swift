@@ -364,13 +364,11 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 //
 extension NotificationDetailsViewController {
     func setupNavigationBar() {
-        // Don't show the notification title in the next-view's back button
-        let backButton = UIBarButtonItem(title: String(),
-                                         style: .plain,
-                                         target: nil,
-                                         action: nil)
-
-        navigationItem.backBarButtonItem = backButton
+        navigationItem.backButtonTitle = NSLocalizedString(
+            "notificationDetails.backButton.title",
+            value: "Notification Details",
+            comment: "Title displayed in the navigation stack when long pressing navigation back button")
+        navigationItem.backButtonDisplayMode = .minimal
 
         let next = UIButton(type: .custom)
         next.setImage(.gridicon(.arrowUp), for: .normal)
