@@ -33,6 +33,8 @@ struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTwoColumnCell.defaultNib, StatsGhostTwoColumnCell.self)
     }()
+
+    var statSection: StatSection? = nil
 }
 
 struct StatsGhostTopImmutableRow: StatsRowGhostable {
