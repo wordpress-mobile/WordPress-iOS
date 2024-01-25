@@ -839,6 +839,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return row;
 }
 
+- (BlogDetailsRow *)siteMonitoringRow
+{
+    // __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Monitoring", @"Noun. Links to a blog's Site Monitoring screen.")
+                                        accessibilityIdentifier:@"Site Monitoring Row"
+                                                          image:[UIImage imageNamed:@"tool"]
+                                                       callback:^{
+        // TODO: show site monitoring screen
+    }];
+    return row;
+}
+
 - (BlogDetailsRow *)activityRow
 {
     __weak __typeof(self) weakSelf = self;
@@ -1139,6 +1151,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *thirdSectionRows = [NSMutableArray array];
 
     // The 1st section
+    if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog isAtomic]) {
+        [firstSectionRows addObject:[self siteMonitoringRow]];
+    }
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [firstSectionRows addObject:[self activityRow]];
     }
