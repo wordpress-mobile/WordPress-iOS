@@ -126,7 +126,7 @@ class SiteStatsInsightsViewModel: Observable {
                         block: { [weak self] in
                             return self?.overviewTableRows() ?? [errorBlock(.insightsViewsVisitors)]
                         }, loading: {
-                            return [StatsGhostChartImmutableRow()]
+                            return [StatsGhostChartImmutableRow(statSection: .insightsViewsVisitors)]
                         }, error: {
                             return [errorBlock(.insightsViewsVisitors)]
                         }))
@@ -160,7 +160,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                         chartData: insightsStore.getPostStats(),
                                                                         siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostChartImmutableRow()
+                    return StatsGhostChartImmutableRow(statSection: .insightsLatestPostSummary)
                 }, error: {
                     errorBlock(.insightsLatestPostSummary)
                 }))
