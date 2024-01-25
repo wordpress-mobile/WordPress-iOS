@@ -1151,7 +1151,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *thirdSectionRows = [NSMutableArray array];
 
     // The 1st section
-    if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog isAtomic]) {
+    if ([self shouldShowSiteMonitoring]) {
         [firstSectionRows addObject:[self siteMonitoringRow]];
     }
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
