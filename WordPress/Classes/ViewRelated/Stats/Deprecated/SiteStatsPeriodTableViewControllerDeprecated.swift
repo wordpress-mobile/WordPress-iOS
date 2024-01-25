@@ -1,20 +1,12 @@
 import UIKit
 import WordPressFlux
 
-@objc protocol SiteStatsPeriodDelegate {
-    @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
-    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-}
+/// ℹ️ SiteStatsPeriodTableViewControllerDeprecated is an outdated version of Stats Period (Traffic) view
+/// It's meant to be displayed when Stats Traffic Tab feature flag is disabled
+/// All deprecated files should be removed once Stats Traffic Tab feature flag is removed
 
-protocol SiteStatsReferrerDelegate: AnyObject {
-    func showReferrerDetails(_ data: StatsTotalRowData)
-}
-
-final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController {
-    static var defaultStoryboardName: String = "SiteStatsDashboard"
+class SiteStatsPeriodTableViewControllerDeprecated: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboardDeprecated"
 
     weak var bannerView: JetpackBannerView?
 
@@ -47,7 +39,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private let store = StoreContainer.shared.statsPeriod
     private var changeReceipt: Receipt?
 
-    private var viewModel: SiteStatsPeriodViewModel?
+    private var viewModel: SiteStatsPeriodViewModelDeprecated?
     private var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
@@ -56,16 +48,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
-    init() {
-        super.init(nibName: nil, bundle: nil)
-
-        tableStyle = .insetGrouped
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {
@@ -73,7 +55,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
 
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
@@ -91,10 +73,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         }
     }
 
-    // TODO: Replace with a new Date Picker
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0 else { return nil }
-
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
@@ -105,17 +84,9 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return UITableView.automaticDimension
-        } else {
-            return super.tableView(tableView, heightForHeaderInSection: section)
-        }
-    }
-
 }
 
-extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+extension SiteStatsPeriodTableViewControllerDeprecated: StatsBarChartViewDelegate {
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         if let intervalDate = viewModel?.chartDate(for: entryIndex) {
             tableHeaderView?.updateDate(with: intervalDate)
@@ -125,7 +96,7 @@ extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
 
 // MARK: - Private Extension
 
-private extension SiteStatsPeriodTableViewController {
+private extension SiteStatsPeriodTableViewControllerDeprecated {
 
     // MARK: - View Model
 
@@ -136,11 +107,11 @@ private extension SiteStatsPeriodTableViewController {
                 return
         }
 
-        viewModel = SiteStatsPeriodViewModel(store: store,
-                                             selectedDate: selectedDate,
-                                             selectedPeriod: selectedPeriod,
-                                             periodDelegate: self,
-                                             referrerDelegate: self)
+        viewModel = SiteStatsPeriodViewModelDeprecated(store: store,
+                                                       selectedDate: selectedDate,
+                                                       selectedPeriod: selectedPeriod,
+                                                       periodDelegate: self,
+                                                       referrerDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -183,7 +154,7 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        refreshControl.endRefreshing()
+        refreshControl?.endRefreshing()
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -192,7 +163,7 @@ private extension SiteStatsPeriodTableViewController {
 
     @objc func userInitiatedRefresh() {
         clearExpandedRows()
-        refreshControl.beginRefreshing()
+        refreshControl?.beginRefreshing()
         refreshData()
     }
 
@@ -200,7 +171,7 @@ private extension SiteStatsPeriodTableViewController {
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod,
             viewIsVisible() else {
-            refreshControl.endRefreshing()
+                refreshControl?.endRefreshing()
                 return
         }
         addViewModelListeners()
@@ -223,7 +194,7 @@ private extension SiteStatsPeriodTableViewController {
 
 // MARK: - NoResultsViewHost
 
-extension SiteStatsPeriodTableViewController: NoResultsViewHost {
+extension SiteStatsPeriodTableViewControllerDeprecated: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
         guard tableHandler.viewModel.sections.isEmpty else {
             return
@@ -249,7 +220,7 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
 
 // MARK: - NoResultsViewControllerDelegate methods
 
-extension SiteStatsPeriodTableViewController: NoResultsViewControllerDelegate {
+extension SiteStatsPeriodTableViewControllerDeprecated: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         hideNoResults()
         refreshData()
@@ -258,7 +229,7 @@ extension SiteStatsPeriodTableViewController: NoResultsViewControllerDelegate {
 
 // MARK: - SiteStatsPeriodDelegate Methods
 
-extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
+extension SiteStatsPeriodTableViewControllerDeprecated: SiteStatsPeriodDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_period")
@@ -324,7 +295,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 // MARK: - SiteStatsReferrerDelegate
 
-extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
+extension SiteStatsPeriodTableViewControllerDeprecated: SiteStatsReferrerDelegate {
     func showReferrerDetails(_ data: StatsTotalRowData) {
         show(ReferrerDetailsTableViewController(data: data), sender: nil)
     }
@@ -332,7 +303,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
 
 // MARK: - SiteStatsTableHeaderDelegate Methods
 
-extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDelegate {
+extension SiteStatsPeriodTableViewControllerDeprecated: SiteStatsTableHeaderDateButtonDelegate {
     func dateChangedTo(_ newDate: Date?) {
         selectedDate = newDate
         refreshData()
@@ -347,7 +318,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDele
 
 // MARK: Jetpack powered banner
 
-private extension SiteStatsPeriodTableViewController {
+private extension SiteStatsPeriodTableViewControllerDeprecated {
 
     func sendScrollEventsToBanner() {
         if let bannerView = bannerView {

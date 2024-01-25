@@ -1,10 +1,12 @@
-class StatsGhostBaseCell: UITableViewCell {
+class StatsGhostBaseCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
     private(set) var topBorder: UIView?
     private(set) var bottomBorder: UIView?
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        headingLabel.isGhostableDisabled = true
         Style.configureCell(self)
     }
 
