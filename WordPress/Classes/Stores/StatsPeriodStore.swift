@@ -19,21 +19,6 @@ enum PeriodAction: Action {
 
     // Period overview
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
-
-    // Period details
-    case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
-    case refreshPublished(date: Date, period: StatsPeriodUnit)
-    case refreshReferrers(date: Date, period: StatsPeriodUnit)
-    case refreshClicks(date: Date, period: StatsPeriodUnit)
-    case refreshAuthors(date: Date, period: StatsPeriodUnit)
-    case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
-    case refreshVideos(date: Date, period: StatsPeriodUnit)
-    case refreshCountries(date: Date, period: StatsPeriodUnit)
-    case refreshFileDownloads(date: Date, period: StatsPeriodUnit)
-
-    // Post Stats
-    case refreshPostStats(postID: Int)
-
     case refreshPeriod(query: PeriodQuery)
 }
 
@@ -188,30 +173,9 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .refreshPostsAndPages(let date, let period):
-            refreshPostsAndPages(date: date, period: period)
-        case .refreshReferrers(let date, let period):
-            refreshReferrers(date: date, period: period)
-        case .refreshClicks(let date, let period):
-            refreshClicks(date: date, period: period)
-        case .refreshPublished(let date, let period):
-            refreshPublished(date: date, period: period)
-        case .refreshAuthors(let date, let period):
-            refreshAuthors(date: date, period: period)
-        case .refreshSearchTerms(let date, let period):
-            refreshSearchTerms(date: date, period: period)
-        case .refreshVideos(let date, let period):
-            refreshVideos(date: date, period: period)
-        case .refreshCountries(let date, let period):
-            refreshCountries(date: date, period: period)
-        case .refreshFileDownloads(let date, let period):
-            refreshFileDownloads(date: date, period: period)
-        case .refreshPostStats(let postID):
-            refreshPostStats(postID: postID)
         case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
             refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshPeriod(let query):
-            operationQueue.cancelAllOperations()
             refreshPeriodData(for: query)
         }
     }
