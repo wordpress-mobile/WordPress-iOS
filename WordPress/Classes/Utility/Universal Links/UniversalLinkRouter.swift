@@ -97,16 +97,7 @@ struct UniversalLinkRouter: LinkRouter {
         StatsRoute.activityLog
     ]
 
-    static let mySitesRoutes: [Route] = [
-        MySitesRoute.pages,
-        MySitesRoute.posts,
-        MySitesRoute.media,
-        MySitesRoute.comments,
-        MySitesRoute.sharing,
-        MySitesRoute.people,
-        MySitesRoute.plugins,
-        MySitesRoute.managePlugins
-    ]
+    static let mySitesRoutes: [Route] = MySitesRoute.allCases
 
     static let appBannerRoutes: [Route] = [
         AppBannerRoute()
