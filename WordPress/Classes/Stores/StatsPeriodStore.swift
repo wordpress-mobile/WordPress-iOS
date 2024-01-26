@@ -338,12 +338,6 @@ private extension StatsPeriodStore {
     }
 
     private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
-        // The call to `persistToCoreData()` might seem unintuitive here, at a first glance.
-        // It's here because call to this method will usually happen after user selects a different
-        // time period they're interested in. If we only relied on calls to `persistToCoreData()`
-        // when user has left the screen/app, we would possibly lose on storing A LOT of data.
-        storeDataInCache()
-
         if forceRefresh {
             cancelQueries()
         }
