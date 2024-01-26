@@ -8,7 +8,7 @@ extension BlogDetailsViewController {
 
     @objc func showSiteMonitoring(selectedTab: NSNumber?) {
         let selectedTab = selectedTab.flatMap { SiteMonitoringTab(rawValue: $0.intValue) }
-        let controller = SiteMonitoringViewController(selectedTab: selectedTab)
+        let controller = SiteMonitoringViewController(blog: blog, selectedTab: selectedTab)
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 }
