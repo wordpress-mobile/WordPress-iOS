@@ -30,6 +30,11 @@ struct DebugMenuView: View {
         } label: {
             DebugMenuRow(systemImage: "flag.fill", color: .pink, title: Strings.featureFlags)
         }
+        NavigationLink() {
+            BinaryPreferencesDebugView()
+        } label: {
+            DebugMenuRow(systemImage: "server.rack", color: .gray, title: Strings.binaryPreferences)
+        }
     }
 
     @ViewBuilder private var settings: some View {
@@ -44,9 +49,6 @@ struct DebugMenuView: View {
         }
         NavigationLink(Strings.readerCssTitle) {
             readerSettings
-        }
-        NavigationLink(Strings.binaryPreferences) {
-            BinaryPreferencesDebugView()
         }
     }
 
