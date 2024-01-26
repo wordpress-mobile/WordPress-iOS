@@ -1858,6 +1858,8 @@ extension ReaderStreamViewController {
         resetNoFollowedSitesViewController()
 
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+        resultsStatusView.loadViewIfNeeded()
+        resultsStatusView.setupReaderButtonStyles()
     }
 
     private func displayNoResultsForSavedPosts() {
