@@ -12,21 +12,20 @@ struct BinaryPreferencesDebugView: View {
                 let sectionPreferences = viewModel.preferenceSections[sectionKey] ?? [:]
 
                 Section(header: Text(sectionKey)
-                            .font(.caption)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(nil)) {
-                    ForEach(sectionPreferences.keys.sorted(), id: \.self) { preferenceKey in
-                        let isOn = Binding<Bool>(
-                            get: { sectionPreferences[preferenceKey] ?? false },
-                            set: { newValue in viewModel.updatePreference(newValue, forSection: sectionKey, forPreference: preferenceKey) }
-                        )
-                        Toggle(preferenceKey, isOn: isOn)
-                            .font(.caption)
+                    .font(.caption)) {
+                        ForEach(sectionPreferences.keys.sorted(), id: \.self) { preferenceKey in
+                            let isOn = Binding<Bool>(
+                                get: { sectionPreferences[preferenceKey] ?? false },
+                                set: { newValue in viewModel.updatePreference(newValue, forSection: sectionKey, forPreference: preferenceKey) }
+                            )
+                            Toggle(preferenceKey, isOn: isOn)
+                                .font(.caption)
+                        }
                     }
-                }
             }
         }
         .navigationTitle(Strings.title)
+        .searchable(text: $viewModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
         .onAppear {
             viewModel.load()
         }
@@ -34,8 +33,31 @@ struct BinaryPreferencesDebugView: View {
 }
 
 private final class BinaryPreferencesDebugViewModel: ObservableObject {
-    @Published var preferenceSections: BinaryPreferenceSections = [:]
+    @Published private var allPreferenceSections = BinaryPreferenceSections()
+    @Published var searchQuery: String = ""
+
     private var persistenceStore: UserPersistentRepository
+
+    var preferenceSections: BinaryPreferenceSections {
+        return if searchQuery.isEmpty {
+            allPreferenceSections
+        } else {
+			filterPreferences(by: searchQuery)
+        }
+    }
+
+    private func filterPreferences(by query: String) -> BinaryPreferenceSections {
+        var filteredSections = BinaryPreferenceSections()
+        allPreferenceSections.forEach { sectionKey, preferences in
+            let filteredPreferences = preferences.filter { preferenceKey, _ in
+                preferenceKey.localizedCaseInsensitiveContains(query)
+            }
+            if sectionKey.localizedCaseInsensitiveContains(query) || !filteredPreferences.isEmpty {
+                filteredSections[sectionKey] = filteredPreferences.isEmpty ? preferences : filteredPreferences
+            }
+        }
+        return filteredSections
+    }
 
     init() {
         persistenceStore = UserPersistentStoreFactory.instance()
@@ -44,7 +66,7 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
 
     func load() {
         let allPreferences = persistenceStore.dictionaryRepresentation()
-        var loadedPreferenceSections: BinaryPreferenceSections = [:]
+        var loadedPreferenceSections = BinaryPreferenceSections()
 
         allPreferences.forEach { entryKey, entryValue in
             if let groupedPreferences = entryValue as? BinaryPreferences {
@@ -54,13 +76,13 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
             }
         }
 
-        preferenceSections = loadedPreferenceSections
+        allPreferenceSections = loadedPreferenceSections
     }
 
     func updatePreference(_ value: Bool, forSection sectionID: String, forPreference preferenceID: String) {
         if sectionID == Strings.otherPreferencesSectionID {
             persistenceStore.set(value, forKey: preferenceID)
-        } else if var section = preferenceSections[sectionID] {
+        } else if var section = allPreferenceSections[sectionID] {
             section[preferenceID] = value
             persistenceStore.set(section, forKey: sectionID)
         }
