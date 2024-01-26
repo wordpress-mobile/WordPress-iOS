@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import UIKit
+import WordPressUI
 
 protocol PagesCardView: AnyObject {
     var tableView: UITableView { get }

@@ -3,6 +3,7 @@ import CoreData
 import Gridicons
 import SVProgressHUD
 import WordPressShared
+import WordPressUI
 
 ///
 ///

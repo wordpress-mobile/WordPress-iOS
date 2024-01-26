@@ -1,4 +1,5 @@
 import WordPressFlux
+import WordPressUI
 
 @objc class ReaderTabViewModel: NSObject {
 

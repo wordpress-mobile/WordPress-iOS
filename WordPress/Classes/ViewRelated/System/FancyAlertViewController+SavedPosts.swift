@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressUI
 
 extension FancyAlertViewController {
     typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig

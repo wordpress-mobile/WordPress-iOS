@@ -608,7 +608,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             }
             break;
         case BlogDetailsSubsectionSiteMonitoring:
-            if ([self shouldShowSiteMonitoring]) {
+            if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog supports:BlogFeatureSiteMonitoring]) {
                 NSNumber *selectedTab = userInfo[[BlogDetailsViewController userInfoSiteMonitoringTabKey]];
                 self.restorableSelectedIndexPath = indexPath;
                 [self.tableView selectRowAtIndexPath:indexPath

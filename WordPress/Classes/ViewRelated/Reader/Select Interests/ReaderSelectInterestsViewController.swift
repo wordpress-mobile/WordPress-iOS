@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol ReaderDiscoverFlowDelegate: AnyObject {
     func didCompleteReaderDiscoverFlow()
