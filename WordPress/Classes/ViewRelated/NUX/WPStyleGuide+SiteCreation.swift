@@ -1,6 +1,5 @@
 import WordPressShared
 
-
 extension WPStyleGuide {
 
     class func edgeInsetForLoginTextFields() -> UIEdgeInsets {

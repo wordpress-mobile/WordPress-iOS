@@ -14,11 +14,9 @@ import WordPressKit
 /// Details in #6220.
 ///
 
-
 // MARK: - Notifications
 //
 let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
-
 
 // MARK: - NotificationSyncMediator
 //
@@ -52,7 +50,6 @@ final class NotificationSyncMediator {
         return queue
     }()
 
-
     /// Designed Initializer
     ///
     convenience init?() {
@@ -79,8 +76,6 @@ final class NotificationSyncMediator {
         contextManager = manager
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
-
-
 
     /// Syncs the latest *maximumNotes*:
     ///
@@ -123,7 +118,6 @@ final class NotificationSyncMediator {
         }
     }
 
-
     /// Sync's Notification matching the specified ID, and updates the local entity.
     ///
     /// - Note: This method should only be used on the main thread.
@@ -149,7 +143,6 @@ final class NotificationSyncMediator {
             }
         }
     }
-
 
     /// Marks a Notification as Read.
     ///
@@ -298,7 +291,6 @@ final class NotificationSyncMediator {
     }
 }
 
-
 // MARK: - Private Helpers
 //
 private extension NotificationSyncMediator {
@@ -333,7 +325,6 @@ private extension NotificationSyncMediator {
         })
     }
 
-
     /// Given a collection of remoteNotes, this method will insert missing local ones, and update the ones
     /// that can be found.
     ///
@@ -359,7 +350,6 @@ private extension NotificationSyncMediator {
         })
     }
 
-
     /// Deletes the collection of local notifications that cannot be found in a given collection of
     /// remote hashes.
     ///
@@ -382,7 +372,6 @@ private extension NotificationSyncMediator {
             }, on: .global())
         })
     }
-
 
     /// Updates the Read status, of a given Notification, as specified.
     ///
@@ -414,7 +403,6 @@ private extension NotificationSyncMediator {
         notes.forEach { $0.read = status }
         contextManager.saveContextAndWait(mainContext)
     }
-
 
     /// Posts a `NotificationSyncMediatorDidUpdateNotifications` Notification, so that (potential listeners)
     /// may react upon new content.

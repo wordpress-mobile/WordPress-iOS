@@ -113,7 +113,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 }
 
-
 private extension RevisionDiffsBrowserViewController {
     private func showRevision() {
         guard let revisionState = revisionState else {
@@ -250,7 +249,6 @@ private extension RevisionDiffsBrowserViewController {
                           withProperties: [WPAppAnalyticsKeySource: source.rawValue])
     }
 }
-
 
 extension RevisionDiffsBrowserViewController: RevisionDiffsPageManagerDelegate {
     func pageWillScroll(to direction: UIPageViewController.NavigationDirection) {

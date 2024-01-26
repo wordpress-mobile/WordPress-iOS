@@ -15,7 +15,6 @@ extension UIImageView {
         static let imageSize = CGSize(width: 40, height: 40)
     }
 
-
     /// Downloads the SiteIcon Image, hosted at the specified path. This method will attempt to optimize the URL, so that
     /// the download Image Size matches `imageSize`.
     ///
@@ -27,7 +26,6 @@ extension UIImageView {
     func downloadSiteIcon(at path: String) {
         downloadSiteIcon(at: path, placeholderImage: .siteIconPlaceholder)
     }
-
 
     /// Downloads the SiteIcon Image, hosted at the specified path. This method will attempt to optimize the URL, so that
     /// the download Image Size matches `imageSize`.
@@ -98,7 +96,6 @@ extension UIImageView {
         })
     }
 
-
     /// Downloads the SiteIcon Image, associated to a given Blog. This method will attempt to optimize the URL, so that
     /// the download Image Size matches `imageSize`.
     ///
@@ -141,7 +138,6 @@ extension UIImageView {
     }
 }
 
-
 // MARK: - Private Methods
 //
 extension UIImageView {
@@ -159,7 +155,6 @@ extension UIImageView {
         return optimizedPhotonURL(from: path, imageSize: imageSize)
     }
 
-
     // MARK: - Private Helpers
 
     /// Returns the download URL for a square icon with a size of `imageSize` in pixels.
@@ -173,7 +168,6 @@ extension UIImageView {
         return parseURL(path: path, query: query)
     }
 
-
     /// Returns the icon URL corresponding to the provided path
     ///
     /// - Parameter path: Blavatar URL (string encoded).
@@ -184,7 +178,6 @@ extension UIImageView {
 
         return parseURL(path: path, query: query)
     }
-
 
     /// Returs the photon URL for the provided path
     ///
@@ -198,13 +191,11 @@ extension UIImageView {
         return PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
     }
 
-
     /// Indicates if the received URL is hosted at WordPress.com
     ///
     private func isDotcomURL(_ path: String) -> Bool {
         return path.contains(".files.wordpress.com")
     }
-
 
     /// Indicates if the received URL is hosted at Gravatar.com
     ///
@@ -212,14 +203,12 @@ extension UIImageView {
         return path.contains("gravatar.com/blavatar")
     }
 
-
     /// Indicates if the received URL is a Photon Endpoint
     /// Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
     ///
     private func isPhotonURL(_ path: String) -> Bool {
         return path.contains(".wp.com")
     }
-
 
     /// Attempts to parse the URL contained within a Path, with a given query. Returns nil on failure.
     ///

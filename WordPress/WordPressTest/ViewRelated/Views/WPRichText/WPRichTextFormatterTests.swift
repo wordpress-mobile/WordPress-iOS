@@ -1,19 +1,16 @@
 import XCTest
 @testable import WordPress
 
-
 class WPRichTextFormatterTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
     }
 
-
     override func tearDown() {
         super.tearDown()
 
     }
-
 
     func testBlockquoteProcessor() {
         let processor = BlockquoteTagProcessor()
@@ -57,7 +54,6 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(str as String == attachment!.identifier)
     }
 
-
     func testVideoTagProcessor() {
         let processor = AttachmentTagProcessor(tagName: "video", includesEndTag: true)
 
@@ -67,7 +63,6 @@ class WPRichTextFormatterTests: XCTestCase {
         let str = result as NSString
         XCTAssert(str as String == attachment!.identifier)
     }
-
 
     func testIFrameTagProcessor() {
         let processor = AttachmentTagProcessor(tagName: "iframe", includesEndTag: true)
@@ -79,7 +74,6 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(str as String == attachment!.identifier)
     }
 
-
     func testAudioTagProcessor() {
         let processor = AttachmentTagProcessor(tagName: "audio", includesEndTag: true)
 
@@ -89,7 +83,6 @@ class WPRichTextFormatterTests: XCTestCase {
         let str = result as NSString
         XCTAssert(str as String == attachment!.identifier)
     }
-
 
     func testFixBlockquoteIndentation() {
         let str = WPRichTextFormatter.blockquoteIdentifier + "Some text"
@@ -103,7 +96,6 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(pStyle.firstLineHeadIndent == formatter.blockquoteIndentation)
         XCTAssert(pStyle.headIndent == formatter.blockquoteIndentation)
     }
-
 
     func testAttributesFromTag() {
 

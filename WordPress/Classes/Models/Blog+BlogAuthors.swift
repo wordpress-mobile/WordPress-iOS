@@ -1,10 +1,8 @@
 import Foundation
 import CoreData
 
-
 extension Blog {
     @NSManaged public var authors: Set<BlogAuthor>?
-
 
     @objc(addAuthorsObject:)
     @NSManaged public func addToAuthors(_ value: BlogAuthor)

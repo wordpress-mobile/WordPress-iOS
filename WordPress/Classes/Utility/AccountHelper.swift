@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// Encapsulates Account-Y Helpers
 ///
 @objc class AccountHelper: NSObject {

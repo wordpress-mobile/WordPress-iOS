@@ -1,6 +1,5 @@
 import Foundation
 
-
 class EditCommentTableViewController: UITableViewController {
 
     // MARK: - Properties
@@ -193,7 +192,6 @@ private extension EditCommentTableViewController {
         completion?(comment, true)
         dismiss(animated: true)
     }
-
 
     func finishWithoutUpdates() {
         completion?(comment, false)

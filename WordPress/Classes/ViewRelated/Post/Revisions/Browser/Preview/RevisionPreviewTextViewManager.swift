@@ -1,7 +1,6 @@
 import Aztec
 import Gridicons
 
-
 class RevisionPreviewTextViewManager: NSObject {
     var post: AbstractPost?
 
@@ -14,7 +13,6 @@ class RevisionPreviewTextViewManager: NSObject {
         static let placeholderMediaLink = URL(string: "placeholder://")
     }
 }
-
 
 extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
@@ -47,7 +45,6 @@ extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) { }
     func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) { }
 }
-
 
 private extension RevisionPreviewTextViewManager {
     private func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {

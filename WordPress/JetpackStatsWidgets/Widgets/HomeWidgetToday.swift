@@ -1,7 +1,6 @@
 import WidgetKit
 import SwiftUI
 
-
 struct HomeWidgetToday: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 

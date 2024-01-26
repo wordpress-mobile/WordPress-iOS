@@ -122,7 +122,6 @@ private extension OnboardingEnableNotificationsViewController {
                                         bottomElementTitle: ReaderStrings.notificationBottomTitle)
         }
 
-
         subTitleLabel.text = text
 
         // Convert the image view to a UIView and embed it

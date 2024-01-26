@@ -41,7 +41,6 @@ class NoteBlockTableViewCell: WPTableViewCell {
         return view
     }()
 
-
     // MARK: - Overridden Methods
 
     override func layoutSubviews() {
@@ -54,7 +53,6 @@ class NoteBlockTableViewCell: WPTableViewCell {
         backgroundView = separatorsView
         backgroundColor = .listForeground
     }
-
 
     // MARK: - Public API
 

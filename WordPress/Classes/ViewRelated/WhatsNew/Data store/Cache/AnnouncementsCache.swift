@@ -6,7 +6,6 @@ protocol AnnouncementsCache {
     var date: Date? { get }
 }
 
-
 /// UserDefaults-based cache for feature announcements
 struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
 

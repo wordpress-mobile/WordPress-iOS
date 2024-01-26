@@ -71,7 +71,6 @@ class GutenbergVideoUploadProcessor: Processor {
         return block
     })
 
-
     func process(_ text: String) -> String {
         var result = videoBlockProcessor.process(text)
         result = mediaTextVideoBlockProcessor.process(result)

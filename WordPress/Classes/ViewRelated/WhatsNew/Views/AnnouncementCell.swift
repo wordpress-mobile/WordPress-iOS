@@ -30,7 +30,6 @@ class AnnouncementCell: AnnouncementTableViewCell {
         return stackView
     }()
 
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -80,7 +79,6 @@ class AnnouncementCell: AnnouncementTableViewCell {
     }
 }
 
-
 // MARK: Helpers
 private extension AnnouncementCell {
 
@@ -95,7 +93,6 @@ private extension AnnouncementCell {
         return label
     }
 }
-
 
 // MARK: - Appearance
 private extension AnnouncementCell {

@@ -102,7 +102,6 @@ class SiteCreationRotatingMessageView: UIView {
                                                    repeats: true)
     }
 
-
     /// Cancels the timer, and stops the rotating animations
     func stopAnimating() {
         guard let timer = animationTimer else {

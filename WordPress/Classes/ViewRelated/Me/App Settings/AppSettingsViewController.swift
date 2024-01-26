@@ -217,7 +217,7 @@ class AppSettingsViewController: UITableViewController {
                 MediaSettings().imageQualitySetting = newQuality
 
                 // Track setting changes
-                WPAnalytics.track(.appSettingsImageQualityChanged, properties: ["quality": newQuality.description])
+                WPAnalytics.track(.appSettingsImageQualityChanged, properties: ["quality": newQuality.rawValue])
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)

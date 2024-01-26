@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 /// The purpose of this class is to provide a simple API to download assets from the web.
 /// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
 /// Internally, images get downloaded and resized: both copies of the image get cached.
@@ -33,8 +32,6 @@ class NotificationMediaDownloader: NSObject {
     /// Failed downloads collection
     ///
     private var urlsFailed = Set<URL>()
-
-
 
     /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
     /// The completion block will get called just once all of the assets are downloaded, and properly sized.
@@ -136,9 +133,7 @@ class NotificationMediaDownloader: NSObject {
         return filtered
     }
 
-
     // MARK: - Private Helpers
-
 
     /// Downloads an asset, given its URL.
     /// - Note: On failure, this method will attempt the download *maximumRetryCount* times.
@@ -242,7 +237,6 @@ class NotificationMediaDownloader: NSObject {
     }
 }
 
-
 // MARK: - Settings
 //
 private extension NotificationMediaDownloader {
@@ -251,7 +245,6 @@ private extension NotificationMediaDownloader {
         static let maximumRetryCount   = 3
     }
 }
-
 
 // MARK: - Errors
 //

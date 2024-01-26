@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-04 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: id */
@@ -1938,6 +1938,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Tidak dapat terhubung ke situs WordPress. Tidak ada situs WordPress yang valid di alamat ini. Periksa alamat situs (URL) yang Anda masukkan.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Tidak dapat terhubung. Metode XML-RPC yang diperlukan tidak ditemukan di server. Hubungi penyedia hosting Anda untuk mengatasi kendala ini.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Tidak dapat terhubung. Kami menerima error 403 saat mencoba mengakses titik akhir XMLRPC situs Anda. Aplikasi ini memerlukannya agar dapat berkomunikasi dengan situs Anda. Hubungi penyedia hosting Anda untuk mengatasi kendala ini.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Tidak dapat terhubung. Host Anda memblokir permintaan POST, padahal aplikasi memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi penyedia hosting Anda untuk mengatasi kendala ini.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Tidak bisa memuat tag.";
 
@@ -3009,6 +3018,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Jenis file";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Jenis berkas tidak didukung sebagai berkas media.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Televisi";
 
@@ -3121,6 +3133,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Ukuran Font";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Ukuran Font, %1$s";
 
 /* Food site intent topic */
 "Food" = "Makanan";
@@ -4501,6 +4516,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Perlu Pembaruan";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Koneksi internet terputus, bekerja secara offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Koneksi internet terhubung lagi";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Baru";
@@ -5999,6 +6020,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Toko Sandbox";
 
 /* Menus save button title
    Save Action
@@ -8708,6 +8732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Berkarya Bersama Kami";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Bekerja Secara Offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Peta dunia menampilkan kunjungan berdasarkan negara.";
 
@@ -8852,6 +8879,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Anda memiliki 1 situs WordPress tersembunyi.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Anda memiliki registrasi domain gratis selama satu tahun dengan paket Anda.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Anda memiliki peningkatan premium aktif dalam situs Anda. Batalkan peningkatan sebelum menghapus situs Anda.";
@@ -9268,6 +9298,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Beri rating sangat membantu";
 
+/* Title for the checkout view */
+"checkout.title" = "Checkout";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "komentar";
 
@@ -9415,8 +9448,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Lihat statistik";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analitik";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Bendera Fitur";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL CSS Pembaca";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL Asal";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Nilai Sekarang";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Nilai Asal";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Konfigurasi Jarak Jauh";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Nilai Konfigurasi Jarak Jauh";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Pengaturan Ulang";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9424,6 +9484,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Hapus Tur Saat Ini";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Pencatatan";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Mulai Cepat";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Pengaturan";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Pengembang";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Ringkasan Mingguan";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Tutup";
@@ -9442,6 +9517,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Kedaluwarsa";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Tidak akan kedaluwarsa";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Perpanjangan";
@@ -9535,6 +9613,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per tahun";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Bantuan";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domain yang dibeli di situs ini akan mengalihkan ke %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Cari domain";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Checkout";
@@ -10407,6 +10494,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Paket";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Dibuat %@";
 
@@ -10838,6 +10928,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "NamaSitusAnda.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Domain lain seharga %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Domain WordPress.com gratis";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Dapatkan registrasi domain gratis selama satu tahun atau transfer domain Anda dengan paket berbayar tahunan mana pun.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Dapatkan domain Anda";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Alamat situs utama adalah yang akan muncul pada kotak alamat browser saat pengunjung mengunjungi situs Anda.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Domain utama";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Cari domain";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Upgrade paket";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domain";
@@ -11351,6 +11465,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, situs, situs, blog, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Terjadi masalah. Silakan coba lagi nanti.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Ganti ke aplikasi Jetpack";

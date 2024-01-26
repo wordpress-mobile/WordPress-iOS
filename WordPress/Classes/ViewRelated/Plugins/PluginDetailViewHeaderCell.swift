@@ -54,7 +54,6 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
 }
 
-
 struct PluginHeaderRow: ImmuTableRow {
     typealias CellType = PluginDetailViewHeaderCell
 

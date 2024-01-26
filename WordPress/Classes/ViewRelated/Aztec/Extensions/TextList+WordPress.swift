@@ -1,7 +1,6 @@
 import Foundation
 import Aztec
 
-
 // MARK: - TextList.Style
 //
 extension TextList.Style {

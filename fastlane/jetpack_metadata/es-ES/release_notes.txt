@@ -1,0 +1,9 @@
+Ya puedes conseguir un plan de WordPress con un dominio gratuito en el panel de administración de dominios. También hemos mejorado la pantalla de Dominios del sitio para que sea aún más fácil gestionar tus dominios.
+
+Cuando edites bloques de texto en el editor, el teclado de tu dispositivo ya no desaparecerá durante la edición. El editor también se desplazará directamente a un nuevo bloque cuando lo añadas. Sigue escribiendo, colega.
+
+¿Echas de menos acceder con tus claves de seguridad? No pasa nada: hemos vuelto a habilitar las claves de seguridad para la autenticación de dos factores durante el acceso. La única persona que accede a tu cuenta eres tú.
+
+Hemos actualizado los colores de la pantalla de acceso para que combinen tanto con WordPress como con Jetpack. Después de todo, el trabajo en equipo hace el trabajo ideal.
+
+Por último, hemos corregido varios códigos y resuelto varios problemas raros (y no tan raros) que provocaban bloqueos en la aplicación. Estos problemas estaban relacionados principalmente con la edición de etiquetas y categorías, el uso de etiquetas duplicadas, la eliminación de entradas y la edición de entradas eliminadas. Forma parte del trabajo.

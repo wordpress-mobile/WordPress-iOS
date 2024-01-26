@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-03 18:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: fr */
@@ -1938,6 +1938,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Impossible de se connecter au site WordPress. Aucun site WordPress valide à cette adresse. Vérifier l’adresse (URL) que vous avez saisi.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Connexion impossible. Les méthodes XML-RPC requises ne sont pas présentes sur le serveur. Veuillez contacter votre hébergeur pour résoudre ce problème.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Connexion impossible. Nous avons rencontré une erreur 403 lors de la tentative d’accès au point de terminaison XML-RPC de votre site. L’application en a besoin pour communiquer avec votre site. Veuillez contacter votre hébergeur pour résoudre ce problème.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Connexion impossible. Votre hébergeur bloque les requêtes POST dont votre application a besoin pour communiquer avec votre site. Veuillez contacter votre hébergeur pour résoudre ce problème.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Impossible de charger les étiquettes";
 
@@ -3009,6 +3018,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Type de fichier";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Type de fichier non pris en charge comme fichier média.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Cinéma et télévision";
 
@@ -3121,6 +3133,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Taille des caractères";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Taille de la police, %1$s";
 
 /* Food site intent topic */
 "Food" = "Alimentation";
@@ -4495,6 +4510,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Mise à jour nécessaire";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Perte de la connexion réseau, travail hors ligne";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Connexion réseau rétablie";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nouveautés";
@@ -5993,6 +6014,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Boutique « bac à sable »";
 
 /* Menus save button title
    Save Action
@@ -8702,6 +8726,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Rejoignez-nous";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Travail hors ligne";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "La carte du monde affiche les vues par pays.";
 
@@ -9244,6 +9271,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Évaluer comme utile";
 
+/* Title for the checkout view */
+"checkout.title" = "Validation de la commande";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "commentaire";
 
@@ -9391,8 +9421,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Voir les statistiques";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Statistiques";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Étiquettes de fonctionnalités";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL du CSS du Lecteur";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL par défaut";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Ajoutez ici une URL de CSS personnalisé à charger dans le Lecteur. Si vous utilisez Calypso en local, cela ressemble à : http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Valeur actuelle";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Valeur par défaut";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Configuration à distance";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Valeur de la configuration à distance";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Réinitialiser";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9400,6 +9457,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Supprimer la visite guidée actuelle";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Journalisation";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Démarrage rapide";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Réglages";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Développeur";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Résumé hebdomadaire";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Masquer ceci";
@@ -9418,6 +9490,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Expiré";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "N’expire jamais";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Se renouvelle";
@@ -9508,6 +9583,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "par an";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Aide";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Les domaines achetés sur ce site redirigeront vers %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Rechercher des domaines";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Validation de la commande";
@@ -10371,6 +10455,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numéro de téléphone";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Plans";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Créé le %@";
 
@@ -10796,6 +10883,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "NomDeVotreSite.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Autres domaines pour %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Votre domaine WordPress.com gratuit";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Bénéficiez d’un enregistrement ou d’un transfert de domaine gratuit d’un an avec un plan payant annuel.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Obtenir votre domaine";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "L’adresse principale de votre site est celle qui s’affichera dans la barre d’adresse des visiteurs qui consultent votre site Web.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Domaine principal";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Chercher simplement un domaine";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Mettre à niveau vers un plan";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domaines";
@@ -11291,6 +11402,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Un problème est survenu, veuillez réessayer ultérieurement.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Basculer vers l’application Jetpack";

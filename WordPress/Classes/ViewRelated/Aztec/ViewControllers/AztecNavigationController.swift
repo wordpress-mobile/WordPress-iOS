@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 // MARK: - AztecNavigationControllerDelegate Protocol
 //
 protocol AztecNavigationControllerDelegate: UINavigationControllerDelegate {
@@ -10,7 +9,6 @@ protocol AztecNavigationControllerDelegate: UINavigationControllerDelegate {
     ///
     func navigationController(_ navigationController: UINavigationController, didDismiss alertController: UIAlertController)
 }
-
 
 // MARK: - AztecNavigationController
 //

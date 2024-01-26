@@ -3,7 +3,6 @@
 /// but it should be possible to make it more generic in the future if there's a need to — it was deliberately
 /// not made as generic as possible, in case it won't be used.
 
-
 struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, Item>: ImmuTableRow {
 
     typealias CellType = CollectionViewContainerCell
@@ -159,7 +158,6 @@ class CollectionViewContainerCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

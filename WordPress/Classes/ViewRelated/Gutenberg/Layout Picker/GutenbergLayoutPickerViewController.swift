@@ -142,7 +142,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         }) ?? []
     }
 
-
     // MARK: - Footer Actions
     override func defaultActionSelected(_ sender: Any) {
         createPage(layout: nil)

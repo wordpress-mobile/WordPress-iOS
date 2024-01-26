@@ -19,7 +19,6 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
         return JetpackRestoreStatusCoordinator(site: self.site, view: self)
     }()
 
-
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity) {

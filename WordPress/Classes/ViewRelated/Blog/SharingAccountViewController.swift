@@ -22,9 +22,7 @@ import WordPressShared
         return controller
     }()
 
-
     // MARK: - Lifecycle Methods
-
 
     @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
         publicizeService = service
@@ -36,12 +34,10 @@ import WordPressShared
         navigationItem.title = publicizeService.label
     }
 
-
     required public init?(coder aDecoder: NSCoder) {
         // TODO:
         fatalError("init(coder:) has not been implemented")
     }
-
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +46,7 @@ import WordPressShared
         configureTableView()
     }
 
-
     // MARK: - Configuration
-
 
     /// Configures the appearance of the nav bar.
     ///
@@ -62,7 +56,6 @@ import WordPressShared
         closeButton.tintColor = .appBarTint
         navigationItem.leftBarButtonItem = closeButton
     }
-
 
     /// Configures the `UITableView`
     ///
@@ -74,7 +67,6 @@ import WordPressShared
         immutableHandler.viewModel = tableViewModel()
     }
 
-
     fileprivate func showNoResultsViewController() {
         let title = NSLocalizedString("No Accounts Found",
                                       comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
@@ -84,7 +76,6 @@ import WordPressShared
     }
 
     // MARK: - View Model Wrangling
-
 
     /// Builds and returns the ImmuTable view model.
     ///
@@ -126,7 +117,6 @@ import WordPressShared
         return ImmuTable(sections: sections)
     }
 
-
     /// Builds the ImmuTableSection that displays unconnected keyring accounts.
     ///
     /// - Parameter rows: An array of ImmuTableRow objects appearing in the section.
@@ -148,7 +138,6 @@ import WordPressShared
         return ImmuTableSection(headerText: title, rows: rows, footerText: footer)
     }
 
-
     /// Builds the ImmuTableSection that displays connected keyring accounts.
     ///
     /// - Parameter rows: An array of ImmuTableRow objects appearing in the section.
@@ -166,7 +155,6 @@ import WordPressShared
         return rows
     }
 
-
     /// Builds an ImmuTableAction that should be performed when a specific row is selected.
     ///
     /// - Parameter keyringAccount: The keyring account for the row.
@@ -183,7 +171,6 @@ import WordPressShared
         }
     }
 
-
     /// Builds ImmuTableRows for the specified keyring accounts.
     ///
     /// - Parameter accounts: An array of KeyringAccount objects.
@@ -199,7 +186,6 @@ import WordPressShared
 
         return rows
     }
-
 
     /// Checks if the specified keyring account is connected.
     ///
@@ -224,9 +210,7 @@ import WordPressShared
         return false
     }
 
-
     // MARK: - Actions
-
 
     /// Notifies the delegate that the user has clicked the close button to dismiss the controller.
     ///
@@ -235,7 +219,6 @@ import WordPressShared
     @objc func handleCloseTapped(_ sender: UIBarButtonItem) {
         delegate?.didDismissSharingAccountViewController(self)
     }
-
 
     /// An ImmuTableRow class.
     ///
@@ -254,7 +237,6 @@ import WordPressShared
         }
     }
 }
-
 
 /// Delegate protocol.
 ///

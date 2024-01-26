@@ -247,10 +247,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-            setupAppRatings()
-            self.showInlinePrompt()
         }
+        // TODO: Remove this when In-App Rating project is shipped
+//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+//            setupAppRatings()
+//            self.showInlinePrompt()
+//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -429,6 +431,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         showDetails(for: note)
 
+        if !note.read {
+            AppRatingUtility.shared.incrementSignificantEvent()
+        }
+
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
         }
@@ -523,8 +529,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
     }
 }
-
-
 
 // MARK: - User Interface Initialization
 //
@@ -646,7 +650,6 @@ extension NotificationsViewController {
     }
 }
 
-
 // MARK: - Notifications
 //
 private extension NotificationsViewController {
@@ -735,8 +738,6 @@ private extension NotificationsViewController {
         }
     }
 }
-
-
 
 // MARK: - Public Methods
 //
@@ -929,7 +930,6 @@ extension NotificationsViewController {
     }
 }
 
-
 // MARK: - Notifications Deletion Mechanism
 //
 private extension NotificationsViewController {
@@ -967,7 +967,6 @@ private extension NotificationsViewController {
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
-
 
     // MARK: - Notifications Deletion from CommentDetailViewController
 
@@ -1035,8 +1034,6 @@ private extension NotificationsViewController {
     }
 
 }
-
-
 
 // MARK: - Marking as Read
 //
@@ -1163,8 +1160,6 @@ private extension NotificationsViewController {
     }
 }
 
-
-
 // MARK: - Unread notifications caching
 //
 private extension NotificationsViewController {
@@ -1198,8 +1193,6 @@ private extension NotificationsViewController {
         }
     }
 }
-
-
 
 // MARK: - WPTableViewHandler Helpers
 //
@@ -1369,8 +1362,6 @@ extension NotificationsViewController {
     }
 }
 
-
-
 // MARK: - WPTableViewHandlerDelegate Methods
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate {
@@ -1532,8 +1523,6 @@ private extension NotificationsViewController {
         return mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
     }
 }
-
-
 
 // MARK: - NoResults Helpers
 //
@@ -1832,7 +1821,6 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }
-
 
 // MARK: - SearchableActivity Conformance
 //

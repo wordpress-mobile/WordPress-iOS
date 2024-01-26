@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 class DiffAbstractValue: NSManagedObject {
     enum Operation: String {
         case add

@@ -141,7 +141,6 @@ private extension EpilogueUserInfoCell {
     }
 }
 
-
 // MARK: - Gravatar uploading
 //
 extension EpilogueUserInfoCell: GravatarUploader {

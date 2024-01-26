@@ -36,7 +36,6 @@ final class InteractiveNotificationsManager: NSObject {
        return NotificationSyncMediator()
     }
 
-
     /// Registers the device for User Notifications.
     ///
     /// This method should be called once during the app initialization process.
@@ -304,7 +303,6 @@ extension InteractiveNotificationsManager {
     }
 }
 
-
 // MARK: - Private Helpers
 //
 private extension InteractiveNotificationsManager {
@@ -324,7 +322,6 @@ private extension InteractiveNotificationsManager {
         })
     }
 
-
     /// Approves a comment and marks the associated notification as read
     ///
     /// - Parameters:
@@ -340,7 +337,6 @@ private extension InteractiveNotificationsManager {
         })
     }
 
-
     /// Opens the details for a given notificationId
     ///
     /// - Parameter noteID: The Notification's Identifier
@@ -348,7 +344,6 @@ private extension InteractiveNotificationsManager {
     func showDetailsWithNoteID(_ noteId: NSNumber) {
         RootViewCoordinator.sharedPresenter.showNotificationsTabForNote(withID: noteId.stringValue)
     }
-
 
     /// Replies to a comment and marks the associated notification as read
     ///
@@ -365,7 +360,6 @@ private extension InteractiveNotificationsManager {
             DDLogInfo("Couldn't reply to comment from push notification")
         })
     }
-
 
     /// Returns a collection of *UNNotificationCategory* instances, for each one of the
     /// supported NoteCategoryDefinition enum case's.
@@ -386,8 +380,6 @@ private extension InteractiveNotificationsManager {
         return PushNotificationsManager.shared.handleAuthenticationApprovedAction(userInfo)
     }
 }
-
-
 
 // MARK: - Nested Types
 //
@@ -473,8 +465,6 @@ extension InteractiveNotificationsManager {
         static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly, bloggingPrompt]
         static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup, bloggingPrompt]
     }
-
-
 
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
@@ -577,7 +567,6 @@ extension InteractiveNotificationsManager {
             }
         }
 
-
         /// Quick action analytics support. Returns either a quick action name (if defined) or an empty string.
         /// NB: This maintains parity with Android.
         ///
@@ -597,7 +586,6 @@ extension InteractiveNotificationsManager {
         static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
     }
 }
-
 
 // MARK: - UNUserNotificationCenterDelegate Conformance
 //

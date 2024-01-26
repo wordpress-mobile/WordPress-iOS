@@ -2,7 +2,6 @@ import UIKit
 import Foundation
 import CocoaLumberjack
 
-
 /// Note:
 /// This migration policy handles database migration from WPiOS 4.3 to 4.4
 ///
@@ -10,7 +9,6 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
     fileprivate let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
     fileprivate let defaultDotcomKey            = "AccountDefaultDotcom"
-
 
     override func begin(_ mapping: NSEntityMapping, with manager: NSMigrationManager) throws {
         // Note:
@@ -50,7 +48,6 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         // Cleanup!
         userDefaults.removeObject(forKey: defaultDotcomUsernameKey)
     }
-
 
     // MARK: - Private Helpers
 

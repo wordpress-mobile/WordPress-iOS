@@ -265,7 +265,6 @@ private extension ReminderScheduleCoordinatorTests {
         }
     }
 
-
     class MockBloggingRemindersScheduler: BloggingRemindersScheduler {
         var behavior = MockSchedulerBehavior()
 

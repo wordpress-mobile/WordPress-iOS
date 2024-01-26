@@ -109,7 +109,6 @@ struct ShareExtractor {
     }
 }
 
-
 // MARK: - Private
 
 /// A private type that represents the information we can extract from an extension context

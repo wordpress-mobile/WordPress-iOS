@@ -1,18 +1,9 @@
-* [**] [internal] A minor refactor in authentication flow, including but not limited to social sign-in and two factor authentication. [#22086]
-* [***] Plans: Upgrade to a WPCOM plan from domains dashboard in Jetpack app. [#22261]
-* [**] [internal] Refactor domain selection flows to use the same domain selection UI. [22254]
-* [**] Re-enable the support for using Security Keys as a second factor during login [#22258]
-* [*] Fix crash in editor that sometimes happens after modifying tags or categories [#22265]
-* [**] Updated login screen's colors to highlight WordPress - Jetpack brand relationship
-* [*] Add defensive code to make sure the retain cycles in the editor don't lead to crashes [#22252]
-* [*] Updated Site Domains screen to make domains management more convenient [#22294, #22311]
-* [**] [internal] Adds support for dynamic dashboard cards driven by the backend [#22326]
-* [**] [internal] Add support for the Phase One Fast Media Uploads banner [#22330]
-* [*] [internal] Remove personalizeHomeTab feature flag [#22280]
-* [*] Fix a rare crash in post search related to tags [#22275]
-* [*] Fix a rare crash when deleting posts [#22277]
-* [*] Fix a rare crash in Site Media prefetching cancellation [#22278]
-* [*] Fix an issue with BlogDashboardPersonalizationService being used on the background thread [#22335]
-* [***] Block Editor: Avoid keyboard dismiss when interacting with text blocks [https://github.com/WordPress/gutenberg/pull/57070]
-* [**] Block Editor: Auto-scroll upon block insertion [https://github.com/WordPress/gutenberg/pull/57273]
+You can now get a WordPress plan with a free domain in the domain dashboard. We also made some improvements to the Site Domains screen so it’s even easier to manage your domains.
 
+When you’re editing text blocks in the editor, your device’s keyboard will no longer disappear mid-edit. The editor will also scroll directly to a new block when you add it. Write away, friend.
+
+Miss logging in with your security keys? Not anymore—we’ve re-enabled security keys for two-factor authentication during login. The only one getting into your account is you.
+
+We updated the colors of the login screen to match both WordPress and Jetpack. After all, teamwork makes the dream work.
+
+Finally, we made assorted code fixes and tackled several rare (and not-so-rare) problems that were causing app crashes. These issues were mostly related to editing tags and categories, using duplicate tags, deleting posts, and editing deleted posts. All in a day’s work.

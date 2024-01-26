@@ -607,6 +607,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showPlugins];
             }
             break;
+        case BlogDetailsSubsectionSiteMonitoring:
+            if ([self shouldShowSiteMonitoring]) {
+                NSNumber *selectedTab = userInfo[[BlogDetailsViewController userInfoSiteMonitoringTabKey]];
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showSiteMonitoringWithSelectedTab:selectedTab];
+            }
+            break;
+
     }
 }
 
@@ -629,6 +640,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
             return [NSIndexPath indexPathForRow:0 inSection:section];
+        case BlogDetailsSubsectionSiteMonitoring:
+            return [NSIndexPath indexPathForRow:2 inSection:section];
         case BlogDetailsSubsectionBlaze:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionJetpackSettings:
@@ -651,6 +664,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPlugins:
             return [NSIndexPath indexPathForRow:2 inSection:section];
+
     }
 }
 
@@ -836,6 +850,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
     }];
     row.quickStartIdentifier = QuickStartTourElementSharing;
+    return row;
+}
+
+- (BlogDetailsRow *)siteMonitoringRow
+{
+     __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[BlogDetailsViewControllerStrings siteMonitoringRowTitle]
+                                        accessibilityIdentifier:@"Site Monitoring Row"
+                                                          image:[UIImage imageNamed:@"tool"]
+                                                       callback:^{
+        [weakSelf showSiteMonitoring];
+    }];
     return row;
 }
 
@@ -1139,6 +1165,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *thirdSectionRows = [NSMutableArray array];
 
     // The 1st section
+    if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog supports:BlogFeatureSiteMonitoring]) {
+        [firstSectionRows addObject:[self siteMonitoringRow]];
+    }
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [firstSectionRows addObject:[self activityRow]];
     }
@@ -2243,6 +2272,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 + (NSString *)userInfoShowPickerKey {
     return @"show-picker";
+}
+
++ (NSString *)userInfoSiteMonitoringTabKey {
+    return @"site-monitoring-tab";
 }
 
 @end

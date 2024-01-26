@@ -2,7 +2,6 @@ import Foundation
 
 // This facilitates showing the CommentDetailViewController within the context of Notifications.
 
-
 protocol CommentDetailsNotificationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)

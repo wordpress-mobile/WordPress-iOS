@@ -543,7 +543,6 @@ extension Set {
     }
 }
 
-
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {
     var allowsUserTransition: Bool {

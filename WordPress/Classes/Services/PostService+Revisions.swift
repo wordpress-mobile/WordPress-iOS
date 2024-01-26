@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension PostService {
 
     /// PostService API to get the revisions list and store them into the Core Data data store.

@@ -68,7 +68,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         applyOpaqueBackgroundColors()
     }
 
-
     // MARK: - Configuration
 
     /**
@@ -89,7 +88,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-
     @objc open func configureViewWithVerboseSiteAttribution(_ contentProvider: ReaderPostContentProvider?) {
         if let contentProvider = contentProvider {
             configureSiteAttribution(contentProvider, verboseAttribution: true)
@@ -98,13 +96,11 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-
     fileprivate func reset() {
         imageView.image = nil
         textLabel.attributedText = nil
         attributionAction = .none
     }
-
 
     fileprivate func configurePostAttribution(_ contentProvider: ReaderPostContentProvider) {
         let url = contentProvider.sourceAvatarURLForDisplay()
@@ -118,7 +114,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }
-
 
     fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
@@ -145,7 +140,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         attributionAction = .visitSite
     }
 
-
     fileprivate func stringForPostAttribution(_ authorName: String?, blogName: String?) -> String {
         var str = ""
         if (authorName != nil) && (blogName != nil) {
@@ -166,7 +160,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         return str
     }
 
-
     fileprivate func patternForSiteAttribution(_ verbose: Bool) -> String {
         var pattern: String
         if verbose {
@@ -176,7 +169,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
         return pattern
     }
-
 
     // MARK: - Touches
 
@@ -190,7 +182,6 @@ private enum ReaderCardDiscoverAttribution: Int {
             textLabel.isHighlighted = true
         }
     }
-
 
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
@@ -206,7 +197,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         guard textLabel.isHighlighted else {
@@ -215,7 +205,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.isHighlighted = false
     }
 
-
     open override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         super.touchesCancelled(touches!, with: event)
         guard textLabel.isHighlighted else {
@@ -223,7 +212,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
         textLabel.isHighlighted = false
     }
-
 
     // MARK: - Actions
 

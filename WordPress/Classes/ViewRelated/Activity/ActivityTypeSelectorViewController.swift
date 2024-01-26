@@ -101,7 +101,6 @@ class ActivityTypeSelectorViewController: UITableViewController {
         }
     }
 
-
     private enum Constants {
         static let groupCellIdentifier = "GroupCellIdentifier"
     }

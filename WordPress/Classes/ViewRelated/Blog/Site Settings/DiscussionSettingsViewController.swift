@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
 /// allow the user to tune those settings, as required.
 ///
@@ -35,8 +34,6 @@ open class DiscussionSettingsViewController: UITableViewController {
         saveSettingsIfNeeded()
     }
 
-
-
     // MARK: - Setup Helpers
     fileprivate func setupNavBar() {
         title = NSLocalizedString("Discussion", comment: "Title for the Discussion Settings Screen")
@@ -57,8 +54,6 @@ open class DiscussionSettingsViewController: UITableViewController {
             name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
             object: settings.managedObjectContext)
     }
-
-
 
     // MARK: - Persistance!
     fileprivate func refreshSettings() {
@@ -98,8 +93,6 @@ open class DiscussionSettingsViewController: UITableViewController {
         saveSettingsIfNeeded()
     }
 
-
-
     // MARK: - UITableViewDataSoutce Methods
     open override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -135,14 +128,10 @@ open class DiscussionSettingsViewController: UITableViewController {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
-
-
     // MARK: - UITableViewDelegate Methods
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowAtIndexPath(indexPath).handler?(tableView)
     }
-
-
 
     // MARK: - Cell Setup Helpers
     fileprivate func rowAtIndexPath(_ indexPath: IndexPath) -> Row {
@@ -176,8 +165,6 @@ open class DiscussionSettingsViewController: UITableViewController {
             row.handler?(newValue as AnyObject?)
         }
     }
-
-
 
     // MARK: - Row Handlers
     fileprivate func pressedCommentsAllowed(_ payload: AnyObject?) {
@@ -493,8 +480,6 @@ open class DiscussionSettingsViewController: UITableViewController {
         return Section(rows: rows)
     }
 
-
-
     // MARK: - Row Detail Helpers
     fileprivate var detailsForCloseCommenting: String {
         if !settings.commentsCloseAutomatically {
@@ -550,8 +535,6 @@ open class DiscussionSettingsViewController: UITableViewController {
         return String(format: format, numberOfLinks)
     }
 
-
-
     // MARK: - Private Nested Classes
     fileprivate class Section {
         let headerText: String?
@@ -587,8 +570,6 @@ open class DiscussionSettingsViewController: UITableViewController {
             case Switch     = "SwitchCell"
         }
     }
-
-
 
     // MARK: - Private Properties
     fileprivate var blog: Blog!

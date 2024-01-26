@@ -3,7 +3,6 @@ import XCTest
 import WordPressKit
 @testable import WordPress
 
-
 /// GravatarService Unit Tests
 ///
 class GravatarServiceTests: CoreDataTestCase {

@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 extension FancyAlertViewController {
 
     private enum VerificationFailureError: Error {

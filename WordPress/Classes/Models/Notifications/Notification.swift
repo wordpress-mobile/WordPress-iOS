@@ -365,7 +365,6 @@ extension Notification {
     }
 }
 
-
 // MARK: - Update Helpers
 //
 extension Notification {

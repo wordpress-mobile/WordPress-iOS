@@ -52,7 +52,6 @@ class PluginViewModel: Observable {
     private let noResultsConnectivityErrorModel = NoResultsViewController.Model(title: String.NoConnectionError.title,
                                                                                 subtitle: String.NoConnectionError.description)
 
-
     let site: JetpackSiteRef
     var capabilities: SitePluginCapabilities?
 
@@ -586,7 +585,6 @@ class PluginViewModel: Observable {
         return BlogService.blog(with: site)?.settings?.name?.nonEmptyString()
     }
 
-
     private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {
         guard let copy = htmlText.mutableCopy() as? NSMutableAttributedString else { return htmlText }
 
@@ -601,7 +599,6 @@ class PluginViewModel: Observable {
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
             copy.addAttribute(.foregroundColor, value: UIColor.text, range: range)
         }
-
 
         var paragraphAttributes: [(paragraph: NSParagraphStyle, range: NSRange)] = []
 

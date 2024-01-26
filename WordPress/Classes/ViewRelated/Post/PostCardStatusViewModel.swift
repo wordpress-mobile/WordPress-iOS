@@ -192,7 +192,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         return AbstractPostButtonSection(buttons: buttons)
     }
 
-
     private func createNavigationSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
@@ -205,7 +204,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
         return AbstractPostButtonSection(buttons: buttons)
     }
-
 
     private func createTrashSection() -> AbstractPostButtonSection {
         return AbstractPostButtonSection(buttons: [.trash])

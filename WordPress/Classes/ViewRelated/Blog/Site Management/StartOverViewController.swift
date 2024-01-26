@@ -155,7 +155,6 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         alertController.presentFromRootViewController()
     }
 
-
     // MARK: - MFMailComposeViewControllerDelegate Method
 
     public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
