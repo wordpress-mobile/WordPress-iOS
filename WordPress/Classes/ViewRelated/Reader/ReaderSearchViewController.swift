@@ -17,7 +17,11 @@ import Gridicons
         var title: String {
             switch self {
             case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
-            case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
+            case .sites: return NSLocalizedString(
+                "reader.search.tab.blogs",
+                value: "Blogs",
+                comment: "Title of a Reader tab showing Sites matching a user's search query"
+            )
             }
         }
 
