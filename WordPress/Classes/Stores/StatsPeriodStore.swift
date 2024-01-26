@@ -291,6 +291,8 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedSummary(summary, error)
             }
+
+            self?.storeDataInCache()
         }
 
         operationQueue.addOperation(chartOperation)
