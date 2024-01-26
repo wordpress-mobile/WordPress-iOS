@@ -269,20 +269,6 @@ private extension StatsPeriodStore {
         }
     }
 
-    func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
-        loadFromCache(date: date, period: period)
-
-        guard shouldFetchOverview() else {
-            DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
-            return
-        }
-
-        state.summaryStatus = .loading
-        scheduler.debounce { [weak self] in
-            self?.fetchChartData(date: date, period: period)
-        }
-    }
-
     // Fetch Chart data first using the async operation
     //
     func fetchChartData(date: Date, period: StatsPeriodUnit) {
@@ -301,7 +287,6 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedSummary(summary, error)
-                self?.fetchAsyncData(date: date, period: period)
             }
         }
 
@@ -360,7 +345,18 @@ private extension StatsPeriodStore {
             cancelQueries()
         }
 
-        fetchPeriodOverviewData(date: date, period: period)
+        loadFromCache(date: date, period: period)
+
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
+            return
+        }
+
+        state.summaryStatus = .loading
+        scheduler.debounce { [weak self] in
+            self?.fetchChartData(date: date, period: period)
+            self?.fetchAsyncData(date: date, period: period)
+        }
     }
 
     func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
