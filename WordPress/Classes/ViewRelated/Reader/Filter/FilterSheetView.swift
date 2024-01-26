@@ -1,4 +1,5 @@
 import WordPressFlux
+import WordPressUI
 
 class FilterSheetView: UIView {
 

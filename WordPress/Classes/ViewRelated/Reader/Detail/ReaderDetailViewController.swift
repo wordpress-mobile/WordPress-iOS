@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 

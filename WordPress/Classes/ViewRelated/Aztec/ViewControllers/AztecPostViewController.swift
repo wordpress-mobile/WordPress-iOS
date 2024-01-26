@@ -13,6 +13,7 @@ import MediaEditor
 import UniformTypeIdentifiers
 import Photos
 import PhotosUI
+import WordPressUI
 
 // MARK: - Aztec's Native Editor!
 //

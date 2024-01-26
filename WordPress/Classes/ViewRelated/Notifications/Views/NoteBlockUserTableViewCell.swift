@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
