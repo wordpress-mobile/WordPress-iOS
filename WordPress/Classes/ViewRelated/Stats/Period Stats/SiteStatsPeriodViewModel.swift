@@ -65,7 +65,7 @@ class SiteStatsPeriodViewModel: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
+        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                                                                                period: lastRequestedPeriod,
                                                                                forceRefresh: true))

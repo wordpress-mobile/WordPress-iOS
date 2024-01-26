@@ -694,7 +694,7 @@ private extension SiteStatsInsightsDetailsViewModel {
         case .periodFileDownloads:
             return .allFileDownloads(date: selectedDate, period: selectedPeriod)
         case .insightsViewsVisitors, .insightsLikesTotals:
-            return .periods(date: selectedDate, period: selectedPeriod)
+            return .allCachedPeriodData(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }

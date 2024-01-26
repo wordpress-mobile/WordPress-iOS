@@ -23,7 +23,7 @@ enum PeriodAction: Action {
 }
 
 enum PeriodQuery {
-    case periods(date: Date, period: StatsPeriodUnit)
+    case allCachedPeriodData(date: Date, period: StatsPeriodUnit)
     case allPostsAndPages(date: Date, period: StatsPeriodUnit)
     case allSearchTerms(date: Date, period: StatsPeriodUnit)
     case allVideos(date: Date, period: StatsPeriodUnit)
@@ -46,7 +46,7 @@ enum PeriodQuery {
 
     var date: Date {
         switch self {
-        case .periods(let date, _):
+        case .allCachedPeriodData(let date, _):
             return date
         case .allPostsAndPages(let date, _):
             return date
@@ -73,7 +73,7 @@ enum PeriodQuery {
 
     var period: StatsPeriodUnit {
         switch self {
-        case .periods( _, let period):
+        case .allCachedPeriodData( _, let period):
             return period
         case .allPostsAndPages( _, let period):
             return period
@@ -224,7 +224,7 @@ private extension StatsPeriodStore {
 
     func refreshPeriodData(for query: PeriodQuery) {
         switch query {
-        case .periods:
+        case .allCachedPeriodData:
             loadFromCache(date: query.date, period: query.period)
         case .allPostsAndPages:
             if shouldFetchPostsAndPages() {
@@ -1029,7 +1029,7 @@ extension StatsPeriodStore {
 
     func fetchingFailed(for query: PeriodQuery) -> Bool {
         switch query {
-        case .periods:
+        case .allCachedPeriodData:
             return fetchingOverviewHasFailed
         case .allPostsAndPages:
             return topPostsAndPagesStatus == .error
