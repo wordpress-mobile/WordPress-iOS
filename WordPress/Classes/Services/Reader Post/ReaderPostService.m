@@ -768,8 +768,8 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         [self deletePostsFromBlockedSitesInContext:context];
 
         BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic inContext:context] < [self maxPostsToSaveForTopic:readerTopic]);
-        if ([ReaderHelpers isTopicTag:readerTopic]) {
-            // For tags, assume there is more content as long as more than zero results are returned.
+        if ([ReaderHelpers isTopicTag:readerTopic] || [ReaderHelpers isRSSFeed:readerTopic]) {
+            // For tags and RSS feeds, assume there is more content as long as more than zero results are returned.
             hasMore = (postsCount > 0 ) && spaceAvailable;
         } else {
             // For other topics, assume there is more content as long as the number of results requested is returned.
@@ -1153,8 +1153,8 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 - (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts inContext: (NSManagedObjectContext * _Nonnull)context {
     BOOL hasMore = NO;
     BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic inContext:context] < [self maxPostsToSaveForTopic:readerTopic]);
-    if ([ReaderHelpers isTopicTag:readerTopic]) {
-        // For tags, assume there is more content as long as more than zero results are returned.
+    if ([ReaderHelpers isTopicTag:readerTopic] || [ReaderHelpers isRSSFeed:readerTopic]) {
+        // For tags and RSS feeds, assume there is more content as long as more than zero results are returned.
         hasMore = ([remotePosts count] > 0 ) && spaceAvailable;
     } else {
         // For other topics, assume there is more content as long as the number of results requested is returned.
