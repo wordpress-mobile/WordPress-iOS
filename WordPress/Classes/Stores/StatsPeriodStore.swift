@@ -310,7 +310,7 @@ private extension StatsPeriodStore {
         ]
 
         periodQueries.forEach {
-            DDLogInfo("Start refreshing: \($0)")
+            DDLogInfo("Stats Period: Start fetching \($0)")
             refreshPeriodData(for: $0)
         }
     }
