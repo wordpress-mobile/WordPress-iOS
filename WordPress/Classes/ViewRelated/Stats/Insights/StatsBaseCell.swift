@@ -43,7 +43,7 @@ class StatsBaseCell: UITableViewCell {
         return stackView
     }()
 
-    @IBOutlet var topConstraint: NSLayoutConstraint!
+    @IBOutlet var topConstraint: NSLayoutConstraint?
 
     private var headingBottomConstraint: NSLayoutConstraint?
     private var headingWidthConstraint: NSLayoutConstraint?
@@ -51,12 +51,12 @@ class StatsBaseCell: UITableViewCell {
     /// Finds the item from the top constraint that's not the content view itself.
     /// - Returns: `topConstraint`'s `firstItem` or `secondItem`, whichever is not this cell's content view.
     private var topConstraintTargetView: UIView? {
-        if let firstItem = topConstraint.firstItem as? UIView,
+        if let firstItem = topConstraint?.firstItem as? UIView,
            firstItem != contentView {
             return firstItem
         }
 
-        return topConstraint.secondItem as? UIView
+        return topConstraint?.secondItem as? UIView
     }
 
     var statSection: StatSection? {
@@ -98,7 +98,7 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private func updateHeader() {
-        if headingBottomConstraint == nil && headingLabel.superview == nil {
+        if let topConstraint, headingBottomConstraint == nil && headingLabel.superview == nil {
             configureHeading(with: topConstraint)
         }
 
@@ -126,7 +126,7 @@ class StatsBaseCell: UITableViewCell {
         let hasTitleOrButton = !title.isEmpty || !showDetailsButton.isHidden
 
         headingBottomConstraint?.isActive = hasTitleOrButton
-        topConstraint.isActive = !hasTitleOrButton
+        topConstraint?.isActive = !hasTitleOrButton
     }
 
     func shouldShowDetailsButton () -> Bool {

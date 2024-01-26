@@ -126,7 +126,7 @@ class SiteStatsInsightsViewModel: Observable {
                         block: { [weak self] in
                             return self?.overviewTableRows() ?? [errorBlock(.insightsViewsVisitors)]
                         }, loading: {
-                            return [StatsGhostChartImmutableRow()]
+                            return [StatsGhostChartImmutableRow(statSection: .insightsViewsVisitors)]
                         }, error: {
                             return [errorBlock(.insightsViewsVisitors)]
                         }))
@@ -147,7 +147,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                    isNudgeCompleted: isNudgeCompleted,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostGrowAudienceImmutableRow()
+                    return StatsGhostGrowAudienceImmutableRow(statSection: InsightType.growAudience.statSection)
                 }, error: {
                     errorBlock(nil)
                 }))
@@ -160,7 +160,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                         chartData: insightsStore.getPostStats(),
                                                                         siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostChartImmutableRow()
+                    return StatsGhostChartImmutableRow(statSection: .insightsLatestPostSummary)
                 }, error: {
                     errorBlock(.insightsLatestPostSummary)
                 }))
@@ -173,7 +173,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      statSection: .insightsAllTime,
                                                                      siteStatsInsightsDelegate: nil)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsAllTime)
                 }, error: {
                     errorBlock(.insightsAllTime)
                 }))
@@ -187,7 +187,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                     return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsLikesTotals)
                 }, error: {
                     errorBlock(.insightsLikesTotals)
                 }))
@@ -201,7 +201,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsCommentsTotals)
                 }, error: {
                     errorBlock(.insightsCommentsTotals)
                 }))
@@ -212,7 +212,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                     return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsFollowerTotals)
                 }, error: {
                     errorBlock(.insightsFollowerTotals)
                 }))
@@ -224,7 +224,7 @@ class SiteStatsInsightsViewModel: Observable {
                     return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
                                              siteStatsInsightsDelegate: nil)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsMostPopularTime)
                 }, error: {
                     errorBlock(.insightsMostPopularTime)
                 }))
@@ -239,7 +239,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                             statSection: .insightsTagsAndCategories,
                                                                             siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTopImmutableRow()
+                    return StatsGhostTopImmutableRow(statSection: .insightsTagsAndCategories)
                 }, error: {
                     errorBlock(.insightsTagsAndCategories)
                 }))
@@ -252,7 +252,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      statSection: .insightsAnnualSiteStats,
                                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsAnnualSiteStats)
                 }, error: {
                     errorBlock(.insightsAnnualSiteStats)
                 }))
@@ -263,7 +263,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createCommentsRow()
                 }, loading: {
-                    return StatsGhostTabbedImmutableRow()
+                    return StatsGhostTabbedImmutableRow(statSection: .insightsCommentsAuthors)
                 }, error: {
                     errorBlock(.insightsCommentsPosts)
                 }))
@@ -274,7 +274,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createFollowersRow()
                 }, loading: {
-                    return StatsGhostTabbedImmutableRow()
+                    return StatsGhostTabbedImmutableRow(statSection: .insightsFollowersWordPress)
                 }, error: {
                     errorBlock(.insightsFollowersWordPress)
                 }))
@@ -287,7 +287,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      statSection: .insightsTodaysStats,
                                                                      siteStatsInsightsDelegate: nil)
                 }, loading: {
-                    return StatsGhostTwoColumnImmutableRow()
+                    return StatsGhostTwoColumnImmutableRow(statSection: .insightsTodaysStats)
                 }, error: {
                     errorBlock(.insightsTodaysStats)
                 }))
@@ -298,7 +298,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return createPostingActivityRow()
                 }, loading: {
-                    return StatsGhostPostingActivitiesImmutableRow()
+                    return StatsGhostPostingActivitiesImmutableRow(statSection: .insightsPostingActivity)
                 }, error: {
                     errorBlock(.insightsPostingActivity)
                 }))
@@ -313,7 +313,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                             statSection: .insightsPublicize,
                                                                             siteStatsInsightsDelegate: nil)
                 }, loading: {
-                    return StatsGhostTopImmutableRow()
+                    return StatsGhostTopImmutableRow(statSection: .insightsPublicize)
                 }, error: {
                     errorBlock(.insightsPublicize)
                 }))

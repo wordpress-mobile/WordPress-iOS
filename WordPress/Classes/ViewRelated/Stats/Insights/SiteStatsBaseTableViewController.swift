@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 
 /// Base class for site stats table view controllers
 ///
@@ -47,5 +48,13 @@ extension SiteStatsBaseTableViewController: TableViewContainer, UITableViewDataS
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Length.Padding.double
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
 }
