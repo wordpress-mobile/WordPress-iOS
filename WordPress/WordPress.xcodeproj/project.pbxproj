@@ -3926,6 +3926,8 @@
 		FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
 		FA3FBF8C2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
 		FA3FBF8E2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */; };
+		FA3FCD532B640C2D009B9740 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FCD522B640C2D009B9740 /* View+Helpers.swift */; };
+		FA3FCD542B640C2D009B9740 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FCD522B640C2D009B9740 /* View+Helpers.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
@@ -9227,6 +9229,7 @@
 		FA3A281D2A42049F00206D74 /* WordPress 150.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 150.xcdatamodel"; sourceTree = "<group>"; };
 		FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModel.swift; sourceTree = "<group>"; };
 		FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModelTests.swift; sourceTree = "<group>"; };
+		FA3FCD522B640C2D009B9740 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
 		FA4104732639393700E90EBF /* JetpackScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanScreen.swift; sourceTree = "<group>"; };
 		FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupScreen.swift; sourceTree = "<group>"; };
@@ -15392,6 +15395,7 @@
 				C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */,
 				F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */,
 				F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */,
+				FA3FCD522B640C2D009B9740 /* View+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -21230,6 +21234,7 @@
 				C3FBF4E828AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */,
 				F1D8C6F026C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift in Sources */,
 				E62AFB6E1DC8E593007484FC /* WPTextAttachmentManager.swift in Sources */,
+				FA3FCD532B640C2D009B9740 /* View+Helpers.swift in Sources */,
 				3F28CEAA2A4ACB9A00B79686 /* AnalyticsEventTracking.swift in Sources */,
 				9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */,
 				D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */,
@@ -24007,6 +24012,7 @@
 				FABB21342602FC2C00C8785C /* PostSettingsViewController.m in Sources */,
 				FAAEFAE12B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */,
 				FACF66CB2ADD4703008C3E13 /* PostListCell.swift in Sources */,
+				FA3FCD542B640C2D009B9740 /* View+Helpers.swift in Sources */,
 				FABB21352602FC2C00C8785C /* MenuItem.m in Sources */,
 				FABB21362602FC2C00C8785C /* WPRichTextFormatter.swift in Sources */,
 				175F99B62625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */,
