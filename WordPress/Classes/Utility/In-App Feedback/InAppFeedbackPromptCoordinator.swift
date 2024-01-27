@@ -40,11 +40,11 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
             message: Strings.FeedbackAlert.message,
             preferredStyle: .alert
         )
-        let yes = UIAlertAction(title: Strings.FeedbackAlert.yes, style: .default) { [weak self] _ in
-            self?.handlePositiveFeedback(in: controller)
+        let yes = UIAlertAction(title: Strings.FeedbackAlert.yes, style: .default) { _ in
+            self.handlePositiveFeedback(in: controller)
         }
-        let no = UIAlertAction(title: Strings.FeedbackAlert.no, style: .default) { [weak self] _ in
-            self?.handleNegativeFeedback(in: controller)
+        let no = UIAlertAction(title: Strings.FeedbackAlert.no, style: .default) { _ in
+            self.handleNegativeFeedback(in: controller)
         }
         alert.addAction(no)
         alert.addAction(yes)
@@ -77,16 +77,13 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
             message: Strings.NegativeFeedbackAlert.message,
             preferredStyle: .alert
         )
-        let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { [weak self] _ in
-            guard let self else {
-                return
-            }
-            let destination = UINavigationController(rootViewController: submitFeedbackViewController(in: controller))
+        let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { _ in
+            let destination = UINavigationController(rootViewController: self.submitFeedbackViewController(in: controller))
             controller.present(destination, animated: true)
         }
-        let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { [weak self] _ in
+        let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { _ in
             WPAnalytics.track(.appReviewsDeclinedToRateApp)
-            self?.appRatingUtility.declinedToRateCurrentVersion()
+            self.appRatingUtility.declinedToRateCurrentVersion()
         }
         alert.addAction(no)
         alert.addAction(yes)
