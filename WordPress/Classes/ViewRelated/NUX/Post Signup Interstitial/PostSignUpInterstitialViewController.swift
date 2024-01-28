@@ -55,6 +55,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     /// Analytics tracker
     ///
     private let tracker = AuthenticatorAnalyticsTracker.shared
+    private var complianceCoordinator: CompliancePopoverCoordinator?
 
     // MARK: - View Methods
     override func viewDidLoad() {
@@ -75,6 +76,14 @@ class PostSignUpInterstitialViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if complianceCoordinator == nil {
+            complianceCoordinator = CompliancePopoverCoordinator()
+            complianceCoordinator?.presentIfNeeded()
+        }
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
