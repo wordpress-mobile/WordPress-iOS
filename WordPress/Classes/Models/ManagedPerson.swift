@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import WordPressKit
+import WordPressUI
 
 public typealias Person = RemotePerson
 

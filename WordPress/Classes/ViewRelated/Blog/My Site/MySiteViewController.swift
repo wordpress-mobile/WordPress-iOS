@@ -1,6 +1,7 @@
 import WordPressAuthenticator
 import UIKit
 import SwiftUI
+import WordPressUI
 
 final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
     enum Section: Int, CaseIterable {

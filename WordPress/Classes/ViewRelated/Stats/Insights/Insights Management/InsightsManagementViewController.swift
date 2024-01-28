@@ -53,7 +53,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     convenience init(insightsDelegate: SiteStatsInsightsDelegate, insightsManagementDelegate: StatsInsightsManagementDelegate? = nil, insightsShown: [StatSection]) {
-        self.init(style: AppConfiguration.statsRevampV2Enabled ? .insetGrouped : .grouped)
+        self.init(style: .insetGrouped)
         self.insightsDelegate = insightsDelegate
         self.insightsManagementDelegate = insightsManagementDelegate
         let insightsShownSupportedForManagement = insightsShown.filter { !InsightsManagementViewController.insightsNotSupportedForManagement.contains($0) }
@@ -73,16 +73,14 @@ class InsightsManagementViewController: UITableViewController {
         tableView.estimatedSectionHeaderHeight = 38
         tableView.accessibilityIdentifier = TextContent.title
 
-        if AppConfiguration.statsRevampV2Enabled {
-            tableView.isEditing = true
-            tableView.allowsSelectionDuringEditing = true
-        }
+        tableView.isEditing = true
+        tableView.allowsSelectionDuringEditing = true
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(doneTapped))
     }
 
     func handleDismissViaGesture(from presenter: UIViewController) {
-        if AppConfiguration.statsRevampV2Enabled && hasChanges {
+        if hasChanges {
             promptToSave(from: presenter)
         } else {
             trackDismiss()
@@ -100,18 +98,10 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return false
-        }
-
         return isActiveCardsSection(indexPath.section)
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return
-        }
-
         if isActiveCardsSection(sourceIndexPath.section) && isActiveCardsSection(destinationIndexPath.section) {
             let item = insightsShown.remove(at: sourceIndexPath.row)
             insightsShown.insert(item, at: destinationIndexPath.row)
@@ -120,10 +110,6 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return false
-        }
-
         return insightsShown.count > 0 && isActiveCardsSection(indexPath.section)
     }
 
@@ -146,10 +132,6 @@ class InsightsManagementViewController: UITableViewController {
     // MARK: - Actions
 
     private func updateSaveButton() {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return
-        }
-
         if hasChanges {
             navigationItem.rightBarButtonItem = saveButton
         } else {
@@ -158,7 +140,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     @objc private func doneTapped() {
-        if AppConfiguration.statsRevampV2Enabled && hasChanges {
+        if hasChanges {
             promptToSave(from: self)
         } else {
             dismiss()
@@ -228,26 +210,14 @@ private extension InsightsManagementViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        if AppConfiguration.statsRevampV2Enabled {
-            return ImmuTable(sections: [ selectedStatsSection(),
-                                         inactiveCardsSection() ].compactMap({$0})
-            )
-        } else {
-            return ImmuTable(sections: [ selectedStatsSection(),
-                                         sectionForCategory(.general),
-                                         sectionForCategory(.postsAndPages),
-                                         sectionForCategory(.activity) ].compactMap({$0})
-            )
-        }
+        return ImmuTable(sections: [ selectedStatsSection(),
+                                     inactiveCardsSection() ].compactMap({$0})
+        )
     }
 
     // MARK: - Table Sections
 
     func selectedStatsSection() -> ImmuTableSection? {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return nil
-        }
-
         guard insightsShown.count > 0 else {
             return ImmuTableSection(headerText: TextContent.activeCardsHeader, rows: [placeholderRow])
         }
@@ -276,16 +246,6 @@ private extension InsightsManagementViewController {
     }
 
     func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection? {
-        guard AppConfiguration.statsRevampV2Enabled else {
-            return ImmuTableSection(headerText: category.title,
-                                    rows: category.insights.map {
-                                        let enabled = !insightsShown.contains($0)
-                                        return AddInsightStatRow(title: $0.insightManagementTitle,
-                                                                 enabled: enabled,
-                                                                 action: enabled ? rowActionFor($0) : nil) }
-            )
-        }
-
         let rows = category.insights.filter({ !self.insightsShown.contains($0) })
         guard rows.count > 0 else {
             return nil
@@ -301,15 +261,7 @@ private extension InsightsManagementViewController {
 
     func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
         return { [unowned self] row in
-            if AppConfiguration.statsRevampV2Enabled {
-                toggleRow(for: statSection)
-            } else {
-                self.selectedStat = statSection
-                self.insightsDelegate?.addInsightSelected?(statSection)
-
-                WPAnalytics.track(.statsInsightsManagementSaved, properties: ["types": [statSection.title]])
-                self.dismiss(animated: true, completion: nil)
-            }
+            toggleRow(for: statSection)
         }
     }
 
@@ -421,11 +373,7 @@ private extension InsightsManagementViewController {
         var insights: [StatSection] {
             switch self {
             case .general:
-                if AppConfiguration.statsRevampV2Enabled {
-                    return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
-                }
-                return [.insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
-
+                return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
             case .postsAndPages:
                 return [.insightsLatestPostSummary, .insightsPostingActivity, .insightsTagsAndCategories]
             case .activity:

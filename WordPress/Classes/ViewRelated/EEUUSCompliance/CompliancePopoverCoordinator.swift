@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
     func presentIfNeeded() async -> Bool

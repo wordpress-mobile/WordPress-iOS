@@ -1,3 +1,5 @@
+import WordPressUI
+
 /// A view with a label and action button
 class EmptyActionView: UIView {
 

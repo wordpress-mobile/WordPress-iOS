@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import CocoaLumberjack
 import WordPressShared
+import WordPressUI
 
 /// Displays a Blog's User Details
 ///

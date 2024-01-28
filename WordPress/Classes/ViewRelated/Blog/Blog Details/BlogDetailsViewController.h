@@ -47,8 +47,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionMigrationSuccess,
     BlogDetailsSubsectionJetpackBrandingCard,
     BlogDetailsSubsectionBlaze,
+    BlogDetailsSubsectionSiteMonitoring
 };
-
 
 typedef NS_ENUM(NSInteger, QuickStartTitleState) {
     QuickStartTitleStateUndefined = 0,
@@ -188,5 +188,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
 
 + (nonnull NSString *)userInfoShowPickerKey;
++ (nonnull NSString *)userInfoSiteMonitoringTabKey;
 
 @end
