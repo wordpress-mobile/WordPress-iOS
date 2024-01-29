@@ -1,24 +1,24 @@
 import SwiftUI
 
-typealias BooleanUserDefaultsSections = [String: BooleanUserDefaults]
-typealias BooleanUserDefaults = [String: Bool]
+private typealias BooleanUserDefaultsSections = [String: BooleanUserDefaults]
+private typealias BooleanUserDefaults = [String: BooleanUserDefault]
 
 struct BooleanUserDefaultsDebugView: View {
     @StateObject private var viewModel = BooleanUserDefaultsDebugViewModel()
 
     var body: some View {
         List {
-            ForEach(viewModel.preferenceSections.keys.sorted(), id: \.self) { sectionKey in
-                let sectionPreferences = viewModel.preferenceSections[sectionKey] ?? [:]
+            ForEach(viewModel.userDefaultsSections.keys.sorted(), id: \.self) { sectionKey in
+                let userDefaultsSection = viewModel.userDefaultsSections[sectionKey] ?? BooleanUserDefaults()
 
                 Section(header: Text(sectionKey)
                     .font(.caption)) {
-                        ForEach(sectionPreferences.keys.sorted(), id: \.self) { preferenceKey in
+                        ForEach(userDefaultsSection.keys.sorted(), id: \.self) { userDefaultKey in
                             let isOn = Binding<Bool>(
-                                get: { sectionPreferences[preferenceKey] ?? false },
-                                set: { newValue in viewModel.updatePreference(newValue, forSection: sectionKey, forPreference: preferenceKey) }
+                                get: { userDefaultsSection[userDefaultKey]?.value ?? false },
+                                set: { newValue in viewModel.updateUserDefault(newValue, forSection: sectionKey, forUserDefault: userDefaultKey) }
                             )
-                            Toggle(preferenceKey, isOn: isOn)
+                            Toggle(userDefaultsSection[userDefaultKey]!.title, isOn: isOn)
                                 .font(.caption)
                         }
                     }
@@ -33,63 +33,81 @@ struct BooleanUserDefaultsDebugView: View {
 }
 
 private final class BooleanUserDefaultsDebugViewModel: ObservableObject {
-    @Published private var allPreferenceSections = BooleanUserDefaultsSections()
+    @Published private var allUserDefaultsSections = BooleanUserDefaultsSections()
     @Published var searchQuery: String = ""
 
-    private var persistenceStore: UserPersistentRepository
+    private var persistentRepository: UserPersistentRepository
 
-    var preferenceSections: BooleanUserDefaultsSections {
+    var userDefaultsSections: BooleanUserDefaultsSections {
         return if searchQuery.isEmpty {
-            allPreferenceSections
+            allUserDefaultsSections
         } else {
-			filterPreferences(by: searchQuery)
+            filterUserDefaults(by: searchQuery)
         }
     }
 
-    private func filterPreferences(by query: String) -> BooleanUserDefaultsSections {
+    let coreDataStack: CoreDataStack
+
+    private func filterUserDefaults(by query: String) -> BooleanUserDefaultsSections {
         var filteredSections = BooleanUserDefaultsSections()
-        allPreferenceSections.forEach { sectionKey, preferences in
-            let filteredPreferences = preferences.filter { preferenceKey, _ in
-                preferenceKey.localizedCaseInsensitiveContains(query)
+        allUserDefaultsSections.forEach { sectionKey, userDefaults in
+            let filteredUserDefaults = userDefaults.filter { key, userDefault in
+                key.localizedCaseInsensitiveContains(query) || userDefault.title.localizedCaseInsensitiveContains(query)
             }
-            if sectionKey.localizedCaseInsensitiveContains(query) || !filteredPreferences.isEmpty {
-                filteredSections[sectionKey] = filteredPreferences.isEmpty ? preferences : filteredPreferences
+            if sectionKey.localizedCaseInsensitiveContains(query) || !filteredUserDefaults.isEmpty {
+                filteredSections[sectionKey] = filteredUserDefaults.isEmpty ? userDefaults : filteredUserDefaults
             }
         }
         return filteredSections
     }
 
     init() {
-        persistenceStore = UserPersistentStoreFactory.instance()
+        persistentRepository = UserPersistentStoreFactory.instance()
+        coreDataStack = ContextManager.shared
         load()
     }
 
     func load() {
-        let allUserDefaults = persistenceStore.dictionaryRepresentation()
-        var loadedPreferenceSections = BooleanUserDefaultsSections()
+        let allUserDefaults = persistentRepository.dictionaryRepresentation()
+        var loadedUserDefaultsSections = BooleanUserDefaultsSections()
 
-        allUserDefaults.forEach { entryKey, entryValue in
-            if let groupedPreferences = entryValue as? BooleanUserDefaults {
-                loadedPreferenceSections[entryKey] = groupedPreferences
-            } else if let booleanUserDefault = entryValue as? Bool, !isSystemPreference(entryKey) {
-                loadedPreferenceSections[Strings.otherBooleanUserDefaultsSectionID, default: [:]][entryKey] = booleanUserDefault
+        for (entryKey, entryValue) in allUserDefaults {
+            if let groupedUserDefaults = entryValue as? [String: Bool] {
+                loadedUserDefaultsSections[entryKey] = processGroupedUserDefaults(groupedUserDefaults)
+            } else if let booleanUserDefault = entryValue as? Bool, !isSystemUserDefault(entryKey) {
+                loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID, default: [:]][entryKey] = BooleanUserDefault(title: entryKey, value: booleanUserDefault)
             }
         }
 
-        allPreferenceSections = loadedPreferenceSections
+        allUserDefaultsSections = loadedUserDefaultsSections
     }
 
-    func updatePreference(_ value: Bool, forSection sectionID: String, forPreference preferenceID: String) {
+    private func processGroupedUserDefaults(_ userDefaults: [String: Bool]) -> BooleanUserDefaults {
+        userDefaults.reduce(into: BooleanUserDefaults()) { result, keyValue in
+            let (key, value) = keyValue
+            result[key] = processSingleUserDefault(key: key, value: value)
+        }
+    }
+
+    private func processSingleUserDefault(key: String, value: Bool) -> BooleanUserDefault {
+        if let siteID = Int(key), let blogURL = try? Blog.lookup(withID: siteID, in: coreDataStack.mainContext)?.url {
+            return BooleanUserDefault(title: blogURL, value: value)
+        } else {
+            return BooleanUserDefault(title: key, value: value)
+        }
+    }
+
+    func updateUserDefault(_ value: Bool, forSection sectionID: String, forUserDefault userDefaultID: String) {
         if sectionID == Strings.otherBooleanUserDefaultsSectionID {
-            persistenceStore.set(value, forKey: preferenceID)
-        } else if var section = allPreferenceSections[sectionID] {
-            section[preferenceID] = value
-            persistenceStore.set(section, forKey: sectionID)
+            persistentRepository.set(value, forKey: userDefaultID)
+        } else if var section = allUserDefaultsSections[sectionID] {
+            section[sectionID] = BooleanUserDefault(title: userDefaultID, value: value)
+            persistentRepository.set(section, forKey: sectionID)
         }
         load()
     }
 
-    private func isSystemPreference(_ key: String) -> Bool {
+    private func isSystemUserDefault(_ key: String) -> Bool {
         key.starts(with: "com.wordpress.")
     }
 }
@@ -97,4 +115,9 @@ private final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 private enum Strings {
     static let title = NSLocalizedString("debugMenu.booleanUserDefaults.title", value: "Boolean User Defaults", comment: "Boolean User Defaults Debug Menu screen title")
     static let otherBooleanUserDefaultsSectionID = "Other"
+}
+
+private struct BooleanUserDefault {
+    var title: String
+    var value: Bool
 }
