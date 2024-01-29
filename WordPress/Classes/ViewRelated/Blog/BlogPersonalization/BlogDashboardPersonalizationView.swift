@@ -3,7 +3,7 @@ import SwiftUI
 struct BlogDashboardPersonalizationView: View {
     @StateObject var viewModel: BlogDashboardPersonalizationViewModel
 
-    @SwiftUI.Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         List {
