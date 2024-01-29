@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// This Extension encapsulates all of the Blog-Capabilities related helpers.
 ///
 extension Blog {
@@ -23,7 +22,6 @@ extension Blog {
         case UploadFiles        = "upload_files"
         case ViewStats          = "view_stats"
     }
-
 
     /// Returns true if a given capability is enabled. False otherwise
     ///

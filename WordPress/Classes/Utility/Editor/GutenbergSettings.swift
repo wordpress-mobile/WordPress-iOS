@@ -140,7 +140,6 @@ class GutenbergSettings {
         WPAppAnalytics.track(stat, withProperties: props)
     }
 
-
     /// Synch the current editor settings with remote for the given site
     ///
     /// - Parameter blog: The site to synch editor settings

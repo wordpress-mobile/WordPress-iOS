@@ -1,7 +1,6 @@
 import Foundation
 import WordPressAuthenticator
 
-
 /// A simple container for the user info shown on the login epilogue screen.
 ///
 public struct LoginEpilogueUserInfo {
@@ -33,7 +32,6 @@ public struct LoginEpilogueUserInfo {
         email = profile.email
     }
 }
-
 
 // MARK: - LoginEpilogueUserInfo
 //

@@ -15,7 +15,6 @@ enum TextFieldStyle {
     case email
 }
 
-
 class InlineEditableSingleLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties

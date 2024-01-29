@@ -29,7 +29,6 @@ struct UnifiedPrologueNotificationsContentView: View {
                                                weight: .regular,
                                                design: .default)
 
-
             VStack {
                 Spacer()
                 RoundRectangleView {

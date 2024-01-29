@@ -170,7 +170,6 @@ class PostEditorNavigationBarManager {
         return separator
     }()
 
-
     /// NavigationBar's Close Button
     ///
     lazy var closeBarButtonItem: UIBarButtonItem = {

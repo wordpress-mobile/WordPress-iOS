@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-04 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.11 */
 /* Language: it */
@@ -1944,6 +1944,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Impossibile connettersi al sito WordPress. Non c'è alcun sito WordPress valido a questo indirizzo. Controlla l'indirizzo del sito (URL) inserito.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Impossibile connettersi. I metodi XML-RPC richiesti non sono presenti su questo server. Contatta il fornitore del servizio di hosting per risolvere questo problema.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Impossibile connettersi. Abbiamo ricevuto un messaggio di errore 403 durante il tentativo di accedere all'endpoint XMLRPC del tuo sito. Per l'app questo è necessario per comunicare con il tuo sito. Contatta il fornitore del servizio di hosting per risolvere questo problema.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Impossibile connettersi. L'host sta bloccando le richieste POST, ma queste sono necessarie per la corretta comunicazione dell'app con il sito. Contatta il fornitore del servizio di hosting per risolvere questo problema.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Non è stato possibile caricare le tag.";
 
@@ -3015,6 +3024,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Tipo di file";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Tipo di file non supportato come file multimediale.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film e televisione";
 
@@ -3127,6 +3139,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Dimensione carattere";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Dimensione carattere, %1$s";
 
 /* Food site intent topic */
 "Food" = "Cibo";
@@ -4507,6 +4522,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "È necessario l'aggiornamento";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Connessione di rete persa, lavoro offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Connessione di rete ristabilita";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nuovo";
@@ -6005,6 +6026,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Negozio sandbox";
 
 /* Menus save button title
    Save Action
@@ -8714,6 +8738,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Lavora con noi";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Lavorare offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mappa del mondo che mostra le visualizzazioni per Paese.";
 
@@ -8858,6 +8885,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Hai 1 sito Wordpress nascosto.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Con il tuo piano hai la registrazione del dominio per un anno gratuitamente.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Sul tuo sito sono attivi degli aggiornamenti premium. Cancella tali aggiornamenti prima di eliminare il sito.";
@@ -9274,6 +9304,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Valuta come utile";
 
+/* Title for the checkout view */
+"checkout.title" = "Pagamento";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "commento";
 
@@ -9424,8 +9457,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Visualizza le statistiche";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analisi";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Flag funzionalità";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL del CSS del Reader";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL predefinito";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Aggiungi un URL CSS personalizzato qui per caricarlo nel Reader Se stai usando Calypso in locale, può essere qualcosa come: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Valore attuale";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Valore predefinito";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Configurazione remota";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Valore configurazione remota";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Reimposta";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9433,6 +9493,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Rimuovi il tour attuale";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Accesso";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Tour iniziale";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Impostazioni";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Sviluppatore";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Resoconto settimanale";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Nascondi";
@@ -9451,6 +9526,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Scaduto";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Nessuna scadenza";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Rinnovi";
@@ -9544,6 +9622,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "all'anno";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Aiuto";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "I domini acquistati su questo sito reindirizzeranno gli utenti a %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Cerca domini";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Pagamento";
@@ -10410,6 +10497,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numero di telefono";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Piani";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Creazione: %@";
 
@@ -10838,6 +10928,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Altri domini per %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Il tuo dominio WordPress.com gratuito";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Scegli un piano annuale a pagamento e regista o trasferisci gratuitamente il tuo dominio per un anno.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Ottieni tuo dominio";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Il tuo dominio principale è l'indirizzo visualizzato nel browser dagli utenti che visitano il tuo sito.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Dominio principale";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Cerca un dominio";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Passa a un altro piano";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domini";
@@ -11348,6 +11462,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, siti, sito, blog, web log";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Si è verificato un problema. Riprova più tardi.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Passa all'app Jetpack";

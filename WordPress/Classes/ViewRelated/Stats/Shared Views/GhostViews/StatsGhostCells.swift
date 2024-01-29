@@ -1,12 +1,13 @@
-class StatsGhostBaseCell: UITableViewCell {
+class StatsGhostBaseCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
     private(set) var topBorder: UIView?
     private(set) var bottomBorder: UIView?
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        headingLabel.isGhostableDisabled = true
         Style.configureCell(self)
-        setupBorders()
     }
 
     override func tintColorDidChange() {
@@ -18,18 +19,6 @@ class StatsGhostBaseCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         stopGhostAnimation()
-    }
-
-    private func setupBorders() {
-        if AppConfiguration.statsRevampV2Enabled {
-            return
-        }
-
-        topBorder = addTopBorder(withColor: .divider)
-        topBorder?.isGhostableDisabled = true
-
-        bottomBorder = addBottomBorder(withColor: .divider)
-        bottomBorder?.isGhostableDisabled = true
     }
 }
 

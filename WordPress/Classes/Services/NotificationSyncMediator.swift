@@ -14,7 +14,6 @@ import WordPressKit
 /// Details in #6220.
 ///
 
-
 // MARK: - Notifications
 //
 let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
@@ -55,7 +54,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         return queue
     }()
 
-
     /// Designed Initializer
     ///
     convenience init?() {
@@ -82,8 +80,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         contextManager = manager
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
-
-
 
     /// Syncs the latest *maximumNotes*:
     ///
@@ -126,7 +122,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
     }
 
-
     /// Sync's Notification matching the specified ID, and updates the local entity.
     ///
     /// - Note: This method should only be used on the main thread.
@@ -152,7 +147,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
             }
         }
     }
-
 
     /// Marks a Notification as Read.
     ///
@@ -301,7 +295,6 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     }
 }
 
-
 // MARK: - Private Helpers
 //
 private extension NotificationSyncMediator {
@@ -336,7 +329,6 @@ private extension NotificationSyncMediator {
         })
     }
 
-
     /// Given a collection of remoteNotes, this method will insert missing local ones, and update the ones
     /// that can be found.
     ///
@@ -362,7 +354,6 @@ private extension NotificationSyncMediator {
         })
     }
 
-
     /// Deletes the collection of local notifications that cannot be found in a given collection of
     /// remote hashes.
     ///
@@ -385,7 +376,6 @@ private extension NotificationSyncMediator {
             }, on: .global())
         })
     }
-
 
     /// Updates the Read status, of a given Notification, as specified.
     ///
@@ -417,7 +407,6 @@ private extension NotificationSyncMediator {
         notes.forEach { $0.read = status }
         contextManager.saveContextAndWait(mainContext)
     }
-
 
     /// Posts a `NotificationSyncMediatorDidUpdateNotifications` Notification, so that (potential listeners)
     /// may react upon new content.

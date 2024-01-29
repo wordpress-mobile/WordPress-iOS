@@ -55,7 +55,6 @@ private extension FindOutMoreCell {
     }
 }
 
-
 private extension FindOutMoreCell {
     enum Accessibility {
         static let findOutMoreButtonIdentifier = "AnnouncementsFindOutMoreButton"

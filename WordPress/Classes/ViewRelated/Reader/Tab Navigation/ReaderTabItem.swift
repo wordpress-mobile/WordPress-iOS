@@ -20,7 +20,6 @@ struct ReaderTabItem: FilterTabBarItem {
     }
 }
 
-
 // MARK: - Localized titles
 extension ReaderTabItem {
 
@@ -52,7 +51,6 @@ extension ReaderTabItem {
     }
 }
 
-
 // MARK: - Reader Content
 enum ReaderContentType {
     case selfHostedFollowing
@@ -60,7 +58,6 @@ enum ReaderContentType {
     case saved
     case topic
 }
-
 
 struct ReaderContent {
 

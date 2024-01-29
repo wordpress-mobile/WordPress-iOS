@@ -1,9 +1,7 @@
 import Foundation
 import Starscream
 
-
 // MARK: Client
-
 
 /// The delegate of a PinghubClient must adopt the PinghubClientDelegate
 /// protocol. The client will inform the delegate of any relevant events.
@@ -26,7 +24,6 @@ public protocol PinghubClientDelegate: AnyObject {
     ///
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected)
 }
-
 
 /// Encapsulates a PingHub connection.
 ///
@@ -139,12 +136,7 @@ public class PinghubClient {
     internal static let endpoint = URL(string: "https://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
 
-
-
-
-
 // MARK: - Debug
-
 
 #if DEBUG
 extension PinghubClient {
@@ -165,11 +157,7 @@ extension PinghubClient {
 }
 #endif
 
-
-
-
 // MARK: - Action
-
 
 extension PinghubClient {
     /// An action received through the PingHub protocol.
@@ -216,11 +204,7 @@ extension PinghubClient {
     }
 }
 
-
-
-
 // MARK: - Socket
-
 
 internal protocol Socket: AnyObject {
     func connect()
@@ -231,11 +215,7 @@ internal protocol Socket: AnyObject {
     var onData: ((Data) -> Void)? { get set }
 }
 
-
-
-
 // MARK: - Starscream
-
 
 private func starscreamSocket(url: URL, token: String) -> Socket {
     var request = URLRequest(url: PinghubClient.endpoint)

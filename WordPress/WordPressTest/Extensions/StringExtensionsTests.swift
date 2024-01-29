@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-
 class StringExtensionsTests: XCTestCase {
     // Note:
     // Specially extra aligned for my RWC friends. With love.
@@ -12,7 +11,6 @@ class StringExtensionsTests: XCTestCase {
 
     fileprivate let text    = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
     fileprivate let anchor  = "<a href=\"%@\">%@</a>"
-
 
     func testLinkifyingPlainLinks() {
         var count = 0

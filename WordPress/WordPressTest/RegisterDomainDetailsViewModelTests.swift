@@ -31,7 +31,6 @@ extension JetpackSiteRef {
         }
         """ as NSString
 
-
         return try! JSONDecoder().decode(JetpackSiteRef.self, from: payload.data(using: 8)!)
     }
 }

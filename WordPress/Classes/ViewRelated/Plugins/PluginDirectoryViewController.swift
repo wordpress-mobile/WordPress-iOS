@@ -101,7 +101,6 @@ class PluginDirectoryViewController: UITableViewController {
     }
 }
 
-
 extension PluginDirectoryViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return tableViewModel.sections.count

@@ -112,7 +112,6 @@ extension URL {
         absoluteString.contains(".wp.com/i/emojis")
     }
 
-
     /// Handle the common link protocols.
     /// - tel: open a prompt to call the phone number
     /// - sms: compose new message in iMessage app
@@ -130,7 +129,6 @@ extension URL {
 
         return false
     }
-
 
     /// Does a quick test to see if 2 urls are equal to each other by
     /// using just the hosts and paths. This ignores any query items, or hashes

@@ -212,7 +212,6 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     @objc private func buttonDoneTapped() {
 
-
         let selection = (selection.array as! [String]).compactMap { assets[$0] }
         delegate?.externalMediaPickerViewController(self, didFinishWithSelection: selection)
     }

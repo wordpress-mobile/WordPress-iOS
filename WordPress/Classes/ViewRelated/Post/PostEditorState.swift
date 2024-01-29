@@ -411,7 +411,6 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction?.publishActionAnalyticsStat
     }
 
-
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {

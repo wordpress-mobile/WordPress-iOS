@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 // MARK: - NoteBlockTextTableViewCell
 //
 class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate {
@@ -91,7 +90,6 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             return textView.isUserInteractionEnabled
         }
     }
-
 
     // MARK: - View Methods
 

@@ -140,7 +140,6 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         return remoteTopics
     }
 
-
     // MARK: Tests
 
     /**

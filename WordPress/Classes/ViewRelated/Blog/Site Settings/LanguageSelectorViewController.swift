@@ -10,7 +10,6 @@ protocol LanguageSelectorDelegate: AnyObject {
     func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int)
 }
 
-
 /// Displays a searchable list of languages supported by WordPress.com, letting the user select one.
 ///
 class LanguageSelectorViewController: UITableViewController, UISearchResultsUpdating {

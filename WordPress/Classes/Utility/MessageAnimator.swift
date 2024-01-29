@@ -26,7 +26,6 @@ class MessageAnimator: Animator {
         static let labelFont           = WPStyleGuide.regularTextFont()
     }
 
-
     // MARK: - Private properties
     fileprivate var previousHeight: CGFloat = 0
     fileprivate var message: String? {
@@ -37,7 +36,6 @@ class MessageAnimator: Animator {
             noticeLabel.label.text = newValue
         }
     }
-
 
     // MARK: - Private Immutable Properties
     fileprivate let targetView: UIView
@@ -52,7 +50,6 @@ class MessageAnimator: Animator {
         return label
     }()
 
-
     // MARK: - Private Computed Properties
     fileprivate var shouldDisplayMessage: Bool {
         return message != nil
@@ -61,15 +58,11 @@ class MessageAnimator: Animator {
         return targetView as? UITableView
     }
 
-
-
     // MARK: - Initializers
     @objc init(target: UIView) {
         targetView = target
         super.init()
     }
-
-
 
     // MARK: - Public Methods
     @objc func layout() {
@@ -87,8 +80,6 @@ class MessageAnimator: Animator {
             animateWithDuration(Defaults.animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
         }
     }
-
-
 
     // MARK: - Animation Methods
     fileprivate func preamble() {
@@ -136,8 +127,6 @@ class MessageAnimator: Animator {
             previousHeight = CGSize.zero.height
         }
     }
-
-
 
     // MARK: - Helpers
     fileprivate func heightForMessage(_ message: String?) -> CGFloat {

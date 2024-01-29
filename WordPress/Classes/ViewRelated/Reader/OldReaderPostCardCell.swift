@@ -2,6 +2,7 @@ import AutomatticTracks
 import Foundation
 import WordPressShared
 import Gridicons
+import WordPressUI
 
 protocol ReaderTopicsChipsDelegate: AnyObject {
     func didSelect(topic: String)
@@ -932,7 +933,6 @@ private extension OldReaderPostCardCell {
         return contentProvider?.dateForDisplay()?.toMediumString() ?? ""
     }
 }
-
 
 /// Extension providing getters to some private outlets, for testability
 extension OldReaderPostCardCell {

@@ -10,7 +10,6 @@ class CircularImageButton: UIButton {
         return view
     }()
 
-
     /// Sets a custom circular background color below the imageView, different from the button background or tint color
     /// - Parameters:
     ///   - color: the custom background color

@@ -34,7 +34,6 @@ final class JetpackNativeConnectionService: NSObject {
         static let getJetpackUserData = "jetpack/v4/connection/data"
     }
 
-
     /// Fetches Jetpack Connection URL that can be used to start Jetpack plugin connection process using Jetpack REST API
     /// https://github.com/Automattic/jetpack/blob/trunk/docs/rest-api.md#get-wp-jsonjetpackv4connectionurl
     ///

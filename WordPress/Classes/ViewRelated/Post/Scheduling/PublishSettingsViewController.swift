@@ -194,7 +194,6 @@ private struct DateAndTimeRow: ImmuTableRow {
             footerText = nil
         }
 
-
         return ImmuTable(sections: [
             ImmuTableSection(rows: rows, footerText: footerText)
         ])

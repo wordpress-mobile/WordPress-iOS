@@ -63,7 +63,6 @@ import Gridicons
         return bannerView
     }()
 
-
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -84,9 +83,7 @@ import Gridicons
         return controller
     }
 
-
     // MARK: - State Restoration
-
 
     public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                       coder: NSCoder) -> UIViewController? {
@@ -104,14 +101,12 @@ import Gridicons
         return controller
     }
 
-
     open override func encodeRestorableState(with coder: NSCoder) {
         if let topic = streamController?.readerTopic {
             coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
     }
-
 
     // MARK: Lifecycle methods
 
@@ -122,11 +117,9 @@ import Gridicons
         return super.awakeAfter(using: aDecoder)
     }
 
-
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         streamController = segue.destination as? ReaderStreamViewController
     }
-
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +135,6 @@ import Gridicons
         configureSiteSearchViewController()
     }
 
-
     open override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
         if let _ = parent {
@@ -153,13 +145,11 @@ import Gridicons
         ReaderTopicService(coreDataStack: ContextManager.shared).deleteAllSearchTopics()
     }
 
-
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         bumpStats()
     }
-
 
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -171,9 +161,7 @@ import Gridicons
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-
     // MARK: - Analytics
-
 
     @objc func bumpStats() {
         if didBumpStats {
@@ -184,9 +172,7 @@ import Gridicons
         didBumpStats = true
     }
 
-
     // MARK: - Configuration
-
 
     private func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
@@ -233,7 +219,6 @@ import Gridicons
         view.addGestureRecognizer(backgroundTapRecognizer)
     }
 
-
     @objc func configureForRestoredTopic() {
         guard let topic = restoredSearchTopic else {
             return
@@ -266,11 +251,9 @@ import Gridicons
 
     // MARK: - Actions
 
-
     @objc func endSearch() {
         searchBar.resignFirstResponder()
     }
-
 
     /// Constructs a ReaderSearchTopic from the search phrase and sets the
     /// embedded stream to the topic.
@@ -323,7 +306,6 @@ import Gridicons
         siteSearchController?.searchQuery = query
     }
 
-
     @objc func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
         endSearch()
     }
@@ -342,7 +324,6 @@ import Gridicons
     }
 
     // MARK: - Autocomplete
-
 
     /// Display the search suggestions view
     ///
@@ -389,7 +370,6 @@ import Gridicons
         suggestionsController = controller
     }
 
-
     /// Remove the search suggestions view.
     ///
     @objc func dismissAutoCompleteView() {
@@ -403,7 +383,6 @@ import Gridicons
     }
 
 }
-
 
 extension ReaderSearchViewController: UIGestureRecognizerDelegate {
 
@@ -423,7 +402,6 @@ extension ReaderSearchViewController: UIGestureRecognizerDelegate {
     }
 }
 
-
 extension ReaderSearchViewController: UISearchBarDelegate {
 
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -431,13 +409,11 @@ extension ReaderSearchViewController: UISearchBarDelegate {
         suggestionsController?.phrase = searchText.trim()
     }
 
-
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         backgroundTapRecognizer.isEnabled = true
         // prepare autocomplete view
         presentAutoCompleteView()
     }
-
 
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         // remove auto complete view
@@ -445,18 +421,15 @@ extension ReaderSearchViewController: UISearchBarDelegate {
         backgroundTapRecognizer.isEnabled = false
     }
 
-
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         performSearch()
     }
-
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         endSearch()
     }
 
 }
-
 
 extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
 

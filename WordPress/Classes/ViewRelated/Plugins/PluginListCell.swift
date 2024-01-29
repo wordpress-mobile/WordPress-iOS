@@ -17,7 +17,6 @@ class PluginListCell: UITableViewCell {
 
             accessoryViewContainer.addSubview(view)
 
-
             view.trailingAnchor.constraint(equalTo: accessoryViewContainer.trailingAnchor).isActive = true
             view.bottomAnchor.constraint(equalTo: accessoryViewContainer.bottomAnchor).isActive = true
             view.leadingAnchor.constraint(greaterThanOrEqualTo: accessoryViewContainer.leadingAnchor).isActive = true

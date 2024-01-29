@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class NoteBlockButtonTableViewCell: NoteBlockTableViewCell {
 

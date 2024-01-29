@@ -1,6 +1,5 @@
 import UIKit
 import WordPressShared
-import WordPressUI
 import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {

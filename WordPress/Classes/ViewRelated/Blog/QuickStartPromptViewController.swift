@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 final class QuickStartPromptViewController: UIViewController {
 

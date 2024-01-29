@@ -320,7 +320,6 @@ import Foundation
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
-    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -1111,8 +1110,6 @@ import Foundation
             return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
-        case .appSettingsOptimizeImagesPopupTapped:
-            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:
@@ -1477,7 +1474,6 @@ import Foundation
             return "support_chatbot_ticket_failure"
         case .supportChatbotEnded:
             return "support_chatbot_ended"
-
 
         // Jetpack plugin connection to user's WP.com account
         case .jetpackPluginConnectUserAccountStarted:

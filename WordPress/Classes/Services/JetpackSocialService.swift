@@ -16,7 +16,6 @@ import CoreData
 
     // MARK: Methods
 
-
     /// Init method for Objective-C.
     ///
     @objc init(contextManager: ContextManager) {

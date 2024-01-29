@@ -1,0 +1,5 @@
+When you’re editing text blocks in the editor, your device’s keyboard will no longer disappear mid-edit. The editor will also scroll directly to a new block when you add it. Write away, friend.
+
+Miss logging in with your security keys? Not anymore – we’ve re-enabled security keys for two-factor authentication during login. The only one getting into your account is you.
+
+Finally, we tackled several rare (and not-so-rare) problems that were causing app crashes. These issues were mostly related to editing tags and categories, using duplicate tags, deleting posts, and editing deleted posts. All in a day’s work.

@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension Blog {
     /// Returns a string, meant for NSFetchedResultsController consumption. Allows us to
     /// group "Primary Blogs" in their own sections.

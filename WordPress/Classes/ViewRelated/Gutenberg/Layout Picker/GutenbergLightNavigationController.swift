@@ -30,7 +30,6 @@ class GutenbergLightNavigationController: UINavigationController {
                                                     NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
                                                    for: .disabled)
 
-
         setNeedsStatusBarAppearanceUpdate()
     }
 }

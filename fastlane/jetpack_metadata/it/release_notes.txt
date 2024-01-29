@@ -1,0 +1,9 @@
+Ora puoi ottenere un piano WordPress con un dominio gratuito nel pannello di amministrazione del dominio. Abbiamo inoltre migliorato la schermata dei domini del sito in modo da rendere ancora più semplice la gestione dei domini.
+
+Quando si modificano blocchi di testo nell'editor, la tastiera del dispositivo non scompare più durante la modifica. Inoltre, l'editor scorre direttamente su un nuovo blocco quando lo si aggiunge. Inizia a scrivere!
+
+Ti manca l'accesso con le chiavi di sicurezza? Sarai felice di sapere che abbiamo riattivato le chiavi di sicurezza per l'autenticazione a due fattori durante l'accesso. Nessun altro può accedere al tuo account.
+
+Abbiamo aggiornato i colori della schermata di accesso per adattarli a WordPress e a Jetpack. Dopo tutto, è il lavoro di squadra a fare la differenza.
+
+Infine, abbiamo corretto il codice e diversi problemi (rari e non) che causavano arresti anomali dell'app. Questi problemi riguardavano soprattutto la modifica di tag e categorie, l'uso di tag duplicati, l'eliminazione di articoli e la modifica di articoli cancellati. Tutto in una giornata lavorativa.

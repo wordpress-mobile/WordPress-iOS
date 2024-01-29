@@ -1,7 +1,6 @@
 import Foundation
 import WordPressKit
 
-
 private enum SubscriptionAction {
     case notifications(siteId: Int)
     case postsEmail(siteId: Int)
@@ -79,7 +78,6 @@ extension ReaderTopicService {
     }
 }
 
-
 extension ReaderTopicService {
     /// Toggle site notifications subscription for new post
     ///
@@ -109,7 +107,6 @@ extension ReaderTopicService {
         }
     }
 
-
     // MARK: Private methods
 
     private func toggleSiteNotifications(with siteId: Int, subscribe: Bool = false, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
@@ -136,7 +133,6 @@ extension ReaderTopicService {
         remoteAction(for: .notifications(siteId: siteId), subscribe, success, failureBlock)
     }
 }
-
 
 extension ReaderTopicService {
     /// Toggle site notifications subscription for new comments
@@ -170,7 +166,6 @@ extension ReaderTopicService {
         }
     }
 
-
     // MARK: Private methods
 
     private func togglePostComments(with siteId: Int, subscribe: Bool = false, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
@@ -197,7 +192,6 @@ extension ReaderTopicService {
         remoteAction(for: .comments(siteId: siteId), subscribe, success, failureBlock)
     }
 }
-
 
 extension ReaderTopicService {
     /// Toggle email site notifications subscription for new post
@@ -231,7 +225,6 @@ extension ReaderTopicService {
         }
     }
 
-
     /// Update email site notifications subscription frequency
     ///
     /// - Parameters:
@@ -258,7 +251,6 @@ extension ReaderTopicService {
             self.updatePostsEmail(with: siteId, frequency: frequency, in: context, successBlock, failureBlock)
         }
     }
-
 
     // MARK: Private methods
 

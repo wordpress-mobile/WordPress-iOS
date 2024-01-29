@@ -89,7 +89,6 @@ import WordPressKit
         }, completion: { onComplete?() }, on: .main)
     }
 
-
     /// Returns an array of all cached `PublicizeConnection` objects.
     ///
     /// - Parameters

@@ -3,7 +3,7 @@ import CoreData
 import Gridicons
 import SVProgressHUD
 import WordPressShared
-
+import WordPressUI
 
 ///
 ///
@@ -11,7 +11,6 @@ protocol NotificationsNavigationDataSource: AnyObject {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceding note: Notification) -> Notification?
 }
-
 
 // MARK: - Renders a given Notification entity, onscreen
 //
@@ -152,8 +151,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
-
-        Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -257,8 +254,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     }
 }
 
-
-
 // MARK: - State Restoration
 //
 extension NotificationDetailsViewController: UIViewControllerRestoration {
@@ -290,8 +285,6 @@ extension NotificationDetailsViewController: UIViewControllerRestoration {
         coder.encode(note.objectID.uriRepresentation(), forKey: Restoration.noteIdKey)
     }
 }
-
-
 
 // MARK: - UITableView Methods
 //
@@ -367,8 +360,6 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         }
     }
 }
-
-
 
 // MARK: - Setup Helpers
 //
@@ -513,8 +504,6 @@ extension NotificationDetailsViewController {
     }
 }
 
-
-
 // MARK: - Reply View Helpers
 //
 extension NotificationDetailsViewController {
@@ -572,8 +561,6 @@ private extension NotificationDetailsViewController {
         return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 }
-
-
 
 // MARK: - Layout Helpers
 //
@@ -633,8 +620,6 @@ private extension NotificationDetailsViewController {
         cell.refreshSeparators()
     }
 }
-
-
 
 // MARK: - UITableViewCell Subclass Setup
 //
@@ -915,8 +900,6 @@ private extension NotificationDetailsViewController {
     }
 }
 
-
-
 // MARK: - Notification Helpers
 //
 extension NotificationDetailsViewController {
@@ -945,8 +928,6 @@ extension NotificationDetailsViewController {
         }
     }
 }
-
-
 
 // MARK: - Resources
 //
@@ -981,7 +962,6 @@ private extension NotificationDetailsViewController {
 
 }
 
-
 // MARK: - Helpers
 //
 private extension NotificationDetailsViewController {
@@ -994,8 +974,6 @@ private extension NotificationDetailsViewController {
         return note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
     }
 }
-
-
 
 // MARK: - Media Download Helpers
 //
@@ -1035,8 +1013,6 @@ private extension NotificationDetailsViewController {
         return readableWidth > 0 ? readableWidth : view.frame.size.width
     }
 }
-
-
 
 // MARK: - Action Handlers
 //
@@ -1200,8 +1176,6 @@ private extension NotificationDetailsViewController {
     }
 }
 
-
-
 // MARK: - Editing Comments
 //
 private extension NotificationDetailsViewController {
@@ -1252,8 +1226,6 @@ private extension NotificationDetailsViewController {
     }
 }
 
-
-
 // MARK: - UITextViewDelegate
 //
 extension NotificationDetailsViewController: ReplyTextViewDelegate {
@@ -1294,8 +1266,6 @@ extension NotificationDetailsViewController: UIScrollViewDelegate {
         keyboardManager?.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
     }
 }
-
-
 
 // MARK: - SuggestionsTableViewDelegate
 //
@@ -1390,7 +1360,6 @@ extension NotificationDetailsViewController {
         return dataSource?.notification(succeeding: note) != nil
     }
 }
-
 
 // MARK: - LikesListController Delegate
 //

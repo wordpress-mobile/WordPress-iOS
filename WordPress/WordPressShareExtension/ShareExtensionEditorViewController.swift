@@ -495,7 +495,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
         headerButton.alternativeIcons = alternativeIcons
 
-
         let listButton = makeToolbarButton(identifier: .unorderedlist)
         var listIcons = [String: UIImage]()
         for list in Constants.lists {
@@ -652,7 +651,6 @@ extension ShareExtensionEditorViewController {
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
-
     func listTypeForSelectedText() -> TextList.Style? {
         var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
@@ -728,7 +726,6 @@ extension ShareExtensionEditorViewController {
             textField.spellCheckingType = .default
             textField.text = title
         })
-
 
         // Action: Insert
         let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in

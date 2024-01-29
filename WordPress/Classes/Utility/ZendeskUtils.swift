@@ -520,8 +520,6 @@ private extension ZendeskUtils {
         }
     }
 
-
-
     // MARK: - View
 
     static func showZendeskView(_ zendeskView: UIViewController) {
@@ -734,8 +732,6 @@ private extension ZendeskUtils {
             tags.append(Constants.wpComTag)
         }
 
-
-
         // Add gutenbergIsDefault tag
         if let blog = Blog.lastUsed(in: context) {
             if blog.isGutenbergEnabled {
@@ -787,7 +783,6 @@ private extension ZendeskUtils {
         let properties = ["source": sourceTag.origin ?? sourceTag.name]
         WPAnalytics.track(event, withProperties: properties)
     }
-
 
     // MARK: - Push Notification Helpers
 
@@ -1113,7 +1108,6 @@ private extension ZendeskUtils {
             self.supportName = supportName
         }
     }
-
 
     // MARK: - Constants
 

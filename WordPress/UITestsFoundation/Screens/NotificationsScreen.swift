@@ -117,7 +117,6 @@ public class NotificationsScreen: ScreenObject {
         return (self, totalLikes)
     }
 
-
     public func likeComment() -> Self {
         let isCommentOnTextDisplayed = app.staticTexts["Comment on"].firstMatch.waitForExistence(timeout: 5)
 

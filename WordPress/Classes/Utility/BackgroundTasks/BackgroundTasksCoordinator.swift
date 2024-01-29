@@ -186,7 +186,6 @@ class BackgroundTasksCoordinator {
         return bgProcessingTaskRequest
     }
 
-
     // MARK: - Querying Data
 
     func getScheduledExecutionDate(taskIdentifier: String, completion: @escaping (Date?) -> Void) {

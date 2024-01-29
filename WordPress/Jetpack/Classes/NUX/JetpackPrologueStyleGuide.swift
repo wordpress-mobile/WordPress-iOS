@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 struct JetpackPrologueStyleGuide {
     // Background color
     static let backgroundColor = UIColor.clear
@@ -17,7 +16,6 @@ struct JetpackPrologueStyleGuide {
     static let continueHighlightedFillColor = continueFillColor.withAlphaComponent(0.9)
     static let continueTextColor = UIColor.white
     static let continueHighlightedTextColor = whiteWithAlpha07
-
 
     // Enter your site address button
     static let siteFillColor = UIColor.clear

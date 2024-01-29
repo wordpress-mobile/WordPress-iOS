@@ -1,6 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-
+import WordPressUI
 
 // MARK: - NoteBlockHeaderTableViewCell
 //
@@ -51,7 +51,6 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
             return headerDetailsLabel.attributedText
         }
     }
-
 
     // MARK: - Public Methods
 

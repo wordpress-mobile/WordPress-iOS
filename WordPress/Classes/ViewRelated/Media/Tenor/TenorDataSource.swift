@@ -69,6 +69,7 @@ extension TenorDataSource: TenorDataLoaderDelegate {
         } else {
             self.assets += media
         }
+        self.assets = self.assets.deduplicated(by: \.id)
         onUpdatedAssets?()
     }
 }

@@ -3,7 +3,6 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-
 // MARK: - NotificationSyncMediatorTests
 //
 class NotificationSyncMediatorTests: CoreDataTestCase {
@@ -20,7 +19,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
     ///
     fileprivate let timeout = TimeInterval(3)
 
-
     // MARK: - Overriden Methods
 
     override func setUp() {
@@ -35,7 +33,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         HTTPStubs.removeAllStubs()
     }
-
 
     /// Verifies that NotificationsSyncMediator effectively inserts a single Notification when *sync* is called.
     /// Normally it'd insert 100, but... that's how our Testing Data looks like!
@@ -60,7 +57,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         wait(for: [expect], timeout: timeout)
     }
-
 
     /// Verifies that the Sync call, when called repeatedly, won't duplicate our local dataset.
     ///
@@ -100,7 +96,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 //        waitForExpectations(timeout: timeout, handler: nil)
 //    }
 
-
     /// Verifies that RefreshNotification withID effectively loads a single Notification from the remote endpoint.
     ///
     func testSyncNoteEffectivelyReturnsASingleNotification() {
@@ -124,7 +119,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         wait(for: [expect], timeout: timeout)
     }
-
 
     /// Verifies that Mark as Read effectively toggles a Notification's read flag
     ///
@@ -230,7 +224,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         wait(for: [contextSaved, expect], timeout: timeout)
     }
-
 
     /// Verifies that updateLastSeen method effectively calls the callback with successfull flag
     ///

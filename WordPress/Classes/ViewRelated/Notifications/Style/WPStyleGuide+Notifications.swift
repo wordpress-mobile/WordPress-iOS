@@ -262,7 +262,6 @@ extension WPStyleGuide {
             button.accessibilityHint = NSLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
         }
 
-
         // MARK: - Constants
         //
 
@@ -272,7 +271,6 @@ extension WPStyleGuide {
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
         public static let contentBlockLineSize      = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
-
 
         // MARK: - Private Propreties
         //

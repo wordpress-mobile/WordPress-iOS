@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 import Gridicons
 import WordPressKit
 

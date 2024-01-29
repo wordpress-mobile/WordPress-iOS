@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// Renders a table with the following structure:
 ///     Section | Row   ContentView
 ///     0           1   [Text]  [Switch]    < Shows / Hides Section 1
@@ -42,8 +41,6 @@ open class SettingsPickerViewController: UITableViewController {
     /// Closure to be executed whenever the Switch / Picker is updated
     @objc open var onChange: ((_ enabled: Bool, _ newValue: Int) -> ())?
 
-
-
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
         assert(selectionText     != nil)
@@ -55,16 +52,12 @@ open class SettingsPickerViewController: UITableViewController {
         setupTableView()
     }
 
-
-
     // MARK: - Setup Helpers
     fileprivate func setupTableView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.estimatedRowHeight = estimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
     }
-
-
 
     // MARK: - UITableViewDataSoutce Methods
     open override func numberOfSections(in tableView: UITableView) -> Int {
@@ -101,7 +94,6 @@ open class SettingsPickerViewController: UITableViewController {
     open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
-
 
     // MARK: - Cell Setup Helpers
     fileprivate func rowAtIndexPath(_ indexPath: IndexPath) -> Row {
@@ -153,8 +145,6 @@ open class SettingsPickerViewController: UITableViewController {
         }
     }
 
-
-
     // MARK: - Button Handlers Properties
     fileprivate func switchDidChange(_ newValue: Bool) {
         switchOn = newValue
@@ -183,8 +173,6 @@ open class SettingsPickerViewController: UITableViewController {
         // Hit the Callback
         onChange?(switchOn, pickerSelectedValue)
     }
-
-
 
     // MARK: - Nested Enums
     fileprivate enum Row: String {

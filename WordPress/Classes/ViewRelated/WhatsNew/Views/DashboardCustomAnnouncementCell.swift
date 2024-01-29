@@ -41,13 +41,11 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
         return stackView
     }()
 
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToSafeArea(mainStackView, insets: Appearance.mainStackViewInsets)
-
 
         NSLayoutConstraint.activate([
             imageBackgroundView.heightAnchor.constraint(equalToConstant: Appearance.announcementImageHeight),
@@ -86,7 +84,6 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     }
 }
 
-
 // MARK: Helpers
 private extension DashboardCustomAnnouncementCell {
 
@@ -102,7 +99,6 @@ private extension DashboardCustomAnnouncementCell {
         return label
     }
 }
-
 
 // MARK: - Appearance
 private extension DashboardCustomAnnouncementCell {

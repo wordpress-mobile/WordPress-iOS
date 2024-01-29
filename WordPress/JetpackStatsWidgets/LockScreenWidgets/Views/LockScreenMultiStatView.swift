@@ -39,7 +39,6 @@ struct LockScreenMultiStatView: View {
         }
     }
 
-
     /// Calculates value font size based on the longest value between two fields
     ///
     /// There's no trivial way to synchronize font sizes between two fields

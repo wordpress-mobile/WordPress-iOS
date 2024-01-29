@@ -3,8 +3,6 @@ import UIKit
 import WordPressShared
 import SVProgressHUD
 
-
-
 /// Allows the user to Invite Followers / Users
 ///
 class InvitePersonViewController: UITableViewController {
@@ -204,7 +202,6 @@ class InvitePersonViewController: UITableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
     }
 
-
     // MARK: - UITableView Methods
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -363,7 +360,6 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
-
     // MARK: - Private Enums
 
     private enum SegueIdentifier: String {
@@ -406,7 +402,6 @@ class InvitePersonViewController: UITableViewController {
     }
 
 }
-
 
 // MARK: - Helpers: Actions
 //
@@ -496,7 +491,6 @@ extension InvitePersonViewController {
         present(navController, animated: true)
     }
 }
-
 
 // MARK: - Helpers: Validation
 //
@@ -843,7 +837,6 @@ private extension InvitePersonViewController {
         role = lastRole
     }
 }
-
 
 // MARK: - Private Helpers: Refreshing Interface
 //

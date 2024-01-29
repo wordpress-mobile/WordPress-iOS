@@ -1,6 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-
+import WordPressUI
 
 // MARK: - NoteBlockCommentTableViewCell Renders a Comment Block Onscreen
 //
@@ -96,8 +96,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         }
     }
 
-
-
     // MARK: - Public Methods
 
     @objc func downloadGravatarWithURL(_ url: URL?) {
@@ -115,7 +113,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
     }
 
-
     // MARK: - View Methods
 
     override func awakeFromNib() {
@@ -130,8 +127,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         detailsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(detailsWasPressed)))
         detailsLabel.longPressAction = { [weak self] in self?.onTimeStampLongPress?() }
     }
-
-
 
     // MARK: - Approval Color Helpers
 

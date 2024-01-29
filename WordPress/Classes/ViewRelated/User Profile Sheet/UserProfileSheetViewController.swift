@@ -1,3 +1,5 @@
+import WordPressUI
+
 class UserProfileSheetViewController: UITableViewController {
 
     // MARK: - Properties

@@ -15,7 +15,7 @@ struct Environment {
     let contextManager: CoreDataStack
 
     /// The base url to use for WP.com api requests
-    let wordPressComApiBase: String
+    let wordPressComApiBase: URL
 
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
@@ -34,7 +34,7 @@ struct Environment {
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
         contextManager: CoreDataStack = ContextManager.shared,
-        wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
+        wordPressComApiBase: URL = WordPressComRestApi.apiBaseURL) {
 
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
@@ -49,7 +49,7 @@ extension Environment {
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
         contextManager: CoreDataStack = Environment.current.contextManager,
-        wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
+        wordPressComApiBase: URL = Environment.current.wordPressComApiBase) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
