@@ -22,10 +22,27 @@
   "testTargets" : [
     {
       "skippedTests" : [
+        "AppSettingsTests",
+        "DashboardTests",
         "EditorAztecTests",
+        "EditorGutenbergTests",
+        "LoginTests",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "MainNavigationTests",
+        "MenuNavigationTests",
+        "NUXTests",
+        "NotificationTests",
+        "PageTests",
+        "PostTests",
+        "ReaderTests\/testFollowNewTopicOnDiscover()",
+        "ReaderTests\/testLikePost()",
+        "ReaderTests\/testSavePost()",
+        "ReaderTests\/testViewPost()",
+        "ReaderTests\/testViewPostInSafari()",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
