@@ -3,20 +3,29 @@ final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: Asy
 
     private weak var service: StatsServiceRemoteV2?
     private let period: StatsPeriodUnit
+    private let unit: StatsPeriodUnit?
     private let date: Date
     private let limit: Int
     private var completion: StatsPeriodCompletion
 
-    init(service: StatsServiceRemoteV2, for period: StatsPeriodUnit, date: Date, limit: Int = 10, completion: @escaping StatsPeriodCompletion) {
+    init(
+        service: StatsServiceRemoteV2,
+        for period: StatsPeriodUnit,
+        unit: StatsPeriodUnit? = nil,
+        date: Date,
+        limit: Int = 10,
+        completion: @escaping StatsPeriodCompletion
+    ) {
         self.service = service
         self.period = period
+        self.unit = unit
         self.date = date
         self.limit = limit
         self.completion = completion
     }
 
     override func main() {
-        service?.getData(for: period, endingOn: date, limit: limit) { [unowned self] (type: TimeStatsType?, error: Error?) in
+        service?.getData(for: period, unit: unit, endingOn: date, limit: limit) { [unowned self] (type: TimeStatsType?, error: Error?) in
             if self.isCancelled {
                 self.state = .isFinished
                 return

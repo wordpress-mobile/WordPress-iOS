@@ -28,11 +28,13 @@ class StatsPeriodAsyncOperationTests: XCTestCase {
 private extension StatsPeriodAsyncOperationTests {
     class MockStatsServiceRemoteV2: StatsServiceRemoteV2 {
         override func getData<TimeStatsType: StatsTimeIntervalData>(for period: StatsPeriodUnit,
+                                                                    unit: StatsPeriodUnit?,
                                                                     endingOn: Date,
                                                                     limit: Int = 10,
                                                                     completion: @escaping ((TimeStatsType?, Error?) -> Void)) {
             let mockType = TimeStatsType(date: endingOn,
                                          period: period,
+                                         unit: unit,
                                          jsonDictionary: [:])
             completion(mockType, nil)
         }
@@ -47,7 +49,7 @@ private extension StatsPeriodAsyncOperationTests {
         var periodEndDate: Date
         var jsonDictionary: [String: AnyObject]
 
-        init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
+        init?(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit?, jsonDictionary: [String: AnyObject]) {
             self.periodEndDate = date
             self.period = period
             self.jsonDictionary = jsonDictionary
