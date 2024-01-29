@@ -43,4 +43,34 @@ final class NotificationsViewModel {
     func didChangeDefaultAccount() {
         lastSeenTime = nil
     }
+
+    func loadNotification(
+        near note: Notification,
+        allNotifications: [Notification],
+        withIndexDelta delta: Int
+    ) -> Notification? {
+        guard let noteIndex = allNotifications.firstIndex(of: note) else {
+            return nil
+        }
+
+        let targetIndex = noteIndex + delta
+        guard targetIndex >= 0 && targetIndex < allNotifications.count else {
+            return nil
+        }
+
+        func notMatcher(_ note: Notification) -> Bool {
+            return note.kind != .matcher
+        }
+
+        if delta > 0 {
+            return allNotifications
+                .suffix(from: targetIndex)
+                .first(where: notMatcher)
+        } else {
+            return allNotifications
+                .prefix(through: targetIndex)
+                .reversed()
+                .first(where: notMatcher)
+        }
+    }
 }

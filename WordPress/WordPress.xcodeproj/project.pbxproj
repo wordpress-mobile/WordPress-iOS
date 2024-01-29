@@ -10005,6 +10005,15 @@
 			path = "Feature Highlight";
 			sourceTree = "<group>";
 		};
+		082EA3D82B4DDF6800E7F361 /* NotificationsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */,
+				083683DC2B4859BB00331ED0 /* NotificationsViewModel.swift */,
+			);
+			path = NotificationsViewController;
+			sourceTree = "<group>";
+		};
 		0830538A2B272F9C00B889FE /* Dynamic */ = {
 			isa = PBXGroup;
 			children = (
@@ -15701,6 +15710,7 @@
 		B5FD453E199D0F2800286FBB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				082EA3D82B4DDF6800E7F361 /* NotificationsViewController */,
 				98E14A3B27C9712D007B0896 /* NotificationCommentDetailViewController.swift */,
 				7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */,
 				B5120B371D47CC6C0059361A /* NotificationDetailsViewController.swift */,
@@ -15708,8 +15718,6 @@
 				B52F8CD71B43260C00D36025 /* NotificationSettingStreamsViewController.swift */,
 				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
 				9F8E38BD209C6DE200454E3C /* NotificationSiteSubscriptionViewController.swift */,
-				B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */,
-				083683DC2B4859BB00331ED0 /* NotificationsViewModel.swift */,
 				4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */,
 				8236EB4F2024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift */,
 				4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */,
