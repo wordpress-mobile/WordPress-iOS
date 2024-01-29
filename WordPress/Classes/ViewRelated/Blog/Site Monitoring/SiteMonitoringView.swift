@@ -15,7 +15,7 @@ struct SiteMonitoringView: View {
     private var main: some View {
         switch viewModel.selectedTab {
         case .metrics:
-            WebView(url: viewModel.metricsURL!)
+            SiteMetricsView(blog: viewModel.blog)
         case .phpLogs:
             phpLogs
         case .webServerLogs:
@@ -78,16 +78,9 @@ final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView
 }
 
 final class SiteMonitoringViewModel: ObservableObject {
-    private let blog: Blog
+    let blog: Blog
 
     @Published var selectedTab: SiteMonitoringTab = .metrics
-
-    var metricsURL: URL? {
-        guard let siteID = blog.dotComID as? Int else {
-            return nil
-        }
-        return URL(string: "https://wordpress.com/site-monitoring/\(siteID)")
-    }
 
     init(blog: Blog, selectedTab: SiteMonitoringTab? = nil) {
         self.blog = blog
