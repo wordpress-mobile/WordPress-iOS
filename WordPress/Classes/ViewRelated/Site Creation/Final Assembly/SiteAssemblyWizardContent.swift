@@ -314,19 +314,12 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 return
             }
             if AppConfiguration.isWordPress && Blog.count(in: ContextManager.sharedInstance().mainContext) == 1 {
-                let viewModel = JetpackFullscreenOverlayGeneralViewModel(
-                    phase: .four,
-                    source: .phaseFourOverlay,
-                    blog: blog,
-                    coordinator: JetpackDefaultOverlayCoordinator()
-                )
-                let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
-                let navigationViewController = UINavigationController(rootViewController: overlayViewController)
-                JetpackFeaturesRemovalCoordinator.presentOverlay(
-                    navigationViewController: navigationViewController,
-                    in: RootViewCoordinator.sharedPresenter.rootViewController
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+                    in: RootViewCoordinator.sharedPresenter.rootViewController,
+                    source: .login
                 )
             }
+            
             let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
             self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
