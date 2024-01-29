@@ -96,14 +96,6 @@ public class BlockEditorScreen: ScreenObject {
         $0.staticTexts["You have unsaved changes."]
     }
 
-    private let leaveOnImageOptimizationButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Yes, leave on"]
-    }
-
-    private let turnOffImageOptimizationButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["No, turn off"]
-    }
-
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
     var chooseFromDeviceButton: XCUIElement { chooseFromDeviceButtonGetter(app) }
     var closeButton: XCUIElement { closeButtonGetter(app) }
@@ -127,8 +119,6 @@ public class BlockEditorScreen: ScreenObject {
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
     var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
-    var leaveOnImageOptimizationButton: XCUIElement { leaveOnImageOptimizationButtonGetter(app) }
-    var turnOffImageOptimizationButton: XCUIElement { turnOffImageOptimizationButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
@@ -197,30 +187,8 @@ public class BlockEditorScreen: ScreenObject {
     public func addImageGallery() throws -> BlockEditorScreen {
         addBlock("Gallery block")
         try addMultipleImages(numberOfImages: 3)
-        try dismissImageOptimizationPopupIfNeeded()
 
         return self
-    }
-
-    /**
-     Chooses the option of Optimize Images popup.
-     */
-    @discardableResult
-    public func chooseOptimizeImages(option: Bool) throws -> BlockEditorScreen {
-        if option {
-            leaveOnImageOptimizationButton.tap()
-        }
-        else {
-            turnOffImageOptimizationButton.tap()
-        }
-
-        return self
-    }
-
-    public func dismissImageOptimizationPopupIfNeeded() throws {
-        if leaveOnImageOptimizationButton.waitForIsHittable() {
-            try chooseOptimizeImages(option: true)
-        }
     }
 
     public func addVideoFromUrl(urlPath: String) -> Self {
@@ -462,7 +430,6 @@ public class BlockEditorScreen: ScreenObject {
     private func addMultipleImages(numberOfImages: Int) throws {
         try chooseFromDevice()
             .selectMultipleImages(numberOfImages)
-        try dismissImageOptimizationPopupIfNeeded()
     }
 
     private func chooseFromDevice() throws -> PHPickerScreen {

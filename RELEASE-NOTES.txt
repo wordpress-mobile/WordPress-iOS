@@ -1,6 +1,9 @@
 24.2
 -----
 
+24.0.1
+-----
+* [**] Fix crash when RichText values are not defined [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6563]
 
 24.1
 -----
@@ -19,6 +22,8 @@
 * [*] [internal] Drop iOS 14 Support: Remove deprecated UIDocumentPickerViewController API [#22286]
 * [***] [internal] Refactor WP.com sign in API requests [#22421]
 * [*] Add In-App Feedback Prompt. [#22050]
+* [**] Disabled the ability of creating new Story posts. [#22453]
+* [**] Disabled Story block [#22449]
 
 24.0
 -----

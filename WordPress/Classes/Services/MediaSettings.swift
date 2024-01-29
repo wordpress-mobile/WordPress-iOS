@@ -8,7 +8,6 @@ class MediaSettings: NSObject {
     fileprivate let imageQualityKey = "SavedImageQualitySetting"
     fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
     fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
-    fileprivate let advertiseImageOptimizationKey = "SavedAdvertiseImageOptimization"
 
     fileprivate let defaultImageOptimization = true
     fileprivate let defaultMaxImageDimension = 2000
@@ -209,11 +208,6 @@ class MediaSettings: NSObject {
         }
         set {
             database.set(newValue, forKey: imageOptimizationKey)
-
-            // If the user changes this setting manually, we disable the image optimization popup.
-            if advertiseImageOptimization {
-                advertiseImageOptimization = false
-            }
         }
     }
 
@@ -227,19 +221,6 @@ class MediaSettings: NSObject {
         }
         set {
             database.set(newValue.rawValue, forKey: imageQualityKey)
-        }
-    }
-
-    var advertiseImageOptimization: Bool {
-        get {
-            if let savedAdvertiseImageOptimization = database.object(forKey: advertiseImageOptimizationKey) as? Bool {
-                return savedAdvertiseImageOptimization
-            } else {
-                return true
-            }
-        }
-        set {
-            database.set(newValue, forKey: advertiseImageOptimizationKey)
         }
     }
 }
