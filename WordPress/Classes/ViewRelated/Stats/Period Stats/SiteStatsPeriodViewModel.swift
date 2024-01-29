@@ -65,9 +65,10 @@ class SiteStatsPeriodViewModel: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod))
+        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: unit(from: lastRequestedPeriod)))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                                                                                period: lastRequestedPeriod,
+                                                                               unit: unit(from: lastRequestedPeriod),
                                                                                forceRefresh: true))
     }
 
@@ -213,7 +214,7 @@ class SiteStatsPeriodViewModel: Observable {
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, unit: unit(from: period), forceRefresh: true))
     }
 
     // MARK: - Chart Date
@@ -645,7 +646,22 @@ private extension SiteStatsPeriodViewModel {
                                                                                              statSection: .periodFileDownloads) }
             ?? []
     }
+}
 
+private extension SiteStatsPeriodViewModel {
+    /// - Returns: `StatsPeriodUnit` granularity of period data we want to receive from API
+    private func unit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
+        switch period {
+        case .day:
+            return .day
+        case .week:
+            return .day
+        case .month:
+            return .week
+        case .year:
+            return .month
+        }
+    }
 }
 
 extension SiteStatsPeriodViewModel: AsyncBlocksLoadable {
