@@ -1,6 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 import Combine
+import WordPressUI
 
 private struct PrepublishingOption {
     let id: PrepublishingIdentifier

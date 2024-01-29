@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 extension ReaderStreamViewController {
     /// Show ghost card cells at the top of the tableView

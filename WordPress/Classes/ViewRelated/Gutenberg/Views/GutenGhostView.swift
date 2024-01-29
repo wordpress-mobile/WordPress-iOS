@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class GutenGhostView: UIView {
     override init(frame: CGRect) {

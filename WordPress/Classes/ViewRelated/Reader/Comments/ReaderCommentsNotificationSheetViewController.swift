@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressUI
 
 @objc public protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
     func didToggleNotificationSwitch(_ isOn: Bool, completion: @escaping (Bool) -> Void)

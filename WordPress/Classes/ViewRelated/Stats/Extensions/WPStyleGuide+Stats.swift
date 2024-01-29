@@ -44,7 +44,7 @@ extension WPStyleGuide {
         }
 
         static func configureViewAsSeparator(_ separatorView: UIView) {
-            separatorView.backgroundColor = AppConfiguration.statsRevampV2Enabled ? .clear : separatorColor
+            separatorView.backgroundColor = .clear
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
             separatorView.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         }

@@ -234,6 +234,10 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .plugins)
     }
 
+    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
+        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue])
+    }
+
     func showManagePlugins(for blog: Blog) {
         guard blog.supports(.pluginManagement) else {
             return
