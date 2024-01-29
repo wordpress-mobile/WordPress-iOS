@@ -18,13 +18,13 @@ enum PeriodType: CaseIterable {
 enum PeriodAction: Action {
 
     // Period overview
-    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
+    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool)
     case refreshPeriod(query: PeriodQuery)
     case toggleSpam(referrerDomain: String, currentValue: Bool)
 }
 
 enum PeriodQuery {
-    case allCachedPeriodData(date: Date, period: StatsPeriodUnit)
+    case allCachedPeriodData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
     case allPostsAndPages(date: Date, period: StatsPeriodUnit)
     case allSearchTerms(date: Date, period: StatsPeriodUnit)
     case allVideos(date: Date, period: StatsPeriodUnit)
@@ -47,7 +47,7 @@ enum PeriodQuery {
 
     var date: Date {
         switch self {
-        case .allCachedPeriodData(let date, _):
+        case .allCachedPeriodData(let date, _, _):
             return date
         case .allPostsAndPages(let date, _):
             return date
@@ -74,7 +74,7 @@ enum PeriodQuery {
 
     var period: StatsPeriodUnit {
         switch self {
-        case .allCachedPeriodData( _, let period):
+        case .allCachedPeriodData( _, let period, _):
             return period
         case .allPostsAndPages( _, let period):
             return period
@@ -174,8 +174,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
-            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
+        case .refreshPeriodOverviewData(let date, let period, let unit, let forceRefresh):
+            refreshPeriodOverviewData(date: date, period: period, unit: unit, forceRefresh: forceRefresh)
         case .refreshPeriod(let query):
             refreshPeriodData(for: query)
         case .toggleSpam(let referrerDomain, let currentValue):
@@ -227,8 +227,8 @@ private extension StatsPeriodStore {
 
     private func refreshPeriodData(for query: PeriodQuery) {
         switch query {
-        case .allCachedPeriodData:
-            loadFromCache(date: query.date, period: query.period)
+        case .allCachedPeriodData(let date, let period, let unit):
+            loadFromCache(date: date, period: period, unit: unit)
         case .allPostsAndPages:
             if shouldFetchPostsAndPages() {
                 fetchAllPostsAndPages(date: query.date, period: query.period)
@@ -274,14 +274,14 @@ private extension StatsPeriodStore {
 
     // Fetch Chart data first using the async operation
     //
-    private func fetchChartData(date: Date, period: StatsPeriodUnit) {
+    private func fetchChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
         guard let service = statsRemote() else {
             return
         }
 
         DDLogInfo("Stats Period: Cancel all operations")
 
-        let chartOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
             }
@@ -317,12 +317,12 @@ private extension StatsPeriodStore {
         }
     }
 
-    private func loadFromCache(date: Date, period: StatsPeriodUnit) {
+    private func loadFromCache(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
         func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record) -> T? {
-            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+            cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
             state.summary = getValue(.summary)
@@ -339,12 +339,12 @@ private extension StatsPeriodStore {
         DDLogInfo("Stats Period: Finished setting data to Period store from disk cache.")
     }
 
-    private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
+    private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool) {
         if forceRefresh {
             cancelQueries()
         }
 
-        loadFromCache(date: date, period: period)
+        loadFromCache(date: date, period: period, unit: unit)
 
         guard shouldFetchOverview() else {
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
@@ -353,7 +353,7 @@ private extension StatsPeriodStore {
 
         state.summaryStatus = .loading
         scheduler.debounce { [weak self] in
-            self?.fetchChartData(date: date, period: period)
+            self?.fetchChartData(date: date, period: period, unit: unit)
             self?.fetchAsyncData(date: date, period: period)
         }
     }
