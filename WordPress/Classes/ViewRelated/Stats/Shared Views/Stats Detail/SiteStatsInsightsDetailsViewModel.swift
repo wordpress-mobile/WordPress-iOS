@@ -530,9 +530,12 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit = .week, forceRefresh: Bool = false) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
-                period: period,
-                forceRefresh: forceRefresh))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(
+            date: date,
+            period: period,
+            unit: period,
+            forceRefresh: forceRefresh)
+        )
     }
 
     func refreshFollowers(forceRefresh: Bool = true) {
@@ -694,7 +697,7 @@ private extension SiteStatsInsightsDetailsViewModel {
         case .periodFileDownloads:
             return .allFileDownloads(date: selectedDate, period: selectedPeriod)
         case .insightsViewsVisitors, .insightsLikesTotals:
-            return .allCachedPeriodData(date: selectedDate, period: selectedPeriod)
+            return .allCachedPeriodData(date: selectedDate, period: selectedPeriod, unit: selectedPeriod)
         default:
             return nil
         }

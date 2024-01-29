@@ -62,7 +62,7 @@ class StatsRevampStoreTests: XCTestCase {
     func testViewsAndVisitorsStatusSuccessWhenAllStatusesAreErroredAndCachedDataExist() {
         var state = StatsRevampStoreState()
         state.summaryStatus = .error
-        state.summary = StatsSummaryTimeIntervalData(period: .day, periodEndDate: Date(), summaryData: [])
+        state.summary = StatsSummaryTimeIntervalData(period: .day, unit: .day, periodEndDate: Date(), summaryData: [])
         state.topReferrersStatus = .error
         state.topCountriesStatus = .error
         sut = StatsRevampStore(initialState: state, dispatcher: dispatcher)

@@ -184,7 +184,7 @@ private extension StatsRevampStore {
             return
         }
         func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, period: StatsPeriodUnit) -> T? {
-            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+            cache.getValue(record: record, date: date, period: period, unit: period, siteID: siteID)
         }
         transaction { state in
             state.summary = getValue(.summary, period: .day)
@@ -250,7 +250,7 @@ private extension StatsRevampStore {
             return
         }
         func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, period: StatsPeriodUnit) -> T? {
-            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+            cache.getValue(record: record, date: date, period: period, unit: period, siteID: siteID)
         }
         transaction { state in
             state.summary = getValue(.summary, period: .day)

@@ -66,9 +66,10 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod))
+        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: lastRequestedPeriod))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                                                                                period: lastRequestedPeriod,
+                                                                               unit: lastRequestedPeriod,
                                                                                forceRefresh: true))
     }
 
@@ -222,7 +223,7 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, unit: period, forceRefresh: true))
     }
 
     // MARK: - Chart Date
