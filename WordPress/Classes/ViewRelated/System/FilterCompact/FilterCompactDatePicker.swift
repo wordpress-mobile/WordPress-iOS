@@ -42,8 +42,7 @@ struct FilterCompactDatePicker: View {
                         .navigationBarTitleDisplayMode(.inline)
                     }
                 } else {
-                    picker
-                        .frame(width: 360)
+                    picker.frame(width: 360)
                 }
             }
         } label: { value in
@@ -66,7 +65,7 @@ struct FilterCompactDatePicker: View {
 private struct FilterCompactDatePickerCompatibilityView<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
 
     var body: some View {
         content()

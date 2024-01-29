@@ -550,6 +550,9 @@
 		0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
 		0CED20022B6809D600E6DD52 /* FilterCompactDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */; };
 		0CED20042B6809E200E6DD52 /* FilterCompactBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */; };
+		0CED20052B681EA400E6DD52 /* FilterCompactBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */; };
+		0CED20062B681EA700E6DD52 /* FilterCompactDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */; };
+		0CED20072B681EB100E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
 		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */; };
@@ -23996,6 +23999,7 @@
 				FABB21262602FC2C00C8785C /* UIViewController+ChildViewController.swift in Sources */,
 				FABB21272602FC2C00C8785C /* Media+Blog.swift in Sources */,
 				FABB21282602FC2C00C8785C /* MenuItemEditingHeaderView.m in Sources */,
+				0CED20072B681EB100E6DD52 /* FilterCompactButton.swift in Sources */,
 				3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */,
 				803BB984295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
 				FABB21292602FC2C00C8785C /* Routes+Banners.swift in Sources */,
@@ -24656,6 +24660,7 @@
 				FABB23052602FC2C00C8785C /* WPAnalyticsEvent.swift in Sources */,
 				FABB23062602FC2C00C8785C /* Coordinate.m in Sources */,
 				F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */,
+				0CED20052B681EA400E6DD52 /* FilterCompactBar.swift in Sources */,
 				0C896DE52A3A7C1F00D7D4E7 /* SiteVisibility+Extensions.swift in Sources */,
 				FABB23072602FC2C00C8785C /* SiteCreationRotatingMessageView.swift in Sources */,
 				FABB23082602FC2C00C8785C /* SignupUsernameViewController.swift in Sources */,
@@ -24994,6 +24999,7 @@
 				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				FABB24072602FC2C00C8785C /* LayoutPickerAnalyticsEvent.swift in Sources */,
+				0CED20062B681EA700E6DD52 /* FilterCompactDatePicker.swift in Sources */,
 				F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */,
 				FABB24082602FC2C00C8785C /* ActivityRange.swift in Sources */,
 				FABB24092602FC2C00C8785C /* DiffAbstractValue+Attributes.swift in Sources */,
