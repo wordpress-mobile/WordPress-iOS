@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 
+@available(iOS 16, *)
 struct SiteMonitoringView: View {
     @StateObject var viewModel: SiteMonitoringViewModel
 
@@ -38,16 +39,12 @@ struct SiteMonitoringView: View {
 
     @ViewBuilder
     private func addToolbarTitleMenu<T: View>(_ view: T) -> some View {
-        if #available(iOS 16, *) {
-            view.toolbarTitleMenu {
-                Picker("", selection: $viewModel.selectedTab) {
-                    ForEach(SiteMonitoringTab.allCases) { tab in
-                        Text(tab.title).tag(tab)
-                    }
-                }.pickerStyle(.inline)
-            }
-        } else {
-            view
+        view.toolbarTitleMenu {
+            Picker("", selection: $viewModel.selectedTab) {
+                ForEach(SiteMonitoringTab.allCases) { tab in
+                    Text(tab.title).tag(tab)
+                }
+            }.pickerStyle(.inline)
         }
     }
 }
@@ -68,6 +65,7 @@ enum SiteMonitoringTab: Int, CaseIterable, Identifiable {
     }
 }
 
+@available(iOS 16, *)
 final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView> {
 
     init(blog: Blog, selectedTab: SiteMonitoringTab? = nil) {
