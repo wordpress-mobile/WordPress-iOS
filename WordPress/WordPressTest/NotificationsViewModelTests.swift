@@ -61,6 +61,18 @@ final class NotificationsViewModelTests: CoreDataTestCase {
 
         XCTAssertNil(result)
     }
+
+    func testLoadNotificationsReturnsNilWhenArrayIsEmpty() {
+        let sut = NotificationsViewModel(userDefaults: sutUserDefaults)
+        let tempNotification = Notification()
+        let result = sut.loadNotification(
+            near: tempNotification,
+            allNotifications: [],
+            withIndexDelta: 0
+        )
+
+        XCTAssertNil(result)
+    }
 }
 
 final class MockNotificationSyncMediator: NotificationSyncMediatorProtocol {
