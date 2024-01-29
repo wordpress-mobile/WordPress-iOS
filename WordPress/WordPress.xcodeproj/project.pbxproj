@@ -547,6 +547,12 @@
 		0CE7833E2B08F3C300B114EB /* ExternalMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */; };
 		0CE783412B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
 		0CE783422B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
+		0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
+		0CED20022B6809D600E6DD52 /* FilterCompactDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */; };
+		0CED20042B6809E200E6DD52 /* FilterCompactBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */; };
+		0CED20052B681EA400E6DD52 /* FilterCompactBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */; };
+		0CED20062B681EA700E6DD52 /* FilterCompactDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */; };
+		0CED20072B681EB100E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
 		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */; };
@@ -6202,6 +6208,9 @@
 		0CE58A2C2B35C91900E87D1E /* SiteMediaPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPreviewViewController.swift; sourceTree = "<group>"; };
 		0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerCollectionCell.swift; sourceTree = "<group>"; };
+		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
+		0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactDatePicker.swift; sourceTree = "<group>"; };
+		0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactBar.swift; sourceTree = "<group>"; };
 		0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFeatureFlagsView.swift; sourceTree = "<group>"; };
 		0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostHelper.swift; sourceTree = "<group>"; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
@@ -10348,6 +10357,16 @@
 			path = External;
 			sourceTree = "<group>";
 		};
+		0CED1FFE2B6809C100E6DD52 /* FilterCompact */ = {
+			isa = PBXGroup;
+			children = (
+				0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */,
+				0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */,
+				0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */,
+			);
+			path = FilterCompact;
+			sourceTree = "<group>";
+		};
 		1705CEE6260A57F900F23763 /* ContentViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -13752,6 +13771,7 @@
 		8584FDB619243AC40019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				0CED1FFE2B6809C100E6DD52 /* FilterCompact */,
 				F5E032E22408D537003AF350 /* Action Sheet */,
 				F551E7F323F6EA1400751212 /* Floating Create Button */,
 				17A4A36A20EE551F0071C2CA /* Coordinators */,
@@ -21037,6 +21057,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F551E7F523F6EA3100751212 /* FloatingActionButton.swift in Sources */,
+				0CED20022B6809D600E6DD52 /* FilterCompactDatePicker.swift in Sources */,
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
@@ -21490,6 +21511,7 @@
 				73CB13972289BEFB00265F49 /* Charts+LargeValueFormatter.swift in Sources */,
 				F4FF50E92B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
+				0CED20042B6809E200E6DD52 /* FilterCompactBar.swift in Sources */,
 				084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */,
 				17B7C89E20EC1D0D0042E260 /* UniversalLinkRouter.swift in Sources */,
 				F59AAC16235EA46D00385EE6 /* LightNavigationController.swift in Sources */,
@@ -21531,6 +21553,7 @@
 				3F8B45A8292C1F2500730FA4 /* MigrationSuccessCardView.swift in Sources */,
 				DC772AF5282009BA00664C02 /* StatsLineChartView.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
+				0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */,
 				F16C35DA23F3F76C00C81331 /* PostAutoUploadMessageProvider.swift in Sources */,
@@ -23976,6 +23999,7 @@
 				FABB21262602FC2C00C8785C /* UIViewController+ChildViewController.swift in Sources */,
 				FABB21272602FC2C00C8785C /* Media+Blog.swift in Sources */,
 				FABB21282602FC2C00C8785C /* MenuItemEditingHeaderView.m in Sources */,
+				0CED20072B681EB100E6DD52 /* FilterCompactButton.swift in Sources */,
 				3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */,
 				803BB984295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
 				FABB21292602FC2C00C8785C /* Routes+Banners.swift in Sources */,
@@ -24636,6 +24660,7 @@
 				FABB23052602FC2C00C8785C /* WPAnalyticsEvent.swift in Sources */,
 				FABB23062602FC2C00C8785C /* Coordinate.m in Sources */,
 				F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */,
+				0CED20052B681EA400E6DD52 /* FilterCompactBar.swift in Sources */,
 				0C896DE52A3A7C1F00D7D4E7 /* SiteVisibility+Extensions.swift in Sources */,
 				FABB23072602FC2C00C8785C /* SiteCreationRotatingMessageView.swift in Sources */,
 				FABB23082602FC2C00C8785C /* SignupUsernameViewController.swift in Sources */,
@@ -24974,6 +24999,7 @@
 				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				FABB24072602FC2C00C8785C /* LayoutPickerAnalyticsEvent.swift in Sources */,
+				0CED20062B681EA700E6DD52 /* FilterCompactDatePicker.swift in Sources */,
 				F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */,
 				FABB24082602FC2C00C8785C /* ActivityRange.swift in Sources */,
 				FABB24092602FC2C00C8785C /* DiffAbstractValue+Attributes.swift in Sources */,
