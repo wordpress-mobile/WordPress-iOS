@@ -69,8 +69,9 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         if sectionID == Strings.otherBooleanUserDefaultsSectionID {
             persistentRepository.set(value, forKey: userDefaultID)
         } else if var section = allUserDefaultsSections[sectionID] {
-            section[sectionID] = BooleanUserDefault(title: userDefaultID, value: value)
-            persistentRepository.set(section, forKey: sectionID)
+            section[userDefaultID] = BooleanUserDefault(title: userDefaultID, value: value)
+            var sectionValues = section.mapValues { $0.value }
+            persistentRepository.set(sectionValues, forKey: sectionID)
         }
         load()
     }
