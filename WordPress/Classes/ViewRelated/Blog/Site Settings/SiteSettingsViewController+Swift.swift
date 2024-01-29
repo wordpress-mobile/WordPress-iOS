@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import WordPressFlux
+import SwiftUI
 
 // This is just a wrapper for the receipts, since Receipt isn't exposed to Obj-C
 @objc class TimeZoneObserver: NSObject {
