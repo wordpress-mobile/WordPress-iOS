@@ -553,6 +553,8 @@
 		0CED20052B681EA400E6DD52 /* FilterCompactBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */; };
 		0CED20062B681EA700E6DD52 /* FilterCompactDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */; };
 		0CED20072B681EB100E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
+		0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
+		0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */; };
@@ -6211,6 +6213,7 @@
 		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
 		0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactDatePicker.swift; sourceTree = "<group>"; };
 		0CED20032B6809E200E6DD52 /* FilterCompactBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactBar.swift; sourceTree = "<group>"; };
+		0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicSiteService.swift; sourceTree = "<group>"; };
 		0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFeatureFlagsView.swift; sourceTree = "<group>"; };
 		0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostHelper.swift; sourceTree = "<group>"; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
@@ -14204,6 +14207,7 @@
 				E6C0ED3A231DA23400A08B57 /* AccountService+MergeDuplicates.swift */,
 				E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */,
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
+				0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */,
 				F12FA5D82428FA8F0054DA21 /* AuthenticationService.swift */,
 				FA4BC0CF2996A589005EB077 /* BlazeService.swift */,
 				46F584812624DCC80010A723 /* BlockEditorSettingsService.swift */,
@@ -21822,6 +21826,7 @@
 				93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
 				018635842A8109DE00915532 /* SupportChatBotViewController.swift in Sources */,
+				0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
 				FE29EFCD29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
@@ -24542,6 +24547,7 @@
 				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
+				0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
 				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
 				FABB22BA2602FC2C00C8785C /* JetpackRemoteInstallViewController.swift in Sources */,
