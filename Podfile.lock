@@ -119,7 +119,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (~> 9.0)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `fdc1c342af0c32310f21ad41aacdcc88140ec66e`)
   - WordPressKit (~> 11.0)
   - WordPressShared (~> 2.3)
   - WordPressUI (~> 1.15)
@@ -128,7 +128,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
   trunk:
@@ -176,11 +175,17 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.111.2.podspec
+  WordPressAuthenticator:
+    :commit: fdc1c342af0c32310f21ad41aacdcc88140ec66e
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  WordPressAuthenticator:
+    :commit: fdc1c342af0c32310f21ad41aacdcc88140ec66e
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -212,7 +217,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: e3c18f1b63222742a565fea3faf1a55a144ce8c4
+  WordPressAuthenticator: 5a6c02f010a7c2c6a9ca17b15233b25f74b3ad33
   WordPressKit: 57712035a44595cf49b0c9f0ad5b8b899a8cbe6a
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
@@ -226,6 +231,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 9331d9b30992bbe14cbb7d537bbad3042f3ff457
+PODFILE CHECKSUM: 3afda8302f94e3466107b59740e519fc675052ea
 
 COCOAPODS: 1.14.2
