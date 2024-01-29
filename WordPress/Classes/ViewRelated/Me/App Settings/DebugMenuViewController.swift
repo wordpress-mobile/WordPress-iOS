@@ -31,9 +31,9 @@ struct DebugMenuView: View {
             DebugMenuRow(systemImage: "flag.fill", color: .pink, title: Strings.featureFlags)
         }
         NavigationLink() {
-            BinaryPreferencesDebugView()
+            BooleanUserDefaultsDebugView()
         } label: {
-            DebugMenuRow(systemImage: "server.rack", color: .gray, title: Strings.binaryPreferences)
+            DebugMenuRow(systemImage: "server.rack", color: .gray, title: Strings.booleanUserDefaults)
         }
     }
 
@@ -223,5 +223,5 @@ private enum Strings {
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
-    static let binaryPreferences = NSLocalizedString("debugMenu.binaryPreferences", value: "Binary Preferences", comment: "Binary Preferences debug menu item")
+    static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
 }

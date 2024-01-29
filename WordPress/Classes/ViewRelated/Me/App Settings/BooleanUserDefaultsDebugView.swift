@@ -1,10 +1,10 @@
 import SwiftUI
 
-typealias BinaryPreferenceSections = [String: BinaryPreferences]
-typealias BinaryPreferences = [String: Bool]
+typealias BooleanUserDefaultsSections = [String: BooleanUserDefaults]
+typealias BooleanUserDefaults = [String: Bool]
 
-struct BinaryPreferencesDebugView: View {
-    @StateObject private var viewModel = BinaryPreferencesDebugViewModel()
+struct BooleanUserDefaultsDebugView: View {
+    @StateObject private var viewModel = BooleanUserDefaultsDebugViewModel()
 
     var body: some View {
         List {
@@ -32,13 +32,13 @@ struct BinaryPreferencesDebugView: View {
     }
 }
 
-private final class BinaryPreferencesDebugViewModel: ObservableObject {
-    @Published private var allPreferenceSections = BinaryPreferenceSections()
+private final class BooleanUserDefaultsDebugViewModel: ObservableObject {
+    @Published private var allPreferenceSections = BooleanUserDefaultsSections()
     @Published var searchQuery: String = ""
 
     private var persistenceStore: UserPersistentRepository
 
-    var preferenceSections: BinaryPreferenceSections {
+    var preferenceSections: BooleanUserDefaultsSections {
         return if searchQuery.isEmpty {
             allPreferenceSections
         } else {
@@ -46,8 +46,8 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
         }
     }
 
-    private func filterPreferences(by query: String) -> BinaryPreferenceSections {
-        var filteredSections = BinaryPreferenceSections()
+    private func filterPreferences(by query: String) -> BooleanUserDefaultsSections {
+        var filteredSections = BooleanUserDefaultsSections()
         allPreferenceSections.forEach { sectionKey, preferences in
             let filteredPreferences = preferences.filter { preferenceKey, _ in
                 preferenceKey.localizedCaseInsensitiveContains(query)
@@ -65,14 +65,14 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
     }
 
     func load() {
-        let allPreferences = persistenceStore.dictionaryRepresentation()
-        var loadedPreferenceSections = BinaryPreferenceSections()
+        let allUserDefaults = persistenceStore.dictionaryRepresentation()
+        var loadedPreferenceSections = BooleanUserDefaultsSections()
 
-        allPreferences.forEach { entryKey, entryValue in
-            if let groupedPreferences = entryValue as? BinaryPreferences {
+        allUserDefaults.forEach { entryKey, entryValue in
+            if let groupedPreferences = entryValue as? BooleanUserDefaults {
                 loadedPreferenceSections[entryKey] = groupedPreferences
-            } else if let binaryPreference = entryValue as? Bool, !isSystemPreference(entryKey) {
-                loadedPreferenceSections[Strings.otherPreferencesSectionID, default: [:]][entryKey] = binaryPreference
+            } else if let booleanUserDefault = entryValue as? Bool, !isSystemPreference(entryKey) {
+                loadedPreferenceSections[Strings.otherBooleanUserDefaultsSectionID, default: [:]][entryKey] = booleanUserDefault
             }
         }
 
@@ -80,7 +80,7 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
     }
 
     func updatePreference(_ value: Bool, forSection sectionID: String, forPreference preferenceID: String) {
-        if sectionID == Strings.otherPreferencesSectionID {
+        if sectionID == Strings.otherBooleanUserDefaultsSectionID {
             persistenceStore.set(value, forKey: preferenceID)
         } else if var section = allPreferenceSections[sectionID] {
             section[preferenceID] = value
@@ -95,6 +95,6 @@ private final class BinaryPreferencesDebugViewModel: ObservableObject {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("debugMenu.binaryPreferences.title", value: "Binary Preferences", comment: "Binary Preferences Debug Menu screen title")
-    static let otherPreferencesSectionID = "Other"
+    static let title = NSLocalizedString("debugMenu.booleanUserDefaults.title", value: "Boolean User Defaults", comment: "Boolean User Defaults Debug Menu screen title")
+    static let otherBooleanUserDefaultsSectionID = "Other"
 }
