@@ -155,10 +155,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func selectTopic() -> Self {
-        let topicCell = topicCellButton.firstMatch
-        scrollDownUntilElementIsFullyVisible(element: topicCell)
-
-        topicCell.tap()
+        topicCellButton.firstMatch.tap()
 
         return self
     }
