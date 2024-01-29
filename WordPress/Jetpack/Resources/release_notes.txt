@@ -1,12 +1,11 @@
-You’ll now see a notification when you’re working offline. Media uploads to image blocks will also pause when your internet connection cuts out, then resume when you reconnect. Nifty.
+You’ll now see a notification when you’re working offline. Media uploads to image blocks will also pause when your internet connection cuts out, then resume when you reconnect.
+As an added bonus, when you manually retry a failed media upload, the app will retry all other failed media uploads in your post. Now that’s efficient.
 
 When you select a custom gradient in the block editor, there’s now an indicator to show your chosen color.
 
 Scrolling through your images on the Site Media details screen will make them load ahead of time for a faster experience. Or maybe they were there all along.
 
-Image previews are now sized properly when you long-press a file in the media library. We’ve also added support for higher-resolution thumbnails, GIF and video playback, documents, and other file previews. (homer-simpson-woohoo.gif)
-
-As an added bonus, when you manually retry a failed media upload, the app will retry all other failed media uploads in your post. Now that’s efficient.
+We added support for higher-resolution thumbnails, GIF and video playback, documents, and other file previews. (homer-simpson-woohoo.gif)
 
 We switched up the publishing flow to give you clearer instructions. Users with the “Contributor” role will see the “Submit for Review” action instead of “Publish.” You can also trash draft posts and deleted posts without having to confirm.
 
