@@ -96,7 +96,8 @@ struct PHPLogsView: View {
                         .font(.system(size: 12, design: .monospaced))
                         .textCase(.uppercase)
                         .padding(4)
-                        .background(Color.yellow.opacity(0.33))
+                        .foregroundColor(Color(uiColor: entry.severityTextColor))
+                        .background(Color(uiColor: entry.severityBackgroundColor))
                         .cornerRadius(4)
                     Spacer()
                     Text((entry.timestamp?.mediumStringWithTime()) ?? "")
@@ -173,7 +174,27 @@ final class PHPLogsViewModel: ObservableObject {
     }
 }
 
-extension AtomicErrorLogEntry: Identifiable {}
+extension AtomicErrorLogEntry: Identifiable {
+    var severityBackgroundColor: UIColor {
+        let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
+        switch severity {
+        case .user: return .muriel(name: .gray, .shade5)
+        case .warning: return .muriel(name: .yellow, .shade5)
+        case .deprecated: return .muriel(name: .blue, .shade5)
+        case .fatalError: return .muriel(name: .red, .shade5)
+        }
+    }
+
+    var severityTextColor: UIColor {
+        let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
+        switch severity {
+        case .user: return .muriel(name: .gray, .shade80)
+        case .warning: return .muriel(name: .yellow, .shade80)
+        case .deprecated: return .muriel(name: .blue, .shade80)
+        case .fatalError: return .muriel(name: .red, .shade80)
+        }
+    }
+}
 
 struct PHPLogsSearchCriteria: Equatable {
     var startDate: Date?
