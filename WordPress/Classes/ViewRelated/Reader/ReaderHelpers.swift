@@ -144,6 +144,20 @@ struct ReaderPostMenuButtonTitles {
         return topic.isKind(of: ReaderSiteTopic.self)
     }
 
+    /// Check if the specified topic is an RSS feed
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is an RSS feed
+    ///
+    @objc open class func isRSSFeed(_ topic: ReaderAbstractTopic) -> Bool {
+        guard let site = topic as? ReaderSiteTopic else {
+            return false
+        }
+        return site.siteID == 0
+    }
+
 
     /// Check if the specified topic is a tag topic
     ///
