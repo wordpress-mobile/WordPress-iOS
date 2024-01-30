@@ -148,7 +148,6 @@ enum NoticeAction: Action {
     case unlock
 }
 
-
 struct NoticeStoreState {
     fileprivate var notice: Notice?
 }

@@ -26,7 +26,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 @objc(Post)
 class Post: AbstractPost {
     @objc static let typeDefaultIdentifier = "post"
@@ -133,7 +132,6 @@ class Post: AbstractPost {
 
         return orderedStrings.joined(separator: ", ")
     }
-
 
     /// Set the categories for a post
     ///

@@ -77,12 +77,10 @@ class RoleViewController: UITableViewController {
         _ = navigationController?.popViewController(animated: true)
     }
 
-
     // MARK: - Private Methods
     fileprivate func roleAtIndexPath(_ indexPath: IndexPath) -> RemoteRole {
         return roles[indexPath.row]
     }
-
 
     // MARK: - Private Constants
     fileprivate let numberOfSections = 1

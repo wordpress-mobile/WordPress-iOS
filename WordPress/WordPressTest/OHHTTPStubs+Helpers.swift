@@ -1,8 +1,6 @@
 import Foundation
 import OHHTTPStubs
 
-
-
 // MARK: - Private helpers
 //
 public extension HTTPStubs {

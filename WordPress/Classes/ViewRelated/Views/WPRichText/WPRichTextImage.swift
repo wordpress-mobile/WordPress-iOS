@@ -25,7 +25,6 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
         }
     }
 
-
     // MARK: Lifecycle
 
     deinit {
@@ -64,7 +63,6 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
         super.encode(with: aCoder)
     }
-
 
     // MARK: Public Methods
 

@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import UIKit
+import WordPressUI
 
 protocol PagesCardView: AnyObject {
     var tableView: UITableView { get }
@@ -340,7 +341,6 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
         }
         return snapshot
     }
-
 
     /// Returns items that need to be reloaded. These are items that haven't changed position, but their date was updated.
     /// - Parameters:

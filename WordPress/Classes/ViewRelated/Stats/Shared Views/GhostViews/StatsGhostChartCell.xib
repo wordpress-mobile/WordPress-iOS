@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,21 +19,21 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xm7-B5-Mcg">
                         <rect key="frame" x="16" y="25" width="20" height="38"/>
+                        <viewLayoutGuide key="safeArea" id="oz5-1m-je4"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="SPf-NH-nmg"/>
                             <constraint firstAttribute="height" constant="38" id="XHE-JB-GBM"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="oz5-1m-je4"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TZ9-xg-9dO">
                         <rect key="frame" x="44" y="43" width="45" height="20"/>
+                        <viewLayoutGuide key="safeArea" id="51z-02-rBE"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="45" id="LIf-9c-4Qh"/>
                             <constraint firstAttribute="height" constant="20" id="ldd-tx-FTd"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="51z-02-rBE"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="hFy-8F-3wO">
                         <rect key="frame" x="40" y="79" width="264" height="100"/>
@@ -137,21 +137,21 @@
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ZN-V8-rLc">
                         <rect key="frame" x="16" y="187" width="65" height="8"/>
+                        <viewLayoutGuide key="safeArea" id="LtN-iQ-PWW"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="65" id="OGo-eH-tjD"/>
                             <constraint firstAttribute="height" constant="8" id="Ome-8h-o0J"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="LtN-iQ-PWW"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GTG-fs-LIN">
                         <rect key="frame" x="239" y="187" width="65" height="8"/>
+                        <viewLayoutGuide key="safeArea" id="XW5-dq-9RM"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="8" id="9c7-1x-tar"/>
                             <constraint firstAttribute="width" constant="65" id="Dyx-uY-hQU"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="XW5-dq-9RM"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ew5-IW-6Hi">
                         <rect key="frame" x="16" y="79" width="16" height="100"/>
@@ -223,6 +223,9 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="topConstraint" destination="TNz-c2-H9M" id="VB8-jr-OOc"/>
+            </connections>
             <point key="canvasLocation" x="339.13043478260875" y="186.16071428571428"/>
         </tableViewCell>
     </objects>

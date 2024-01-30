@@ -17,7 +17,6 @@ struct LockScreenFieldView: View {
         self.valueFontSize = valueFontSize
     }
 
-
     private var accessibilityLabel: Text {
         Text(title) + Text(": ") + Text(value)
     }

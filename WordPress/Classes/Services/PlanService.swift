@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressKit
 
-
 open class PlanService: NSObject {
 
     private let coreDataStack: CoreDataStack
@@ -53,7 +52,6 @@ open class PlanService: NSObject {
         }, completion: onComplete, on: .main)
     }
 
-
     func allPlans(in context: NSManagedObjectContext) -> [Plan] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Plan")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
@@ -65,13 +63,11 @@ open class PlanService: NSObject {
         }
     }
 
-
     private func findPlanByShortname(_ shortname: String, in context: NSManagedObjectContext) -> Plan? {
         allPlans(in: context).first {
             $0.shortname == shortname
         }
     }
-
 
     private func allPlanGroups(in context: NSManagedObjectContext) -> [PlanGroup] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanGroup")
@@ -84,13 +80,11 @@ open class PlanService: NSObject {
         }
     }
 
-
     private func findPlanGroupBySlug(_ slug: String, in context: NSManagedObjectContext) -> PlanGroup? {
         allPlanGroups(in: context).first {
             $0.slug == slug
         }
     }
-
 
     func allPlanFeatures(in context: NSManagedObjectContext) -> [PlanFeature] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanFeature")
@@ -102,13 +96,11 @@ open class PlanService: NSObject {
         }
     }
 
-
     private func findPlanFeatureBySlug(_ slug: String, in context: NSManagedObjectContext) -> PlanFeature? {
         let features = allPlanFeatures(in: context) as NSArray
         let results = features.filtered(using: NSPredicate(format: "slug = %@", slug))
         return results.first as? PlanFeature
     }
-
 
     private func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan], in context: NSManagedObjectContext) {
 
@@ -145,7 +137,6 @@ open class PlanService: NSObject {
         }
 
     }
-
 
     private func mergeRemotePlanGroups(_ remoteGroups: [RemotePlanGroup], in context: NSManagedObjectContext) {
 

@@ -1,7 +1,8 @@
 import UIKit
+import WordPressUI
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
-    func presentIfNeeded()
+    func presentIfNeeded() async -> Bool
     func navigateToSettings()
     func dismiss()
 }
@@ -10,8 +11,9 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Dependencies
 
-    private let complianceService = ComplianceLocationService()
+    private let complianceService: ComplianceLocationService
     private let defaults: UserDefaults
+    private let isFeatureFlagEnabled: Bool
 
     // MARK: - Views
 
@@ -21,20 +23,30 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
 
     // MARK: - Init
 
-    init(defaults: UserDefaults = UserDefaults.standard) {
+    init(
+        defaults: UserDefaults = UserDefaults.standard,
+        complianceService: ComplianceLocationService = .init(),
+        isFeatureFlagEnabled: Bool = FeatureFlag.compliancePopover.enabled
+    ) {
         self.defaults = defaults
+        self.complianceService = complianceService
+        self.isFeatureFlagEnabled = isFeatureFlagEnabled
     }
 
-    func presentIfNeeded() {
-        guard FeatureFlag.compliancePopover.enabled/*, !defaults.didShowCompliancePopup */else {
-            return
+    @MainActor func presentIfNeeded() async -> Bool {
+        guard isFeatureFlagEnabled, !defaults.didShowCompliancePopup else {
+            return false
         }
-        complianceService.getIPCountryCode { [weak self] result in
-            guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
-                return
-            }
-            DispatchQueue.main.async {
-                self.presentPopover()
+        return await withCheckedContinuation { continuation in
+            self.complianceService.getIPCountryCode { [weak self] result in
+                guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                    continuation.resume(returning: false)
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.presentPopover()
+                    continuation.resume(returning: Self.window != nil)
+                }
             }
         }
     }
@@ -52,8 +64,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     // MARK: - Helpers
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
-        let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && !defaults.didShowCompliancePopup
+        return Self.gdprCountryCodes.contains(countryCode)
     }
 
     private func dismiss(completion: (() -> Void)? = nil) {

@@ -3,7 +3,6 @@ import XCTest
 import WordPressFlux
 import CoreData
 
-
 class MockItemsStore: ItemsStore {
     let changeDispatcher = Dispatcher<Void>()
 
@@ -155,7 +154,6 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         }
     }
 }
-
 
 // MARK: - Helpers
 extension ReaderTabViewModelTests {

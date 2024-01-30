@@ -1,14 +1,7 @@
 class StatsStackViewCell: StatsBaseCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
 
-    @IBOutlet private(set) var stackView: UIStackView! {
-        didSet {
-            if !AppConfiguration.statsRevampV2Enabled {
-                contentView.addTopBorder(withColor: Style.separatorColor)
-                contentView.addBottomBorder(withColor: Style.separatorColor)
-            }
-        }
-    }
+    @IBOutlet private(set) var stackView: UIStackView!
 
     override func awakeFromNib() {
         super.awakeFromNib()

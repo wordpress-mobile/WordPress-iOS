@@ -125,7 +125,6 @@ class ReaderTabViewController: UIViewController {
     }
 }
 
-
 // MARK: - Navigation Buttons
 extension ReaderTabViewController {
     @objc private func didTapSettingsButton() {
@@ -150,7 +149,6 @@ extension ReaderTabViewController {
         }
     }
 }
-
 
 // MARK: - State Restoration
 extension ReaderTabViewController: UIViewControllerRestoration {

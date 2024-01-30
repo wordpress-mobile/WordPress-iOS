@@ -51,7 +51,6 @@ final class TooltipPresenter {
         }
     }
 
-
     private(set) var tooltip: Tooltip
     var tooltipVerticalPosition: TooltipVerticalPosition = .auto
     private let shouldShowSpotlightView: Bool
@@ -387,7 +386,6 @@ final class TooltipPresenter {
 
         return extraRetractOffset
     }
-
 
     private func tooltipOrientation() -> Tooltip.ArrowPosition {
         switch tooltipVerticalPosition {

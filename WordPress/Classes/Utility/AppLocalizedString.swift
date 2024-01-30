@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 extension Bundle {
     /// Returns the `Bundle` for the host `.app`.
     ///

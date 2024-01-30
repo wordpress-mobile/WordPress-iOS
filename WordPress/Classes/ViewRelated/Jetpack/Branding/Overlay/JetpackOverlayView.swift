@@ -133,7 +133,6 @@ class JetpackOverlayView: UIView {
     private func configureConstraints() {
         animationContainerView.pinSubviewToAllEdges(animationView)
 
-
         let stackViewTrailingConstraint = stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                                               constant: -Metrics.edgeMargins.right)
         stackViewTrailingConstraint.priority = Metrics.veryHighPriority

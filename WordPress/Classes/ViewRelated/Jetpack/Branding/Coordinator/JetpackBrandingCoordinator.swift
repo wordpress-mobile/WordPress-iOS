@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// A class containing convenience methods for the the Jetpack branding experience
 class JetpackBrandingCoordinator {

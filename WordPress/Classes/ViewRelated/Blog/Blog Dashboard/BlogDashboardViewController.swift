@@ -34,6 +34,8 @@ final class BlogDashboardViewController: UIViewController {
         return view.superview?.superview as? UIScrollView
     }
 
+    // MARK: - Init
+
     @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
         self.embeddedInScrollView = embeddedInScrollView
@@ -47,6 +49,8 @@ final class BlogDashboardViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -313,7 +317,6 @@ extension BlogDashboardViewController {
             comment: "Action shown in a bottom notice to dismiss it."
         )
     }
-
 
     private enum Constants {
         static let estimatedHeight: CGFloat = 44

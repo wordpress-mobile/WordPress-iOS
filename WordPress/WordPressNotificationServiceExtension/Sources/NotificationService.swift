@@ -235,7 +235,6 @@ private extension NotificationService {
         task.resume()
     }
 
-
     /// Save the downloaded media data with a unique identifier
     /// - Parameters:
     ///   - data: The media attachment data
@@ -319,7 +318,6 @@ private extension NotificationService {
         return userID
     }
 }
-
 
 // MARK: - View Milestone notifications support
 private extension NotificationService {

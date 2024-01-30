@@ -60,7 +60,6 @@ extension GravatarButtonView {
     }
 }
 
-
 /// Border options
 extension GravatarButtonView {
 

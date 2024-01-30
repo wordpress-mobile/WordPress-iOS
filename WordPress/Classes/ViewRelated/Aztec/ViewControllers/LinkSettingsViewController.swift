@@ -92,7 +92,6 @@ class LinkSettingsViewController: UITableViewController {
                                            value: linkSettings.openInNewWindow,
                                            onChange: editOpenInNewWindow)
 
-
         let linkToExistingContentRow = EditableTextRow(title: NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
                                       value: titleOfExistingContent(),
                                       action: selectExistingContent)

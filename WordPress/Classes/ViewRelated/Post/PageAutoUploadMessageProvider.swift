@@ -31,7 +31,6 @@ class PageAutoUploadMessageProvider: AutoUploadMessageProvider {
     static let offlineSubmitFailureFirstTry = NSLocalizedString("We'll submit your page for review when your device is back online.",
                                                                 comment: "Text displayed in notice after the app fails to upload a page], it will attempt to upload it later.")
 
-
     // MARK: - Offline: Retry
 
     static let onlineDefaultFailureRetry = NSLocalizedString("We couldn't complete this action, but we'll try again later.",

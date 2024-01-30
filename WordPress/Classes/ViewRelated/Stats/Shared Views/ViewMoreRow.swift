@@ -40,7 +40,7 @@ private extension ViewMoreRow {
         backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
-        if AppConfiguration.statsRevampV2Enabled && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
+        if statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail {
             disclosureImageView.isHidden = true
         }
     }

@@ -100,7 +100,6 @@ class EditorMediaUtility {
         })
     }
 
-
     func downloadImage(
         from url: URL,
         post: AbstractPost,

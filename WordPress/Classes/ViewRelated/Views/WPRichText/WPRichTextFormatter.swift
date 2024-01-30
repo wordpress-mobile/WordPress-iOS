@@ -89,7 +89,6 @@ class WPRichTextFormatter {
         return NSAttributedString(attributedString: attrString)
     }
 
-
     func replaceHorizontalRuleMarkers(_ attrString: NSMutableAttributedString) -> NSMutableAttributedString {
 
         let str = attrString.string
@@ -136,7 +135,6 @@ class WPRichTextFormatter {
         return string[range] != "\n"
     }
 
-
     /// Converting an HTML formatted string to an NSAttributedString results in
     /// blockquotes being ignored. This method finds the blockquote markers
     /// in the supplied NSAttributedString, reapplies indentation to the blockquote's
@@ -179,7 +177,6 @@ class WPRichTextFormatter {
         return attrString
     }
 
-
     /// Processes the supplied string, scanning for HTML tags that need special
     /// handling.
     ///
@@ -205,7 +202,6 @@ class WPRichTextFormatter {
 
         return (processedString, attachments)
     }
-
 
     /// Processes the supplied string, scanning for and handling the specified tag.
     ///
@@ -265,7 +261,6 @@ class WPRichTextFormatter {
     }
 }
 
-
 /// A base class for processing HTML tags.  Logic for specific tags
 /// should be implemented in subclasses of this class.
 ///
@@ -277,7 +272,6 @@ class HtmlTagProcessor {
         self.tagName = tagName
         self.includesEndTag = includesEndTag
     }
-
 
     /// Tells the passed scanner object to extract the tag represented by
     /// the `tagName` property.
@@ -308,7 +302,6 @@ class HtmlTagProcessor {
         return (success, parsedString)
     }
 
-
     /// Subclasses should override this method to process the HTML extracted via
     /// the extractTag method.
     ///
@@ -324,7 +317,6 @@ class HtmlTagProcessor {
 
 }
 
-
 /// Encapsulates the logic for processing blockquote tags.
 ///
 class BlockquoteTagProcessor: HtmlTagProcessor {
@@ -332,7 +324,6 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
     init() {
         super.init(tagName: "blockquote", includesEndTag: true)
     }
-
 
     /// Inserts markers identifiying a blockquote paragraph.
     ///
@@ -381,7 +372,6 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
     }
 }
 
-
 /// Encapsulates the logic for processing pre tags.
 ///
 class PreTagProcessor: HtmlTagProcessor {
@@ -389,7 +379,6 @@ class PreTagProcessor: HtmlTagProcessor {
     init() {
         super.init(tagName: "pre", includesEndTag: true)
     }
-
 
     /// Adds a new line after the end of the pre tag.
     ///
@@ -403,7 +392,6 @@ class PreTagProcessor: HtmlTagProcessor {
         return (parsedString, nil)
     }
 }
-
 
 /// Handles processing list tags. Basically we just want to
 /// correct the line spacing following a list. Appending
@@ -423,7 +411,6 @@ class ListTagProcessor: HtmlTagProcessor {
         return (parsedString, nil)
     }
 }
-
 
 /// Handles processing tags representing external content, i.e. attachments.
 /// The HTML for the attachment is extracted and replaced with a string marker.
@@ -449,7 +436,6 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         return (identifier, attachment)
     }
-
 
     /// Createa a WPTextAttachment instance representing the specified HTML string.
     ///
@@ -540,7 +526,6 @@ class AttachmentTagProcessor: HtmlTagProcessor {
         return CGSize(width: CGFloat(width), height: CGFloat(height))
     }
 
-
     /// Parses attributes from the specified html tag.  If the tag has child tags
     /// only the parent tag is considered.
     ///
@@ -576,15 +561,12 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
 }
 
-
 class HRTagProcessor: HtmlTagProcessor {
     static let horizontalRuleIdentifier = "WPHORIZONTALRULEIDENTIFIER"
-
 
     init() {
         super.init(tagName: "hr", includesEndTag: false)
     }
-
 
     /// Replaces extracted tags with markers.
     ///

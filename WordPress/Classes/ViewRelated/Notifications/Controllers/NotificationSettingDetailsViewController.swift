@@ -2,7 +2,6 @@ import Foundation
 import WordPressShared
 import UserNotifications
 
-
 /// The purpose of this class is to render a collection of NotificationSettings for a given Stream,
 /// encapsulated in the class NotificationSettings.Stream, and to provide the user a simple interface
 /// to update those settings, as needed.
@@ -50,8 +49,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
         }
     }
 
-
-
     convenience init(settings: NotificationSettings) {
         self.init(settings: settings, stream: settings.streams.first!)
     }
@@ -84,7 +81,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         saveSettingsIfNeeded()
     }
-
 
     // MARK: - Setup Helpers
     private func startListeningToNotifications() {
@@ -119,7 +115,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
         }
         tableView.reloadData()
     }
-
 
     // MARK: - Private Helpers
     private func sectionsForSettings(_ settings: NotificationSettings, stream: NotificationSettings.Stream) -> [SettingsSection] {
@@ -157,7 +152,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
                 return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
             }
         }
-
 
         // Multi Section Mode: We'll have one Section per Row
         var sections = [SettingsSection]()
@@ -197,7 +191,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         return [section]
     }
-
 
     // MARK: - UITableView Delegate Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -254,7 +247,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
         }
     }
 
-
     // MARK: - UITableView Helpers
     private func configureTextCell(_ cell: WPTableViewCell, row: SettingsRow) {
         guard let row = row as? TextSettingsRow else {
@@ -279,7 +271,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
             self?.newValues[settingKey] = newValue
         }
     }
-
 
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
@@ -309,7 +300,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
             self.pushNotificationsAuthorized = status
         }
     }
-
 
     // MARK: - Service Helpers
     private func saveSettingsIfNeeded() {

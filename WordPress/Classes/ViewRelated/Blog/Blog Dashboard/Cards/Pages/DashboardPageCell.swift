@@ -90,7 +90,6 @@ class DashboardPageCell: UITableViewCell, Reusable {
         dateLabel.text = date?.toMediumString()
     }
 
-
     /// Reduces the top spacing for the first cell to reduce the vertical spacing between the tableview and the card header
     private func configureStackViewLayoutMargins(rowIndex: Int) {
         let margins = rowIndex == 0 ? Metrics.firstCellMainStackViewLayoutMargins : Metrics.defaultMainStackViewLayoutMargins

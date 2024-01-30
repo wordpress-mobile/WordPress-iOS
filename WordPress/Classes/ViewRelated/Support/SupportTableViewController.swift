@@ -447,7 +447,6 @@ private extension SupportTableViewController {
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
 
-
         func configureCell(_ cell: UITableViewCell) {
             guard let cell = cell as? CellType else {
                 return

@@ -2,7 +2,6 @@ import UIKit
 import WordPressShared
 import WordPressAuthenticator
 
-
 // MARK: - LoginEpilogueTableViewController
 //
 class LoginEpilogueTableViewController: UITableViewController {
@@ -70,7 +69,6 @@ class LoginEpilogueTableViewController: UITableViewController {
         refreshInterface(for: credentials)
     }
 }
-
 
 // MARK: - UITableViewDataSource methods
 //
@@ -240,7 +238,6 @@ private extension LoginEpilogueTableViewController {
         static let blogRowHeight = CGFloat(60)
     }
 }
-
 
 // MARK: - Loading
 //

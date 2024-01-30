@@ -170,7 +170,6 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return CGSize(width: size.width, height: cellHeight)
     }
 
-
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         if allowsCentering, isCentered || collectionView?.traitCollection.horizontalSizeClass == .regular {
             return centeredLayoutAttributesForElements(in: rect)

@@ -1,6 +1,5 @@
 import Foundation
 
-
 // MARK: - String: RegularExpression Helpers
 //
 extension String {

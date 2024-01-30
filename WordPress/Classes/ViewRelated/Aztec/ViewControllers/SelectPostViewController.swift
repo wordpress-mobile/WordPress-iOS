@@ -1,6 +1,5 @@
 import UIKit
 
-
 class SelectPostViewController: UITableViewController {
 
     typealias SelectPostCallback = (AbstractPost) -> ()
@@ -71,7 +70,6 @@ class SelectPostViewController: UITableViewController {
     }
 }
 
-
 // MARK: - UITableViewDataSource Conformance
 //
 extension SelectPostViewController {
@@ -122,7 +120,6 @@ extension SelectPostViewController {
     }
 }
 
-
 // MARK: - UITableViewDelegate Conformance
 //
 extension SelectPostViewController {
@@ -132,7 +129,6 @@ extension SelectPostViewController {
         callback?(post)
     }
 }
-
 
 // MARK: - UISearchResultsUpdating Conformance
 //

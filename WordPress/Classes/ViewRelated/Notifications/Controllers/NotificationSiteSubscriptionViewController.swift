@@ -1,7 +1,6 @@
 import UIKit
 import WordPressKit
 
-
 /// The purpose of this class is to render a collection of notifications sunscriptions for a Site Topic,
 /// and to provide the user a simple interface to update those settings, as needed.
 ///
@@ -33,7 +32,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         let title: String
         let kind: Kind
         let frequency: ReaderServiceDeliveryFrequency?
-
 
         init(kind: Kind = .setting, title: String, frequency: ReaderServiceDeliveryFrequency? = nil) {
             self.title = title
@@ -69,7 +67,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     private var siteTopic: ReaderSiteTopic?
     private let siteSubscription = SiteSubscription()
 
-
     required init(siteId: Int) {
         self.siteId = siteId
         super.init(style: .grouped)
@@ -88,7 +85,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
         startListeningToNotifications()
     }
-
 
     // MARK: - Private methods
 
@@ -198,7 +194,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         }
     }
 
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -222,7 +217,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         case .setting: return switchCell(for: section, row: row, at: indexPath)
         }
     }
-
 
     // MARK: - Table view delegate
 

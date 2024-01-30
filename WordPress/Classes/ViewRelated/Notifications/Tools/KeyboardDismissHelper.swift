@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 /// Helper meant to aid in the InteractiveDismiss process.
 ///
 /// Why this class exists:
@@ -88,7 +87,6 @@ import UIKit
         scrollView.keyboardDismissMode = .interactive
     }
 
-
     /// Initializes the Keyboard Event Listeners
     ///
     @objc func startListeningToKeyboardNotifications() {
@@ -166,7 +164,6 @@ import UIKit
         trackingDragOperation = false
     }
 
-
     // MARK: - Notification Helpers
     @objc func keyboardWillShow(_ note: Foundation.Notification) {
         isKeyboardVisible = true
@@ -197,7 +194,6 @@ import UIKit
     @objc func keyboardDidChangeFrame(_ note: Foundation.Notification) {
         onDidChangeFrame?()
     }
-
 
     // MARK: - Private Helpers
 

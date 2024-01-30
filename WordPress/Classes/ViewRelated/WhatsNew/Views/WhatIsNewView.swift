@@ -1,3 +1,4 @@
+import WordPressUI
 
 /// Labels and button titles
 struct WhatIsNewViewTitles {
@@ -6,7 +7,6 @@ struct WhatIsNewViewTitles {
     let continueButtonTitle: String
     let disclaimerTitle: String
 }
-
 
 /// Main view of the What's New page
 class WhatIsNewView: UIView {
@@ -198,7 +198,6 @@ class WhatIsNewView: UIView {
     }
 }
 
-
 // MARK: - Helpers
 private extension WhatIsNewView {
 
@@ -232,7 +231,6 @@ private extension WhatIsNewView {
         dismissAction?()
     }
 }
-
 
 // MARK: - Layout
 extension WhatIsNewView {

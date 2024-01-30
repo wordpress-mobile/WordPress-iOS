@@ -39,18 +39,14 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         return controller
     }
 
-
     // MARK: - State Restoration
-
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
         return controller()
     }
 
-
     // MARK: - LifeCycle Methods
-
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
         restorationClass = type(of: self)
@@ -58,11 +54,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         return super.awakeAfter(using: aDecoder)
     }
 
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         tableViewController = segue.destination as? UITableViewController
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +69,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -98,9 +91,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         })
     }
 
-
     // MARK: - Setup
-
 
     fileprivate func setupTableView() {
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
@@ -111,7 +102,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
     }
 
-
     fileprivate func setupTableViewHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
@@ -119,9 +109,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         tableViewHandler.delegate = self
     }
 
-
     // MARK: - Configuration
-
 
     @objc func configureSearchBar() {
         let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
@@ -150,9 +138,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         view.addGestureRecognizer(gestureRecognizer)
     }
 
-
     // MARK: - Keyboard Handling
-
 
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo as? [String: AnyObject],
@@ -168,9 +154,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         currentKeyboardHeight = 0
     }
 
-
     // MARK: - Instance Methods
-
 
     fileprivate func syncSites() {
         if isSyncing {
@@ -191,17 +175,14 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         })
     }
 
-
     @objc func handleRefresh(_ sender: AnyObject) {
         syncSites()
     }
-
 
     @objc func refreshFollowedPosts() {
         let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.syncPostsForFollowedSites()
     }
-
 
     @objc func unfollowSiteAtIndexPath(_ indexPath: IndexPath) {
         guard let site = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSiteTopic else {
@@ -231,7 +212,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.post(notice)
         })
     }
-
 
     @objc func followSite(_ site: String) {
         guard let url = urlFromString(site) else {
@@ -286,7 +266,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         service.refreshPostsForFollowedTopic()
     }
 
-
     @objc func urlFromString(_ str: String) -> URL? {
         // if the string contains space its not a URL
         if str.contains(" ") {
@@ -309,7 +288,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         return nil
     }
-
 
     @objc func showPostListForSite(_ site: ReaderSiteTopic) {
         let controller = ReaderStreamViewController.controllerWithTopic(site)
@@ -402,7 +380,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         return ContextManager.sharedInstance().mainContext
     }
 
-
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSiteTopic")
         fetchRequest.predicate = NSPredicate(format: "following = YES")
@@ -412,7 +389,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         return fetchRequest
     }
-
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         guard let site = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSiteTopic else {
@@ -453,7 +429,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         return cell
     }
 
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -483,12 +458,10 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         showPostListForSite(site)
     }
 
-
     func tableView(_ tableView: UITableView,
                    canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
 
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,
@@ -496,12 +469,10 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         unfollowSiteAtIndexPath(indexPath)
     }
 
-
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
-
 
     func tableView(_ tableView: UITableView,
                    titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {

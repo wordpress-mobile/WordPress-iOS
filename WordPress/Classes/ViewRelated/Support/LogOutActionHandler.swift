@@ -32,7 +32,6 @@ struct LogOutActionHandler {
         return String(format: format, count)
     }
 
-
     private struct Strings {
         static let alertDefaultTitle = AppConstants.Logout.alertTitle
         static let alertUnsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",

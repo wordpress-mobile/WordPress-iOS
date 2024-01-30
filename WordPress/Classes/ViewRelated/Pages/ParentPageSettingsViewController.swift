@@ -1,6 +1,5 @@
 import UIKit
 
-
 private struct Row: ImmuTableRow {
     static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)
 
@@ -18,7 +17,6 @@ private struct Row: ImmuTableRow {
         case .child: return page?.titleForDisplay() ?? ""
         }
     }
-
 
     init(page: Page? = nil, type: RowType = .topLevel) {
         self.page = page
@@ -39,7 +37,6 @@ extension Row: Equatable {
         return lhs.page?.postID == rhs.page?.postID
     }
 }
-
 
 class ParentPageSettingsViewController: UIViewController {
     var onClose: (() -> Void)?
@@ -69,7 +66,6 @@ class ParentPageSettingsViewController: UIViewController {
         }
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -89,7 +85,6 @@ class ParentPageSettingsViewController: UIViewController {
         WPAnalytics.track(.pageSetParentViewed)
     }
 
-
     func set(pages: [Page], for page: Page) {
         selectedPage = page
         originalRow = originalRow(with: pages)
@@ -101,7 +96,6 @@ class ParentPageSettingsViewController: UIViewController {
         self.rows = [ImmuTableSection(rows: [Row()]),
                      ImmuTableSection(headerText: NSLocalizedString("Pages", comment: "This is the section title"), rows: rows)]
     }
-
 
     // MARK: - Private methods
 
@@ -225,7 +219,6 @@ class ParentPageSettingsViewController: UIViewController {
         dismiss(animated: true)
     }
 
-
     // MARK: IBAction
 
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
@@ -256,7 +249,6 @@ class ParentPageSettingsViewController: UIViewController {
     }
 }
 
-
 extension ParentPageSettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -285,7 +277,6 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
     }
 }
 
-
 extension ParentPageSettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
@@ -301,7 +292,6 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
         tableView.reloadData()
     }
 }
-
 
 /// ParentPageSettingsViewController class constructor
 //
@@ -320,7 +310,6 @@ extension ParentPageSettingsViewController {
         return controller
     }
 }
-
 
 extension ParentPageSettingsViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

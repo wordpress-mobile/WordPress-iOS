@@ -20,7 +20,6 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
     let settingsFilename    = "notifications-settings.json"
     let dummyDeviceId       = "1234"
 
-
     // MARK: - Overriden Methods
     override func setUp() {
         super.setUp()
@@ -41,7 +40,6 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         super.tearDown()
         HTTPStubs.removeAllStubs()
     }
-
 
     // MARK: - Unit Tests!
     func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
@@ -154,8 +152,6 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
             XCTAssert(expectedSettings[key]! == value, "Error while parsing WordPress.com Settings")
         }
     }
-
-
 
     // MARK: - Private Helpers
     fileprivate func loadNotificationSettings() -> [NotificationSettings] {

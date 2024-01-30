@@ -13,32 +13,40 @@ extension SitePickerViewController {
     }
 
     private func makeSections() -> [UIMenu] {
-        [
+        let sections = [
             makePrimarySection(),
             makeSecondarySection(),
             makeTertiarySection()
         ]
+        return sections.compactMap { $0 }
     }
 
     private func makePrimarySection() -> UIMenu {
-        var menuItems = [
+        let menuItems = [
             MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
             MenuItem.shareSite { [weak self] in self?.buttonShareSiteTapped() },
             MenuItem.addSite({ [weak self] in self?.addSiteTapped()} ),
+            MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() })
         ]
-        if numberOfBlogs() > 1 {
-            menuItems.append(MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() }))
-        }
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
 
-    private func makeSecondarySection() -> UIMenu {
-        UIMenu(options: .displayInline, children: [
-            MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction,
-            UIMenu(title: Strings.siteIcon, image: UIImage(systemName: "photo.circle"), children: [
-                makeSiteIconMenu() ?? UIMenu()
-            ])
-        ])
+    private func makeSecondarySection() -> UIMenu? {
+        guard blog.isAdmin else {
+            return nil
+        }
+
+        var menuItems: [UIMenuElement] = [
+            MenuItem.siteTitle({ [weak self] in self?.siteTitleTapped() }).toAction
+        ]
+        if siteIconShouldAllowDroppedImages() {
+            menuItems.append(
+                UIMenu(title: Strings.siteIcon, image: UIImage(systemName: "photo.circle"), children: [
+                    makeSiteIconMenu() ?? UIMenu()
+                ])
+            )
+        }
+        return UIMenu(options: .displayInline, children: menuItems)
     }
 
     private func makeTertiarySection() -> UIMenu {
@@ -57,7 +65,7 @@ extension SitePickerViewController {
         }
         let viewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         if let popover = viewController.popoverPresentationController {
-            popover.barButtonItem = navigationItem.rightBarButtonItem
+            popover.sourceView = blogDetailHeaderView.titleView.siteSwitcherButton
         }
         present(viewController, animated: true, completion: nil)
         WPAnalytics.trackEvent(.mySiteHeaderShareSiteTapped)
@@ -75,7 +83,7 @@ extension SitePickerViewController {
             return
         }
 
-        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteActionButton,
+        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteSwitcherButton,
                                canCreateWPComSite: canCreateWPComSite,
                                canAddSelfHostedSite: canAddSelfHostedSite)
 
@@ -128,10 +136,6 @@ extension SitePickerViewController {
     }
 
     // MARK: - Helpers
-
-    private func numberOfBlogs() -> Int {
-        defaultAccount()?.blogs?.count ?? 0
-    }
 
     private func defaultAccount() -> WPAccount? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)

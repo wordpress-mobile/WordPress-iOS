@@ -6,12 +6,10 @@ final class StatsPeriodHelperTests: XCTestCase {
 
     override func setUpWithError() throws {
         sut = StatsPeriodHelper()
-        try? FeatureFlagOverrideStore().override(FeatureFlag.statsNewInsights, withValue: true)
     }
 
     override func tearDownWithError() throws {
         sut = nil
-        try? FeatureFlagOverrideStore().override(FeatureFlag.statsNewInsights, withValue: false)
     }
 
     func testEndOfWeekWhenMondayIsSetAsFirstWeekday() {

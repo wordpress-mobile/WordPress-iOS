@@ -55,7 +55,6 @@ extension WPStyleGuide {
             static let ellipsisIconImageName = "ellipsis.circle"
             static let infoIconImageName = "info.circle"
 
-
             static var replyIconImage: UIImage? {
                 // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
                 let name = "arrowshape.turn.up.backward"

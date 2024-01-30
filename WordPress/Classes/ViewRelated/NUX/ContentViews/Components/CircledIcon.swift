@@ -31,7 +31,6 @@ struct CircledIcon: View {
         self.iconColor = iconColor
     }
 
-
     var body: some View {
         ZStack {
             Circle()

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "tool.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

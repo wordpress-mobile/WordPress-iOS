@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 class RevisionDiff: NSManagedObject {
     @NSManaged var fromRevisionId: NSNumber
     @NSManaged var toRevisionId: NSNumber
@@ -22,7 +21,6 @@ class RevisionDiff: NSManagedObject {
         return (titleDiffs?.operations ?? []).toAttributedString()
     }
 }
-
 
 private extension NSSet {
     var operations: [DiffAbstractValue]? {

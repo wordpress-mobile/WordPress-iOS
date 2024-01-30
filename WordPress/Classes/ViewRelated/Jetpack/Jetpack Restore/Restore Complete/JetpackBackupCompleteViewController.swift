@@ -81,7 +81,6 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         activityVC.popoverPresentationController?.sourceView = sender
         activityVC.modalPresentationStyle = .popover
 
-
         self.present(activityVC, animated: true)
     }
 

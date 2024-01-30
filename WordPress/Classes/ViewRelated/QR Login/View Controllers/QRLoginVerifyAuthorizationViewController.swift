@@ -7,7 +7,6 @@ class QRLoginVerifyAuthorizationViewController: UIViewController {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
 
-
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
 

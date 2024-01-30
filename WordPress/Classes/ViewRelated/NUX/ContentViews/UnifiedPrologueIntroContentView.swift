@@ -57,7 +57,6 @@ struct UnifiedPrologueIntroContentView: View {
     }
 }
 
-
 struct PrologueIntroImage: View {
 
     let imageName: String

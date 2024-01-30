@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
@@ -771,7 +772,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return controller
     }
 
-
     /// Creates an instance from a Related post / Simple Post
     /// - Parameter simplePost: The related post object
     /// - Returns: If the related post URL is not valid
@@ -830,7 +830,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                                name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
                                                object: post.managedObjectContext)
     }
-
 
     @objc func handleObjectsChange(_ notification: Foundation.Notification) {
         guard let post else {
@@ -1127,7 +1126,6 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
                                       coder: NSCoder) -> UIViewController? {
         return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
     }
-
 
     open override func encodeRestorableState(with coder: NSCoder) {
         coordinator?.encodeRestorableState(with: coder)
