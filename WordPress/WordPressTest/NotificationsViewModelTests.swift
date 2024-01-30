@@ -49,6 +49,30 @@ final class NotificationsViewModelTests: CoreDataTestCase {
         sut.didChangeDefaultAccount()
         XCTAssertNil(sut.lastSeenTime)
     }
+
+    func testLoadNotificationsReturnsNilWhenIndexIsNegative() {
+        let sut = NotificationsViewModel(userDefaults: sutUserDefaults)
+        let tempNotification = Notification()
+        let result = sut.loadNotification(
+            near: tempNotification,
+            allNotifications: [tempNotification],
+            withIndexDelta: -1
+        )
+
+        XCTAssertNil(result)
+    }
+
+    func testLoadNotificationsReturnsNilWhenArrayIsEmpty() {
+        let sut = NotificationsViewModel(userDefaults: sutUserDefaults)
+        let tempNotification = Notification()
+        let result = sut.loadNotification(
+            near: tempNotification,
+            allNotifications: [],
+            withIndexDelta: 0
+        )
+
+        XCTAssertNil(result)
+    }
 }
 
 final class MockNotificationSyncMediator: NotificationSyncMediatorProtocol {

@@ -1736,29 +1736,11 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.firstIndex(of: note) else {
-            return nil
-        }
-
-        let targetIndex = noteIndex + delta
-        guard targetIndex >= 0 && targetIndex < notifications.count else {
-            return nil
-        }
-
-        func notMatcher(_ note: Notification) -> Bool {
-            return note.kind != .matcher
-        }
-
-        if delta > 0 {
-            return notifications
-                .suffix(from: targetIndex)
-                .first(where: notMatcher)
-        } else {
-            return notifications
-                .prefix(through: targetIndex)
-                .reversed()
-                .first(where: notMatcher)
-        }
+        return viewModel.loadNotification(
+            near: note,
+            allNotifications: notifications,
+            withIndexDelta: delta
+        )
     }
 
     func resetNotifications() {
