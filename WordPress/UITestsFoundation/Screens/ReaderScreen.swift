@@ -168,8 +168,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func followTopic() -> Self {
-        _ = followButton.waitForExistence(timeout: 3)
-        followButton.tap()
+        waitForExistenceAndTap(followButton, timeout: 3)
 
         return self
     }
