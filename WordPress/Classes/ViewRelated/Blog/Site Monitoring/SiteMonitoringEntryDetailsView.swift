@@ -53,7 +53,7 @@ private func makeAttributedText(for entry: AtomicErrorLogEntry) -> NSAttributedS
 
 private func makeAttributedText(for entry: AtomicWebServerLogEntry) -> NSAttributedString {
     makeAttributedText(metadata: [
-        (Strings.metadataKeyRequestURL, entry.requestURL),
+        (Strings.metadataKeyRequestURL, entry.requestUrl),
         (Strings.metadataKeyStatus, entry.status?.description),
         (Strings.metadataKeyTimestamp, entry.date.map(makeString)),
         (Strings.metadataKeyResponseBodySize, entry.bodyBytesSent.map {
