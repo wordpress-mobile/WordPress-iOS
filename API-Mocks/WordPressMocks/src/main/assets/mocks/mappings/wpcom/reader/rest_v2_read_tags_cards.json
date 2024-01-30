@@ -41,6 +41,31 @@
           ]
         },
         {
+          "type": "interests_you_may_like",
+          "data": [
+            {
+              "slug": "blogging",
+              "title": "Blogging",
+              "score": 278
+            },
+            {
+              "slug": "travel",
+              "title": "Travel",
+              "score": 251
+            },
+            {
+              "slug": "photos",
+              "title": "Photos",
+              "score": 173
+            },
+            {
+              "slug": "technology",
+              "title": "Technology",
+              "score": 139
+            }
+          ]
+        },
+        {
           "type": "post",
           "data": {
             "ID": 37222,

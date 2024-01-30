@@ -3,6 +3,10 @@ import XCTest
 
 public class ReaderScreen: ScreenObject {
 
+    private let readerNavigationButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["reader-navigation-button"]
+    }
+
     private let discoverButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Discover"]
     }
@@ -43,12 +47,16 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Following"]
     }
 
+    private let subscriptionsMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Subscriptions"]
+    }
+
     private let likesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Likes"]
     }
 
     private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["topics-card-cell-button"]
+        $0.cells["topics-card-cell-button"]
     }
 
     private let noResultsViewGetter: (XCUIApplication) -> XCUIElement = {
@@ -63,12 +71,18 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Save"]
     }
 
+    private let ghostLoadingGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Reader Ghost Loading"]
+    }
+
+    var readerNavigationMenuButton: XCUIElement { readerNavigationButtonGetter(app) }
     var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
     var firstPostLikeButton: XCUIElement { firstPostLikeButtonGetter(app) }
     var followButton: XCUIElement { followButtonGetter(app) }
     var followingButton: XCUIElement { followingButtonGetter(app) }
+    var subscriptionsMenuButton: XCUIElement { subscriptionsMenuButtonGetter(app) }
     var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
     var noResultsView: XCUIElement { noResultsViewGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
@@ -78,6 +92,7 @@ public class ReaderScreen: ScreenObject {
     var savedButton: XCUIElement { savedButtonGetter(app) }
     var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
+    var ghostLoading: XCUIElement { ghostLoadingGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -144,20 +159,8 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscoverTab() -> Self {
-        discoverButton.tap()
-
-        return self
-    }
-
     public func selectTopic() -> Self {
         topicCellButton.firstMatch.tap()
-
-        return self
-    }
-
-    public func openSavedTab() -> Self {
-        savedButton.tap()
 
         return self
     }
@@ -169,23 +172,53 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func openFollowingTab() -> Self {
-        followingButton.tap()
-
-        return self
-    }
-
-    public func openLikesTab() -> Self {
-        likesTabButton.tap()
-
-        return self
-    }
-
     public func followTopic() -> Self {
-        _ = followButton.waitForExistence(timeout: 3)
-        followButton.tap()
+        waitForExistenceAndTap(followButton, timeout: 3)
 
         return self
+    }
+
+    // MARK: Stream switching actions
+
+    public enum ReaderStream: String {
+        case discover
+        case subscriptions
+        case saved
+        case liked
+
+        var buttonIdentifier: String {
+            "Reader Navigation Menu Item, \(rawValue.capitalized)"
+        }
+
+        func menuButton(_ app: XCUIApplication) -> XCUIElement {
+            return app.buttons[buttonIdentifier].firstMatch
+        }
+    }
+
+    private func openNavigationMenu() {
+        readerNavigationMenuButton.tap()
+    }
+
+    public func switchToStream(_ stream: ReaderStream) -> Self {
+        openNavigationMenu()
+
+        let menuButton = stream.menuButton(app)
+        guard menuButton.waitForIsHittable(timeout: 3) else {
+            fatalError("ReaderScreen: Discover menu button not loaded")
+        }
+        menuButton.tap()
+
+        waitForLoadingToFinish()
+
+        return self
+    }
+
+    // wait for the ghost loading view to be removed.
+    private func waitForLoadingToFinish() {
+        let doesNotExistPredicate = NSPredicate(format: "exists == FALSE")
+        let expectation = XCTNSPredicateExpectation(predicate: doesNotExistPredicate, object: ghostLoading)
+        let result = XCTWaiter.wait(for: [expectation], timeout: 5.0)
+        XCTAssertEqual(result, .completed)
     }
 
     @discardableResult

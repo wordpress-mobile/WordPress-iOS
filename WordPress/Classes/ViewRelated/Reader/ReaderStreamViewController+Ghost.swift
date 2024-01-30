@@ -16,6 +16,7 @@ extension ReaderStreamViewController {
             ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
         ])
 
+        ghostableTableView.accessibilityIdentifier = "Reader Ghost Loading"
         ghostableTableView.separatorStyle = .none
 
         let postCardTextCellNib = UINib(nibName: "OldReaderPostCardCell", bundle: Bundle.main)

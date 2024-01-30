@@ -8,7 +8,7 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     let content: ReaderContent
 
     var accessibilityIdentifier: String {
-        return title
+        return "Reader Navigation Menu Item, \(title)"
     }
 
     /// initialize with topic
