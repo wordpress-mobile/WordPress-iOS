@@ -107,7 +107,8 @@ struct WebServerLogsView: View {
                         .font(.system(size: 12, design: .monospaced))
                         .textCase(.uppercase)
                         .padding(4)
-                        .background(Color.blue.opacity(0.33))
+                        .foregroundColor(Color(uiColor: entry.requestTypeTextColor))
+                        .background(Color(uiColor: entry.requestTypeBackgroundColor))
                         .cornerRadius(4)
                     Text(entry.status.flatMap(String.init) ?? "")
                         .font(.system(size: 12, design: .monospaced))
@@ -188,7 +189,29 @@ final class WebServerLogsViewModel: ObservableObject {
     }
 }
 
-extension AtomicWebServerLogEntry: Identifiable {}
+extension AtomicWebServerLogEntry: Identifiable {
+    var requestTypeBackgroundColor: UIColor {
+        switch requestType {
+        case "GET": return .muriel(name: .green, .shade5)
+        case "HEAD": return .muriel(name: .gray, .shade5)
+        case "PUT": return .muriel(name: .yellow, .shade5)
+        case "POST": return .muriel(name: .blue, .shade5)
+        case "DELETE": return .muriel(name: .red, .shade5)
+        default: return .clear
+        }
+    }
+
+    var requestTypeTextColor: UIColor {
+        switch requestType {
+        case "GET": return .muriel(name: .green, .shade80)
+        case "HEAD": return .muriel(name: .gray, .shade80)
+        case "PUT": return .muriel(name: .yellow, .shade80)
+        case "POST": return .muriel(name: .blue, .shade80)
+        case "DELETE": return .muriel(name: .red, .shade80)
+        default: return .clear
+        }
+    }
+}
 
 struct WebServerLogsSearchCriteria: Equatable {
     var startDate: Date?
