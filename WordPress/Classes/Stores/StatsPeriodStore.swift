@@ -1050,6 +1050,7 @@ private extension StatsPeriodStore {
 
     private func shouldFetchOverview() -> Bool {
         return [state.timeIntervalsSummaryStatus,
+                state.totalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -1064,6 +1065,7 @@ private extension StatsPeriodStore {
     private func setAllFetchingStatus(_ status: StoreFetchingStatus) {
         transaction { state in
             state.timeIntervalsSummaryStatus = status
+            state.totalsSummaryStatus = status
             state.topPostsAndPagesStatus = status
             state.topReferrersStatus = status
             state.topPublishedStatus = status
