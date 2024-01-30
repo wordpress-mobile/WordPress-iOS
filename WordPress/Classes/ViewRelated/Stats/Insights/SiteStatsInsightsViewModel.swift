@@ -120,7 +120,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .viewsVisitors:
                 tableRows.append(contentsOf: blocks(for: .viewsVisitors,
                         type: .period,
-                        status: periodStore.summaryStatus,
+                        status: periodStore.timeIntervalsSummaryStatus,
                         checkingCache: { [weak self] in
                             return self?.mostRecentChartData != nil
                         },
@@ -181,7 +181,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .likesTotals:
                 tableRows.append(blocks(for: .likesTotals,
                                         type: .period,
-                                        status: periodStore.summaryStatus,
+                                        status: periodStore.timeIntervalsSummaryStatus,
                                         checkingCache: { [weak self] in
                                             return self?.mostRecentChartData != nil
                                         },
@@ -195,7 +195,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .commentsTotals:
                 tableRows.append(blocks(for: .commentsTotals,
                                         type: .period,
-                                        status: periodStore.summaryStatus,
+                                        status: periodStore.timeIntervalsSummaryStatus,
                                         checkingCache: { [weak self] in
                                             return self?.mostRecentChartData != nil
                                         },

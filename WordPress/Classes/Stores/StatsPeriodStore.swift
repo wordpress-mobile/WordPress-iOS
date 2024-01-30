@@ -3,7 +3,7 @@ import WordPressFlux
 import WidgetKit
 
 enum PeriodType: CaseIterable {
-    case summary
+    case timeIntervalsSummary
     case topPostsAndPages
     case topReferrers
     case topPublished
@@ -104,14 +104,14 @@ struct PeriodStoreState {
 
     // Period overview
 
-    var summary: StatsSummaryTimeIntervalData? {
+    var timeIntervalsSummary: StatsSummaryTimeIntervalData? {
         didSet {
-            StoreContainer.shared.statsWidgets.updateThisWeekHomeWidget(summary: summary)
+            StoreContainer.shared.statsWidgets.updateThisWeekHomeWidget(summary: timeIntervalsSummary)
             storeTodayHomeWidgetData()
         }
     }
 
-    var summaryStatus: StoreFetchingStatus = .idle
+    var timeIntervalsSummaryStatus: StoreFetchingStatus = .idle
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var topPostsAndPagesStatus: StoreFetchingStatus = .idle
@@ -195,7 +195,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         func setValue<T: StatsTimeIntervalData>(_ value: T, _ record: StatsPediodCache.Record) {
             cache.setValue(value, record: record, siteID: siteID)
         }
-        state.summary.map { setValue($0, .summary) }
+        state.timeIntervalsSummary.map { setValue($0, .timeIntervalsSummary) }
         state.topPostsAndPages.map { setValue($0, .topPostsAndPages) }
         state.topReferrers.map { setValue($0, .topReferrers) }
         state.topClicks.map { setValue($0, .topClicks) }
@@ -281,15 +281,15 @@ private extension StatsPeriodStore {
 
         DDLogInfo("Stats Period: Cancel all operations")
 
-        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
+                DDLogError("Stats Period: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Period: Finished fetching summary.")
+            DDLogInfo("Stats Period: Finished fetching timeIntervalsSummary.")
 
             DispatchQueue.main.async {
-                self?.receivedSummary(summary, error)
+                self?.receivedSummary(timeIntervalsSummary, error)
             }
 
             self?.storeDataInCache()
@@ -325,7 +325,7 @@ private extension StatsPeriodStore {
             cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
-            state.summary = getValue(.summary)
+            state.timeIntervalsSummary = getValue(.timeIntervalsSummary)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
             state.topClicks = getValue(.topClicks)
@@ -351,7 +351,7 @@ private extension StatsPeriodStore {
             return
         }
 
-        state.summaryStatus = .loading
+        state.timeIntervalsSummaryStatus = .loading
         scheduler.debounce { [weak self] in
             self?.fetchChartData(date: date, period: period, unit: unit)
             self?.fetchAsyncData(date: date, period: period)
@@ -658,12 +658,12 @@ private extension StatsPeriodStore {
 
     // MARK: - Receive data methods
 
-    private func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
+    private func receivedSummary(_ timeIntervalsSummaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
         transaction { state in
-            state.summaryStatus = error != nil ? .error : .success
+            state.timeIntervalsSummaryStatus = error != nil ? .error : .success
 
-            if summaryData != nil {
-                state.summary = summaryData
+            if timeIntervalsSummaryData != nil {
+                state.timeIntervalsSummary = timeIntervalsSummaryData
             }
         }
     }
@@ -801,7 +801,7 @@ private extension StatsPeriodStore {
     }
 
     private func shouldFetchOverview() -> Bool {
-        return [state.summaryStatus,
+        return [state.timeIntervalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -815,7 +815,7 @@ private extension StatsPeriodStore {
 
     private func setAllFetchingStatus(_ status: StoreFetchingStatus) {
         transaction { state in
-            state.summaryStatus = status
+            state.timeIntervalsSummaryStatus = status
             state.topPostsAndPagesStatus = status
             state.topReferrersStatus = status
             state.topPublishedStatus = status
@@ -873,7 +873,7 @@ private extension StatsPeriodStore {
 extension StatsPeriodStore {
 
     func getSummary() -> StatsSummaryTimeIntervalData? {
-        return state.summary
+        return state.timeIntervalsSummary
     }
 
     func getTopPostsAndPages() -> StatsTopPostsTimeIntervalData? {
@@ -929,12 +929,12 @@ extension StatsPeriodStore {
         return Calendar.autoupdatingCurrent.date(from: mostRecentDay)
     }
 
-    var summaryStatus: StoreFetchingStatus {
-        return state.summaryStatus
+    var timeIntervalsSummaryStatus: StoreFetchingStatus {
+        return state.timeIntervalsSummaryStatus
     }
 
     var isFetchingSummary: Bool {
-        return summaryStatus == .loading
+        return timeIntervalsSummaryStatus == .loading
     }
 
     var topPostsAndPagesStatus: StoreFetchingStatus {
@@ -1010,7 +1010,7 @@ extension StatsPeriodStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
-        return [state.summaryStatus,
+        return [state.timeIntervalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -1098,9 +1098,9 @@ private extension PeriodStoreState {
     // Store data for the iOS 14 Today widget. We don't need to check if the site
     // matches here, as `storeHomeWidgetData` does that for us.
     private func storeTodayHomeWidgetData() {
-        guard summary?.period == .day,
-              summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate(),
-              let todayData = summary?.summaryData.last else {
+        guard timeIntervalsSummary?.period == .day,
+              timeIntervalsSummary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate(),
+              let todayData = timeIntervalsSummary?.summaryData.last else {
             return
         }
 

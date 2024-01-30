@@ -101,9 +101,9 @@ class SiteStatsPeriodViewModel: Observable {
         var sections: [ImmuTableSection] = []
 
         // TODO: Replace with a new Bar Chart
-        sections.append(.init(rows: blocks(for: .summary,
+        sections.append(.init(rows: blocks(for: .timeIntervalsSummary,
                                             type: .period,
-                                            status: store.summaryStatus,
+                                            status: store.timeIntervalsSummaryStatus,
                                             checkingCache: { [weak self] in
                                                 return self?.mostRecentChartData != nil
             },

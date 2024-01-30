@@ -105,9 +105,9 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
                     StatsGhostTopImmutableRow()]
         }
 
-        tableRows.append(contentsOf: blocks(for: .summary,
+        tableRows.append(contentsOf: blocks(for: .timeIntervalsSummary,
                                             type: .period,
-                                            status: store.summaryStatus,
+                                            status: store.timeIntervalsSummaryStatus,
                                             checkingCache: { [weak self] in
                                                 return self?.mostRecentChartData != nil
             },

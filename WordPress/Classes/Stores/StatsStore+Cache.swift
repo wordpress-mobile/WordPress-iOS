@@ -54,8 +54,8 @@ extension StatsInsightsStore: StatsStoreCacheable {
 extension StatsPeriodStore: StatsStoreCacheable {
     func containsCachedData(for type: PeriodType) -> Bool {
         switch type {
-        case .summary:
-            return state.summary != nil
+        case .timeIntervalsSummary:
+            return state.timeIntervalsSummary != nil
         case .topPostsAndPages:
             return state.topPostsAndPages != nil
         case .topReferrers:

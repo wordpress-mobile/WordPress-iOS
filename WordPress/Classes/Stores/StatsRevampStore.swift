@@ -187,7 +187,7 @@ private extension StatsRevampStore {
             cache.getValue(record: record, date: date, period: period, unit: period, siteID: siteID)
         }
         transaction { state in
-            state.summary = getValue(.summary, period: .day)
+            state.summary = getValue(.timeIntervalsSummary, period: .day)
             state.topReferrers = getValue(.topReferrers, period: .week)
             state.topCountries = getValue(.topCountries, period: .week)
             DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache")
@@ -253,7 +253,7 @@ private extension StatsRevampStore {
             cache.getValue(record: record, date: date, period: period, unit: period, siteID: siteID)
         }
         transaction { state in
-            state.summary = getValue(.summary, period: .day)
+            state.summary = getValue(.timeIntervalsSummary, period: .day)
             state.topPostsAndPages = getValue(.topPostsAndPages, period: .week)
             DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache.")
         }
@@ -366,7 +366,7 @@ private extension StatsRevampStore {
             }
         }
 
-        persistData(state.summary, record: .summary)
+        persistData(state.summary, record: .timeIntervalsSummary)
     }
 }
 
