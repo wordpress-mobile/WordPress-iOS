@@ -95,3 +95,7 @@ private enum Strings {
     static let phpLogs = NSLocalizedString("siteMonitoring.phpLogs", value: "PHP Logs", comment: "Title for PHP logs screen.")
     static let webServerLogs = NSLocalizedString("siteMonitoring.metrics", value: "Web Server Logs", comment: "Title for web server log screen.")
 }
+
+extension Date {
+    static let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? Date()
+}

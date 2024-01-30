@@ -3,7 +3,7 @@ import WordPressKit
 
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel
-    @State private var searchCriteria = PHPLogsSearchCriteria()
+    @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo)
 
     var body: some View {
         VStack {
@@ -156,7 +156,7 @@ final class PHPLogsViewModel: ObservableObject {
         do {
             let response = try await atomicSiteService.errorLogs(
                 siteID: siteID,
-                range: (searchCriteria.startDate ?? Date.distantPast)..<(searchCriteria.endDate ?? Date.now),
+                range: (searchCriteria.startDate ?? Date.oneWeekAgo)..<(searchCriteria.endDate ?? Date.now),
                 severity: searchCriteria.severity,
                 scrollID: scrollId
             )
