@@ -54,6 +54,7 @@ class RootViewCoordinator {
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
+    var isSiteCreationActive = false
 
     // MARK: Initializer
 

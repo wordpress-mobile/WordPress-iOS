@@ -80,10 +80,8 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if complianceCoordinator == nil {
-            complianceCoordinator = CompliancePopoverCoordinator()
-            complianceCoordinator?.presentIfNeeded()
-        }
+        complianceCoordinator = CompliancePopoverCoordinator()
+        complianceCoordinator?.presentIfNeeded()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -97,6 +95,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         })
         let source = "post_signup"
         let siteCreationPhase = JetpackFeaturesRemovalCoordinator.siteCreationPhase()
+        RootViewCoordinator.shared.isSiteCreationActive = true
 
         JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
             guard siteCreationPhase != .two else {

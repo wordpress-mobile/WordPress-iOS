@@ -124,7 +124,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
-            launchSiteCreation: { [weak self] in self?.launchSiteCreationFromNoSites() },
+            launchSiteCreation: {
+                [weak self] in self?.launchSiteCreationFromNoSites()
+                RootViewCoordinator.shared.isSiteCreationActive = true
+            },
             launchLoginForSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
         )
         let noSiteView = NoSitesView(
@@ -189,8 +192,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-        complianceCoordinator = CompliancePopoverCoordinator()
-        complianceCoordinator?.presentIfNeeded()
+        if !RootViewCoordinator.shared.isSiteCreationActive {
+            complianceCoordinator = CompliancePopoverCoordinator()
+            complianceCoordinator?.presentIfNeeded()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -918,7 +923,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
-        if isViewOnScreen(), !willDisplayPostSignupFlow {
+        if isViewOnScreen() && !willDisplayPostSignupFlow && !RootViewCoordinator.shared.isSiteCreationActive {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
                 let phase = JetpackFeaturesRemovalCoordinator.generalPhase()

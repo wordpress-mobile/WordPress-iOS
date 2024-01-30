@@ -307,19 +307,14 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         }
 
         dismissTapped(viaDone: true) { [blog, weak self] in
+            RootViewCoordinator.shared.isSiteCreationActive = false
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
+            RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
 
-            // present quick start, and mark site title as complete if they already selected one
-            guard let self = self else {
+            guard let self = self, AppConfiguration.isJetpack else {
                 return
             }
-            if AppConfiguration.isWordPress && Blog.count(in: ContextManager.sharedInstance().mainContext) == 1 {
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
-                    in: RootViewCoordinator.sharedPresenter.rootViewController,
-                    source: .login
-                )
-            }
-            
+
             let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
             self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
