@@ -120,15 +120,13 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `6312d0a91e709a4bae017e04f70e520199928928`)
-  - WordPressKit (~> 12.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `24b055e8066ddfe69a4557c8db7529dbf0537ae0`)
   - WordPressShared (~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -178,6 +176,9 @@ EXTERNAL SOURCES:
   WordPressAuthenticator:
     :commit: 6312d0a91e709a4bae017e04f70e520199928928
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: 24b055e8066ddfe69a4557c8db7529dbf0537ae0
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -186,6 +187,9 @@ CHECKOUT OPTIONS:
   WordPressAuthenticator:
     :commit: 6312d0a91e709a4bae017e04f70e520199928928
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: 24b055e8066ddfe69a4557c8db7529dbf0537ae0
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -218,7 +222,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: ce9688b78d71e296ea54159c4eef3a1ea5cc1838
-  WordPressKit: 55d1abb019a150a59ede51ace089cb148a4375a0
+  WordPressKit: 25452ae322f6fcb605f816caec2ff8ac707c7d9d
   WordPressShared: f99faa127509b666d2f8b931989a900e2fd9d10d
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -231,6 +235,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 3f50c462bc6ca88a080eadc41f81a87e959f5324
+PODFILE CHECKSUM: 2b7da053f75501dc914d2d91b07795f043498427
 
 COCOAPODS: 1.14.2
