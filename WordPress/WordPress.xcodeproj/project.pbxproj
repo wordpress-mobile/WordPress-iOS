@@ -3930,8 +3930,6 @@
 		FA34AD972B629FCB00208D65 /* SiteMonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34AD932B62976100208D65 /* SiteMonitoringView.swift */; };
 		FA34AD992B62A35E00208D65 /* BlogDetailsViewController+SiteMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34AD982B62A35E00208D65 /* BlogDetailsViewController+SiteMonitoring.swift */; };
 		FA34AD9A2B62A35E00208D65 /* BlogDetailsViewController+SiteMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34AD982B62A35E00208D65 /* BlogDetailsViewController+SiteMonitoring.swift */; };
-		FA34AD9F2B63DAE500208D65 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34AD9E2B63DAE500208D65 /* WebView.swift */; };
-		FA34ADA02B63DAE500208D65 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34AD9E2B63DAE500208D65 /* WebView.swift */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */; };
 		FA3A28192A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */; };
@@ -9243,7 +9241,6 @@
 		FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsGhostGrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA34AD932B62976100208D65 /* SiteMonitoringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMonitoringView.swift; sourceTree = "<group>"; };
 		FA34AD982B62A35E00208D65 /* BlogDetailsViewController+SiteMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+SiteMonitoring.swift"; sourceTree = "<group>"; };
-		FA34AD9E2B63DAE500208D65 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignTableViewCell.swift; sourceTree = "<group>"; };
 		FA3A281A2A39C8FF00206D74 /* BlazeCampaignSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignSingleStatView.swift; sourceTree = "<group>"; };
@@ -15145,7 +15142,6 @@
 				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
 				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
 				5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */,
-				FA34AD9E2B63DAE500208D65 /* WebView.swift */,
 			);
 			name = WebViewController;
 			sourceTree = "<group>";
@@ -21382,7 +21378,6 @@
 				830A58D82793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */,
 				08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
-				FA34AD9F2B63DAE500208D65 /* WebView.swift in Sources */,
 				F49B9A0029393049000CEFCE /* MigrationAppDetection.swift in Sources */,
 				3F6DA04125646F96002AB88F /* HomeWidgetData.swift in Sources */,
 				F484D4EA2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */,
@@ -24413,7 +24408,6 @@
 				FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				FABB223C2602FC2C00C8785C /* EditCommentViewController.m in Sources */,
 				FABB223E2602FC2C00C8785C /* PostAutoUploadMessageProvider.swift in Sources */,
-				FA34ADA02B63DAE500208D65 /* WebView.swift in Sources */,
 				FABB223F2602FC2C00C8785C /* GutenbergMediaPickerHelper.swift in Sources */,
 				0CB424EF2ADEE3CD0080B807 /* PostSearchTokenTableCell.swift in Sources */,
 				FABB22402602FC2C00C8785C /* FeatureFlag.swift in Sources */,
