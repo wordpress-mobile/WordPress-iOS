@@ -281,21 +281,172 @@ private extension StatsPeriodStore {
     }
 
     private func fetchAsyncData(date: Date, period: StatsPeriodUnit) {
-        let periodQueries: [PeriodQuery] = [
-            .allPostsAndPages(date: date, period: period),
-            .allSearchTerms(date: date, period: period),
-            .allVideos(date: date, period: period),
-            .allClicks(date: date, period: period),
-            .allAuthors(date: date, period: period),
-            .allReferrers(date: date, period: period),
-            .allCountries(date: date, period: period),
-            .allPublished(date: date, period: period),
-            .allFileDownloads(date: date, period: period)
-        ]
+        guard let service = statsRemote() else {
+            return
+        }
 
-        periodQueries.forEach {
-            DDLogInfo("Stats Period: Start fetching \($0)")
-            refreshPeriodData(for: $0)
+        let group = DispatchGroup()
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching posts.")
+        let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching posts.")
+
+            DispatchQueue.main.async {
+                self?.receivedPostsAndPages(posts, error)
+                DDLogInfo("Stats Period: Leave group fetching posts.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching referrers.")
+        let topReferrers = PeriodOperation(service: service, for: period, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching referrers.")
+
+            DispatchQueue.main.async {
+                self?.receivedReferrers(referrers, error)
+                DDLogInfo("Stats Period: Leave group fetching referrers.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching published.")
+        let topPublished = PublishedPostOperation(service: service, for: period, date: date) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching published.")
+
+            DispatchQueue.main.async {
+                self?.receivedPublished(published, error)
+                DDLogInfo("Stats Period: Leave group fetching published.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching clicks.")
+        let topClicks = PeriodOperation(service: service, for: period, date: date) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching clicks.")
+
+            DispatchQueue.main.async {
+                self?.receivedClicks(clicks, error)
+                DDLogInfo("Stats Period: Leave group fetching clicks.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching authors.")
+        let topAuthors = PeriodOperation(service: service, for: period, date: date) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching authors.")
+
+            DispatchQueue.main.async {
+                self?.receivedAuthors(authors, error)
+                DDLogInfo("Stats Period: Leave group fetching authors.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching search terms.")
+        let topSearchTerms = PeriodOperation(service: service, for: period, date: date) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching search terms.")
+
+            DispatchQueue.main.async {
+                self?.receivedSearchTerms(searchTerms, error)
+                DDLogInfo("Stats Period: Leave group fetching search terms.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching countries.")
+        let topCountries = PeriodOperation(service: service, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching countries.")
+
+            DispatchQueue.main.async {
+                self?.receivedCountries(countries, error)
+                DDLogInfo("Stats Period: Leave group fetching countries.")
+                group.leave()
+            }
+        }
+
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching videos.")
+        let topVideos = PeriodOperation(service: service, for: period, date: date) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching videos.")
+
+            DispatchQueue.main.async {
+                self?.receivedVideos(videos, error)
+                DDLogInfo("Stats Period: Leave group fetching videos.")
+                group.leave()
+            }
+        }
+
+        // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
+        // 'num' relates to the "number of periods to include in the query".
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching file downloads.")
+        let topFileDownloads = PeriodOperation(service: service, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished file downloads.")
+
+            DispatchQueue.main.async {
+                self?.receivedFileDownloads(downloads, error)
+                DDLogInfo("Stats Period: Leave group fetching file downloads.")
+                group.leave()
+            }
+        }
+
+        operationQueue.addOperations([topPostsOperation,
+                                      topReferrers,
+                                      topPublished,
+                                      topClicks,
+                                      topAuthors,
+                                      topSearchTerms,
+                                      topCountries,
+                                      topVideos,
+                                      topFileDownloads],
+                                     waitUntilFinished: false)
+
+        group.notify(queue: .main) { [weak self] in
+            DDLogInfo("Stats Period: Finished fetchAsyncData.")
+            self?.storeDataInCache()
         }
     }
 
@@ -430,6 +581,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        operationQueue.cancelAllOperations()
+
         state.topPostsAndPagesStatus = .loading
 
         operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -459,6 +612,8 @@ private extension StatsPeriodStore {
         guard let statsRemote = statsRemote() else {
             return
         }
+
+        operationQueue.cancelAllOperations()
 
         state.topSearchTermsStatus = .loading
 
@@ -490,6 +645,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        operationQueue.cancelAllOperations()
+
         state.topVideosStatus = .loading
 
         operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
@@ -519,6 +676,8 @@ private extension StatsPeriodStore {
         guard let statsRemote = statsRemote() else {
             return
         }
+
+        operationQueue.cancelAllOperations()
 
         state.topClicksStatus = .loading
 
@@ -550,6 +709,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        operationQueue.cancelAllOperations()
+
         state.topAuthorsStatus = .loading
 
         operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
@@ -579,6 +740,8 @@ private extension StatsPeriodStore {
         guard let statsRemote = statsRemote() else {
             return
         }
+
+        operationQueue.cancelAllOperations()
 
         state.topReferrersStatus = .loading
 
@@ -610,6 +773,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        operationQueue.cancelAllOperations()
+
         state.topCountriesStatus = .loading
 
         operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
@@ -640,6 +805,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        operationQueue.cancelAllOperations()
+
         state.topPublishedStatus = .loading
 
         operationQueue.addOperation(PublishedPostOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
@@ -669,6 +836,8 @@ private extension StatsPeriodStore {
         guard let statsRemote = statsRemote() else {
             return
         }
+
+        operationQueue.cancelAllOperations()
 
         state.topFileDownloadsStatus = .loading
 
@@ -701,6 +870,8 @@ private extension StatsPeriodStore {
             let statsRemote = statsRemote() else {
                 return
         }
+
+        operationQueue.cancelAllOperations()
 
         state.postStatsFetchingStatuses[postID] = .loading
 
