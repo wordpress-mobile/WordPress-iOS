@@ -5501,6 +5501,8 @@
 		FAFC065127D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */; };
 		FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */; };
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
+		FAFF7A1C2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */; };
+		FAFF7A1D2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FE003F5D282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
 		FE003F5E282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
@@ -9366,6 +9368,7 @@
 		FAFC064D27D2360B002F0483 /* QuickStartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartCell.swift; sourceTree = "<group>"; };
 		FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Dashboard.swift"; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
+		FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPLogsView.swift; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -18099,6 +18102,7 @@
 			children = (
 				FA34AD932B62976100208D65 /* SiteMonitoringView.swift */,
 				0C9434D52B687E38006AA6BC /* SiteMonitoringEntryDetailsView.swift */,
+				FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */,
 			);
 			path = "Site Monitoring";
 			sourceTree = "<group>";
@@ -22027,6 +22031,7 @@
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
 				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
 				80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */,
+				FAFF7A1C2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				4A5DE7382B0D511900363171 /* PageTree.swift in Sources */,
@@ -25032,6 +25037,7 @@
 				FAA4012E27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */,
 				FABB23FE2602FC2C00C8785C /* SharingService.swift in Sources */,
 				FABB24002602FC2C00C8785C /* BottomSheetPresentationController.swift in Sources */,
+				FAFF7A1D2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */,
 				FABB24012602FC2C00C8785C /* LikesListController.swift in Sources */,
 				FABB24022602FC2C00C8785C /* AccountSettingsService.swift in Sources */,
 				FABB24032602FC2C00C8785C /* ReaderCSS.swift in Sources */,

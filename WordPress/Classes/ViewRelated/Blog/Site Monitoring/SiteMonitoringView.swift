@@ -17,16 +17,9 @@ struct SiteMonitoringView: View {
         case .metrics:
             WebView(url: viewModel.metricsURL!)
         case .phpLogs:
-            phpLogs
+            PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
         case .webServerLogs:
             webServerLogs
-        }
-    }
-
-    @ViewBuilder
-    private var phpLogs: some View {
-        List {
-            Text("PHP Logs")
         }
     }
 
@@ -78,7 +71,7 @@ final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView
 }
 
 final class SiteMonitoringViewModel: ObservableObject {
-    private let blog: Blog
+    let blog: Blog
 
     @Published var selectedTab: SiteMonitoringTab = .metrics
 
