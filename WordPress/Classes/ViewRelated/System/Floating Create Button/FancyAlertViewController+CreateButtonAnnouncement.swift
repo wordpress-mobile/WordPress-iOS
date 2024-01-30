@@ -1,3 +1,5 @@
+import WordPressUI
+
 extension FancyAlertViewController {
     private struct Strings {
         static let titleText = NSLocalizedString("Streamlined navigation", comment: "Title of alert announcing new Create Button feature.")

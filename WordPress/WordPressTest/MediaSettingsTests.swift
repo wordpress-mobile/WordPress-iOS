@@ -23,12 +23,6 @@ class MediaSettingsTests: XCTestCase {
         expect(imageQuality).to(equal(.medium))
     }
 
-    func testDefaultAdvertiseImageOptimization() {
-        let settings = MediaSettings(database: EphemeralKeyValueDatabase())
-        let advertiseImageOptimization = settings.advertiseImageOptimization
-        expect(advertiseImageOptimization).to(beTrue())
-    }
-
     // MARK: - Max Image Size values
     func testMaxImageSizeMigratesCGSizeToInt() {
         let dimension = Int(1200)
@@ -73,12 +67,5 @@ class MediaSettingsTests: XCTestCase {
         expect(settings.imageQualityForUpload).to(equal(.medium))
         settings.imageOptimizationEnabled = false
         expect(settings.imageQualityForUpload).to(equal(.high))
-    }
-
-    func testAdvertiseImageOptimizationValueBasedOnOptimization() {
-        let settings = MediaSettings(database: EphemeralKeyValueDatabase())
-        expect(settings.advertiseImageOptimization).to(beTrue())
-        settings.imageOptimizationEnabled = false
-        expect(settings.advertiseImageOptimization).to(beFalse())
     }
 }

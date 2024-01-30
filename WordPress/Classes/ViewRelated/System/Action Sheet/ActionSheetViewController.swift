@@ -1,3 +1,5 @@
+import WordPressUI
+
 struct ActionSheetButton {
     let title: String
     let image: UIImage

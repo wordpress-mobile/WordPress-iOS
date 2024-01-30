@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressAuthenticator
 import Gridicons
 import UIKit
+import WordPressUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.

@@ -1,6 +1,9 @@
+import WordPressUI
+
 protocol StatsRowGhostable: ImmuTableRow {
     var statSection: StatSection? { get }
 }
+
 extension StatsRowGhostable {
     var action: ImmuTableAction? {
         return nil

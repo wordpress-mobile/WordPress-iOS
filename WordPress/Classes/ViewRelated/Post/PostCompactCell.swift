@@ -2,6 +2,7 @@ import AutomatticTracks
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressUI
 
 class PostCompactCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!

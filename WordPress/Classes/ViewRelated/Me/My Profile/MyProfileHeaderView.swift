@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 class MyProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Public Properties and Outlets

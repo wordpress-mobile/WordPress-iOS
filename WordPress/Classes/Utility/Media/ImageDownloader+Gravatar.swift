@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 extension ImageDownloader {
 

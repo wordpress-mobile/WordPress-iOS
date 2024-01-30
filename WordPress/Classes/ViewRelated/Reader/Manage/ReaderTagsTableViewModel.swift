@@ -1,3 +1,5 @@
+import WordPressUI
+
 class ReaderTagsTableViewModel: NSObject {
 
     private let tableViewHandler: OffsetTableViewHandler

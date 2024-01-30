@@ -109,12 +109,23 @@ extension WPTabBarController {
 
     @objc func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
 
-        guard let index = tabBar.items?.firstIndex(of: item), tabBar.subviews.count > index + 1 else {
+        // Order of subviews may not be guaranteed, so filter and sort them
+        let tabBarButtons = tabBar.subviews
+            .filter { $0 is UIControl }
+            .sorted { $0.frame.minX < $1.frame.minX }
+
+        // The number of buttons should be the same as the number of tab bar items
+        guard tabBarButtons.count == tabBar.items?.count else {
             return
         }
 
-        let button = tabBar.subviews[(index + 1)]
+        // Get the button that corresponds to the selected tab bar item
+        guard let index = tabBar.items?.firstIndex(of: item),
+              let button = tabBarButtons[safe: index] else {
+            return
+        }
 
+        // Get the button's image view
         guard let imageView = button.subviews.lazy.compactMap({ $0 as? UIImageView }).first else {
             return
         }

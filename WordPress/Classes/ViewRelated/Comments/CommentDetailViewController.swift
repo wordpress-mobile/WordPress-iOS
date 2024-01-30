@@ -1,5 +1,6 @@
 import UIKit
 import CoreData
+import WordPressUI
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
