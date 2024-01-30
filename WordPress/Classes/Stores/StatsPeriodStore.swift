@@ -20,7 +20,7 @@ enum PeriodAction: Action {
 
     // Period overview
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
-    case refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
+    case refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int)
     case refreshPeriod(query: PeriodQuery)
     case toggleSpam(referrerDomain: String, currentValue: Bool)
 }
@@ -181,8 +181,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
             refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
-        case .refreshTrafficOverviewData(let date, let period, let unit):
-            refreshTrafficOverviewData(date: date, period: period, unit: unit)
+        case .refreshTrafficOverviewData(let date, let period, let unit, let limit):
+            refreshTrafficOverviewData(date: date, period: period, unit: unit, limit: limit)
         case .refreshPeriod(let query):
             refreshPeriodData(for: query)
         case .toggleSpam(let referrerDomain, let currentValue):
@@ -324,7 +324,7 @@ private extension StatsPeriodStore {
 
     // MARK: - Traffic Overview Data
 
-    private func refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
+    private func refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int) {
         cancelQueries()
 
         loadFromCache(date: date, period: period, unit: unit)
@@ -336,12 +336,12 @@ private extension StatsPeriodStore {
 
         state.timeIntervalsSummaryStatus = .loading
         scheduler.debounce { [weak self] in
-            self?.fetchTrafficOverviewChartData(date: date, period: period, unit: unit)
+            self?.fetchTrafficOverviewChartData(date: date, period: period, unit: unit, limit: limit)
             self?.fetchAsyncData(date: date, period: period)
         }
     }
 
-    private func fetchTrafficOverviewChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
+    private func fetchTrafficOverviewChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int) {
         guard let service = statsRemote() else {
             return
         }
@@ -361,7 +361,7 @@ private extension StatsPeriodStore {
         }
         operationQueue.addOperation(totalsOperation)
 
-        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: limit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Traffic: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
             }

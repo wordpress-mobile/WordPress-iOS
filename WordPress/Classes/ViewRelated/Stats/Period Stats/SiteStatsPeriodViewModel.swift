@@ -66,9 +66,12 @@ class SiteStatsPeriodViewModel: Observable {
 
     func startFetchingOverview() {
         periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: unit(from: lastRequestedPeriod)))
-        store.actionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(date: lastRequestedDate,
-                                                                                period: lastRequestedPeriod,
-                                                                                unit: unit(from: lastRequestedPeriod)))
+        store.actionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(
+            date: lastRequestedDate,
+            period: lastRequestedPeriod,
+            unit: unit(from: lastRequestedPeriod),
+            limit: limit(for: lastRequestedPeriod))
+        )
     }
 
     func isFetchingChart() -> Bool {
@@ -213,7 +216,12 @@ class SiteStatsPeriodViewModel: Observable {
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(date: date, period: period, unit: unit(from: period)))
+        ActionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(
+            date: date,
+            period: period,
+            unit: unit(from: period),
+            limit: limit(for: period))
+        )
     }
 
     // MARK: - Chart Date
@@ -651,14 +659,24 @@ private extension SiteStatsPeriodViewModel {
     /// - Returns: `StatsPeriodUnit` granularity of period data we want to receive from API
     private func unit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
         switch period {
-        case .day:
-            return .day
-        case .week:
+        case .day, .week:
             return .day
         case .month:
             return .week
         case .year:
             return .month
+        }
+    }
+
+    /// - Returns: Number of pieces of data for a given Stats period
+    private func limit(for period: StatsPeriodUnit) -> Int {
+        switch period {
+        case .day, .week:
+            return 7
+        case .month:
+            return 5
+        case .year:
+            return 12
         }
     }
 }
