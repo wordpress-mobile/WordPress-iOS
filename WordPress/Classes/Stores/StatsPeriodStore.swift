@@ -485,7 +485,7 @@ private extension StatsPeriodStore {
             return
         }
 
-        state.timeIntervalsSummaryStatus = .loading
+        setAllFetchingStatus(.loading)
         scheduler.debounce { [weak self] in
             self?.fetchTrafficOverviewChartData(date: date, period: period, unit: unit, limit: limit)
             self?.fetchAsyncData(date: date, period: period)
@@ -533,6 +533,7 @@ private extension StatsPeriodStore {
 
     private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
         if forceRefresh {
+            DDLogInfo("Stats Period: Cancel all operations")
             cancelQueries()
         }
 
@@ -543,7 +544,7 @@ private extension StatsPeriodStore {
             return
         }
 
-        state.timeIntervalsSummaryStatus = .loading
+        setAllFetchingStatus(.loading)
         scheduler.debounce { [weak self] in
             self?.fetchPeriodOverviewChartData(date: date, period: period, unit: period)
             self?.fetchAsyncData(date: date, period: period)
@@ -554,8 +555,6 @@ private extension StatsPeriodStore {
         guard let service = statsRemote() else {
             return
         }
-
-        DDLogInfo("Stats Period: Cancel all operations")
 
         let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
