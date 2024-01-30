@@ -71,6 +71,10 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Save"]
     }
 
+    private let ghostLoadingGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Reader Ghost Loading"]
+    }
+
     var readerNavigationMenuButton: XCUIElement { readerNavigationButtonGetter(app) }
     var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
@@ -88,6 +92,7 @@ public class ReaderScreen: ScreenObject {
     var savedButton: XCUIElement { savedButtonGetter(app) }
     var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
+    var ghostLoading: XCUIElement { ghostLoadingGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -203,7 +208,17 @@ public class ReaderScreen: ScreenObject {
         }
         menuButton.tap()
 
+        waitForLoadingToFinish()
+
         return self
+    }
+
+    // wait for the ghost loading view to be removed.
+    private func waitForLoadingToFinish() {
+        let doesNotExistPredicate = NSPredicate(format: "exists == FALSE")
+        let expectation = XCTNSPredicateExpectation(predicate: doesNotExistPredicate, object: ghostLoading)
+        let result = XCTWaiter.wait(for: [expectation], timeout: 5.0)
+        XCTAssertEqual(result, .completed)
     }
 
     @discardableResult
