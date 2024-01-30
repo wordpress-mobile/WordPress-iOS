@@ -4,7 +4,7 @@ import WordPressKit
 
 /// A collection of global variables and singletons that the app wants access to.
 ///
-struct Environment {
+struct AppEnvironment {
 
     // MARK: - Globals
 
@@ -27,7 +27,7 @@ struct Environment {
 
     /// The current environment. Use this to access the app globals.
     ///
-    static private(set) var current = Environment()
+    static private(set) var current = AppEnvironment()
 
     // MARK: - Initialization
 
@@ -42,16 +42,16 @@ struct Environment {
     }
 }
 
-extension Environment {
+extension AppEnvironment {
     /// Creates a new Environment, changing just a subset of the current global dependencies.
     ///
     @discardableResult
     static func replaceEnvironment(
-        appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        contextManager: CoreDataStack = Environment.current.contextManager,
-        wordPressComApiBase: URL = Environment.current.wordPressComApiBase) -> Environment {
+        appRatingUtility: AppRatingUtilityType = AppEnvironment.current.appRatingUtility,
+        contextManager: CoreDataStack = AppEnvironment.current.contextManager,
+        wordPressComApiBase: URL = AppEnvironment.current.wordPressComApiBase) -> AppEnvironment {
 
-        current = Environment(
+        current = AppEnvironment(
             appRatingUtility: appRatingUtility,
             contextManager: contextManager,
             wordPressComApiBase: wordPressComApiBase

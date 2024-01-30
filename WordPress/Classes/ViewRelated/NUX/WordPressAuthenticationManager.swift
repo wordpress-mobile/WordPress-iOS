@@ -67,7 +67,7 @@ extension WordPressAuthenticationManager {
                                                    wpcomScheme: WPComScheme,
                                                    wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
                                                    wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
-                                                   wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
+                                                   wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
                                                    googleLoginClientId: ApiCredentials.googleLoginClientId,
                                                    googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
                                                    googleLoginScheme: ApiCredentials.googleLoginSchemeId,

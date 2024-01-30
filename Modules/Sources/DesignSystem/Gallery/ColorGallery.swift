@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ColorGallery: View {
-    @SwiftUI.Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         List {
