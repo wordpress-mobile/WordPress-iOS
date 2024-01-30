@@ -19,7 +19,7 @@ enum PeriodType: CaseIterable {
 enum PeriodAction: Action {
 
     // Period overview
-    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool)
+    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
     case refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
     case refreshPeriod(query: PeriodQuery)
     case toggleSpam(referrerDomain: String, currentValue: Bool)
@@ -179,8 +179,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .refreshPeriodOverviewData(let date, let period, let unit, let forceRefresh):
-            refreshPeriodOverviewData(date: date, period: period, unit: unit, forceRefresh: forceRefresh)
+        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
+            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshTrafficOverviewData(let date, let period, let unit):
             refreshTrafficOverviewData(date: date, period: period, unit: unit)
         case .refreshPeriod(let query):
@@ -380,12 +380,12 @@ private extension StatsPeriodStore {
 
     // MARK: - Period Overview Data
 
-    private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool) {
+    private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
         if forceRefresh {
             cancelQueries()
         }
 
-        loadFromCache(date: date, period: period, unit: unit)
+        loadFromCache(date: date, period: period, unit: period)
 
         guard shouldFetchOverview() else {
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
@@ -394,7 +394,7 @@ private extension StatsPeriodStore {
 
         state.timeIntervalsSummaryStatus = .loading
         scheduler.debounce { [weak self] in
-            self?.fetchPeriodOverviewChartData(date: date, period: period, unit: unit)
+            self?.fetchPeriodOverviewChartData(date: date, period: period, unit: period)
             self?.fetchAsyncData(date: date, period: period)
         }
     }

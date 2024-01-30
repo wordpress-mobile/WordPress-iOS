@@ -530,12 +530,9 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit = .week, forceRefresh: Bool = false) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(
-            date: date,
-            period: period,
-            unit: period,
-            forceRefresh: forceRefresh)
-        )
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
+                period: period,
+                forceRefresh: forceRefresh))
     }
 
     func refreshFollowers(forceRefresh: Bool = true) {
