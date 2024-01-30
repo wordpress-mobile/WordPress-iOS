@@ -75,11 +75,9 @@ struct PHPLogsView: View {
     private var footerRow: some View {
         VStack(alignment: .center) {
             if viewModel.isLoading {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
+                PagingFooterWrapperView(state: .loading)
+            } else if viewModel.error != nil {
+                PagingFooterWrapperView(state: .error)
             } else {
                 EmptyView()
             }
