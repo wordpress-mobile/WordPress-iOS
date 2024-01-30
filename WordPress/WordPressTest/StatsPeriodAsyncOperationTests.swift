@@ -49,7 +49,7 @@ private extension StatsPeriodAsyncOperationTests {
         var periodEndDate: Date
         var jsonDictionary: [String: AnyObject]
 
-        init?(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit?, jsonDictionary: [String: AnyObject]) {
+        init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
             self.periodEndDate = date
             self.period = period
             self.jsonDictionary = jsonDictionary
