@@ -26,9 +26,9 @@ struct WebServerLogsView: View {
             if viewModel.isLoading {
                 ProgressView()
             } else if viewModel.error != nil {
-                Text("Error")
+                NoAtomicLogsView(state: .error(reload))
             } else {
-                Text("No results")
+                NoAtomicLogsView(state: .empty)
             }
         } else {
             List {
@@ -128,6 +128,10 @@ struct WebServerLogsView: View {
         Task {
             await viewModel.loadLogs(searchCriteria: searchCriteria, reset: reset)
         }
+    }
+
+    private func reload() {
+        loadLogs(searchCriteria: searchCriteria, reset: true)
     }
 }
 

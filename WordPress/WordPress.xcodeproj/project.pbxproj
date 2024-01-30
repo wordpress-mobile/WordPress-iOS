@@ -5505,6 +5505,8 @@
 		FAFF7A1D2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */; };
 		FAFF7A222B695801006A7CB2 /* WebServerLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */; };
 		FAFF7A232B695801006A7CB2 /* WebServerLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */; };
+		FAFF7A282B695EA3006A7CB2 /* NoAtomicLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A272B695EA3006A7CB2 /* NoAtomicLogsView.swift */; };
+		FAFF7A292B695EA3006A7CB2 /* NoAtomicLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A272B695EA3006A7CB2 /* NoAtomicLogsView.swift */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FE003F5D282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
 		FE003F5E282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
@@ -9372,6 +9374,7 @@
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPLogsView.swift; sourceTree = "<group>"; };
 		FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerLogsView.swift; sourceTree = "<group>"; };
+		FAFF7A272B695EA3006A7CB2 /* NoAtomicLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAtomicLogsView.swift; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -18107,6 +18110,7 @@
 				0C9434D52B687E38006AA6BC /* SiteMonitoringEntryDetailsView.swift */,
 				FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */,
 				FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */,
+				FAFF7A272B695EA3006A7CB2 /* NoAtomicLogsView.swift */,
 			);
 			path = "Site Monitoring";
 			sourceTree = "<group>";
@@ -22449,6 +22453,7 @@
 				DCF892CC282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */,
 				08D553662821286300AA1E8D /* Tooltip.swift in Sources */,
 				FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
+				FAFF7A282B695EA3006A7CB2 /* NoAtomicLogsView.swift in Sources */,
 				FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
 				436110E022C4241A000773AD /* UIColor+MurielColorsObjC.swift in Sources */,
@@ -25611,6 +25616,7 @@
 				175721172754D31F00DE38BC /* AppIcon.swift in Sources */,
 				FABB258E2602FC2C00C8785C /* StatsForegroundObservable.swift in Sources */,
 				80348F332AF880820045CCD3 /* DomainPurchaseChoicesView.swift in Sources */,
+				FAFF7A292B695EA3006A7CB2 /* NoAtomicLogsView.swift in Sources */,
 				FABB258F2602FC2C00C8785C /* AbstractPost+TitleForVisibility.swift in Sources */,
 				FABB25902602FC2C00C8785C /* SharingViewController.m in Sources */,
 				0C75E26F2A9F63CB00B784E5 /* MediaImageService.swift in Sources */,
