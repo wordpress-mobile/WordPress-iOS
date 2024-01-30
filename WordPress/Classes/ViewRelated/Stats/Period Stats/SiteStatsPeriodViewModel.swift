@@ -66,10 +66,9 @@ class SiteStatsPeriodViewModel: Observable {
 
     func startFetchingOverview() {
         periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: unit(from: lastRequestedPeriod)))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
-                                                                               period: lastRequestedPeriod,
-                                                                               unit: unit(from: lastRequestedPeriod),
-                                                                               forceRefresh: true))
+        store.actionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(date: lastRequestedDate,
+                                                                                period: lastRequestedPeriod,
+                                                                                unit: unit(from: lastRequestedPeriod)))
     }
 
     func isFetchingChart() -> Bool {
@@ -211,10 +210,10 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+    func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, unit: unit(from: period), forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(date: date, period: period, unit: unit(from: period)))
     }
 
     // MARK: - Chart Date
@@ -240,7 +239,7 @@ class SiteStatsPeriodViewModel: Observable {
             // a refresh.
             let increment = forward ? 1 : -1
             let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
-            refreshPeriodOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
+            refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
             return nextDate
         }
 

@@ -4,6 +4,7 @@ import WidgetKit
 
 enum PeriodType: CaseIterable {
     case timeIntervalsSummary
+    case totalsSummary
     case topPostsAndPages
     case topReferrers
     case topPublished
@@ -19,6 +20,7 @@ enum PeriodAction: Action {
 
     // Period overview
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool)
+    case refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
     case refreshPeriod(query: PeriodQuery)
     case toggleSpam(referrerDomain: String, currentValue: Bool)
 }
@@ -113,6 +115,9 @@ struct PeriodStoreState {
 
     var timeIntervalsSummaryStatus: StoreFetchingStatus = .idle
 
+    var totalsSummary: StatsTotalsSummaryData?
+    var totalsSummaryStatus: StoreFetchingStatus = .idle
+
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var topPostsAndPagesStatus: StoreFetchingStatus = .idle
 
@@ -176,6 +181,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .refreshPeriodOverviewData(let date, let period, let unit, let forceRefresh):
             refreshPeriodOverviewData(date: date, period: period, unit: unit, forceRefresh: forceRefresh)
+        case .refreshTrafficOverviewData(let date, let period, let unit):
+            refreshTrafficOverviewData(date: date, period: period, unit: unit)
         case .refreshPeriod(let query):
             refreshPeriodData(for: query)
         case .toggleSpam(let referrerDomain, let currentValue):
@@ -196,6 +203,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             cache.setValue(value, record: record, siteID: siteID)
         }
         state.timeIntervalsSummary.map { setValue($0, .timeIntervalsSummary) }
+        state.totalsSummary.map { setValue($0, .totalsSummary) }
         state.topPostsAndPages.map { setValue($0, .topPostsAndPages) }
         state.topReferrers.map { setValue($0, .topReferrers) }
         state.topClicks.map { setValue($0, .topClicks) }
@@ -272,32 +280,6 @@ private extension StatsPeriodStore {
         }
     }
 
-    // Fetch Chart data first using the async operation
-    //
-    private func fetchChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
-        guard let service = statsRemote() else {
-            return
-        }
-
-        DDLogInfo("Stats Period: Cancel all operations")
-
-        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogError("Stats Period: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats Period: Finished fetching timeIntervalsSummary.")
-
-            DispatchQueue.main.async {
-                self?.receivedSummary(timeIntervalsSummary, error)
-            }
-
-            self?.storeDataInCache()
-        }
-
-        operationQueue.addOperation(chartOperation)
-    }
-
     private func fetchAsyncData(date: Date, period: StatsPeriodUnit) {
         let periodQueries: [PeriodQuery] = [
             .allPostsAndPages(date: date, period: period),
@@ -326,6 +308,7 @@ private extension StatsPeriodStore {
         }
         transaction { state in
             state.timeIntervalsSummary = getValue(.timeIntervalsSummary)
+            state.totalsSummary = getValue(.totalsSummary)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
             state.topClicks = getValue(.topClicks)
@@ -338,6 +321,64 @@ private extension StatsPeriodStore {
         }
         DDLogInfo("Stats Period: Finished setting data to Period store from disk cache.")
     }
+
+    // MARK: - Traffic Overview Data
+
+    private func refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
+        cancelQueries()
+
+        loadFromCache(date: date, period: period, unit: unit)
+
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Traffic Overview refresh triggered while one was in progress.")
+            return
+        }
+
+        state.timeIntervalsSummaryStatus = .loading
+        scheduler.debounce { [weak self] in
+            self?.fetchTrafficOverviewChartData(date: date, period: period, unit: unit)
+            self?.fetchAsyncData(date: date, period: period)
+        }
+    }
+
+    private func fetchTrafficOverviewChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        let totalsOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 1) { [weak self] (totalsSummary: StatsTotalsSummaryData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Traffic: Error fetching totals summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Traffic: Finished fetching total summary.")
+
+            DispatchQueue.main.async {
+                self?.receivedTotalsSummary(totalsSummary, error)
+            }
+
+            self?.storeDataInCache()
+        }
+        operationQueue.addOperation(totalsOperation)
+
+        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Traffic: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Traffic: Finished fetching timeIntervalsSummary.")
+
+            DispatchQueue.main.async {
+                self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+            }
+
+            self?.storeDataInCache()
+        }
+
+        operationQueue.addOperation(chartOperation)
+    }
+
+    // MARK: - Period Overview Data
 
     private func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, forceRefresh: Bool) {
         if forceRefresh {
@@ -353,10 +394,36 @@ private extension StatsPeriodStore {
 
         state.timeIntervalsSummaryStatus = .loading
         scheduler.debounce { [weak self] in
-            self?.fetchChartData(date: date, period: period, unit: unit)
+            self?.fetchPeriodOverviewChartData(date: date, period: period, unit: unit)
             self?.fetchAsyncData(date: date, period: period)
         }
     }
+
+    private func fetchPeriodOverviewChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        DDLogInfo("Stats Period: Cancel all operations")
+
+        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 14) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching timeIntervalsSummary.")
+
+            DispatchQueue.main.async {
+                self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+            }
+
+            self?.storeDataInCache()
+        }
+
+        operationQueue.addOperation(chartOperation)
+    }
+
+    // MARK: - Periods
 
     private func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
@@ -658,12 +725,22 @@ private extension StatsPeriodStore {
 
     // MARK: - Receive data methods
 
-    private func receivedSummary(_ timeIntervalsSummaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
+    private func receivedTimeIntervalsSummary(_ timeIntervalsSummaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.timeIntervalsSummaryStatus = error != nil ? .error : .success
 
             if timeIntervalsSummaryData != nil {
                 state.timeIntervalsSummary = timeIntervalsSummaryData
+            }
+        }
+    }
+
+    private func receivedTotalsSummary(_ summaryData: StatsTotalsSummaryData?, _ error: Error?) {
+        transaction { state in
+            state.totalsSummaryStatus = error != nil ? .error : .success
+
+            if summaryData != nil {
+                state.totalsSummary = summaryData
             }
         }
     }
