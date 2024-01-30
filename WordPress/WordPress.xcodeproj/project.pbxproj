@@ -5503,6 +5503,8 @@
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
 		FAFF7A1C2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */; };
 		FAFF7A1D2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */; };
+		FAFF7A222B695801006A7CB2 /* WebServerLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */; };
+		FAFF7A232B695801006A7CB2 /* WebServerLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FE003F5D282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
 		FE003F5E282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
@@ -9369,6 +9371,7 @@
 		FAFC065027D27241002F0483 /* BlogDetailsViewController+Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Dashboard.swift"; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPLogsView.swift; sourceTree = "<group>"; };
+		FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerLogsView.swift; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -18103,6 +18106,7 @@
 				FA34AD932B62976100208D65 /* SiteMonitoringView.swift */,
 				0C9434D52B687E38006AA6BC /* SiteMonitoringEntryDetailsView.swift */,
 				FAFF7A1B2B693D8B006A7CB2 /* PHPLogsView.swift */,
+				FAFF7A212B695801006A7CB2 /* WebServerLogsView.swift */,
 			);
 			path = "Site Monitoring";
 			sourceTree = "<group>";
@@ -22055,6 +22059,7 @@
 				436D56262117312700CEAA33 /* RegisterDomainDetailsViewController+HeaderFooter.swift in Sources */,
 				931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
+				FAFF7A222B695801006A7CB2 /* WebServerLogsView.swift in Sources */,
 				AE2F3125270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
 				B560914C208A671F00399AE4 /* WPStyleGuide+SiteCreation.swift in Sources */,
 				014ACD142A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */,
@@ -24652,6 +24657,7 @@
 				FABB22E02602FC2C00C8785C /* DebugMenuViewController.swift in Sources */,
 				9801E683274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */,
 				FABB22E12602FC2C00C8785C /* MenuItemCheckButtonView.m in Sources */,
+				FAFF7A232B695801006A7CB2 /* WebServerLogsView.swift in Sources */,
 				80348F312AF87FEA0045CCD3 /* AllDomainsListViewController.swift in Sources */,
 				FABB22E22602FC2C00C8785C /* MenuItemLinkViewController.m in Sources */,
 				FABB22E32602FC2C00C8785C /* PreviewWebKitViewController.swift in Sources */,

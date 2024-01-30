@@ -19,14 +19,7 @@ struct SiteMonitoringView: View {
         case .phpLogs:
             PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
         case .webServerLogs:
-            webServerLogs
-        }
-    }
-
-    @ViewBuilder
-    private var webServerLogs: some View {
-        List {
-            Text("Web Server Logs")
+            WebServerLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
         }
     }
 
