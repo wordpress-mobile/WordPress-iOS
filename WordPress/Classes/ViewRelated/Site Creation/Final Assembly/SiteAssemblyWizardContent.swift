@@ -268,6 +268,7 @@ private extension SiteAssemblyWizardContent {
 
     func dismissTapped(viaDone: Bool = false, completion: (() -> Void)? = nil) {
         // TODO : using viaDone, capture analytics event via #10335
+        RootViewCoordinator.shared.isSiteCreationActive = false
         navigationController?.dismiss(animated: true, completion: completion)
     }
 
