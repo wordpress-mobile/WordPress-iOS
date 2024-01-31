@@ -78,12 +78,28 @@ platform :ios do
 
   lane :trigger_new_hotfix_in_ci do |options|
     version = extract_hotfix_version_from_lane_options!(options)
-    UI.message("TODO: Will start hotfix #{version}")
+
+    buildkite_trigger_build(
+      buildkite_organization: BUILDKITE_ORGANIZATION,
+      buildkite_pipeline: BUILDKITE_PIPELINE,
+      branch: compute_release_branch_name(options:, version:),
+      pipeline_file: File.join(PIPELINES_ROOT, 'new-hotfix.yml'),
+      message: "Set up new hotfix version #{version}",
+      environment: { VERSION: version }
+    )
   end
 
   lane :trigger_finalize_hotfix_in_ci do |options|
     version = extract_hotfix_version_from_lane_options!(options)
-    UI.message("TODO: Will finish hotfix #{version}")
+
+    buildkite_trigger_build(
+      buildkite_organization: BUILDKITE_ORGANIZATION,
+      buildkite_pipeline: BUILDKITE_PIPELINE,
+      branch: compute_release_branch_name(options:, version:),
+      pipeline_file: File.join(PIPELINES_ROOT, 'finalize-hotfix.yml'),
+      message: "Finalize hotfix version #{version}",
+      environment: { VERSION: version }
+    )
   end
 end
 
