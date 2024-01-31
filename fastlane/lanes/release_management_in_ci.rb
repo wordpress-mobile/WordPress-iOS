@@ -75,4 +75,12 @@ platform :ios do
       environment: { RELEASE_VERSION: release_version }
     )
   end
+
+  lane :trigger_new_hotfix_in_ci do
+    UI.message('TODO')
+  end
+
+  lane :trigger_finalize_hotfix_in_ci do
+    UI.message('TODO')
+  end
 end
