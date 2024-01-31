@@ -1562,6 +1562,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableViewDidChangeContent(_ tableView: UITableView) {
         if content.contentCount == 0 {
             displayNoResultsView()
+        } else {
+            hideResultsStatus()
         }
     }
 
