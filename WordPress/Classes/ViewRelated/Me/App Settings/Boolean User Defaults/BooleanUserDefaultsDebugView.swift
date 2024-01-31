@@ -17,6 +17,9 @@ struct BooleanUserDefaultsDebugView: View {
                             )
                             Toggle(userDefaultsSection[userDefaultKey]!.title, isOn: isOn)
                                 .font(.caption)
+                                .toggleStyle(
+                                    SwitchToggleStyle(
+                                        tint: Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack)))
                         }
                     }
             }
