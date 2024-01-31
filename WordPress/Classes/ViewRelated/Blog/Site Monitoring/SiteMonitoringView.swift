@@ -16,10 +16,19 @@ struct SiteMonitoringView: View {
         switch viewModel.selectedTab {
         case .metrics:
             WebView(url: viewModel.metricsURL!)
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "metrics"])
+                }
         case .phpLogs:
             PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "php_logs"])
+                }
         case .webServerLogs:
             WebServerLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "web_server_logs"])
+                }
         }
     }
 

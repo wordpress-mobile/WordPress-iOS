@@ -559,6 +559,10 @@ import Foundation
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
+    // Site monitoring
+    case siteMonitoringTabShown
+    case siteMonitoringEntryDetailsShown
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1523,6 +1527,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Site Monitoring
+        case .siteMonitoringTabShown:
+            return "site_monitoring_tab_shown"
+        case .siteMonitoringEntryDetailsShown:
+            return "site_monitoring_entry_details_shown"
 
         } // END OF SWITCH
     }

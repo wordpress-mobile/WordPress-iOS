@@ -115,7 +115,10 @@ struct WebServerLogsView: View {
 
     private func makeRow(for entry: AtomicWebServerLogEntry) -> some View {
         let attributedDescription = entry.attributedDescription
-        return NavigationLink(destination: { SiteMonitoringEntryDetailsView(text: attributedDescription) }) {
+        return NavigationLink(destination: {
+            SiteMonitoringEntryDetailsView(text: attributedDescription)
+                .onAppear { WPAnalytics.track(.siteMonitoringEntryDetailsShown, properties: ["tab": "web_server_logs"]) }
+        }) {
             WebServerLogsRowView(entry: entry)
                 .swipeActions(edge: .trailing) {
                     ShareLink(item: attributedDescription.string) {
