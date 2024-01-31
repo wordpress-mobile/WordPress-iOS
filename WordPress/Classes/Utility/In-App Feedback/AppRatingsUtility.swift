@@ -37,10 +37,11 @@ class AppRatingUtility: NSObject {
     /// http://stackoverflow.com/questions/26081543/how-to-tell-at-runtime-whether-an-ios-app-is-running-through-a-testflight-beta-i?noredirect=1&lq=1
     ///
     private var promptingDisabledLocal: Bool = {
-        guard let path = Bundle.main.appStoreReceiptURL?.path else {
-            return false
-        }
-        return path.contains("sandboxReceipt")
+//        guard let path = Bundle.main.appStoreReceiptURL?.path else {
+//            return false
+//        }
+//        return path.contains("sandboxReceipt")
+        return false
     }()
 
     private var promptingDisabled: Bool {

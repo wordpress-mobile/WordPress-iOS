@@ -119,7 +119,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `6312d0a91e709a4bae017e04f70e520199928928`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `2eb1d76a86435401e4c741c23e6accf8608ea`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ce6b99a`)
   - WordPressShared (~> 2.3)
   - WordPressUI (~> 1.15)
@@ -127,6 +127,8 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressShared
   trunk:
     - Alamofire
     - AlamofireImage
@@ -155,7 +157,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressShared
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -174,7 +175,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.112.0-alpha4.podspec
   WordPressAuthenticator:
-    :commit: 6312d0a91e709a4bae017e04f70e520199928928
+    :commit: 2eb1d76a86435401e4c741c23e6accf8608ea
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: ce6b99a
@@ -185,7 +186,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressAuthenticator:
-    :commit: 6312d0a91e709a4bae017e04f70e520199928928
+    :commit: 2eb1d76a86435401e4c741c23e6accf8608ea
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: ce6b99a
@@ -223,7 +224,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: ce9688b78d71e296ea54159c4eef3a1ea5cc1838
   WordPressKit: 25452ae322f6fcb605f816caec2ff8ac707c7d9d
-  WordPressShared: f99faa127509b666d2f8b931989a900e2fd9d10d
+  WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -235,6 +236,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 7260e9818eb4025e85daf601ce751fcc023551f8
+PODFILE CHECKSUM: 0605bcba67cd378ea72a187ece8495fed6186712
 
 COCOAPODS: 1.14.2

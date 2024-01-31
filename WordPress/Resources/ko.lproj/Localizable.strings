@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 09:54:11+0000 */
+/* Translation-Revision-Date: 2024-01-23 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%2$@ 중 %1$@가 사이트에서 사용됨";
-
-/* Plan yearly price */
-"%@ per year" = "%@\/1년";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@천조 개";
@@ -2680,7 +2677,6 @@
 "Empty URL" = "빈 URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "활성화";
 
@@ -4090,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "블록 편집기를 로드하는 중입니다.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "사용자명 로드 중";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4576,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "다음 단계";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "다음 달";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "다음 알림";
 
@@ -4759,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "사용 가능한 미리보기 없음";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "기본 사이트 주소를 찾을 수 없음";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "아직 프롬프트 없음";
@@ -5525,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "새 사이트를 미리 보며 방문자에게 표시되는 내용을 참조하세요.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "이전 달";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "이전 알림";
@@ -7161,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "인터넷 연결이 오프라인인 것 같습니다.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "아이템을 미디어 라이브러리에 추가할 수 없습니다.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "만들 수 있는 사이트 종류";
 
@@ -7836,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "요금제 가격을 업데이트할 수 없습니다. 제공된 블로그에 문제가 있습니다.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1개 임시글을 업로드할 수 없음";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1개 글을 업로드할 수 없음";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8275,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google에서 완료하기를 기다리는 중…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "연결 대기 중";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9135,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "이미지 품질";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "이미지 최적화에서는 더 빠른 업로드를 위해 이미지가 축소됩니다.\n\n이 옵션은 기본적으로 활성화되어 있지만, 언제든지 앱 설정에서 변경하실 수 있습니다.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "이미지를 계속 최적화하시겠어요?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "아니요. 끄기";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "예. 그대로 두기";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
 
@@ -9512,9 +9481,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "숨기기";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "도메인 검색";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "도메인 받기";
 
@@ -9770,6 +9736,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "젯팩 모바일 앱을 즐겁게 사용하고 계시나요?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "좋지 않음";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "피드백은 중요";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "훌륭";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "앱 개선을 도와주셔서 감사합니다.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "피드백 발송됨";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "추가 상세 정보를 공유해 주시겠어요?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "지금 안 함";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "개선할 수 있도록 도와주세요.";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "좋음";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
@@ -10365,6 +10361,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "홈 개인 설정";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "사이트 공유";
+
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "사이트 제목 변경";
 
@@ -10565,9 +10564,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "미리보기";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "지금 공개";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "다시 시도";
@@ -11034,6 +11030,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter의 약관 및 가격 변경으로 인해 Twitter 자동 공유를 더는 이용할 수 없습니다.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "트래픽";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";
 
@@ -11138,6 +11137,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "미디어 라이브러리에 추가할 무료 사진을 검색하여 찾으세요!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "제출";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "피드백";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "대화";

@@ -1,5 +1,14 @@
-Cuando edites bloques de texto en el editor, el teclado de tu dispositivo ya no desaparecerá durante la edición. El editor también se desplazará directamente a un nuevo bloque cuando lo añadas. Sigue escribiendo, colega.
+Ahora verás una notificación cuando estés trabajando y se vaya la conexión. Las cargas multimedia a bloques de imágenes también se dejarán en pausa si la conexión a Internet se interrumpe y se volverán a reanudar cuando la conexión se restablezca.
+Como ventaja añadida, si vuelves a intentar realizar una carga multimedia fallida manualmente, la aplicación volverá a intentar a realizar todas las cargas multimedia fallidas en tu publicación. Esto sí que es eficiencia.
 
-¿Echas de menos acceder con tus claves de seguridad? No pasa nada: hemos vuelto a habilitar las claves de seguridad para la autenticación de dos factores durante el acceso. La única persona que accede a tu cuenta eres tú.
+Cuando seleccionas un gradiente personalizado en el editor de bloques, ahora hay un indicador te muestra el color que has elegido.
 
-Por último, hemos resuelto varios problemas raros (y no tan raros) que provocaban bloqueos en la aplicación. Estos problemas estaban relacionados principalmente con la edición de etiquetas y categorías, el uso de etiquetas duplicadas, la eliminación de entradas y la edición de entradas eliminadas. Forma parte del trabajo.
+Al desplazarte por las imágenes en la pantalla de detalles de Site Media, estas se cargarán de forma anticipada para agilizar el proceso. Si es que no estaban ya cargadas de antes.
+
+Hemos añadido compatibilidad para imágenes de póster, reproducciones de vídeo y GIF, documentos y otras previsualizaciones de archivos con una resolución más alta. (homer-simpson-woohoo.gif)
+
+Hemos modificado el flujo de publicación para ofrecerte instrucciones más claras. Los usuarios con función de colaborador verán la acción de envío de reseñas en lugar de la de publicación. También podrás enviar a la papelera publicaciones en borrador y eliminadas sin tener que confirmar la acción.
+
+El menú contextual del sitio incluye ahora una acción para compartir, de modo que podrás compartir tu sitio con otros usuarios.
+
+Por último, en un mundo que vive pendiente de la visibilidad y los "Likes", hemos mejorado la sugerencia del sistema de puntuación de la aplicación. Se te pedirá que dejes una reseña si te gusta la aplicación, o podrás acceder a un formulario de valoración si crees que la aplicación necesita alguna puesta a punto. Las opiniones de la comunidad nos sirven para mejorar, así que no dudes en compartir la tuya.

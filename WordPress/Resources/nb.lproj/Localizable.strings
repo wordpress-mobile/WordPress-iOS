@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -73,9 +73,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ av %2$@ brukt på ditt nettsted";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per år";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ billiard";
@@ -1806,7 +1803,6 @@
 "Empty URL" = "Tom URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktiver";
 
@@ -2681,9 +2677,6 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Laster inn strøm...";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Laster inn brukernavn";
 
 /* Loading tags
    Loading tags.
@@ -4967,9 +4960,6 @@
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internettforbindelsen synes å være frakoblet.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Gjenstanden kunne ikke legges til i Mediebiblioteket.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Disse typen nettsteder kan opprettes";
 
@@ -5412,9 +5402,6 @@
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Kunne ikke oppdatere abonnementspriser. Det er et problem med denne bloggen.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Kunne ikke laste opp 1 kladd";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Kunne ikke laste opp 1 innlegg";

@@ -1,5 +1,14 @@
-When you’re editing text blocks in the editor, your device’s keyboard will no longer disappear mid-edit. The editor will also scroll directly to a new block when you add it. Write away, friend.
+You’ll now see a notification when you’re working offline. Media uploads to image blocks will also pause when your internet connection cuts out, then resume when you reconnect.
+As an added bonus, when you manually retry a failed media upload, the app will retry all other failed media uploads in your post. Now that’s efficient.
 
-Miss logging in with your security keys? Not anymore – we’ve re-enabled security keys for two-factor authentication during login. The only one getting into your account is you.
+When you select a custom gradient in the block editor, there’s now an indicator to show your chosen colour.
 
-Finally, we tackled several rare (and not-so-rare) problems that were causing app crashes. These issues were mostly related to editing tags and categories, using duplicate tags, deleting posts, and editing deleted posts. All in a day’s work.
+Scrolling through your images on the Site Media details screen will make them load ahead of time for a faster experience. Or maybe they were there all along.
+
+We added support for higher-resolution thumbnails, GIF and video playback, documents, and other file previews. (homer-simpson-woohoo.gif)
+
+We changed the publishing flow to give you clearer instructions. Users with the “Contributor” role will see the “Submit for Review” action instead of “Publish”. You can also bin draft posts and deleted posts without having to confirm.
+
+There’s now a “Share” action in the site context menu so you can share your site with others.
+
+Finally, because we live for the applause, we improved the in-app rating prompt. You’ll be asked to leave a review if you’re happy with the app, or be given a feedback form if you feel the app needs work. Feedback is how we get better, so feel free to share yours!
