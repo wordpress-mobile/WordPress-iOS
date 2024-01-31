@@ -6,17 +6,20 @@ import UIKit
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel
     @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
-        VStack {
-            filterBar
-            Spacer()
+        VStack(spacing: 0) {
+            VStack(spacing: 8) {
+                filterBar
+                Divider()
+            }
+            .background(colorScheme == .dark ? Color(uiColor: .secondarySystemBackground) : nil)
             main
-            Spacer()
         }
-        .onAppear(perform: {
+        .onAppear {
             loadLogs(searchCriteria: searchCriteria)
-        })
+        }
         .onChange(of: searchCriteria) { value in
             loadLogs(searchCriteria: value, reset: true)
         }
@@ -25,12 +28,10 @@ struct PHPLogsView: View {
     @ViewBuilder
     private var main: some View {
         if viewModel.loadedLogs.isEmpty {
-            if viewModel.isLoading {
-                ProgressView()
-            } else if viewModel.error != nil {
-                NoAtomicLogsView(state: .error(reload))
-            } else {
-                NoAtomicLogsView(state: .empty)
+            VStack {
+                Spacer()
+                stateView
+                Spacer()
             }
         } else {
             List {
@@ -45,6 +46,17 @@ struct PHPLogsView: View {
                 .listSectionSeparator(.hidden, edges: .bottom)
             }
             .listStyle(.plain)
+        }
+    }
+
+    @ViewBuilder
+    private var stateView: some View {
+        if viewModel.isLoading {
+            ProgressView()
+        } else if viewModel.error != nil {
+            NoAtomicLogsView(state: .error(reload))
+        } else {
+            NoAtomicLogsView(state: .empty)
         }
     }
 
@@ -91,25 +103,24 @@ struct PHPLogsView: View {
     }
 
     private func makeRow(for entry: AtomicErrorLogEntry) -> some View {
-        NavigationLink(destination: { SiteMonitoringEntryDetailsView(entry: entry) }) {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(entry.severity ?? "")
-                        .font(.system(size: 12, design: .monospaced))
-                        .textCase(.uppercase)
-                        .padding(4)
-                        .foregroundColor(Color(uiColor: entry.severityTextColor))
-                        .background(Color(uiColor: entry.severityBackgroundColor))
-                        .cornerRadius(4)
-                    Spacer()
-                    Text((entry.timestamp?.mediumStringWithTime()) ?? "")
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
+        let attributedDescription = entry.attributedDescription
+        return NavigationLink(destination: { SiteMonitoringEntryDetailsView(text: attributedDescription) }) {
+            PHPLogsEntryRowView(entry: entry)
+                .swipeActions(edge: .trailing) {
+                    ShareLink(item: attributedDescription.string) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    .tint(Color.blue)
                 }
-                Text(entry.message ?? "")
-                    .font(.system(size: 15))
-                    .lineLimit(3)
-            }
+                .contextMenu {
+                    ShareLink(item: attributedDescription.string) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                } preview: {
+                    Text(AttributedString(attributedDescription))
+                        .frame(width: 320)
+                        .padding()
+                }
         }
     }
 
@@ -121,6 +132,31 @@ struct PHPLogsView: View {
 
     private func reload() {
         loadLogs(searchCriteria: searchCriteria, reset: true)
+    }
+}
+
+private struct PHPLogsEntryRowView: View {
+    let entry: AtomicErrorLogEntry
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(entry.severity ?? "")
+                    .font(.system(.caption, design: .monospaced))
+                    .textCase(.uppercase)
+                    .padding(4)
+                    .foregroundColor(Color(uiColor: entry.severityTextColor))
+                    .background(Color(uiColor: entry.severityBackgroundColor))
+                    .cornerRadius(4)
+                Spacer()
+                Text((entry.timestamp?.mediumStringWithTime()) ?? "")
+                    .font(.system(.footnote))
+                    .foregroundStyle(.secondary)
+            }
+            Text(entry.message ?? "")
+                .font(.system(.subheadline))
+                .lineLimit(3)
+        }
     }
 }
 
@@ -159,9 +195,12 @@ final class PHPLogsViewModel: ObservableObject {
         error = nil
 
         do {
+            let endDate = searchCriteria.endDate ?? Date.now
+            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+
             let response = try await atomicSiteService.errorLogs(
                 siteID: siteID,
-                range: (searchCriteria.startDate ?? Date.oneWeekAgo)..<(searchCriteria.endDate ?? Date.now),
+                range: startDate..<endDate,
                 severity: searchCriteria.severity,
                 scrollID: scrollId
             )

@@ -2,18 +2,10 @@ import SwiftUI
 
 @available(iOS 16, *)
 struct SiteMonitoringEntryDetailsView: View {
-    private let text: NSAttributedString
-
-    init(entry: AtomicErrorLogEntry) {
-        self.text = makeAttributedText(for: entry)
-    }
-
-    init(entry: AtomicWebServerLogEntry) {
-        self.text = makeAttributedText(for: entry)
-    }
+    let text: NSAttributedString
 
     var body: some View {
-        TextView(text: text)
+        SiteMonitoringTextView(text: text)
             .navigationTitle(Strings.navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -24,8 +16,9 @@ struct SiteMonitoringEntryDetailsView: View {
     }
 }
 
-private struct TextView: UIViewRepresentable {
+private struct SiteMonitoringTextView: UIViewRepresentable {
     let text: NSAttributedString
+    var isScrollEnabled = true
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -41,29 +34,33 @@ private struct TextView: UIViewRepresentable {
     }
 }
 
-private func makeAttributedText(for entry: AtomicErrorLogEntry) -> NSAttributedString {
-    makeAttributedText(metadata: [
-        (Strings.metadataKeyTimestamp, entry.timestamp.map(makeString)),
-        (Strings.metadataKeyKind, entry.kind),
-        (Strings.metadataKeyName, entry.name),
-        (Strings.metadataKeyFile, entry.file),
-        (Strings.metadataKeyLine, entry.line?.description)
-    ], message: entry.message)
+extension AtomicErrorLogEntry {
+    var attributedDescription: NSAttributedString {
+        makeAttributedText(metadata: [
+            (Strings.metadataKeyTimestamp, timestamp.map(makeString)),
+            (Strings.metadataKeyKind, kind),
+            (Strings.metadataKeyName, name),
+            (Strings.metadataKeyFile, file),
+            (Strings.metadataKeyLine, line?.description)
+        ], message: message)
+    }
 }
 
-private func makeAttributedText(for entry: AtomicWebServerLogEntry) -> NSAttributedString {
-    makeAttributedText(metadata: [
-        (Strings.metadataKeyRequestURL, entry.requestUrl),
-        (Strings.metadataKeyStatus, entry.status?.description),
-        (Strings.metadataKeyTimestamp, entry.date.map(makeString)),
-        (Strings.metadataKeyResponseBodySize, entry.bodyBytesSent.map {
-            ByteCountFormatter().string(fromByteCount: Int64($0))
-        }),
-        (Strings.metadataKeyRequestTime, entry.requestTime.map(makeString)),
-        (Strings.metadataKeyCached, (entry.cached == "true").description),
-        (Strings.metadataKeyHTTPHost, entry.httpHost),
-        (Strings.metadataKeyReferrer, entry.httpReferer)
-    ])
+extension AtomicWebServerLogEntry {
+    var attributedDescription: NSAttributedString {
+        makeAttributedText(metadata: [
+            (Strings.metadataKeyRequestURL, requestUrl),
+            (Strings.metadataKeyStatus, status?.description),
+            (Strings.metadataKeyTimestamp, date.map(makeString)),
+            (Strings.metadataKeyResponseBodySize, bodyBytesSent.map {
+                ByteCountFormatter().string(fromByteCount: Int64($0))
+            }),
+            (Strings.metadataKeyRequestTime, requestTime.map(makeString)),
+            (Strings.metadataKeyCached, (cached == "true").description),
+            (Strings.metadataKeyHTTPHost, httpHost),
+            (Strings.metadataKeyReferrer, httpReferer)
+        ])
+    }
 }
 
 private func makeAttributedText(metadata: [(String, String?)], message: String? = nil) -> NSAttributedString {
@@ -119,7 +116,7 @@ private enum Strings {
 #Preview("AtomicErrorLogEntry") {
     NavigationView {
         if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(entry: errorLogEntry)
+            SiteMonitoringEntryDetailsView(text: errorLogEntry.attributedDescription)
         }
     }
 }
@@ -127,7 +124,7 @@ private enum Strings {
 #Preview("AtomicWebServerLogEntry") {
     NavigationView {
         if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(entry: serverLogEntry)
+            SiteMonitoringEntryDetailsView(text: serverLogEntry.attributedDescription)
         }
     }
 }

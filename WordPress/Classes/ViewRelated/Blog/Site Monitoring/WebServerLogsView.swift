@@ -6,17 +6,20 @@ import UIKit
 struct WebServerLogsView: View {
     @StateObject var viewModel: WebServerLogsViewModel
     @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
-        VStack {
-            filterBar
-            Spacer()
+        VStack(spacing: 0) {
+            VStack(spacing: 8) {
+                filterBar
+                Divider()
+            }
+            .background(colorScheme == .dark ? Color(uiColor: .secondarySystemBackground) : nil)
             main
-            Spacer()
         }
-        .onAppear(perform: {
+        .onAppear {
             loadLogs(searchCriteria: searchCriteria)
-        })
+        }
         .onChange(of: searchCriteria) { value in
             loadLogs(searchCriteria: value, reset: true)
         }
@@ -25,12 +28,10 @@ struct WebServerLogsView: View {
     @ViewBuilder
     private var main: some View {
         if viewModel.loadedLogs.isEmpty {
-            if viewModel.isLoading {
-                ProgressView()
-            } else if viewModel.error != nil {
-                NoAtomicLogsView(state: .error(reload))
-            } else {
-                NoAtomicLogsView(state: .empty)
+            VStack {
+                Spacer()
+                stateView
+                Spacer()
             }
         } else {
             List {
@@ -45,6 +46,17 @@ struct WebServerLogsView: View {
                 .listSectionSeparator(.hidden, edges: .bottom)
             }
             .listStyle(.plain)
+        }
+    }
+
+    @ViewBuilder
+    private var stateView: some View {
+        if viewModel.isLoading {
+            ProgressView()
+        } else if viewModel.error != nil {
+            NoAtomicLogsView(state: .error(reload))
+        } else {
+            NoAtomicLogsView(state: .empty)
         }
     }
 
@@ -102,28 +114,24 @@ struct WebServerLogsView: View {
     }
 
     private func makeRow(for entry: AtomicWebServerLogEntry) -> some View {
-        NavigationLink(destination: { SiteMonitoringEntryDetailsView(entry: entry) }) {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(entry.requestType ?? "")
-                        .font(.system(size: 12, design: .monospaced))
-                        .textCase(.uppercase)
-                        .padding(4)
-                        .foregroundColor(Color(uiColor: entry.requestTypeTextColor))
-                        .background(Color(uiColor: entry.requestTypeBackgroundColor))
-                        .cornerRadius(4)
-                    Text(entry.status.flatMap(String.init) ?? "")
-                        .font(.system(size: 12, design: .monospaced))
-                        .textCase(.uppercase)
-                    Spacer()
-                    Text((entry.date?.mediumStringWithTime()) ?? "")
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
+        let attributedDescription = entry.attributedDescription
+        return NavigationLink(destination: { SiteMonitoringEntryDetailsView(text: attributedDescription) }) {
+            WebServerLogsRowView(entry: entry)
+                .swipeActions(edge: .trailing) {
+                    ShareLink(item: attributedDescription.string) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    .tint(Color.blue)
                 }
-                Text(entry.requestUrl ?? "")
-                    .font(.system(size: 15))
-                    .lineLimit(3)
-            }
+                .contextMenu {
+                    ShareLink(item: attributedDescription.string) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                } preview: {
+                    Text(AttributedString(attributedDescription))
+                        .frame(width: 320)
+                        .padding()
+                }
         }
     }
 
@@ -135,6 +143,34 @@ struct WebServerLogsView: View {
 
     private func reload() {
         loadLogs(searchCriteria: searchCriteria, reset: true)
+    }
+}
+
+private struct WebServerLogsRowView: View {
+    let entry: AtomicWebServerLogEntry
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(entry.requestType ?? "")
+                    .font(.system(.caption, design: .monospaced))
+                    .textCase(.uppercase)
+                    .padding(4)
+                    .foregroundColor(Color(uiColor: entry.requestTypeTextColor))
+                    .background(Color(uiColor: entry.requestTypeBackgroundColor))
+                    .cornerRadius(4)
+                Text(entry.status.flatMap(String.init) ?? "")
+                    .font(.system(.caption, design: .monospaced))
+                    .textCase(.uppercase)
+                Spacer()
+                Text((entry.date?.mediumStringWithTime()) ?? "")
+                    .font(.system(.footnote))
+                    .foregroundStyle(.secondary)
+            }
+            Text(entry.requestUrl ?? "")
+                .font(.system(.subheadline))
+                .lineLimit(3)
+        }
     }
 }
 
@@ -173,9 +209,12 @@ final class WebServerLogsViewModel: ObservableObject {
         error = nil
 
         do {
+            let endDate = searchCriteria.endDate ?? Date.now
+            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+
             let response = try await atomicSiteService.webServerLogs(
                 siteID: siteID,
-                range: (searchCriteria.startDate ?? Date.oneWeekAgo)..<(searchCriteria.endDate ?? Date.now),
+                range: startDate..<endDate,
                 httpMethod: searchCriteria.requestType,
                 statusCode: searchCriteria.status,
                 scrollID: scrollId
