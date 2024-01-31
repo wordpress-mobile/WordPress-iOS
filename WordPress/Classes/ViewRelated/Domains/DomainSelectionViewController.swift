@@ -281,7 +281,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         let type: DomainsServiceRemote.DomainSuggestionType
         switch domainSelectionType {
         case .siteCreation:
-            type = (RemoteFeatureFlag.plansInSiteCreation.enabled() && AppConfiguration.isJetpack) ? .freeAndPaid : .wordPressDotComAndDotBlogSubdomains
+            type = siteCreationType
         default:
             if coordinator?.site?.hasBloggerPlan == true {
                 type = .allowlistedTopLevelDomains(["blog"])
@@ -295,6 +295,12 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
                 self?.handleResult(results)
             }
         }
+    }
+
+    private var siteCreationType: DomainsServiceRemote.DomainSuggestionType {
+        (RemoteFeatureFlag.plansInSiteCreation.enabled() && AppConfiguration.isJetpack) ?
+            .freeAndPaid :
+            .wordPressDotComAndDotBlogSubdomains
     }
 
     private func handleResult(_ results: Result<SiteAddressServiceResult, Error>) {

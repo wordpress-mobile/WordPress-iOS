@@ -255,10 +255,6 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         self.errorStateViewController = errorStateViewController
     }
-
-    private func shouldPresentJetpackFeaturesRemovalOverlay() -> Bool {
-        AppConfiguration.isWordPress && Blog.count(in: ContextManager.sharedInstance().mainContext) == 1
-    }
 }
 
 // MARK: ErrorStateViewController support
@@ -306,10 +302,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
+        RootViewCoordinator.shared.isSiteCreationActive = false
+        RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
+
         dismissTapped(viaDone: true) { [blog, weak self] in
-            RootViewCoordinator.shared.isSiteCreationActive = false
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
-            RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
 
             guard let self = self, AppConfiguration.isJetpack else {
                 return
