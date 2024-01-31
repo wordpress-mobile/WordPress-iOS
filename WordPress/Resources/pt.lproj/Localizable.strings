@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -28,9 +28,6 @@
 
 /* Number of Links */
 "%@ links" = "%@ ligações";
-
-/* Plan yearly price */
-"%@ per year" = "%@ por ano";
 
 /* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
 "%d accounts" = "%d contas";

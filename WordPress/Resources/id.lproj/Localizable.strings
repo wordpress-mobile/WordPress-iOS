@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-01-23 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ dari %2$@ digunakan di situs Anda";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per tahur";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ kuadriliun";
@@ -2674,7 +2671,6 @@
 "Empty URL" = "URL Kosong";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktifkan";
 
@@ -4084,9 +4080,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Memuat editor blok.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Memuat nama pengguna";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4570,9 +4563,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Langkah Berikutnya";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Bulan selanjutnya";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Pemberitahuan selanjutnya";
 
@@ -4753,9 +4743,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Pratinjau tidak tersedia";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Tidak ada alamat situs utama";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Belum ada petunjuk";
@@ -5519,9 +5506,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Pratinjau situs Anda untuk mengetahui tampilan situs yang akan dilihat oleh pengunjung.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Bulan sebelumnya ";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Pemberitahuan sebelumnya";
@@ -7155,9 +7139,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Sepertinya koneksi internet-nya terputus.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Item tidak bisa ditambahkan ke Pustaka Media.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Berbagai macam situs yang dapat dibuat";
 
@@ -7827,9 +7808,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Tidak dapat memperbarui harga paket. Terdapat masalah dengan blog yang diberikan.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Gagal mengunggah 1 pos konsep";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Gagal mengunggah 1 pos";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8266,6 +8244,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Menunggu Google untuk menyelesaikan…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Menunggu koneksi";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9129,18 +9110,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Kualitas Gambar";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Pengoptimalan gambar mengecilkan gambar agar bisa diunggah lebih cepat.\n\nPilihan ini diaktifkan sesuai dengan pengaturan asal, tetapi Anda dapat mengubahnya di pengaturan aplikasi kapan saja.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Teruskan pengoptimalan gambar?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Tidak, matikan";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Ya, biarkan";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
 
@@ -9503,9 +9472,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Tutup";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Cari domain";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Dapatkan Domain";
 
@@ -9764,6 +9730,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/alamat-situs-saya (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Apakah Anda menyukai aplikasi seluler Jetpack?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Kurang suka";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Feedback dari Anda sangat berharga";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Sangat baik";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Terima kasih sudah membantu kami meningkatkan aplikasi ini.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback terkirim";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Ada hal lain yang ingin Anda bagikan dengan kami?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Lain kali";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Bantu kami lebih baik lagi";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Ya";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Untuk mengambil foto atau video agar dapat digunakan di artikel Anda.";
@@ -10377,6 +10373,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalisasikan beranda";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Bagikan situs";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Ubah ikon situs";
 
@@ -10586,9 +10585,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Pratinjau";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publikasikan sekarang";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Coba ulang";
@@ -11058,6 +11054,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Fitur berbagi otomatis ke Twitter tidak lagi tersedia karena adanya perubahan ketentuan dan harga dari Twitter.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Lalu lintas";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 hari terakhir";
 
@@ -11165,6 +11164,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Kirim";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Dalam percakapan ini";

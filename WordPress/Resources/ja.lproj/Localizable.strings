@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-12 10:54:12+0000 */
+/* Translation-Revision-Date: 2024-01-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "サイトの利用量: %1$@ \/ %2$@";
-
-/* Plan yearly price */
-"%@ per year" = "%@ \/ 年";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ (単位 : 1,000兆)";
@@ -2680,7 +2677,6 @@
 "Empty URL" = "空の URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "有効化する";
 
@@ -4090,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "ブロックエディターを読み込んでいます。";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "ユーザー名を読み込んでいます";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4576,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "次のステップ";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "翌月";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "次の通知";
 
@@ -4759,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "利用できるプレビューがありません";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "主要サイトのアドレスが見つかりません";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "プロンプトはまだありません";
@@ -5525,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "サイトをプレビューして訪問者に表示される内容を確認できます。";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "前の月";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "前の通知";
@@ -7161,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "インターネットに接続されていないようです。";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "項目をメディアライブラリに追加できませんでした。";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "作成可能なサイトの種類";
 
@@ -7836,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "プランの価格を更新できません。提供されたブログに問題があります。";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1件の下書き投稿をアップロードできません";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1件の投稿をアップロードできません";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8275,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google が完了するのを待機しています…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "接続を待機中";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9135,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "画質";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "画像の最適化により、画像のサイズを縮小して迅速に読み込めます。\n\nこのオプションはデフォルトで有効になっていますが、アプリの設定でいつでも変更できます。";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "画像の最適化を続けますか ?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "オフにする";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "そのままにする";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音声ファイル";
 
@@ -9509,9 +9478,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "非表示";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "ドメインを検索";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "ドメインを取得";
 
@@ -9770,6 +9736,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Jetpack モバイルアプリをお楽しみいただけていますか ?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "そこまででない";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "フィードバックをお待ちしております";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "すばらしい";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "アプリの改善にご協力いただきありがとうございます。";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "フィードバックを送信しました";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "さらに詳しい情報を共有していただけますか ?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "後で";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "改善にご協力ください";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "もちろん";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "投稿に使用する写真または動画を撮る。";
@@ -10383,6 +10379,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "ホームをパーソナライズ";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "サイトを共有する";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "サイトアイコンを変更";
 
@@ -10592,9 +10591,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "プレビュー";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "今すぐ公開";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "再試行";
@@ -11061,6 +11057,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "トラフィック";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";
 
@@ -11168,6 +11167,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "無料の写真を検索して、メディアライブラリに追加してください。";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "送信";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "フィードバック";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "この会話内";

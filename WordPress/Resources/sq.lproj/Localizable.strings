@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-18 07:27:21+0000 */
+/* Translation-Revision-Date: 2024-01-24 11:50:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ nga %2$@ gjithsej të përdorur në sajtin tuaj";
-
-/* Plan yearly price */
-"%@ per year" = "%@ në vit";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ kuadrilion";
@@ -2671,7 +2668,6 @@
 "Empty URL" = "URL e Zbrazët";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivizoje";
 
@@ -4078,9 +4074,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Po ngarkohet përpunuesi me blloqe.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Po ngarkohen emra përdoruesish";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4564,9 +4557,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Hapat Pasues";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Muaji pasues";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Njoftimi pasues";
 
@@ -4747,9 +4737,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "S’ka paraparje gati";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "S’u gjet adresë parësore sajti";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Ende pa cytje";
@@ -5510,9 +5497,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Bëni një paraparje të sajtit tuaj që të shihni ç’do të shohin vizitorët tuaj.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Muaji i mëparshëm";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Njoftimi i mëparshëm";
@@ -7143,9 +7127,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Lidhja internet duket se është jashtë linje.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Objekti s’u shtua dot te Mediateka.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Llojet e sajteve që mund të krijohen";
 
@@ -7818,9 +7799,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "S’arrihet të përditësohen çmime planesh. Ka një problem me blogun e dhënë.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "S’arrihet të ngarkohet 1 skicë postimi";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "S’arrihet të ngarkohet 1 postim";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8257,6 +8235,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Po pritet që të mbarojë punë Google…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Po pritet për lidhje";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9120,18 +9101,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Cilësi Figurash";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Optimizimi i figurave i tkurr këto, për ngarkim më të shpejtë.\n\nKjo mundësi, si parazgjedhje, është e aktivizuar, por mund ta ndryshoni që nga rregullimet e aplikacioni kurdo.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Të vazhdohet të optimizohen figura?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Jo, çaktivizoje";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Po, lëre të aktivizuar";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "kartelë audio";
 
@@ -9466,12 +9435,18 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.overridenValue" = "Formësim Së Largëti";
 
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Riktheji te parazgjedhjet";
+
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Formësim Së Largëti";
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Hiqe Turin e Tanishëm";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Regjistrim";
 
 /* Debug Menu section title */
 "debugMenu.section.quickStart" = "Nisje e Shpejtë";
@@ -9487,9 +9462,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Fshihe këtë";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Kërkoni për një përkatësi";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Merrni Përkatësi";
@@ -9746,6 +9718,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/adresa-e-sajtit-tim (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "A po kënaqeni me aplikacionin Jetpack për celular?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Jo dhe aq";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Përshtypjet tuaja vlejnë";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Është i shkëlqyer";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Faleminderit që na ndihmoni të përmirësojmë aplikacionin.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Përshtypjet u dërguan";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Do të donit të na jepni më tepër hollësi?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Jo tani";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Ndihmonani të përmirësohemi";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Patjetër";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Që të bëjë foto ose video për t’u përdorur te postimet tuaja.";
@@ -10359,6 +10361,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalizoni kreun";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Ndajeni sajtin me të tjerë";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Ndryshoni ikonë sajti";
 
@@ -10565,9 +10570,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Paraparje";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Botoje që tani";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Riprovoni";
@@ -11037,6 +11039,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Ndarja e automatizuar me të tjerë që nga Twitter s’mund të përdoret më, për shkak ndryshimesh në kushte dhe çmime nga ana e Twitter-it.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Trafik";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 ditët e fundit";
 
@@ -11144,6 +11149,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Kërkoni për të gjetur foto të lira që t’i shtoni te Mediateka juaj!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Parashtroje";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Përshtypje";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Në këtë bisedë";
