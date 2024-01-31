@@ -6,7 +6,7 @@ struct BooleanUserDefaultsDebugView: View {
     var body: some View {
         List {
             ForEach(viewModel.userDefaultsSections.keys.sorted(), id: \.self) { sectionKey in
-                let userDefaultsSection = viewModel.userDefaultsSections[sectionKey] ?? BooleanUserDefaults()
+                let userDefaultsSection = viewModel.userDefaultsSections[sectionKey] ?? BooleanUserDefaultEntries()
 
                 Section(header: Text(sectionKey)
                     .font(.caption)) {

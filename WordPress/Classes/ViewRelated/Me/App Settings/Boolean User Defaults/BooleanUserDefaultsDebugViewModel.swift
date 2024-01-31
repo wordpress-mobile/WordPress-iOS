@@ -1,5 +1,8 @@
 import SwiftUI
 
+typealias BooleanUserDefaultsSections = [String: BooleanUserDefaultEntries]
+typealias BooleanUserDefaultEntries = [String: BooleanUserDefault]
+
 final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     @Published private var allUserDefaultsSections = BooleanUserDefaultsSections()
     @Published var searchQuery: String = ""
@@ -7,16 +10,16 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     private var persistentRepository: UserPersistentRepository
 
     var userDefaultsSections: BooleanUserDefaultsSections {
-        return if searchQuery.isEmpty {
-            allUserDefaultsSections
-        } else {
-            filterUserDefaults(by: searchQuery)
-        }
+        return filterUserDefaults(by: searchQuery)
     }
 
     let coreDataStack: CoreDataStack
 
     private func filterUserDefaults(by query: String) -> BooleanUserDefaultsSections {
+        guard !query.isEmpty else {
+            return allUserDefaultsSections
+        }
+
         var filteredSections = BooleanUserDefaultsSections()
         allUserDefaultsSections.forEach { sectionKey, userDefaults in
             let filteredUserDefaults = userDefaults.filter { key, userDefault in
@@ -38,20 +41,21 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     func load() {
         let allUserDefaults = persistentRepository.dictionaryRepresentation()
         var loadedUserDefaultsSections = BooleanUserDefaultsSections()
+        var otherSection = BooleanUserDefaultEntries()
 
         for (entryKey, entryValue) in allUserDefaults {
-            if let groupedUserDefaults = entryValue as? [String: Bool] {
+            if let groupedUserDefaults = entryValue as? [String: Bool], !isFeatureFlagsSection(entryKey) {
                 loadedUserDefaultsSections[entryKey] = processGroupedUserDefaults(groupedUserDefaults)
-            } else if let booleanUserDefault = entryValue as? Bool, !isSystemUserDefault(entryKey) {
-                loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID, default: [:]][entryKey] = BooleanUserDefault(title: entryKey, value: booleanUserDefault)
+            } else if let booleanUserDefault = entryValue as? Bool, !isGutenbergUserDefault(entryKey) {
+                otherSection[entryKey] = BooleanUserDefault(title: entryKey, value: booleanUserDefault)
             }
         }
-
+        loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID] = otherSection
         allUserDefaultsSections = loadedUserDefaultsSections
     }
 
-    private func processGroupedUserDefaults(_ userDefaults: [String: Bool]) -> BooleanUserDefaults {
-        userDefaults.reduce(into: BooleanUserDefaults()) { result, keyValue in
+    private func processGroupedUserDefaults(_ userDefaults: [String: Bool]) -> BooleanUserDefaultEntries {
+        userDefaults.reduce(into: BooleanUserDefaultEntries()) { result, keyValue in
             let (key, value) = keyValue
             result[key] = processSingleUserDefault(key: key, value: value)
         }
@@ -70,19 +74,20 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
             persistentRepository.set(value, forKey: userDefaultID)
         } else if var section = allUserDefaultsSections[sectionID] {
             section[userDefaultID] = BooleanUserDefault(title: userDefaultID, value: value)
-            var sectionValues = section.mapValues { $0.value }
+            let sectionValues = section.mapValues { $0.value }
             persistentRepository.set(sectionValues, forKey: sectionID)
         }
         load()
     }
 
-    private func isSystemUserDefault(_ key: String) -> Bool {
-        key.starts(with: "com.wordpress.")
+    private func isGutenbergUserDefault(_ key: String) -> Bool {
+        key.starts(with: Strings.gutenbergUserDefaultPrefix)
+    }
+
+    private func isFeatureFlagsSection(_ key: String) -> Bool {
+        key.isEqual(to: Strings.featureFlagSectionKey)
     }
 }
-
-typealias BooleanUserDefaultsSections = [String: BooleanUserDefaults]
-typealias BooleanUserDefaults = [String: BooleanUserDefault]
 
 struct BooleanUserDefault {
     var title: String
@@ -91,4 +96,6 @@ struct BooleanUserDefault {
 
 private enum Strings {
     static let otherBooleanUserDefaultsSectionID = "Other"
+    static let gutenbergUserDefaultPrefix = "com.wordpress.gutenberg-"
+    static let featureFlagSectionKey = "FeatureFlagStoreCache"
 }
