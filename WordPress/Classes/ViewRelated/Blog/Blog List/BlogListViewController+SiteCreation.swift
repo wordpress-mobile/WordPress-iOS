@@ -12,6 +12,7 @@ extension BlogListViewController {
             guard let wizard = wizardLauncher.ui else {
                 return
             }
+            RootViewCoordinator.shared.isSiteCreationActive = true
             self.present(wizard, animated: true)
             SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
         })
