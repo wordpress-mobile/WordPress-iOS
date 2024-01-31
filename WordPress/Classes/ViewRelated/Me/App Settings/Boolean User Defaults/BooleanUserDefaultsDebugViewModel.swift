@@ -32,9 +32,10 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         return filteredSections
     }
 
-    init() {
-        persistentRepository = UserPersistentStoreFactory.instance()
-        coreDataStack = ContextManager.shared
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+        self.coreDataStack = coreDataStack
+        self.persistentRepository = persistentRepository
         load()
     }
 
@@ -50,7 +51,9 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
                 otherSection[entryKey] = BooleanUserDefault(title: entryKey, value: booleanUserDefault)
             }
         }
-        loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID] = otherSection
+        if !otherSection.isEmpty {
+            loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID] = otherSection
+        }
         allUserDefaultsSections = loadedUserDefaultsSections
     }
 
@@ -89,7 +92,7 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     }
 }
 
-struct BooleanUserDefault {
+struct BooleanUserDefault: Equatable {
     var title: String
     var value: Bool
 }

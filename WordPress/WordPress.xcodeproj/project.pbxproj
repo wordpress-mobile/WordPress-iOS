@@ -1645,6 +1645,7 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
+		77A141172B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A141162B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift */; };
 		77B84EFE2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B84EFD2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift */; };
 		77DFF0882B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DFF0872B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift */; };
 		77DFF0892B68386800FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DFF0872B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift */; };
@@ -7219,6 +7220,7 @@
 		74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensionsService.swift; sourceTree = "<group>"; };
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-Apps-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
+		77A141162B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugViewModelTests.swift; sourceTree = "<group>"; };
 		77B84EFD2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugView.swift; sourceTree = "<group>"; };
 		77DFF0872B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugViewModel.swift; sourceTree = "<group>"; };
 		7D21280C251CF0850086DD2C /* EditPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPageViewController.swift; sourceTree = "<group>"; };
@@ -11278,6 +11280,7 @@
 		3F28CEAD2A4ACEA400B79686 /* Me */ = {
 			isa = PBXGroup;
 			children = (
+				77A141142B68543700BF75DD /* App Settings */,
 				3F28CEAE2A4ACEBE00B79686 /* PrivacySettingsViewControllerTests.swift */,
 			);
 			path = Me;
@@ -13019,6 +13022,22 @@
 				74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */,
 			);
 			name = Data;
+			sourceTree = "<group>";
+		};
+		77A141142B68543700BF75DD /* App Settings */ = {
+			isa = PBXGroup;
+			children = (
+				77A141152B68544300BF75DD /* Boolean User Defaults */,
+			);
+			path = "App Settings";
+			sourceTree = "<group>";
+		};
+		77A141152B68544300BF75DD /* Boolean User Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				77A141162B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift */,
+			);
+			path = "Boolean User Defaults";
 			sourceTree = "<group>";
 		};
 		77DFF0862B6835EC00FA561D /* Boolean User Defaults */ = {
@@ -23663,6 +23682,7 @@
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				3F759FBA2A2DA93B0039A845 /* WPAccount+Fixture.swift in Sources */,
 				8B821F3C240020E2006B697E /* PostServiceUploadingListTests.swift in Sources */,
+				77A141172B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift in Sources */,
 				73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
