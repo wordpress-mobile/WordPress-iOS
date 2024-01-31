@@ -198,7 +198,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-        attemptToDisplayPopover()
+        Task { @MainActor in
+            await overlaysCoordinator.presentOverlayIfNeeded(in: self)
+        }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -931,18 +934,6 @@ private extension MySiteViewController {
                 let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
                 let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource = phase == .four ? .phaseFourOverlay : .appOpen
                 JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: source, blog: self.blog)
-            }
-        }
-    }
-}
-
-// MARK: Compliance Popover
-
-private extension MySiteViewController {
-    func attemptToDisplayPopover() {
-        if !RootViewCoordinator.shared.isSiteCreationActive && !RootViewCoordinator.shared.isFullScreenOverlayBeingDisplayed {
-            Task { @MainActor in
-                await overlaysCoordinator.presentOverlayIfNeeded(in: self)
             }
         }
     }

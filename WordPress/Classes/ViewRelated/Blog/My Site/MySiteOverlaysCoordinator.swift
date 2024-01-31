@@ -28,6 +28,10 @@ final class MySiteOverlaysCoordinator {
     ///
     /// - Parameter viewController: The UIViewController instance on which to potentially present an overlay.
     @MainActor func presentOverlayIfNeeded(in viewController: UIViewController) async {
+        guard !RootViewCoordinator.shared.isSiteCreationActive && !RootViewCoordinator.shared.isFullScreenOverlayBeingDisplayed else {
+            return
+        }
+
         if let complianceCoordinator, await complianceCoordinator.presentIfNeeded() {
             self.complianceCoordinator = nil
         } else if let inAppFeedbackCoordinator, inAppFeedbackCoordinator.presentIfNeeded(in: viewController) {
