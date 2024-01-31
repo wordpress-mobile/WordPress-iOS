@@ -9,7 +9,6 @@ import WordPressShared.WPStyleGuide
     // Required by ReaderStreamHeader protocol.
     open weak var delegate: ReaderStreamHeaderDelegate?
 
-
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {
@@ -26,7 +25,6 @@ import WordPressShared.WPStyleGuide
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
     }
-
 
     // MARK: - Configuration
 

@@ -1,6 +1,6 @@
 import Foundation
 import WordPressShared
-
+import WordPressUI
 
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
@@ -78,7 +78,6 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
         configureAccesibility()
     }
-
 
     // MARK: - IBActions
     @IBAction func followWasPressed(_ sender: AnyObject) {

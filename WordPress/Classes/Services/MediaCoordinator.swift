@@ -825,6 +825,14 @@ extension Media {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
             return true
         } else if let nsError = error as NSError?,
+            nsError.domain == "Alamofire.AFError",
+            nsError.code == 2 /* AFError.multipartEncodingFailed */ {
+            // Check if the original error is `AFError.multipartEncodingFailed`.
+            // We will soon remove Alamofire from the app, and the above `if` statement will be delete along with Alamofire,
+            // which is why actual values—instead of `AFError` references-are used here.
+
+            return true
+        } else if let nsError = error as NSError?,
             nsError.domain == MediaServiceErrorDomain,
             nsError.code == MediaServiceError.fileDoesNotExist.rawValue {
             // if for some reason, the app crashed when trying to create a media object (like, for example, in this crash):

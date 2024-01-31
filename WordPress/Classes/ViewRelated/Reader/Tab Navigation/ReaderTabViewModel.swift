@@ -1,5 +1,5 @@
 import WordPressFlux
-
+import WordPressUI
 
 @objc class ReaderTabViewModel: NSObject {
 
@@ -55,7 +55,6 @@ import WordPressFlux
     }
 }
 
-
 // MARK: - Tab bar items
 extension ReaderTabViewModel {
 
@@ -67,7 +66,6 @@ extension ReaderTabViewModel {
         tabItemsStore.getItems()
     }
 }
-
 
 // MARK: - Tab selection
 extension ReaderTabViewModel {
@@ -108,7 +106,6 @@ extension ReaderTabViewModel {
         didSelectIndex?(index)
     }
 }
-
 
 // MARK: - Filter
 extension ReaderTabViewModel {
@@ -175,7 +172,6 @@ extension ReaderTabViewModel {
     }
 }
 
-
 // MARK: - Reader Content
 extension ReaderTabViewModel {
 
@@ -191,7 +187,6 @@ extension ReaderTabViewModel {
         return controller
     }
 }
-
 
 extension ReaderTabViewModel: NetworkStatusReceiver, NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {

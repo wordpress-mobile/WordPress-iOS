@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-23 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%2$@ 중 %1$@가 사이트에서 사용됨";
-
-/* Plan yearly price */
-"%@ per year" = "%@\/1년";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@천조 개";
@@ -1944,6 +1941,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "워드프레스 사이트에 연결할 수 없습니다. 이 주소에 유효한 워드프레스 사이트가 없습니다. 입력한 사이트 주소(URL)를 확인하세요.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "연결할 수 없습니다. 필수 XML-RPC 메서드가 서버에 없습니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "연결할 수 없습니다. 회원님의 사이트 XMLRPC 엔드포인트에 액세스하려고 할 때 403 오류가 발생했습니다. 앱에서 회원님의 사이트와 통신하려면 이 정보가 필요합니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "연결할 수 없습니다. 호스트에서 POST 요청을 차단하고 있으나 앱에서 회원님의 사이트와 통신하려면 이 요청이 필요합니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "태그를 로드할 수 없었습니다.";
 
@@ -2671,7 +2677,6 @@
 "Empty URL" = "빈 URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "활성화";
 
@@ -3015,6 +3020,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "파일 형식";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "파일 유형이 미디어 파일로 지원되지 않습니다.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "영화 및 텔레비전";
 
@@ -3127,6 +3135,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "글꼴 크기";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "글꼴 크기, %1$s";
 
 /* Food site intent topic */
 "Food" = "음식";
@@ -4075,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "블록 편집기를 로드하는 중입니다.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "사용자명 로드 중";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4508,6 +4516,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "업데이트 필요";
 
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "네트워크 연결 해제됨, 오프라인 작업 중";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "네트워크 다시 연결됨";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "신규";
 
@@ -4554,9 +4568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Table view title for the quick start section.
    Title for the Quick Start dashboard card. */
 "Next Steps" = "다음 단계";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "다음 달";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "다음 알림";
@@ -4738,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "사용 가능한 미리보기 없음";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "기본 사이트 주소를 찾을 수 없음";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "아직 프롬프트 없음";
@@ -5505,9 +5513,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "새 사이트를 미리 보며 방문자에게 표시되는 내용을 참조하세요.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "이전 달";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "이전 알림";
 
@@ -6005,6 +6010,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "사파리";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "샌드박스 스토어";
 
 /* Menus save button title
    Save Action
@@ -7137,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "인터넷 연결이 오프라인인 것 같습니다.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "아이템을 미디어 라이브러리에 추가할 수 없습니다.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "만들 수 있는 사이트 종류";
 
@@ -7812,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "요금제 가격을 업데이트할 수 없습니다. 제공된 블로그에 문제가 있습니다.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1개 임시글을 업로드할 수 없음";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1개 글을 업로드할 수 없음";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8251,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google에서 완료하기를 기다리는 중…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "연결 대기 중";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8714,6 +8719,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "워드프레스닷컴 사용";
 
+/* No comment provided by engineer. */
+"Working Offline" = "오프라인 작업 중";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
 
@@ -8858,6 +8866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "숨겨진 워드프레스 사이트가 하나 있습니다.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "이용 중인 요금제에 1년 무료 도메인 등록이 포함되어 있습니다.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "회원님의 사이트에서 프리미엄 업그레이드가 활성화되었습니다. 사이트를 삭제하기 전에 업그레이드를 취소하세요.";
@@ -9105,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "이미지 품질";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "이미지 최적화에서는 더 빠른 업로드를 위해 이미지가 축소됩니다.\n\n이 옵션은 기본적으로 활성화되어 있지만, 언제든지 앱 설정에서 변경하실 수 있습니다.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "이미지를 계속 최적화하시겠어요?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "아니요. 끄기";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "예. 그대로 두기";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
 
@@ -9274,6 +9273,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "도움이 되는 것으로 평가";
 
+/* Title for the checkout view */
+"checkout.title" = "체크아웃";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "댓글";
 
@@ -9424,8 +9426,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "통계 보기";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "분석";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "기능 플래그";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "리더 CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "기본 URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "리더에서 불러올 사용자 정의 CSS URL을 여기에 추가하세요. Calypso를 로컬에서 실행하는 경우 다음과 같을 수 있습니다. http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "현재 값";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "기본값";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "원격 구성";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "원격 구성 값";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "초기화";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9434,11 +9463,23 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "현재 둘러보기 제거";
 
+/* Debug Menu section title */
+"debugMenu.section.logging" = "로깅";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "퀵 스타트";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "설정";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "개발자";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "주간 총정리";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "숨기기";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "도메인 검색";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "도메인 받기";
@@ -9451,6 +9492,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "만료됨";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "만료 기간 없음";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "갱신";
@@ -9544,6 +9588,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/년";
+
+/* Help button */
+"domainSelection.helpButton.title" = "도움말";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "이 사이트에서 구매한 도메인이 %1$@(으)로 리디렉팅됨";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "도메인 검색";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "체크아웃";
@@ -9683,6 +9736,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "젯팩 모바일 앱을 즐겁게 사용하고 계시나요?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "좋지 않음";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "피드백은 중요";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "훌륭";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "앱 개선을 도와주셔서 감사합니다.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "피드백 발송됨";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "추가 상세 정보를 공유해 주시겠어요?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "지금 안 함";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "개선할 수 있도록 도와주세요.";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "좋음";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
@@ -10278,6 +10361,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "홈 개인 설정";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "사이트 공유";
+
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "사이트 제목 변경";
 
@@ -10386,6 +10472,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";
 
+/* Title for the plan selection view */
+"planSelection.title" = "요금제";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "%@ 생성됨";
 
@@ -10475,9 +10564,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "미리보기";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "지금 공개";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "다시 시도";
@@ -10818,6 +10904,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "%1$@의 다른 도메인";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "무료 워드프레스닷컴 도메인";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "연간 유료 요금제로 도메인 등록 또는 이전을 1년간 무료로 이용하세요.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "도메인 받기";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "기본 사이트 주소는 방문자가 회원님의 사이트에 방문할 때 브라우저의 주소창에 표시되는 주소입니다.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "기본 도메인";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "도메인 검색";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "유료 요금제로 업그레이드";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "도메인";
 
@@ -10919,6 +11029,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter의 약관 및 가격 변경으로 인해 Twitter 자동 공유를 더는 이용할 수 없습니다.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "트래픽";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";
@@ -11024,6 +11137,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "미디어 라이브러리에 추가할 무료 사진을 검색하여 찾으세요!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "제출";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "피드백";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "대화";
@@ -11324,6 +11443,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "워드프레스, 사이트, 사이트, 블로그, 블로그";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "문제가 발생했습니다. 나중에 다시 시도하세요.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "젯팩 앱으로 전환";

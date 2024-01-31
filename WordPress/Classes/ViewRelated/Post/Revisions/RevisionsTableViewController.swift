@@ -32,7 +32,6 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler.resultsController?.sections?.count ?? 0
     }
 
-
     required init(post: AbstractPost, onRevisionLoaded: @escaping RevisionLoadedBlock) {
         self.post = post
         self.onRevisionLoaded = onRevisionLoaded
@@ -62,7 +61,6 @@ class RevisionsTableViewController: UITableViewController {
         }
     }
 }
-
 
 private extension RevisionsTableViewController {
     private func setupUI() {
@@ -173,7 +171,6 @@ private extension RevisionsTableViewController {
     }
 }
 
-
 extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -210,7 +207,6 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         cell.totalDel = revision.diff?.totalDeletions.intValue
         cell.avatarURL = author?.avatarURL
     }
-
 
     // MARK: Override delegate methodds
 
@@ -262,13 +258,11 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 }
 
-
 extension RevisionsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         refreshRevisions()
     }
 }
-
 
 extension RevisionsTableViewController: RevisionsView {
     func stopLoading(success: Bool, error: Error?) {
@@ -294,13 +288,11 @@ extension RevisionsTableViewController: RevisionsView {
     }
 }
 
-
 private struct Sizes {
     static let sectionHeaderHeight = CGFloat(40.0)
     static let sectionFooterHeight = CGFloat(48.0)
     static let cellEstimatedRowHeight = CGFloat(60.0)
 }
-
 
 private extension Date {
     private static let shortTimeFormatter: DateFormatter = {
@@ -325,7 +317,6 @@ private extension Date {
         return Date.shortTimeFormatter.string(from: self)
     }
 }
-
 
 struct NoResultsText {
     static let loadingTitle = NSLocalizedString("Loading history...", comment: "Displayed while a call is loading the history.")

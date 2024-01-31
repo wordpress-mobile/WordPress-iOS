@@ -2,7 +2,6 @@
 import CoreData
 import XCTest
 
-
 class MockReblogPresenter: ReaderReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 

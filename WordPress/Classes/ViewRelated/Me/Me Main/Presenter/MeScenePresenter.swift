@@ -1,7 +1,6 @@
 
 import UIKit
 
-
 /// Concrete implementation of ScenePresenter that presents the Me scene
 /// in a UISplitViewController/UINavigationController view hierarchy
 @objc
@@ -28,7 +27,6 @@ class MeScenePresenter: NSObject, ScenePresenter {
         WPAnalytics.track(.meTabAccessed)
     }
 }
-
 
 /// Presented UIViewController factory methods
 private extension MeScenePresenter {

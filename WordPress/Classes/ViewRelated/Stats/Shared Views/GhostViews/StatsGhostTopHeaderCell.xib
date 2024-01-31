@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -39,14 +39,17 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Yth-8k-r1U" secondAttribute="trailing" constant="16" id="5Rp-bq-Zmm"/>
+                    <constraint firstItem="Yac-EB-3AV" firstAttribute="top" secondItem="Yth-8k-r1U" secondAttribute="top" id="Bc1-7z-9fS"/>
                     <constraint firstAttribute="bottom" secondItem="Yac-EB-3AV" secondAttribute="bottom" constant="16" id="GOF-Di-lzB"/>
                     <constraint firstItem="Yac-EB-3AV" firstAttribute="leading" secondItem="FZl-8a-aiR" secondAttribute="leading" constant="16" id="PDx-aa-JSZ"/>
                     <constraint firstAttribute="bottom" secondItem="Yth-8k-r1U" secondAttribute="bottom" constant="16" id="VvT-WE-S82"/>
                     <constraint firstItem="Yac-EB-3AV" firstAttribute="top" secondItem="FZl-8a-aiR" secondAttribute="top" constant="7" id="aQN-Zr-UMD"/>
-                    <constraint firstItem="Yth-8k-r1U" firstAttribute="top" secondItem="FZl-8a-aiR" secondAttribute="top" constant="7" id="zEa-ST-uKv"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="topConstraint" destination="aQN-Zr-UMD" id="EYD-NE-REE"/>
+            </connections>
             <point key="canvasLocation" x="139" y="153"/>
         </tableViewCell>
     </objects>

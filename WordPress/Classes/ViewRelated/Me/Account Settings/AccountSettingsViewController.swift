@@ -33,7 +33,6 @@ private class AccountSettingsController: SettingsController {
         ]
     }
 
-
     // MARK: - Initialization
 
     private let accountSettingsService: AccountSettingsService
@@ -75,13 +74,11 @@ private class AccountSettingsController: SettingsController {
         loadStatus()
     }
 
-
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
         return mapViewModel(settings, service: accountSettingsService, presenter: presenter)
     }
-
 
     // MARK: - Model mapping
 

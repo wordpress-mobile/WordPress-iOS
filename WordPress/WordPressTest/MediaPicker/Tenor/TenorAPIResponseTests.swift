@@ -13,7 +13,6 @@ class TenorAPIResponseParserTests: XCTestCase {
     fileprivate var previewGif: TenorMediaObject!
     fileprivate var thumbnailGif: TenorMediaObject!
 
-
     override func setUp() {
         super.setUp()
 
@@ -55,7 +54,6 @@ class TenorAPIResponseParserTests: XCTestCase {
         XCTAssertEqual(thumbnailGif?.size, 15256)
         XCTAssertEqual(thumbnailGif?.dimension, [160, 90])
     }
-
 
     func testParserReturnsCorrectNextPageToken() {
         XCTAssertEqual(next, "1")

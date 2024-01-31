@@ -57,7 +57,6 @@ extension GutenbergViewController {
             }
         }
 
-
         let settingsTitle = self.post is Page ? MoreSheetAlert.pageSettingsTitle : MoreSheetAlert.postSettingsTitle
 
         alert.addDefaultActionWithTitle(settingsTitle) { [weak self] _ in

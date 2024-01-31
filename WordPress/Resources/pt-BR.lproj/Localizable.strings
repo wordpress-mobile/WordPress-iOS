@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-01-04 16:02:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ de %2$@ usados em seu site";
-
-/* Plan yearly price */
-"%@ per year" = "%@ por ano";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ quatrilhões";
@@ -2614,7 +2611,6 @@
 "Empty URL" = "URL vazia";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Ativar";
 
@@ -3997,9 +3993,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Carregando o editor de blocos.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Carregando nomes de usuários";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4477,9 +4470,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Próximos passos";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Próximo mês";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Próxima notificação";
 
@@ -4657,9 +4647,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Nenhuma visualização disponível";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Nenhum endereço principal encontrado";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Ainda não há sugestões";
@@ -5414,9 +5401,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Visualize seu site e veja como será ele apresentado aos seus visitantes.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Mês anterior";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificação anterior";
@@ -7035,9 +7019,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "A conexão de internet parece estar offline.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Não foi possível adicionar o item à biblioteca de mídia.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Tipos de sites que podem ser criados";
 
@@ -7702,9 +7683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Não foi possível atualizar o preço do plano. Houve um problema com o blog informado.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Não foi possível enviar 1 rascunho de post";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Não foi possível enviar um post";

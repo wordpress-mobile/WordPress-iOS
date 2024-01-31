@@ -2,7 +2,6 @@
 import XCTest
 import CoreData
 
-
 class ReaderTabViewTests: CoreDataTestCase {
 
     func testRefreshTabBarWithHiddenButtons() {
@@ -86,7 +85,6 @@ class ReaderTabViewTests: CoreDataTestCase {
     }
 
 }
-
 
 // MARK: - Helper methods
 extension ReaderTabViewTests {

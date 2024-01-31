@@ -1,8 +1,8 @@
 import SwiftUI
 
 public struct DSButton: View {
-    @SwiftUI.Environment(\.isEnabled) private var isEnabled
-    @SwiftUI.Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.colorScheme) private var colorScheme
     private let title: String
     private let style: DSButtonStyle
     @Binding private var isLoading: Bool

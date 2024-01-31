@@ -15,7 +15,6 @@ extension Post {
     @NSManaged var categories: Set<PostCategory>?
     @NSManaged var isStickyPost: Bool
 
-
     // If the post is created as an answer to a Blogging Prompt, the promptID is stored here.
     @NSManaged var bloggingPromptID: String?
 

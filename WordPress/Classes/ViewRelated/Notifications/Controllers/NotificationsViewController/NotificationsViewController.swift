@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressAuthenticator
 import Gridicons
 import UIKit
+import WordPressUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -135,15 +136,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
-    /// The last time when user seen notifications
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
-        }
-    }
+    lazy var viewModel: NotificationsViewModel = {
+        NotificationsViewModel(userDefaults: userDefaults)
+    }()
 
     // MARK: - View Lifecycle
 
@@ -247,10 +242,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-            setupAppRatings()
-            self.showInlinePrompt()
         }
+        // TODO: Remove this when In-App Rating project is shipped
+//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+//            setupAppRatings()
+//            self.showInlinePrompt()
+//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -429,6 +426,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         showDetails(for: note)
 
+        if !note.read {
+            AppRatingUtility.shared.incrementSignificantEvent()
+        }
+
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
         }
@@ -523,8 +524,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
     }
 }
-
-
 
 // MARK: - User Interface Initialization
 //
@@ -646,7 +645,6 @@ extension NotificationsViewController {
     }
 }
 
-
 // MARK: - Notifications
 //
 private extension NotificationsViewController {
@@ -700,7 +698,7 @@ private extension NotificationsViewController {
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
         resetNotifications()
-        resetLastSeenTime()
+        viewModel.didChangeDefaultAccount()
         resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
@@ -735,8 +733,6 @@ private extension NotificationsViewController {
         }
     }
 }
-
-
 
 // MARK: - Public Methods
 //
@@ -929,7 +925,6 @@ extension NotificationsViewController {
     }
 }
 
-
 // MARK: - Notifications Deletion Mechanism
 //
 private extension NotificationsViewController {
@@ -967,7 +962,6 @@ private extension NotificationsViewController {
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
-
 
     // MARK: - Notifications Deletion from CommentDetailViewController
 
@@ -1035,8 +1029,6 @@ private extension NotificationsViewController {
     }
 
 }
-
-
 
 // MARK: - Marking as Read
 //
@@ -1163,8 +1155,6 @@ private extension NotificationsViewController {
     }
 }
 
-
-
 // MARK: - Unread notifications caching
 //
 private extension NotificationsViewController {
@@ -1198,8 +1188,6 @@ private extension NotificationsViewController {
         }
     }
 }
-
-
 
 // MARK: - WPTableViewHandler Helpers
 //
@@ -1369,8 +1357,6 @@ extension NotificationsViewController {
     }
 }
 
-
-
 // MARK: - WPTableViewHandlerDelegate Methods
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate {
@@ -1532,8 +1518,6 @@ private extension NotificationsViewController {
         return mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
     }
 }
-
-
 
 // MARK: - NoResults Helpers
 //
@@ -1738,18 +1722,7 @@ private extension NotificationsViewController {
             return
         }
 
-        guard let timestamp = note.timestamp, timestamp != lastSeenTime else {
-            return
-        }
-
-        let mediator = NotificationSyncMediator()
-        mediator?.updateLastSeen(timestamp) { error in
-            guard error == nil else {
-                return
-            }
-
-            self.lastSeenTime = timestamp
-        }
+        viewModel.lastSeenChanged(timestamp: note.timestamp)
     }
 
     func loadNotification(with noteId: String) -> Notification? {
@@ -1763,29 +1736,11 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.firstIndex(of: note) else {
-            return nil
-        }
-
-        let targetIndex = noteIndex + delta
-        guard targetIndex >= 0 && targetIndex < notifications.count else {
-            return nil
-        }
-
-        func notMatcher(_ note: Notification) -> Bool {
-            return note.kind != .matcher
-        }
-
-        if delta > 0 {
-            return notifications
-                .suffix(from: targetIndex)
-                .first(where: notMatcher)
-        } else {
-            return notifications
-                .prefix(through: targetIndex)
-                .reversed()
-                .first(where: notMatcher)
-        }
+        return viewModel.loadNotification(
+            near: note,
+            allNotifications: notifications,
+            withIndexDelta: delta
+        )
     }
 
     func resetNotifications() {
@@ -1796,10 +1751,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetLastSeenTime() {
-        lastSeenTime = nil
     }
 
     func resetApplicationBadge() {
@@ -1832,7 +1783,6 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }
-
 
 // MARK: - SearchableActivity Conformance
 //
@@ -1973,7 +1923,6 @@ private extension NotificationsViewController {
 
     enum Settings {
         static let estimatedRowHeight = CGFloat(70)
-        static let lastSeenTime = "notifications_last_seen_time"
     }
 
     enum Stats {

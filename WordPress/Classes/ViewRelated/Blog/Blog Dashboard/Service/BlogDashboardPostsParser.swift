@@ -19,7 +19,6 @@ class BlogDashboardPostsParser {
             return postsDictionary
         }
 
-
         if let localDraftsCount = numberOfPosts(for: blog, filter: PostListFilter.draftFilter()) {
             // If drafts are synced OR
             // If drafts are not synced and the cards API returns zero posts

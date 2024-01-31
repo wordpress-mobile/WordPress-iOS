@@ -122,7 +122,6 @@ class EditPageViewController: UIViewController {
 
 }
 
-
 extension EditPageViewController: UIViewControllerRestoration {
     enum RestorationKey: String {
         case viewController = "EditPageViewControllerRestorationID"

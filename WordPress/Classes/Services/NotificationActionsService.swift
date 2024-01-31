@@ -27,7 +27,6 @@ class NotificationActionsService: CoreDataService {
         })
     }
 
-
     /// Unfollows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
@@ -49,7 +48,6 @@ class NotificationActionsService: CoreDataService {
             completion?(false)
         })
     }
-
 
     /// Replies a comment referenced by a given NotificationBlock.
     ///
@@ -73,7 +71,6 @@ class NotificationActionsService: CoreDataService {
             completion?(false)
         })
     }
-
 
     /// Updates a comment referenced by a given NotificationBlock.
     ///
@@ -101,7 +98,6 @@ class NotificationActionsService: CoreDataService {
             completion?(false)
         })
     }
-
 
     /// Likes a comment referenced by a given NotificationBlock.
     ///
@@ -131,7 +127,6 @@ class NotificationActionsService: CoreDataService {
         })
     }
 
-
     /// Unlikes a comment referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Comment Block
@@ -153,7 +148,6 @@ class NotificationActionsService: CoreDataService {
             completion?(false)
         })
     }
-
 
     /// Approves a comment referenced by a given NotificationBlock.
     ///
@@ -177,7 +171,6 @@ class NotificationActionsService: CoreDataService {
         })
     }
 
-
     /// Unapproves a comment referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Comment Block
@@ -200,7 +193,6 @@ class NotificationActionsService: CoreDataService {
         })
     }
 
-
     /// Spams a comment referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Comment Block
@@ -222,7 +214,6 @@ class NotificationActionsService: CoreDataService {
             completion?(false)
         })
     }
-
 
     /// Deletes a comment referenced by a given NotificationBlock.
     ///
@@ -247,8 +238,6 @@ class NotificationActionsService: CoreDataService {
     }
 }
 
-
-
 // MARK: - Private Helpers
 //
 private extension NotificationActionsService {
@@ -272,8 +261,6 @@ private extension NotificationActionsService {
         mediator.syncNote(with: notificationID)
     }
 }
-
-
 
 // MARK: - Computed Properties
 //

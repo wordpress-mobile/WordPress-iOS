@@ -351,7 +351,6 @@ struct JetpackScanThreatViewModel {
             }
         }
 
-
         struct titles {
             struct core {
                 static let singular = NSLocalizedString("Infected core file", comment: "Title for a threat")
@@ -504,7 +503,6 @@ private extension String {
         return (self as NSString).lastPathComponent
     }
 }
-
 
 private extension WPStyleGuide {
     static func monospacedSystemFontForTextStyle(_ style: UIFont.TextStyle,

@@ -242,7 +242,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         dismissOverlay()
     }
 
-
     @IBAction func switchButtonPressed(_ sender: Any) {
         viewModel.didTapPrimary()
     }

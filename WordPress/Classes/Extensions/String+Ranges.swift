@@ -1,6 +1,5 @@
 import Foundation
 
-
 // MARK: - Range Helpers
 //
 extension String {

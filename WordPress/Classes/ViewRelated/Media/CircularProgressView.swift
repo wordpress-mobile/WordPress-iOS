@@ -123,7 +123,6 @@ class CircularProgressView: UIView {
 
     // MARK: - public methods
 
-
     /// Shows the error state. (Obj-C helper)
     ///
     @objc func showError() {

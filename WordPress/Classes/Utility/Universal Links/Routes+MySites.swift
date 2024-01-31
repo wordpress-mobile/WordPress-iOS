@@ -1,6 +1,6 @@
 import Foundation
 
-enum MySitesRoute {
+enum MySitesRoute: CaseIterable {
     case pages
     case posts
     case media
@@ -9,6 +9,9 @@ enum MySitesRoute {
     case people
     case plugins
     case managePlugins
+    case siteMonitoring
+    case phpLogs
+    case webServerLogs
 }
 
 extension MySitesRoute: Route {
@@ -38,6 +41,12 @@ extension MySitesRoute: Route {
             return "/plugins/:domain"
         case .managePlugins:
             return "/plugins/manage/:domain"
+        case .siteMonitoring:
+            return "/site-monitoring/:domain"
+        case .phpLogs:
+            return "/site-monitoring/:domain/php"
+        case .webServerLogs:
+            return "/site-monitoring/:domain/web"
         }
     }
 
@@ -52,6 +61,12 @@ extension MySitesRoute: Route {
         case .comments:
             return false
         case .sharing:
+            return true
+        case .siteMonitoring:
+            return true
+        case .phpLogs:
+            return true
+        case .webServerLogs:
             return true
         case .people:
             return true
@@ -107,6 +122,12 @@ extension MySitesRoute: NavigationAction {
             coordinator.showPlugins(for: blog)
         case .managePlugins:
             coordinator.showManagePlugins(for: blog)
+        case .siteMonitoring:
+            coordinator.showSiteMonitoring(for: blog, selectedTab: .metrics)
+        case .phpLogs:
+            coordinator.showSiteMonitoring(for: blog, selectedTab: .phpLogs)
+        case .webServerLogs:
+            coordinator.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
         }
     }
 }

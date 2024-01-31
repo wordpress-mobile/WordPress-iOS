@@ -41,7 +41,7 @@ class GutenbergSettingsTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        Environment.replaceEnvironment(contextManager: contextManager)
+        AppEnvironment.replaceEnvironment(contextManager: contextManager)
         database = EphemeralKeyValueDatabase()
         settings = GutenbergSettings(database: database)
         blog = newTestBlog()

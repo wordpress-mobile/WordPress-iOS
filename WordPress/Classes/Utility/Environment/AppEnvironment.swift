@@ -4,7 +4,7 @@ import WordPressKit
 
 /// A collection of global variables and singletons that the app wants access to.
 ///
-struct Environment {
+struct AppEnvironment {
 
     // MARK: - Globals
 
@@ -15,7 +15,7 @@ struct Environment {
     let contextManager: CoreDataStack
 
     /// The base url to use for WP.com api requests
-    let wordPressComApiBase: String
+    let wordPressComApiBase: URL
 
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
@@ -27,14 +27,14 @@ struct Environment {
 
     /// The current environment. Use this to access the app globals.
     ///
-    static private(set) var current = Environment()
+    static private(set) var current = AppEnvironment()
 
     // MARK: - Initialization
 
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
         contextManager: CoreDataStack = ContextManager.shared,
-        wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
+        wordPressComApiBase: URL = WordPressComRestApi.apiBaseURL) {
 
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
@@ -42,16 +42,16 @@ struct Environment {
     }
 }
 
-extension Environment {
+extension AppEnvironment {
     /// Creates a new Environment, changing just a subset of the current global dependencies.
     ///
     @discardableResult
     static func replaceEnvironment(
-        appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        contextManager: CoreDataStack = Environment.current.contextManager,
-        wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
+        appRatingUtility: AppRatingUtilityType = AppEnvironment.current.appRatingUtility,
+        contextManager: CoreDataStack = AppEnvironment.current.contextManager,
+        wordPressComApiBase: URL = AppEnvironment.current.wordPressComApiBase) -> AppEnvironment {
 
-        current = Environment(
+        current = AppEnvironment(
             appRatingUtility: appRatingUtility,
             contextManager: contextManager,
             wordPressComApiBase: wordPressComApiBase

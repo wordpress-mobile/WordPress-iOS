@@ -132,7 +132,6 @@ extension OnboardingQuestionsPromptViewController: UINavigationControllerDelegat
     }
 }
 
-
 // MARK: - CGSize Helper Extension
 private extension CGSize {
 

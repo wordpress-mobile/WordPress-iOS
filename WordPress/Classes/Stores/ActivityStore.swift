@@ -68,7 +68,6 @@ struct ActivityStoreState {
     fileprivate var backupStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
 }
 
-
 private enum Constants {
     /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
     static let delaySequence = [1, 5]
@@ -127,7 +126,6 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         // Fetching Activities.
         sitesToFetch
             .forEach { fetchActivities(site: $0, count: numberOfItemsPerPage) }
-
 
         // Fetching Status
         sitesStatusesToFetch

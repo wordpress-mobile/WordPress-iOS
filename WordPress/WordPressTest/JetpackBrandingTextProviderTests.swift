@@ -111,7 +111,6 @@ final class JetpackBrandingTextProviderTests: CoreDataTestCase {
         XCTAssertEqual(text, "Jetpack powered")
     }
 
-
     func testPhaseThreeWithNoDeadlineAndFeatureIsPlural() {
         // Given
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")

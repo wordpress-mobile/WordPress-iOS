@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 protocol SignupEpilogueCellDelegate: AnyObject {
     func updated(value: String, forType: EpilogueCellType)
     func changed(value: String, forType: EpilogueCellType)

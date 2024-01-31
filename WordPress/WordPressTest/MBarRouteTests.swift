@@ -121,7 +121,6 @@ class MBarRouteTests: XCTestCase {
                                  router: router)
         }
 
-
         waitForExpectations(timeout: 1.0)
     }
 }

@@ -104,7 +104,6 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         }
         cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
 
-
         let activityAction = UIAction(title: Strings.allActivity,
                                       image: Style.allActivityImage,
                                       handler: { [weak self] _ in self?.showActivityLog(for: blog, tapSource: Constants.contextMenuTapSource) })
@@ -112,7 +111,6 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         // Wrap the activity action in a menu to display a divider between the activity action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
         let activitySubmenu = UIMenu(title: String(), options: .displayInline, children: [activityAction])
-
 
         let hideThisAction = BlogDashboardHelpers.makeHideCardAction(for: .activityLog, blog: blog)
 

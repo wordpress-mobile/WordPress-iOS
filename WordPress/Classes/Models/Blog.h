@@ -107,7 +107,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureBlaze,
     /// Does the blog support listing and editing Pages?
     BlogFeaturePages,
-
+    /// Does the blog support Site Monitoring?
+    BlogFeatureSiteMonitoring,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {

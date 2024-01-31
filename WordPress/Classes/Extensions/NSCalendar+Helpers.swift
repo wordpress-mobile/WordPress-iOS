@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension Calendar {
     public func daysElapsedSinceDate(_ date: Date) -> Int {
         let fromDate = date.normalizedDate()

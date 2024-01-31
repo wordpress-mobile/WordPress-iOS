@@ -114,7 +114,6 @@ extension WPStyleGuide {
     }
 }
 
-
 extension WPStyleGuide {
     @objc(configureColorsForView:andTableView:)
     open class func configureColors(view: UIView?, tableView: UITableView?) {

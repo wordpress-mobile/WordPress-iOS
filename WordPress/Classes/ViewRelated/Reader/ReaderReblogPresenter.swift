@@ -46,7 +46,6 @@ class ReaderReblogPresenter {
     }
 }
 
-
 // MARK: - Blog Picker
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
@@ -84,7 +83,6 @@ private extension ReaderReblogPresenter {
     }
 }
 
-
 // MARK: - Post Editor
 private extension ReaderReblogPresenter {
     /// presents the post editor when users have at least one blog site.
@@ -108,7 +106,6 @@ private extension ReaderReblogPresenter {
         origin.present(editor, animated: false)
     }
 }
-
 
 // MARK: - No Sites
 private extension ReaderReblogPresenter {

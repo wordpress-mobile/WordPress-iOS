@@ -81,6 +81,5 @@ struct HomepageSettingsService {
             )
         }, on: .main)
 
-
     }
 }

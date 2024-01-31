@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol PrepublishingDismissible {
     func handleDismiss()
@@ -87,7 +88,6 @@ class PrepublishingNavigationController: LightNavigationController {
         navigationBar.compactAppearance = appearance
     }
 }
-
 
 // MARK: - DrawerPresentable
 

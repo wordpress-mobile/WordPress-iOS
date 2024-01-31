@@ -10,7 +10,6 @@ struct ReaderReblogFormatter {
         return embedInWpImage(image: image)
     }
 
-
     static func aztecQuote(text: String, citation: String? = nil) -> String {
         let quote = quoteWithCitation(text: text, citation: citation)
         return embedInQuote(html: quote)
@@ -21,7 +20,6 @@ struct ReaderReblogFormatter {
         return embedInParagraph(html: imageInHtml)
     }
 }
-
 
 // MARK: - Gutenberg formatter helpers
 private extension ReaderReblogFormatter {

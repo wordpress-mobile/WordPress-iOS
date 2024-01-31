@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-
 // MARK: - NotificationReplyStore Unit Tests!
 //
 class NotificationReplyStoreTests: XCTestCase {

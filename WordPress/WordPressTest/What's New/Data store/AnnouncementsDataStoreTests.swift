@@ -3,7 +3,6 @@
 import XCTest
 import WordPressFlux
 
-
 struct MockAnnouncementsCache: AnnouncementsCache {
 
     var announcements: [Announcement]?
@@ -71,7 +70,6 @@ struct MockVersionProvider: AnnouncementsVersionProvider {
 
     var version: String? = "2.0"
 }
-
 
 class AnnouncementsDataStoreTests: XCTestCase {
 

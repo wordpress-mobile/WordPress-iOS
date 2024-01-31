@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// Encapsulates Notification Interface Helpers
 ///
 extension Notification {
@@ -45,7 +44,6 @@ extension Notification {
 
         return section.description
     }
-
 
     // MARK: - Private Helpers
 

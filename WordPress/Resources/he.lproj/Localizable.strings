@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-04 14:54:09+0000 */
+/* Translation-Revision-Date: 2024-01-24 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ מתוך %2$@ נוצלו באתר שלך";
-
-/* Plan yearly price */
-"%@ per year" = "%@ לשנה";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ מיליון מליארדים";
@@ -1941,6 +1938,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "לא ניתן היה להתחבר לאתר WordPress. אין אתר WordPress תקף בכתובת זו. בדוק את כתובת האתר (URL) שהזנת.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "לא ניתן להתחבר. שיטות XML-RPC נדרשות חסרות בשרת. יש לפנות אל ספקית האחסון כדי לפתור את הבעיה.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "לא ניתן להתחבר. התקבלה שגיאת 403 בניסיון לגשת אל נקודת הקצה של XMLRPC באתר שלך. כדי שהאפליקציה תוכל לבצע התקשרות עם האתר שלך, יש להפעיל אפשרות זו. יש לפנות אל ספקית האחסון כדי לפתור את הבעיה.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "לא ניתן להתחבר. חברת האחסון שלך חוסמת בקשות POST והאפליקציה דורשת את הפעלת האפשרות הזו כדי לבצע התקשרות עם האתר שלך. יש לפנות אל ספקית האחסון כדי לפתור את הבעיה.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "לא ניתן לטעון את התגיות.";
 
@@ -2668,7 +2674,6 @@
 "Empty URL" = "קישור ריק";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "הפעלה";
 
@@ -3012,6 +3017,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "סוג קובץ";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "סוג הקובץ לא נתמך כקובץ מדיה.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "סרטים וטלוויזיה";
 
@@ -3124,6 +3132,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "גודל הגופן";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "גודל הגופן, ⁦%1$s⁩";
 
 /* Food site intent topic */
 "Food" = "אוכל";
@@ -4072,9 +4083,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "טעינת עורך הבלוקים.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "טעינת שמות המשתמשים";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4505,6 +4513,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "נדרש עדכון";
 
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "החיבור לרשת אבד, העבודה מתבצעת במצב לא מקוון";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "החיבור לרשת בוצע מחדש";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "חדש";
 
@@ -4551,9 +4565,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Table view title for the quick start section.
    Title for the Quick Start dashboard card. */
 "Next Steps" = "לשלב הבא";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "החודש הבא";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "ההודעה הבאה";
@@ -4735,9 +4746,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "תצוגה מקדימה לא זמינה";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "לא נמצא כתובת אתר ראשי";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "עדיין אין הצעות";
@@ -5502,9 +5510,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "באפשרותך להציג תצוגה מקדימה של האתר כדי לבחון מה יראו המבקרים.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "החודש הקודם";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "הודעה קודמת";
 
@@ -6002,6 +6007,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "חנות Sandbox";
 
 /* Menus save button title
    Save Action
@@ -7134,9 +7142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "החיבור לאינטרנט לא מחובר.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "לא ניתן להוסיף את הפריט לספריית המדיה.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "סוגי האתרים שאפשר ליצור";
 
@@ -7809,9 +7814,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "אין אפשרות לעדכן את מחירי התוכנית. אירעה בעיה עם הבלוג הנוכחי.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "אין אפשרות להעלות פוסט טיוטה אחד";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "אין אפשרות להעלות פוסט אחד";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8248,6 +8250,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "ממתין להשלמת הפעולה על ידי Google...";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "ממתין לחיבור";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8711,6 +8716,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "הצטרפות לכוח העבודה שלנו";
 
+/* No comment provided by engineer. */
+"Working Offline" = "עבודה במצב לא מקוון";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "מפת העולם שמציגה צפיות לפי מדינה.";
 
@@ -8855,6 +8863,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "יש לך אתר WordPress מוסתר אחד.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "אנחנו מעניקים לך רישום דומיין בחינם לשנה עם התוכנית שלך.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "קיימים שדרוגים פעילים באתר שלך. יש לבטל את השדרוגים לפני מחיקת האתר.";
@@ -9102,18 +9113,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "איכות תמונה";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "מיטוב התמונות מכווץ כעת תמונות להעלאה מהירה יותר.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "קובץ אודיו";
 
@@ -9271,6 +9270,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "לדרג כמידע מועיל";
 
+/* Title for the checkout view */
+"checkout.title" = "קופה";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "תגובה";
 
@@ -9421,8 +9423,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "לצפות בנתונים סטטיסטיים";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "נתונים אנליטיים";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "האפשרות סומנה";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "כתובת URL ל-CSS של Reader";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "כתובת URL בברירת מחדל";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "להוסיף כאן כתובת URL של CSS מותאם אישית כדי לטעון אותה ב-Reader. אם השירות של Calypso מופעל אצלך באופן מקומי, הכתובת תוצג בצורה הבאה: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "ערך התבנית הנוכחית";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "ערך בברירת מחדל";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "שינוי תצורה מרחוק";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "ערך לשינוי תצורה מרחוק";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "לאפס";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9431,11 +9460,23 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "להסיר את הסיור הנוכחי שלי";
 
+/* Debug Menu section title */
+"debugMenu.section.logging" = "רישום";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "התחלה מהירה";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "הגדרות";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "מפתחים";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "סיכום שבועי";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "להסתיר את המידע";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "לחפש דומיין";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "לקבל דומיין";
@@ -9448,6 +9489,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "התוקף פג";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "ללא תאריך תפוגה";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "מתחדש";
@@ -9541,6 +9585,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "לשנה";
+
+/* Help button */
+"domainSelection.helpButton.title" = "עזרה";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "רכישות דומיין באתר זה ינתבו את המבקרים אל %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "לחפש דומיינים";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "קופה";
@@ -9683,6 +9736,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "האם נהנית בינתיים מהשימוש באפליקציה של Jetpack לנייד?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "לא ממש";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "המשוב שלך חשוב לנו";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "השירות נהדר";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "תודה שעזרת לנו לשפר את האפליקציה.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "המשוב נשלח";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "רוצה לספר לנו פרטים נוספים?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "לא עכשיו";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "נשמח למשוב כדי להשתפר";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "בטח!";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
@@ -10296,6 +10379,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "להתאים אישית את הלשונית 'בית'";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "לשתף את האתר";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "לשנות את סמל אתר";
 
@@ -10413,6 +10499,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
 
+/* Title for the plan selection view */
+"planSelection.title" = "תוכניות";
+
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "מוחק פוסט";
 
@@ -10493,9 +10582,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "תצוגה מקדימה";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "לפרסם כעת";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "לנסות שוב";
@@ -10836,6 +10922,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "אפשרויות אחרות לדומיין עבור %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "דומיין של WordPress.com בחינם";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "ניתן לקבל רישום או העברה של דומיין בחינם לשנה עם כל התוכניות השנתיות בתשלום.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "לקבל בעלות על דומיין משלך";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "הכתובת הראשית של האתר היא הכתובת שהמבקרים יראו בשורת הכתובת שלהם כאשר יבקרו באתר שלך.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "דומיין ראשי";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "אפשר פשוט לחפש דומיין";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "לשדרג לתוכנית";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "דומיינים";
 
@@ -10940,6 +11050,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה עקב השינויים בתנאים ובתמחור של טוויטר.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "תעבורה";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "שבעת הימים האחרונים";
@@ -11048,6 +11161,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "אפשר לחפש תמונות חינמיות ולהוסיף אותן לספריית המדיה שלך!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "לשלוח";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "משוב";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "בשיחה הזאת";
@@ -11348,6 +11467,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, אתרים, אתר, בלוגים, בלוג";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "משהו השתבש, יש לנסות שוב מאוחר יותר.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "החלפה לאפליקציה של Jetpack";

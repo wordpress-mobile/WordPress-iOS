@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 class Revision: NSManagedObject {
     @NSManaged var siteId: NSNumber
     @NSManaged var revisionId: NSNumber
@@ -17,7 +16,6 @@ class Revision: NSManagedObject {
     @NSManaged var postModifiedGmt: String?
 
     @NSManaged var diff: RevisionDiff?
-
 
     private lazy var revisionFormatter: DateFormatter = {
         let formatter = DateFormatter()

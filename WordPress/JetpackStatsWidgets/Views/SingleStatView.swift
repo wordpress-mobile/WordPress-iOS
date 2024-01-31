@@ -23,7 +23,6 @@ struct SingleStatView: View {
         self.value = value
     }
 
-
     var body: some View {
         HStack {
             if showsWidgetContainerBackground {

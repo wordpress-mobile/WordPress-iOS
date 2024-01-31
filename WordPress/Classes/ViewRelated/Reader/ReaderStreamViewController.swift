@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 import Combine
+import WordPressUI
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -236,7 +237,6 @@ import Combine
         return controller
     }
 
-
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for previewing the content of a site.
     ///
@@ -277,9 +277,7 @@ import Combine
         return controller
     }
 
-
     // MARK: - State Restoration
-
 
     public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                       coder: NSCoder) -> UIViewController? {
@@ -297,14 +295,12 @@ import Combine
         return controller
     }
 
-
     override func encodeRestorableState(with coder: NSCoder) {
         if let topic = readerTopic {
             coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
     }
-
 
     // MARK: - LifeCycle Methods
 
@@ -316,7 +312,6 @@ import Combine
 
         NotificationCenter.default.removeObserver(self)
     }
-
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
         restorationIdentifier = type(of: self).restorationClassIdentifier
@@ -370,7 +365,6 @@ import Combine
         }
     }
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -388,7 +382,6 @@ import Combine
         bumpStats()
         registerUserActivity()
     }
-
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -438,7 +431,6 @@ import Combine
         ReaderTracker.shared.start(.filteredList)
     }
 
-
     // MARK: - Topic acquisition
 
     /// Fetches a site topic for the value of the `siteID` property.
@@ -481,7 +473,6 @@ import Combine
             })
     }
 
-
     /// Fetches a tag topic for the value of the `tagSlug` property
     ///
     // TODO: - READERNAV - Remove this when the new reader is released
@@ -509,7 +500,6 @@ import Combine
                 self?.reportStreamLoadFailure()
             })
     }
-
 
     // MARK: - Setup
 
@@ -709,7 +699,6 @@ import Combine
         }
     }
 
-
     private func configureTitleForTopic() {
         guard let topic = readerTopic else {
             title = NSLocalizedString("Reader", comment: "The default title of the Reader")
@@ -742,9 +731,7 @@ import Combine
         postCellActions?.imageRequestAuthToken = account?.authToken
     }
 
-
     // MARK: - Instance Methods
-
 
     /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
     ///
@@ -760,7 +747,6 @@ import Combine
         }
         return post
     }
-
 
     /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
     /// to its intrinsic content layout, and after major layout changes on the viewcontroller itself.
@@ -931,9 +917,7 @@ import Combine
         }
     }
 
-
     // MARK: - Actions
-
 
     /// Handles the user initiated pull to refresh action.
     ///
@@ -984,7 +968,6 @@ import Combine
 
     // MARK: - Analytics
 
-
     /// Bump tracked analytics stats if necessary.
     ///
     private func bumpStats() {
@@ -1002,9 +985,7 @@ import Combine
         ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
     }
 
-
     // MARK: - Sync Methods
-
 
     /// Updates the last synced date for a topic.  Since its possible for a sync
     /// to complete *after* the current topic is changed we fetch the correct topic
@@ -1023,7 +1004,6 @@ import Combine
         ContextManager.sharedInstance().save(context)
     }
 
-
     private func canSync() -> Bool {
         return (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
     }
@@ -1031,7 +1011,6 @@ import Combine
     @objc func connectionAvailable() -> Bool {
         return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
-
 
     /// Kicks off a "background" sync without updating the UI if certain conditions
     /// are met.
@@ -1240,7 +1219,6 @@ import Combine
         }
     }
 
-
     func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
@@ -1311,7 +1289,6 @@ import Combine
         footerView.showSpinner(false)
     }
 
-
     // MARK: - Notifications
 
     @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
@@ -1336,7 +1313,6 @@ import Combine
     }
 
     // MARK: - Helpers for TableViewHandler
-
 
     func predicateForFetchRequest() -> NSPredicate {
         // If readerTopic is nil return a predicate that is valid, but still
@@ -1363,12 +1339,10 @@ import Combine
         return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topicInContext)
     }
 
-
     func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
         let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
-
 
     private func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
@@ -1445,7 +1419,6 @@ import Combine
     }
 }
 
-
 // MARK: - ReaderStreamHeaderDelegate
 
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
@@ -1475,11 +1448,9 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         }
     }
 
-
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         loadMoreItems(success, failure: failure)
     }
-
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         if content.isScrolling {
@@ -1488,7 +1459,6 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         }
         cleanupAfterSync()
     }
-
 
     func syncContentFailed(_ syncHelper: WPContentSyncHelper) {
         cleanupAfterSync(refresh: false)
@@ -1520,7 +1490,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
     }
 
-
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
@@ -1530,13 +1499,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
     }
 
-
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
     }
-
 
     // MARK: - Fetched Results Related
 
@@ -1545,7 +1512,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return viewContext
     }
 
-
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
@@ -1553,13 +1519,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return fetchRequest
     }
 
-
     func tableViewDidChangeContent(_ tableView: UITableView) {
         if content.contentCount == 0 {
             displayNoResultsView()
         }
     }
-
 
     // MARK: - Refresh Bookends
 
@@ -1579,7 +1543,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             tableView.flashScrollIndicators()
         }
     }
-
 
     // MARK: - TableView Related
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -1769,7 +1732,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         tableView.deselectRow(at: indexPath, animated: false)
     }
-
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
@@ -2007,7 +1969,6 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
-
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
@@ -2089,7 +2050,6 @@ private extension ReaderStreamViewController {
 
         view.isUserInteractionEnabled = true
     }
-
 
     func noTopicViewController(title: String,
                                buttonTitle: String? = nil,

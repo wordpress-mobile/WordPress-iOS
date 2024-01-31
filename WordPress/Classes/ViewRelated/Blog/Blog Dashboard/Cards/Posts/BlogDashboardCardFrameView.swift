@@ -135,7 +135,6 @@ class BlogDashboardCardFrameView: UIView {
         mainStackViewTrailingConstraint?.constant = 0
     }
 
-
     /// Set's the title displayed in the card's header
     /// - Parameters:
     ///   - title: Title to be displayed

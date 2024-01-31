@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-04 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
-
-/* Plan yearly price */
-"%@ per year" = "每年 %@";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ 千的五次方";
@@ -1944,6 +1941,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "无法连接到 WordPress 站点。此地址下没有任何有效的 WordPress 站点。请检查您输入的站点地址 (URL)。";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "无法连接。 服务器上缺少所需的 XML-RPC 方法。 请联系您的托管服务提供商以解决此问题。";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "无法连接。 尝试访问您站点的 XMLRPC 终端时收到 403 错误。 应用程序需要通过该请求与您的站点通信。 请联系您的托管服务提供商以解决此问题。";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "无法连接。 您的主机会阻止 POST 请求，而应用程序需要通过该请求与您的站点通信。 请联系您的托管服务提供商以解决此问题。";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "无法加载标签。";
 
@@ -2668,7 +2674,6 @@
 "Empty URL" = "空 URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "启用";
 
@@ -3012,6 +3017,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "文件类型";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "不支持的媒体文件类型。";
+
 /* Film & Television site intent topic */
 "Film & Television" = "电影与电视";
 
@@ -3124,6 +3132,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "字体大小";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "字体大小，%1$s";
 
 /* Food site intent topic */
 "Food" = "食物";
@@ -4072,9 +4083,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "正在加载区块编辑器。";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "正在加载用户名";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4505,6 +4513,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "需要更新";
 
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "网络连接中断，正在离线工作";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "已重新建立网络连接";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "新";
 
@@ -4551,9 +4565,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Table view title for the quick start section.
    Title for the Quick Start dashboard card. */
 "Next Steps" = "后续步骤";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "下个月";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "下一条通知";
@@ -4735,9 +4746,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "无可用预览";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "找不到主站点地址";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "尚无提示";
@@ -5502,9 +5510,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "预览您的站点，查看访客将看到的内容。";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "上个月";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一条通知";
 
@@ -6002,6 +6007,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "沙盒商店";
 
 /* Menus save button title
    Save Action
@@ -7134,9 +7142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "似乎您没有联网。";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "无法将此项目添加到媒体库。";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "可以创建的站点类型";
 
@@ -7809,9 +7814,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "无法更新套餐价格。提供的博客存在问题。";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 篇草稿文章上传失败";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "无法上传 1 篇文章";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8248,6 +8250,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "正在等待连接";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8714,6 +8719,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "加入我们";
 
+/* No comment provided by engineer. */
+"Working Offline" = "离线工作";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "按国家\/地区显示查看次数世界地图";
 
@@ -8858,6 +8866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "您有 1 个隐藏的 WordPress 站点。";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "您的套餐中包括为期一年的免费域名注册。";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "您的站点上具有活动的高级套餐升级。在删除站点前，请先取消升级。";
@@ -9105,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "图像质量";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "优化图像可缩小图像尺寸，以便更快地上传。\n\n默认启用该选项，但是您可以随时在应用程序设置中进行更改。";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "继续优化图像？";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "不，停止优化";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "是，继续优化";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
@@ -9271,6 +9270,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "评价为有帮助";
 
+/* Title for the checkout view */
+"checkout.title" = "结账";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "评论";
 
@@ -9421,8 +9423,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "查看统计信息";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "分析";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能标志";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "阅读器 CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "默认 URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "当前值";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "默认值";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "远程配置";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "远程配置值";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "重置";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9431,11 +9460,23 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "删除当前导览";
 
+/* Debug Menu section title */
+"debugMenu.section.logging" = "日志记录";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "快速启动";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "设置";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "开发者";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "每周综述";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隐藏此内容";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "搜索域名";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "获取域名";
@@ -9448,6 +9489,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "已到期";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "永不过期";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "续订";
@@ -9541,6 +9585,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/年";
+
+/* Help button */
+"domainSelection.helpButton.title" = "帮助";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "搜索域名";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "结账";
@@ -9683,6 +9733,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "您喜欢 Jetpack 移动应用程序吗？";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "不太喜欢";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "我们非常重视您的反馈意见";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "很喜欢";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "感谢您帮助我们改进此应用程序。";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "反馈已发送";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "您愿意与我们分享更多详细信息吗？";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "不是现在";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "帮助我们改进";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "确定";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍摄要在您的文章内使用的照片或视频。";
@@ -10296,6 +10376,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "对首页进行个性化设置";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "共享站点";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "更改站点图标";
 
@@ -10413,6 +10496,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
 
+/* Title for the plan selection view */
+"planSelection.title" = "套餐";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "已创建 %@";
 
@@ -10502,9 +10588,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "预览";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "立即发布";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "重试";
@@ -10845,6 +10928,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "%1$@ 的其他域名";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "您的免费 WordPress.com 域名";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "购买任何年度付费套餐均可获得一年的免费域名注册或转移服务。";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "获取您的域名";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "主站点地址是访客访问您的网站时在地址栏中看到的地址。";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "主域名";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "只需搜索域名";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "升级到套餐";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "域名";
 
@@ -10949,6 +11056,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "流量";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "过去 7 天";
@@ -11057,6 +11167,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "搜索查找要添加到您的媒体库中的免费照片！";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "提交";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "反馈";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "此会话中";
@@ -11357,6 +11473,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog wordpress, 站点, 博客";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "出错了，请稍后重试。";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "切换到 Jetpack 应用";

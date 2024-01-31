@@ -31,7 +31,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
         service = TestableEditorSettingsService(coreDataStack: contextManager, wpcomApi: remoteApi)
-        Environment.replaceEnvironment(contextManager: contextManager)
+        AppEnvironment.replaceEnvironment(contextManager: contextManager)
         setupDefaultAccount(with: mainContext)
     }
 

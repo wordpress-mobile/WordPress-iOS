@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-
 extension SiteSuggestion {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SiteSuggestion> {

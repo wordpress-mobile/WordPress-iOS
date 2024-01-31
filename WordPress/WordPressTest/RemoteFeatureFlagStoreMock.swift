@@ -10,6 +10,7 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
     var removalPhaseNewUsers = false
     var removalPhaseSelfHosted = false
     var removalPhaseStaticScreens = false
+    var inAppRating = false
 
     var enabledFeatureFlags = Set<String>()
     var disabledFeatureFlag = Set<String>()
@@ -39,6 +40,8 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
             return removalPhaseSelfHosted
         case RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.remoteKey:
             return removalPhaseStaticScreens
+        case RemoteFeatureFlag.inAppRating.remoteKey:
+            return inAppRating
         default:
             return super.value(for: flagKey)
         }

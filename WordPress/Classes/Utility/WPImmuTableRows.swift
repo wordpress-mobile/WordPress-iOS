@@ -2,7 +2,6 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-
 struct NavigationItemRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
@@ -51,7 +50,6 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
     let showIndicator: Bool
     let accessoryType: UITableViewCell.AccessoryType
     let action: ImmuTableAction?
-
 
     init(title: String, icon: UIImage? = nil, showIndicator: Bool = false, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
@@ -122,7 +120,6 @@ struct EditableAttributedTextRow: ImmuTableRow {
         WPStyleGuide.configureTableViewCell(cell)
     }
 }
-
 
 struct TextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
