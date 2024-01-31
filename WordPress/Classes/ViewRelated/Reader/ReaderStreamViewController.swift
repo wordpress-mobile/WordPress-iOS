@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 import Combine
+import WordPressUI
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:

@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressAuthenticator
 import Gridicons
 import UIKit
+import WordPressUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -135,15 +136,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
-    /// The last time when user seen notifications
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
-        }
-    }
+    lazy var viewModel: NotificationsViewModel = {
+        NotificationsViewModel(userDefaults: userDefaults)
+    }()
 
     // MARK: - View Lifecycle
 
@@ -703,7 +698,7 @@ private extension NotificationsViewController {
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
         resetNotifications()
-        resetLastSeenTime()
+        viewModel.didChangeDefaultAccount()
         resetApplicationBadge()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
@@ -1727,18 +1722,7 @@ private extension NotificationsViewController {
             return
         }
 
-        guard let timestamp = note.timestamp, timestamp != lastSeenTime else {
-            return
-        }
-
-        let mediator = NotificationSyncMediator()
-        mediator?.updateLastSeen(timestamp) { error in
-            guard error == nil else {
-                return
-            }
-
-            self.lastSeenTime = timestamp
-        }
+        viewModel.lastSeenChanged(timestamp: note.timestamp)
     }
 
     func loadNotification(with noteId: String) -> Notification? {
@@ -1752,29 +1736,11 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.firstIndex(of: note) else {
-            return nil
-        }
-
-        let targetIndex = noteIndex + delta
-        guard targetIndex >= 0 && targetIndex < notifications.count else {
-            return nil
-        }
-
-        func notMatcher(_ note: Notification) -> Bool {
-            return note.kind != .matcher
-        }
-
-        if delta > 0 {
-            return notifications
-                .suffix(from: targetIndex)
-                .first(where: notMatcher)
-        } else {
-            return notifications
-                .prefix(through: targetIndex)
-                .reversed()
-                .first(where: notMatcher)
-        }
+        return viewModel.loadNotification(
+            near: note,
+            allNotifications: notifications,
+            withIndexDelta: delta
+        )
     }
 
     func resetNotifications() {
@@ -1785,10 +1751,6 @@ private extension NotificationsViewController {
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
-    }
-
-    func resetLastSeenTime() {
-        lastSeenTime = nil
     }
 
     func resetApplicationBadge() {
@@ -1961,7 +1923,6 @@ private extension NotificationsViewController {
 
     enum Settings {
         static let estimatedRowHeight = CGFloat(70)
-        static let lastSeenTime = "notifications_last_seen_time"
     }
 
     enum Stats {

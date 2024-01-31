@@ -243,7 +243,7 @@
 
 - (NSError *)unknownErrorForInvalidApiFailure
 {
-    return [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUnknown userInfo:nil];
+    return [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorCodeUnknown userInfo:nil];
 }
 
 #pragma mark - Menu managed objects from RemoteMenu objects

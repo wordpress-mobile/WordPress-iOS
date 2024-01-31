@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressUI
 
 protocol PublishingEditor where Self: UIViewController {
     //TODO: Add publishing things

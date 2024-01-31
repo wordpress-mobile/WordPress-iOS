@@ -30,7 +30,7 @@ struct WeeklyRoundupDebugScreen: View {
         }
     }
 
-    @SwiftUI.Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     @State private var scheduledDate: Date? = nil
     @State private var running: Bool = false
     @State private var errorScheduling: Bool = false

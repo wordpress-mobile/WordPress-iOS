@@ -1,3 +1,5 @@
+import WordPressUI
+
 class FilterSheetViewController: UIViewController {
 
     private let viewTitle: String

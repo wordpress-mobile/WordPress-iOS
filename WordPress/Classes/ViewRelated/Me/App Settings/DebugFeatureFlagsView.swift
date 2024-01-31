@@ -180,9 +180,3 @@ private enum DebugFeatureFlagFilter: Hashable {
     case local
     case overriden
 }
-
-private extension View {
-    func apply<T>(_ closure: (Self) -> T) -> T {
-        closure(self)
-    }
-}
