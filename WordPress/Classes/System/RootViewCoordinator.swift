@@ -55,7 +55,7 @@ class RootViewCoordinator {
     private var windowManager: WindowManager?
     private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
     var isSiteCreationActive = false
-    var isFullScreenOverlayDisplayed = false
+    var isFullScreenOverlayBeingDisplayed = false
     // MARK: Initializer
 
     init(featureFlagStore: RemoteFeatureFlagStore,
@@ -154,7 +154,7 @@ class RootViewCoordinator {
             return
         }
 
-        isFullScreenOverlayDisplayed = true
+        isFullScreenOverlayBeingDisplayed = true
         let viewController = BlurredEmptyViewController()
 
         windowManager.displayOverlayingWindow(with: viewController)
@@ -166,7 +166,7 @@ class RootViewCoordinator {
                                                                  blog: blog,
                                                                  onWillDismiss: {
             viewController.removeBlurView()
-            self.isFullScreenOverlayDisplayed = false
+            self.isFullScreenOverlayBeingDisplayed = false
         }, onDidDismiss: {
             windowManager.clearOverlayingWindow()
         })

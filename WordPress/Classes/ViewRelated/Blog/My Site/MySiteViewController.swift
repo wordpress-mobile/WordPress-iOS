@@ -198,10 +198,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-        attemptToDisplayCompliancePopover()
-        Task { @MainActor in
-            await overlaysCoordinator.presentOverlayIfNeeded(in: self)
-        }
+        attemptToDisplayPopover()
     }
 
     override func viewDidLayoutSubviews() {
@@ -942,10 +939,11 @@ private extension MySiteViewController {
 // MARK: Compliance Popover
 
 private extension MySiteViewController {
-    func attemptToDisplayCompliancePopover() {
-        if !RootViewCoordinator.shared.isSiteCreationActive && !RootViewCoordinator.shared.isFullScreenOverlayDisplayed {
-            complianceCoordinator = CompliancePopoverCoordinator()
-            complianceCoordinator?.presentIfNeeded()
+    func attemptToDisplayPopover() {
+        if !RootViewCoordinator.shared.isSiteCreationActive && !RootViewCoordinator.shared.isFullScreenOverlayBeingDisplayed {
+            Task { @MainActor in
+                await overlaysCoordinator.presentOverlayIfNeeded(in: self)
+            }
         }
     }
 }
