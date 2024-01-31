@@ -15,7 +15,7 @@ struct BooleanUserDefaultsDebugView: View {
                                 get: { userDefaultsSection[userDefaultKey]?.value ?? false },
                                 set: { newValue in viewModel.updateUserDefault(newValue, forSection: sectionKey, forUserDefault: userDefaultKey) }
                             )
-                            Toggle(userDefaultsSection[userDefaultKey]!.title, isOn: isOn)
+                            Toggle(userDefaultsSection[userDefaultKey]?.title ?? Strings.unrecognizedEntryTitle, isOn: isOn)
                                 .font(.caption)
                                 .toggleStyle(
                                     SwitchToggleStyle(
@@ -34,4 +34,6 @@ struct BooleanUserDefaultsDebugView: View {
 
 private enum Strings {
     static let title = NSLocalizedString("debugMenu.booleanUserDefaults.title", value: "Boolean User Defaults", comment: "Boolean User Defaults Debug Menu screen title")
+
+    static let unrecognizedEntryTitle = "Unrecognized Entry"
 }
