@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-01-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
-
-/* Plan yearly price */
-"%@ per year" = "每年 %@";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ 千的五次方";
@@ -2677,7 +2674,6 @@
 "Empty URL" = "空 URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "启用";
 
@@ -4087,9 +4083,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "正在加载区块编辑器。";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "正在加载用户名";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4573,9 +4566,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "后续步骤";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "下个月";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "下一条通知";
 
@@ -4756,9 +4746,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "无可用预览";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "找不到主站点地址";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "尚无提示";
@@ -5522,9 +5509,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "预览您的站点，查看访客将看到的内容。";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "上个月";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一条通知";
@@ -7158,9 +7142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "似乎您没有联网。";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "无法将此项目添加到媒体库。";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "可以创建的站点类型";
 
@@ -7833,9 +7814,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "无法更新套餐价格。提供的博客存在问题。";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 篇草稿文章上传失败";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "无法上传 1 篇文章";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8272,6 +8250,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "正在等待连接";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9135,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "图像质量";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "优化图像可缩小图像尺寸，以便更快地上传。\n\n默认启用该选项，但是您可以随时在应用程序设置中进行更改。";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "继续优化图像？";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "不，停止优化";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "是，继续优化";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
@@ -9509,9 +9478,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隐藏此内容";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "搜索域名";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "获取域名";
 
@@ -9767,6 +9733,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "您喜欢 Jetpack 移动应用程序吗？";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "不太喜欢";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "我们非常重视您的反馈意见";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "很喜欢";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "感谢您帮助我们改进此应用程序。";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "反馈已发送";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "您愿意与我们分享更多详细信息吗？";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "不是现在";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "帮助我们改进";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "确定";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍摄要在您的文章内使用的照片或视频。";
@@ -10380,6 +10376,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "对首页进行个性化设置";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "共享站点";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "更改站点图标";
 
@@ -10589,9 +10588,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "预览";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "立即发布";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "重试";
@@ -11061,6 +11057,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "流量";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "过去 7 天";
 
@@ -11168,6 +11167,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "搜索查找要添加到您的媒体库中的免费照片！";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "提交";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "反馈";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "此会话中";

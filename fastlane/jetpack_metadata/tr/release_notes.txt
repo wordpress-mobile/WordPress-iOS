@@ -1,9 +1,0 @@
-Artık alan adı panosunda ücretsiz bir alan adı içeren WordPress paketi alabilirsiniz. Alan adlarınızı yönetmenin daha da kolay olması için Site Alan Adları ekranına bazı iyileştirmeler yaptık.
-
-Düzenleyicide metin bloklarını düzenlerken cihazınızın klavyesi artık düzenlemenin ortasında kaybolmaz. Düzenleyici ayrıca yeni bir blok eklediğinizde doğrudan yeni bloka kaydırır. Yaz dostum.
-
-Güvenlik anahtarlarınızla oturum açmayı mı özlediniz? Artık özlemenize gerek yok, oturum açma sırasında iki faktörlü kimlik doğrulama için güvenlik anahtarlarını yeniden etkinleştirdik. Hesabınıza yalnızca siz gireceksiniz.
-
-Oturum açma ekranının renklerini hem WordPress hem de Jetpack ile eşleşecek şekilde güncelledik. Sonuçta birlikten kuvvet doğar.
-
-Son olarak çeşitli kod düzeltmeleri yaptık ve uygulamanın kilitlenmesine neden olan birkaç nadir (ve çok da nadir olmayan) sorunu ele aldık. Bu sorunlar genellikle etiketleri ve kategorileri düzenleme, gönderileri silme ve silinen gönderileri düzenleme ile ilgiliydi. Hepsi bir günlük iş.

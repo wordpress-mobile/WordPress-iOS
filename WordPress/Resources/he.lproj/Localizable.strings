@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-01-24 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ מתוך %2$@ נוצלו באתר שלך";
-
-/* Plan yearly price */
-"%@ per year" = "%@ לשנה";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ מיליון מליארדים";
@@ -2677,7 +2674,6 @@
 "Empty URL" = "קישור ריק";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "הפעלה";
 
@@ -4087,9 +4083,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "טעינת עורך הבלוקים.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "טעינת שמות המשתמשים";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4573,9 +4566,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "לשלב הבא";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "החודש הבא";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "ההודעה הבאה";
 
@@ -4756,9 +4746,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "תצוגה מקדימה לא זמינה";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "לא נמצא כתובת אתר ראשי";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "עדיין אין הצעות";
@@ -5522,9 +5509,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "באפשרותך להציג תצוגה מקדימה של האתר כדי לבחון מה יראו המבקרים.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "החודש הקודם";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "הודעה קודמת";
@@ -7158,9 +7142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "החיבור לאינטרנט לא מחובר.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "לא ניתן להוסיף את הפריט לספריית המדיה.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "סוגי האתרים שאפשר ליצור";
 
@@ -7833,9 +7814,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "אין אפשרות לעדכן את מחירי התוכנית. אירעה בעיה עם הבלוג הנוכחי.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "אין אפשרות להעלות פוסט טיוטה אחד";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "אין אפשרות להעלות פוסט אחד";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8272,6 +8250,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "ממתין להשלמת הפעולה על ידי Google...";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "ממתין לחיבור";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9132,18 +9113,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "איכות תמונה";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "מיטוב התמונות מכווץ כעת תמונות להעלאה מהירה יותר.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "קובץ אודיו";
 
@@ -9509,9 +9478,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "להסתיר את המידע";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "לחפש דומיין";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "לקבל דומיין";
 
@@ -9770,6 +9736,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "האם נהנית בינתיים מהשימוש באפליקציה של Jetpack לנייד?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "לא ממש";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "המשוב שלך חשוב לנו";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "השירות נהדר";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "תודה שעזרת לנו לשפר את האפליקציה.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "המשוב נשלח";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "רוצה לספר לנו פרטים נוספים?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "לא עכשיו";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "נשמח למשוב כדי להשתפר";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "בטח!";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
@@ -10383,6 +10379,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "להתאים אישית את הלשונית 'בית'";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "לשתף את האתר";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "לשנות את סמל אתר";
 
@@ -10583,9 +10582,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "תצוגה מקדימה";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "לפרסם כעת";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "לנסות שוב";
@@ -11055,6 +11051,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה עקב השינויים בתנאים ובתמחור של טוויטר.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "תעבורה";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "שבעת הימים האחרונים";
 
@@ -11162,6 +11161,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "אפשר לחפש תמונות חינמיות ולהוסיף אותן לספריית המדיה שלך!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "לשלוח";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "משוב";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "בשיחה הזאת";

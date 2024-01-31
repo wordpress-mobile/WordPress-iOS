@@ -1,5 +1,14 @@
-Wenn du Text-Blöcke im Editor bearbeitest, verschwindet die Tastatur deines Geräts nicht mehr mitten in der Bearbeitung. Der Editor scrollt auch direkt zu einem neuen Block, wenn du ihn hinzufügst. Viel Spaß beim Schreiben.
+Du erhältst ab sofort eine Benachrichtigung, wenn du offline arbeitest. Medien-Uploads auf Bildblöcke werden pausiert, wenn deine Internetverbindung unterbrochen ist, und fortgesetzt, sobald die Verbindung wiederhergestellt ist.
+Zusätzlich: Wenn du einen fehlgeschlagenen Medien-Upload manuell wiederholst, werden alle anderen fehlgeschlagenen Medien-Uploads in deinem Beitrag von der App wiederholt. Wenn das mal nicht effizient ist.
 
-Vermisst du das Anmelden mit deinen Sicherheitsschlüsseln? Jetzt nicht mehr! Wir haben die Sicherheitsschlüssel für die zweistufige Authentifizierung beim Anmelden wieder aktiviert. Nur du kannst dich in deinem Konto anmelden.
+Wenn du im Block-Editor einen individuellen Verlauf auswählst, wird dir jetzt deine ausgewählte Farbe angezeigt.
 
-Schließlich haben wir mehrere seltene (und nicht so seltene) Probleme behoben, die zu App-Abstürzen führten. Diese Probleme standen hauptsächlich im Zusammenhang mit der Bearbeitung von Schlagwörtern und Kategorien, der Verwendung von doppelten Schlagwörtern, dem Löschen von Beiträgen und der Bearbeitung von gelöschten Beiträgen. Das ist doch selbstverständlich.
+Und wenn du auf dem Bildschirm mit den Website-Mediendetails durch deine Bilder scrollst, werden diese vorab geladen, damit du schneller arbeiten kannst. Vielleicht waren sie auch schon immer da.
+
+Ab sofort werden Vorschaubilder, GIFs und Videowiedergaben, Dokumente und andere Dateivorschauen mit höherer Auflösung unterstützt. (homer-simpson-woohoo.gif)
+
+Wir haben deutlichere Anweisungen zum Ablauf für Veröffentlichungen hinzugefügt. Benutzer mit der Rolle „Mitarbeiter“ sehen nun anstelle von „Veröffentlichen“ die Aktion „Zur Überprüfung vorlegen“. Außerdem kannst du Beitragsentwürfe und gelöschte Beiträge ohne Bestätigung in den Papierkorb legen.
+
+Im Website-Kontextmenü gibt es jetzt eine Freigabefunktion, damit du deine Website mit anderen teilen kannst.
+
+Und weil wir Applaus lieben, haben wir die Schreibanregung für In-App-Bewertungen verbessert. Du wirst aufgefordert, eine Bewertung abzugeben, wenn du mit der App zufrieden bist, oder du erhältst ein Feedbackformular, um Verbesserungsvorschläge zu machen. Feedback hilft uns, besser zu werden. Deshalb freuen wir uns auf deine Meinung!
