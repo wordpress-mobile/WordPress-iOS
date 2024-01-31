@@ -76,11 +76,22 @@ platform :ios do
     )
   end
 
-  lane :trigger_new_hotfix_in_ci do
-    UI.message('TODO')
+  lane :trigger_new_hotfix_in_ci do |options|
+    version = extract_hotfix_version_from_lane_options!(options)
+    UI.message("TODO: Will start hotfix #{version}")
   end
 
-  lane :trigger_finalize_hotfix_in_ci do
-    UI.message('TODO')
+  lane :trigger_finalize_hotfix_in_ci do |options|
+    version = extract_hotfix_version_from_lane_options!(options)
+    UI.message("TODO: Will finish hotfix #{version}")
   end
+end
+
+def extract_hotfix_version_from_lane_options!(options)
+  version_key = :version
+  version = options[version_key]
+
+  UI.user_error!("You must specify a version for the hotfix by calling this lane with a '#{version_key}:' parameter.") unless version
+
+  version
 end
