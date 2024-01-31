@@ -200,6 +200,7 @@ final class WebServerLogsViewModel: ObservableObject {
         if reset {
             loadedLogs = []
             hasMore = true
+            scrollId = nil
         }
 
         guard !isLoading && hasMore else {
