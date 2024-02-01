@@ -238,8 +238,7 @@ extension AtomicWebServerLogEntry: Identifiable {
     var requestTypeBackgroundColor: UIColor {
         switch requestType {
         case "GET": return .muriel(name: .green, .shade5)
-        case "HEAD": return .muriel(name: .gray, .shade5)
-        case "PUT": return .muriel(name: .yellow, .shade5)
+        case "HEAD", "PUT": return .muriel(name: .gray, .shade5)
         case "POST": return .muriel(name: .blue, .shade5)
         case "DELETE": return .muriel(name: .red, .shade5)
         default: return .clear
@@ -249,8 +248,7 @@ extension AtomicWebServerLogEntry: Identifiable {
     var requestTypeTextColor: UIColor {
         switch requestType {
         case "GET": return .muriel(name: .green, .shade80)
-        case "HEAD": return .muriel(name: .gray, .shade80)
-        case "PUT": return .muriel(name: .yellow, .shade80)
+        case "HEAD", "PUT": return .muriel(name: .gray, .shade80)
         case "POST": return .muriel(name: .blue, .shade80)
         case "DELETE": return .muriel(name: .red, .shade80)
         default: return .clear
