@@ -46,6 +46,7 @@ struct ReaderNavigationButton: View {
             Text(item.title)
                 .foregroundStyle(Colors.primary)
                 .font(.subheadline.weight(.semibold))
+                .minimumScaleFactor(0.1) // prevents the text from truncating while in transition.
                 .frame(minHeight: 24.0)
             Image("reader-menu-chevron-down")
                 .frame(width: 16.0, height: 16.0)
