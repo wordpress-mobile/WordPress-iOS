@@ -104,7 +104,10 @@ struct PHPLogsView: View {
 
     private func makeRow(for entry: AtomicErrorLogEntry) -> some View {
         let attributedDescription = entry.attributedDescription
-        return NavigationLink(destination: { SiteMonitoringEntryDetailsView(text: attributedDescription) }) {
+        return NavigationLink(destination: {
+            SiteMonitoringEntryDetailsView(text: attributedDescription)
+                .onAppear { WPAnalytics.track(.siteMonitoringEntryDetailsShown, properties: ["tab": "php_logs"]) }
+        }) {
             PHPLogsEntryRowView(entry: entry)
                 .swipeActions(edge: .trailing) {
                     ShareLink(item: attributedDescription.string) {
@@ -186,6 +189,7 @@ final class PHPLogsViewModel: ObservableObject {
         if reset {
             loadedLogs = []
             hasMore = true
+            scrollId = nil
         }
 
         guard !isLoading && hasMore else {
