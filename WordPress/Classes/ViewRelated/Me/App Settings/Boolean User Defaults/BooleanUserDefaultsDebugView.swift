@@ -5,17 +5,23 @@ struct BooleanUserDefaultsDebugView: View {
 
     var body: some View {
         List {
-            ForEach(viewModel.userDefaultsSections.keys.sorted(), id: \.self) { sectionKey in
-                let userDefaultsSection = viewModel.userDefaultsSections[sectionKey] ?? BooleanUserDefaultEntries()
-
-                Section(header: Text(sectionKey)
+            ForEach(viewModel.userDefaultsSections, id: \.key) { section in
+                Section(header: Text(section.key)
                     .font(.caption)) {
-                        ForEach(userDefaultsSection.keys.sorted(), id: \.self) { userDefaultKey in
+                        ForEach(section.rows, id: \.key) { row in
                             let isOn = Binding<Bool>(
-                                get: { userDefaultsSection[userDefaultKey]?.value ?? false },
-                                set: { newValue in viewModel.updateUserDefault(newValue, forSection: sectionKey, forUserDefault: userDefaultKey) }
+                                get: {
+                                    row.value
+                                },
+                                set: { newValue in
+                                    viewModel.updateUserDefault(
+                                        newValue,
+                                        forSection: section.key,
+                                        forRow: row.key
+                                    )
+                                }
                             )
-                            Toggle(userDefaultsSection[userDefaultKey]?.title ?? Strings.unrecognizedEntryTitle, isOn: isOn)
+                            Toggle(row.title, isOn: isOn)
                                 .font(.caption)
                                 .toggleStyle(
                                     SwitchToggleStyle(

@@ -1,86 +1,126 @@
 import SwiftUI
 
-typealias BooleanUserDefaultsSections = [String: BooleanUserDefaultEntries]
-typealias BooleanUserDefaultEntries = [String: BooleanUserDefault]
-
 final class BooleanUserDefaultsDebugViewModel: ObservableObject {
-    @Published private var allUserDefaultsSections = BooleanUserDefaultsSections()
-    @Published var searchQuery: String = ""
+    private let persistentRepository: UserPersistentRepository
+    private let coreDataStack: CoreDataStack
 
-    private var persistentRepository: UserPersistentRepository
-
-    var userDefaultsSections: BooleanUserDefaultsSections {
-        return filterUserDefaults(by: searchQuery)
+    private var allUserDefaultsSections = Sections() {
+        didSet {
+            self.reloadSections()
+        }
     }
 
-    let coreDataStack: CoreDataStack
-
-    private func filterUserDefaults(by query: String) -> BooleanUserDefaultsSections {
-        guard !query.isEmpty else {
-            return allUserDefaultsSections
+    @Published var searchQuery: String = "" {
+        didSet {
+            self.reloadSections()
         }
-
-        var filteredSections = BooleanUserDefaultsSections()
-        allUserDefaultsSections.forEach { sectionKey, userDefaults in
-            let filteredUserDefaults = userDefaults.filter { key, userDefault in
-                key.localizedCaseInsensitiveContains(query) || userDefault.title.localizedCaseInsensitiveContains(query)
-            }
-            if sectionKey.localizedCaseInsensitiveContains(query) || !filteredUserDefaults.isEmpty {
-                filteredSections[sectionKey] = filteredUserDefaults.isEmpty ? userDefaults : filteredUserDefaults
-            }
-        }
-        return filteredSections
     }
+
+    @Published var userDefaultsSections: Sections = []
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.coreDataStack = coreDataStack
         self.persistentRepository = persistentRepository
-        load()
     }
 
     func load() {
         let allUserDefaults = persistentRepository.dictionaryRepresentation()
-        var loadedUserDefaultsSections = BooleanUserDefaultsSections()
-        var otherSection = BooleanUserDefaultEntries()
+        var loadedUserDefaultsSections = Sections()
+        var otherSection = [Row]()
 
-        for (entryKey, entryValue) in allUserDefaults {
-            if let groupedUserDefaults = entryValue as? [String: Bool], !isFeatureFlagsSection(entryKey) {
-                loadedUserDefaultsSections[entryKey] = processGroupedUserDefaults(groupedUserDefaults)
-            } else if let booleanUserDefault = entryValue as? Bool, !isGutenbergUserDefault(entryKey) {
-                otherSection[entryKey] = BooleanUserDefault(title: entryKey, value: booleanUserDefault)
+        for (key, value) in allUserDefaults {
+            if let groupedUserDefaults = value as? [String: Bool], !isFeatureFlagsSection(key) {
+                let section = Section(
+                    key: key,
+                    rows: processGroupedUserDefaults(groupedUserDefaults)
+                )
+                loadedUserDefaultsSections.append(section)
+            } else if let booleanUserDefault = value as? Bool, !isGutenbergUserDefault(key) {
+                otherSection.append(.init(key: key, title: key, value: booleanUserDefault))
             }
         }
         if !otherSection.isEmpty {
-            loadedUserDefaultsSections[Strings.otherBooleanUserDefaultsSectionID] = otherSection
+            let rows = otherSection.sorted { $0.title < $1.title }
+            let section = Section(key: Strings.otherBooleanUserDefaultsSectionID, rows: rows)
+            loadedUserDefaultsSections.append(section)
         }
         allUserDefaultsSections = loadedUserDefaultsSections
     }
 
-    private func processGroupedUserDefaults(_ userDefaults: [String: Bool]) -> BooleanUserDefaultEntries {
-        userDefaults.reduce(into: BooleanUserDefaultEntries()) { result, keyValue in
+    private func reloadSections() {
+        self.userDefaultsSections = filterUserDefaults(by: searchQuery)
+    }
+
+    private func filterUserDefaults(by query: String) -> Sections {
+        guard !query.isEmpty else {
+            return allUserDefaultsSections
+        }
+
+        var filteredSections = Sections()
+        allUserDefaultsSections.forEach { section in
+            let filteredUserDefaults = section.rows.filter { entry in
+                section.key.localizedCaseInsensitiveContains(query) || entry.title.localizedCaseInsensitiveContains(query)
+            }
+            if section.key.localizedCaseInsensitiveContains(query) || !filteredUserDefaults.isEmpty {
+                let section = Section(
+                    key: section.key,
+                    rows: filteredUserDefaults.isEmpty ? section.rows : filteredUserDefaults
+                )
+                filteredSections.append(section)
+            }
+        }
+        return filteredSections
+    }
+
+    private func processGroupedUserDefaults(_ userDefaults: [String: Bool]) -> [Row] {
+        var rows = userDefaults.reduce(into: [Row]()) { result, keyValue in
             let (key, value) = keyValue
-            result[key] = processSingleUserDefault(key: key, value: value)
+            result.append(processSingleUserDefault(key: key, value: value))
         }
+        rows = rows.sorted { $0.title < $1.title }
+        return rows
     }
 
-    private func processSingleUserDefault(key: String, value: Bool) -> BooleanUserDefault {
-        if let siteID = Int(key), let blogURL = try? Blog.lookup(withID: siteID, in: coreDataStack.mainContext)?.url {
-            return BooleanUserDefault(title: blogURL, value: value)
+    private func processSingleUserDefault(key: String, value: Bool) -> Row {
+        let title = findBlog(byID: key)?.url ?? key
+        return Row(key: key, title: title, value: value)
+    }
+
+    private func findBlog(byID id: String) -> Blog? {
+        return try? Blog.lookup(withID: Int(id) ?? 0, in: coreDataStack.mainContext)
+    }
+
+    func updateUserDefault(_ newValue: Bool, forSection targetSection: String, forRow targetRow: String) {
+        updateAllUserDefaultsSections(newValue, forSection: targetSection, forRow: targetRow)
+        if targetSection == Strings.otherBooleanUserDefaultsSectionID {
+            persistentRepository.set(newValue, forKey: targetRow)
         } else {
-            return BooleanUserDefault(title: key, value: value)
+            guard let section = allUserDefaultsSections.first(where: { $0.key == targetSection }) else {
+                return
+            }
+            let entries = section.rows.reduce(into: [String: Bool]()) { result, row in
+                result[row.key] = newValue
+            }
+            persistentRepository.set(entries, forKey: targetSection)
         }
     }
 
-    func updateUserDefault(_ value: Bool, forSection sectionID: String, forUserDefault userDefaultID: String) {
-        if sectionID == Strings.otherBooleanUserDefaultsSectionID {
-            persistentRepository.set(value, forKey: userDefaultID)
-        } else if var section = allUserDefaultsSections[sectionID] {
-            section[userDefaultID] = BooleanUserDefault(title: userDefaultID, value: value)
-            let sectionValues = section.mapValues { $0.value }
-            persistentRepository.set(sectionValues, forKey: sectionID)
+    func updateAllUserDefaultsSections(_ newValue: Bool, forSection targetSection: String, forRow targetRow: String) {
+        allUserDefaultsSections = allUserDefaultsSections.map { currentSection in
+            if currentSection.key == targetSection {
+                let updatedRows = currentSection.rows.map { currentRow in
+                    if currentRow.key == targetRow {
+                        return Row(key: currentRow.key, title: currentRow.title, value: newValue)
+                    } else {
+                        return currentRow
+                    }
+                }
+                return Section(key: currentSection.key, rows: updatedRows)
+            } else {
+                return currentSection
+            }
         }
-        load()
     }
 
     private func isGutenbergUserDefault(_ key: String) -> Bool {
@@ -90,12 +130,31 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     private func isFeatureFlagsSection(_ key: String) -> Bool {
         key.isEqual(to: Strings.featureFlagSectionKey)
     }
+
+    // MARK: - Types
+
+    struct Section {
+        let key: String
+        let rows: [Row]
+    }
+
+    final class Row {
+        let key: String
+        let title: String
+        let value: Bool
+
+        init(key: String, title: String, value: Bool) {
+            self.key = key
+            self.title = title
+            self.value = value
+        }
+    }
+
+    typealias Sections = [Section]
+
 }
 
-struct BooleanUserDefault: Equatable {
-    var title: String
-    var value: Bool
-}
+// MARK: - Constants
 
 private enum Strings {
     static let otherBooleanUserDefaultsSectionID = "Other"
