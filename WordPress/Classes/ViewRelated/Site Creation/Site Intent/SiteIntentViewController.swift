@@ -110,6 +110,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     @objc
     private func closeButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentCanceled()
+        RootViewCoordinator.shared.reloadPostSiteCreationCancellationIfNeeded()
         dismiss(animated: true)
     }
 }
