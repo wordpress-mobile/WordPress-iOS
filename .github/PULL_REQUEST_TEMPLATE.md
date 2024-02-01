@@ -16,10 +16,10 @@ PR submission checklist:
 - [ ] I have completed the Regression Notes.
 - [ ] I have considered adding unit tests for my changes.
 - [ ] I have considered adding accessibility improvements for my changes.
-- [ ] I have tested this feature for both WordPress.com sites and self-hosted Jetpack sites.
 - [ ] I have considered if this change warrants user-facing release notes and have added them to `RELEASE-NOTES.txt` if necessary.
 
-UI Changes testing checklist:
+Testing checklist:
+- [ ] WordPress.com sites and self-hosted Jetpack sites.
 - [ ] Portrait and landscape orientations.
 - [ ] Light and dark modes.
 - [ ] Fonts: Larger, smaller and bold text.
