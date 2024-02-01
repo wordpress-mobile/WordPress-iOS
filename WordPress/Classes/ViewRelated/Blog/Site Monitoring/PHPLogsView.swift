@@ -5,7 +5,7 @@ import UIKit
 @available(iOS 16, *)
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel
-    @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo())
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -200,7 +200,7 @@ final class PHPLogsViewModel: ObservableObject {
 
         do {
             let endDate = searchCriteria.endDate ?? Date.now
-            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+            let startDate = searchCriteria.startDate ?? Date.oneWeekAgo(from: endDate)
 
             let response = try await atomicSiteService.errorLogs(
                 siteID: siteID,

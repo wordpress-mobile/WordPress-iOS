@@ -5,7 +5,7 @@ import UIKit
 @available(iOS 16, *)
 struct WebServerLogsView: View {
     @StateObject var viewModel: WebServerLogsViewModel
-    @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo())
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -214,7 +214,7 @@ final class WebServerLogsViewModel: ObservableObject {
 
         do {
             let endDate = searchCriteria.endDate ?? Date.now
-            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+            let startDate = searchCriteria.startDate ?? Date.oneWeekAgo(from: endDate)
 
             let response = try await atomicSiteService.webServerLogs(
                 siteID: siteID,
@@ -238,8 +238,7 @@ extension AtomicWebServerLogEntry: Identifiable {
     var requestTypeBackgroundColor: UIColor {
         switch requestType {
         case "GET": return .muriel(name: .green, .shade5)
-        case "HEAD": return .muriel(name: .gray, .shade5)
-        case "PUT": return .muriel(name: .yellow, .shade5)
+        case "HEAD", "PUT": return .muriel(name: .gray, .shade5)
         case "POST": return .muriel(name: .blue, .shade5)
         case "DELETE": return .muriel(name: .red, .shade5)
         default: return .clear
@@ -249,8 +248,7 @@ extension AtomicWebServerLogEntry: Identifiable {
     var requestTypeTextColor: UIColor {
         switch requestType {
         case "GET": return .muriel(name: .green, .shade80)
-        case "HEAD": return .muriel(name: .gray, .shade80)
-        case "PUT": return .muriel(name: .yellow, .shade80)
+        case "HEAD", "PUT": return .muriel(name: .gray, .shade80)
         case "POST": return .muriel(name: .blue, .shade80)
         case "DELETE": return .muriel(name: .red, .shade80)
         default: return .clear
