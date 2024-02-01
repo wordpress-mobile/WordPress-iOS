@@ -1,5 +1,6 @@
 24.2
 -----
+* [*] Fix the UI bug on Dynamic Dashboard Card [#22516]
 
 24.0.1
 -----
