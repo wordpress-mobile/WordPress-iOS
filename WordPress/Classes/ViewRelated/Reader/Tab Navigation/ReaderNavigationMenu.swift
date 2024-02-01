@@ -28,6 +28,7 @@ struct ReaderNavigationMenu: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ReaderNavigationButton(viewModel: viewModel)
+                        .animation(.easeInOut, value: viewModel.selectedItem)
                     streamFilterView
                 }
             }
