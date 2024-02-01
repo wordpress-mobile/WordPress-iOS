@@ -57,9 +57,9 @@ struct DynamicDashboardCard: View {
                         )
                 default:
                     Color.DS.Background.secondary
+                        .frame(height: 160)
                 }
             }
-            .frame(height: 160)
         }
     }
 
