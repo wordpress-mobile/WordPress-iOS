@@ -39,30 +39,27 @@ struct DynamicDashboardCard: View {
         }
         .padding(.bottom, Length.Padding.single)
         .padding(.horizontal, Length.Padding.double)
-        .fixedSize(horizontal: false, vertical: true)
     }
 
     @ViewBuilder
     var featureImage: some View {
         if let featureImageURL = input.featureImageURL {
             AsyncImage(url: featureImageURL) { phase in
-                Group {
-                    if let image = phase.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    } else {
-                        Color.DS.Background.secondary
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 150)
-                    }
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(
+                            RoundedRectangle(
+                                cornerRadius: Length.Radius.small
+                            )
+                        )
+                default:
+                    Color.DS.Background.secondary
                 }
-                .clipShape(
-                    RoundedRectangle(
-                        cornerRadius: Length.Radius.small
-                    )
-                )
             }
+            .frame(height: 160)
         }
     }
 
