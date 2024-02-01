@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-11-25 14:35:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ of %2$@ used on your site";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per year";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ quadrillion";
@@ -2659,7 +2656,6 @@
 "Empty URL" = "Empty URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Enable";
 
@@ -4057,9 +4053,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Loading the block editor.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Loading usernames";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4537,9 +4530,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Next Steps";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Next notification";
 
@@ -4720,9 +4710,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "No preview available";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "No prompts yet";
@@ -5486,9 +5473,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Preview your site to see what your visitors will see.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Previous notification";
@@ -7119,9 +7103,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "The internet connection appears to be offline.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "The item could not be added to the Media Library.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "The kinds of sites that can be created";
 
@@ -7792,9 +7773,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Unable to update plan prices. There is a problem with the supplied blog.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Unable to upload 1 draft post";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Unable to upload 1 post";
@@ -9352,9 +9330,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Search for a domain";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Get Domain";
 
@@ -10351,9 +10326,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Preview";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publish now";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Retry";

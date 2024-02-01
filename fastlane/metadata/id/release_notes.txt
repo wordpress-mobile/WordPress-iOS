@@ -1,5 +1,14 @@
-Saat Anda menyunting blok teks di editor, keyboard perangkat Anda tidak akan hilang di tengah penyuntingan. Editor juga akan langsung bergulir ke blok baru ketika Anda menambahkannya. Tulis sebanyak-banyaknya segera.
+Anda kini akan melihat pemberitahuan saat bekerja secara offline. Pengunggahan media ke blok gambar juga akan dijeda ketika koneksi internet terputus, lalu dilanjutkan ketika koneksi tersambung kembali.
+Sebagai bonus, saat Anda mencoba lagi mengunggah media yang sebelumnya gagal, aplikasi akan mencoba lagi mengunggah semua media yang sebelumnya gagal di pos yang Anda buat. Ini yang namanya efisien!
 
-Tidak dapat login dengan kunci keamanan Anda? Sekarang masalah tersebut sudah teratasi. Kami telah mengaktifkan kembali kunci keamanan untuk autentikasi dua faktor selama login. Hanya Anda yang dapat login ke akun Anda.
+Jika Anda memilih gradien kustom di editor blok, kini akan ada indikator yang menunjukkan warna yang dipilih.
 
-Akhirnya, kami mengatasi beberapa masalah langka (dan yang tidak begitu langka) yang menyebabkan crash pada aplikasi. Berbagai masalah ini umumnya terkait dengan penyuntingan tag dan kategori, penggunaan tag duplikat, penghapusan pos, dan penyuntingan pos yang dihapus. Totalitas kerja yang kami nikmati.
+Dengan menggulir gambar di layar detail Media Situs, gambar akan dimuat lebih awal demi pengalaman yang lebih cepat. Mungkin juga sejak dahulu sudah begitu.
+
+Kami menambah dukungan untuk thumbnail, pemutaran ulang GIF dan video, dokumen, dan pratinjau berkas lainnya dengan resolusi yang lebih tinggi. (homer-simpson-woohoo.gif)
+
+Kami mengubah alur pengeposan sebagai petunjuk yang lebih jelas untuk Anda. Pengguna dengan peran “Kontributor” akan melihat tindakan “Kirim untuk Ditinjau,” alih-alih “Poskan.” Anda juga dapat membuang draf pos dan pos yang dihapus tanpa harus mengonfirmasi.
+
+Kini ada tindakan “Bagikan” di menu konteks situs untuk membagikan situs Anda kepada orang lain.
+
+Terakhir, karena semua orang sebenarnya ingin diapresiasi, kami memperbaiki ajakan untuk memberi rating dalam aplikasi. Anda akan diminta untuk memberikan ulasan jika puas dengan aplikasi. Atau, formulir masukan akan disediakan jika Anda merasa aplikasi perlu perbaikan. Masukan Anda adalah cara kami untuk terus berbenah, jadi jangan sungkan untuk membagikannya.

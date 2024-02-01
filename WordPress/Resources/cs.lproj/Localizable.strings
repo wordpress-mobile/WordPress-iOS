@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-05 08:23:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ z %2$@ použité na vašem webu";
-
-/* Plan yearly price */
-"%@ per year" = "%@ každý rok";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ kvadrilion";
@@ -2602,7 +2599,6 @@
 "Empty URL" = "Prázdná URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivovat";
 
@@ -3982,9 +3978,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Načítání editoru bloků.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Načítání uživatelských jmen";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4459,9 +4452,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Další kroky";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Příští měsíc";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Další notifikace";
 
@@ -4639,9 +4629,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Náhled není k dispozici.";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Nebyla nalezena žádná adresa primárního webu";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Zatím žádné výzvy";
@@ -5390,9 +5377,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Zobrazte náhled pro kontrolu, jak uvidí stránku ostatní";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Předcházející měsíc";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Předchozí upozornění";
@@ -7002,9 +6986,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Zdá se, že nejste připojeni k internetu.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Položku nelze přidat do knihovny médií.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Druhy webů, které lze vytvořit";
 
@@ -7666,9 +7647,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Ceny plánu nelze aktualizovat. Došlo k problému s dodaným blogem.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Nelze nahrát 1 koncept příspěvku";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nelze nahrát 1 příspěvek";

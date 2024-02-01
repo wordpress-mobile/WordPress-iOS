@@ -16,24 +16,19 @@ struct SiteMonitoringView: View {
         switch viewModel.selectedTab {
         case .metrics:
             SiteMetricsView(blog: viewModel.blog)
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "metrics"])
+                }
         case .phpLogs:
-            phpLogs
+            PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "php_logs"])
+                }
         case .webServerLogs:
-            webServerLogs
-        }
-    }
-
-    @ViewBuilder
-    private var phpLogs: some View {
-        List {
-            Text("PHP Logs")
-        }
-    }
-
-    @ViewBuilder
-    private var webServerLogs: some View {
-        List {
-            Text("Web Server Logs")
+            WebServerLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "web_server_logs"])
+                }
         }
     }
 
@@ -94,4 +89,8 @@ private enum Strings {
     static let metrics = NSLocalizedString("siteMonitoring.metrics", value: "Metrics", comment: "Title for metrics screen.")
     static let phpLogs = NSLocalizedString("siteMonitoring.phpLogs", value: "PHP Logs", comment: "Title for PHP logs screen.")
     static let webServerLogs = NSLocalizedString("siteMonitoring.metrics", value: "Web Server Logs", comment: "Title for web server log screen.")
+}
+
+extension Date {
+    static let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? Date()
 }

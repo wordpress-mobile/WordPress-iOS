@@ -33,13 +33,13 @@ final class NotificationsViewControllerTests: XCTestCase {
 
     func testResetLastSeenTimeWhenAccountChange() throws {
         // Give
-        controller.lastSeenTime = "testTime"
+        controller.viewModel.lastSeenChanged(timestamp: "testTime")
 
         // When
         postAccountChangeNotification()
 
         // Then
-        XCTAssertEqual(controller.lastSeenTime, nil)
+        XCTAssertEqual(controller.viewModel.lastSeenTime, nil)
     }
 
     func testResetApplicationBadgeWhenAccountChange() throws {

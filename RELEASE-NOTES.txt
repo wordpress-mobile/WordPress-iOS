@@ -1,5 +1,6 @@
 24.2
 -----
+* [*] [Jetpack-only] Site Monitoring: Add Metrics, PHP Logs, and Web Server Logs under Site Monitoring [#22475, #22499, #22504, #22500]
 
 24.0.1
 -----

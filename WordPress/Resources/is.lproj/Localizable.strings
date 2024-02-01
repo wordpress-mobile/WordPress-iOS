@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: is */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -28,9 +28,6 @@
 
 /* Number of Links */
 "%@ links" = "%@ tenglar";
-
-/* Plan yearly price */
-"%@ per year" = "%@ á ári";
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ var tengt aftur.";

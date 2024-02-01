@@ -1,9 +1,0 @@
-Je kan nu een WordPress-abonnement met een gratis domein kopen op het domeinendashboard. We hebben ook verbeteringen aangebracht aan het scherm Sitedomeinen, zodat het nog eenvoudiger is om je domeinen te beheren.
-
-Wanneer je tekstblokken in de editor bewerkt, verdwijnt het toetsenbord van je apparaat niet meer terwijl je bezig bent met bewerken. De editor scrolt ook direct naar een nieuw blok toe wanneer je er een toevoegt. Schrijf maar raak, mijn vriend.
-
-Mis je de mogelijkheid om via beveiligingssleutels in te loggen? Wacht niet langer! We hebben beveiligingssleutels weer ingeschakeld voor tweevoudige verificatie bij inloggen. De enige die je account in kan, ben jij.
-
-We hebben de kleuren van het inlogscherm aangepast zodat ze passen bij zowel WordPress als Jetpack. Want: 'Teamwork makes the dream work.'
-
-Ten slotte hebben we allerhande codefixes uitgevoerd en een aantal zeldzame (en minder zeldzame) problemen opgelost die zorgden dat de app crashte. Deze problemen hadden grotendeels te maken met de tags en categorieën bewerken, dubbele tags gebruiken, berichten verwijderen en verwijderde berichten bewerken. Lekker alledaags.
