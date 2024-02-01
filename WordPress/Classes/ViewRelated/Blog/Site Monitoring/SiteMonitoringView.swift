@@ -92,5 +92,7 @@ private enum Strings {
 }
 
 extension Date {
-    static let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? Date()
+    static func oneWeekAgo(from date: Date = Date.now) -> Date {
+        Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? date
+    }
 }

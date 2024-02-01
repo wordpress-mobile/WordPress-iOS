@@ -5,7 +5,7 @@ import UIKit
 @available(iOS 16, *)
 struct WebServerLogsView: View {
     @StateObject var viewModel: WebServerLogsViewModel
-    @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo())
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -214,7 +214,7 @@ final class WebServerLogsViewModel: ObservableObject {
 
         do {
             let endDate = searchCriteria.endDate ?? Date.now
-            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+            let startDate = searchCriteria.startDate ?? Date.oneWeekAgo(from: endDate)
 
             let response = try await atomicSiteService.webServerLogs(
                 siteID: siteID,
