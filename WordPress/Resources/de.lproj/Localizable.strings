@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-26 20:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-02 01:07:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: de */
@@ -9749,11 +9749,20 @@ Example: Reply to Pamela Nguyen */
 /* The message for the first feedback alert */
 "in-app.feedback.alert.message" = "Gefällt dir die Jetpack-Mobil-App?";
 
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Nicht wirklich";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Dein Feedback ist uns wichtig";
+
 /* The 'yes' button title for the first feedback alert */
 "in-app.feedback.alert.yes" = "Sie ist toll";
 
 /* No comment provided by engineer. */
 "in-app.feedback.confirmation.notice.message" = "Danke, dass du uns hilfst, die App zu verbessern.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback gesendet";
 
 /* The message for the negative feedback alert */
 "in-app.feedback.negative.alert.message" = "Möchtest du weitere Informationen mit uns teilen?";
@@ -10378,6 +10387,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Startseite personalisieren";
+
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Website teilen";
 
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Website-Icon ändern";
@@ -11170,6 +11182,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Übermitteln";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dieser Konversation";

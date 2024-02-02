@@ -15,11 +15,20 @@ struct SiteMonitoringView: View {
     private var main: some View {
         switch viewModel.selectedTab {
         case .metrics:
-            WebView(url: viewModel.metricsURL!)
+            SiteMetricsView(blog: viewModel.blog)
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "metrics"])
+                }
         case .phpLogs:
             PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "php_logs"])
+                }
         case .webServerLogs:
             WebServerLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "web_server_logs"])
+                }
         }
     }
 
@@ -68,13 +77,6 @@ final class SiteMonitoringViewModel: ObservableObject {
 
     @Published var selectedTab: SiteMonitoringTab = .metrics
 
-    var metricsURL: URL? {
-        guard let siteID = blog.dotComID as? Int else {
-            return nil
-        }
-        return URL(string: "https://wordpress.com/site-monitoring/\(siteID)")
-    }
-
     init(blog: Blog, selectedTab: SiteMonitoringTab? = nil) {
         self.blog = blog
         if let selectedTab {
@@ -90,5 +92,7 @@ private enum Strings {
 }
 
 extension Date {
-    static let oneWeekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? Date()
+    static func oneWeekAgo(from date: Date = Date.now) -> Date {
+        Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? date
+    }
 }

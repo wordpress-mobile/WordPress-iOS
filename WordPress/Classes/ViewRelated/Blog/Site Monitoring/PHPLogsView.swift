@@ -5,7 +5,7 @@ import UIKit
 @available(iOS 16, *)
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel
-    @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo)
+    @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo())
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -104,7 +104,10 @@ struct PHPLogsView: View {
 
     private func makeRow(for entry: AtomicErrorLogEntry) -> some View {
         let attributedDescription = entry.attributedDescription
-        return NavigationLink(destination: { SiteMonitoringEntryDetailsView(text: attributedDescription) }) {
+        return NavigationLink(destination: {
+            SiteMonitoringEntryDetailsView(text: attributedDescription)
+                .onAppear { WPAnalytics.track(.siteMonitoringEntryDetailsShown, properties: ["tab": "php_logs"]) }
+        }) {
             PHPLogsEntryRowView(entry: entry)
                 .swipeActions(edge: .trailing) {
                     ShareLink(item: attributedDescription.string) {
@@ -186,6 +189,7 @@ final class PHPLogsViewModel: ObservableObject {
         if reset {
             loadedLogs = []
             hasMore = true
+            scrollId = nil
         }
 
         guard !isLoading && hasMore else {
@@ -196,7 +200,7 @@ final class PHPLogsViewModel: ObservableObject {
 
         do {
             let endDate = searchCriteria.endDate ?? Date.now
-            let startDate = searchCriteria.startDate ?? (Calendar.current.date(byAdding: .weekOfYear, value: -1, to: endDate) ?? endDate)
+            let startDate = searchCriteria.startDate ?? Date.oneWeekAgo(from: endDate)
 
             let response = try await atomicSiteService.errorLogs(
                 siteID: siteID,
