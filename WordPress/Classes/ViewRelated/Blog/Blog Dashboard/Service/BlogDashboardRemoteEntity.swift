@@ -59,6 +59,7 @@ extension BlogDashboardRemoteEntity {
         let id: String
         let title: String?
         let featuredImage: String?
+        let featuredImageSize: ImageSize?
         let url: String?
         let action: String?
         let order: Order?
@@ -75,10 +76,16 @@ extension BlogDashboardRemoteEntity {
             let icon: String?
         }
 
+        struct ImageSize {
+            let width: Int
+            let height: Int
+        }
+
         private enum CodingKeys: String, CodingKey {
             case id
             case title
             case featuredImage = "featured_image"
+            case featuredImageSize = "featured_image_size"
             case url
             case action
             case order
