@@ -297,7 +297,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         viewController.present(navigationViewController, animated: true)
     }
 
-    static func hasBlog() -> Bool {
+    private static func hasBlog() -> Bool {
         Blog.count(in: ContextManager.sharedInstance().mainContext) > 0
     }
 }
