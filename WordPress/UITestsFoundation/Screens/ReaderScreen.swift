@@ -40,11 +40,11 @@ public class ReaderScreen: ScreenObject {
     }
 
     private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Follow"]
+        $0.buttons["Subscribe"]
     }
 
     private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Following"]
+        $0.buttons["Subscribed"]
     }
 
     private let subscriptionsMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
