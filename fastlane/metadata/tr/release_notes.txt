@@ -1,5 +1,14 @@
-Düzenleyicide metin bloklarını düzenlerken cihazınızın klavyesi artık düzenlemenin ortasında kaybolmaz. Düzenleyici ayrıca yeni bir blok eklediğinizde doğrudan yeni bloka kaydırır. Yaz dostum.
+Artık çevrimdışı çalışırken bir bildirim görürsünüz. İnternet bağlantınız kesildiğinde görsel bloklarına ortam yükleme de durdurulur, yeniden bağlandığınızda devam eder.
+Ek bir bonus olarak, başarısız bir ortam yüklemesini manuel olarak yeniden denediğinizde uygulama gönderinizdeki diğer tüm başarısız ortam yüklemelerini yeniden dener. Bu da etkili bir kullanım sağlar.
 
-Güvenlik anahtarlarınızla oturum açmayı mı özlediniz? Artık özlemenize gerek yok, oturum açma sırasında iki faktörlü kimlik doğrulama için güvenlik anahtarlarını yeniden etkinleştirdik. Hesabınıza giren tek şey siz olacaksınız.
+Blok düzenleyiciden özel bir gradyan seçtiğinizde artık seçtiğiniz rengi gösteren bir gösterge olur.
 
-Son olarak çeşitli kod düzeltmeleri yaptık ve uygulamanın kilitlenmesine neden olan birkaç nadir (ve çok da nadir olmayan) sorunu ele aldık. Bu sorunlar genellikle etiketleri ve kategorileri düzenleme, gönderileri silme ve silinen gönderileri düzenleme ile ilgiliydi. Hepsi bir günlük iş.
+Site Ortamları bilgilerinde görsellerde dolaşırken daha hızlı bir deneyim için görseller ekranda önceden yüklenir. Görseller belki de hep oradaydı.
+
+Daha yüksek çözünürlüklü poster görselleri, GIF ile video oynatma ve diğer dosya önizlemeleri için destek ekledik. (homer-simpson-woohoo.gif)
+
+Daha net talimatlar sağlamak için yayımlama akışında değişiklik yaptık. "Katkıda bulunan" rolü olan kullanıcılar "Yayımla" yerine "İncelemeye Gönder" işlemini görür. Ayrıca gönderi taslaklarını ve silinen gönderileri onaya gerek kalmadan çöpe atabilirsiniz.
+
+Artık sitenizi başkalarıyla paylaşabilmeniz için sitenizin bağlam menüsünde bir "Paylaş" işlemi var.
+
+Son olarak, daha da fazla alkışlanmak için uygulama içi değerlendirme istemini de iyileştirdik. Uygulamadan memnunsanız değerlendirme bırakmanız veya uygulamanın geliştirilmesi gerektiğini düşünüyorsanız geri bildirim vermeniz istenir. Geri bildirimleriniz sayesinde kendimizi iyileştiriyoruz, düşüncelerinizi paylaşmaktan çekinmeyin!

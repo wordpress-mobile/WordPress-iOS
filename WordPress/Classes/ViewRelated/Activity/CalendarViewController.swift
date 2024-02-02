@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol CalendarViewControllerDelegate: AnyObject {
     func didCancel(calendar: CalendarViewController)

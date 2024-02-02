@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
+import WordPressUI
 
 // MARK: - NoteBlockCommentTableViewCell Renders a Comment Block Onscreen
 //

@@ -320,7 +320,6 @@ import Foundation
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
-    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -559,6 +558,10 @@ import Foundation
 
     // Widgets
     case widgetsLoadedOnApplicationOpened
+
+    // Site monitoring
+    case siteMonitoringTabShown
+    case siteMonitoringEntryDetailsShown
 
     /// A String that represents the event
     var value: String {
@@ -1111,8 +1114,6 @@ import Foundation
             return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
-        case .appSettingsOptimizeImagesPopupTapped:
-            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:
@@ -1526,6 +1527,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Site Monitoring
+        case .siteMonitoringTabShown:
+            return "site_monitoring_tab_shown"
+        case .siteMonitoringEntryDetailsShown:
+            return "site_monitoring_entry_details_shown"
 
         } // END OF SWITCH
     }

@@ -1,3 +1,5 @@
+import WordPressUI
+
 /// Table view cell for the List component.
 ///
 /// This is used in Comments and Notifications as part of the Comments

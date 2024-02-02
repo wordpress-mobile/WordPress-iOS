@@ -3,6 +3,7 @@ import CoreData
 import Gridicons
 import SVProgressHUD
 import WordPressShared
+import WordPressUI
 
 ///
 ///
@@ -258,7 +259,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 extension NotificationDetailsViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [String],
                               coder: NSCoder) -> UIViewController? {
-        let context = Environment.current.mainContext
+        let context = AppEnvironment.current.mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
                 return nil

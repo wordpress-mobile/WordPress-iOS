@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 11:54:10+0000 */
+/* Translation-Revision-Date: 2024-01-22 10:48:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "Din webbplats använder %1$@ av tillgängliga %2$@";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per år";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ biljard";
@@ -2680,7 +2677,6 @@
 "Empty URL" = "Tom URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivera";
 
@@ -4090,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Blockredigeraren laddas.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Hämtar användarnamn";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4576,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Nästa steg";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Nästa månad";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Nästa notifiering";
 
@@ -4759,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Ingen förhandsgranskning tillgänglig";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Ingen primär webbplatsadress hittades";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Inga förslag än";
@@ -5525,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Förhandsgranska din webbplats för att se vad dina besökare kommer att se.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Föregående månad";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Föregående notifiering";
@@ -7161,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Kan inte ansluta till Internet.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Objektet kunde inte läggas till i mediabiblioteket.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "De typer av webbplatser som kan skapas";
 
@@ -7836,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Det gick inte att uppdatera priserna. Det är något problem med den angivna bloggen.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Det gick inte att ladda upp utkast för 1 inlägg.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Det gick inte att ladda upp 1 inlägg";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8275,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Väntar på att Google ska bli klara …";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Väntar på anslutning";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9138,18 +9119,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Bildkvalitet";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Bildoptimering minskar storleken på bilder för snabbare uppladdning.\n\nDet här alternativet är aktiverat som standard, men du kan ändra det i appinställningarna när som helst.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Fortsätt optimera bilder?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Nej, stäng av";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Ja, lämna på";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ljudfil";
 
@@ -9518,9 +9487,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dölj detta";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Sök efter en domän";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Skaffa domän";
 
@@ -9779,6 +9745,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/min-webbplats-adress (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Gillar du Jetpack-mobilappen?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Inte riktigt";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Din feedback är viktig";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Den är toppen";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Tack för att du hjälper oss att förbättra appen.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback skickad";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Vill du dela mer information med oss?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Inte nu";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Hjälp oss att förbättra";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Absolut";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.";
@@ -10392,6 +10388,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personifiera hem";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Dela webbplats";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Ändra webbplats-ikon";
 
@@ -10601,9 +10600,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Förhandsgranska";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publicera nu";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Försök igen";
@@ -11073,6 +11069,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Automatisk delning på Twitter är inte längre tillgängligt på grund av Twitters ändringar i villkor och pris.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Trafik";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Senaste 7 dagarna";
 
@@ -11180,6 +11179,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Sök efter gratis foton att lägga till i ditt mediabibliotek!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Skicka";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "I denna konversation";

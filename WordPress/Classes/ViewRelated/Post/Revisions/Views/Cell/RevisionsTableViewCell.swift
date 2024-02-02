@@ -1,4 +1,5 @@
 import Gridicons
+import WordPressUI
 
 class RevisionsTableViewCell: UITableViewCell {
     static let reuseIdentifier = "RevisionsTableViewCellIdentifier"

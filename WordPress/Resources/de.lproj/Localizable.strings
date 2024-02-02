@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-08 12:56:59+0000 */
+/* Translation-Revision-Date: 2024-02-02 01:07:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ von %2$@, die auf deiner Seite verwendet wird";
-
-/* Plan yearly price */
-"%@ per year" = "%@ pro Jahr";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ Billiarden";
@@ -2680,7 +2677,6 @@
 "Empty URL" = "Leere URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivieren";
 
@@ -4090,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Der Block-Editors wird geladen.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Benutzernamen werden geladen";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4576,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Nächste Schritte";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Nächster Monat";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Nächste Benachrichtigung";
 
@@ -4759,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Keine Vorschau verfügbar";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Es wurde keine Adresse für eine Haupt-Website gefunden";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Bisher keine Themenvorschläge";
@@ -5525,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Zeige eine Vorschau deiner Website an, um zu sehen, wie sie deinen Besuchern angezeigt wird.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Vorheriger Monat";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Vorherige Benachrichtigung";
@@ -7161,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Die Internetverbindung scheint gerade offline zu sein.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Die Datei konnte nicht zur Mediathek hinzugefügt werden.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Die Arten von Websites, die erstellt werden können.";
 
@@ -7836,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Tarifpreise können nicht aktualisiert werden. Es gibt ein Problem mit dem angegebenen Blog.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 Beitragsentwurf konnte nicht hochgeladen werden.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8275,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Registrierung wird von Google abgeschlossen …";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Warten auf Verbindung";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9138,18 +9119,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Bildqualität";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Die Bildoptimierung schrumpft Bilder für schnelleres Hochladen.\n\nDiese Option ist standardmäßig aktiviert, aber du kannst jederzeit Änderungen in den App-Einstellungen vornehmen.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Sollen Bilder weiterhin optimiert werden?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Nein, deaktivieren";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Ja, aktiviert lassen";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "Audiodatei";
 
@@ -9518,9 +9487,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ausblenden";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Nach einer Domain suchen";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Domain erhalten";
 
@@ -9779,6 +9745,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/meine-website-adresse (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Gefällt dir die Jetpack-Mobil-App?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Nicht wirklich";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Dein Feedback ist uns wichtig";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Sie ist toll";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Danke, dass du uns hilfst, die App zu verbessern.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback gesendet";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Möchtest du weitere Informationen mit uns teilen?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Jetzt nicht";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Hilf mit, uns zu verbessern";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Gerne";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Um Fotos oder Videos für deine Beiträge aufzunehmen.";
@@ -10392,6 +10388,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Startseite personalisieren";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Website teilen";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Website-Icon ändern";
 
@@ -10601,9 +10600,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Vorschau";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Jetzt veröffentlichen";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Erneut versuchen";
@@ -11073,6 +11069,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Automatisches Teilen auf Twitter ist aufgrund von Änderungen an den Nutzungsbedingungen und Preisen von Twitter nicht mehr verfügbar.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Traffic";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
 
@@ -11180,6 +11179,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Suche nach kostenlosen Fotos, die du deiner Mediathek hinzufügen kannst!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Übermitteln";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dieser Konversation";

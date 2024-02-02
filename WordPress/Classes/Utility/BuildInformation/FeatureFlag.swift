@@ -6,7 +6,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case statsNewInsights
     case betaSiteDesigns
     case commentModerationUpdate
     case compliancePopover
@@ -28,8 +27,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .statsNewInsights:
-            return AppConfiguration.statsRevampV2Enabled
         case .betaSiteDesigns:
             return false
         case .commentModerationUpdate:
@@ -70,8 +67,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .statsNewInsights:
-            return "New Cards for Stats Insights"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
         case .commentModerationUpdate:

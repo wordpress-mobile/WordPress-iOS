@@ -1,9 +1,14 @@
-Je kan nu een WordPress-abonnement met een gratis domein kopen op het domeinendashboard. We hebben ook verbeteringen aangebracht aan het scherm Sitedomeinen, zodat het nog eenvoudiger is om je domeinen te beheren.
+Je krijgt nu een melding wanneer je offline werkt. Media-uploads naar afbeeldingblokken worden ook gepauzeerd wanneer je internetverbinding wordt verbroken, en gaan daarna weer verder zodra deze hersteld is.
+Als kers op de taart, zal de app ook alle andere mislukte media-uploads opnieuw proberen uit te voeren zodra een mislukte media-upload handmatig opnieuw wordt uitgevoerd. Dat is pas efficiënt.
 
-Wanneer je tekstblokken in de editor bewerkt, verdwijnt het toetsenbord van je apparaat niet meer terwijl je bezig bent met bewerken. De editor scrolt ook direct naar een nieuw blok toe wanneer je er een toevoegt. Schrijf maar raak, mijn vriend.
+Als je een aangepast kleurverloop selecteert in de blokeditor, krijg je nu een indicator te zien die jouw gekozen kleur weergeeft.
 
-Mis je de mogelijkheid om via beveiligingssleutels in te loggen? Wacht niet langer! We hebben beveiligingssleutels weer ingeschakeld voor tweevoudige verificatie bij inloggen. De enige die je account in kan, ben jij.
+De afbeeldingen in het Sitemedia-detailscherm worden van te voren geladen wanneer je erdoor scrolt voor een snellere ervaring. Of stonden ze altijd al klaar?
 
-We hebben de kleuren van het inlogscherm aangepast zodat ze passen bij zowel WordPress als Jetpack. Want: 'Teamwork makes the dream work.'
+We hebben ondersteuning toegevoegd voor miniatuurweergaven met een hogere resolutie, voorbeeldafbeeldingen van gifjes en video's, documenten en andere bestanden. (homer-simpson-woohoo.gif)
 
-Ten slotte hebben we allerhande codefixes uitgevoerd en een aantal zeldzame (en minder zeldzame) problemen opgelost die zorgden dat de app crashte. Deze problemen hadden grotendeels te maken met de tags en categorieën bewerken, dubbele tags gebruiken, berichten verwijderen en verwijderde berichten bewerken. Lekker alledaags.
+We hebben de publicatieworkflow veranderd zodat je precies weet wat je moet doen. Gebruikers met de rol 'Bijdrager' zien de actie 'Inzenden voor beoordeling' in plaats van 'Publiceren'. Je kan ook conceptberichten en verwijderde berichten naar de prullenbak verplaatsen zonder te hoeven bevestigen.
+
+Er is nu de actie 'Delen' in het contextmenu van de site, zodat je je site met anderen kan delen.
+
+En omdat we dol zijn op complimenten, hebben we de beoordelingsprompt in de app verbeterd. Je wordt gevraagd een beoordeling te schrijven als je blij bent met de app, of een feedbackformulier in te vullen als je vindt dat er nog ruimte voor verbetering is. Door feedback worden we beter, dus deel die van jou!

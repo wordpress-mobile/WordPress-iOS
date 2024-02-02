@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -46,9 +46,6 @@
 
 /* Number of Links */
 "%@ links" = "%@ odkazov";
-
-/* Plan yearly price */
-"%@ per year" = "%@ ročne";
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ bol znova pripojený.";
@@ -1228,7 +1225,6 @@
 "Empty URL" = "Prázdny URL odkaz";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Povoliť";
 
@@ -1897,9 +1893,6 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Načítava sa vysielanie...";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Načítavanie užívateľských mien";
 
 /* Loading tags
    Loading tags.
@@ -3582,9 +3575,6 @@
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internetové pripojenie vyzerá nedostupné.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Položku sa nepodarilo pridať do Knižnice médií.";
-
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Jazyk v ktorom je tento web primárne napísaný.";
 
@@ -3942,9 +3932,6 @@
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nie je možné aktualizovať nastavenia domovskej stránky";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Nepodarilo sa nahrať 1 koncept príspevku";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nepodarilo sa nahrať 1 článok";

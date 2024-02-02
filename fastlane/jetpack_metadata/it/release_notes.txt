@@ -1,9 +1,14 @@
-Ora puoi ottenere un piano WordPress con un dominio gratuito nel pannello di amministrazione del dominio. Abbiamo inoltre migliorato la schermata dei domini del sito in modo da rendere ancora più semplice la gestione dei domini.
+Ora vedrai una notifica mentre lavori offline. I caricamenti dei media sui blocchi Immagine saranno messi in pausa quando la tua connessione internet si interrompe, per poi essere ripresi quando ti riconnetti.
+Come ulteriore vantaggio, quando riprovi a caricare manualmente un media non andato a buon fine, l'app proverà a ricaricare tutti gli altri media presenti nel tuo articolo. Questa sì che è efficienza.
 
-Quando si modificano blocchi di testo nell'editor, la tastiera del dispositivo non scompare più durante la modifica. Inoltre, l'editor scorre direttamente su un nuovo blocco quando lo si aggiunge. Inizia a scrivere!
+Quando selezioni un gradiente personalizzato nell'editor dei blocchi, ora c'è un indicatore che mostra il colore scelto.
 
-Ti manca l'accesso con le chiavi di sicurezza? Sarai felice di sapere che abbiamo riattivato le chiavi di sicurezza per l'autenticazione a due fattori durante l'accesso. Nessun altro può accedere al tuo account.
+Scorrendo le immagini nella schermata dei dettagli del media del sito, queste verranno caricate in anticipo per un'esperienza più veloce. O forse erano già lì.
 
-Abbiamo aggiornato i colori della schermata di accesso per adattarli a WordPress e a Jetpack. Dopo tutto, è il lavoro di squadra a fare la differenza.
+Abbiamo aggiunto il supporto per le immagini poster, le GIF e la riproduzione video ad alta risoluzione, per i documenti e le anteprime di altri file. (homer-simpson-Woohoo.gif)
 
-Infine, abbiamo corretto il codice e diversi problemi (rari e non) che causavano arresti anomali dell'app. Questi problemi riguardavano soprattutto la modifica di tag e categorie, l'uso di tag duplicati, l'eliminazione di articoli e la modifica di articoli cancellati. Tutto in una giornata lavorativa.
+Abbiamo cambiato il flusso di pubblicazione per darti istruzioni più chiare. Gli utenti con il ruolo "Collaboratore" vedranno l'azione "Invia per la revisione" anziché "Pubblica". Puoi anche spostare nel cestino le bozze e gli articoli eliminati senza dover confermare.
+
+Ora c'è un'azione "Condividi" nel menu a tendina del sito che ti consente di condividere il tuo sito con altri.
+
+Infine, perché ci piace ricevere complimenti, abbiamo migliorato la richiesta di valutazione in-app. Ti verrà chiesto di lasciare una recensione se sei soddisfatto dell'app o di compilare un modulo del feedback se ritieni che l'app debba essere migliorata. I feedback ci permettono di migliorare, quindi non esitare a inviarci il tuo!

@@ -1,9 +1,14 @@
-Du kan nu skaffa ett WordPress-paket med en gratis domän i domänadminpanelen. Vi har också gjort vissa förbättringar på skärmen Webbplatsdomäner, så nu är det ännu enklare att hantera dina domäner.
+Du kommer nu att få en notis när du arbetar offline. Dessutom kommer mediauppladdningar till bildblock nu att pausas om din internetanslutning bryts, för att sedan återupptas igen när du återansluter.
+Och som en extra bonus: Om du försöker genomföra en misslyckad mediauppladdning igen kommer appen att försöka genomföra alla misslyckade mediauppladdningar för ditt inlägg igen. Det är effektivitet.
 
-Ditt enhetstangentbord kommer inte längre att försvinna mitt i arbetet när du redigerar textblock i redigeraren. Redigeraren bläddrar dessutom direkt till ett nytt block när du har lagt till det. Skriv på, min vän.
+När du väljer en anpassad gradient i blockredigeraren finns det nu en indikator som visar din valda färg.
 
-Saknar du att logga in med dina säkerhetsnycklar? Det behöver du inte göra längre – vi har återaktiverat säkerhetsnycklar för tvåfaktorsautentisering vid inloggning. Den enda som kommer in i ditt konto är du.
+När du bläddrar igenom dina bilder på skärmen Webbplatsmedia kommer de att läsas in i förväg för en snabbare upplevelse. Eller så har de varit där hela tiden.
 
-Vi har uppdaterat färgerna på inloggningsskärmen så att de ska matcha både WordPress och Jetpack. Det är ju, när allt kommer omkring, lagarbete som får drömmen att fungera.
+Vi har lagt till stöd för miniatyrer med högre upplösning, GIF- och videouppspelning, dokument och andra filförhandsgranskningar. (homer-simpson-woohoo.gif)
 
-Slutligen har vi gjort diverse kodkorrigeringar och åtgärdat flertalet sällsynta (och inte så sällsynta) problem som gjorde att appen kraschade. Dessa problem var mestadels relaterade till redigering av etiketter och kategorier, användning av duplicerade etiketter, borttagning av inlägg och redigering av borttagna inlägg. Allt på en arbetsdag.
+Vi har förbättrat publiceringsflödet för att ge dig tydligare instruktioner. Användare med rollen "Medarbetare" kommer att se åtgärden "Skicka för granskning" istället för "Publicera". Du kan också kasta utkastinlägg och borttagna inlägg utan att behöva bekräfta.
+
+Det finns nu en "Dela"-åtgärd i webbplatsens kontextmeny så att du kan dela din webbplats med andra.
+
+Slutligen har vi, eftersom vi lever för applåderna, förbättrat betygsättningsuppmaningen i appen. Du kommer att bli ombedd att lämna en recension om du är nöjd med appen, eller ges möjlighet att fylla i ett feedbackformulär om du känner att appen behöver förbättras. Feedback hjälper oss att bli bättre, så dela gärna med dig av dina tankar.

@@ -8,7 +8,7 @@ extension WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: oAuthToken,
                                    userAgent: userAgent,
                                    localeKey: localeKey,
-                                   baseURL: Environment.current.wordPressComApiBase)
+                                   baseURL: AppEnvironment.current.wordPressComApiBase)
     }
 
     /// Returns the default API the default WP.com account using the given context

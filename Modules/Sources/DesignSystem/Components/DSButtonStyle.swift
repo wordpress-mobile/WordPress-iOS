@@ -48,7 +48,7 @@ extension DSButtonStyle {
 }
 
 public struct ScalingButtonStyle: ButtonStyle {
-    @SwiftUI.Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
 
     private let style: DSButtonStyle
 

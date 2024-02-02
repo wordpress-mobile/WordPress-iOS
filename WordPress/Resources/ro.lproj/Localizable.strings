@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-08 17:56:46+0000 */
+/* Translation-Revision-Date: 2024-01-23 16:54:53+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ din %2$@ folosiți pe site-ul tău";
-
-/* Plan yearly price */
-"%@ per year" = "%@ pe an";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ cvadrilioane";
@@ -2680,7 +2677,6 @@
 "Empty URL" = "URL gol";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Activează";
 
@@ -4090,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Încarc editorul de blocuri.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Încarc nume de utilizatori";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4576,9 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Pașii următori";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Luna viitoare";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Notificare următoare";
 
@@ -4759,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Nu este disponibilă nicio previzualizare";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Nu am găsit nicio adresă principală pentru site";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Niciun îndemn încă";
@@ -5525,9 +5512,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Previzualizează site-ul pentru a vedea cum apare pentru vizitatori.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Luna trecută";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificare anterioară";
@@ -7161,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Conexiunea la internet pare să fie decuplată.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Elementul nu a putut fi adăugat în biblioteca Media.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Tipurile de site care pot fi create";
 
@@ -7836,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Nu pot actualiza prețurile planurilor. Există o problemă cu blogul dat.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Nu pot încărca o ciornă de articol";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nu pot încărca un articol";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8275,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Aștept să finalizeze Google...";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Aștept conexiunea";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -9138,18 +9119,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Calitate imagini";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Optimizarea imaginilor micșorează imaginile pentru o încărcare mai rapidă.\n\nAceastă opțiune este activată implicit, dar poți să o modifici oricând în setările aplicației.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Continui optimizarea imaginilor?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Nu, oprește";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Da, lasă în continuare";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
 
@@ -9518,9 +9487,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ascunde asta";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Caută un domeniu";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Ia domeniul";
 
@@ -9779,6 +9745,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Îți place aplicația Jetpack pentru mobil?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Nu prea";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Părerea ta contează";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Este importantă";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Îți mulțumim că ne-ai ajutat să îmbunătățim aplicația.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Am trimis impresiile";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Vrei să ne dai mai multe informații?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Nu acum";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Ajută-ne să îmbunătățim";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Sigur";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Să faci poze sau videouri pe care să le folosești în articolele tale.";
@@ -10392,6 +10388,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalizează prima pagină";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Partajează site-ul";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Schimbă iconul site-ului";
 
@@ -10601,9 +10600,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Previzualizează";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publică acum";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Reîncearcă";
@@ -11073,6 +11069,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Partajarea automată pe Twitter nu mai este disponibilă deoarece Twitter a făcut modificări la termeni și prețuri.";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Trafic";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Ultimele 7 zile";
 
@@ -11180,6 +11179,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Caută pentru a găsi fotografii gratuite pe care să le adaugi în biblioteca ta Media!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Trimite";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Impresii";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "În această conversație";

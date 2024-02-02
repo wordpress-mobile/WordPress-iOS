@@ -14,7 +14,7 @@ struct AddNewSiteConfiguration {
 
 struct NoSitesView: View {
 
-    @SwiftUI.Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme
 
     @State private var isShowingDialog = false
 

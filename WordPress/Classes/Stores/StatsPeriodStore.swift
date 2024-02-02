@@ -379,10 +379,8 @@ private extension StatsPeriodStore {
 
         let group = DispatchGroup()
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching posts.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching posts.")
         let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -392,17 +390,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching posts.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching posts.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching referrers.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching referrers.")
         let topReferrers = PeriodOperation(service: service, for: period, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
@@ -412,17 +406,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching referrers.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching referrers.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching published.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching published.")
         let topPublished = PublishedPostOperation(service: service, for: period, date: date) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
@@ -432,17 +422,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching published.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching published.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching clicks.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching clicks.")
         let topClicks = PeriodOperation(service: service, for: period, date: date) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
@@ -452,17 +438,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedClicks(clicks, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching clicks.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching clicks.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching authors.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching authors.")
         let topAuthors = PeriodOperation(service: service, for: period, date: date) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
@@ -472,17 +454,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching authors.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching authors.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching search terms.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching search terms.")
         let topSearchTerms = PeriodOperation(service: service, for: period, date: date) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
@@ -492,17 +470,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedSearchTerms(searchTerms, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching search terms.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching search terms.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching countries.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching countries.")
         let topCountries = PeriodOperation(service: service, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
@@ -512,17 +486,13 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching countries.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching countries.")
+                group.leave()
             }
         }
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching videos.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching videos.")
         let topVideos = PeriodOperation(service: service, for: period, date: date) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
@@ -532,19 +502,15 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching videos.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching videos.")
+                group.leave()
             }
         }
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
         // 'num' relates to the "number of periods to include in the query".
-        if AppConfiguration.statsRevampV2Enabled {
-            group.enter()
-            DDLogInfo("Stats Period: Enter group fetching file downloads.")
-        }
+        group.enter()
+        DDLogInfo("Stats Period: Enter group fetching file downloads.")
         let topFileDownloads = PeriodOperation(service: service, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
@@ -554,10 +520,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
-                if AppConfiguration.statsRevampV2Enabled {
-                    DDLogInfo("Stats Period: Leave group fetching file downloads.")
-                    group.leave()
-                }
+                DDLogInfo("Stats Period: Leave group fetching file downloads.")
+                group.leave()
             }
         }
 
@@ -572,11 +536,9 @@ private extension StatsPeriodStore {
                                       topFileDownloads],
                                      waitUntilFinished: false)
 
-        if AppConfiguration.statsRevampV2Enabled {
-            group.notify(queue: .main) { [weak self] in
-                DDLogInfo("Stats Period: Finished fetchAsyncData.")
-                self?.storeDataInCache()
-            }
+        group.notify(queue: .main) { [weak self] in
+            DDLogInfo("Stats Period: Finished fetchAsyncData.")
+            self?.storeDataInCache()
         }
     }
 

@@ -79,7 +79,7 @@ class PeopleServiceTests: CoreDataTestCase {
                     done()
                 },
                 failure: { error in
-                    XCTAssertTrue(error is WordPressComRestApiError)
+                    XCTAssertTrue(error is WordPressComRestApiEndpointError)
                     done()
                 }
             )
@@ -212,7 +212,7 @@ class PeopleServiceTests: CoreDataTestCase {
                     done()
                 },
                 failure: { error in
-                    XCTAssertTrue(error is WordPressComRestApiError)
+                    XCTAssertTrue(error is WordPressComRestApiEndpointError)
                     done()
                 }
             )
