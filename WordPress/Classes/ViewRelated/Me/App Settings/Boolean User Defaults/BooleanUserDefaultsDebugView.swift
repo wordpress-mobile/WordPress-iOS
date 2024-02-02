@@ -5,10 +5,10 @@ struct BooleanUserDefaultsDebugView: View {
 
     var body: some View {
         List {
-            ForEach(viewModel.userDefaultsSections, id: \.key) { section in
+            ForEach(viewModel.userDefaultsSections, id: \.id) { section in
                 Section(header: Text(section.key)
                     .font(.caption)) {
-                        ForEach(section.rows, id: \.key) { row in
+                        ForEach(section.rows, id: \.id) { row in
                             let isOn = Binding<Bool>(
                                 get: {
                                     row.value
@@ -16,8 +16,8 @@ struct BooleanUserDefaultsDebugView: View {
                                 set: { newValue in
                                     viewModel.updateUserDefault(
                                         newValue,
-                                        forSection: section.key,
-                                        forRow: row.key
+                                        section: section,
+                                        row: row
                                     )
                                 }
                             )
