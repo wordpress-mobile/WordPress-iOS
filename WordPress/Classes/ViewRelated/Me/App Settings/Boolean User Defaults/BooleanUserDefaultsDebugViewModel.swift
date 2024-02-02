@@ -100,7 +100,11 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
                 return
             }
             let entries = section.rows.reduce(into: [String: Bool]()) { result, row in
-                result[row.key] = newValue
+                if row.key == targetRow {
+                    result[row.key] = newValue
+                } else {
+                    result[row.key] = row.value
+                }
             }
             persistentRepository.set(entries, forKey: targetSection)
         }
