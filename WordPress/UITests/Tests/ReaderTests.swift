@@ -46,8 +46,8 @@ class ReaderTests: XCTestCase {
             .switchToStream(.discover)
             .selectTopic()
             .verifyTopicLoaded()
-            .followTopic()
-            .verifyTopicFollowed()
+            .subscribeToTopic()
+            .verifyTopicSubscribed()
     }
 
     func testSavePost() throws {
