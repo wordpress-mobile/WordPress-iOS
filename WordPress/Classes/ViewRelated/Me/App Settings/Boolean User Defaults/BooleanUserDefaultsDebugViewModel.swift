@@ -125,7 +125,7 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         let key: String
         let title: String
 
-        var value: Bool
+        fileprivate(set) var value: Bool
 
         init(key: String, title: String, value: Bool) {
             self.key = key
