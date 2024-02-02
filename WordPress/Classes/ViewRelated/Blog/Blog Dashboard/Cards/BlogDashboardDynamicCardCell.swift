@@ -120,7 +120,16 @@ private extension DynamicDashboardCard {
             return .init(title: title, callback: callback)
         }()
 
-        let input = Input(featureImageURL: featureImageURL, rows: rows, action: action)
+        let input = Input(
+            featureImageURL: featureImageURL,
+            featureImageWidthToHeightRatio: CGFloat(
+                payload.featuredImageSize?.width ?? 2
+            ) / CGFloat(
+                payload.featuredImageSize?.height ?? 1
+            ),
+            rows: rows,
+            action: action
+        )
         self.init(input: input)
     }
 }

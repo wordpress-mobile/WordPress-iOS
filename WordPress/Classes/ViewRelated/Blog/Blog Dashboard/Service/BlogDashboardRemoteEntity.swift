@@ -76,7 +76,7 @@ extension BlogDashboardRemoteEntity {
             let icon: String?
         }
 
-        struct ImageSize {
+        struct ImageSize: Decodable, Hashable {
             let width: Int
             let height: Int
         }

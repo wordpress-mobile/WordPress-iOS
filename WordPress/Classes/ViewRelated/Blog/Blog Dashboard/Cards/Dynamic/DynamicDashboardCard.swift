@@ -21,6 +21,7 @@ struct DynamicDashboardCard: View {
         }
 
         let featureImageURL: URL?
+        let featureImageWidthToHeightRatio: CGFloat
         let rows: [Row]
         let action: Action?
     }
@@ -49,7 +50,7 @@ struct DynamicDashboardCard: View {
                 case .success(let image):
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
                         .clipShape(
                             RoundedRectangle(
                                 cornerRadius: Length.Radius.small
@@ -57,7 +58,7 @@ struct DynamicDashboardCard: View {
                         )
                 default:
                     Color.DS.Background.secondary
-                        .frame(height: 160)
+                        .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
                 }
             }
         }
@@ -138,6 +139,7 @@ struct DynamicDashboardCard_Previews: PreviewProvider {
         DynamicDashboardCard(
             input: .init(
                 featureImageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=400x200")!,
+                featureImageWidthToHeightRatio: 2,
                 rows: [
                     .init(
                         title: "Title first",
