@@ -114,13 +114,13 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 
     // MARK: - Types
 
-    struct Section {
+    struct Section: Identifiable {
         let id: String = UUID().uuidString
         let key: String
         let rows: [Row]
     }
 
-    final class Row {
+    final class Row: Identifiable {
         let id: String = UUID().uuidString
         let key: String
         let title: String
