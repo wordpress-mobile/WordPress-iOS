@@ -30,7 +30,7 @@ final class AtomicSiteService {
         scrollID: String? = nil
     ) async throws -> AtomicWebServerLogsResponse {
         try await withUnsafeThrowingContinuation { continuation in
-            self.remote.getWebServerLogs(siteID: siteID, range: range, httpMethod: httpMethod, statusCode: statusCode, scrollID: scrollID, pageSize: 5, success: continuation.resume, failure: continuation.resume)
+            self.remote.getWebServerLogs(siteID: siteID, range: range, httpMethod: httpMethod, statusCode: statusCode, scrollID: scrollID, success: continuation.resume, failure: continuation.resume)
         }
     }
 }

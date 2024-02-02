@@ -15,25 +15,20 @@ struct SiteMonitoringView: View {
     private var main: some View {
         switch viewModel.selectedTab {
         case .metrics:
-            WebView(url: viewModel.metricsURL!)
+            SiteMetricsView(blog: viewModel.blog)
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "metrics"])
+                }
         case .phpLogs:
-            phpLogs
+            PHPLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "php_logs"])
+                }
         case .webServerLogs:
-            webServerLogs
-        }
-    }
-
-    @ViewBuilder
-    private var phpLogs: some View {
-        List {
-            Text("PHP Logs")
-        }
-    }
-
-    @ViewBuilder
-    private var webServerLogs: some View {
-        List {
-            Text("Web Server Logs")
+            WebServerLogsView(viewModel: .init(blog: viewModel.blog, atomicSiteService: .init()))
+                .onAppear {
+                    WPAnalytics.track(.siteMonitoringTabShown, properties: ["tab": "web_server_logs"])
+                }
         }
     }
 
@@ -78,16 +73,9 @@ final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView
 }
 
 final class SiteMonitoringViewModel: ObservableObject {
-    private let blog: Blog
+    let blog: Blog
 
     @Published var selectedTab: SiteMonitoringTab = .metrics
-
-    var metricsURL: URL? {
-        guard let siteID = blog.dotComID as? Int else {
-            return nil
-        }
-        return URL(string: "https://wordpress.com/site-monitoring/\(siteID)")
-    }
 
     init(blog: Blog, selectedTab: SiteMonitoringTab? = nil) {
         self.blog = blog
@@ -101,4 +89,10 @@ private enum Strings {
     static let metrics = NSLocalizedString("siteMonitoring.metrics", value: "Metrics", comment: "Title for metrics screen.")
     static let phpLogs = NSLocalizedString("siteMonitoring.phpLogs", value: "PHP Logs", comment: "Title for PHP logs screen.")
     static let webServerLogs = NSLocalizedString("siteMonitoring.metrics", value: "Web Server Logs", comment: "Title for web server log screen.")
+}
+
+extension Date {
+    static func oneWeekAgo(from date: Date = Date.now) -> Date {
+        Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now) ?? date
+    }
 }

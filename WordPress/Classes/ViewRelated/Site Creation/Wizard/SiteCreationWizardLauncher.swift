@@ -7,7 +7,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     let steps: [SiteCreationStep] = {
-        if RemoteFeatureFlag.plansInSiteCreation.enabled() {
+        if RemoteFeatureFlag.plansInSiteCreation.enabled() && AppConfiguration.isJetpack {
             return [
                 .intent,
                 .design,
