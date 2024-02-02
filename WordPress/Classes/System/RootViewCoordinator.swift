@@ -149,15 +149,6 @@ class RootViewCoordinator {
         return true
     }
 
-    func reloadPostSiteCreationCancellationIfNeeded() {
-        isSiteCreationActive = false
-        if let windowManager,
-            !JetpackFeaturesRemovalCoordinator.hasBlog()
-            && AppConfiguration.isWordPress {
-            reloadUI(using: windowManager)
-        }
-    }
-
     private func displayOverlay(using windowManager: WindowManager, blog: Blog?) {
         guard currentAppUIType == .simplified else {
             return
