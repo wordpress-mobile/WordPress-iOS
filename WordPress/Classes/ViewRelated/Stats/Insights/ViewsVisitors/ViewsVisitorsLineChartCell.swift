@@ -114,7 +114,6 @@ struct StatsSegmentedControlData {
     }
 }
 
-
 protocol StatsInsightsViewsAndVisitorsDelegate: AnyObject {
     func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int)
 }
@@ -195,7 +194,6 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     }
 }
 
-
 // MARK: - Private Extension
 
 private extension ViewsVisitorsLineChartCell {
@@ -241,7 +239,6 @@ private extension ViewsVisitorsLineChartCell {
         legendLatestLabel.textColor = chartStyle.primaryLineColor
         latestData.textColor = chartStyle.primaryLineColor
         latestLabel.textColor = chartStyle.primaryLineColor
-
 
         let segmentData = segmentsData[selectedSegmentIndex]
         latestLabel.text = segmentData.segmentTitle

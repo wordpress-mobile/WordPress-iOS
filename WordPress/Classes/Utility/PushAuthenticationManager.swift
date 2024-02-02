@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import WordPressShared
 
-
 /// The purpose of this class is to handle WordPress.com Push Authentication Notifications.
 /// When logging into a WordPress.com that has 2FA enabled, the user will be presented with the possibility of
 /// authorizing access by means of a mobile device that's already authenticated.
@@ -18,7 +17,6 @@ class PushAuthenticationManager {
     ///
     fileprivate let pushAuthenticationService: PushAuthenticationService
 
-
     convenience init() {
         let service = PushAuthenticationService(coreDataStack: ContextManager.shared)
         self.init(pushAuthenticationService: service)
@@ -27,7 +25,6 @@ class PushAuthenticationManager {
     public init(pushAuthenticationService: PushAuthenticationService) {
         self.pushAuthenticationService = pushAuthenticationService
     }
-
 
     /// Checks if a given Push Notification is a Push Authentication.
     ///
@@ -92,7 +89,6 @@ class PushAuthenticationManager {
     }
 }
 
-
 // MARK: - Private Helpers
 //
 private extension PushAuthenticationManager {
@@ -116,7 +112,6 @@ private extension PushAuthenticationManager {
         }
     }
 
-
     /// Checks if a given Push Authentication Notification has already expired.
     ///
     /// - Parameter userInfo: Is the Notification's payload.
@@ -129,7 +124,6 @@ private extension PushAuthenticationManager {
         let parsedExpiration = Date(timeIntervalSince1970: rawExpiration)
         return parsedExpiration.timeIntervalSinceNow < Settings.minimumRemainingExpirationTime
     }
-
 
     /// Displays an AlertView indicating that a Login Request has expired.
     ///
@@ -166,7 +160,6 @@ private extension PushAuthenticationManager {
         }
     }
 }
-
 
 // MARK: - Private Internal Constants
 //

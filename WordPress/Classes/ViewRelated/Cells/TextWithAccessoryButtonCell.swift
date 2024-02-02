@@ -1,7 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-
 class TextWithAccessoryButtonCell: WPReusableTableViewCell {
     var buttonText: String? {
         get {
@@ -37,7 +36,6 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
             secondaryLabel?.text = secondaryLabelText
         }
     }
-
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

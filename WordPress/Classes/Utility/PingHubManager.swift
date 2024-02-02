@@ -86,7 +86,6 @@ class PingHubManager: NSObject {
     fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
     fileprivate var delayedRetry: DispatchDelayedAction?
 
-
     override init() {
         let foreground = (UIApplication.shared.applicationState != .background)
         let authToken = defaultAccountToken()
@@ -162,7 +161,6 @@ class PingHubManager: NSObject {
         return !UIApplication.shared.isRunningTestSuite() || Configuration.enabledDuringTests
     }
 }
-
 
 // MARK: - Inputs
 fileprivate extension PingHubManager {

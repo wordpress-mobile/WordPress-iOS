@@ -10,11 +10,9 @@ import UniformTypeIdentifiers
     @objc optional func textView(_ textView: UITextView, didPressLink link: URL)
 }
 
-
 @objc open class RichTextView: UIView, UITextViewDelegate {
     @objc open weak var dataSource: RichTextViewDataSource?
     @objc open weak var delegate: RichTextViewDelegate?
-
 
     // MARK: - Initializers
     convenience init() {
@@ -30,7 +28,6 @@ import UniformTypeIdentifiers
         super.init(coder: aDecoder)!
         setupSubviews()
     }
-
 
     // MARK: - Properties
     @objc open var contentInset: UIEdgeInsets {
@@ -119,7 +116,6 @@ import UniformTypeIdentifiers
         }
     }
 
-
     // MARK: - TextKit Getters
     @objc open var layoutManager: NSLayoutManager {
         get {
@@ -138,7 +134,6 @@ import UniformTypeIdentifiers
             return textView.textContainer
         }
     }
-
 
     // MARK: - Private Methods
     fileprivate func setupSubviews() {
@@ -207,7 +202,6 @@ import UniformTypeIdentifiers
         return requiredSize
     }
 
-
     // MARK: - UITapGestureRecognizer Helpers
     @objc open func handleTextViewTap(_ recognizer: UITapGestureRecognizer) {
 
@@ -233,7 +227,6 @@ import UniformTypeIdentifiers
             delegate?.textView?(textView, didPressLink: unwrappedURL)
         }
     }
-
 
     // MARK: - UITextViewDelegate Wrapped Methods
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
@@ -271,7 +264,6 @@ import UniformTypeIdentifiers
     open func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange, interaction: interaction) ?? true
     }
-
 
     // MARK: - Private Properites
     fileprivate var textView: UITextView!

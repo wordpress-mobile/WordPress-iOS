@@ -3,7 +3,6 @@ import UIKit
 import WordPressShared
 import WordPressAuthenticator
 
-
 /// A view controller that presents a Jetpack login form.
 ///
 class JetpackLoginViewController: UIViewController {
@@ -106,7 +105,6 @@ class JetpackLoginViewController: UIViewController {
         observeLoginNotifications(false)
         completionBlock?()
     }
-
 
     // MARK: - UI Helpers
 

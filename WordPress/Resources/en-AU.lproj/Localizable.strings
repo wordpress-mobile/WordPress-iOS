@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-04 02:58:06+0000 */
+/* Translation-Revision-Date: 2024-01-28 12:22:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ of %2$@ used on your site";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per year";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ quadrillion";
@@ -1944,6 +1941,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
 
@@ -2671,7 +2677,6 @@
 "Empty URL" = "Empty URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Enable";
 
@@ -3015,6 +3020,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "File type";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "File type not supported as a media file.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
 
@@ -3127,6 +3135,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Font Size, %1$s";
 
 /* Food site intent topic */
 "Food" = "Food";
@@ -4075,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Loading the block editor.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Loading usernames";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4508,6 +4516,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "Needs Update";
 
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Network connection lost, working offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Network connection re-established";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "New";
 
@@ -4554,9 +4568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Table view title for the quick start section.
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Next Steps";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Next notification";
@@ -4738,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "No preview available";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "No prompts yet";
@@ -5505,9 +5513,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Preview your site to see what your visitors will see.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Previous notification";
 
@@ -6005,6 +6010,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandbox Store";
 
 /* Menus save button title
    Save Action
@@ -7137,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "The internet connection appears to be offline.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "The item could not be added to the Media Library.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "The kinds of sites that can be created";
 
@@ -7812,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Unable to update plan prices. There is a problem with the supplied blog.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Unable to upload 1 draft post";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Unable to upload 1 post";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8251,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Waiting for Google to complete…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Waiting for connection";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8717,6 +8722,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Working Offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
@@ -8861,6 +8869,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "You have 1 hidden WordPress site.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "You have a free one-year domain registration with your plan.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site.";
@@ -9108,18 +9119,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Image Quality";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Image optimisation shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Keep optimising images?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audio file";
 
@@ -9280,6 +9279,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Rate as helpful";
 
+/* Title for the checkout view */
+"checkout.title" = "Checkout";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "comment";
 
@@ -9430,8 +9432,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "View stats";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analytics";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "Reader CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Default URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Current Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Default Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Remote Config";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Remote Config Value";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Reset";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9440,11 +9469,23 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Remove Current Tour";
 
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Logging";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Quick Start";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Settings";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Developer";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Weekly Roundup";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Search for a domain";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Get Domain";
@@ -9457,6 +9498,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Expired";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Never expires";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Renews";
@@ -9550,6 +9594,15 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per year";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Help";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domains purchased on this site will redirect to %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Search domains";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Checkout";
@@ -9692,6 +9745,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Are you enjoying the Jetpack mobile app?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Not really";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Your feedback matters";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "It's great";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Thanks for helping us improve the app.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback sent";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Would you like to share more details with us?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Not now";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Help us improve";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Sure";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "To take photos or videos to use in your posts.";
@@ -10305,6 +10388,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalise home";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Share site";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Change site icon";
 
@@ -10422,6 +10508,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Plans";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Created %@";
 
@@ -10511,9 +10600,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Preview";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publish now";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Retry";
@@ -10854,6 +10940,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Other domains for %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Your Free WordPress.com domain";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Get a free one-year domain registration or transfer with any annual paid plan.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Get your domain";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Primary domain";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Just search for a domain";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Upgrade to a plan";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
 
@@ -10958,6 +11068,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Traffic";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Last 7-days";
@@ -11066,6 +11179,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Search to find free photos to add to your Media Library!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Submit";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In this conversation";
@@ -11366,6 +11485,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Something went wrong, please try again later.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Switch to the Jetpack app";

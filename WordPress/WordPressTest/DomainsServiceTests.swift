@@ -49,7 +49,6 @@ class DomainsServiceTests: CoreDataTestCase {
         return blog
     }
 
-
     fileprivate func findAllDomains() -> [ManagedDomain] {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]

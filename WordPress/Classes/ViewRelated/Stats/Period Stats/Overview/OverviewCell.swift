@@ -174,9 +174,7 @@ private extension OverviewCell {
         filterTabBar.equalWidthSpacing = 12
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
-        if AppConfiguration.statsRevampV2Enabled {
-            filterTabBar.dividerColor = .clear
-        }
+        filterTabBar.dividerColor = .clear
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {

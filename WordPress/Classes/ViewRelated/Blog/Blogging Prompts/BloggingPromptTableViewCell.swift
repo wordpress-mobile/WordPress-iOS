@@ -20,7 +20,6 @@ class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
         return formatter
     }()
 
-
     // MARK: Init
 
     override func awakeFromNib() {

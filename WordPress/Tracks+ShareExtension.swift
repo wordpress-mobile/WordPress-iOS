@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// This extension implements helper tracking methods, meant for Share Extension Usage.
 ///
 extension Tracks {

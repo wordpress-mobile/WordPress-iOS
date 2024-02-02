@@ -10,7 +10,6 @@ struct DomainPurchaseChoicesView: View {
         static let imageLength: CGFloat = 36
     }
 
-
     @StateObject var viewModel = DomainPurchaseChoicesViewModel()
 
     let analyticsSource: String?

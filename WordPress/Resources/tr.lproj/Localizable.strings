@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-03 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-01-23 09:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -127,9 +127,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "Sitenizdeki %2$@ alanın %1$@ kadarı kullanılıyor";
-
-/* Plan yearly price */
-"%@ per year" = "yıl başına %@";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ katrilyon";
@@ -1944,6 +1941,15 @@
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "WordPress siteye bağlanılamıyor. Bu adreste geçerli bir WordPress sitesi yok. Girdiğiniz site adresini (URL) kontrol edin.";
 
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Gerekli XML-RPC yordamları sunucuda bulunmuyor. Sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Sitenizin XMLRPC uç noktasına erişmeye çalışırken 403 hatasını aldık. Uygulama, sitenizle bağlantı kurabilmek için buna gereksinim duyuyor. Sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Sunucunuz POST isteklerini engelliyor ve uygulama sitenizle iletişim kurmak için buna gereksinim duyuyor. Sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Etiketler yüklenemedi.";
 
@@ -2671,7 +2677,6 @@
 "Empty URL" = "Boş adres";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Etkinleştir";
 
@@ -3015,6 +3020,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Dosya tipi";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "File type not supported as a media file.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film ve Televizyon";
 
@@ -3127,6 +3135,9 @@
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Boyutu";
+
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Yazı tipi boyutu %1$s";
 
 /* Food site intent topic */
 "Food" = "Yiyecek";
@@ -4075,9 +4086,6 @@
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Blok düzenleyici yükleniyor.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Kullanıcı adları yükleniyor";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -4508,6 +4516,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Describes a status of a plugin */
 "Needs Update" = "Güncellenmesi gerekiyor";
 
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Network connection lost, working offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Network connection re-established";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Yeni";
 
@@ -4554,9 +4568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Table view title for the quick start section.
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Sonraki adımlar";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Sonraki ay";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Sonraki bildirim";
@@ -4738,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "No preview available" = "Önizleme yok";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Birincil site adresi bulunamadı";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Henüz istem yok";
@@ -5505,9 +5513,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Ziyaretçilerinizin neler göreceğini anlamak için sitenizi önizleyin.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Önceki ay ";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Önceki bildirim";
 
@@ -6005,6 +6010,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandbox Store'u kullanın";
 
 /* Menus save button title
    Save Action
@@ -7137,9 +7145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internet bağlantısı yok gözüküyor.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Öğe ortam kütüphanesine eklenemez.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Oluşturulabilecek site türleri";
 
@@ -7812,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Plan fiyatları güncellenemiyor. Sağlanan blogda bir sorun var.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 taslak yazı yüklenemedi";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1 yazı karşıya yüklenemedi";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -8251,6 +8253,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Tamamlanması için Google bekleniyor…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Bağlantı bekleniyor";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8717,6 +8722,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Bizimle Çalışın";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Çevrimdışı çalışın";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren dünya haritası.";
 
@@ -9108,18 +9116,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Görsel Kalitesi";
 
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Görsel iyileştirme özelliği, daha hızlı yüklenmeleri için görselleri küçültür.\n\nBu seçenek varsayılan olarak etkindir, ancak dilediğiniz zaman uygulama ayarlarından değiştirebilirsiniz.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Görseller iyileştirilmeye devam edilsin mi?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Hayır, kapat";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Evet, açık kalsın";
-
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
 
@@ -9280,6 +9276,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Faydalı olarak değerlendirin";
 
+/* Title for the checkout view */
+"checkout.title" = "Ödeme";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "yorum";
 
@@ -9430,8 +9429,32 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "İstatistikleri Görüntüle";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analizler";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Özellik bayrakları";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "Okuyucu CSS URLsi";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Varsayılan URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Reader'a yüklenmek üzere buraya özel bir CSS URL'si ekleyin. Calypso'yu yerel olarak çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Varsayılan Değer";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Uzaktan Yapılandırma";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Uzaktan Yapılandırma";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Sıfırla";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9440,11 +9463,20 @@ Example: Reply to Pamela Nguyen */
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Mevcut Turu Kaldır";
 
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Logging";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Ayarlar";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Geliştirici";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Haftalık Özet";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Bir alan adı arayın";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Alan Adı Al";
@@ -9457,6 +9489,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Süresi Dolmuş";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Süresi asla bitmez";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Yenilemeler";
@@ -9550,6 +9585,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "yıllık";
+
+/* Help button */
+"domainSelection.helpButton.title" = "Yardım";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Alan adı arayın";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Ödeme";
@@ -9692,6 +9733,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/benim-site-adresim (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Jetpack mobil uygulamasından memnun musunuz?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Pek değil";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Geri bildiriminiz bizim için önemli";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Harika";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Uygulamayı geliştirmemize yardımcı olduğunuz için teşekkürler.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Geri bildirim gönderildi";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Bizimle daha fazla ayrıntı paylaşmak ister misiniz?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Şimdi değil";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Geliştirmemize yardım edin";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Tamam";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
@@ -10305,6 +10376,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Ana sayfayı kişiselleştir";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Siteyi paylaş";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Site simgesini değiştir";
 
@@ -10422,6 +10496,9 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
 
+/* Title for the plan selection view */
+"planSelection.title" = "Paketler";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Oluşturma tarihi: %@";
 
@@ -10511,9 +10588,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Önizle";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Şimdi yayınla";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Tekrar dene";
@@ -10854,6 +10928,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "SiteAdi.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Other domains for %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Ücretsiz WordPress.com alan adı";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Yıllık ücretli paketlerden herhangi biriyle bir yıllık ücretsiz alan adı kaydı veya transferi hakkı edinin.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Size ait bir alan adı.";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Birincil site adresiniz, web sitenizi ziyaret edenlerin adres çubuğunda görecekleri adrestir.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Birincil alan adı";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Sadece alan adı arayacağım";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Ücretli bir pakete geç";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Alan adları";
 
@@ -10958,6 +11056,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter otomatik paylaşım özelliği, Twitter'ın şartlarındaki ve fiyatlandırmasındaki değişiklikler nedeniyle artık kullanılmıyor.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Trafik";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Son 7 gün";
@@ -11066,6 +11167,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Gönder";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Geri bildirim";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Bu sohbette";
@@ -11366,6 +11473,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, siteler, site, bloglar, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Bir yanlışlık oldu, lütfen daha sonra tekrar deneyin.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack uygulamasına geçiş yapın";

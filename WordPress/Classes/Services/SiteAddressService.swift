@@ -94,7 +94,7 @@ final class DomainsServiceAdapter: SiteAddressService {
                 completion(Result.success(SiteAddressServiceResult()))
                 return
             }
-            if (error as NSError).code == WordPressComRestApiError.invalidQuery.rawValue {
+            if (error as NSError).code == WordPressComRestApiErrorCode.invalidQuery.rawValue {
                 completion(Result.success(SiteAddressServiceResult(invalidQuery: true)))
                 return
             }

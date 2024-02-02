@@ -79,9 +79,7 @@ extension ImmuTable {
     }
 }
 
-
 // MARK: -
-
 
 /// ImmuTableSection represents the view model for a table view section.
 ///
@@ -101,9 +99,7 @@ public struct ImmuTableSection {
     }
 }
 
-
 // MARK: - ImmuTableRow
-
 
 /// ImmuTableRow represents the minimum common elements of a row model.
 ///
@@ -177,9 +173,7 @@ extension ImmuTableRow {
     }
 }
 
-
 // MARK: - ImmuTableCell
-
 
 /// ImmuTableCell describes cell types so they can be registered with a table view.
 ///
@@ -221,9 +215,7 @@ public enum ImmuTableCell {
     }
 }
 
-
 // MARK: -
-
 
 /// ImmuTableViewHandler is a helper to facilitate integration of ImmuTable in your
 /// table view controllers.
@@ -396,7 +388,6 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return target.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
     }
 
-
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:trailingSwipeActionsConfigurationForRowAt:))) {
             return target.tableView?(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
@@ -464,18 +455,15 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     }
 }
 
-
 // MARK: - Type aliases
 
 public typealias ImmuTableAction = (ImmuTableRow) -> Void
-
 
 // MARK: - Internal testing helpers
 
 protocol CellRegistrar {
     func register(_ cell: ImmuTableCell, cellReuseIdentifier: String)
 }
-
 
 extension UITableView: CellRegistrar {
     public func register(_ cell: ImmuTableCell, cellReuseIdentifier: String) {

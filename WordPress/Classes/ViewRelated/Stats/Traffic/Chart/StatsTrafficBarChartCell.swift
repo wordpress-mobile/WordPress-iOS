@@ -84,7 +84,6 @@ private extension StatsTrafficBarChartCell {
         let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
                                                               styling: chartStyling[filterSelectedIndex])
 
-
         if chartView == nil {
             let chartView = StatsTrafficBarChartView(configuration: configuration)
 

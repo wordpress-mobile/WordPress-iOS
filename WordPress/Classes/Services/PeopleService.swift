@@ -18,7 +18,6 @@ struct PeopleService {
     private let coreDataStack: CoreDataStackSwift
     fileprivate let remote: PeopleServiceRemote
 
-
     /// Designated Initializer.
     ///
     /// - Parameters:
@@ -303,7 +302,6 @@ struct PeopleService {
                                   failure: failure)
     }
 
-
     /// Sends an Invitation to a specified recipient, to access a Blog.
     ///
     /// - Parameters:
@@ -503,7 +501,6 @@ extension PeopleService {
     }
 
 }
-
 
 // MARK: - Private Methods
 

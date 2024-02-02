@@ -60,7 +60,6 @@ final class SiteCreator {
             return information?.title ?? ""
         }
 
-
         return domainName.isWordPress ? domainName.subdomain : domainName
     }
 

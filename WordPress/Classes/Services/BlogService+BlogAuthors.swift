@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension BlogService {
     /// Synchronizes authors for a `Blog` from an array of `RemoteUser`s.
     /// - Parameters:
@@ -37,7 +36,6 @@ extension BlogService {
         }
     }
 }
-
 
 private extension BlogService {
     private func findBlogAuthor(with userId: NSNumber, and blog: Blog, in context: NSManagedObjectContext) -> BlogAuthor {

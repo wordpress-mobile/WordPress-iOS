@@ -182,7 +182,6 @@ private extension StatsTrafficBarChartView {
         configureAndPopulateData()
     }
 
-
     /// Adds X axis ticks below each bar
     func addXAxisTicks() {
         guard

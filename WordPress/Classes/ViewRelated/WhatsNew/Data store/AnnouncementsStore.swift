@@ -20,7 +20,6 @@ extension Bundle: AnnouncementsVersionProvider {
     }
 }
 
-
 /// Announcement store with a local cache of "some sort"
 class CachedAnnouncementsStore: AnnouncementsStore {
 
@@ -119,7 +118,6 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 }
-
 
 extension CachedAnnouncementsStore {
 

@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension NSMutableAttributedString {
 
     /// Applies a collection of Styles to all of the substrings that match a given pattern

@@ -1,7 +1,6 @@
 import UIKit
 import WordPressFlux
 
-
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
@@ -14,7 +13,7 @@ protocol SiteStatsReferrerDelegate: AnyObject {
     func showReferrerDetails(_ data: StatsTotalRowData)
 }
 
-class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
+final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     weak var bannerView: JetpackBannerView?
@@ -57,6 +56,16 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
+    init() {
+        super.init(nibName: nil, bundle: nil)
+
+        tableStyle = .insetGrouped
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -64,7 +73,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
 
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
@@ -82,7 +91,10 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    // TODO: Replace with a new Date Picker
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 0 else { return nil }
+
         guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
@@ -91,6 +103,14 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         cell.animateGhostLayers(viewModel?.isFetchingChart() == true)
         tableHeaderView = cell
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return UITableView.automaticDimension
+        } else {
+            return super.tableView(tableView, heightForHeaderInSection: section)
+        }
     }
 
 }
@@ -163,7 +183,7 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -172,7 +192,7 @@ private extension SiteStatsPeriodTableViewController {
 
     @objc func userInitiatedRefresh() {
         clearExpandedRows()
-        refreshControl?.beginRefreshing()
+        refreshControl.beginRefreshing()
         refreshData()
     }
 
@@ -180,7 +200,7 @@ private extension SiteStatsPeriodTableViewController {
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod,
             viewIsVisible() else {
-                refreshControl?.endRefreshing()
+            refreshControl.endRefreshing()
                 return
         }
         addViewModelListeners()

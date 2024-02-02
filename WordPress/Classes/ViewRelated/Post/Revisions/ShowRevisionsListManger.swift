@@ -2,7 +2,6 @@ protocol RevisionsView: AnyObject {
     func stopLoading(success: Bool, error: Error?)
 }
 
-
 final class ShowRevisionsListManger {
     let context = ContextManager.sharedInstance().mainContext
 

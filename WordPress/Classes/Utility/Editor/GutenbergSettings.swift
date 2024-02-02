@@ -34,7 +34,7 @@ class GutenbergSettings {
     // MARK: - Internal variables
     private let database: KeyValueDatabase
     private var coreDataStack: CoreDataStack {
-        Environment.current.contextManager
+        AppEnvironment.current.contextManager
     }
 
     // MARK: - Initialization
@@ -139,7 +139,6 @@ class GutenbergSettings {
         ]
         WPAppAnalytics.track(stat, withProperties: props)
     }
-
 
     /// Synch the current editor settings with remote for the given site
     ///

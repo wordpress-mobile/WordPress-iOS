@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// In this extension, we implement several nested Enums (and helper setters / getters)  aimed at simplifying
 /// the BlogSettings interface. This may be considered as an Adapter class, *Swift* style!
 ///
@@ -12,13 +11,11 @@ extension BlogSettings {
         case fromKnownUsers = 1
         case everything     = 2
 
-
         /// Returns the localized description of the current enum value
         ///
         var description: String {
             return CommentsAutoapproval.descriptionMap[rawValue]!
         }
-
 
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
@@ -34,13 +31,11 @@ extension BlogSettings {
             return allValues.compactMap { hintsMap[$0] }
         }
 
-
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
         static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
-
 
         // MARK: - Private Properties
 
@@ -57,21 +52,17 @@ extension BlogSettings {
         ]
     }
 
-
-
     /// Enumerates all of the valid Comment Sort Order options
     ///
     enum CommentsSorting: Int {
         case ascending  = 0
         case descending = 1
 
-
         /// Returns the localized description of the current enum value
         ///
         var description: String {
             return CommentsSorting.descriptionMap[rawValue]!
         }
-
 
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
@@ -80,13 +71,11 @@ extension BlogSettings {
             return allValues.compactMap { descriptionMap[$0] }
         }
 
-
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
         static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
-
 
         // MARK: - Private Properties
 
@@ -96,14 +85,11 @@ extension BlogSettings {
         ]
     }
 
-
-
     /// Enumerates all of the valid Threading options
     ///
     enum CommentsThreading {
         case disabled
         case enabled(depth: Int)
-
 
         /// Designated Initializer
         ///
@@ -120,7 +106,6 @@ extension BlogSettings {
             }
         }
 
-
         /// Returns the Raw Value (for Core Data / Transport Layer usage)
         ///
         var rawValue: Int {
@@ -132,20 +117,17 @@ extension BlogSettings {
             }
         }
 
-
         /// Returns the localized description of the current enum value
         ///
         var description: String {
             return CommentsThreading.descriptionMap[rawValue]!
         }
 
-
         /// Convenience helper that will return *true* whenever the case is *Disabled*
         ///
         var isDisabled: Bool {
             return rawValue == CommentsThreading.disabledValue
         }
-
 
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
@@ -154,13 +136,11 @@ extension BlogSettings {
             return allValues.compactMap { descriptionMap[$0] }
         }
 
-
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
         static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
-
 
         // MARK: - Private Properties
 
@@ -183,10 +163,7 @@ extension BlogSettings {
         }
     }
 
-
-
     // MARK: - Swift Adapters
-
 
     /// Wraps Core Data values into Swift's CommentsAutoapproval Enum
     ///
@@ -206,7 +183,6 @@ extension BlogSettings {
         }
     }
 
-
     /// Wraps Core Data values into Swift's CommentsSorting Enum
     ///
     var commentsSorting: CommentsSorting {
@@ -222,7 +198,6 @@ extension BlogSettings {
         }
     }
 
-
     /// Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
     ///
     @objc var commentsSortOrderAscending: Bool {
@@ -233,7 +208,6 @@ extension BlogSettings {
             commentsSortOrder = newValue ? CommentsSorting.ascending.rawValue as NSNumber? : CommentsSorting.descending.rawValue as NSNumber?
         }
     }
-
 
     /// Wraps Core Data values into Swift's CommentsThreading Enum
     ///

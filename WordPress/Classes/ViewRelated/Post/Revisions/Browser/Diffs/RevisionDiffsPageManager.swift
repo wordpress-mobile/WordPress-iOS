@@ -1,6 +1,5 @@
 import Foundation
 
-
 protocol RevisionDiffsPageManagerDelegate: AnyObject {
     func currentIndex() -> Int
     func pageWillScroll(to direction: UIPageViewController.NavigationDirection)
@@ -23,7 +22,6 @@ class RevisionDiffsPageManager: NSObject {
         return viewControllers.lazy.firstIndex { $0 === viewController }
     }
 }
-
 
 extension RevisionDiffsPageManager: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -62,7 +60,6 @@ extension RevisionDiffsPageManager: UIPageViewControllerDataSource {
         return viewControllers[nextIndex]
     }
 }
-
 
 extension RevisionDiffsPageManager: UIPageViewControllerDelegate {
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {

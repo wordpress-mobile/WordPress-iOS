@@ -97,9 +97,6 @@
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ of %2$@ used on your site";
 
-/* Plan yearly price */
-"%@ per year" = "%@ per year";
-
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ quadrillion";
 
@@ -901,18 +898,6 @@
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Image Quality";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Image optimization shrinks images for faster uploading.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Are you sure you want to cancel and discard changes?";
@@ -2807,9 +2792,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
 
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Search for a domain";
-
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Get Domain";
 
@@ -3269,7 +3251,6 @@ Example: Reply to Pamela Nguyen */
 "Empty URL" = "Empty URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Enable";
 
@@ -4264,6 +4245,36 @@ Example: Reply to Pamela Nguyen */
 /* The app successfully enabled notifications for the subscription */
 "In-app notifications enabled" = "In-app notifications enabled";
 
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Are you enjoying the Jetpack mobile app?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Not really";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Your feedback matters";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "It's great";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Thanks for helping us improve the app.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback sent";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Would you like to share more details with us?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Not now";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Help us improve";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Sure";
+
 /* Describes a status of a plugin */
 "Inactive" = "Inactive";
 
@@ -5056,9 +5067,6 @@ Please install the %3$@ to use the app with this site.";
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Loading the block editor.";
 
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Loading usernames";
-
 /* Loading tags
    Loading tags.
    Loading. Verb
@@ -5755,6 +5763,9 @@ Please install the %3$@ to use the app with this site.";
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalize home";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Share site";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Change site icon";
 
@@ -5863,9 +5874,6 @@ Please install the %3$@ to use the app with this site.";
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Next";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Next notification";
@@ -6048,9 +6056,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No Preview URL available";
-
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
 
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "No prompts yet";
@@ -6962,9 +6967,6 @@ Please install the %3$@ to use the app with this site.";
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Preview";
 
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publish now";
-
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Retry";
 
@@ -7134,9 +7136,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Preview your site to see what your visitors will see.";
-
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Previous notification";
@@ -8763,6 +8762,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Stats not loaded";
 
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Traffic";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Last 7-days";
 
@@ -8918,6 +8920,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Submit for Review";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Submit";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Submitting for Review...";
@@ -9364,9 +9372,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "The internet connection appears to be offline.";
-
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "The item could not be added to the Media Library.";
 
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "The kinds of sites that can be created";
@@ -10055,9 +10060,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Unable to update plan prices. There is a problem with the supplied blog." = "Unable to update plan prices. There is a problem with the supplied blog.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Unable to upload 1 draft post";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Unable to upload 1 post";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -10503,6 +10505,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Waiting for connection";
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Waiting for Google to complete…";

@@ -32,7 +32,6 @@ extension RootViewPresenter {
         }
     }
 
-
     func navigateToAppSettings() {
         CATransaction.perform {
             showMeScreen()

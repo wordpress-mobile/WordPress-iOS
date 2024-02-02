@@ -112,7 +112,6 @@ class PluginDirectoryViewModel: Observable {
             return nil
         }
 
-
         let title = NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins")
         let secondaryTitle = NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins")
         let query = PluginQuery.all(site: site)

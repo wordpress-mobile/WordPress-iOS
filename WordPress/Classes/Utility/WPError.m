@@ -88,7 +88,7 @@ NSInteger const SupportButtonIndex = 0;
     if ([error.domain isEqualToString:WordPressComRestApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
                    [error localizedDescription]);
-        if (error.code == WordPressComRestApiErrorInvalidToken || error.code == WordPressComRestApiErrorAuthorizationRequired) {
+        if (error.code == WordPressComRestApiErrorCodeInvalidToken || error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
             [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
             return YES;
         }

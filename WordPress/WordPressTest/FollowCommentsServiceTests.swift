@@ -166,7 +166,6 @@ class FollowCommentsServiceTests: CoreDataTestCase {
            return topic
        }
 
-
        func seedReaderTeamTopic() -> ReaderTeamTopic {
            let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderTeamTopic
             topic.path = "/a8c/topic2"

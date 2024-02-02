@@ -27,7 +27,6 @@ open class WPTextAttachment: NSTextAttachment {
     fileprivate let widthKey = "width"
     fileprivate let heightKey = "height"
 
-
     /// Designated initializer.
     ///
     /// - Parameters:
@@ -43,7 +42,6 @@ open class WPTextAttachment: NSTextAttachment {
         // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
         super.init(data: UIImage(color: .basicBackground).pngData(), ofType: UTType.png.identifier)
     }
-
 
     /// For required NSCoding support.
     ///
@@ -61,7 +59,6 @@ open class WPTextAttachment: NSTextAttachment {
         super.init(coder: aDecoder)
     }
 
-
     /// For NSCoding support.
     ///
     open override func encode(with aCoder: NSCoder) {
@@ -77,7 +74,6 @@ open class WPTextAttachment: NSTextAttachment {
         aCoder.encode(Double(width), forKey: widthKey)
         aCoder.encode(Double(height), forKey: heightKey)
     }
-
 
     /// Adjusts the amount of space for the attachment glyph on a line fragment.
     /// Used for clearing text trailing an attachment when align equals .None

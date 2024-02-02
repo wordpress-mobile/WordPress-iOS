@@ -28,7 +28,6 @@ struct StatsTrafficBarChartMockData {
         ),
     ]
 
-
     struct Week {
         static let barChartTabData1 = BarChartTabData(
             tabTitle: "Views",

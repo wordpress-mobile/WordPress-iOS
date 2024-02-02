@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import Aztec
 
-
 // MARK: - UnknownEditorViewController
 //
 class UnknownEditorViewController: UIViewController {
@@ -41,8 +40,6 @@ class UnknownEditorViewController: UIViewController {
     ///
     var onDidCancel: (() -> Void)?
 
-
-
     /// Default Initializer
     ///
     /// - Parameter rawHTML: HTML To Be Edited
@@ -53,13 +50,11 @@ class UnknownEditorViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-
     /// Overriden Initializers
     ///
     required init?(coder aDecoder: NSCoder) {
         fatalError("You should use the `init(rawHTML:)` initializer!")
     }
-
 
     // MARK: - View Methods
 
@@ -77,7 +72,6 @@ class UnknownEditorViewController: UIViewController {
         editorView.becomeFirstResponder()
     }
 }
-
 
 // MARK: - Private Helpers
 //
@@ -142,7 +136,6 @@ extension UnknownEditorViewController {
         onDidSave?(editorView.text)
     }
 }
-
 
 // MARK: - Constants
 //

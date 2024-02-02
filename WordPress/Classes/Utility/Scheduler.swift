@@ -29,7 +29,6 @@ public class Scheduler {
         queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
     }
 
-
     /// The original function will be called after the caller stops calling the this function after the specified period.
     ///
     func debounce(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {

@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 // MARK: - NSAttributedStringKey Helpers
 //
 extension NSAttributedString.Key {
@@ -17,7 +16,6 @@ extension NSAttributedString.Key {
 
         return output
     }
-
 
     /// Converts a collection of NSAttributedString Attributes, with 'String' instances as 'Keys', into an equivalent
     /// collection that uses the new 'NSAttributedStringKey' enum as keys.

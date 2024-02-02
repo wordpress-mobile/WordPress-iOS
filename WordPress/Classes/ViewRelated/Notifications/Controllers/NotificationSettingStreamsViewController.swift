@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 
-
 /// This class will simply render the collection of Streams available for a given NotificationSettings
 /// collection.
 /// A Stream represents a possible way in which notifications are communicated.
@@ -39,8 +38,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
     ///
     private let rowsCount = 1
 
-
-
     convenience init(settings: NotificationSettings) {
         self.init(style: .grouped)
         setupWithSettings(settings)
@@ -62,7 +59,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
         WPAnalytics.track(.openedNotificationSettingStreams)
     }
 
-
     // MARK: - Setup Helpers
     private func startListeningToNotifications() {
         let notificationCenter = NotificationCenter.default
@@ -80,7 +76,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
-
 
     // MARK: - Public Helpers
     func setupWithSettings(_ streamSettings: NotificationSettings) {
@@ -102,7 +97,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
         tableView.reloadData()
     }
-
 
     // MARK: - UITableView Delegate Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,16 +126,12 @@ class NotificationSettingStreamsViewController: UITableViewController {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
-
-
     // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let stream = streamAtSection(indexPath.section)
         let detailsViewController = NotificationSettingDetailsViewController(settings: settings!, stream: stream)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
-
-
 
     // MARK: - Helpers
     private func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
@@ -174,7 +164,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
         return UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
     }
-
 
     // MARK: - Disabled Push Notifications Helpers
     @objc func refreshPushAuthorizationStatus() {

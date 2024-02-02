@@ -1,3 +1,5 @@
+import WordPressUI
+
 struct ActionSheetButton {
     let title: String
     let image: UIImage
@@ -96,7 +98,6 @@ class ActionSheetViewController: UIViewController {
         let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
             return button(buttonInfo)
         })
-
 
         let buttonConstraints = buttonViews.flatMap { button in
             [

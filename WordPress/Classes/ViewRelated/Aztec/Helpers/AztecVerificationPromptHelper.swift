@@ -1,5 +1,5 @@
 import UIKit
-
+import WordPressUI
 
 typealias VerificationPromptCompletion = (Bool) -> ()
 

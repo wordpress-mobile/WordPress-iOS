@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension NSFetchedResultsController {
     /// Returns whether an indexPath represents the last row in it's section, or not
     ///
