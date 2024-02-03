@@ -3959,8 +3959,7 @@
             "use_excerpt": false
           }
         }
-      ],
-      "next_page_handle": "ZnJvbT04JnJlZnJlc2g9MQ=="
+      ]
     },
     "headers": {
       "Content-Type": "application/json",
