@@ -94,8 +94,9 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
 
         let title = data[indexPath.row].title
         cell.titleLabel.text = title
-        cell.titleLabel.accessibilityIdentifier = .topicsCardCellIdentifier
-        cell.titleLabel.accessibilityTraits = .button
+
+        cell.accessibilityLabel = title
+        cell.accessibilityIdentifier = .topicsCardCellIdentifier
 
         return cell
     }
@@ -177,6 +178,8 @@ class ReaderTopicCardCollectionViewCell: UICollectionViewCell, ReusableCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
+        isAccessibilityElement = true
 
         contentView.addSubview(titleLabel)
         contentView.pinSubviewToAllEdges(titleLabel, insets: .init(top: 8.0, left: 16.0, bottom: 8.0, right: 16.0))

@@ -118,8 +118,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: WPStyleGuide.serifFontForTextStyle(.title3),
-
+            .font: UIFont.preferredFont(forTextStyle: .title3).semibold(),
         ]
     }
 
@@ -129,9 +128,8 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: fontForTextStyle(.subheadline),
-            .foregroundColor: UIColor(light: .muriel(color: .gray, .shade40),
-                                      dark: .muriel(color: .gray, .shade20))
+            .font: UIFont.preferredFont(forTextStyle: .callout),
+            .foregroundColor: UIColor.secondaryLabel
         ]
     }
 
@@ -500,9 +498,21 @@ extension WPStyleGuide {
 
     public struct FollowButton {
         struct Text {
-            static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
-            static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-            static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+            static let accessibilityHint = NSLocalizedString(
+                "reader.subscribe.button.accessibility.hint",
+                value: "Subscribes to the tag.",
+                comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag."
+            )
+            static let followStringForDisplay =  NSLocalizedString(
+                "reader.subscribe.button.title",
+                value: "Subscribe",
+                comment: "Verb. Button title. Subscribes to a new blog."
+            )
+            static let followingStringForDisplay = NSLocalizedString(
+                "reader.subscribed.button.title",
+                value: "Subscribed",
+                comment: "Verb. Button title. The user is subscribed to a blog."
+            )
         }
     }
 }

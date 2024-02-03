@@ -15,17 +15,21 @@ struct ReaderSelectInterestsConfiguration {
 class ReaderSelectInterestsViewController: UIViewController {
     private struct Constants {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
-        static let interestsLabelMargin: CGFloat = 10
+        static let interestsLabelMargin: CGFloat = 12
 
-        static let cellCornerRadius: CGFloat = 8
+        static let cellCornerRadius: CGFloat = 5
         static let cellSpacing: CGFloat = 6
-        static let cellHeight: CGFloat = 40
+        static let cellHeight: CGFloat = 36
         static let animationDuration: TimeInterval = 0.2
         static let isCentered: Bool = true
     }
 
     private struct Strings {
-        static let noSearchResultsTitle = NSLocalizedString("No new topics to follow", comment: "Message shown when there are no new topics to follow.")
+        static let noSearchResultsTitle = NSLocalizedString(
+            "reader.select.tags.no.results.title",
+            value: "No new tags to subscribe to",
+            comment: "Message shown when there are no new topics to follow."
+        )
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
         static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
     }
@@ -35,7 +39,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonContainerView: UIView!
-    @IBOutlet weak var nextButton: FancyButton!
+    @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var contentContainerView: UIStackView!
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -187,7 +191,6 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         styleGuide.applyLoadingLabelStyles(label: loadingLabel)
         styleGuide.applyActivityIndicatorStyles(indicator: activityIndicatorView)
-
     }
 
     private func configureNavigationBar() {
@@ -201,14 +204,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private func configureI18N() {
-
-        if isModal() {
-            title = configuration.title
-            titleLabel.isHidden = true
-        } else {
-            titleLabel.text = configuration.title
-            titleLabel.isHidden = false
-        }
+        titleLabel.text = configuration.title
+        titleLabel.isHidden = false
 
         if let subtitle = configuration.subtitle {
             subTitleLabel.text = subtitle
@@ -329,6 +326,8 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
                                                       isSelected: interest.isSelected)
 
+        cell.layer.borderWidth = interest.isSelected ? 0 : 1
+        cell.layer.borderColor = UIColor.separator.cgColor
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = interest.title
         cell.label.accessibilityTraits = interest.isSelected ? [.selected, .button] : .button
