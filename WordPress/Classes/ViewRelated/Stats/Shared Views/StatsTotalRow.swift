@@ -1,6 +1,6 @@
 import UIKit
 
-struct StatsTotalRowData {
+struct StatsTotalRowData: Hashable {
     var name: String
     var data: String
     var mediaID: NSNumber?

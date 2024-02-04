@@ -73,7 +73,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }
 }
 
-struct CellHeaderRow: ImmuTableRow {
+struct CellHeaderRow: ImmuTableRow, Hashable {
 
     typealias CellType = StatsCellHeader
 
@@ -433,7 +433,7 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow, Hashable {
     func hash(into hasher: inout Hasher) {}
 }
 
-struct TopTotalsPeriodStatsRow: ImmuTableRow {
+struct TopTotalsPeriodStatsRow: ImmuTableRow, Hashable {
 
     typealias CellType = TopTotalsCell
 
