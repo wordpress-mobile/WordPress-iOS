@@ -4,6 +4,9 @@ import WordPressFlux
 /// The view model used by Period Stats.
 ///
 
+typealias StatsTrafficSnapshot = NSDiffableDataSourceSnapshot<StatsTrafficSection, StatsTrafficRow>
+typealias StatsTrafficDataSource = UITableViewDiffableDataSource<StatsTrafficSection, StatsTrafficRow>
+
 enum StatsTrafficRow: Hashable {
     case emptyPeriodCellHeader(PeriodEmptyCellHeaderRow)
     case cellHeader(CellHeaderRow)
