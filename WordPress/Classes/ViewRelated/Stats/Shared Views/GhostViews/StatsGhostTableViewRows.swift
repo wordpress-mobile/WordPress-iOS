@@ -40,7 +40,7 @@ struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
     var statSection: StatSection? = nil
 }
 
-struct StatsGhostTopImmutableRow: StatsRowGhostable {
+struct StatsGhostTopImmutableRow: StatsRowGhostable, Hashable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
     }()
@@ -48,6 +48,20 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
     var hideTopBorder = false
     var hideBottomBorder = false
     var statSection: StatSection? = nil
+
+    // MARK: - Hashable
+
+    static func == (lhs: StatsGhostTopImmutableRow, rhs: StatsGhostTopImmutableRow) -> Bool {
+        return lhs.hideTopBorder == rhs.hideTopBorder &&
+            lhs.hideBottomBorder == rhs.hideBottomBorder &&
+            lhs.statSection == rhs.statSection
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(hideTopBorder)
+        hasher.combine(hideBottomBorder)
+        hasher.combine(statSection)
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         DispatchQueue.main.async {
@@ -84,7 +98,7 @@ struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
     var statSection: StatSection? = nil
 }
 
-struct StatsGhostChartImmutableRow: StatsRowGhostable {
+struct StatsGhostChartImmutableRow: StatsRowGhostable, Hashable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostChartCell.defaultNib, StatsGhostChartCell.self)
     }()
@@ -111,6 +125,20 @@ struct StatsGhostDetailRow: StatsRowGhostable {
             detailCell.isLastRow = isLastRow
             detailCell.enableTopPadding = enableTopPadding
         }
+    }
+
+    // MARK: - Hashable
+
+    static func == (lhs: StatsGhostDetailRow, rhs: StatsGhostDetailRow) -> Bool {
+        return lhs.hideTopBorder == rhs.hideTopBorder &&
+            lhs.isLastRow == rhs.isLastRow &&
+            lhs.enableTopPadding == rhs.enableTopPadding
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(hideTopBorder)
+        hasher.combine(isLastRow)
+        hasher.combine(enableTopPadding)
     }
 }
 
