@@ -1,22 +1,26 @@
 import SwiftUI
+import Combine
 
 final class BooleanUserDefaultsDebugViewModel: ObservableObject {
+
     private let persistentRepository: UserPersistentRepository
     private let coreDataStack: CoreDataStackSwift
+    private var allUserDefaultsSections = Sections()
+    private var cancellables = Set<AnyCancellable>()
 
-    private var allUserDefaultsSections = Sections() {
-        didSet {
-            self.reloadSections()
-        }
-    }
+    // MARK: - State
 
     @Published var searchQuery: String = "" {
         didSet {
-            self.reloadSections()
+            Task { @MainActor in
+                self.reloadSections()
+            }
         }
     }
 
     @MainActor @Published private(set) var userDefaultsSections: Sections = []
+
+    // MARK: - Init
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
@@ -24,13 +28,15 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         self.persistentRepository = persistentRepository
     }
 
+    // MARK: - Load
+
     func load() {
         Task {
             await self.load()
         }
     }
 
-    private func load() async {
+    func load() async {
         let allUserDefaults = persistentRepository.dictionaryRepresentation()
         var loadedUserDefaultsSections = Sections()
         var otherSection = [Row]()
@@ -55,12 +61,16 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         }
 
         self.allUserDefaultsSections = loadedUserDefaultsSections
+
+        await MainActor.run {
+            self.reloadSections()
+        }
     }
 
-     private func reloadSections() {
-        Task { @MainActor in
-            self.userDefaultsSections = filterUserDefaults(by: searchQuery)
-        }
+    // MARK: - Helpers
+
+    @MainActor private func reloadSections() {
+        self.userDefaultsSections = filterUserDefaults(by: searchQuery)
     }
 
     private func filterUserDefaults(by query: String) -> Sections {
