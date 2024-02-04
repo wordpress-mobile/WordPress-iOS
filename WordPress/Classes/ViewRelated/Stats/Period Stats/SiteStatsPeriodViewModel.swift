@@ -4,6 +4,32 @@ import WordPressFlux
 /// The view model used by Period Stats.
 ///
 
+enum StatsTrafficRow: Hashable {
+    case emptyPeriodCellHeader(PeriodEmptyCellHeaderRow)
+    case cellHeader(CellHeaderRow)
+    case topTotals(TopTotalsPeriodStatsRow)
+    case topTotalsNoSubtitles(TopTotalsNoSubtitlesPeriodStatsRow)
+    case countries(CountriesStatsRow)
+    case countriesMap(CountriesMapRow)
+    case overview(OverviewRow)
+    case footer(TableFooterRow)
+    case error(StatsErrorRow)
+    case ghostChart(StatsGhostChartImmutableRow)
+    case ghostTop(StatsGhostTopImmutableRow)
+}
+
+struct StatsTrafficSection: Hashable {
+    let headerText: String?
+    let rows: [StatsTrafficRow]
+    let footerText: String?
+
+    init(headerText: String? = nil, rows: [StatsTrafficRow], footerText: String? = nil) {
+        self.headerText = headerText
+        self.rows = rows
+        self.footerText = footerText
+    }
+}
+
 class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Properties
