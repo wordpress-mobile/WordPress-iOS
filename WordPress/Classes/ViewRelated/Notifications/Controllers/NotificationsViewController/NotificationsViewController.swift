@@ -104,33 +104,17 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }()
 
     /// Notification Settings button
-    private lazy var settingsBarButtonItem: UIBarButtonItem = {
-        let settingsButton = UIBarButtonItem(
-            image: .gridicon(.cog),
-            style: .plain,
-            target: self,
-            action: #selector(showNotificationSettings)
-        )
-        settingsButton.accessibilityLabel = NSLocalizedString(
-            "Notification Settings",
-            comment: "Link to Notification Settings section"
-        )
-        return settingsButton
+    private lazy var settingsMenuAction: UIAction = {
+        return UIAction(title: Strings.NavigationBar.notificationSettingsActionTitle, image: .gridicon(.cog)) { [weak self] _ in
+            self?.showNotificationSettings()
+        }
     }()
 
     /// Mark All As Read button
-    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
-        let markButton = UIBarButtonItem(
-            image: .gridicon(.checkmark),
-            style: .plain,
-            target: self,
-            action: #selector(showMarkAllAsReadConfirmation)
-        )
-        markButton.accessibilityLabel = NSLocalizedString(
-            "Mark All As Read",
-            comment: "Marks all notifications under the filter as read"
-        )
-        return markButton
+    private lazy var markAllAsReadMenuAction: UIAction = {
+        return UIAction(title: Strings.NavigationBar.markAllAsReadActionTitle, image: .gridicon(.checkmark)) { [weak self] _ in
+            self?.showMarkAllAsReadConfirmation()
+        }
     }()
 
     /// Used by JPScrollViewDelegate to send scroll position
@@ -540,15 +524,20 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        var barItems: [UIBarButtonItem] = []
+        var menuItems: [UIAction] = []
+
+        menuItems.append(markAllAsReadMenuAction)
 
         if shouldDisplaySettingsButton {
-            barItems.append(settingsBarButtonItem)
+            menuItems.append(settingsMenuAction)
         }
 
-        barItems.append(markAllAsReadBarButtonItem)
-
-        navigationItem.setRightBarButtonItems(barItems, animated: false)
+        self.navigationItem.rightBarButtonItem = {
+            let menu = UIMenu(children: menuItems)
+            let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisVertical), menu: menu)
+            button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
+            return button
+        }()
     }
 
     @objc func closeNotificationSettings() {
@@ -1150,8 +1139,7 @@ private extension NotificationsViewController {
 
         let isEnabled = notes.first { !$0.read } != nil
 
-        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
-        markAllAsReadBarButtonItem.isEnabled = isEnabled
+        markAllAsReadMenuAction.attributes = isEnabled ? .init(rawValue: 0) : .disabled
     }
 }
 
