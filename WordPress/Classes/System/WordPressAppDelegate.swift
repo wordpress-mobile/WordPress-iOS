@@ -133,6 +133,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ABTest.start()
 
+        if FeatureFlag.useURLSession.enabled {
+            WordPressComRestApi.useURLSession = true
+            WordPressOrgXMLRPCApi.useURLSession = true
+        }
+
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
         InteractiveNotificationsManager.shared.registerForUserNotifications()
