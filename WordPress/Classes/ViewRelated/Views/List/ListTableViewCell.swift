@@ -52,7 +52,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         }
         set {
             titleLabel.attributedText = newValue ?? NSAttributedString()
-            // Updating snippetLabel's line count to keep the max total of both lines at 4.
+            // Updating snippetLabel's line count to keep the max total of both lines at 3.
             snippetLabel.numberOfLines = titleLabel.numberOfVisibleLines > 1 ? 1 : 2
         }
     }
