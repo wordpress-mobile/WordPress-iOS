@@ -102,7 +102,7 @@ GEM
     colored2 (3.1.2)
     commander (4.6.0)
       highline (~> 2.0.0)
-    commonmarker (0.23.7)
+    commonmarker (0.23.10)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     cork (0.3.0)
