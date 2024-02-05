@@ -58,6 +58,10 @@ def gutenberg_local_pod
 
   react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
 
+  # It seems like React Native prepends $PWD to the path internally in the post install hook.
+  # To workaround, we make sure the path is relative to Dir.pwd
+  react_native_path = Pathname.new(react_native_path).relative_path_from(Dir.pwd).to_s
+
   use_react_native! path: react_native_path
 
   pod 'Gutenberg', options_gb
