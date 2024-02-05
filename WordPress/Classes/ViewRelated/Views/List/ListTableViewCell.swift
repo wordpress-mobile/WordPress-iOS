@@ -1,4 +1,5 @@
 import WordPressUI
+import DesignSystem
 
 /// Table view cell for the List component.
 ///
@@ -135,13 +136,13 @@ private extension ListTableViewCell {
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
 
         // title label
-        titleLabel.font = Style.plainTitleFont
-        titleLabel.textColor = Style.titleTextColor
+        titleLabel.setStyle(.bodySmall(.regular))
+        titleLabel.textColor = .DS.Foreground.primary
         titleLabel.numberOfLines = Constants.titleNumberOfLinesWithSnippet
 
         // snippet label
-        snippetLabel.font = Style.snippetFont
-        snippetLabel.textColor = Style.snippetTextColor
+        snippetLabel.setStyle(.bodySmall(.regular))
+        snippetLabel.textColor = .DS.Foreground.secondary
         snippetLabel.numberOfLines = Constants.snippetNumberOfLines
     }
 
