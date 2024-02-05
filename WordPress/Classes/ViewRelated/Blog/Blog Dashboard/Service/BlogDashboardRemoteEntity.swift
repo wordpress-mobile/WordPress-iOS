@@ -77,8 +77,16 @@ extension BlogDashboardRemoteEntity {
         }
 
         struct ImageSize: Decodable, Hashable {
-            let width: Int
-            let height: Int
+            let width: Int?
+            let height: Int?
+
+            var widthToHeightRatio: CGFloat {
+                CGFloat(
+                    width ?? 2
+                ) / CGFloat(
+                    height ?? 1
+                )
+            }
         }
 
         private enum CodingKeys: String, CodingKey {

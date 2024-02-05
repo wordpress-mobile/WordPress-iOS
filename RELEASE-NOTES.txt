@@ -1,6 +1,6 @@
 24.2
 -----
-* [*] Fix the UI bug on Dynamic Dashboard Card [#22516]
+* [*] [Jetpack-only] Fixed a UI bug where the Dynamic Dashboard Card would slightly jump on first launch.
 * [**] Prevent images from temporarily disappearing when uploading media [https://github.com/WordPress/gutenberg/pull/57869]
 * [**] Fix crash occurring on large post on Android [https://github.com/WordPress/gutenberg/pull/58266]
 * [*] [Jetpack-only] Site Monitoring: Add Metrics, PHP Logs, and Web Server Logs under Site Monitoring [#22475, #22499, #22504, #22500]

@@ -51,16 +51,16 @@ struct DynamicDashboardCard: View {
                     image
                         .resizable()
                         .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
-                        .clipShape(
-                            RoundedRectangle(
-                                cornerRadius: Length.Radius.small
-                            )
-                        )
                 default:
                     Color.DS.Background.secondary
                         .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
                 }
             }
+            .clipShape(
+                RoundedRectangle(
+                    cornerRadius: Length.Radius.small
+                )
+            )
         }
     }
 

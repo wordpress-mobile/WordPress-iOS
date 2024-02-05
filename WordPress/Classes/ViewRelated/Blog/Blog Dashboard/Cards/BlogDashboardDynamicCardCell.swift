@@ -122,11 +122,7 @@ private extension DynamicDashboardCard {
 
         let input = Input(
             featureImageURL: featureImageURL,
-            featureImageWidthToHeightRatio: CGFloat(
-                payload.featuredImageSize?.width ?? 2
-            ) / CGFloat(
-                payload.featuredImageSize?.height ?? 1
-            ),
+            featureImageWidthToHeightRatio: payload.featuredImageSize?.widthToHeightRatio ?? 2,
             rows: rows,
             action: action
         )
