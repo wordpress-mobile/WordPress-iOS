@@ -52,6 +52,8 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         }
         set {
             titleLabel.attributedText = newValue ?? NSAttributedString()
+            // Updating snippetLabel's line count to keep the max total of both lines at 4.
+            snippetLabel.numberOfLines = titleLabel.numberOfVisibleLines > 1 ? 1 : 2
         }
     }
 
@@ -165,5 +167,15 @@ private extension ListTableViewCell {
         static let titleNumberOfLinesWithoutSnippet = 3
         static let titleNumberOfLinesWithSnippet = 2
         static let snippetNumberOfLines = 2
+    }
+}
+
+private extension UILabel {
+    var numberOfVisibleLines: Int {
+        let textSize = CGSize(width: self.frame.size.width, height: CGFloat(Float.infinity))
+        let rHeight = lroundf(Float(self.sizeThatFits(textSize).height))
+        let charSize = lroundf(Float(self.font.lineHeight))
+        let lineCount = rHeight/charSize
+        return lineCount
     }
 }
