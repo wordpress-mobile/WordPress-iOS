@@ -128,7 +128,9 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         viewModel.load()
 
         // When
-        viewModel.updateUserDefault(false, forSection: "Other", forRow: "entry1")
+        let section = viewModel.userDefaultsSections[0]
+        let row = section.rows[0]
+        viewModel.updateUserDefault(false, section: section, row: row)
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)
@@ -145,7 +147,9 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         viewModel.load()
 
         // When
-        viewModel.updateUserDefault(false, forSection: "section1", forRow: "entry1")
+        let section = viewModel.userDefaultsSections[0]
+        let row = section.rows[0]
+        viewModel.updateUserDefault(false, section: section, row: row)
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)

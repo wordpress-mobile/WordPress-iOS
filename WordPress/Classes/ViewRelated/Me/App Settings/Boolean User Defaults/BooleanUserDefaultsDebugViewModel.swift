@@ -91,39 +91,16 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
         return try? Blog.lookup(withID: Int(id) ?? 0, in: coreDataStack.mainContext)
     }
 
-    func updateUserDefault(_ newValue: Bool, forSection targetSection: String, forRow targetRow: String) {
-        updateAllUserDefaultsSections(newValue, forSection: targetSection, forRow: targetRow)
-        if targetSection == Strings.otherBooleanUserDefaultsSectionID {
-            persistentRepository.set(newValue, forKey: targetRow)
-        } else {
-            guard let section = allUserDefaultsSections.first(where: { $0.key == targetSection }) else {
-                return
-            }
-            let entries = section.rows.reduce(into: [String: Bool]()) { result, row in
-                if row.key == targetRow {
-                    result[row.key] = newValue
-                } else {
-                    result[row.key] = row.value
-                }
-            }
-            persistentRepository.set(entries, forKey: targetSection)
-        }
-    }
+    func updateUserDefault(_ newValue: Bool, section: Section, row: Row) {
+        row.value = newValue
 
-    func updateAllUserDefaultsSections(_ newValue: Bool, forSection targetSection: String, forRow targetRow: String) {
-        allUserDefaultsSections = allUserDefaultsSections.map { currentSection in
-            if currentSection.key == targetSection {
-                let updatedRows = currentSection.rows.map { currentRow in
-                    if currentRow.key == targetRow {
-                        return Row(key: currentRow.key, title: currentRow.title, value: newValue)
-                    } else {
-                        return currentRow
-                    }
-                }
-                return Section(key: currentSection.key, rows: updatedRows)
-            } else {
-                return currentSection
+        if section.key == Strings.otherBooleanUserDefaultsSectionID {
+            persistentRepository.set(newValue, forKey: row.key)
+        } else {
+            let entries = section.rows.reduce(into: [String: Bool]()) { result, row in
+                result[row.key] = row.value
             }
+            persistentRepository.set(entries, forKey: section.key)
         }
     }
 
@@ -137,15 +114,18 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 
     // MARK: - Types
 
-    struct Section {
+    struct Section: Identifiable {
+        let id: String = UUID().uuidString
         let key: String
         let rows: [Row]
     }
 
-    final class Row {
+    final class Row: Identifiable {
+        let id: String = UUID().uuidString
         let key: String
         let title: String
-        let value: Bool
+
+        fileprivate(set) var value: Bool
 
         init(key: String, title: String, value: Bool) {
             self.key = key
