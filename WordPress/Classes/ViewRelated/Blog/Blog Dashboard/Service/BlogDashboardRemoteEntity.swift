@@ -80,12 +80,11 @@ extension BlogDashboardRemoteEntity {
             let width: Int?
             let height: Int?
 
-            var widthToHeightRatio: CGFloat {
-                CGFloat(
-                    width ?? 2
-                ) / CGFloat(
-                    height ?? 1
-                )
+            var widthToHeightRatio: CGFloat? {
+                guard let width, let height else {
+                    return nil
+                }
+                return CGFloat(width) / CGFloat(height)
             }
         }
 
