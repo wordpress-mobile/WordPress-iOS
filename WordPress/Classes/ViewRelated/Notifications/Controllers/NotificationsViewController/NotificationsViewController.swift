@@ -105,14 +105,14 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     /// Notification Settings button
     private lazy var settingsMenuAction: UIAction = {
-        return UIAction(title: Strings.NavigationBar.notificationSettingsActionTitle, image: .gridicon(.cog)) { [weak self] _ in
+        return UIAction(title: Strings.NavigationBar.notificationSettingsActionTitle, image: .DS.icon(named: .gearshapeFill)) { [weak self] _ in
             self?.showNotificationSettings()
         }
     }()
 
     /// Mark All As Read button
     private lazy var markAllAsReadMenuAction: UIAction = {
-        return UIAction(title: Strings.NavigationBar.markAllAsReadActionTitle, image: .gridicon(.checkmark)) { [weak self] _ in
+        return UIAction(title: Strings.NavigationBar.markAllAsReadActionTitle, image: .DS.icon(named: .checkmark)) { [weak self] _ in
             self?.showMarkAllAsReadConfirmation()
         }
     }()
