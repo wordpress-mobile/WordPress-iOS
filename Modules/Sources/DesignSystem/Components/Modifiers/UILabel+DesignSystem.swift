@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - UIKit.UIFont: TextStyle
-extension TextStyle {
+public extension TextStyle {
     var uiFont: UIFont {
         switch self {
         case .heading1:
@@ -50,13 +50,12 @@ extension TextStyle {
 }
 
 // MARK: - SwiftUI.Text
-extension UILabel {
-    func style(_ style: TextStyle) -> Self {
+public extension UILabel {
+    func setStyle(_ style: TextStyle) {
         self.font = style.uiFont
         if style.case == .uppercase {
             self.text = self.text?.uppercased()
         }
-        return self
     }
 }
 

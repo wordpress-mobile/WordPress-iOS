@@ -157,12 +157,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         setupNavigationBar()
         setupTableHandler()
         setupTableView()
-        setupTableFooterView()
         setupRefreshControl()
         setupNoResultsView()
         setupFilterBar()
 
         tableView.tableHeaderView = tableHeaderView
+        tableView.separatorStyle = .none
         setupConstraints()
         configureJetpackBanner()
 
@@ -584,11 +584,6 @@ private extension NotificationsViewController {
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-    }
-
-    func setupTableFooterView() {
-        //  Fix: Hide the cellSeparators, when the table is empty
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
     }
 
     func setupTableHandler() {

@@ -1,3 +1,5 @@
+import DesignSystem
+
 /// Renders a table header view with bottom separator, and meant to be used
 /// alongside `ListTableViewCell`.
 ///
@@ -23,7 +25,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
             titleLabel.text
         }
         set {
-            titleLabel.text = newValue?.localizedUppercase ?? String()
+            titleLabel.text = newValue ?? String()
             accessibilityLabel = newValue
         }
     }
@@ -47,12 +49,12 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         }()
 
         // configure title label
-        titleLabel.font = Style.sectionHeaderFont
-        titleLabel.textColor = Style.sectionHeaderTitleColor
+        titleLabel.setStyle(.bodyLarge(.emphasized))
+        titleLabel.textColor = .DS.Foreground.primary
 
         // configure separators view
         separatorsView.bottomColor = Style.separatorColor
-        separatorsView.bottomVisible = true
+        separatorsView.bottomVisible = false
     }
 
     // MARK: Convenience
