@@ -181,7 +181,19 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark([notification], asRead: false, completion: completion)
+        markAsUnread([notification], completion: completion)
+    }
+
+    /// Marks a Notification as Unead.
+    ///
+    /// - Note: This method should only be used on the main thread.
+    ///
+    /// - Parameters:
+    ///     - notifications: The notifications that should be marked unread.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsUnread(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
+        mark(notifications, asRead: false, completion: completion)
     }
 
     private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
