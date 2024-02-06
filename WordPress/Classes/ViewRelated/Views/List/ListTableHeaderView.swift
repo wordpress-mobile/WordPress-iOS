@@ -54,7 +54,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
         // configure separators view
         separatorsView.bottomColor = Style.separatorColor
-        separatorsView.bottomVisible = false
+        separatorsView.bottomVisible = true
     }
 
     // MARK: Convenience
