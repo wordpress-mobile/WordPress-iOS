@@ -511,7 +511,7 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        let moreMenuItems = { [weak self] completion in
+        let moreMenuItems = UIDeferredMenuElement { [weak self] completion in
             guard let self else {
                 completion([])
                 return

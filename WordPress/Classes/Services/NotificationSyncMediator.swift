@@ -184,7 +184,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         markAsUnread([notification], completion: completion)
     }
 
-    /// Marks a Notification as Unead.
+    /// Marks a Notification as Unread.
     ///
     /// - Note: This method should only be used on the main thread.
     ///
