@@ -8,7 +8,7 @@ import SwiftUI
 ///
 /// For example, `ellipsis.vertical` represents a vertical ellipsis icon.
 public enum IconName: String, CaseIterable {
-    case ellipsisVertical = "ellipsis.vertical"
+    case ellipsisHorizontal = "ellipsis.horizontal"
     case checkmark
     case gearshapeFill = "gearshape.fill"
 }

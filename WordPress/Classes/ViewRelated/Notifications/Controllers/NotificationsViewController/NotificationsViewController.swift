@@ -170,7 +170,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         // Refresh the UI
         reloadResultsControllerIfNeeded()
 
-
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
         }
@@ -520,7 +519,7 @@ private extension NotificationsViewController {
         }
         self.navigationItem.rightBarButtonItem = {
             let menu = UIMenu(children: [moreMenuItems])
-            let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisVertical), menu: menu)
+            let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisHorizontal), menu: menu)
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
             return button
         }()
@@ -1083,7 +1082,7 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
             let notice = Notice(
                 title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
             )
