@@ -68,14 +68,14 @@ fileprivate extension UIFont {
         static let heading4 = DynamicFontHelper.fontForTextStyle(.title3, fontWeight: .semibold)
 
         enum Body {
-            static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
+            static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
             static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .regular)
-            static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
+            static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
 
             enum Emphasized {
-                static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
+                static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
                 static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .semibold)
-                static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
+                static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
             }
         }
 
