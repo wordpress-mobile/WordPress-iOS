@@ -348,12 +348,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
-              let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
+              let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NotificationsTableHeaderView.reuseIdentifier) as? NotificationsTableHeaderView
+        else {
             return nil
         }
-
-        headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-        return headerView
+        view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        return view
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -587,15 +587,16 @@ private extension NotificationsViewController {
 
     func setupTableView() {
         // Register the cells
-        tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
+        tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
         tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
+        tableView.backgroundColor = .DS.Background.primary
+        view.backgroundColor = .DS.Background.primary
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     func setupTableFooterView() {
