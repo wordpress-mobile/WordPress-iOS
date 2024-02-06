@@ -103,27 +103,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return indicator
     }()
 
-    /// Navigation Bar More Menu
-    private let moreMenuNavigationBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisVertical))
-        button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
-        return button
-    }()
-
-    /// Notification Settings button
-    private var settingsMenuAction: UIAction {
-        return UIAction(title: Strings.NavigationBar.notificationSettingsActionTitle, image: .DS.icon(named: .gearshapeFill)) { [weak self] _ in
-            self?.showNotificationSettings()
-        }
-    }
-
-    /// Mark All As Read button
-    private var markAllAsReadMenuAction: UIAction {
-        return UIAction(title: Strings.NavigationBar.markAllAsReadActionTitle, image: .DS.icon(named: .checkmark)) { [weak self] _ in
-            self?.showMarkAllAsReadConfirmation()
-        }
-    }
-
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -190,7 +169,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
-        updateMoreMenuNavigationItem()
+
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -519,6 +498,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 // MARK: - User Interface Initialization
 //
 private extension NotificationsViewController {
+
     func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
@@ -531,37 +511,53 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        self.navigationItem.rightBarButtonItem = moreMenuNavigationBarButtonItem
-        self.updateMoreMenuNavigationItem()
+        let moreMenuItems = { [weak self] completion in
+            guard let self else {
+                completion([])
+                return
+            }
+            completion(self.makeMoreMenuElements())
+        }
+        self.navigationItem.rightBarButtonItem = {
+            let menu = UIMenu(children: [moreMenuItems])
+            let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisVertical), menu: menu)
+            button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
+            return button
+        }()
     }
 
-    func updateMoreMenuNavigationItem() {
-        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
-            return
-        }
-
-        var menuItems: [UIAction] = []
-
+    func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
-        let markAllAsReadMenuAction = markAllAsReadMenuAction
-        let isEnabled = notes.first { !$0.read } != nil
-        markAllAsReadMenuAction.attributes = isEnabled ? .init(rawValue: 0) : .disabled
-        menuItems.append(markAllAsReadMenuAction)
-
-        // Settings
-        if shouldDisplaySettingsButton {
-            menuItems.append(settingsMenuAction)
-        }
-
-        // Update menu
-        let menu: UIMenu = {
-            if let menu = self.moreMenuNavigationBarButtonItem.menu {
-                return menu.replacingChildren(menuItems)
-            } else {
-                return UIMenu(children: menuItems)
+        let markAllAsRead: UIAction? = { () -> UIAction? in
+            guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+                return nil
+            }
+            let isEnabled = notes.first { !$0.read } != nil
+            let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
+            return UIAction(
+                title: Strings.NavigationBar.markAllAsReadActionTitle,
+                image: .DS.icon(named: .checkmark),
+                attributes: attributes
+            ) { [weak self] _ in
+                self?.showMarkAllAsReadConfirmation()
             }
         }()
-        self.moreMenuNavigationBarButtonItem.menu = menu
+
+        // Notifications Settings
+        let settings: UIAction? = { () -> UIAction? in
+            guard shouldDisplaySettingsButton else {
+                return nil
+            }
+            return UIAction(
+                title: Strings.NavigationBar.notificationSettingsActionTitle,
+                image: .DS.icon(named: .gearshapeFill)
+            ) { [weak self] _ in
+                self?.showNotificationSettings()
+            }
+        }()
+
+        // Return
+        return [markAllAsRead, settings].compactMap { $0 }
     }
 
     @objc func closeNotificationSettings() {
@@ -1092,7 +1088,6 @@ private extension NotificationsViewController {
                 title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
             )
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-            self?.updateMoreMenuNavigationItem()
         })
     }
 
@@ -1145,7 +1140,6 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
-        updateMoreMenuNavigationItem()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -1223,7 +1217,6 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
-        updateMoreMenuNavigationItem()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
