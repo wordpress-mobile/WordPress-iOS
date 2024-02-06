@@ -163,6 +163,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         tableView.tableHeaderView = tableHeaderView
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .DS.Background.primary
         setupConstraints()
         configureJetpackBanner()
 
