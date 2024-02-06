@@ -809,7 +809,11 @@ extension NotificationsViewController {
         if let postID = note.metaPostID,
             let siteID = note.metaSiteID,
             note.kind == .matcher || note.kind == .newPost {
-            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            var fallbackURL: URL?
+            if let permalink = note.url {
+                fallbackURL = URL(string: permalink)
+            }
+            let readerViewController = ReaderDetailViewController.controllerWithXPostID(postID, siteID: siteID, fallbackURL: fallbackURL)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             showDetailViewController(readerViewController, sender: nil)
 
