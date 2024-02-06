@@ -5,15 +5,17 @@ extension NotificationsViewController {
     enum Strings {
         enum NavigationBar {
             static let notificationSettingsActionTitle = NSLocalizedString(
-                "Notification Settings",
+                "notificationsViewController.navigationBar.action.settings",
+                value: "Notification Settings",
                 comment: "Link to Notification Settings section"
             )
             static let markAllAsReadActionTitle = NSLocalizedString(
-                "Mark All As Read",
+                "notificationsViewController.navigationBar.action.markAllAsRead",
+                value: "Mark All As Read",
                 comment: "Marks all notifications under the filter as read"
             )
             static let menuButtonAccessibilityLabel = NSLocalizedString(
-                "notifications.navigation.bar.menu.button.accessibility.label",
+                "notificationsViewController.navigationBar.menu.accessibilityLabel",
                 value: "Navigation Bar Menu Button",
                 comment: "Accessibility label for the navigation bar menu button"
             )
