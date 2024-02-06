@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 
 final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
 
@@ -61,7 +62,12 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         static let backgroundColor = UIColor.DS.Background.primary
         static let textColor = UIColor.DS.Foreground.primary ?? .text
         static let textFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
-        static let layoutMargins = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+        static let layoutMargins = NSDirectionalEdgeInsets(
+            top: Length.Padding.single,
+            leading: Length.Padding.double,
+            bottom: Length.Padding.single,
+            trailing: Length.Padding.double
+        )
     }
 
 }
