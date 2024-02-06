@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
-gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic'
+gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic', ref: 'iangmaia/common-utils'
 gem 'dotenv'
 # 2.219.0 includes a fix for a bug introduced in 2.218.0
 # See https://github.com/fastlane/fastlane/issues/21762#issuecomment-1875208663
