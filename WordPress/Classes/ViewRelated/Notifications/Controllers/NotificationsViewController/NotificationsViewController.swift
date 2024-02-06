@@ -510,16 +510,20 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        let moreMenuItems = UIDeferredMenuElement { [weak self] completion in
+        let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
             guard let self else {
                 completion([])
                 return
             }
+            WPAnalytics.track(.notificationMenuTapped)
             completion(self.makeMoreMenuElements())
         }
         self.navigationItem.rightBarButtonItem = {
             let menu = UIMenu(children: [moreMenuItems])
-            let button = UIBarButtonItem(image: UIImage.DS.icon(named: .ellipsisHorizontal), menu: menu)
+            let button = UIBarButtonItem(
+                image: UIImage.DS.icon(named: .ellipsisHorizontal),
+                menu: menu
+            )
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
             return button
         }()
