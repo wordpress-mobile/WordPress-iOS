@@ -111,7 +111,7 @@ def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
   ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
   puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
 
-  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
+  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-3.6.2'
 end
 
 def gutenberg_post_install(installer:)
