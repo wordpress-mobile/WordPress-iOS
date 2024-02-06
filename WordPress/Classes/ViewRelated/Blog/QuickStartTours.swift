@@ -184,15 +184,27 @@ struct QuickStartFollowTour: QuickStartTour {
         let step2DiscoverDescriptionTarget = NSLocalizedString("Discover", comment: "The menu item to select during a guided tour.")
         let step2DiscoverDescription = step2DiscoverDescriptionBase.highlighting(phrase: step2DiscoverDescriptionTarget, icon: nil)
 
-        let step2SettingsDescriptionBase = NSLocalizedString("Try selecting %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2SettingsDescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
-        let step2SettingsDescription = step2SettingsDescriptionBase.highlighting(phrase: step2SettingsDescriptionTarget, icon: .gridicon(.cog))
+        let step2SubscriptionDescriptionBase = NSLocalizedString(
+            "quick.start.reader.2.subscriptions.base",
+            value: "Try selecting %@ to view subscribed content and manage your subscriptions.",
+            comment: "A step in a guided tour for quick start. %@ will be a bolded Subscriptions text."
+        )
+        let step2SubscriptionDescriptionTarget = NSLocalizedString(
+            "quick.start.reader.2.subscriptions.target",
+            value: "Subscriptions",
+            comment: "The bolded Subscriptions text in the Reader step 2 description for the quick start tour."
+        )
+        let step2SubscriptionDescription = step2SubscriptionDescriptionBase.highlighting(
+            phrase: step2SubscriptionDescriptionTarget,
+            icon: nil
+        )
 
         /// Combined description for step 2
         let step2Format = NSAttributedString(string: "%@ %@")
-        let step2Description = NSAttributedString(format: step2Format, args: step2DiscoverDescription, step2SettingsDescription)
+        let step2Description = NSAttributedString(format: step2Format,
+                                                  args: step2DiscoverDescription, step2SubscriptionDescription)
 
-        let step2: WayPoint = (element: .readerDiscoverSettings, description: step2Description)
+        let step2: WayPoint = (element: .readerDiscoverSubscriptions, description: step2Description)
 
         return [step1, step2]
     }()
