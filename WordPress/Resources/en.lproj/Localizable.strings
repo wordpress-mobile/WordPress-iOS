@@ -11731,3 +11731,6 @@ from anywhere.";
 
 /* This is a link that takes the user to the external Gravatar website. */
 "Learn more on Gravatar.com" = "Learn more on Gravatar.com";
+
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Updates might take some time to sync with your Gravatar profile.";
