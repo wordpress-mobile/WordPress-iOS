@@ -54,6 +54,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
         text.backgroundColor = .clear
         text.textContainerInset = .zero
         text.textContainer.lineFragmentPadding = 0
+        text.textDragInteraction?.isEnabled = false
         return text
     }()
 
