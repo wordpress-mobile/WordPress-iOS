@@ -61,14 +61,6 @@ class ReaderTabViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if QuickStartTourGuide.shared.isCurrentElement(.readerDiscoverSettings) {
-
-            if viewModel.selectedIndex != ReaderTabConstants.discoverIndex {
-                viewModel.showTab(at: ReaderTabConstants.discoverIndex)
-            }
-
-            // TODO: Revisit Reader spotlight
-        }
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 

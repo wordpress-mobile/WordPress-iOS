@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementSharing = 8,
     QuickStartTourElementConnections = 9,
     QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderDiscoverSettings = 12,
+    QuickStartTourElementReaderDiscoverSubscriptions = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
     QuickStartTourElementSiteIcon = 15,
