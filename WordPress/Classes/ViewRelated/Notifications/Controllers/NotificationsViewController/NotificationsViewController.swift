@@ -103,36 +103,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return indicator
     }()
 
-    /// Notification Settings button
-    private lazy var settingsBarButtonItem: UIBarButtonItem = {
-        let settingsButton = UIBarButtonItem(
-            image: .gridicon(.cog),
-            style: .plain,
-            target: self,
-            action: #selector(showNotificationSettings)
-        )
-        settingsButton.accessibilityLabel = NSLocalizedString(
-            "Notification Settings",
-            comment: "Link to Notification Settings section"
-        )
-        return settingsButton
-    }()
-
-    /// Mark All As Read button
-    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
-        let markButton = UIBarButtonItem(
-            image: .gridicon(.checkmark),
-            style: .plain,
-            target: self,
-            action: #selector(showMarkAllAsReadConfirmation)
-        )
-        markButton.accessibilityLabel = NSLocalizedString(
-            "Mark All As Read",
-            comment: "Marks all notifications under the filter as read"
-        )
-        return markButton
-    }()
-
     private let shouldPushDetailsViewController = UIDevice.current.userInterfaceIdiom != .pad
 
     /// Used by JPScrollViewDelegate to send scroll position
@@ -201,7 +171,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
-        updateMarkAllAsReadButton()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -531,6 +500,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 // MARK: - User Interface Initialization
 //
 private extension NotificationsViewController {
+
     func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
@@ -543,15 +513,57 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        var barItems: [UIBarButtonItem] = []
-
-        if shouldDisplaySettingsButton {
-            barItems.append(settingsBarButtonItem)
+        let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
+            guard let self else {
+                completion([])
+                return
+            }
+            WPAnalytics.track(.notificationMenuTapped)
+            completion(self.makeMoreMenuElements())
         }
+        self.navigationItem.rightBarButtonItem = {
+            let menu = UIMenu(children: [moreMenuItems])
+            let button = UIBarButtonItem(
+                image: UIImage.DS.icon(named: .ellipsisHorizontal),
+                menu: menu
+            )
+            button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
+            return button
+        }()
+    }
 
-        barItems.append(markAllAsReadBarButtonItem)
+    func makeMoreMenuElements() -> [UIAction] {
+        // Mark All As Read
+        let markAllAsRead: UIAction? = { () -> UIAction? in
+            guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+                return nil
+            }
+            let isEnabled = notes.first { !$0.read } != nil
+            let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
+            return UIAction(
+                title: Strings.NavigationBar.markAllAsReadActionTitle,
+                image: .DS.icon(named: .checkmark),
+                attributes: attributes
+            ) { [weak self] _ in
+                self?.showMarkAllAsReadConfirmation()
+            }
+        }()
 
-        navigationItem.setRightBarButtonItems(barItems, animated: false)
+        // Notifications Settings
+        let settings: UIAction? = { () -> UIAction? in
+            guard shouldDisplaySettingsButton else {
+                return nil
+            }
+            return UIAction(
+                title: Strings.NavigationBar.notificationSettingsActionTitle,
+                image: .DS.icon(named: .gearshapeFill)
+            ) { [weak self] _ in
+                self?.showNotificationSettings()
+            }
+        }()
+
+        // Return
+        return [markAllAsRead, settings].compactMap { $0 }
     }
 
     @objc func closeNotificationSettings() {
@@ -1100,12 +1112,11 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
             let notice = Notice(
                 title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
             )
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-            self?.updateMarkAllAsReadButton()
         })
     }
 
@@ -1158,7 +1169,6 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
-        updateMarkAllAsReadButton()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -1167,17 +1177,6 @@ private extension NotificationsViewController {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
-    }
-
-    func updateMarkAllAsReadButton() {
-        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
-            return
-        }
-
-        let isEnabled = notes.first { !$0.read } != nil
-
-        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
-        markAllAsReadBarButtonItem.isEnabled = isEnabled
     }
 }
 
@@ -1247,7 +1246,6 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
-        updateMarkAllAsReadButton()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {

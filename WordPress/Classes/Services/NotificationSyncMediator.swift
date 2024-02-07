@@ -150,43 +150,59 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
     /// Marks a Notification as Read.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark([notification], asRead: true, completion: completion)
+        Task { @MainActor in
+            mark([notification], asRead: true, completion: completion)
+        }
     }
 
     /// Marks an array of notifications as Read.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notifications: Notifications that were marked as read.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
-        mark(notifications, asRead: true, completion: completion)
+        Task { @MainActor in
+            mark(notifications, asRead: true, completion: completion)
+        }
     }
 
     /// Marks a Notification as Unead.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notification: The notification that should be marked unread.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark([notification], asRead: false, completion: completion)
+        markAsUnread([notification], completion: completion)
     }
 
-    private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
-        assert(Thread.isMainThread)
+    /// Marks a Notification as Unread.
+    ///
+    /// - Note: This method is called on the main thread.
+    ///
+    /// - Parameters:
+    ///     - notifications: The notifications that should be marked unread.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsUnread(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
+        Task { @MainActor in
+            mark(notifications, asRead: false, completion: completion)
+        }
+    }
 
+    @MainActor private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
         let noteIDs = notifications.map {
             $0.notificationId
         }
