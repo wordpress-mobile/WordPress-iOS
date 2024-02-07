@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 import WordPressKit
 import CocoaLumberjack
 
@@ -56,6 +57,9 @@ extension SettingsController {
 
             let change = changeType(value)
             service.saveChange(change)
+            if change.isGravatarField {
+                sendGravatarSyncNotice()
+            }
             DDLogDebug("\(title) changed: \(value)")
 
             trackChangeIfNeeded(row)
@@ -79,6 +83,9 @@ extension SettingsController {
 
             let change = changeType(value)
             service.saveChange(change)
+            if change.isGravatarField {
+                sendGravatarSyncNotice()
+            }
             DDLogDebug("\(title) changed: \(value)")
 
             trackChangeIfNeeded(row)
@@ -94,5 +101,23 @@ extension SettingsController {
         }
 
         WPAnalytics.trackSettingsChange(trackingKey, fieldName: fieldName)
+    }
+
+    private func sendGravatarSyncNotice() {
+        let noticeMessage = NSLocalizedString("Updates might take some time to sync with your Gravatar profile.", comment: "A notice message that's shown after the user updates their profile information.")
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: noticeMessage)))
+    }
+}
+
+extension AccountSettingsChange {
+
+    // These are the fields that are in sync with user's Gravatar account
+    var isGravatarField: Bool {
+        switch self {
+        case .firstName, .lastName, .aboutMe, .displayName:
+            return true
+        default:
+            return false
+        }
     }
 }
