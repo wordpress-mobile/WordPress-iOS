@@ -17,7 +17,7 @@ struct AvatarsView: View {
             case .single:
                 return 40
             case .double:
-                return 34
+                return 32
             case .triple:
                 return 28
             }
@@ -28,7 +28,7 @@ struct AvatarsView: View {
             case .single:
                 return 0
             case .double:
-                return 8
+                return 5
             case .triple:
                 return Length.Padding.split/2
             }
