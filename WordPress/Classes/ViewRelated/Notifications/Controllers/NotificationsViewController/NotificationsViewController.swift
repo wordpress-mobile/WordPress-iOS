@@ -133,6 +133,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return markButton
     }()
 
+    private let shouldPushDetailsViewController = UIDevice.current.userInterfaceIdiom != .pad
+
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -509,6 +511,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
+        detailsViewController.hidesBottomBarWhenPushed = true
         detailsViewController.dataSource = self
         detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
@@ -811,7 +814,12 @@ extension NotificationsViewController {
             note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
-            showDetailViewController(readerViewController, sender: nil)
+            if shouldPushDetailsViewController {
+                readerViewController.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(readerViewController, animated: true)
+            } else {
+                showDetailViewController(readerViewController, sender: nil)
+            }
 
             return
         }
@@ -845,15 +853,33 @@ extension NotificationsViewController {
                 self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
                     self?.selectRow(for: note)
                 }
-
                 commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-                self.showDetailViewController(commentDetailViewController, sender: nil)
 
+                if shouldPushDetailsViewController {
+                    commentDetailViewController.hidesBottomBarWhenPushed = true
+                    navigationController?.pushViewController(commentDetailViewController, animated: true)
+                } else {
+                    self.showDetailViewController(commentDetailViewController, sender: nil)
+                }
                 return
             }
-
-            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            if shouldPushDetailsViewController {
+                presentDetailsWithNoTabBar(for: note)
+            } else {
+                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            }
         }
+    }
+
+    private func presentDetailsWithNoTabBar(for note: Notification) {
+        let viewControllerID = NotificationDetailsViewController.classNameWithoutNamespaces()
+        let detailsViewController = storyboard?.instantiateViewController(withIdentifier: viewControllerID)
+        guard let detailsViewController = detailsViewController as? NotificationDetailsViewController else {
+            return
+        }
+
+        configureDetailsViewController(detailsViewController, withNote: note)
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
 
     /// Tracks: Details Event!
