@@ -68,7 +68,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
         let stackView = UIStackView(arrangedSubviews: [logosView, infoLabel, linkTextView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Length.Padding.single
+        stackView.spacing = Length.Padding.split
         stackView.alignment = .leading
         return stackView
     }()
