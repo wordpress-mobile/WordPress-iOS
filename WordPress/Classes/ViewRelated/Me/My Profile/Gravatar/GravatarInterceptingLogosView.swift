@@ -39,13 +39,7 @@ class GravatarInterceptingLogosView: UIView {
     }()
 
     private var appLogo: UIImage? {
-        return isJetpack ? Constants.jetpackLogo : Constants.wordpressLogo
-    }
-
-    var isJetpack: Bool = AppConfiguration.isJetpack {
-        didSet {
-            appLogoImageView.image = appLogo
-        }
+        return AppConfiguration.isJetpack ? Constants.jetpackLogo : Constants.wordpressLogo
     }
 
     override init(frame: CGRect) {

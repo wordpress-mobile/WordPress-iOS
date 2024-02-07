@@ -25,12 +25,9 @@ struct GravatarInfoRow: ImmuTableRow {
 class GravatarInfoCell: WPTableViewCellDefault {
 
     private enum Constants {
-        static let appLogo: UIImage? = AppConfiguration.isJetpack ? UIImage(named: "jetpack-circular") : UIImage(named: "wordpress-circular")
-        static let gravatarLogo: UIImage? = UIImage(named: "gravatar-circular")
         static let externalLinkLogo: UIImage? = UIImage(named: "icon-post-actionbar-view")?.withRenderingMode(.alwaysTemplate)
         static let infoText = NSLocalizedString("Gravatar keeps your profile information safe and up to date, automatically syncing any updates made here with your Gravatar profile.", comment: "This text is shown in the profile editing page to let the user know about Gravatar.")
         static let linkText = NSLocalizedString("Learn more on Gravatar.com", comment: "This is a link that takes the user to the external Gravatar website")
-        static let cardCornerRadius: CGFloat = Length.Radius.medium
         static let font = TextStyle.caption.uiFont
         static let gravatarLink = "https://gravatar.com"
     }
