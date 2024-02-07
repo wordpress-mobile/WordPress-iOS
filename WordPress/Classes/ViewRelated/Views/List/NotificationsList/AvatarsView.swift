@@ -2,6 +2,11 @@ import SwiftUI
 import DesignSystem
 
 struct AvatarsView: View {
+    private enum Constants {
+        static let doubleAvatarHorizontalOffset: CGFloat = 20
+        static let tripleAvatarViewHeight: CGFloat = 44
+    }
+
     enum Style {
         case single(URL)
         case double(URL, URL)
@@ -58,10 +63,10 @@ struct AvatarsView: View {
         ZStack {
             HStack {
                 avatar(url: secondaryURL)
-                Spacer().frame(width: 20)
+                Spacer().frame(width: Constants.doubleAvatarHorizontalOffset)
             }
             HStack {
-                Spacer().frame(width: 20)
+                Spacer().frame(width: Constants.doubleAvatarHorizontalOffset)
                 avatar(url: primaryURL)
             }
         }
@@ -87,7 +92,7 @@ struct AvatarsView: View {
                 avatar(url: primaryURL)
             }
         }
-        .frame(height: 44)
+        .frame(height: Constants.tripleAvatarViewHeight)
     }
 }
 
