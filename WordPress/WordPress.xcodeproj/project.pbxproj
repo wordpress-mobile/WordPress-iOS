@@ -10098,9 +10098,9 @@
 		086023D92B73BA47000D084A /* NotificationsList */ = {
 			isa = PBXGroup;
 			children = (
-				086023D32B73AFD0000D084A /* NotificationsTableViewCellContent.swift */,
-				086023D62B73B44A000D084A /* NotificationsTableViewCell.swift */,
 				086023DA2B73BA67000D084A /* AvatarsView.swift */,
+				086023D62B73B44A000D084A /* NotificationsTableViewCell.swift */,
+				086023D32B73AFD0000D084A /* NotificationsTableViewCellContent.swift */,
 			);
 			path = NotificationsList;
 			sourceTree = "<group>";

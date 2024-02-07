@@ -3,7 +3,7 @@ import DesignSystem
 
 struct AvatarsView: View {
     private enum Constants {
-        static let doubleAvatarHorizontalOffset: CGFloat = 20
+        static let doubleAvatarHorizontalOffset: CGFloat = 18
         static let tripleAvatarViewHeight: CGFloat = 44
     }
 
@@ -20,6 +20,17 @@ struct AvatarsView: View {
                 return 34
             case .triple:
                 return 28
+            }
+        }
+
+        var leadingOffset: CGFloat {
+            switch self {
+            case .single:
+                return 0
+            case .double:
+                return 8
+            case .triple:
+                return Length.Padding.split/2
             }
         }
     }
@@ -100,7 +111,9 @@ struct AvatarsView: View {
 #Preview {
     VStack(spacing: Length.Padding.medium) {
         AvatarsView(
-            style: .single(URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!)
+            style: .single(
+                URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
+            )
         )
         AvatarsView(
             style: .double(
