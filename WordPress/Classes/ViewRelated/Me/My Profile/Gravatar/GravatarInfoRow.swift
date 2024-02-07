@@ -104,8 +104,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
 
     func applyColors() {
         infoLabel.textColor = UIColor.DS.Foreground.primary
-        let brandColor = UIColor.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack) ?? UIColor.text
-        linkTextView.tintColor = brandColor
+        linkTextView.tintColor = UIColor.primary
 
         let infoText = NSMutableAttributedString(string: Constants.linkText,
                                                              attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,
