@@ -366,7 +366,7 @@ extension ReaderTagTopic {
         )
 
         static let pluralFilterTitle = NSLocalizedString(
-            "reader.navigation.filter.blog.plural",
+            "reader.navigation.filter.tag.plural",
             value: "%1$d Tags",
             comment: """
                 Plural button title to filter the Reader stream by tag.
