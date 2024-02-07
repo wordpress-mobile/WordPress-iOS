@@ -79,6 +79,7 @@ struct AvatarsView: View {
             HStack {
                 Spacer().frame(width: Constants.doubleAvatarHorizontalOffset)
                 avatar(url: primaryURL)
+                    .avatarBorderOverlay()
             }
         }
         .frame(height: style.diameter)
@@ -96,14 +97,25 @@ struct AvatarsView: View {
             }
             VStack {
                 avatar(url: secondaryURL)
+                    .avatarBorderOverlay()
                 Spacer().frame(height: Length.Padding.large)
             }
             HStack {
                 Spacer().frame(width: Length.Padding.medium)
                 avatar(url: primaryURL)
+                    .avatarBorderOverlay()
             }
         }
         .frame(height: Constants.tripleAvatarViewHeight)
+    }
+}
+
+private extension View {
+    func avatarBorderOverlay() -> some View {
+        self.overlay(
+            Circle()
+                .stroke(Color.DS.Background.primary, lineWidth: 1)
+        )
     }
 }
 
