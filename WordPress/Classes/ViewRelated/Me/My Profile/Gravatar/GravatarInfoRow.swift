@@ -73,27 +73,14 @@ class GravatarInfoCell: WPTableViewCellDefault {
         return stackView
     }()
 
-    private lazy var cardView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(verticalStackView)
-        NSLayoutConstraint.activate([
-            verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Length.Padding.double),
-            verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Length.Padding.double),
-            verticalStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Length.Padding.double),
-            verticalStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Length.Padding.double),
-        ])
-        return view
-    }()
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(cardView)
+        contentView.addSubview(verticalStackView)
         NSLayoutConstraint.activate([
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Length.Padding.double),
+            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Length.Padding.double),
+            verticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Length.Padding.double),
+            verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Length.Padding.double),
         ])
         applyColors()
     }
@@ -108,8 +95,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
 
         let infoText = NSMutableAttributedString(string: Constants.linkText,
                                                              attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,
-                                                                          .font: Constants.font
-                                                                         ])
+                                                                          .font: Constants.font])
         if let linkImage = Constants.externalLinkLogo {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = linkImage
