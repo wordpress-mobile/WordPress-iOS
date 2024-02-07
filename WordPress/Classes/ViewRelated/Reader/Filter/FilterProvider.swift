@@ -100,11 +100,6 @@ extension FilterProvider: Equatable {
 
 extension FilterProvider {
 
-    func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
-        let presenter = ReaderManageScenePresenter(selected: section, sceneDelegate: sceneDelegate)
-        presenter.present(on: presenterViewController, animated: true, completion: nil)
-    }
-
     static func filterItems(_ items: [TableDataItem], siteType: SiteOrganizationType?) -> [TableDataItem] {
         // If a site type is specified, filter items by it.
         // Otherwise, just return all items.
