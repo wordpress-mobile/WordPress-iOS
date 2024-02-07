@@ -62,7 +62,6 @@ struct AvatarsView: View {
     private func avatar(url: URL) -> some View {
         AsyncImage(url: url) { image in
             image.resizable()
-                .background(Color.DS.Background.primary) // Only for testing
         } placeholder: {
             Color.DS.Background.secondary
         }
