@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
-gem 'danger-dangermattic', git: 'https://github.com/Automattic/dangermattic', ref: 'iangmaia/common-utils'
+gem 'danger-dangermattic', '~> 1.0'
 gem 'dotenv'
 # 2.219.0 includes a fix for a bug introduced in 2.218.0
 # See https://github.com/fastlane/fastlane/issues/21762#issuecomment-1875208663
@@ -18,7 +18,7 @@ gem 'fastlane-plugin-sentry'
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '2cb009edaee3d058a61cfeb503e533eb0647f108'
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.3'
 gem 'rake'
-gem 'rubocop', '~> 1.30'
+gem 'rubocop', '~> 1.60'
 gem 'rubocop-rake', '~> 0.6'
 gem 'xcpretty-travis-formatter'
 
