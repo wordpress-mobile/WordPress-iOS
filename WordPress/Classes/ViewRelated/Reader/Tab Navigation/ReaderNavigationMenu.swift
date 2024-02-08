@@ -4,6 +4,7 @@ protocol ReaderNavigationMenuDelegate: AnyObject {
     func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint)
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
     func didTapDiscoverBlogs()
+    func didScrollToTop()
 }
 
 struct ReaderNavigationMenu: View {
