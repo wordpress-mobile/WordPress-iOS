@@ -28,9 +28,11 @@ struct ReaderNavigationMenu: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ReaderNavigationButton(viewModel: viewModel)
+                        .frame(maxHeight: .infinity)
                         .animation(.easeInOut, value: viewModel.selectedItem)
                     streamFilterView
                 }
+                .fixedSize(horizontal: false, vertical: true)
             }
             .animation(.easeInOut, value: filters)
             .mask({
@@ -88,12 +90,12 @@ struct ReaderNavigationMenu: View {
         }
         // the inherent padding from the close image bumps the content height, so we'll need to reduce the padding
         // when the close button is shown.
-        .padding(.vertical, isSelected ? 6.0 : 10.0)
+        .padding(.vertical, 6.0)
         .padding(.leading, 16.0)
         .padding(.trailing, isSelected ? 8.0 : 16.0)
+        .frame(maxHeight: .infinity)
         .background(isSelected ? Colors.StreamFilter.selectedBackground : Colors.StreamFilter.background)
         .clipShape(Capsule())
-
     }
 
     struct Colors {
