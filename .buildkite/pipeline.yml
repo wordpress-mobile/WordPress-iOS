@@ -12,110 +12,49 @@ common_params:
 steps:
 
   #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
   # Create Builds for Testing
   #################
   - group: "🛠 Builds for Testing"
     steps:
-      - label: "🛠 :wordpress: Build for Testing"
-        key: "build_wordpress"
-        command: ".buildkite/commands/build-for-testing.sh wordpress"
-        env: *common_env
-        plugins: *common_plugins
-        notify:
-          - github_commit_status:
-              context: "WordPress Build for Testing"
-
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
         env: *common_env
         plugins: *common_plugins
+        artifact_paths:
+          - lint.json
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
 
-  #################
-  # Run Unit Tests
-  #################
-  - label: "🔬 :wordpress: Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build_wordpress"
-    env: *common_env
+  - label: "🔍 SwiftLint"
+    depends_on:
+      - step: build_jetpack
+        # A SwiftLint error violation will fail the build.
+        # This allows this step to run anyway.
+        allow_failure: true
     plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
+    # We cannot run on Docker because we need to download artifact but cannot add our CI pluging in a straightforward way.
+    # We cannot use the default queue because it doesn't have Ruby.
+    # It would be overkill to use the macOS queue for running a couple of Ruby scripts.
+    # So, we're left with the Android queue, even though it looks out of place here.
+    #
+    # If we were to move forward with this approach, we might want to build a dedicated queue (queue: ruby?) or perhaps a Docker image with the Buildkite CLI available.
+    agents:
+      queue: android
+    command: |
+      echo '--- Test Ruby'
+      which ruby
 
-  #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    steps:
-      - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
-        depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
+      echo "--- :rubygems: Setting up Gems"
+      install_gems
 
-      - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
-        depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
+      echo "--- 📦 Download lint result"
+      download_artifact lint.json
 
-  #################
-  # Linters
-  #################
-  - group: "Linters"
-    steps:
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-      - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
-        env: *common_env
+      echo "--- Annotate PR via Danger"
+      bundle exec danger --fail-on-errors=true --remove-previous-comments --danger_id=pr-check --dangerfile=Dangerfile-SwiftLint
+    if: "build.pull_request.id != null"
+    retry:
+      manual:
+        permit_on_passed: true

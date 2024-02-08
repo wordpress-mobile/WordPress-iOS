@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+require 'json'
+require 'pathname'
+
+# Replace 'your_file_path.json' with the path to your actual JSON file
+json_path = Pathname.new(File.join(__dir__, 'lint.json'))
+violations = JSON.parse(File.read(json_path))
+
+# Iterate through violations and create an inline comment for each
+violations.each do |violation|
+  message = <<~MESSAGE
+    **#{violation['type']}**
+    Severity: #{violation['severity']}
+    Reason: #{violation['reason']}
+    Rule: #{violation['rule_id']}
+  MESSAGE
+
+  if violation['severity'].downcase == 'warning'
+    warn(message, file: violation['file'], line: violation['line'])
+  else
+    failure(message, file: violation['file'], line: violation['line'])
+  end
+end

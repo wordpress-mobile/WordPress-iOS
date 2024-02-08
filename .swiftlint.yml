@@ -16,3 +16,6 @@ discarded_notification_center_observer:
 
 weak_delegate:
   severity: error
+
+vertical_whitespace:
+  severity: error
