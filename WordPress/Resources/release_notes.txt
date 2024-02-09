@@ -1,1 +1,1 @@
-* [**] Prevent images from temporarily disappearing when uploading media [https://github.com/WordPress/gutenberg/pull/57869]
+We fixed an issue that made images and other media “blink” while being uploaded. Presto, no more disappearing act.

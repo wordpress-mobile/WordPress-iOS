@@ -8,14 +8,14 @@ public extension UIFont {
         static let heading4 = DynamicFontHelper.fontForTextStyle(.title3, fontWeight: .semibold)
 
         enum Body {
-            static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
+            static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
             static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .regular)
-            static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
+            static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
 
             enum Emphasized {
-                static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
+                static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
                 static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .semibold)
-                static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
+                static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
             }
         }
 
@@ -30,48 +30,48 @@ public extension UIFont.DS {
 
     static func font(_ style: DesignSystem.TextStyle) -> UIFont {
         switch style {
-        case .heading1:
-            return .DS.heading1
+         case .heading1:
+             return UIFont.DS.heading1
 
-        case .heading2:
-            return .DS.heading2
+         case .heading2:
+             return UIFont.DS.heading2
 
-        case .heading3:
-            return .DS.heading3
+         case .heading3:
+             return UIFont.DS.heading3
 
-        case .heading4:
-            return .DS.heading4
+         case .heading4:
+             return UIFont.DS.heading4
 
-        case .bodySmall(let weight):
-            switch weight {
-            case .regular:
-                return .DS.Body.small
-            case .emphasized:
-                return .DS.Body.Emphasized.small
-            }
+         case .bodySmall(let weight):
+             switch weight {
+             case .regular:
+                 return UIFont.DS.Body.small
+             case .emphasized:
+                 return UIFont.DS.Body.Emphasized.small
+             }
 
-        case .bodyMedium(let weight):
-            switch weight {
-            case .regular:
-                return .DS.Body.medium
-            case .emphasized:
-                return .DS.Body.Emphasized.medium
-            }
+         case .bodyMedium(let weight):
+             switch weight {
+             case .regular:
+                 return UIFont.DS.Body.medium
+             case .emphasized:
+                 return UIFont.DS.Body.Emphasized.medium
+             }
 
-        case .bodyLarge(let weight):
-            switch weight {
-            case .regular:
-                return .DS.Body.large
-            case .emphasized:
-                return .DS.Body.Emphasized.large
-            }
+         case .bodyLarge(let weight):
+             switch weight {
+             case .regular:
+                 return UIFont.DS.Body.large
+             case .emphasized:
+                 return UIFont.DS.Body.Emphasized.large
+             }
 
-        case .footnote:
-            return .DS.footnote
+         case .footnote:
+             return UIFont.DS.footnote
 
-        case .caption:
-            return .DS.caption
-        }
+         case .caption:
+             return UIFont.DS.caption
+         }
     }
 }
 

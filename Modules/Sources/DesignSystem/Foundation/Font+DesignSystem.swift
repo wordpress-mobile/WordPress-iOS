@@ -70,13 +70,4 @@ public extension Font.DS {
             return Font.DS.caption
         }
     }
-
-//    var `case`: Text.Case? {
-//        switch self {
-//        case .caption:
-//            return .uppercase
-//        default:
-//            return nil
-//        }
-//    }
 }

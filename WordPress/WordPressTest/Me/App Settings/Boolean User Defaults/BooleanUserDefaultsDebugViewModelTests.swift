@@ -1,16 +1,19 @@
 import XCTest
+import Combine
 @testable import WordPress
 
 private typealias Section = BooleanUserDefaultsDebugViewModel.Section
 private typealias Row = BooleanUserDefaultsDebugViewModel.Row
 
-class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
+@MainActor final class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
 
     var viewModel: BooleanUserDefaultsDebugViewModel!
     var mockPersistentRepository: InMemoryUserDefaults!
+    var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
+        cancellables = .init()
         mockPersistentRepository = InMemoryUserDefaults()
         viewModel = BooleanUserDefaultsDebugViewModel(coreDataStack: contextManager,
                                                       persistentRepository: mockPersistentRepository)
@@ -22,12 +25,12 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         super.tearDown()
     }
 
-    func testLoadUserDefaults_WithOtherSection() {
+    func testLoadUserDefaults_WithOtherSection() async {
         // Given
         mockPersistentRepository.set(true, forKey: "entry1")
 
         // When
-        viewModel.load()
+        await viewModel.load()
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)
@@ -38,12 +41,12 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.userDefaultsSections.first?.rows.first?.value == true)
     }
 
-    func testLoadUserDefaults_WithoutOtherSection() {
+    func testLoadUserDefaults_WithoutOtherSection() async {
         // Given
         mockPersistentRepository.set(["entry1": true], forKey: "section1")
 
         // When
-        viewModel.load()
+        await viewModel.load()
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)
@@ -54,10 +57,10 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.userDefaultsSections.first?.rows.first?.value == true)
     }
 
-    func testUserDefaultsSections_MatchingQuery() {
+    func testUserDefaultsSections_MatchingQuery() async {
         // Given
         mockPersistentRepository.set(["match": true], forKey: "section1")
-        viewModel.load()
+        await viewModel.load()
 
         // When
         viewModel.searchQuery = "mat"
@@ -71,25 +74,33 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.userDefaultsSections.first?.rows.first?.value == true)
     }
 
-    func testUserDefaultsSections_NotMatchingQuery() {
+    func testUserDefaultsSections_NotMatchingQuery() async {
         // Given
+        let expectation = expectation(description: "List should be empty when no matching entries")
         mockPersistentRepository.set(["entry1": true], forKey: "section1")
-        viewModel.load()
+        await viewModel.load()
 
         // When
+        viewModel.$userDefaultsSections
+            .dropFirst()
+            .sink { sections in
+                XCTAssertTrue(sections.isEmpty)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
         viewModel.searchQuery = "noMatch"
 
         // Then
-        XCTAssertTrue(viewModel.userDefaultsSections.isEmpty)
+        await fulfillment(of: [expectation], timeout: 1)
     }
 
-    func testUserDefaultsSections_WithFilteredOutNonBooleanEntries() {
+    func testUserDefaultsSections_WithFilteredOutNonBooleanEntries() async {
         // Given
         mockPersistentRepository.set(["entry1": "NotBoolean"], forKey: "section1")
         mockPersistentRepository.set(["entry2": false], forKey: "section1")
 
         // When
-        viewModel.load()
+        await viewModel.load()
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)
@@ -100,35 +111,37 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.userDefaultsSections.first?.rows.first?.value == false)
     }
 
-    func testUserDefaultsSections_WithFilteredOutGutenbergItems() {
+    func testUserDefaultsSections_WithFilteredOutGutenbergItems() async {
         // Given
         mockPersistentRepository.set(true, forKey: "com.wordpress.gutenberg-entry")
 
         // When
-        viewModel.load()
+        await viewModel.load()
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.isEmpty)
     }
 
-    func testUserDefaultsSections_WithFilteredOutFeatureFlagSection() {
+    func testUserDefaultsSections_WithFilteredOutFeatureFlagSection() async {
         // Given
         mockPersistentRepository.set(["entry1": true], forKey: "FeatureFlagStoreCache")
 
         // When
-        viewModel.load()
+        await viewModel.load()
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.isEmpty)
     }
 
-    func testUpdateUserDefault_OtherSection() {
+    func testUpdateUserDefault_OtherSection() async {
         // Given
         mockPersistentRepository.set(true, forKey: "entry1")
-        viewModel.load()
+        await viewModel.load()
 
         // When
-        viewModel.updateUserDefault(false, forSection: "Other", forRow: "entry1")
+        let section = viewModel.userDefaultsSections[0]
+        let row = section.rows[0]
+        viewModel.updateUserDefault(false, section: section, row: row)
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)
@@ -139,13 +152,15 @@ class BooleanUserDefaultsDebugViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.userDefaultsSections.first?.rows.first?.value == false)
     }
 
-    func testUpdateUserDefault_GivenSection() {
+    func testUpdateUserDefault_GivenSection() async {
         // Given
         mockPersistentRepository.set(["entry1": true], forKey: "section1")
-        viewModel.load()
+        await viewModel.load()
 
         // When
-        viewModel.updateUserDefault(false, forSection: "section1", forRow: "entry1")
+        let section = viewModel.userDefaultsSections[0]
+        let row = section.rows[0]
+        viewModel.updateUserDefault(false, section: section, row: row)
 
         // Then
         XCTAssertTrue(viewModel.userDefaultsSections.count == 1)

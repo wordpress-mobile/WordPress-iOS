@@ -13,9 +13,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ วัน";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ ผู้ติดตาม";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ ระดับ";
@@ -446,7 +443,8 @@
    User's Display Name */
 "Display Name" = "ชื่อที่แสดง";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -561,20 +559,12 @@
 "First Name" = "ชื่อ";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "ติดตาม";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "เว็บที่ติดตาม";
-
-/* Followed Topics Title */
-"Followed Topics" = "กระทู้ที่ติดตามแล้ว";
-
-/* User followed a site. */
-"Followed site" = "เว็บที่ติดตามแล้ว";
 
 /* Label for list of followers.
    User role badge */
@@ -585,9 +575,7 @@
    Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "กำลังติดตาม";
 
 /* Filters Follows Notifications */
@@ -734,7 +722,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "ชื่นชอบ";
 
@@ -743,9 +730,6 @@
 
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "ความชื่นชอบบนเรื่องของฉัน";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "คุณทำเกินขีดจำกัดแล้ว  คุณสามารถลองใหม่อีก 1 นาทีภายหลัง  การลองใหม่อีกครั้งก่อนการแบนจะยกเลิกจะเพิ่มเวลาที่คุณต้องรอเพิ่มขึ้น  ถ้าคุณคิดว่าสิ่งนี้เป็นความผิดพลาด  กรุณาติดต่อฝ่ายช่วยเหลือ";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1209,9 +1193,6 @@
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "สัปดาห์ที่แล้ว";
 
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "เรื่องล่าสุดจากบล็อกและเว็บที่คุณชื่นชอบจะปรากฎที่นี่";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "อ้างอิง";
 
@@ -1351,7 +1332,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "ตั้งค่า";
@@ -1396,8 +1376,7 @@
    Title for screen that show site title editor */
 "Site Title" = "หัวข้อเว็บ";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL เว็บ";
 
 /* Setting: indicates if Achievements will be notified */
@@ -1408,10 +1387,6 @@
 
 /* Setting: indicates if New Follows will be notified */
 "Site follows" = "ติดตามเว็บ";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "เว็บ";
 
 /* Image size option title. */
 "Size" = "ขนาด";
@@ -1575,17 +1550,11 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "เซิร์ฟเวอร์ตอบสนองค่าว่างกลับมา  นี่อาจเป็นสัญญาณว่าคุณต้องเพิ่มหน่วยความจำสำหรับเว็บของคุณ";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "เว็บไซต์ %@ จะไม่ปรากฎในตัวอ่านของคุณอีกแล้ว   แตะเพื่อเลิกทำ";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "ที่อยู่เว็บต้องสั้นกว่า 64 ตัวอักษร";
 
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "เว็บไซต์ที่ %1$@ ใช้เวิร์ดเพรส %2$@ เราแนะนำให้อัปเดตไปยังรุ่นล่าสุด  หรืออย่างน้อยรุ่น %3$@";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "เว็บในรายชื่อนั้นไม่มีการเพิ่มเรื่องใด ๆ เมื่อเร็ว ๆ มานี้";
 
 /* No comment provided by engineer. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "ชื่อผู้ใช้หรือรหัสผ่านที่เก็บอยู่ในแอพ อาจจะเก่าจนใช้ไม่ได้แล้ว กรุณาใส่รหัสผ่านของคุณอีกครั้งในการตั้งค่าและลองใหม่อีกครั้ง";
@@ -1619,9 +1588,6 @@
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงกล้องเพื่อถ่ายรูป\/วีดีโอใหม่  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "ยังไม่มีการเขียนเรื่องบนเว็บ  ลองอีกครั้งภายหลัง";
-
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
 "Threading" = "การเชื่อมกัน";
@@ -1654,9 +1620,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "กระทู้";
-
-/* Topics Filter Tab Title */
-"Topics" = "หัวข้อ";
 
 /* Label for total followers */
 "Total" = "ทั้งหมด";
@@ -1721,13 +1684,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "ย้อนกลับ";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "เลิกติดตาม";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "เว็บที่เลิกติดตาม";
 
 /* Label for size of media when it's not possible to calculate it.
    Unknown Tag Name */

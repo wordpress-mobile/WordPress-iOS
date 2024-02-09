@@ -244,7 +244,8 @@
    Dismiss a view. Verb */
 "Dismiss" = "Odbaci";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -732,7 +733,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Postavke";
@@ -752,8 +752,7 @@
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sjedište";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL Web stranice";
 
 /* Image size option title. */
@@ -842,9 +841,6 @@
    Notifications Today Section Header */
 "Today" = "Danas";
 
-/* Topics Filter Tab Title */
-"Topics" = "Teme";
-
 /* Label for total followers */
 "Total" = "Ukupno";
 
@@ -869,9 +865,6 @@
 
 /* URL text field placeholder */
 "URL" = "URL";
-
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Nije moguće blokirati ovu web-stranicu";
 
 /* Unapproves a Comment
    Unapproves a comment */
