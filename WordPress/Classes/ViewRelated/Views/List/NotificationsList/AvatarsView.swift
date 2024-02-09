@@ -36,9 +36,11 @@ struct AvatarsView: View {
     }
 
     private let style: Style
+    private let borderColor: Color
 
-    init(style: Style) {
+    init(style: Style, borderColor: Color = .DS.Background.primary) {
         self.style = style
+        self.borderColor = borderColor
     }
 
     var body: some View {
@@ -63,7 +65,7 @@ struct AvatarsView: View {
         AsyncImage(url: url) { image in
             image.resizable()
         } placeholder: {
-            Color.DS.Background.secondary
+            borderColor
         }
         .frame(width: style.diameter, height: style.diameter)
         .clipShape(Circle())
