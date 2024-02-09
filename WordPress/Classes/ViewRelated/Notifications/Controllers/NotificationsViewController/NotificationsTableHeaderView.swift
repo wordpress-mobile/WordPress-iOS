@@ -61,7 +61,7 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
     private enum Appearance {
         static let backgroundColor = UIColor.systemBackground
         static let textColor = UIColor.DS.Foreground.primary ?? .text
-        static let textFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        static let textFont = UIFont.DS.font(.bodyLarge(.emphasized))
         static let layoutMargins = NSDirectionalEdgeInsets(
             top: Length.Padding.single,
             leading: Length.Padding.double,
