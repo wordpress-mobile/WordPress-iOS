@@ -124,7 +124,7 @@ fileprivate extension NotificationsTableViewCell.Content {
                     Text(info.text)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.white)
-                        .lineLimit(1)
+                        .lineLimit(2)
                         .padding(.leading, Length.Padding.medium)
 
                     Spacer()
