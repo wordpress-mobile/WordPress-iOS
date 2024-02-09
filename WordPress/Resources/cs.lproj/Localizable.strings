@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dny";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "sledující %@";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ úrovní";
@@ -471,9 +468,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Přidat na konec";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Přidat téma";
-
 /* No comment provided by engineer. */
 "Add URL" = "Přidat URL";
 
@@ -482,9 +476,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Přidat profilovou fotku";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Přidat téma";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Přidat doménu";
@@ -498,20 +489,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Přidat krátký kód ...";
 
-/* No Tags View Button Label */
-"Add a site" = "Přidat web";
-
-/* No Topics View Button Label */
-"Add a topic" = "Přidejte téma";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Přidejte obrázek účtu.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Přidat alternativní text";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Přidejte jakékoli téma";
 
 /* No comment provided by engineer. */
 "Add blocks" = "Přidat bloky";
@@ -1068,12 +1050,6 @@
 /* No comment provided by engineer. */
 "Block settings" = "Nastavení bloku";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Zablokovat tento web";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blokovaný web";
-
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Blokovaný uživatel";
 
@@ -1467,9 +1443,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Zvolit video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Vyberte si svá témata";
-
 /* Register Domain - Address information field City */
 "City" = "Město";
 
@@ -1842,9 +1815,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Oznámení nelze aktivovat";
 
-/* Title of a prompt. */
-"Could not follow site" = "Nemůžu sledovat web";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Nelze začít sledovat web s touto adresou.";
 
@@ -1868,9 +1838,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Nelze přepnout na viditelné: chybí ID příspěvku.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Nemůžu přestat sledovat web";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Nelze zrušit sledování webu s touto adresou.";
@@ -2251,17 +2218,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Objevujte";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Objevte weby";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Objevujte a sledujte své oblíbené blogy";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Objevujte a sledujte weby, které vás inspirují.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Objevte další témata";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2302,7 +2263,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Nemáte účet? _Přihlásit se_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2623,9 +2585,6 @@
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Povolit oznámení v aplikaci";
 
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Povolit oznámení na webu?";
-
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Povolte statistiky webu, abyste viděli podrobné informace o své návštěvnosti, hodnoceních Líbí se mi, komentářích a odběratelích.";
 
@@ -2653,9 +2612,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Zadejte heslo";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Zadejte URL adresu webu pro sledování";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2919,9 +2875,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Načítám příspěvky...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Načítání stránek...";
 
 /* Label for the posting activity legend. */
@@ -2944,9 +2898,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film a televize";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtr";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filtrovat podle typu aktivity";
@@ -2987,8 +2938,7 @@
 "Fixing Threats" = "Oprava hrozby";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Sledovat";
 
 /* Button title. Follow the comments on a post. */
@@ -2996,9 +2946,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Sledovat konverzaci";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Sledovat web";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Sledujte témata";
@@ -3010,15 +2957,8 @@
 "Follow your favorite sites and discover new blogs." = "Sledujte své oblíbené weby a objevujte nové blogy.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Stránky které sledujete";
-
-/* Followed Topics Title */
-"Followed Topics" = "Sledovaná témata";
-
-/* User followed a site. */
-"Followed site" = "Sledované weby";
 
 /* Label for list of followers.
    User role badge */
@@ -3029,13 +2969,8 @@
    Label for number of followers. */
 "Followers" = "Odběratelé";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Sleduji";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Následující %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Sledování nových témat...";
@@ -3048,9 +2983,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Sledovat tento blog.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Sleduje značku.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Velikost písma";
@@ -3190,9 +3122,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Přejít na sledování";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Zobrazit čtečku";
@@ -3854,7 +3783,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "To se mi líbí";
 
@@ -3866,9 +3794,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Komentář se mi líbí";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Dosažen limit. Můžete to zkusit za 1 minutu. Další pokusy před vypršením limitu, tento limit pouze prodlouží. Pokud se domníváte, že je to chyba, kontaktujte prosím podporu.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Spojnicový graf znázorňující zobrazení pro statistiky.";
@@ -4090,9 +4015,6 @@
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Spravovat přehled";
 
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Spravovat weby";
-
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Spravovat web";
 
@@ -4267,9 +4189,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Více možností podpory";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Nejoblíbenější čas";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Přesunuto %@";
@@ -4503,9 +4422,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Žádost nedokáže zpracovat tento požadavek. Nainstalujte si prosím webový prohlížeč.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Žádné dostupné weby WordPress.com";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Žádné adresy, které odpovídají vašemu vyhledávání, nejsou k dispozici";
 
@@ -4546,9 +4462,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Žádné opravené hrozby";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Žádné sledované weby";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Zatím žádní fanoušci";
@@ -4597,9 +4510,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Není třeba čekat. Až bude váš web obnoven, upozorníme vás.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Žádná nová témata ke sledování";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Zatím nejsou žádná oznámení";
 
@@ -4641,12 +4551,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Žádné uložené příspěvky";
-
-/* A message title */
-"No sites found" = "Nenalezeny žádné stránky";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Nenalezeny žádné stránky %@ ve vašem jazyce.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Žádné štítky neodpovídají hledanému výrazu";
@@ -4818,9 +4722,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Jakmile se seznámíte s názvy různých bloků, můžete přidat blok zadáním lomítka následovaného názvem bloku – například \/image nebo \/heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Jakmile vytvoříte web na WordPress.com, můžete přesdílet obsah, který se vám líbí, na svůj vlastní web.";
 
 /* No comment provided by engineer. */
 "One" = "Jeden";
@@ -5415,9 +5316,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problém s načítáním obsahu";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problém s načítáním webů";
-
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problém s otevřením zvuku";
 
@@ -5554,9 +5452,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Poslední týdny";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Poslední příspěvky z blogů a stránek, které sledujete, se zobrazí zde.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Příjemce";
@@ -5758,9 +5653,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Obnovit filtr časového období";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Resetovat filtr";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Resetovat vaše heslo";
@@ -6228,7 +6120,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavení";
@@ -6364,9 +6255,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Zobrazuje obsah příspěvku";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Zobrazuje příspěvky webu.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Zaregistrovat se";
 
@@ -6421,8 +6309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Téma webu";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL adresa webu";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6454,16 +6341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Název webu byl úspěšně změněn";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Weby";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Weby (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Weby, které je třeba sledovat";
 
 /* Image size option title. */
 "Size" = "Velikost";
@@ -7025,9 +6902,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server vrátil prázdnou odpověď. To obvykle znamená, že je třeba zvýšit limit paměti pro váš web.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Web %@ se již nebude zobrazovat ve vaší čtečce. Klepnutím to vrátíte zpátky.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Adresa webu musí být kratší než 64 znaků.";
 
@@ -7043,9 +6917,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Web nemohl být exportován.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Webové stránky v tomto seznamu nebyly zveřejněny v poslední době.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Slug je název stránky (článku) v URL.";
@@ -7256,9 +7127,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Tento příspěvek není v sekci moje lajky";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Tento web nemá nic publikovaného. Zkuste to později.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Tento uživatelský účet nelze uzavřít, pokud existují nevyřešená zpětná zúčtování.";
 
@@ -7401,12 +7269,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Téma nenalezeno pro id:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Témata";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Témata (%lu)";
-
 /* Label for total followers */
 "Total" = "Dohromady";
 
@@ -7489,9 +7351,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Zkuste to teď";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Zkuste vybrat %@ a přidat témata, která se vám líbí.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Vyzkoušet nový blokový editor";
 
@@ -7501,23 +7360,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Zkuste adresu webu";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Vypnout notifikace";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Zapnout notifikace";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Zapnout push notifikace";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Zapnout notifikace";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Notifikace webu jsou vypnuty";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Notifikace webu jsou zapnuty";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Vypnutím přepínače deaktivujete všechna oznámení z této aplikace bez ohledu na typ.";
@@ -7564,9 +7411,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nelze synchronizovat";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Nepodařilo se zablokovat web";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Nelze vytvořit nové odkazy na pozvánky.";
 
@@ -7584,9 +7428,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Konverzaci nelze sledovat";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Web nelze sledovat";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Stránky teď nelze načíst.";
@@ -7632,15 +7473,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Odkaz nelze sdílet";
-
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Nelze vypnout notifikace webu";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Nelze zapnout notifikace webu";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Web nelze zrušit sledování";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nelze aktualizovat nastavení domovské stránky";
@@ -7699,24 +7531,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Zpět";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Zrušení sledování";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Zrušit sledování %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Přestat sledovat konverzaci";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Sledujte konverzaci";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Zrušení sledování tohoto webu";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Sledování webu zrušeno";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Přestat sledovat tento blog.";
@@ -8339,9 +8158,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Vítejte v Jetpacku";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Vítejte v aplikaci Reader. Objevte miliony blogů na dosah ruky.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Vítejte ve WordPressu!";
 
@@ -8423,9 +8239,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokud komentář obsahuje jakékoliv z těchto slov ve svém obsahu, jméně, URL, e-mailu, nebo IP, bude označen jako spam. Můžete také zadat části slov, takže podmínce \"press\" bude odpovídat \"WordPress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Když sledujete weby, uvidíte jejich obsah zde.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Když provedete změny v editoru, zde uvidíte historii";
@@ -8599,9 +8412,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Chystáte se změnit své uživatelské jméno, které je aktuálně k dispozici %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Tento web už sledujete.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Měníte své uživatelské jméno na %@. Změna uživatelského jména ovlivní také váš profil Gravatar a adresy profilu IntenseDebate.\nChcete-li pokračovat, potvrďte své nové uživatelské jméno.";
 
@@ -8619,12 +8429,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Tento blok můžete upravit pomocí webové verze editoru.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Příspěvky na konkrétním webu můžete sledovat jeho sledováním.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Přidáním tématu můžete sledovat příspěvky na konkrétní téma.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Tato nastavení můžete přepsat pro jednotlivé příspěvky.";
