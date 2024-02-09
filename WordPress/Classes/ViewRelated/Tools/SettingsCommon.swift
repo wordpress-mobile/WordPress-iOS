@@ -79,14 +79,14 @@ extension SettingsController {
 
         controller.title = title
         controller.onValueChanged = {
-            value in
-
-            let change = changeType(value)
+            newValue in
+            guard value != newValue else { return }
+            let change = changeType(newValue)
             service.saveChange(change)
             if change.isGravatarField {
                 sendGravatarSyncNotice()
             }
-            DDLogDebug("\(title) changed: \(value)")
+            DDLogDebug("\(title) changed: \(newValue)")
 
             trackChangeIfNeeded(row)
         }
