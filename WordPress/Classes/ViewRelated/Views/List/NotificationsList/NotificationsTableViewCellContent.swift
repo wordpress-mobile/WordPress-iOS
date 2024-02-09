@@ -3,33 +3,58 @@ import DesignSystem
 
 extension NotificationsTableViewCell {
     struct Content: View {
-        private let title: String
-        private let description: String?
-        private let shouldShowIndicator: Bool
-        private let avatarStyle: AvatarsView.Style
-        private let actionIconName: String? // TODO: Will be refactored to contain the action.
+        enum Style {
+            struct Regular {
+                let title: String
+                let description: String?
+                let shouldShowIndicator: Bool
+                let avatarStyle: AvatarsView.Style
+                let actionIconName: String? // TODO: Will be refactored to contain the action.
+            }
 
-        init(
-            title: String,
-            description: String?,
-            shouldShowIndicator: Bool,
-            avatarStyle: AvatarsView.Style,
-            actionIconName: String?
-        ) {
-            self.title = title
-            self.description = description
-            self.shouldShowIndicator = shouldShowIndicator
-            self.avatarStyle = avatarStyle
-            self.actionIconName = actionIconName
+            struct Altered {
+                let text: String
+                let actionTitle: String
+                let action: (() -> Void)?
+            }
+
+            case regular(Regular)
+            case altered(Altered)
+        }
+
+        private let style: Style
+
+        init(style: Style) {
+            self.style = style
+        }
+
+        var body: some View {
+            switch style {
+            case .regular(let regular):
+                Regular(info: regular)
+            case .altered(let altered):
+                Altered(info: altered)
+            }
+        }
+    }
+}
+
+// MARK: - Regular Style
+fileprivate extension NotificationsTableViewCell.Content {
+    struct Regular: View {
+        private let info: Style.Regular
+
+        fileprivate init(info: Style.Regular) {
+            self.info = info
         }
 
         var body: some View {
             HStack(alignment: .top, spacing: 0) {
                 avatarHStack
                 textsVStack
-                    .offset(x: -avatarStyle.leadingOffset*2)
+                    .offset(x: -info.avatarStyle.leadingOffset*2)
                     .padding(.horizontal, Length.Padding.split)
-                if let actionIconName {
+                if let actionIconName = info.actionIconName {
                     actionIcon(withName: actionIconName)
                 }
             }
@@ -38,14 +63,14 @@ extension NotificationsTableViewCell {
 
         private var avatarHStack: some View {
             HStack(spacing: 0) {
-                if shouldShowIndicator {
+                if info.shouldShowIndicator {
                     indicator
                         .padding(.horizontal, Length.Padding.single)
-                    AvatarsView(style: avatarStyle)
-                        .offset(x: -avatarStyle.leadingOffset)
+                    AvatarsView(style: info.avatarStyle)
+                        .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
-                    AvatarsView(style: avatarStyle)
-                        .offset(x: -avatarStyle.leadingOffset)
+                    AvatarsView(style: info.avatarStyle)
+                        .offset(x: -info.avatarStyle.leadingOffset)
                         .padding(.leading, Length.Padding.medium)
                 }
             }
@@ -59,12 +84,12 @@ extension NotificationsTableViewCell {
 
         private var textsVStack: some View {
             VStack(alignment: .leading, spacing: 2) {
-                Text(title)
+                Text(info.title)
                     .style(.bodySmall(.regular))
                     .foregroundStyle(Color.DS.Foreground.primary)
                     .lineLimit(2)
 
-                if let description {
+                if let description = info.description {
                     Text(description)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
@@ -82,40 +107,99 @@ extension NotificationsTableViewCell {
     }
 }
 
+// MARK: - Regular Style
+fileprivate extension NotificationsTableViewCell.Content {
+    struct Altered: View {
+        private let info: Style.Altered
+
+        fileprivate init(info: Style.Altered) {
+            self.info = info
+        }
+
+        var body: some View {
+            // To not pollute the init too much, colors are uncustomizable
+            // If a need arises, they can be added to the `Altered.Info` struct.
+            HStack(spacing: 0) {
+                Group {
+                    Text(info.text)
+                        .style(.bodySmall(.regular))
+                        .foregroundStyle(Color.white)
+                        .lineLimit(1)
+                        .padding(.leading, Length.Padding.medium)
+
+                    Spacer()
+
+                    Button(action: {
+                        info.action?()
+                    }, label: {
+                        Text(info.actionTitle)
+                            .style(.bodySmall(.regular))
+                            .foregroundStyle(Color.white)
+                        .padding(.trailing, Length.Padding.medium)
+                    })
+                }
+            }
+            .frame(height: 60)
+            .background(Color.DS.Foreground.error)
+        }
+    }
+}
+
 #if DEBUG
 #Preview {
     VStack(alignment: .leading, spacing: Length.Padding.medium) {
         NotificationsTableViewCell.Content(
-            title: "John Smith liked your comment more than all other comments as asdf",
-            description: "Here is what I think of all this: Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            shouldShowIndicator: true,
-            avatarStyle: .single(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
-            ),
-            actionIconName: "star"
+            style: .regular(
+                .init(
+                    title: "John Smith liked your comment more than all other comments as asdf",
+                    description: "Here is what I think of all this: Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                    shouldShowIndicator: true,
+                    avatarStyle: .single(
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
+                    ),
+                    actionIconName: "star"
+                )
+            )
         )
 
         NotificationsTableViewCell.Content(
-            title: "Albert Einstein and Marie Curie liked your comment on Quantum Mechanical solution for Hydrogen",
-            description: "Mary Carpenter • marycarpenter.com",
-            shouldShowIndicator: true,
-            avatarStyle: .double(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
-            ),
-            actionIconName: "plus"
+            style: .regular(
+                .init(
+                    title: "Albert Einstein and Marie Curie liked your comment on Quantum Mechanical solution for Hydrogen",
+                    description: "Mary Carpenter • marycarpenter.com",
+                    shouldShowIndicator: true,
+                    avatarStyle: .double(
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
+                    ),
+                    actionIconName: "plus"
+                )
+            )
+        )
+        NotificationsTableViewCell.Content(
+            style: .regular(
+                .init(
+                    title: "New likes on Night Time in Tokyo",
+                    description: "Sarah, Céline and Amit",
+                    shouldShowIndicator: true,
+                    avatarStyle: .triple(
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
+                        URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
+                    ),
+                    actionIconName: nil
+                )
+            )
         )
 
         NotificationsTableViewCell.Content(
-            title: "New likes on Night Time in Tokyo",
-            description: "Sarah, Céline and Amit",
-            shouldShowIndicator: true,
-            avatarStyle: .triple(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
-            ),
-            actionIconName: nil
+            style: .altered(
+                .init(
+                    text: "Comment has been marked as Spam",
+                    actionTitle: "Undo",
+                    action: nil
+                )
+            )
         )
     }
 }
