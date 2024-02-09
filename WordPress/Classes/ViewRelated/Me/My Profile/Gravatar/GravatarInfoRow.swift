@@ -1,11 +1,3 @@
-//
-//  GravatarInfoRow.swift
-//  WordPress
-//
-//  Created by Pinar Olguc on 6.02.2024.
-//  Copyright © 2024 WordPress. All rights reserved.
-//
-
 import Foundation
 import WordPressShared
 import DesignSystem
