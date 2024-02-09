@@ -111,6 +111,28 @@ struct AvatarsView: View {
     }
 }
 
+extension AvatarsView.Style {
+    init?(urls: [URL]) {
+        var tempURLs: [URL]
+        if urls.count > 3 {
+            tempURLs = Array(urls.prefix(3))
+        } else {
+            tempURLs = urls
+        }
+
+        switch UInt(tempURLs.count) {
+        case 0:
+            return nil
+        case 1:
+            self = AvatarsView.Style.single(tempURLs[0])
+        case 2:
+            self = AvatarsView.Style.double(tempURLs[0], tempURLs[1])
+        default:
+            self = AvatarsView.Style.triple(tempURLs[0], tempURLs[1], tempURLs[2])
+        }
+    }
+}
+
 private extension View {
     func avatarBorderOverlay() -> some View {
         self.overlay(
@@ -135,11 +157,13 @@ private extension View {
             )
         )
         AvatarsView(
-            style: .triple(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
-            )
+            style: .init(
+                urls: [
+                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
+                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
+                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
+                ]
+            )!
         )
     }
 }
