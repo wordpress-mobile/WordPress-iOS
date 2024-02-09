@@ -11726,11 +11726,3 @@ from anywhere.";
 /* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
 
-/* This text is shown in the profile editing page to let the user know about Gravatar */
-"Gravatar keeps your profile information safe and up to date, automatically syncing any updates made here with your Gravatar profile." = "Gravatar keeps your profile information safe and up to date, automatically syncing any updates made here with your Gravatar profile.";
-
-/* This is a link that takes the user to the external Gravatar website. */
-"Learn more on Gravatar.com" = "Learn more on Gravatar.com";
-
-/* A notice message that's shown after the user updates their profile information. */
-"Updates might take some time to sync with your Gravatar profile." = "Updates might take some time to sync with your Gravatar profile.";
