@@ -24,7 +24,7 @@ struct ReaderNavigationMenu: View {
     }
 
     var body: some View {
-        HStack(spacing: 8.0) {
+        HStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ReaderNavigationButton(viewModel: viewModel)
@@ -44,7 +44,7 @@ struct ReaderNavigationMenu: View {
                                .frame(width: 16)
                 }
             })
-            Spacer()
+            Spacer(minLength: 0)
             Button {
                 viewModel.navigateToSearch()
             } label: {
@@ -115,7 +115,7 @@ struct ReaderNavigationMenu: View {
 
         struct StreamFilter {
             static let text = Color.primary
-            static let background = Color(uiColor: .secondarySystemBackground)
+            static let background = Color(uiColor: .init(light: .secondarySystemBackground, dark: .tertiarySystemBackground))
             static let selectedText = Color(uiColor: .systemBackground)
             static let selectedBackground = Color.primary
         }
