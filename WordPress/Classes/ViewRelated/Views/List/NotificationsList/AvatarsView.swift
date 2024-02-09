@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressUI
 
 struct AvatarsView: View {
     private enum Constants {
@@ -62,7 +63,15 @@ struct AvatarsView: View {
     }
 
     private func avatar(url: URL) -> some View {
-        AsyncImage(url: url) { image in
+        let processedURL: URL
+        if let gravatar = Gravatar(url) {
+            let size = Int(ceil(style.diameter * UIScreen.main.scale))
+            processedURL = gravatar.urlWithSize(size)
+        } else {
+            processedURL = url
+        }
+
+        return AsyncImage(url: processedURL) { image in
             image.resizable()
         } placeholder: {
             borderColor
