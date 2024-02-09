@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - UIKit.UIFont: TextStyle
-extension TextStyle {
+public extension TextStyle {
     var uiFont: UIFont {
         switch self {
         case .heading1:
@@ -50,13 +50,12 @@ extension TextStyle {
 }
 
 // MARK: - SwiftUI.Text
-extension UILabel {
-    func style(_ style: TextStyle) -> Self {
+public extension UILabel {
+    func setStyle(_ style: TextStyle) {
         self.font = style.uiFont
         if style.case == .uppercase {
             self.text = self.text?.uppercased()
         }
-        return self
     }
 }
 
@@ -69,14 +68,14 @@ fileprivate extension UIFont {
         static let heading4 = DynamicFontHelper.fontForTextStyle(.title3, fontWeight: .semibold)
 
         enum Body {
-            static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
+            static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
             static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .regular)
-            static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .regular)
+            static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .regular)
 
             enum Emphasized {
-                static let small = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
+                static let small = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
                 static let medium = DynamicFontHelper.fontForTextStyle(.callout, fontWeight: .semibold)
-                static let large = DynamicFontHelper.fontForTextStyle(.subheadline, fontWeight: .semibold)
+                static let large = DynamicFontHelper.fontForTextStyle(.body, fontWeight: .semibold)
             }
         }
 

@@ -344,9 +344,6 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
             spotlightIsShown = false
         }
 
-        // End reader quick start tour if user selects a topic.
-        QuickStartTourGuide.shared.visited(.readerDiscoverSettings)
-
         dataSource.interest(for: indexPath.row).toggleSelected()
         updateNextButtonState()
 

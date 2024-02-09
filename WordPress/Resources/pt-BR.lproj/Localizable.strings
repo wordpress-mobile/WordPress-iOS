@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dias";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ seguidores";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ níveis";
@@ -471,9 +468,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Adicionar ao final";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Adicionar tópico";
-
 /* No comment provided by engineer. */
 "Add URL" = "Adicionar URL";
 
@@ -482,9 +476,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Adicionar uma foto ao perfil";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Adicionar um tópico";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Adicionar um domínio";
@@ -498,20 +489,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Adicione um shortcode…";
 
-/* No Tags View Button Label */
-"Add a site" = "Adicionar um site";
-
-/* No Topics View Button Label */
-"Add a topic" = "Adicionar um tópico";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Adicionar imagem da conta.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Adicionar texto alternativo";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Adicionar novo tópico";
 
 /* No comment provided by engineer. */
 "Add blocks" = "Adicionar blocos";
@@ -1071,12 +1053,6 @@
 /* No comment provided by engineer. */
 "Block settings" = "Configurações do bloco";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Bloquear este site";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Site bloqueado";
-
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Usuário bloqueado";
 
@@ -1473,9 +1449,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Escolher vídeo";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Escolha seus tópicos";
-
 /* Register Domain - Address information field City */
 "City" = "Cidade";
 
@@ -1848,9 +1821,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Não foi possível ativar as notificações";
 
-/* Title of a prompt. */
-"Could not follow site" = "Não foi possível seguir o site";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Não foi possível seguir o site no endereço especificado.";
 
@@ -1874,9 +1844,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Não foi possível alternar Lido: faltando postID.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Não foi possível parar de seguir o site";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Não foi possível parar de seguir o site no endereço especificado.";
@@ -2260,17 +2227,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Explorar";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Descobrir sites";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descubra e siga blogs que você ama";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Descubra e siga sites que inspiram você.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Descobrir mais tópicos";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2311,7 +2272,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Não tem uma conta? _Cadastre-se_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2635,9 +2597,6 @@
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Ativar notificações no aplicativo";
 
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Ativar notificações do site?";
-
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Ative as estatísticas do site para obter informações detalhadas sobre tráfego, curtidas, comentários e assinantes.";
 
@@ -2665,9 +2624,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Digite a senha";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Digite a URL do site que deseja seguir";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2931,9 +2887,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Buscando posts...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Buscando sites...";
 
 /* Label for the posting activity legend. */
@@ -2956,9 +2910,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Cinema e televisão";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtrar";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filtrar por tipo de atividade";
@@ -2999,8 +2950,7 @@
 "Fixing Threats" = "Corrigindo ameaças";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Seguir";
 
 /* Button title. Follow the comments on a post. */
@@ -3008,9 +2958,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Seguir conversa";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Seguir site";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Seguir tópicos";
@@ -3022,15 +2969,8 @@
 "Follow your favorite sites and discover new blogs." = "Siga seus sites favoritos e descubra novos blogs.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Sites seguidos";
-
-/* Followed Topics Title */
-"Followed Topics" = "Tópicos seguidos";
-
-/* User followed a site. */
-"Followed site" = "Site seguido";
 
 /* Label for list of followers.
    User role badge */
@@ -3041,13 +2981,8 @@
    Label for number of followers. */
 "Followers" = "Seguidores";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Seguindo";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Seguindo %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Seguindo novos tópicos...";
@@ -3060,9 +2995,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Segue o blog.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Segue a tag.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Tamanho da fonte";
@@ -3202,9 +3134,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Ir para sites seguidos";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Ir para o Leitor";
@@ -3872,7 +3801,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Curtidas";
 
@@ -3884,9 +3812,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Curtir o comentário.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite atingido Tente novamente em 1 minuto. Tentar novamente antes disso aumentará o tempo que precisa esperar antes de a restrição ser eliminada. Se acha que isso é um erro, contate o suporte.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Gráfico de linha exibindo visualizações para fins informativos.";
@@ -4105,9 +4030,6 @@
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Gerenciar resumo";
 
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Gerenciar sites";
-
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Gerenciar site";
 
@@ -4285,9 +4207,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Mais opções de suporte";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Horário mais popular";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Mover %@";
@@ -4521,9 +4440,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Nenhum aplicativo pode responder essa requisição. Instale um navegador de internet.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Nenhum site WordPress.com encontrado";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Nenhum endereço disponível corresponde à sua pesquisa";
 
@@ -4564,9 +4480,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Ameaças não corrigidas";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Nenhum site seguido";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Nenhum seguidor ainda";
@@ -4615,9 +4528,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Você não precisa esperar com o celular na mão. Avisaremos quando seu site for restaurado.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Nenhum novo tópico para seguir";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Nenhuma notificação ainda";
 
@@ -4659,12 +4569,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Nenhum post salvo";
-
-/* A message title */
-"No sites found" = "Nenhum site encontrado";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Nenhum site corresponde à %@ em seu idioma.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Nenhuma tag corresponde à sua pesquisa";
@@ -4836,9 +4740,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Assim que você se acostumar com os nomes dos blocos, você poderá adicionar um bloco digitando uma barra seguida pelo nome do bloco. Por exemplo, \/imagem ou \/titulo.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Assim que você criar um site no WordPress.com, você poderá republicar o conteúdo que você curtir em seu próprio site.";
 
 /* No comment provided by engineer. */
 "One" = "Um";
@@ -5442,9 +5343,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problema ao carregar conteúdo";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problema ao carregar sites";
-
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problema ao abrir o áudio";
 
@@ -5581,9 +5479,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Semanas recentes";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Os posts recentes dos blogs e sites que você segue vão aparecer aqui.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Para";
@@ -5788,9 +5683,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Redefine o filtro de intervalo de data";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Redefinir filtros";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Redefinir sua senha";
@@ -6261,7 +6153,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Configurações";
@@ -6397,9 +6288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Mostra o conteúdo do post";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Mostrar os posts do site.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Registrar-se";
 
@@ -6454,8 +6342,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Assunto do site";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL do site";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6487,16 +6374,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "O título do site foi alterado com sucesso";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Sites";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Sites (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Sites para seguir";
 
 /* Image size option title. */
 "Size" = "Tamanho";
@@ -7058,9 +6935,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "O servidor retornou uma resposta vazia. Isso geralmente significa que você precisa aumentar o limite de memória de seu site.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "O site %@ não será mais exibido no seu leitor. Toque para desfazer.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "O endereço do site deve ter menos que 64 caracteres.";
 
@@ -7076,9 +6950,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "O site não pode ser exportado.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Não há posts recentes nos sites desta lista.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "O slug é a versão amigável do URL do título do post.";
@@ -7289,9 +7160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Este post não está nas Minhas curtidas";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Ainda não há posts neste site. Tente novamente mais tarde.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "A conta não pode ser encerrada pois possui estornos não resolvidos.";
 
@@ -7434,12 +7302,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Nenhum tópico encontrada para o ID:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Tópicos";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Tópicos (%lu)";
-
 /* Label for total followers */
 "Total" = "Total";
 
@@ -7522,9 +7384,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Experimente agora";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Tente selecionar %@ para adicionar tópicos que você gosta.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Experimente o novo editor de blocos";
 
@@ -7537,23 +7396,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Desativar sugestões";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Desligar notificações do site";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Ativar notificações";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Ativar notificações push";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Ligar notificações do site";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Notificações do site desativadas";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Notificações do site ativadas";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Desativar o botão desativará todas as notificações deste aplicativo, independentemente do tipo.";
@@ -7600,9 +7447,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Não é possível sincronizar";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Não foi possível bloquear o site";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Não foi possível criar novos links de convite.";
 
@@ -7620,9 +7464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Não foi possível seguir a conversa";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Não foi possível seguir o site";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Não foi possível carregar as páginas no momento.";
@@ -7668,15 +7509,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Não foi possível compartilhar o link";
-
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Não foi possível desativar as notificações do site";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Não foi possível ativar as notificações do site";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Não foi possível deixar de seguir o site";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Não foi possível atualizar as configurações da página inicial";
@@ -7735,24 +7567,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Desfazer";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Deixar de seguir";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Deixar de seguir %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Deixar de seguir conversa";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Deixar de seguir conversa";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Deixar de seguir o site";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Site que deixei de seguir";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Deixar de seguir o blog.";
@@ -8372,9 +8191,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Desejamos boas-vindas ao Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Boas-vindas ao Leitor. Descubra milhões de blogs ao seu alcance.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Bem-vindo ao WordPress";
 
@@ -8456,9 +8272,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Quando um comentário tiver uma destas palavras em seu conteúdo, nome, URL, e-mail ou IP, ele será marcado como spam. Você pode inserir partes de palavras, então \"press\" corresponderá a \"WordPress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Ao seguir sites, você verá o conteúdo deles aqui.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Assim que você fizer alterações, você poderá ver o histórico aqui";
@@ -8632,9 +8445,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Você está prestes a alterar seu nome de usuário que, no momento, é %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Você já está seguindo esse site.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Você está alterando o seu nome de usuário para %@. Mudar seu nome de usuário também afetará o endereço de seus perfis no Gravatar e IntenseDebate. \nConfirme seu novo nome de usuário para continuar.";
 
@@ -8658,12 +8468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Você pode editar este bloco na versão Web do editor.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Você pode receber notificações de posts publicados em um site específico seguindo o site.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Você pode seguir posts de um assunto específico adicionando um tópico.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "É possível substituir essas configurações para posts individuais.";

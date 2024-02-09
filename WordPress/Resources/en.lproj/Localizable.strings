@@ -7218,6 +7218,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Try selecting %@ to view subscribed content and manage your subscriptions.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Subscriptions";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "More";
 
@@ -7352,9 +7358,7 @@ but tapping on this button will remove their like from the post. */
 "reader.manage.tab.tags" = "Tags";
 
 /* Plural button title to filter the Reader stream by blog.
-%1$d is a placeholder for the number of blogs.
-   Plural button title to filter the Reader stream by tag.
-%1$d is a placeholder for the number of tags. */
+%1$d is a placeholder for the number of blogs. */
 "reader.navigation.filter.blog.plural" = "%1$d Blogs";
 
 /* Singular button title to filter the Reader stream by blog.
@@ -7365,6 +7369,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "Tags";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d Tags";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d Tag";
@@ -7373,14 +7381,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "Tags";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtered by %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opens the filter list";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Liked";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Lists";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Reset";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Saved";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Search";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Subscriptions";
@@ -8377,7 +8399,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -10107,9 +10128,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Try it now";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Try selecting %@ to add topics you like.";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Try the new Block Editor";

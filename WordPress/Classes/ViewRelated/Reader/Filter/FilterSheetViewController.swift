@@ -249,7 +249,8 @@ private extension FilterSheetViewController {
             present(navController, animated: true)
             break
         case .tag:
-            filterProvider.showAdd(on: self, sceneDelegate: self)
+            // Go to the Filter management view
+            didTapEditButton()
         }
     }
 
