@@ -140,7 +140,6 @@ fileprivate extension NotificationsTableViewCellContent {
                     })
                 }
             }
-            .frame(height: 60)
             .background(Color.DS.Foreground.error)
         }
     }

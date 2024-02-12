@@ -5,7 +5,6 @@ import WordPressUI
 struct AvatarsView: View {
     private enum Constants {
         static let doubleAvatarHorizontalOffset: CGFloat = 18
-        static let tripleAvatarViewHeight: CGFloat = 44
     }
 
     enum Style {
@@ -116,7 +115,7 @@ struct AvatarsView: View {
                     .avatarBorderOverlay()
             }
         }
-        .frame(height: Constants.tripleAvatarViewHeight)
+        .frame(height: Length.Padding.large + style.diameter)
     }
 }
 
