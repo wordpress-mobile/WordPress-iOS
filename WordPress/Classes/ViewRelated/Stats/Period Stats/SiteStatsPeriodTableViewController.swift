@@ -53,7 +53,19 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+        let handler = ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+        tableView.dataSource = dataSource
+        handler.automaticallyReloadTableView = false
+        return handler
+    }()
+
+    private lazy var dataSource: StatsTrafficDataSource = {
+        return StatsTrafficDataSource(tableView: tableView) { tableView, indexPath, item in
+            let row = item.immuTableRow
+            let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+            row.configureCell(cell)
+            return cell
+        }
     }()
 
     init() {
@@ -181,7 +193,7 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        dataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
 
