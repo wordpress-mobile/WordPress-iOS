@@ -73,7 +73,8 @@ struct AvatarsView: View {
         return AsyncImage(url: processedURL) { image in
             image.resizable()
         } placeholder: {
-            borderColor
+            Image("gravatar")
+                .resizable()
         }
         .frame(width: style.diameter, height: style.diameter)
         .clipShape(Circle())
