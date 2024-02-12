@@ -3681,6 +3681,8 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
+		F46039182B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
+		F46039192B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
 		F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */; };
 		F46546312AF2F8D30017E3D1 /* DomainsStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */; };
@@ -9046,6 +9048,7 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableHeaderView.swift; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
 		F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsStateViewModel.swift; sourceTree = "<group>"; };
@@ -10062,6 +10065,7 @@
 				B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */,
 				083683DC2B4859BB00331ED0 /* NotificationsViewModel.swift */,
 				F42A9C652B7111BB0035CBCE /* NotificationsViewController+Strings.swift */,
+				F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */,
 			);
 			path = NotificationsViewController;
 			sourceTree = "<group>";
@@ -22366,6 +22370,7 @@
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,
 				E17FEADA221494B2006E1D2D /* Blog+Analytics.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
+				F46039182B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
 				8379669F299D51EC004A92B9 /* JetpackPlugin.swift in Sources */,
 				2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */,
@@ -25069,6 +25074,7 @@
 				0CB424F22ADEE52A0080B807 /* PostSearchToken.swift in Sources */,
 				FABB23D52602FC2C00C8785C /* SiteCreationRequest+Validation.swift in Sources */,
 				FABB23D62602FC2C00C8785C /* FormattableContentGroup.swift in Sources */,
+				F46039192B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */,
 				FABB23D72602FC2C00C8785C /* MenuItemSourceViewController.m in Sources */,
 				FABB23D82602FC2C00C8785C /* WPReusableTableViewCells.swift in Sources */,
 				FABB23D92602FC2C00C8785C /* HomepageSettingsService.swift in Sources */,
